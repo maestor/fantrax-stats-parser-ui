@@ -6,13 +6,16 @@ Once made lightweight API to parse my NHL fantasy league team stats and print co
 
 ## Installation and use
 
+### Prerequirements
+
+Running backend, instructions find from [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser).
+
 ```
 1. Install Node (at least 22.x recommended)
-2. Make [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) backend up and running with instructions there
-3. Clone this repo
-4. npm install
-5. npm start
-6. Go to http://localhost:4200
+2. Clone this repo
+3. npm install
+4. npm start
+5. Go to http://localhost:4200
 ```
 
 This project was originally enerated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
