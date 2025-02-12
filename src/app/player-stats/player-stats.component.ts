@@ -23,6 +23,8 @@ import { PLAYER_COLUMNS } from '@shared/table-columns';
 export class PlayerStatsComponent implements OnInit {
   private apiService = inject(ApiService);
 
+  reportType: ReportType = 'regular';
+  season?: number;
   tableData: Player[] = [];
   tableColumns = PLAYER_COLUMNS;
 
@@ -31,7 +33,13 @@ export class PlayerStatsComponent implements OnInit {
   }
 
   changeReport(reportType: ReportType) {
-    this.fetchPlayers({ reportType });
+    this.reportType = reportType;
+    this.fetchPlayers({ reportType, season: this.season });
+  }
+
+  changeSeason(season?: number) {
+    this.season = season;
+    this.fetchPlayers({ reportType: this.reportType, season });
   }
 
   fetchPlayers(params: ApiParams = {}) {

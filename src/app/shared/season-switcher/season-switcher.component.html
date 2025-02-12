@@ -1,11 +1,9 @@
-<section class="content-section">
-  <mat-form-field>
-    <mat-label>Kausivalitsin</mat-label>
-    <mat-select>
-      <mat-option value="0">Kaikki kaudet</mat-option>
-      @for (season of seasons; track season) {
-      <mat-option [value]="season.season">{{ season.text }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-</section>
+<mat-form-field subscriptSizing="dynamic">
+  <mat-label>{{ "season.selector" | translate }}</mat-label>
+  <mat-select (selectionChange)="onChangeSeason($event)">
+    <mat-option>{{ "season.allSeasons" | translate }}</mat-option>
+    @for (season of seasons; track season) {
+    <mat-option [value]="season.season">{{ season.text }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>

@@ -1,6 +1,6 @@
 <div class="switcher-panel">
   <app-report-switcher (changeReportTypeEvent)="changeReport($event)" />
-  <app-season-switcher />
+  <app-season-switcher (changeSeasonEvent)="changeSeason($event)" />
 </div>
 <app-stats-table
   [data]="tableData"

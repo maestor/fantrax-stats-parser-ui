@@ -65,7 +65,7 @@ export class ApiService {
     const { reportType = 'regular', season } = params;
     const cacheKey = `playerStats-${reportType}-${season ?? 'combined'}`;
     const path = season
-      ? `players/season/${reportType}/${season}}`
+      ? `players/season/${reportType}/${season}`
       : `players/combined/${reportType}`;
 
     return this.handleRequest<Player[]>(path, cacheKey);

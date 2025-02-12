@@ -19,7 +19,6 @@
     "target": "ES2022",
     "module": "ES2022",
     "paths": {
-      "@app/*": ["./src/app/*"],
       "@base/*": ["./src/app/base/*"],
       "@services/*": ["./src/app/services/*"],
       "@shared/*": ["./src/app/shared/*"]

@@ -1,0 +1,27 @@
+.mat-column-games,
+.mat-column-goals,
+.mat-column-assists,
+.mat-column-shots,
+.mat-column-plusMinus,
+.mat-column-ppp,
+.mat-column-shp,
+.mat-column-hits,
+.mat-column-penalties,
+.mat-column-blocks,
+.mat-column-points,
+.mat-column-wins,
+.mat-column-shutouts,
+.mat-column-gaa,
+.mat-column-savePercent,
+.mat-column-saves {
+  text-align: center;
+}
+
+.mat-column-name {
+  min-width: 150px;
+}
+
+.stats-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
