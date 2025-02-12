@@ -1,8 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { CacheService } from './cache.service';
+
+export type Season = {
+  season: number;
+  text: string;
+};
 
 export type Player = {
   name: string;
@@ -49,6 +54,11 @@ export class ApiService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
   private readonly API_URL = 'http://localhost:3000';
+
+  // Fetching available seasons
+  getSeasons(): Observable<Season[]> {
+    return this.handleRequest<Season[]>('seasons', 'seasons');
+  }
 
   // Fetching players data
   getPlayerData(params: ApiParams): Observable<Player[]> {

@@ -6,12 +6,17 @@ import {
   ReportType,
 } from '@services/api.service';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
-import { ReportSwitcherComponent } from '@app/shared/report-switcher/report-switcher.component';
+import { ReportSwitcherComponent } from '@shared/report-switcher/report-switcher.component';
+import { SeasonSwitcherComponent } from '@shared/season-switcher/season-switcher.component';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
 
 @Component({
   selector: 'app-player-stats',
-  imports: [StatsTableComponent, ReportSwitcherComponent],
+  imports: [
+    StatsTableComponent,
+    ReportSwitcherComponent,
+    SeasonSwitcherComponent,
+  ],
   templateUrl: './player-stats.component.html',
   styleUrl: './player-stats.component.scss',
 })
