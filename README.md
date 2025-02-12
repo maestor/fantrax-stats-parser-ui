@@ -1,59 +1,18 @@
-# FantraxStatsParserUi
+# fantrax-stats-parser-ui
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
+## Purpose
 
-## Development server
+Once made lightweight API to parse my NHL fantasy league team stats and print combined seasons results by player (regular season &amp; playoffs separately) as JSON, [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser). It have been useful but without UI it's quite tricky to use. So here is one simple UI for those stats. Selected Angular framework as a base because I haven't use it in work related stuff since 2016, and thinking this is better for me learning and developing skills than do it with for example something like React or Vue.js which I have working experience in recent years.
 
-To start a local development server, run:
+## Installation and use
 
-```bash
-ng serve
+```
+1. Install Node (at least 22.x recommended)
+2. Make [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) backend up and running with instructions there
+3. Clone this repo
+4. npm install
+5. npm start
+6. Go to http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+This project was originally enerated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
