@@ -1,6 +1,10 @@
 {
   "name": "fantrax-stats-parser-ui",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Fantrax stats parser UI by Angular",
+  "repository": "git@github.com:maestor/fantrax-stats-parser-ui.git",
+  "author": "Kalle Haavisto <maestori@gmail.com>",
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
