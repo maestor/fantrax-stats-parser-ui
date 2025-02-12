@@ -1,0 +1,29 @@
+{
+  "pageTitle": "Colorado Avalance - FFHL pelaajatilastot",
+  "link": {
+    "playerStats": "Kenttäpelaajat",
+    "goalieStats": "Maalivahdit"
+  },
+  "reportType": {
+    "regular": "Runkosarja",
+    "playoffs": "Playoffs"
+  },
+  "tableColumn": {
+    "position": "#",
+    "name": "Nimi",
+    "games": "Ottelut",
+    "goals": "Maalit",
+    "assists": "Syötöt",
+    "points": "Pisteet",
+    "ppp": "YV-pisteet",
+    "shp": "AV-pisteet",
+    "plusMinus": "+/-",
+    "shots": "Laukaukset",
+    "penalties": "Jäähyt",
+    "hits": "Taklaukset",
+    "blocks": "Blokit",
+    "wins": "Voitot",
+    "saves": "Torjunnat",
+    "shutouts": "Nollapelit"
+  }
+}

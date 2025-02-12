@@ -1,0 +1,13 @@
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  @for (item of navItems; track item) {
+  <a
+    mat-tab-link
+    [routerLink]="item.path"
+    [active]="activeLink == item.path"
+    (click)="setActiveTab(item.path)"
+    ariaCurrentWhenActive="page"
+  >
+    {{ item.label | translate }}
+  </a>
+  }
+</nav>

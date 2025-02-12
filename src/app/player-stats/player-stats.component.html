@@ -1,0 +1,7 @@
+<app-report-switcher (changeReportTypeEvent)="changeReport($event)" />
+
+<app-stats-table
+  [data]="tableData"
+  [columns]="tableColumns"
+  defaultSortColumn="points"
+></app-stats-table>

@@ -1,0 +1,12 @@
+<main class="main">
+  <div class="content">
+    <h1 class="mat-display-1 center">{{ "pageTitle" | translate }}</h1>
+    <app-navigation [tabPanel]="tabPanel" />
+    <mat-tab-nav-panel #tabPanel>
+      <div class="content-wrapper">
+        <router-outlet />
+      </div>
+    </mat-tab-nav-panel>
+  </div>
+</main>
+<app-footer />
