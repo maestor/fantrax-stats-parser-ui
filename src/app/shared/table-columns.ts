@@ -11,6 +11,7 @@ const COMMON_COLUMNS = [
 ];
 const PLAYER_ONLY_COLUMNS = ['plusMinus', 'shots', 'hits', 'blocks'];
 const GOALIE_ONLY_COLUMNS = ['wins', 'saves', 'shutouts'];
+const GOALIE_ONLY_SEASON_COLUMNS = ['gaa', 'savePercent'];
 
 export const PLAYER_COLUMNS = [
   ...BASE_COLUMNS,
@@ -21,6 +22,13 @@ export const PLAYER_COLUMNS = [
 export const GOALIE_COLUMNS = [
   ...BASE_COLUMNS,
   ...GOALIE_ONLY_COLUMNS,
+  ...COMMON_COLUMNS,
+];
+
+export const GOALIE_SEASON_COLUMNS = [
+  ...BASE_COLUMNS,
+  ...GOALIE_ONLY_COLUMNS,
+  ...GOALIE_ONLY_SEASON_COLUMNS,
   ...COMMON_COLUMNS,
 ];
 

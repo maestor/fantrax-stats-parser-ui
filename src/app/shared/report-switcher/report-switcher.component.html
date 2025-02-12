@@ -1,15 +1,13 @@
-<section class="content-section">
-  <mat-button-toggle-group
-    name="reportType"
-    aria-label="Stats report type"
-    [(ngModel)]="reportType"
-    (change)="onChangeReportType($event)"
-  >
-    <mat-button-toggle value="regular">
-      {{ "reportType.regular" | translate }}
-    </mat-button-toggle>
-    <mat-button-toggle value="playoffs">
-      {{ "reportType.playoffs" | translate }}
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-</section>
+<mat-button-toggle-group
+  name="reportType"
+  aria-label="Stats report type"
+  [(ngModel)]="reportType"
+  (change)="onChangeReportType($event)"
+>
+  <mat-button-toggle value="regular">
+    {{ "reportType.regular" | translate }}
+  </mat-button-toggle>
+  <mat-button-toggle value="playoffs">
+    {{ "reportType.playoffs" | translate }}
+  </mat-button-toggle>
+</mat-button-toggle-group>

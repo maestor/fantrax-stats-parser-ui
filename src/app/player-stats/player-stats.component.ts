@@ -6,18 +6,25 @@ import {
   ReportType,
 } from '@services/api.service';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
-import { ReportSwitcherComponent } from '@app/shared/report-switcher/report-switcher.component';
+import { ReportSwitcherComponent } from '@shared/report-switcher/report-switcher.component';
+import { SeasonSwitcherComponent } from '@shared/season-switcher/season-switcher.component';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
 
 @Component({
   selector: 'app-player-stats',
-  imports: [StatsTableComponent, ReportSwitcherComponent],
+  imports: [
+    StatsTableComponent,
+    ReportSwitcherComponent,
+    SeasonSwitcherComponent,
+  ],
   templateUrl: './player-stats.component.html',
   styleUrl: './player-stats.component.scss',
 })
 export class PlayerStatsComponent implements OnInit {
   private apiService = inject(ApiService);
 
+  reportType: ReportType = 'regular';
+  season?: number;
   tableData: Player[] = [];
   tableColumns = PLAYER_COLUMNS;
 
@@ -26,7 +33,13 @@ export class PlayerStatsComponent implements OnInit {
   }
 
   changeReport(reportType: ReportType) {
-    this.fetchPlayers({ reportType });
+    this.reportType = reportType;
+    this.fetchPlayers({ reportType, season: this.season });
+  }
+
+  changeSeason(season?: number) {
+    this.season = season;
+    this.fetchPlayers({ reportType: this.reportType, season });
   }
 
   fetchPlayers(params: ApiParams = {}) {

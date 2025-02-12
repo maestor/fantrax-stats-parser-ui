@@ -7,17 +7,24 @@ import {
 } from '@services/api.service';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { ReportSwitcherComponent } from '@shared/report-switcher/report-switcher.component';
-import { GOALIE_COLUMNS } from '@shared/table-columns';
+import { SeasonSwitcherComponent } from '@shared/season-switcher/season-switcher.component';
+import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
 
 @Component({
   selector: 'app-goalie-stats',
-  imports: [StatsTableComponent, ReportSwitcherComponent],
+  imports: [
+    StatsTableComponent,
+    ReportSwitcherComponent,
+    SeasonSwitcherComponent,
+  ],
   templateUrl: './goalie-stats.component.html',
   styleUrl: './goalie-stats.component.scss',
 })
 export class GoalieStatsComponent implements OnInit {
   private apiService = inject(ApiService);
 
+  reportType: ReportType = 'regular';
+  season?: number;
   tableData: Goalie[] = [];
   tableColumns = GOALIE_COLUMNS;
 
@@ -26,7 +33,15 @@ export class GoalieStatsComponent implements OnInit {
   }
 
   changeReport(reportType: ReportType) {
-    this.fetchPlayers({ reportType });
+    this.reportType = reportType;
+    this.tableColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
+    this.fetchPlayers({ reportType, season: this.season });
+  }
+
+  changeSeason(season?: number) {
+    this.season = season;
+    this.tableColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
+    this.fetchPlayers({ reportType: this.reportType, season });
   }
 
   fetchPlayers(params: ApiParams = {}) {

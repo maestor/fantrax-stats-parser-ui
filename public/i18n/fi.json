@@ -15,15 +15,21 @@
     "goals": "Maalit",
     "assists": "Syötöt",
     "points": "Pisteet",
-    "ppp": "YV-pisteet",
-    "shp": "AV-pisteet",
+    "ppp": "YVP",
+    "shp": "AVP",
     "plusMinus": "+/-",
-    "shots": "Laukaukset",
+    "shots": "Vedot",
     "penalties": "Jäähyt",
     "hits": "Taklaukset",
     "blocks": "Blokit",
     "wins": "Voitot",
     "saves": "Torjunnat",
-    "shutouts": "Nollapelit"
+    "shutouts": "Nollat",
+    "gaa": "GAA",
+    "savePercent": "Torjunta%"
+  },
+  "season": {
+    "selector": "Kausivalitsin",
+    "allSeasons": "Kaikki kaudet"
   }
 }
