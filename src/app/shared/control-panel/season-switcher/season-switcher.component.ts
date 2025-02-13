@@ -1,10 +1,11 @@
-import { Component, inject, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, Season } from '@services/api.service';
+import { FilterService } from '@services/filter.service';
 
 @Component({
   selector: 'app-season-switcher',
@@ -20,8 +21,7 @@ import { ApiService, Season } from '@services/api.service';
 })
 export class SeasonSwitcherComponent implements OnInit {
   private apiService = inject(ApiService);
-
-  @Output() changeSeasonEvent = new EventEmitter<number>();
+  private filterService = inject(FilterService);
 
   seasons: Season[] = [];
 
@@ -35,7 +35,7 @@ export class SeasonSwitcherComponent implements OnInit {
     });
   }
 
-  onChangeSeason(event: MatSelectChange): void {
-    this.changeSeasonEvent.emit(event.value);
+  changeSeason(event: MatSelectChange): void {
+    this.filterService.updateSeason(event.value);
   }
 }
