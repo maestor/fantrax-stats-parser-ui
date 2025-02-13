@@ -31,5 +31,6 @@
   "season": {
     "selector": "Kausivalitsin",
     "allSeasons": "Kaikki kaudet"
-  }
+  },
+  "statsModeToggle": "Tilastot per ottelu"
 }

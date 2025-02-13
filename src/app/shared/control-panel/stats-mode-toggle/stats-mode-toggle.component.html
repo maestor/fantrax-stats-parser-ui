@@ -1,1 +1,3 @@
-<mat-slide-toggle labelPosition="before">Tilastot per peli</mat-slide-toggle>
+<mat-slide-toggle labelPosition="before" (change)="toggleMode($event)">
+  {{ "statsModeToggle" | translate }}
+</mat-slide-toggle>
