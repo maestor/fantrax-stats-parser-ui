@@ -55,6 +55,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.filterService.updateReportType('regular');
     this.filterService.updateSeason(undefined);
+    this.filterService.toggleStatsMode(false);
     this.subscriptions.unsubscribe();
   }
 
