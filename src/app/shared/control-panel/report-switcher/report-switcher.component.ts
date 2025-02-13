@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -6,6 +6,7 @@ import {
   MatButtonToggleChange,
 } from '@angular/material/button-toggle';
 import { ReportType } from '@services/api.service';
+import { FilterService } from '@services/filter.service';
 
 @Component({
   selector: 'app-report-switcher',
@@ -14,12 +15,12 @@ import { ReportType } from '@services/api.service';
   styleUrl: './report-switcher.component.scss',
 })
 export class ReportSwitcherComponent {
-  @Output() changeReportTypeEvent = new EventEmitter<ReportType>();
+  filterService = inject(FilterService);
 
   reportType: ReportType = 'regular';
 
-  onChangeReportType(event: MatButtonToggleChange): void {
-    this.changeReportTypeEvent.emit(event.value);
+  changeReportType(event: MatButtonToggleChange): void {
     this.reportType = event.value;
+    this.filterService.updateReportType(this.reportType);
   }
 }

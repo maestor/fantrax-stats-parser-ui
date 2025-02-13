@@ -2,7 +2,7 @@
   name="reportType"
   aria-label="Stats report type"
   [(ngModel)]="reportType"
-  (change)="onChangeReportType($event)"
+  (change)="changeReportType($event)"
 >
   <mat-button-toggle value="regular">
     {{ "reportType.regular" | translate }}
