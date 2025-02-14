@@ -7,8 +7,6 @@ test.beforeEach(async ({ page }) => {
 test('Go to front page correctly and check that everything find with initial state', async ({
   page,
 }) => {
-  await page.goto('/');
-
   // Site title
   await expect(page).toHaveTitle(/Colorado Avalance - FFHL pelaajatilastot/);
 
