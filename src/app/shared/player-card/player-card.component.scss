@@ -1,0 +1,29 @@
+.player-card {
+  padding: 16px 0;
+  min-width: 360px;
+}
+
+.card-title-icon {
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+}
+
+mat-card-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.mdc-icon-button {
+  position: absolute;
+  right: 8px;
+}
+
+.mat-cell-label {
+  background-color: #eeeeee;
+  font-weight: bold;
+}
+
+.mat-cell-value {
+  text-align: right;
+}

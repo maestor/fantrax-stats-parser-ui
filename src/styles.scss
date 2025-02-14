@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-
 html,
 body {
   height: 100%;
@@ -15,4 +14,20 @@ body {
 
 .center {
   text-align: center;
+}
+
+.mat-elevation-z1 {
+  box-shadow: var(--mat-sys-level1);
+}
+.mat-elevation-z2 {
+  box-shadow: var(--mat-sys-level2);
+}
+.mat-elevation-z3 {
+  box-shadow: var(--mat-sys-level3);
+}
+.mat-elevation-z4 {
+  box-shadow: var(--mat-sys-level4);
+}
+.mat-elevation-z5 {
+  box-shadow: var(--mat-sys-level5);
 }
