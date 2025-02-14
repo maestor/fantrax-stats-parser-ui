@@ -29,6 +29,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   statsPerGame: boolean = false;
   tableData: Goalie[] = [];
   tableColumns = GOALIE_COLUMNS;
+  loading = false;
 
   ngOnInit() {
     this.fetchData();
@@ -77,10 +78,12 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   }
 
   fetchData(params: ApiParams = {}) {
+    this.loading = true;
     this.apiService.getGoalieData(params).subscribe((data) => {
       this.tableData = this.statsPerGame
         ? this.statsService.getGoalieStatsPerGame(data)
         : data;
+      this.loading = false;
     });
   }
 }

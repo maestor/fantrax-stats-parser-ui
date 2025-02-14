@@ -1,4 +1,9 @@
 <div class="stats-table-wrapper">
+  @if (loading) {
+  <div class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+  }
   <table
     mat-table
     [dataSource]="dataSource"

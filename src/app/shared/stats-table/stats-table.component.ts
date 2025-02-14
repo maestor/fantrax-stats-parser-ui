@@ -11,12 +11,19 @@ import {
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { STATIC_COLUMNS } from '@shared/table-columns';
 
 @Component({
   selector: 'app-stats-table',
-  imports: [CommonModule, TranslateModule, MatTableModule, MatSortModule],
+  imports: [
+    CommonModule,
+    TranslateModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+  ],
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
 })
@@ -26,6 +33,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
   @Input() data: any = [];
   @Input() columns: string[] = [];
   @Input() defaultSortColumn = 'games';
+  @Input() loading = false;
 
   dataSource = new MatTableDataSource([]);
   displayedColumns: string[] = [];
