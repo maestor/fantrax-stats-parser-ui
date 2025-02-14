@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { STATIC_COLUMNS } from '@shared/table-columns';
 
@@ -21,6 +23,8 @@ import { STATIC_COLUMNS } from '@shared/table-columns';
     CommonModule,
     TranslateModule,
     MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatProgressSpinnerModule,
     MatSortModule,
   ],
@@ -63,5 +67,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
     this.sort.sortChange.emit();
 
     this.cdr.detectChanges();
+  }
+
+  filterItems(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }

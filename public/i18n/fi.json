@@ -8,6 +8,10 @@
     "regular": "Runkosarja",
     "playoffs": "Playoffs"
   },
+  "table": {
+    "playerSearch": "Pelaajahaku",
+    "noSearchResults": "Ei hakutuloksia"
+  },
   "tableColumn": {
     "position": "#",
     "name": "Nimi",

@@ -4,6 +4,12 @@
     <mat-spinner></mat-spinner>
   </div>
   }
+
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>{{ "table.playerSearch" | translate }}</mat-label>
+    <input matInput (keyup)="filterItems($event)" #search />
+  </mat-form-field>
+
   <table
     mat-table
     [dataSource]="dataSource"
@@ -31,5 +37,12 @@
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell no-results" [colSpan]="displayedColumns.length">
+        <span>
+          {{ "table.noSearchResults" | translate }}
+        </span>
+      </td>
+    </tr>
   </table>
 </div>
