@@ -1,4 +1,4 @@
-<div class="stats-table-wrapper">
+<div class="stats-table-wrapper mat-elevation-z4">
   @if (loading) {
   <div class="loading">
     <mat-spinner></mat-spinner>
@@ -10,13 +10,7 @@
     <input matInput (keyup)="filterItems($event)" #search />
   </mat-form-field>
 
-  <table
-    mat-table
-    [dataSource]="dataSource"
-    matSort
-    matSortStart="desc"
-    class="mat-elevation-z8"
-  >
+  <table mat-table [dataSource]="dataSource" matSort matSortStart="desc">
     <!-- Auto increment position column -->
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef>
@@ -36,7 +30,11 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr
+      mat-row
+      (click)="selectItem(row)"
+      *matRowDef="let row; columns: displayedColumns"
+    ></tr>
     <tr class="mat-row" *matNoDataRow>
       <td class="mat-cell no-results" [colSpan]="displayedColumns.length">
         <span>

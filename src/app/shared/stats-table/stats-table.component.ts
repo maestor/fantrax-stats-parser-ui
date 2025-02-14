@@ -15,7 +15,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
 import { STATIC_COLUMNS } from '@shared/table-columns';
+import { Player, Goalie } from '@services/api.service';
+import { PlayerCardComponent } from '@shared/player-card/player-card.component';
 
 @Component({
   selector: 'app-stats-table',
@@ -33,6 +36,7 @@ import { STATIC_COLUMNS } from '@shared/table-columns';
 })
 export class StatsTableComponent implements OnChanges, AfterViewInit {
   private cdr = inject(ChangeDetectorRef);
+  readonly dialog = inject(MatDialog);
 
   @Input() data: any = [];
   @Input() columns: string[] = [];
@@ -72,5 +76,11 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
   filterItems(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  selectItem(data: Player | Goalie) {
+    this.dialog.open(PlayerCardComponent, {
+      data,
+    });
   }
 }

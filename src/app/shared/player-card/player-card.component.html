@@ -1,0 +1,27 @@
+<mat-card class="player-card">
+  <button mat-icon-button (click)="onNoClick()">X</button>
+  <mat-card-header>
+    <mat-icon
+      mat-card-avatar
+      fontIcon="account_circle"
+      class="card-title-icon"
+    />
+    <mat-card-title>{{ data.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="stats" class="mat-elevation-z2">
+      <ng-container matColumnDef="label">
+        <td mat-cell *matCellDef="let stat" class="mat-cell-label">
+          {{ stat.label | translate }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="value">
+        <td mat-cell *matCellDef="let stat" class="mat-cell-value">
+          {{ stat.value }}
+        </td>
+      </ng-container>
+
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

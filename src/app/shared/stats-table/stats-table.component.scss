@@ -36,6 +36,11 @@
   height: 56px;
 }
 
+.mat-mdc-row:hover {
+  background-color: var(--mat-sys-primary-container);
+  cursor: pointer;
+}
+
 .loading {
   position: absolute;
   top: 0;
