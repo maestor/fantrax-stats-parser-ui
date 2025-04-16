@@ -31,7 +31,8 @@ export class SeasonSwitcherComponent implements OnInit {
 
   fetchSeasons() {
     this.apiService.getSeasons().subscribe((data) => {
-      this.seasons = data;
+      // Recent seasons first
+      this.seasons = data.reverse();
     });
   }
 
