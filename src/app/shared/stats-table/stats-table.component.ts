@@ -51,7 +51,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data'] && this.data) {
-      this.dataSource = new MatTableDataSource(this.data);
+      this.dataSource.data = this.data;
       if (this.columns?.length > 0) {
         this.displayedColumns = this.columns;
         this.dynamicColumns = this.displayedColumns.filter(
