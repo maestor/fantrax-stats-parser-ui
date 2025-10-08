@@ -55,10 +55,6 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
       : this.filterService.updatePlayerFilters({ season });
   }
 
-  trackBySeason(_: number, season: Season) {
-    return season.season;
-  }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

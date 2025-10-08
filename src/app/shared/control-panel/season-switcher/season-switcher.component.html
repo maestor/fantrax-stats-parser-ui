@@ -4,10 +4,11 @@
     <mat-option [value]="undefined">
       {{ "season.allSeasons" | translate }}
     </mat-option>
-    @for (let season of seasons; track trackBySeason) {
-      <mat-option [value]="season.season">
-        {{ season.text }}
-      </mat-option>
+
+    @for (season of seasons; track season.season) {
+    <mat-option [value]="season.season">
+      {{ season.text }}
+    </mat-option>
     }
   </mat-select>
 </mat-form-field>
