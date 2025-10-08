@@ -1,7 +1,7 @@
 <mat-button-toggle-group
   name="reportType"
   aria-label="Stats report type"
-  [(ngModel)]="reportType"
+  [value]="reportType$ | async"
   (change)="changeReportType($event)"
 >
   <mat-button-toggle value="regular">
