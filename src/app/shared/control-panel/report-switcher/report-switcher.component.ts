@@ -22,9 +22,7 @@ export class ReportSwitcherComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
 
   filterService = inject(FilterService);
-  reportType$ = this.filterService.playerFilters$.pipe(
-    map((f) => f.reportType)
-  );
+  reportType$: any;
 
   ngOnInit() {
     this.reportType$ = (
