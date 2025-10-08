@@ -68,7 +68,6 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
     this.dataSource.sort = this.sort;
     this.sort.active = this.defaultSortColumn;
     this.sort.direction = 'desc';
-    this.sort.sortChange.emit();
 
     this.cdr.detectChanges();
   }
