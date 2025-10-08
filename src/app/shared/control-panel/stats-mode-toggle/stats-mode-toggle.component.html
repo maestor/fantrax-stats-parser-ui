@@ -1,3 +1,7 @@
-<mat-slide-toggle labelPosition="before" (change)="toggleMode($event)">
+<mat-slide-toggle
+  labelPosition="before"
+  [checked]="statsPerGame"
+  (change)="toggleMode($event)"
+>
   {{ "statsModeToggle" | translate }}
 </mat-slide-toggle>

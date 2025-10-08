@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReportSwitcherComponent } from './report-switcher/report-switcher.component';
 import { SeasonSwitcherComponent } from './season-switcher/season-switcher.component';
 import { StatsModeToggleComponent } from './stats-mode-toggle/stats-mode-toggle.component';
@@ -13,4 +13,6 @@ import { StatsModeToggleComponent } from './stats-mode-toggle/stats-mode-toggle.
   templateUrl: './control-panel.component.html',
   styleUrl: './control-panel.component.scss',
 })
-export class ControlPanelComponent {}
+export class ControlPanelComponent {
+  @Input() context: 'player' | 'goalie' = 'player';
+}

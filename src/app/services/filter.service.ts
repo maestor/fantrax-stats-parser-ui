@@ -2,27 +2,55 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ReportType } from './api.service';
 
+export interface FilterState {
+  reportType: ReportType;
+  season?: number;
+  statsPerGame: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class FilterService {
-  private reportTypeSource = new BehaviorSubject<ReportType>('regular');
-  private seasonSource = new BehaviorSubject<number | undefined>(undefined);
-  private statsPerGameSource = new BehaviorSubject<boolean>(false);
+  private filters = {
+    players: new BehaviorSubject<FilterState>({
+      reportType: 'regular',
+      season: undefined,
+      statsPerGame: false,
+    }),
+    goalies: new BehaviorSubject<FilterState>({
+      reportType: 'regular',
+      season: undefined,
+      statsPerGame: false,
+    }),
+  };
 
-  reportType$ = this.reportTypeSource.asObservable();
-  season$ = this.seasonSource.asObservable();
-  statsPerGame$ = this.statsPerGameSource.asObservable();
+  playerFilters$ = this.filters.players.asObservable();
+  goalieFilters$ = this.filters.goalies.asObservable();
 
-  updateReportType(reportType: ReportType) {
-    this.reportTypeSource.next(reportType);
+  updatePlayerFilters(change: Partial<FilterState>) {
+    const current = this.filters.players.value;
+    this.filters.players.next({ ...current, ...change });
   }
 
-  updateSeason(season?: number) {
-    this.seasonSource.next(season);
+  updateGoalieFilters(change: Partial<FilterState>) {
+    const current = this.filters.goalies.value;
+    this.filters.goalies.next({ ...current, ...change });
   }
 
-  toggleStatsMode(statsPerGame: boolean) {
-    this.statsPerGameSource.next(statsPerGame);
+  resetPlayerFilters() {
+    this.filters.players.next({
+      reportType: 'regular',
+      season: undefined,
+      statsPerGame: false,
+    });
+  }
+
+  resetGoalieFilters() {
+    this.filters.goalies.next({
+      reportType: 'regular',
+      season: undefined,
+      statsPerGame: false,
+    });
   }
 }

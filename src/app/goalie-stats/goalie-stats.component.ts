@@ -32,13 +32,10 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   loading = false;
 
   ngOnInit() {
-    combineLatest([
-      this.filterService.reportType$,
-      this.filterService.season$,
-      this.filterService.statsPerGame$,
-    ])
+    combineLatest([this.filterService.goalieFilters$])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([reportType, season, statsPerGame]) => {
+      .subscribe(([filters]) => {
+        const { reportType, season, statsPerGame } = filters;
         this.reportType = reportType;
         this.season = season;
         this.statsPerGame = statsPerGame;
@@ -52,10 +49,6 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-
-    this.filterService.updateReportType('regular');
-    this.filterService.updateSeason(undefined);
-    this.filterService.toggleStatsMode(false);
   }
 
   fetchData(params: ApiParams = {}) {
