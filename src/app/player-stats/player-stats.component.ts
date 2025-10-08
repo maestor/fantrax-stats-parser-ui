@@ -1,5 +1,5 @@
 import { OnInit, OnDestroy, Component, inject } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import {
   ApiService,
   ApiParams,
@@ -22,7 +22,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private filterService = inject(FilterService);
   private statsService = inject(StatsService);
-  private subscriptions = new Subscription();
+  private destroy$ = new Subject<void>();
 
   reportType: ReportType = 'regular';
   season?: number;
@@ -34,30 +34,26 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.fetchData();
 
-    this.subscriptions.add(
-      this.filterService.reportType$.subscribe((report) => {
-        this.changeReport(report);
-      })
-    );
+    this.filterService.reportType$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((report) => this.changeReport(report));
 
-    this.subscriptions.add(
-      this.filterService.season$.subscribe((season) => {
-        this.changeSeason(season);
-      })
-    );
+    this.filterService.season$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((season) => this.changeSeason(season));
 
-    this.subscriptions.add(
-      this.filterService.statsPerGame$.subscribe((statsPerGame) => {
-        this.toggleStatsMode(statsPerGame);
-      })
-    );
+    this.filterService.statsPerGame$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((statsPerGame) => this.toggleStatsMode(statsPerGame));
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
     this.filterService.updateReportType('regular');
     this.filterService.updateSeason(undefined);
     this.filterService.toggleStatsMode(false);
-    this.subscriptions.unsubscribe();
   }
 
   changeReport(reportType: ReportType) {
@@ -77,11 +73,15 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
 
   fetchData(params: ApiParams = {}) {
     this.loading = true;
-    this.apiService.getPlayerData(params).subscribe((data) => {
-      this.tableData = this.statsPerGame
-        ? this.statsService.getPlayerStatsPerGame(data)
-        : data;
-      this.loading = false;
-    });
+
+    this.apiService
+      .getPlayerData(params)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.tableData = this.statsPerGame
+          ? this.statsService.getPlayerStatsPerGame(data)
+          : data;
+        this.loading = false;
+      });
   }
 }
