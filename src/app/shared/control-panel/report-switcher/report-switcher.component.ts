@@ -2,7 +2,7 @@ import { Component, Input, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, takeUntil, map } from 'rxjs';
+import { Subject, takeUntil, map, Observable, of } from 'rxjs';
 import {
   MatButtonToggleModule,
   MatButtonToggleChange,
@@ -22,7 +22,7 @@ export class ReportSwitcherComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
 
   filterService = inject(FilterService);
-  reportType$: any;
+  reportType$: Observable<ReportType> = of('regular');
 
   ngOnInit() {
     this.reportType$ = (
