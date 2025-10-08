@@ -60,7 +60,7 @@ describe('StatsModeToggleComponent', () => {
 
     component.toggleMode(event);
 
-    filterService.playerFilters$.subscribe((filters) => {
+    filterService.goalieFilters$.subscribe((filters) => {
       expect(filters.statsPerGame).toBeTrue();
       done();
     });
