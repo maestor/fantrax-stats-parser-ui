@@ -1,5 +1,5 @@
 import { OnInit, Component, inject, OnDestroy } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, combineLatest, takeUntil } from 'rxjs';
 import {
   ApiParams,
   ApiService,
@@ -32,19 +32,21 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   loading = false;
 
   ngOnInit() {
-    this.fetchData();
-
-    this.filterService.reportType$
+    combineLatest([
+      this.filterService.reportType$,
+      this.filterService.season$,
+      this.filterService.statsPerGame$,
+    ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe((report) => this.changeReport(report));
-
-    this.filterService.season$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((season) => this.changeSeason(season));
-
-    this.filterService.statsPerGame$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((statsPerGame) => this.toggleStatsMode(statsPerGame));
+      .subscribe(([reportType, season, statsPerGame]) => {
+        this.reportType = reportType;
+        this.season = season;
+        this.statsPerGame = statsPerGame;
+        this.tableColumns = this.season
+          ? GOALIE_SEASON_COLUMNS
+          : GOALIE_COLUMNS;
+        this.fetchData({ reportType, season });
+      });
   }
 
   ngOnDestroy(): void {
@@ -54,23 +56,6 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
     this.filterService.updateReportType('regular');
     this.filterService.updateSeason(undefined);
     this.filterService.toggleStatsMode(false);
-  }
-
-  changeReport(reportType: ReportType) {
-    this.reportType = reportType;
-    this.tableColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
-    this.fetchData({ reportType, season: this.season });
-  }
-
-  changeSeason(season?: number) {
-    this.season = season;
-    this.tableColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
-    this.fetchData({ reportType: this.reportType, season });
-  }
-
-  toggleStatsMode(statsPerGame: boolean) {
-    this.statsPerGame = statsPerGame;
-    this.fetchData({ reportType: this.reportType, season: this.season });
   }
 
   fetchData(params: ApiParams = {}) {
