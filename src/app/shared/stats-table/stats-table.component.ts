@@ -8,7 +8,7 @@ import {
   OnChanges,
   AfterViewInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -23,14 +23,13 @@ import { PlayerCardComponent } from '@shared/player-card/player-card.component';
 @Component({
   selector: 'app-stats-table',
   imports: [
-    CommonModule,
     TranslateModule,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
-    MatSortModule,
-  ],
+    MatSortModule
+],
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
 })

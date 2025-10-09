@@ -4,13 +4,13 @@ import {
   MatSlideToggleChange,
 } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 import { FilterService, FilterState } from '@services/filter.service';
 
 @Component({
   selector: 'app-stats-mode-toggle',
-  imports: [MatSlideToggleModule, TranslateModule, CommonModule],
+  imports: [MatSlideToggleModule, TranslateModule],
   templateUrl: './stats-mode-toggle.component.html',
   styleUrl: './stats-mode-toggle.component.scss',
 })

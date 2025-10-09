@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
@@ -16,9 +16,8 @@ import { FilterService, FilterState } from '@services/filter.service';
     MatSelectModule,
     MatInputModule,
     FormsModule,
-    TranslateModule,
-    CommonModule,
-  ],
+    TranslateModule
+],
   templateUrl: './season-switcher.component.html',
   styleUrl: './season-switcher.component.scss',
 })
