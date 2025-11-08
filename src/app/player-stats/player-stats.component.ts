@@ -61,7 +61,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
         const baseData = this.statsPerGame
           ? this.statsService.getPlayerStatsPerGame(data)
           : data;
-        this.maxGames = Math.max(...baseData.map(({ games }) => games));
+        this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
         this.tableData = baseData.filter((g) => g.games >= this.minGames);
         this.loading = false;
       });
