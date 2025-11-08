@@ -36,5 +36,9 @@
     "selector": "Kausivalitsin",
     "allSeasons": "Kaikki kaudet"
   },
-  "statsModeToggle": "Tilastot per ottelu"
+  "statsModeToggle": "Tilastot per ottelu",
+  "minGamesSlider": {
+    "label": "Otteluja pelattu vähintään",
+    "ariaLabel": "Säädä vähimmäispelien määrää"
+  }
 }

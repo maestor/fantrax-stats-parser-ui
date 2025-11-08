@@ -6,6 +6,7 @@ export interface FilterState {
   reportType: ReportType;
   season?: number;
   statsPerGame: boolean;
+  minGames: number;
 }
 
 @Injectable({
@@ -17,11 +18,13 @@ export class FilterService {
       reportType: 'regular',
       season: undefined,
       statsPerGame: false,
+      minGames: 0,
     }),
     goalies: new BehaviorSubject<FilterState>({
       reportType: 'regular',
       season: undefined,
       statsPerGame: false,
+      minGames: 0,
     }),
   };
 
@@ -43,6 +46,7 @@ export class FilterService {
       reportType: 'regular',
       season: undefined,
       statsPerGame: false,
+      minGames: 0,
     });
   }
 
@@ -51,6 +55,7 @@ export class FilterService {
       reportType: 'regular',
       season: undefined,
       statsPerGame: false,
+      minGames: 0,
     });
   }
 }

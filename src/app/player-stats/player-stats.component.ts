@@ -27,6 +27,8 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   reportType: ReportType = 'regular';
   season?: number;
   statsPerGame: boolean = false;
+  minGames: number = 0;
+  maxGames: number = 0;
   tableData: Player[] = [];
   tableColumns = PLAYER_COLUMNS;
   loading = false;
@@ -35,10 +37,11 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
     combineLatest([this.filterService.playerFilters$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([filters]) => {
-        const { reportType, season, statsPerGame } = filters;
+        const { reportType, season, statsPerGame, minGames } = filters;
         this.reportType = reportType;
         this.season = season;
         this.statsPerGame = statsPerGame;
+        this.minGames = minGames;
         this.fetchData({ reportType, season });
       });
   }
@@ -55,9 +58,11 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
       .getPlayerData(params)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        this.tableData = this.statsPerGame
+        const baseData = this.statsPerGame
           ? this.statsService.getPlayerStatsPerGame(data)
           : data;
+        this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
+        this.tableData = baseData.filter((g) => g.games >= this.minGames);
         this.loading = false;
       });
   }

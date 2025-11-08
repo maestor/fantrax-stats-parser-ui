@@ -1,0 +1,18 @@
+.min-games-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  min-width: 220px;
+  position: relative;
+}
+
+.range-slider-label {
+  display: flex;
+  justify-content: space-between;
+  span {
+    color: #1a1b1f;
+    font-size: 0.875rem;
+    letter-spacing: 0.016rem;
+  }
+}
