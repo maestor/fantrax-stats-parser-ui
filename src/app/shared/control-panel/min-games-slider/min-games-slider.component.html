@@ -1,0 +1,17 @@
+<div class="min-games-slider">
+  <label for="min-games-slider">Minimum games played: {{ minGames }}</label>
+  <mat-slider
+    id="min-games-slider"
+    [min]="0"
+    [max]="maxGames"
+    [step]="1"
+    [disabled]="maxGames === 0"
+    aria-label="Minimum games played"
+  >
+    <input matSliderThumb [value]="minGames" (input)="onThumbInput($event)" />
+  </mat-slider>
+  <div class="range-values">
+    <span>0</span>
+    <span>{{ maxGames }}</span>
+  </div>
+</div>

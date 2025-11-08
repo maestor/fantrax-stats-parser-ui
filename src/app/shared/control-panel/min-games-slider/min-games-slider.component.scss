@@ -1,0 +1,13 @@
+.min-games-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+  min-width: 220px;
+}
+
+.min-games-slider label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+}
