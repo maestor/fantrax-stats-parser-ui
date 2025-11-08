@@ -27,11 +27,11 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   reportType: ReportType = 'regular';
   season?: number;
   statsPerGame: boolean = false;
-  minGames = 0;
+  minGames: number = 0;
+  maxGames: number = 0;
   tableData: Goalie[] = [];
   tableColumns = GOALIE_COLUMNS;
   loading = false;
-  maxGames = 0;
 
   ngOnInit() {
     combineLatest([this.filterService.goalieFilters$])
@@ -61,17 +61,11 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
       .getGoalieData(params)
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        const transformed = this.statsPerGame
+        const baseData = this.statsPerGame
           ? this.statsService.getGoalieStatsPerGame(data)
           : data;
-        this.maxGames = transformed.reduce(
-          (max, g) => (g.games > max ? g.games : max),
-          0
-        );
-        this.tableData =
-          this.minGames > 0
-            ? transformed.filter((g) => g.games >= this.minGames)
-            : transformed;
+        this.maxGames = Math.max(...baseData.map(({ games }) => games));
+        this.tableData = baseData.filter((g) => g.games >= this.minGames);
         this.loading = false;
       });
   }

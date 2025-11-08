@@ -1,8 +1,9 @@
 <div class="min-games-slider">
   <div class="range-slider-label">
-    <span>{{
-      "minGamesSlider.label" | translate : { minGames: minGames }
-    }}</span>
+    <span>{{ "minGamesSlider.label" | translate }}</span>
+    <span
+      ><strong>{{ minGames }}</strong></span
+    >
   </div>
   <mat-slider
     id="min-games-slider"
@@ -13,6 +14,10 @@
     [aria-label]="'minGamesSlider.ariaLabel' | translate"
     discrete
   >
-    <input matSliderThumb [value]="minGames" (input)="onThumbInput($event)" />
+    <input
+      matSliderThumb
+      [value]="minGames"
+      (valueChange)="onValueChange($event)"
+    />
   </mat-slider>
 </div>

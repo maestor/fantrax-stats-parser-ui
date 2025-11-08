@@ -38,7 +38,7 @@
   },
   "statsModeToggle": "Tilastot per ottelu",
   "minGamesSlider": {
-    "label": "Pelejä vähintään: {{minGames}}",
+    "label": "Otteluja pelattu vähintään",
     "ariaLabel": "Säädä vähimmäispelien määrää"
   }
 }
