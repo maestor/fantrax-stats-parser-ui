@@ -39,7 +39,6 @@ export class MinGamesSliderComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   onSliderInput(event: any) {
-    // event is MatSliderChange; using any avoids template inference issues under strict mode
     const value = Number(event.value) || 0;
     this.updateValue(value);
   }

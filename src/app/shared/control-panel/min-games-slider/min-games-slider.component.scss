@@ -2,12 +2,17 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 4px 0;
+  padding: 0;
   min-width: 220px;
+  position: relative;
 }
 
-.min-games-slider label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #444;
+.range-slider-label {
+  display: flex;
+  justify-content: space-between;
+  span {
+    color: #1a1b1f;
+    font-size: 0.875rem;
+    letter-spacing: 0.016rem;
+  }
 }
