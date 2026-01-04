@@ -15,6 +15,8 @@
   "tableColumn": {
     "position": "#",
     "name": "Nimi",
+    "season": "Kausi",
+    "seasonDisplay": "Kausi",
     "games": "Ottelut",
     "goals": "Maalit",
     "assists": "Syötöt",
@@ -40,5 +42,9 @@
   "minGamesSlider": {
     "label": "Otteluja pelattu vähintään",
     "ariaLabel": "Säädä vähimmäispelien määrää"
+  },
+  "playerCard": {
+    "all": "Kaikki",
+    "bySeason": "Kausittain"
   }
 }

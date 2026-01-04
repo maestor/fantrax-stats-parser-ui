@@ -16,22 +16,102 @@ Services in this application handle data fetching, business logic, state managem
 - Handle request/response transformation
 - Basic error handling
 - Configure API endpoints
+- Define data type interfaces
+
+**Type Definitions**:
+```typescript
+// Season selector type
+export type Season = {
+  season: number;
+  text: string;
+};
+
+// Player season-specific stats
+export type PlayerSeasonStats = {
+  season: number;
+  games: number;
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+  penalties: number;
+  shots: number;
+  ppp: number;
+  shp: number;
+  hits: number;
+  blocks: number;
+};
+
+// Combined player stats with optional seasons array
+export type Player = {
+  name: string;
+  games: number;
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+  penalties: number;
+  shots: number;
+  ppp: number;
+  shp: number;
+  hits: number;
+  blocks: number;
+  seasons?: PlayerSeasonStats[]; // Optional season breakdown
+};
+
+// Goalie season-specific stats
+export type GoalieSeasonStats = {
+  season: number;
+  games: number;
+  wins: number;
+  saves: number;
+  shutouts: number;
+  goals: number;
+  assists: number;
+  points: number;
+  penalties: number;
+  ppp: number;
+  shp: number;
+  gaa?: string;
+  savePercent?: string;
+};
+
+// Combined goalie stats with optional seasons array
+export type Goalie = {
+  name: string;
+  games: number;
+  wins: number;
+  saves: number;
+  shutouts: number;
+  goals: number;
+  assists: number;
+  points: number;
+  penalties: number;
+  ppp: number;
+  shp: number;
+  gaa?: string;
+  savePercent?: string;
+  seasons?: GoalieSeasonStats[]; // Optional season breakdown
+};
+
+// API request parameters
+export type ApiParams = {
+  reportType?: 'regular' | 'playoffs';
+  season?: number;
+};
+```
 
 **Key Methods**:
 ```typescript
 class ApiService {
   // Fetch player statistics
-  getPlayerStats(season?: string): Observable<PlayerStats[]>
+  getPlayerData(params: ApiParams): Observable<Player[]>
 
   // Fetch goalie statistics
-  getGoalieStats(season?: string): Observable<GoalieStats[]>
+  getGoalieData(params: ApiParams): Observable<Goalie[]>
 
   // Fetch available seasons
-  getSeasons(): Observable<string[]>
-
-  // Generic HTTP methods
-  get<T>(endpoint: string): Observable<T>
-  post<T>(endpoint: string, data: any): Observable<T>
+  getSeasons(): Observable<Season[]>
 }
 ```
 

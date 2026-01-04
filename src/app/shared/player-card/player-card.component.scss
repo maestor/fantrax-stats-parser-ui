@@ -1,6 +1,14 @@
 .player-card {
   padding: 16px 0;
   min-width: 360px;
+  max-width: 800px;
+  width: 100%;
+
+  // Wider card when showing season breakdown
+  &.season-mode {
+    max-width: 95vw;
+    width: auto;
+  }
 }
 
 .card-title-icon {
@@ -26,4 +34,89 @@ mat-card-title {
 
 .mat-cell-value {
   text-align: right;
+}
+
+.tab-content {
+  padding: 16px 0;
+  overflow: visible;
+}
+
+.season-table-container {
+  max-height: calc(90vh - 250px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  // Scrollbar styling
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+
+    &:hover {
+      background: #555;
+    }
+  }
+}
+
+.season-table {
+  width: 100%;
+
+  th {
+    font-weight: bold;
+    background-color: #f5f5f5;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  // Make season column stand out
+  th:first-child,
+  td:first-child {
+    font-weight: bold;
+    background-color: #eeeeee;
+  }
+}
+
+// Ensure tabs fit properly
+mat-tab-group {
+  width: 100%;
+}
+
+// Responsive handling for season table
+@media (max-width: 768px) {
+  .player-card {
+    min-width: 100%;
+
+    &.season-mode {
+      min-width: 100%;
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+
+  .season-table-container {
+    max-height: calc(80vh - 250px);
+  }
+
+  .season-table {
+    font-size: 12px;
+
+    th,
+    td {
+      padding: 8px 4px;
+    }
+  }
 }

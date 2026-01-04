@@ -79,6 +79,9 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
   selectItem(data: Player | Goalie) {
     this.dialog.open(PlayerCardComponent, {
       data,
+      maxWidth: '95vw',
+      width: 'auto',
+      panelClass: 'player-card-dialog'
     });
   }
 }

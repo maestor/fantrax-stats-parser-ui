@@ -23,21 +23,31 @@ This Angular application provides a user-friendly interface for viewing NHL fant
    - Combined season results by player
    - Regular season and playoff stats separated
    - Filterable and sortable tables
+   - Click on any player to view detailed stats card
 
 2. **Goalie Statistics Display**
    - Separate view for goalie-specific stats
    - Same filtering and sorting capabilities
+   - Click on any goalie to view detailed stats card
 
-3. **Control Panel**
+3. **Player/Goalie Detail Cards** (Dialog)
+   - **Tab Navigation**: "All" tab shows combined career stats, "By Season" tab shows season-by-season breakdown
+   - **Dynamic Layout**: Card width adjusts based on active tab
+   - **Season View**: Displays all seasons from newest to oldest (e.g., 2025-26, 2024-25)
+   - **Sticky Headers**: Column headers remain visible while scrolling through seasons
+   - **Responsive Design**: Adapts to viewport size (max 95vw)
+
+4. **Control Panel**
    - Season switcher (multiple seasons)
    - Report type switcher (regular/playoffs)
    - Stats mode toggle (combined/separate views)
    - Minimum games filter slider
 
-4. **Data Management**
+5. **Data Management**
    - Caching service to reduce API calls
    - Filter service for table data
    - Stats service for data transformation
+   - Support for optional season breakdown data
 
 ## User Flow
 
@@ -48,7 +58,11 @@ This Angular application provides a user-friendly interface for viewing NHL fant
    - Select different seasons
    - Toggle between regular season and playoffs
    - Adjust minimum games filter
-   - View detailed player cards
+   - Click on any player/goalie row to open detailed stats dialog
+   - In detail dialog:
+     - View combined career stats in "All" tab
+     - Switch to "By Season" tab to see season-by-season breakdown
+     - Scroll through seasons with sticky headers
    - Sort and filter table data
 
 ## Design Patterns

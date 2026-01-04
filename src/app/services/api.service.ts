@@ -9,6 +9,21 @@ export type Season = {
   text: string;
 };
 
+export type PlayerSeasonStats = {
+  season: number;
+  games: number;
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+  penalties: number;
+  shots: number;
+  ppp: number;
+  shp: number;
+  hits: number;
+  blocks: number;
+};
+
 export type Player = {
   name: string;
   games: number;
@@ -22,6 +37,23 @@ export type Player = {
   shp: number;
   hits: number;
   blocks: number;
+  seasons?: PlayerSeasonStats[];
+};
+
+export type GoalieSeasonStats = {
+  season: number;
+  games: number;
+  wins: number;
+  saves: number;
+  shutouts: number;
+  goals: number;
+  assists: number;
+  points: number;
+  penalties: number;
+  ppp: number;
+  shp: number;
+  gaa?: string;
+  savePercent?: string;
 };
 
 export type Goalie = {
@@ -38,6 +70,7 @@ export type Goalie = {
   shp: number;
   gaa?: string;
   savePercent?: string;
+  seasons?: GoalieSeasonStats[];
 };
 
 export type ReportType = 'regular' | 'playoffs';

@@ -16,6 +16,19 @@ body {
   text-align: center;
 }
 
+/* Player card dialog styles */
+.player-card-dialog {
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+    width: auto !important;
+
+    .mdc-dialog__surface {
+      max-width: 95vw !important;
+      width: auto !important;
+    }
+  }
+}
+
 .mat-elevation-z1 {
   box-shadow: var(--mat-sys-level1);
 }
