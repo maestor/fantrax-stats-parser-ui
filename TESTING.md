@@ -362,8 +362,8 @@ Tests table functionality:
 ### ⚠️ Partially Tested
 
 - **AppComponent** - Basic tests, could add more integration tests
-- **PlayerStatsComponent** - Needs integration tests
-- **GoalieStatsComponent** - Needs integration tests
+- **PlayerStatsComponent** - Has integration tests for filter wiring, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
+- **GoalieStatsComponent** - Has integration tests for filter wiring, season-dependent columns, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
 - **ControlPanelComponent** - Needs composition tests
 - **PlayerCardComponent** - Dialog logic not fully tested
 
