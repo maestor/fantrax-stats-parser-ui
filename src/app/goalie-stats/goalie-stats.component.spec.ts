@@ -212,6 +212,38 @@ describe('GoalieStatsComponent', () => {
     expect(component.loading).toBe(false);
   });
 
+  it('should call getGoalieData with default params when fetchData is called without arguments', () => {
+    const mockGoalies: Goalie[] = [
+      {
+        name: 'Goalie 1',
+        games: 3,
+        wins: 2,
+        saves: 90,
+        shutouts: 1,
+        goals: 0,
+        assists: 0,
+        points: 0,
+        penalties: 0,
+        ppp: 0,
+        shp: 0,
+        gaa: '2.00',
+        savePercent: '0.930',
+      },
+    ];
+
+    apiServiceMock.getGoalieData.and.returnValue(of(mockGoalies));
+
+    component.statsPerGame = false;
+    component.minGames = 0;
+
+    component.fetchData();
+
+    expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({});
+    expect(component.tableData).toEqual(mockGoalies);
+    expect(component.maxGames).toBe(3);
+    expect(component.loading).toBe(false);
+  });
+
   it('should complete destroy$ on ngOnDestroy', () => {
     const nextSpy = spyOn<any>(component['destroy$'], 'next');
     const completeSpy = spyOn<any>(component['destroy$'], 'complete');

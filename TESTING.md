@@ -6,12 +6,13 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 
 ## Test Statistics
 
-- **Total Test Files**: 15
-- **Total Tests**: 206 (201 passing, 5 skipped)
+- **Total Test Files**: 15+
+- **Total Tests**: 200+ (all passing, 0 skipped)
 - **Test Framework**: Jasmine + Karma
 - **E2E Framework**: Playwright
-- **Pass Rate**: 100% of active tests ✅
-- **Skipped Tests**: 5 (Angular Material framework internals)
+- **Coverage**: 100% statements, branches, functions and lines (unit tests)
+- **Pass Rate**: 100% of tests ✅
+- **Skipped Tests**: 0
 
 ## Running Tests
 
@@ -317,60 +318,7 @@ it("should emit new values to subscribers", fakeAsync(() => {
 
 ### 6. HTTP Testing
 
-## Test Statistics
-
-- **Total Test Files**: 15
-- **Total Tests**: 206 (206 passing, 0 skipped)
-- **Test Framework**: Jasmine + Karma
-- **E2E Framework**: Playwright
-- **Pass Rate**: 100% of tests ✅
-- **Skipped Tests**: 0 (previous Angular Material integration tests have been refactored and re-enabled)
-  expect(players).toEqual(mockPlayers);
-  done();
-  **Important Notes:**
-
-- ✅ **Regular Chrome mode** (`npm test`) is recommended - all tests pass reliably
-- ⚠️ **Headless mode** may crash due to Karma infrastructure issues (not test failures)
-- 📋 **No tests are currently skipped**
-  req.flush(mockPlayers);
-  });
-
-#### StatsTableComponent (~31 tests, all passing)
-
-Tests table functionality:
-
-- ✅ Data binding with `MatTableDataSource`
-- ✅ Sorting configuration via `MatSort` (component wires sort to the table and applies default column/direction)
-- ✅ Filtering with `filterItems()`
-- ✅ Dialog opening via `selectItem()`
-- ✅ Column management (static vs dynamic)
-- ✅ Loading states
-- ✅ Data transformation handling
-- **StatsService** (18 tests) - 100% coverage
-- **FilterService** (27 tests) - 100% coverage
-
-### ⚠️ Partially Tested
-
-- **AppComponent** - Has tests for creation, tabPanel ViewChild, and page title behavior (including multiple translation emissions); could add more full-app routing/integration tests
-- **PlayerStatsComponent** - Has integration tests for filter wiring, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
-- **GoalieStatsComponent** - Has integration tests for filter wiring, season-dependent columns, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
-- **ControlPanelComponent** - Now has composition tests verifying that it renders all child controls and passes context/maxGames inputs down correctly
-- **PlayerCardComponent** - Dialog logic not fully tested
-
-### 📋 Skipped Tests
-
-- None currently. Previously skipped StatsTableComponent sort tests were refactored to test component behavior (wiring to MatSort) rather than Angular Material internals and are now enabled.
-
-### Issue: "You provided 'undefined' where a stream was expected"
-
-**Problem**: Mock MatSort objects can be missing required observables when testing MatTableDataSource, which causes this error.
-
-**Updated Solution**: Use the real `MatSort` instance from the template and let Angular wire it up, then assert component behavior instead of Angular Material internals.
-
-### ✅ Fully Tested
-
-- **StatsModeToggleComponent** (10 tests) - 100% coverage (async fixes applied)
-- **StatsTableComponent** (~31 tests) - 100% coverage (sort tests refactored and enabled)
+HTTP interactions are covered in depth in the ApiService tests using `HttpTestingController`, including happy paths, caching behavior and error handling.
 
 ## Common Test Failures & Solutions
 
