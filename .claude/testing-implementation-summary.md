@@ -180,7 +180,8 @@ This document summarizes the comprehensive testing implementation completed duri
   - `TranslateModule.forRoot()`
   - `provideHttpClient()`
   - `NoopAnimationsModule`
-- **Coverage**: Basic instantiation
+- **Added**: Composition tests to verify that all child controls (report switcher, season switcher, stats mode toggle, min games slider) are rendered and receive the correct `context` and `maxGames` inputs.
+- **Coverage**: Instantiation plus basic composition wiring
 
 #### **AppComponent** ([src/app/app.component.spec.ts](../../src/app/app.component.spec.ts))
 

@@ -351,21 +351,15 @@ Tests table functionality:
 
 ### ⚠️ Partially Tested
 
-- **AppComponent** - Basic tests, could add more integration tests
-- **MinGamesSliderComponent** (27 tests) - 100% coverage
-- **ReportSwitcherComponent** (20 tests) - 100% coverage (async fixes applied)
+- **AppComponent** - Has tests for creation, tabPanel ViewChild, and page title behavior (including multiple translation emissions); could add more full-app routing/integration tests
+- **PlayerStatsComponent** - Has integration tests for filter wiring, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
+- **GoalieStatsComponent** - Has integration tests for filter wiring, season-dependent columns, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
+- **ControlPanelComponent** - Now has composition tests verifying that it renders all child controls and passes context/maxGames inputs down correctly
+- **PlayerCardComponent** - Dialog logic not fully tested
 
 ### 📋 Skipped Tests
 
 - None currently. Previously skipped StatsTableComponent sort tests were refactored to test component behavior (wiring to MatSort) rather than Angular Material internals and are now enabled.
-
-### ⚠️ Partially Tested
-
-- **AppComponent** - Basic tests, could add more integration tests
-- **PlayerStatsComponent** - Has integration tests for filter wiring, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
-- **GoalieStatsComponent** - Has integration tests for filter wiring, season-dependent columns, data fetching, stats-per-game and minGames behavior; could add more UI-level assertions
-- **ControlPanelComponent** - Needs composition tests
-- **PlayerCardComponent** - Dialog logic not fully tested
 
 ### Issue: "You provided 'undefined' where a stream was expected"
 
