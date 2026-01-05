@@ -197,6 +197,21 @@ describe('GoalieStatsComponent', () => {
     expect(component.maxGames).toBe(20);
   });
 
+  it('should handle empty goalie data without errors', () => {
+    const mockGoalies: Goalie[] = [];
+
+    apiServiceMock.getGoalieData.and.returnValue(of(mockGoalies));
+
+    component.statsPerGame = false;
+    component.minGames = 0;
+
+    component.fetchData({ reportType: 'regular' });
+
+    expect(component.tableData).toEqual([]);
+    expect(component.maxGames).toBe(0);
+    expect(component.loading).toBe(false);
+  });
+
   it('should complete destroy$ on ngOnDestroy', () => {
     const nextSpy = spyOn<any>(component['destroy$'], 'next');
     const completeSpy = spyOn<any>(component['destroy$'], 'complete');
