@@ -77,10 +77,13 @@ describe('ApiService', () => {
     });
 
     it('should handle API errors gracefully', (done) => {
+      const consoleErrorSpy = spyOn(console, 'error');
+
       service.getSeasons().subscribe({
         next: () => fail('should have failed'),
         error: (error) => {
           expect(error.message).toBe('Something went wrong with the API!');
+          expect(consoleErrorSpy).toHaveBeenCalled();
           done();
         },
       });
@@ -189,7 +192,8 @@ describe('ApiService', () => {
       const params: ApiParams = {};
       const mockPlayers: Player[] = [];
 
-      service.getPlayerData(params).subscribe(() => {
+      service.getPlayerData(params).subscribe((players) => {
+        expect(players).toEqual(mockPlayers);
         done();
       });
 
@@ -266,11 +270,13 @@ describe('ApiService', () => {
 
     it('should handle API errors for player data', (done) => {
       const params: ApiParams = { reportType: 'regular' };
+      const consoleErrorSpy = spyOn(console, 'error');
 
       service.getPlayerData(params).subscribe({
         next: () => fail('should have failed'),
         error: (error) => {
           expect(error.message).toBe('Something went wrong with the API!');
+          expect(consoleErrorSpy).toHaveBeenCalled();
           done();
         },
       });
@@ -367,7 +373,8 @@ describe('ApiService', () => {
       const params: ApiParams = {};
       const mockGoalies: Goalie[] = [];
 
-      service.getGoalieData(params).subscribe(() => {
+      service.getGoalieData(params).subscribe((goalies) => {
+        expect(goalies).toEqual(mockGoalies);
         done();
       });
 
@@ -445,11 +452,13 @@ describe('ApiService', () => {
 
     it('should handle API errors for goalie data', (done) => {
       const params: ApiParams = { reportType: 'regular' };
+      const consoleErrorSpy = spyOn(console, 'error');
 
       service.getGoalieData(params).subscribe({
         next: () => fail('should have failed'),
         error: (error) => {
           expect(error.message).toBe('Something went wrong with the API!');
+          expect(consoleErrorSpy).toHaveBeenCalled();
           done();
         },
       });
