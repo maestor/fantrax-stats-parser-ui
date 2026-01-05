@@ -108,36 +108,45 @@ describe('SeasonSwitcherComponent', () => {
       component.context = 'player';
       const event = { value: 2024 } as MatSelectChange;
 
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.season;
+      });
+
       component.changeSeason(event);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.season).toBe(2024);
-      });
+      expect(result).toBe(2024);
     }));
 
     it('should update goalie filters when context is goalie', fakeAsync(() => {
       component.context = 'goalie';
       const event = { value: 2023 } as MatSelectChange;
 
+      let result: number | undefined;
+      filterService.goalieFilters$.subscribe((filters) => {
+        result = filters.season;
+      });
+
       component.changeSeason(event);
       tick();
 
-      filterService.goalieFilters$.subscribe((filters) => {
-        expect(filters.season).toBe(2023);
-      });
+      expect(result).toBe(2023);
     }));
 
     it('should handle undefined season', fakeAsync(() => {
       component.context = 'player';
       const event = { value: undefined } as MatSelectChange;
 
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.season;
+      });
+
       component.changeSeason(event);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.season).toBeUndefined();
-      });
+      expect(result).toBeUndefined();
     }));
   });
 

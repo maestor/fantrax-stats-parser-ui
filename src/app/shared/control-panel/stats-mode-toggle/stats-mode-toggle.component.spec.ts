@@ -85,12 +85,15 @@ describe('StatsModeToggleComponent', () => {
       component.context = 'player';
       const event = { checked: true } as MatSlideToggleChange;
 
+      let result: boolean | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.statsPerGame;
+      });
+
       component.toggleMode(event);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.statsPerGame).toBe(true);
-      });
+      expect(result).toBe(true);
     }));
 
     it('should update player filters when toggled off', fakeAsync(() => {
@@ -98,13 +101,16 @@ describe('StatsModeToggleComponent', () => {
       filterService.updatePlayerFilters({ statsPerGame: true });
       tick();
 
+      let result: boolean | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.statsPerGame;
+      });
+
       const event = { checked: false } as MatSlideToggleChange;
       component.toggleMode(event);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.statsPerGame).toBe(false);
-      });
+      expect(result).toBe(false);
     }));
   });
 
@@ -113,12 +119,15 @@ describe('StatsModeToggleComponent', () => {
       component.context = 'goalie';
       const event = { checked: true } as MatSlideToggleChange;
 
+      let result: boolean | undefined;
+      filterService.goalieFilters$.subscribe((filters) => {
+        result = filters.statsPerGame;
+      });
+
       component.toggleMode(event);
       tick();
 
-      filterService.goalieFilters$.subscribe((filters) => {
-        expect(filters.statsPerGame).toBe(true);
-      });
+      expect(result).toBe(true);
     }));
   });
 

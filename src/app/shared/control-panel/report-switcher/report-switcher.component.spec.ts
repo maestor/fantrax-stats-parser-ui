@@ -139,12 +139,15 @@ describe('ReportSwitcherComponent', () => {
       component.context = 'player';
       const event = { value: 'playoffs' } as MatButtonToggleChange;
 
+      let result: string | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.reportType;
+      });
+
       component.changeReportType(event);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.reportType).toBe('playoffs');
-      });
+      expect(result).toBe('playoffs');
     }));
 
     it('should update component reportType property', () => {
@@ -190,12 +193,15 @@ describe('ReportSwitcherComponent', () => {
       component.context = 'goalie';
       const event = { value: 'playoffs' } as MatButtonToggleChange;
 
+      let result: string | undefined;
+      filterService.goalieFilters$.subscribe((filters) => {
+        result = filters.reportType;
+      });
+
       component.changeReportType(event);
       tick();
 
-      filterService.goalieFilters$.subscribe((filters) => {
-        expect(filters.reportType).toBe('playoffs');
-      });
+      expect(result).toBe('playoffs');
     }));
 
     it('should not affect player filters', fakeAsync(() => {

@@ -189,26 +189,39 @@ describe('MinGamesSliderComponent', () => {
   describe('onValueChange - player context', () => {
     it('should update player filters when context is player', fakeAsync(() => {
       component.context = 'player';
+
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(15);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(15);
-      });
+      expect(result).toBe(15);
     }));
 
     it('should not affect goalie filters when context is player', fakeAsync(() => {
       component.context = 'player';
+
+      let result: number | undefined;
+      filterService.goalieFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(10);
       tick();
 
-      filterService.goalieFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(0);
-      });
+      expect(result).toBe(0);
     }));
 
     it('should handle multiple value changes', fakeAsync(() => {
       component.context = 'player';
+
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
 
       component.onValueChange(5);
       tick();
@@ -217,31 +230,37 @@ describe('MinGamesSliderComponent', () => {
       component.onValueChange(15);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(15);
-      });
+      expect(result).toBe(15);
     }));
   });
 
   describe('onValueChange - goalie context', () => {
     it('should update goalie filters when context is goalie', fakeAsync(() => {
       component.context = 'goalie';
+
+      let result: number | undefined;
+      filterService.goalieFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(8);
       tick();
 
-      filterService.goalieFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(8);
-      });
+      expect(result).toBe(8);
     }));
 
     it('should not affect player filters when context is goalie', fakeAsync(() => {
       component.context = 'goalie';
+
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(12);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(0);
-      });
+      expect(result).toBe(0);
     }));
   });
 
@@ -273,22 +292,30 @@ describe('MinGamesSliderComponent', () => {
   describe('edge cases', () => {
     it('should handle minGames of 0', fakeAsync(() => {
       component.context = 'player';
+
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(0);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(0);
-      });
+      expect(result).toBe(0);
     }));
 
     it('should handle large minGames values', fakeAsync(() => {
       component.context = 'player';
+
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(100);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(100);
-      });
+      expect(result).toBe(100);
     }));
 
     it('should handle rapid maxGames changes', fakeAsync(() => {
@@ -319,12 +346,15 @@ describe('MinGamesSliderComponent', () => {
 
       expect(component.minGames).toBe(10);
 
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(15);
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(15);
-      });
+      expect(result).toBe(15);
       expect(component.minGames).toBe(15);
     }));
 
@@ -343,12 +373,15 @@ describe('MinGamesSliderComponent', () => {
 
       expect(component.minGames).toBe(0);
 
+      let result: number | undefined;
+      filterService.goalieFilters$.subscribe((filters) => {
+        result = filters.minGames;
+      });
+
       component.onValueChange(5);
       tick();
 
-      filterService.goalieFilters$.subscribe((filters) => {
-        expect(filters.minGames).toBe(5);
-      });
+      expect(result).toBe(5);
     }));
   });
 });
