@@ -10,7 +10,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "npm run test:watch -- --watch=false",
+    "test:watch": "ng test",
+    "test:coverage": "npm test -- --code-coverage",
+    "test:headless": "npm test -- --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {

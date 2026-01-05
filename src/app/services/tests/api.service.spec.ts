@@ -77,10 +77,13 @@ describe('ApiService', () => {
     });
 
     it('should handle API errors gracefully', (done) => {
+      const consoleErrorSpy = spyOn(console, 'error');
+
       service.getSeasons().subscribe({
         next: () => fail('should have failed'),
         error: (error) => {
           expect(error.message).toBe('Something went wrong with the API!');
+          expect(consoleErrorSpy).toHaveBeenCalled();
           done();
         },
       });
@@ -118,9 +121,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
       expect(req.request.method).toBe('GET');
       req.flush(mockPlayers);
     });
@@ -134,9 +135,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/combined/playoffs`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/combined/playoffs`);
       req.flush(mockPlayers);
     });
 
@@ -164,9 +163,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/season/regular/2024`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/season/regular/2024`);
       req.flush(mockPlayers);
     });
 
@@ -179,9 +176,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/season/playoffs/2023`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/season/playoffs/2023`);
       req.flush(mockPlayers);
     });
 
@@ -189,13 +184,12 @@ describe('ApiService', () => {
       const params: ApiParams = {};
       const mockPlayers: Player[] = [];
 
-      service.getPlayerData(params).subscribe(() => {
+      service.getPlayerData(params).subscribe((players) => {
+        expect(players).toEqual(mockPlayers);
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
       req.flush(mockPlayers);
     });
 
@@ -211,9 +205,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
       req.flush(mockPlayers);
     });
 
@@ -229,9 +221,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/season/playoffs/2024`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/season/playoffs/2024`);
       req.flush(mockPlayers);
     });
 
@@ -254,30 +244,28 @@ describe('ApiService', () => {
       ];
       cacheService.set('playerStats-regular-combined', mockPlayers);
 
-      service
-        .getPlayerData({ reportType: 'regular' })
-        .subscribe((players) => {
-          expect(players).toEqual(mockPlayers);
-          done();
-        });
+      service.getPlayerData({ reportType: 'regular' }).subscribe((players) => {
+        expect(players).toEqual(mockPlayers);
+        done();
+      });
 
       httpMock.expectNone(`${API_URL}/players/combined/regular`);
     });
 
     it('should handle API errors for player data', (done) => {
       const params: ApiParams = { reportType: 'regular' };
+      const consoleErrorSpy = spyOn(console, 'error');
 
       service.getPlayerData(params).subscribe({
         next: () => fail('should have failed'),
         error: (error) => {
           expect(error.message).toBe('Something went wrong with the API!');
+          expect(consoleErrorSpy).toHaveBeenCalled();
           done();
         },
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/players/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
       req.error(new ProgressEvent('Network error'), {
         status: 404,
         statusText: 'Not Found',
@@ -311,9 +299,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
       expect(req.request.method).toBe('GET');
       req.flush(mockGoalies);
     });
@@ -327,9 +313,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/combined/playoffs`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/combined/playoffs`);
       req.flush(mockGoalies);
     });
 
@@ -342,9 +326,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/season/regular/2024`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/season/regular/2024`);
       req.flush(mockGoalies);
     });
 
@@ -357,9 +339,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/season/playoffs/2023`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/season/playoffs/2023`);
       req.flush(mockGoalies);
     });
 
@@ -367,13 +347,12 @@ describe('ApiService', () => {
       const params: ApiParams = {};
       const mockGoalies: Goalie[] = [];
 
-      service.getGoalieData(params).subscribe(() => {
+      service.getGoalieData(params).subscribe((goalies) => {
+        expect(goalies).toEqual(mockGoalies);
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
       req.flush(mockGoalies);
     });
 
@@ -389,9 +368,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
       req.flush(mockGoalies);
     });
 
@@ -407,9 +384,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/season/playoffs/2024`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/season/playoffs/2024`);
       req.flush(mockGoalies);
     });
 
@@ -433,30 +408,28 @@ describe('ApiService', () => {
       ];
       cacheService.set('goalieStats-regular-combined', mockGoalies);
 
-      service
-        .getGoalieData({ reportType: 'regular' })
-        .subscribe((goalies) => {
-          expect(goalies).toEqual(mockGoalies);
-          done();
-        });
+      service.getGoalieData({ reportType: 'regular' }).subscribe((goalies) => {
+        expect(goalies).toEqual(mockGoalies);
+        done();
+      });
 
       httpMock.expectNone(`${API_URL}/goalies/combined/regular`);
     });
 
     it('should handle API errors for goalie data', (done) => {
       const params: ApiParams = { reportType: 'regular' };
+      const consoleErrorSpy = spyOn(console, 'error');
 
       service.getGoalieData(params).subscribe({
         next: () => fail('should have failed'),
         error: (error) => {
           expect(error.message).toBe('Something went wrong with the API!');
+          expect(consoleErrorSpy).toHaveBeenCalled();
           done();
         },
       });
 
-      const req = httpMock.expectOne(
-        `${API_URL}/goalies/combined/regular`
-      );
+      const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
       req.error(new ProgressEvent('Network error'), {
         status: 500,
         statusText: 'Internal Server Error',

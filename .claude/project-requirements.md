@@ -12,29 +12,46 @@
 Before any code can be committed or deployed, ALL of the following must pass:
 
 #### 1. ✅ Tests Must Pass
+
 ```bash
 npm test -- --browsers=ChromeHeadless --watch=false
 ```
+
 - **Requirement**: 100% of tests must pass
-- **Current**: ~97% pass rate (202/209 tests)
+- **Current**: 100% pass rate (200+ tests)
 - **Action on Failure**: Fix the failing test or update it if code changed
 - **Exception**: 5-8 known flaky tests (documented below)
 
 #### 2. ✅ Build Must Succeed
+
 ```bash
 npm run build
 ```
+
 - **Requirement**: Build must complete without TypeScript errors
 - **Current**: ✅ Passing (warnings about bundle size are acceptable)
 - **Action on Failure**: Fix TypeScript errors in output
 
 #### 3. ✅ Application Must Serve
+
 ```bash
 npm start
 ```
+
 - **Requirement**: Development server must start without errors
 - **Current**: ✅ Passing
 - **Action on Failure**: Check for missing dependencies or circular imports
+
+#### 4. ✅ Coverage Must Stay at 100%
+
+```bash
+npm run test:coverage
+```
+
+- **Requirement**: 100% statements, branches, functions and lines (unit tests)
+- **Current**: ✅ 100% (200+ tests)
+- **Action on Failure**: Add or update tests until coverage returns to 100%
+- **Exception**: Temporary drops only on feature branches with a documented TODO and issue reference
 
 ---
 
@@ -42,17 +59,24 @@ npm start
 
 ### Test Coverage Requirements
 
-| Category | Minimum Coverage | Current Coverage |
-|----------|------------------|------------------|
-| Services | 100% | ✅ 100% |
-| Base Components | 90% | ✅ 100% |
-| Shared Components | 90% | ✅ 95% |
-| Page Components | 60% | ⚠️ 15% (basic only) |
-| **Overall** | **90%** | **✅ 97%** |
+| Category          | Minimum Coverage | Current Coverage |
+| ----------------- | ---------------- | ---------------- |
+| Services          | 100%             | ✅ 100%          |
+| Base Components   | 100%             | ✅ 100%          |
+| Shared Components | 100%             | ✅ 100%          |
+| Page Components   | 100%             | ✅ 100%          |
+| **Overall**       | **100%**         | **✅ 100%**      |
+
+#### Coverage Enforcement
+
+- Unit-test coverage must remain at 100% for statements, branches, functions and lines.
+- New or changed code must include tests so that overall coverage does not drop.
+- Any intentional exception must be temporary and explicitly documented in the relevant pull request or commit.
 
 ### Testing Best Practices
 
 #### ✅ DO
+
 - Use `fakeAsync` and `tick()` for async tests
 - Mock all external dependencies
 - Clean up subscriptions in `afterEach`
@@ -62,6 +86,7 @@ npm start
 - Keep tests isolated and independent
 
 #### ❌ DON'T
+
 - Use `setTimeout` in tests (use `fakeAsync` + `tick` instead)
 - Test Angular framework internals (like change detection)
 - Forget to provide dependencies in test configuration
@@ -70,8 +95,9 @@ npm start
 - Use production services in tests (use mocks)
 
 ### Test File Structure
+
 ```typescript
-describe('ComponentName', () => {
+describe("ComponentName", () => {
   let component: ComponentName;
   let fixture: ComponentFixture<ComponentName>;
 
@@ -89,8 +115,8 @@ describe('ComponentName', () => {
     // Clean up
   });
 
-  describe('feature name', () => {
-    it('should do something specific', fakeAsync(() => {
+  describe("feature name", () => {
+    it("should do something specific", fakeAsync(() => {
       // Arrange
       // Act
       tick();
@@ -109,16 +135,19 @@ describe('ComponentName', () => {
 These tests have timing dependencies and may occasionally fail. This is acceptable:
 
 1. **NavigationComponent** (3 tests):
+
    - Tests involving change detection
    - Tests involving router navigation timing
 
 2. **SeasonSwitcherComponent** (2 tests):
+
    - Tests with filter updates (observable timing)
 
 3. **ReportSwitcherComponent** (1 test):
    - Observable synchronization test
 
 **Protocol**: If these tests fail:
+
 1. Re-run the test suite
 2. If still failing after 2 retries, consider removing the test
 3. Document the decision in git commit message
@@ -134,6 +163,7 @@ These tests have timing dependencies and may occasionally fail. This is acceptab
 ## 🔧 TypeScript Standards
 
 ### Strict Mode Requirements
+
 ```json
 {
   "strict": true,
@@ -147,15 +177,18 @@ These tests have timing dependencies and may occasionally fail. This is acceptab
 All code must pass these strict TypeScript checks.
 
 ### Path Aliases
+
 Use these aliases for imports:
+
 - `@base/*` → `./src/app/base/*`
 - `@services/*` → `./src/app/services/*`
 - `@shared/*` → `./src/app/shared/*`
 
 Example:
+
 ```typescript
-import { ApiService } from '@services/api.service';
-import { NavigationComponent } from '@base/navigation/navigation.component';
+import { ApiService } from "@services/api.service";
+import { NavigationComponent } from "@base/navigation/navigation.component";
 ```
 
 ---
@@ -163,6 +196,7 @@ import { NavigationComponent } from '@base/navigation/navigation.component';
 ## 📁 Project Structure Standards
 
 ### Directory Organization
+
 ```
 src/app/
 ├── base/              # Framework components (nav, footer)
@@ -180,6 +214,7 @@ src/app/
 ```
 
 ### File Naming
+
 - Components: `kebab-case.component.ts`
 - Services: `kebab-case.service.ts`
 - Tests: `kebab-case.spec.ts`
@@ -190,6 +225,7 @@ src/app/
 ## 🚀 Development Workflow
 
 ### Before Starting Work
+
 ```bash
 git pull origin main
 npm install  # If package.json changed
@@ -197,12 +233,14 @@ npm test     # Ensure clean state
 ```
 
 ### During Development
+
 ```bash
 npm start    # Development server
 npm test     # Run tests in watch mode
 ```
 
 ### Before Committing
+
 ```bash
 npm test -- --browsers=ChromeHeadless --watch=false  # Full test run
 npm run build                                         # Verify build
@@ -210,6 +248,7 @@ npm run build                                         # Verify build
 ```
 
 ### Commit Message Format
+
 ```
 type(scope): subject
 
@@ -221,6 +260,7 @@ footer (optional)
 Types: `feat`, `fix`, `test`, `refactor`, `docs`, `style`, `chore`
 
 Example:
+
 ```
 feat(player-stats): add per-game stats toggle
 
@@ -236,22 +276,25 @@ Closes #123
 ## 📚 Documentation Requirements
 
 ### Code Documentation
+
 - **Services**: JSDoc comments for public methods
 - **Components**: Input/Output descriptions
 - **Complex Logic**: Inline comments explaining "why", not "what"
 
 ### Test Documentation
+
 - Test names must clearly describe what is being tested
 - Use `describe` blocks to group related tests
 - Add comments for non-obvious test setup
 
 Example:
+
 ```typescript
-describe('getPlayerStatsPerGame', () => {
-  it('should calculate per-game stats for single player', () => {
+describe("getPlayerStatsPerGame", () => {
+  it("should calculate per-game stats for single player", () => {
     // Test validates division by games and rounding to 2 decimals
     const result = service.getPlayerStatsPerGame(players);
-    expect(result[0].goals).toBe(1.0);  // 82 goals / 82 games
+    expect(result[0].goals).toBe(1.0); // 82 goals / 82 games
   });
 });
 ```
@@ -263,11 +306,13 @@ describe('getPlayerStatsPerGame', () => {
 ### When Tests Fail
 
 1. **Identify the failure type**:
+
    - Flaky test? → Re-run, check known flaky list
    - New test? → Fix the test
    - Existing test? → Code change broke it, fix code or update test
 
 2. **Debug process**:
+
    ```bash
    # Run specific test file
    npm test -- --include='**/failing-test.spec.ts'
@@ -287,12 +332,14 @@ describe('getPlayerStatsPerGame', () => {
 
 1. **Read TypeScript errors carefully**
 2. **Common issues**:
+
    - Missing import
    - Type mismatch
    - Missing dependency in providers array
    - Circular dependency
 
 3. **Fix process**:
+
    ```bash
    # Run build to see all errors
    npm run build
@@ -305,12 +352,14 @@ describe('getPlayerStatsPerGame', () => {
 
 1. **Check console output** for error messages
 2. **Common issues**:
+
    - Port 4200 already in use
    - Missing dependencies
    - Circular imports
    - Translation files missing
 
 3. **Fix process**:
+
    ```bash
    # Kill existing process on port 4200
    lsof -ti:4200 | xargs kill -9
@@ -341,7 +390,7 @@ Before marking work complete, verify:
 - [ ] Build succeeds (`npm run build`)
 - [ ] App serves without errors (`npm start`)
 - [ ] New features have tests
-- [ ] Test coverage > 90%
+- [ ] Test coverage 100% (statements, branches, functions, lines)
 - [ ] No TypeScript errors
 - [ ] Code follows project structure
 - [ ] Documentation updated
@@ -350,4 +399,4 @@ Before marking work complete, verify:
 ---
 
 **Last Verified**: January 5, 2026
-**Status**: All requirements passing ✅
+**Status**: All requirements (including 100% coverage) passing ✅

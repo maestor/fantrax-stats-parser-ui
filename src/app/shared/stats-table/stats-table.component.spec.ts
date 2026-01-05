@@ -187,69 +187,46 @@ describe('StatsTableComponent', () => {
       expect(component.dataSource.data).toEqual([]);
     });
 
-    // TODO: Fix this test - currently fails with "undefined where a stream was expected"
-    // Issue: MatTableDataSource.sort setter expects a fully initialized MatSort object
-    // The mock object needs more properties to satisfy MatTableDataSource's internal subscription logic
-    xit('should update dataSource.sort if sort is available', () => {
-      const mockSort = {
-        sortChange: of({}),
-      } as any;
-      component.sort = mockSort;
-
-      const changes = {
-        data: new SimpleChange(null, mockPlayerData, true),
-      };
-
+    it('should keep dataSource.sort assigned when data changes after sort is available', () => {
       component.data = mockPlayerData;
       component.columns = playerColumns;
+
+      fixture.detectChanges();
+
+      const newData = [...mockPlayerData].reverse();
+      const changes = {
+        data: new SimpleChange(mockPlayerData, newData, false),
+      };
+
+      component.data = newData;
       component.ngOnChanges(changes);
 
-      expect(component.dataSource.sort).toBe(mockSort);
+      expect(component.dataSource.sort).toBe(component.sort);
     });
   });
 
   describe('ngAfterViewInit', () => {
-    // TODO: Fix this test - currently fails with "undefined where a stream was expected"
-    // Issue: Mock MatSort has sortChange but MatTableDataSource expects additional observables/properties
-    // when assigning dataSource.sort. The subscription logic in MatTableDataSource fails.
-    xit('should set dataSource sort', () => {
-      const mockSort = {
-        active: '',
-        direction: '',
-        sortChange: of({}),
-      } as any;
-      component.sort = mockSort;
+    it('should set dataSource sort using the view MatSort instance', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
 
-      component.ngAfterViewInit();
+      fixture.detectChanges();
 
-      expect(component.dataSource.sort).toBe(mockSort);
+      expect(component.dataSource.sort).toBe(component.sort);
     });
 
-    // TODO: Fix this test - currently fails with "undefined where a stream was expected"
-    // Issue: fixture.detectChanges() creates a real MatSort, but it may not be fully initialized
-    // when ngAfterViewInit() is called manually, causing dataSource.sort assignment to fail
-    xit('should set default sort column', () => {
-      fixture.detectChanges();
+    it('should set default sort column', () => {
       component.defaultSortColumn = 'points';
 
-      component.ngAfterViewInit();
-
-      if (component.sort) {
-        expect(component.sort.active).toBe('points');
-      }
-    });
-
-    // TODO: Fix this test - currently fails with "undefined where a stream was expected"
-    // Issue: fixture.detectChanges() creates a real MatSort, but it may not be fully initialized
-    // when ngAfterViewInit() is called manually, causing dataSource.sort assignment to fail
-    xit('should set default sort direction to descending', () => {
       fixture.detectChanges();
 
-      component.ngAfterViewInit();
+      expect(component.sort.active).toBe('points');
+    });
 
-      if (component.sort) {
-        expect(component.sort.direction).toBe('desc');
-      }
+    it('should set default sort direction to descending', () => {
+      fixture.detectChanges();
+
+      expect(component.sort.direction).toBe('desc');
     });
   });
 
@@ -407,28 +384,22 @@ describe('StatsTableComponent', () => {
       expect(component.dynamicColumns.length).toBeGreaterThan(0);
     });
 
-    // TODO: Fix this test - currently fails with "undefined where a stream was expected"
-    // Issue: When ngAfterViewInit() assigns dataSource.sort = mockSort, and then ngOnChanges()
-    // tries to reassign it, MatTableDataSource's internal subscription logic fails
-    xit('should handle data update after initialization', () => {
-      const mockSort = {
-        active: 'games',
-        direction: 'desc',
-        sortChange: of({}),
-      } as any;
-      component.sort = mockSort;
-
-      component.ngAfterViewInit();
-
-      const changes = {
-        data: new SimpleChange([], mockPlayerData, false),
-      };
+    it('should handle data update after initialization with sorting enabled', () => {
       component.data = mockPlayerData;
       component.columns = playerColumns;
+
+      fixture.detectChanges();
+
+      const updatedData = [...mockPlayerData].reverse();
+      const changes = {
+        data: new SimpleChange(mockPlayerData, updatedData, false),
+      };
+
+      component.data = updatedData;
       component.ngOnChanges(changes);
 
-      expect(component.dataSource.data).toEqual(mockPlayerData as any);
-      expect(component.dataSource.sort).toBeTruthy();
+      expect(component.dataSource.data).toEqual(updatedData as any);
+      expect(component.dataSource.sort).toBe(component.sort);
     });
 
     it('should handle switching between player and goalie data', () => {

@@ -3,7 +3,7 @@ import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 describe('AppComponent', () => {
   let translateService: TranslateService;
@@ -12,10 +12,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent, TranslateModule.forRoot()],
-      providers: [
-        provideRouter([]),
-        Title,
-      ],
+      providers: [provideRouter([]), Title],
     }).compileComponents();
 
     translateService = TestBed.inject(TranslateService);
@@ -40,6 +37,23 @@ describe('AppComponent', () => {
       expect(titleService.setTitle).toHaveBeenCalledWith('Test Title');
       done();
     }, 10);
+  });
+
+  it('should update page title for each emission from translateService', () => {
+    const translateSubject = new Subject<string>();
+    spyOn(translateService, 'get').and.returnValue(
+      translateSubject.asObservable()
+    );
+    const setTitleSpy = spyOn(titleService, 'setTitle');
+
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+
+    translateSubject.next('First Title');
+    translateSubject.next('Second Title');
+
+    expect(setTitleSpy.calls.count()).toBe(2);
+    expect(setTitleSpy.calls.mostRecent().args[0]).toBe('Second Title');
   });
 
   it('should have tabPanel ViewChild', () => {
