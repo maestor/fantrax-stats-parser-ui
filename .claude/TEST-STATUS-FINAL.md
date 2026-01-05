@@ -135,6 +135,33 @@ npm start
 
 ---
 
+## Playwright E2E Status
+
+In addition to the Jasmine/Karma unit tests described above, the project has a Playwright-based end-to-end test suite.
+
+- **Location**: `e2e/App.spec.ts` (and other files under `e2e/`)
+- **Config**: `playwright.config.ts` uses `baseURL: 'http://localhost:4200'` and a `webServer` that runs `npm start` automatically.
+- **Browsers**: Chromium, Firefox and WebKit.
+
+### How to Run
+
+```bash
+npx playwright install   # one-time browser install
+npx playwright test      # run all E2E tests
+```
+
+As of this status snapshot, all Playwright tests pass across the configured browsers, covering:
+
+- Front page rendering and core controls.
+- Navigation between player and goalie stats views.
+- Player Card behavior (including optional career-by-season view).
+- Player and goalie filters (search, report type, season, stats-per-game toggle, min-games slider).
+- Sorting by points and isolation between player and goalie filters.
+
+These E2E tests run independently of Karma and provide an additional safety net around full user journeys.
+
+---
+
 ## Conclusion
 
 ✅ **206 tests pass, 0 skipped**

@@ -32,6 +32,14 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
+  /* Automatically run the Angular dev server for local E2E runs */
+  webServer: {
+    command: 'npm start',
+    url: 'http://localhost:4200',
+    reuseExistingServer: !process.env['CI'],
+    timeout: 120000,
+  },
+
   /* Configure projects for major browsers */
   projects: [
     {

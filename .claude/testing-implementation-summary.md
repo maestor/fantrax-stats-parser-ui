@@ -368,6 +368,48 @@ npm test -- --include='**/api.service.spec.ts'
 
 ---
 
+## 🌐 End-to-End Tests with Playwright (Overview)
+
+Although this session focused on achieving 100% unit test coverage, the project also includes a Playwright-based end-to-end test suite that validates full-page user flows against a running Angular dev server.
+
+### Location & Configuration
+
+- E2E tests live under `e2e/`, with the main suite in `e2e/App.spec.ts`.
+- Playwright is configured in `playwright.config.ts` to:
+  - Use `testDir: './e2e'` and `baseURL: 'http://localhost:4200'`.
+  - Start the dev server automatically via `webServer: { command: 'npm start', ... }`.
+  - Run tests in Chromium, Firefox and WebKit.
+
+### How to Run E2E Tests
+
+```bash
+npx playwright install   # one-time browser install
+npx playwright test      # run all E2E tests
+```
+
+Common variants:
+
+```bash
+npx playwright test e2e/App.spec.ts              # single file
+npx playwright test --project=chromium --headed  # single browser, headed
+```
+
+### E2E Coverage (High Level)
+
+The E2E suite focuses on high-value, user-visible behaviors:
+
+- Front page layout: title, main heading, nav tabs, report/season controls, stats-per-game toggle, search and table visibility.
+- Navigation between player and goalie stats views and corresponding route URLs.
+- Player Card dialog: opening from the table and verifying combined vs. per-season career views when the `Kausittain` tab is available.
+- Player filters: search ("no results" and recovery), report type (Runkosarja/Playoffs), season selection, stats-per-game toggle and min-games slider effects on table contents.
+- Goalie view: navigation, stats-per-game toggle, and opening goalie cards.
+- Sorting by points (`Pisteet`) and verifying that row order changes across sort directions.
+- Isolation between player and goalie filters so changes in one view do not leak into the other.
+
+These E2E tests complement the unit tests by validating that the full stack (routing, templates, services, filters and dialogs) works together as expected in a real browser.
+
+---
+
 ## 📋 Test Coverage by Category
 
 | Category          | Files  | Tests    | Status                    |

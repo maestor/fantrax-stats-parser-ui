@@ -25,6 +25,13 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 - Playwright (E2E testing)
 - Jasmine/Karma (unit testing)
 
+## Testing Overview
+
+- Unit tests are implemented with Jasmine/Karma and focus on services, shared components, and page-level wiring (see TESTING.md and the various `*.spec.ts` files under `src/app`).
+- End-to-end tests are implemented with Playwright in the `e2e` directory and exercise real user flows against a running dev server.
+- Playwright is configured via `playwright.config.ts` to start `npm start` automatically and run tests against `http://localhost:4200` in Chromium, Firefox and WebKit.
+- The main E2E suite in `e2e/App.spec.ts` covers front-page layout, navigation between player/goalie views, Player Card behavior, filters (search/report type/season/stats-per-game/min-games), sorting, and isolation of player vs. goalie filters.
+
 ## Common Tasks for Claude
 
 ### Making Changes

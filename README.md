@@ -13,6 +13,7 @@ Once made lightweight API to parse my NHL fantasy league team stats and print co
 - 📈 **Stats Per Game**: Calculate and display per-game averages
 - 🎯 **Minimum Games Filter**: Filter players/goalies by minimum games played
 - 🔍 **Search & Sort**: Interactive table with search and column sorting
+- 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats and season-by-season breakdown in separate tabs
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: Multi-language support with ngx-translate
 - 🎨 **Material Design**: Clean UI with Angular Material components
@@ -35,14 +36,19 @@ Running backend, instructions find from [node-fantrax-stats-parser](https://gith
 
 ```bash
 # Development server
-npm start              # Runs on http://localhost:4200
+npm start               # Runs on http://localhost:4200
 
-# Testing
-npm test              # Run unit tests with Karma
-npm run test:e2e      # Run E2E tests with Playwright
+# Unit tests (Jasmine + Karma)
+npm test                # Run all tests once (Chrome)
+npm run test:watch      # Run tests in watch mode
+npm run test:headless   # Run tests in headless Chrome (may be flaky)
+npm run test:coverage   # Run unit tests with coverage
+
+# E2E tests (Playwright)
+npx playwright test
 
 # Production build
-npm run build         # Build for production
+npm run build           # Build for production
 ```
 
 ## Testing
@@ -53,18 +59,25 @@ This project has comprehensive test coverage with **200+ tests** covering all UI
 
 Quick test commands:
 ```bash
-# Run all tests
+# Run all unit tests (single run, Chrome)
 npm test
 
-# Run in headless mode
-npm test -- --browsers=ChromeHeadless --watch=false
+# Run unit tests in watch mode
+npm run test:watch
 
-# Run with coverage
-npm test -- --code-coverage
+# Run unit tests in headless mode (may be flaky due to Karma infra)
+npm run test:headless
 
-# E2E tests
+# Run unit tests with coverage report
+npm run test:coverage
+
+# E2E tests (Playwright)
 npx playwright test
 ```
+
+E2E tests use **Playwright** to cover the main user flows (landing page layout, navigation between player/goalie stats, and opening the Player Card with its career view). See TESTING.md for detailed E2E scenarios and options.
+
+For AI assistants working on this repo, additional E2E-focused context is available in the Claude docs under [.claude/testing-implementation-summary.md](.claude/testing-implementation-summary.md) and [.claude/TEST-STATUS-FINAL.md](.claude/TEST-STATUS-FINAL.md).
 
 ### Test Coverage Summary
 
@@ -100,7 +113,7 @@ src/
 │   ├── player-stats/      # Player stats page
 │   ├── goalie-stats/      # Goalie stats page
 │   └── app.component.ts   # Root component
-├── assets/i18n/           # Translation files
+├── public/i18n/           # Translation files (served from public root)
 └── e2e/                   # End-to-end tests
 ```
 
