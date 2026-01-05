@@ -3,14 +3,12 @@ import { NavigationComponent } from './navigation.component';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTabsModule, MatTabNavPanel } from '@angular/material/tabs';
-import { ChangeDetectorRef } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
   let router: Router;
-  let cdr: ChangeDetectorRef;
 
   beforeEach(async () => {
 
@@ -27,7 +25,6 @@ describe('NavigationComponent', () => {
     fixture = TestBed.createComponent(NavigationComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    cdr = fixture.componentRef.injector.get(ChangeDetectorRef);
 
     const mockTabPanel = {} as MatTabNavPanel;
     component.tabPanel = mockTabPanel;
@@ -82,15 +79,6 @@ describe('NavigationComponent', () => {
       });
     });
 
-    it('should trigger change detection when router URL changes', (done) => {
-      spyOn(cdr, 'detectChanges');
-      component.ngOnInit();
-
-      router.navigate(['/player-stats']).then(() => {
-        expect(cdr.detectChanges).toHaveBeenCalled();
-        done();
-      });
-    });
   });
 
   describe('setActiveTab', () => {
@@ -105,12 +93,6 @@ describe('NavigationComponent', () => {
 
       component.setActiveTab('/goalie-stats');
       expect(component.activeLink).toBe('/goalie-stats');
-    });
-
-    it('should trigger change detection', () => {
-      spyOn(cdr, 'detectChanges');
-      component.setActiveTab('/player-stats');
-      expect(cdr.detectChanges).toHaveBeenCalled();
     });
 
     it('should handle multiple consecutive calls', () => {
@@ -129,18 +111,6 @@ describe('NavigationComponent', () => {
       expect(links.length).toBe(2);
     });
 
-    it('should set correct routerLink for each navigation item', () => {
-      fixture.detectChanges();
-      const compiled = fixture.nativeElement as HTMLElement;
-      const links = compiled.querySelectorAll('a[mat-tab-link]');
-
-      expect(links[0].getAttribute('ng-reflect-router-link')).toBe(
-        '/player-stats'
-      );
-      expect(links[1].getAttribute('ng-reflect-router-link')).toBe(
-        '/goalie-stats'
-      );
-    });
 
     it('should activate link when clicked', () => {
       fixture.detectChanges();

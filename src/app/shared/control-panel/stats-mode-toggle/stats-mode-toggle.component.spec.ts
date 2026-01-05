@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { StatsModeToggleComponent } from './stats-mode-toggle.component';
 import { FilterService } from '@services/filter.service';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CommonModule } from '@angular/common';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatSlideToggleModule, MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('StatsModeToggleComponent', () => {
   let component: StatsModeToggleComponent;
@@ -12,57 +12,125 @@ describe('StatsModeToggleComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatsModeToggleComponent, MatSlideToggleModule, CommonModule],
+      imports: [
+        StatsModeToggleComponent,
+        TranslateModule.forRoot(),
+        MatSlideToggleModule,
+        NoopAnimationsModule,
+      ],
       providers: [FilterService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(StatsModeToggleComponent);
     component = fixture.componentInstance;
     filterService = TestBed.inject(FilterService);
-    fixture.detectChanges();
   });
 
-  it('should reflect statsPerGame from player filters', (done) => {
-    component.context = 'player';
-    filterService.updatePlayerFilters({ statsPerGame: true });
-    component.ngOnInit();
-    setTimeout(() => {
-      expect(component.statsPerGame).toBeTrue();
-      done();
-    });
+  afterEach(() => {
+    if (component) {
+      component.ngOnDestroy();
+    }
+    filterService.resetPlayerFilters();
+    filterService.resetGoalieFilters();
   });
 
-  it('should reflect statsPerGame from goalie filters', (done) => {
-    component.context = 'goalie';
-    filterService.updateGoalieFilters({ statsPerGame: true });
-    component.ngOnInit();
-    setTimeout(() => {
-      expect(component.statsPerGame).toBeTrue();
-      done();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should update player filters when toggleMode is called', (done) => {
-    component.context = 'player';
-    const event = { checked: true } as MatSlideToggleChange;
+  describe('ngOnInit - player context', () => {
+    it('should subscribe to player filters', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
+      tick();
 
-    component.toggleMode(event);
+      expect(component.statsPerGame).toBe(false);
+    }));
 
-    filterService.playerFilters$.subscribe((filters) => {
-      expect(filters.statsPerGame).toBeTrue();
-      done();
-    });
+    it('should update statsPerGame when player filters change', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
+      tick();
+
+      filterService.updatePlayerFilters({ statsPerGame: true });
+      tick();
+
+      expect(component.statsPerGame).toBe(true);
+    }));
   });
 
-  it('should update goalie filters when toggleMode is called', (done) => {
-    component.context = 'goalie';
-    const event = { checked: false } as MatSlideToggleChange;
+  describe('ngOnInit - goalie context', () => {
+    it('should subscribe to goalie filters', fakeAsync(() => {
+      component.context = 'goalie';
+      component.ngOnInit();
+      tick();
 
-    component.toggleMode(event);
+      expect(component.statsPerGame).toBe(false);
+    }));
 
-    filterService.goalieFilters$.subscribe((filters) => {
-      expect(filters.statsPerGame).toBeTrue();
-      done();
+    it('should update statsPerGame when goalie filters change', fakeAsync(() => {
+      component.context = 'goalie';
+      component.ngOnInit();
+      tick();
+
+      filterService.updateGoalieFilters({ statsPerGame: true });
+      tick();
+
+      expect(component.statsPerGame).toBe(true);
+    }));
+  });
+
+  describe('toggleMode - player context', () => {
+    it('should update player filters when toggled on', fakeAsync(() => {
+      component.context = 'player';
+      const event = { checked: true } as MatSlideToggleChange;
+
+      component.toggleMode(event);
+      tick();
+
+      filterService.playerFilters$.subscribe((filters) => {
+        expect(filters.statsPerGame).toBe(true);
+      });
+    }));
+
+    it('should update player filters when toggled off', fakeAsync(() => {
+      component.context = 'player';
+      filterService.updatePlayerFilters({ statsPerGame: true });
+      tick();
+
+      const event = { checked: false } as MatSlideToggleChange;
+      component.toggleMode(event);
+      tick();
+
+      filterService.playerFilters$.subscribe((filters) => {
+        expect(filters.statsPerGame).toBe(false);
+      });
+    }));
+  });
+
+  describe('toggleMode - goalie context', () => {
+    it('should update goalie filters when toggled', fakeAsync(() => {
+      component.context = 'goalie';
+      const event = { checked: true } as MatSlideToggleChange;
+
+      component.toggleMode(event);
+      tick();
+
+      filterService.goalieFilters$.subscribe((filters) => {
+        expect(filters.statsPerGame).toBe(true);
+      });
+    }));
+  });
+
+  describe('ngOnDestroy', () => {
+    it('should complete destroy$ subject', () => {
+      spyOn(component.destroy$, 'next');
+      spyOn(component.destroy$, 'complete');
+
+      component.ngOnDestroy();
+
+      expect(component.destroy$.next).toHaveBeenCalled();
+      expect(component.destroy$.complete).toHaveBeenCalled();
     });
   });
 });
