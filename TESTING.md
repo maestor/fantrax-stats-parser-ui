@@ -42,18 +42,50 @@ npm test -- --include='**/api.service.spec.ts'
 - ⚠️ **Headless mode** may crash due to Karma infrastructure issues (not test failures)
 - 📋 **No tests are currently skipped**
 
-### E2E Tests
+### E2E Tests (Playwright)
+
+The project uses **Playwright Test** for end-to-end (E2E) coverage.
+
+**Prerequisites:**
+- Playwright browsers installed: `npx playwright install`
+- Backend API running (see project README and backend repo)
+
+The Playwright config is defined in `playwright.config.ts` and:
+- Uses `baseURL` `http://localhost:4200`
+- Starts (or reuses) the Angular dev server via `webServer` with `npm start`
+- Runs tests against Chromium, Firefox and WebKit
+
+**Basic commands:**
 
 ```bash
-# Run Playwright tests
+# Run all E2E tests (headless, all browsers)
 npx playwright test
 
-# Run in headed mode
+# Run in headed mode (for debugging)
 npx playwright test --headed
 
-# Run specific test
+# Run specific test file
 npx playwright test e2e/App.spec.ts
+
+# Run only in a single browser, e.g. Chromium
+npx playwright test --project=chromium
 ```
+
+**Current E2E coverage (high level):**
+- Front page rendering and initial UI state (titles, navigation, filters, table)
+- Navigation between **Kenttäpelaajat** and **Maalivahdit** tabs and route changes
+- Opening the **Player Card** dialog from the stats table and switching to the **Kausittain** career tab when present
+- Search filtering via **Pelaajahaku**, including "no results" state
+- Report type switching (**Runkosarja** ↔ **Playoffs**) and its effect on table contents
+- Season selection via **Kausivalitsin** and its effect on table contents
+- **Tilastot per ottelu** toggle affecting per-player stats in the table
+- **Otteluja pelattu vähintään** slider reducing the visible rows based on minimum games
+ - Goalie stats page behavior (filters, stats-per-game toggle, player card open)
+ - Search clear/recovery (from "no results" back to full table)
+ - Sorting by **Pisteet** and verifying row order changes
+ - Isolation of player vs goalie filters when switching tabs
+
+For a Claude-focused overview of how these E2E tests are structured and how they complement the unit suite, see the Playwright sections in [.claude/testing-implementation-summary.md](.claude/testing-implementation-summary.md) and [.claude/TEST-STATUS-FINAL.md](.claude/TEST-STATUS-FINAL.md).
 
 ## Test Structure
 
