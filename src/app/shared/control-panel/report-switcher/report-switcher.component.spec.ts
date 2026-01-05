@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 describe('ReportSwitcherComponent', () => {
   let component: ReportSwitcherComponent;
   let fixture: ComponentFixture<ReportSwitcherComponent>;
-  let filterService: FilterService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -17,7 +16,6 @@ describe('ReportSwitcherComponent', () => {
 
     fixture = TestBed.createComponent(ReportSwitcherComponent);
     component = fixture.componentInstance;
-    filterService = TestBed.inject(FilterService);
     fixture.detectChanges();
   });
 
