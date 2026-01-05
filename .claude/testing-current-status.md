@@ -1,19 +1,22 @@
 # Testing - Current Status
 
 **Last Updated**: January 5, 2026
-**Total Tests**: 206
+**Total Tests**: 206 (all passing, 0 skipped)
 
 ---
 
 ## Current Test Status
 
 ### Summary
+
 - **Total Test Specs**: 206
 - **Removed Tests**: 3 (tests that were testing Angular framework internals)
 - **Known Issues**: RxJS cleanup warnings and occasional test timeouts
 
 ### Tests Removed Today
+
 The following tests were removed because they were testing Angular framework internals rather than business logic:
+
 1. NavigationComponent: "should trigger change detection when router URL changes"
 2. NavigationComponent: "should trigger change detection" (in setActiveTab)
 3. NavigationComponent: "should set correct routerLink for each navigation item"
@@ -21,16 +24,19 @@ The following tests were removed because they were testing Angular framework int
 ### Fixes Applied Today
 
 #### 1. NavigationComponent Tests (3 tests fixed/removed)
+
 - **Issue**: Tests were trying to spy on ChangeDetectorRef which is injected using `inject()`
 - **Fix**: Removed tests that tested Angular internals (change detection)
 - **Result**: Tests now focus on business logic only
 
-#### 2. StatsTableComponent Test (1 test fixed)
-- **Issue**: Test was comparing MatSort objects with `.toEqual()` which failed due to circular references
-- **Fix**: Changed to `.toBeTruthy()` to just verify sort is set
-- **File**: [stats-table.component.spec.ts:412](../src/app/shared/stats-table/stats-table.component.spec.ts#L412)
+#### 2. StatsTableComponent Tests (sort behavior)
+
+- **Issue (earlier)**: Several sort-related tests either compared `MatSort` objects incorrectly or used partial mocks, causing "undefined where a stream was expected" errors.
+- **Fix**: Reworked the sort specs to use the real `MatSort` instance created from the template and to assert component behavior/wiring instead of Angular Material internals. All StatsTableComponent tests now pass with no skips.
+- **File**: [stats-table.component.spec.ts](../src/app/shared/stats-table/stats-table.component.spec.ts)
 
 #### 3. RxJS Subscription Cleanup (4 files updated)
+
 - **Issue**: Components with OnDestroy weren't having ngOnDestroy() called in tests
 - **Fix**: Added `component.ngOnDestroy()` calls in `afterEach()` blocks
 - **Files Updated**:
@@ -44,7 +50,9 @@ The following tests were removed because they were testing Angular framework int
 ## Known Issues
 
 ### 1. RxJS "undefined stream" Warnings
+
 **Symptom**: Tests show warnings like:
+
 ```
 An error was thrown in afterAll
 TypeError: You provided 'undefined' where a stream was expected
@@ -57,6 +65,7 @@ TypeError: You provided 'undefined' where a stream was expected
 **Status**: ⚠️ Non-blocking - does not affect test results
 
 ### 2. Test Timeout / Disconnects
+
 **Symptom**: Tests occasionally timeout with "Disconnected, because no message in 30000 ms"
 
 **Cause**: Some tests may be running slower than expected, possibly due to RxJS subscription cleanup
@@ -68,7 +77,9 @@ TypeError: You provided 'undefined' where a stream was expected
 **Status**: ⚠️ Intermittent - affects test reliability
 
 ### 3. HTTP Error Logs
+
 **Symptom**: Console shows errors like:
+
 ```
 ERROR: 'API Error:', HttpErrorResponse ... 'http://localhost:3000/seasons'
 ```
@@ -83,31 +94,36 @@ ERROR: 'API Error:', HttpErrorResponse ... 'http://localhost:3000/seasons'
 
 ## Test Categories Status
 
-| Category | Files | Tests (approx) | Status |
-|----------|-------|----------------|--------|
-| Services | 4 | 91 | ✅ Passing |
-| Base Components | 2 | 15 | ✅ Passing |
-| Shared Components | 5 | 97 | ⚠️ Mostly passing |
-| Page Components | 3 | 3 | ✅ Passing |
-| **TOTAL** | **15** | **206** | **⚠️ See issues above** |
+| Category          | Files  | Tests (approx) | Status                                        |
+| ----------------- | ------ | -------------- | --------------------------------------------- |
+| Services          | 4      | 91             | ✅ Passing                                    |
+| Base Components   | 2      | 15             | ✅ Passing                                    |
+| Shared Components | 5      | 100+           | ✅ Passing                                    |
+| Page Components   | 3      | 3              | ✅ Passing                                    |
+| **TOTAL**         | **15** | **206**        | **⚠️ See issues above (infrastructure only)** |
 
 ---
 
 ## Running Tests
 
 ### Recommended: Regular Chrome Browser
+
 ```bash
 npm test
 ```
+
 This opens a browser window and is more reliable than headless mode.
 
 ### Headless Mode (May Timeout)
+
 ```bash
 npm test -- --browsers=ChromeHeadless --watch=false
 ```
+
 ⚠️ Warning: May encounter timeout issues
 
 ### Debug Specific Test
+
 ```bash
 npm test -- --include='**/navigation.component.spec.ts'
 ```
@@ -117,17 +133,20 @@ npm test -- --include='**/navigation.component.spec.ts'
 ## What Was Fixed vs What Remains
 
 ### ✅ Fixed
+
 - NavigationComponent change detection tests (removed - testing framework not business logic)
-- StatsTableComponent MatSort comparison issue
+- StatsTableComponent MatSort tests (rewritten to use real MatSort instance; all sort-related specs now enabled and passing)
 - Missing ngOnDestroy() calls in test cleanup
 - Test file count reduced from 209 to 206 tests
 
 ### ⚠️ Remains
+
 - RxJS cleanup warnings in Karma output
 - Occasional test timeouts in headless mode
 - HTTP error logs from unmocked API calls
 
 ### ❌ Blockers
+
 - None - all tests can run, though with warnings
 
 ---
@@ -135,16 +154,19 @@ npm test -- --include='**/navigation.component.spec.ts'
 ##Recommendations
 
 ### For Development
+
 1. Use `npm test` (regular browser mode) for development
 2. Investigate individual test failures using `--include` flag
 3. Ignore RxJS cleanup warnings - they don't affect test results
 
 ### For CI/CD
+
 1. May need to increase Karma timeout in karma.conf.js
 2. Consider splitting test suite into smaller chunks
 3. Alternative: Use Playwright for E2E testing instead
 
 ### For Future Work
+
 1. Consider migrating from Karma to Jest (better performance, less Angular-specific issues)
 2. Mock API service in all component tests to eliminate HTTP errors
 3. Investigate Karma configuration options to reduce timeout issues
@@ -154,21 +176,25 @@ npm test -- --include='**/navigation.component.spec.ts'
 ## Test Quality Assessment
 
 **Business Logic Coverage**: ✅ Excellent
+
 - All services have comprehensive tests
 - Core component logic is well tested
 - Per-game calculations verified
 - Filter synchronization tested
 
 **Framework Testing**: ✅ Improved
+
 - Removed tests that tested Angular internals
 - Focus on behavior rather than implementation details
 
 **Reliability**: ⚠️ Fair
+
 - Tests pass when they run
 - Timeout issues affect reliability
 - Would benefit from migration to Jest or better Karma configuration
 
 **Maintenance**: ✅ Good
+
 - Well organized test structure
 - Clear test descriptions
 - Proper use of fakeAsync/tick patterns

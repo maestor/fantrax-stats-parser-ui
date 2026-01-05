@@ -14,12 +14,14 @@ This document summarizes the comprehensive testing implementation completed duri
 ## 📊 Test Statistics
 
 ### Before This Session
+
 - **Test Files**: 8
 - **Total Tests**: ~20
 - **Coverage**: Minimal (only basic "should create" tests)
 - **Issues**: Poor async patterns, missing dependencies, incomplete coverage
 
 ### After This Session
+
 - **Test Files**: 15
 - **Total Tests**: 209
 - **Coverage**: Comprehensive (all services, base components, most shared components)
@@ -32,6 +34,7 @@ This document summarizes the comprehensive testing implementation completed duri
 ### 1. Service Tests (100% Coverage)
 
 #### **ApiService** ([src/app/services/tests/api.service.spec.ts](../../src/app/services/tests/api.service.spec.ts))
+
 - **Created**: 25 comprehensive tests
 - **Coverage**:
   - All HTTP endpoints (`getSeasons`, `getPlayerData`, `getGoalieData`)
@@ -41,6 +44,7 @@ This document summarizes the comprehensive testing implementation completed duri
   - Cache key generation
 
 #### **CacheService** ([src/app/services/tests/cache.service.spec.ts](../../src/app/services/tests/cache.service.spec.ts))
+
 - **Created**: 21 comprehensive tests
 - **Coverage**:
   - All CRUD operations (`set`, `get`, `clear`, `clearAll`)
@@ -49,7 +53,8 @@ This document summarizes the comprehensive testing implementation completed duri
   - Edge cases (expired data, non-existent keys)
   - Integration scenarios
 
-####  **StatsService** ([src/app/services/tests/stats.service.spec.ts](../../src/app/services/tests/stats.service.spec.ts))
+#### **StatsService** ([src/app/services/tests/stats.service.spec.ts](../../src/app/services/tests/stats.service.spec.ts))
+
 - **Created**: 18 comprehensive tests
 - **Coverage**:
   - `getPlayerStatsPerGame()` calculations
@@ -59,6 +64,7 @@ This document summarizes the comprehensive testing implementation completed duri
   - Edge cases (zero stats, single game, large numbers)
 
 #### **FilterService** ([src/app/services/tests/filter.service.spec.ts](../../src/app/services/tests/filter.service.spec.ts))
+
 - **Improved**: From 3 to 27 tests
 - **Fixes**:
   - Renamed file from `.spect.ts` to `.spec.ts`
@@ -74,6 +80,7 @@ This document summarizes the comprehensive testing implementation completed duri
 ### 2. Base Component Tests (100% Coverage)
 
 #### **NavigationComponent** ([src/app/base/navigation/navigation.component.spec.ts](../../src/app/base/navigation/navigation.component.spec.ts))
+
 - **Created**: 15 tests
 - **Coverage**:
   - Router integration
@@ -84,12 +91,14 @@ This document summarizes the comprehensive testing implementation completed duri
 - **Note**: 3 tests checking Angular internal change detection are flaky and may fail intermittently
 
 #### **FooterComponent** ([src/app/base/footer/footer.component.spec.ts](../../src/app/base/footer/footer.component.spec.ts))
+
 - **Created**: 3 tests
 - **Coverage**: Basic component instantiation and template rendering
 
 ### 3. Shared Component Tests
 
 #### **StatsTableComponent** ([src/app/shared/stats-table/stats-table.component.spec.ts](../../src/app/shared/stats-table/stats-table.component.spec.ts))
+
 - **Improved**: From 1 to 30 tests
 - **Fixes**:
   - Fixed column names ('pos' → 'position')
@@ -104,6 +113,7 @@ This document summarizes the comprehensive testing implementation completed duri
   - Integration scenarios
 
 #### **MinGamesSliderComponent** ([src/app/shared/control-panel/min-games-slider/min-games-slider.component.spec.ts](../../src/app/shared/control-panel/min-games-slider/min-games-slider.component.spec.ts))
+
 - **Created**: 30+ tests
 - **Coverage**:
   - Player/goalie context switching
@@ -114,6 +124,7 @@ This document summarizes the comprehensive testing implementation completed duri
   - Subscription cleanup
 
 #### **ReportSwitcherComponent** ([src/app/shared/control-panel/report-switcher/report-switcher.component.spec.ts](../../src/app/shared/control-panel/report-switcher/report-switcher.component.spec.ts))
+
 - **Improved**: From 3 to 20+ tests
 - **Fixes**:
   - Replaced `setTimeout` with `fakeAsync`/`tick()`
@@ -126,6 +137,7 @@ This document summarizes the comprehensive testing implementation completed duri
   - Integration scenarios
 
 #### **SeasonSwitcherComponent** ([src/app/shared/control-panel/season-switcher/season-switcher.component.spec.ts](../../src/app/shared/control-panel/season-switcher/season-switcher.component.spec.ts))
+
 - **Created**: 12 tests
 - **Coverage**:
   - API integration (loading seasons)
@@ -135,6 +147,7 @@ This document summarizes the comprehensive testing implementation completed duri
 - **Note**: 2 tests have timing issues and may fail intermittently
 
 #### **StatsModeToggleComponent** ([src/app/shared/control-panel/stats-mode-toggle/stats-mode-toggle.component.spec.ts](../../src/app/shared/control-panel/stats-mode-toggle/stats-mode-toggle.component.spec.ts))
+
 - **Improved**: From 5 to 10+ tests
 - **Fixes**: Better async patterns
 - **Coverage**:
@@ -146,6 +159,7 @@ This document summarizes the comprehensive testing implementation completed duri
 ### 4. Page Component Tests (Basic Coverage)
 
 #### **PlayerStatsComponent** ([src/app/player-stats/player-stats.component.spec.ts](../../src/app/player-stats/player-stats.component.spec.ts))
+
 - **Fixed**: Added missing dependencies
   - `TranslateModule.forRoot()`
   - `provideHttpClient()`
@@ -153,6 +167,7 @@ This document summarizes the comprehensive testing implementation completed duri
 - **Coverage**: Basic instantiation
 
 #### **GoalieStatsComponent** ([src/app/goalie-stats/goalie-stats.component.spec.ts](../../src/app/goalie-stats/goalie-stats.component.spec.ts))
+
 - **Fixed**: Added missing dependencies
   - `TranslateModule.forRoot()`
   - `provideHttpClient()`
@@ -160,6 +175,7 @@ This document summarizes the comprehensive testing implementation completed duri
 - **Coverage**: Basic instantiation
 
 #### **ControlPanelComponent** ([src/app/shared/control-panel/control-panel.component.spec.ts](../../src/app/shared/control-panel/control-panel.component.spec.ts))
+
 - **Fixed**: Added missing dependencies
   - `TranslateModule.forRoot()`
   - `provideHttpClient()`
@@ -167,6 +183,7 @@ This document summarizes the comprehensive testing implementation completed duri
 - **Coverage**: Basic instantiation
 
 #### **AppComponent** ([src/app/app.component.spec.ts](../../src/app/app.component.spec.ts))
+
 - **Completely Rewritten**: From failing to passing tests
 - **Fixes**:
   - Added proper dependency mocking
@@ -179,13 +196,15 @@ This document summarizes the comprehensive testing implementation completed duri
 ## 🔧 Technical Improvements Made
 
 ### 1. Async Testing Patterns
+
 **Before**:
+
 ```typescript
-it('should update filters', (done) => {
+it("should update filters", (done) => {
   component.ngOnInit();
   setTimeout(() => {
     component.reportType$.subscribe((value) => {
-      expect(value).toBe('regular');
+      expect(value).toBe("regular");
       done();
     });
   }, 100);
@@ -193,52 +212,54 @@ it('should update filters', (done) => {
 ```
 
 **After**:
+
 ```typescript
-it('should update filters', fakeAsync(() => {
+it("should update filters", fakeAsync(() => {
   component.ngOnInit();
   tick();
 
   component.reportType$.subscribe((value) => {
-    expect(value).toBe('regular');
+    expect(value).toBe("regular");
   });
 }));
 ```
 
 ### 2. Proper Dependency Injection
+
 **Before**:
+
 ```typescript
 await TestBed.configureTestingModule({
-  imports: [PlayerStatsComponent]
+  imports: [PlayerStatsComponent],
 }).compileComponents();
 ```
 
 **After**:
+
 ```typescript
 await TestBed.configureTestingModule({
-  imports: [
-    PlayerStatsComponent,
-    TranslateModule.forRoot(),
-    NoopAnimationsModule,
-  ],
+  imports: [PlayerStatsComponent, TranslateModule.forRoot(), NoopAnimationsModule],
   providers: [provideHttpClient()],
 }).compileComponents();
 ```
 
 ### 3. HTTP Testing with HttpTestingController
+
 ```typescript
-it('should fetch player data', (done) => {
-  service.getPlayerData({ reportType: 'regular' }).subscribe((players) => {
+it("should fetch player data", (done) => {
+  service.getPlayerData({ reportType: "regular" }).subscribe((players) => {
     expect(players).toEqual(mockPlayers);
     done();
   });
 
   const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
-  expect(req.request.method).toBe('GET');
+  expect(req.request.method).toBe("GET");
   req.flush(mockPlayers);
 });
 ```
 
 ### 4. Proper Cleanup
+
 ```typescript
 afterEach(() => {
   filterService.resetPlayerFilters();
@@ -256,11 +277,13 @@ afterEach(() => {
 These tests may fail intermittently due to timing issues or Angular internal change detection:
 
 1. **NavigationComponent** (3 tests):
+
    - "should trigger change detection" - Tests Angular internal behavior
    - "should trigger change detection when router URL changes" - Router timing issues
    - "should set correct routerLink for each navigation item" - Template rendering timing
 
 2. **SeasonSwitcherComponent** (2 tests):
+
    - "should update player filters when context is player" - Observable timing
    - "should update goalie filters when context is goalie" - Observable timing
 
@@ -270,8 +293,9 @@ These tests may fail intermittently due to timing issues or Angular internal cha
 ### Recommendations for Flaky Tests
 
 **Option 1: Increase Timeout** (Quick Fix)
+
 ```typescript
-it('should update filters', fakeAsync(() => {
+it("should update filters", fakeAsync(() => {
   component.ngOnInit();
   tick(100); // Increase delay
   // ... assertions
@@ -279,18 +303,20 @@ it('should update filters', fakeAsync(() => {
 ```
 
 **Option 2: Remove Tests** (Pragmatic)
+
 - The flaky tests are testing Angular framework internals
 - Core business logic is already covered by passing tests
 - Consider removing these tests if they continue to cause issues
 
 **Option 3: Use `done()` Callback** (Alternative)
+
 ```typescript
-it('should update filters', (done) => {
+it("should update filters", (done) => {
   component.ngOnInit();
 
   setTimeout(() => {
     component.reportType$.subscribe((value) => {
-      expect(value).toBe('playoffs');
+      expect(value).toBe("playoffs");
       done();
     });
   }, 50);
@@ -302,6 +328,7 @@ it('should update filters', (done) => {
 ## 📁 Files Created/Modified
 
 ### New Files (9)
+
 1. `src/app/services/tests/api.service.spec.ts`
 2. `src/app/services/tests/cache.service.spec.ts`
 3. `src/app/services/tests/stats.service.spec.ts`
@@ -313,6 +340,7 @@ it('should update filters', (done) => {
 9. `.claude_docs/testing-implementation-summary.md` (this file)
 
 ### Modified Files (8)
+
 1. `src/app/services/tests/filter.service.spec.ts` (renamed + improved)
 2. `src/app/shared/stats-table/stats-table.component.spec.ts` (30 tests)
 3. `src/app/shared/control-panel/report-switcher/report-switcher.component.spec.ts` (20+ tests)
@@ -328,21 +356,25 @@ it('should update filters', (done) => {
 ## 🚀 Running Tests
 
 ### All Tests
+
 ```bash
 npm test
 ```
 
 ### Headless Mode (CI)
+
 ```bash
 npm test -- --browsers=ChromeHeadless --watch=false
 ```
 
 ### With Coverage
+
 ```bash
 npm test -- --code-coverage
 ```
 
 ### Single Test File
+
 ```bash
 npm test -- --include='**/api.service.spec.ts'
 ```
@@ -351,13 +383,13 @@ npm test -- --include='**/api.service.spec.ts'
 
 ## 📋 Test Coverage by Category
 
-| Category | Files | Tests | Status |
-|----------|-------|-------|--------|
-| Services | 4 | 91 | ✅ 100% |
-| Base Components | 2 | 18 | ✅ 100% |
-| Shared Components | 5 | 100+ | ✅ 95% |
-| Page Components | 3 | 3 | ⚠️ Basic |
-| **TOTAL** | **15** | **209** | **✅ 97%** |
+| Category          | Files  | Tests   | Status     |
+| ----------------- | ------ | ------- | ---------- |
+| Services          | 4      | 91      | ✅ 100%    |
+| Base Components   | 2      | 18      | ✅ 100%    |
+| Shared Components | 5      | 100+    | ✅ 95%     |
+| Page Components   | 3      | 3       | ⚠️ Basic   |
+| **TOTAL**         | **15** | **209** | **✅ 97%** |
 
 ---
 
@@ -379,16 +411,19 @@ npm test -- --include='**/api.service.spec.ts'
 ## 🔄 Next Steps for Future Development
 
 ### High Priority
+
 1. **Fix/Remove Flaky Tests** - Decide on approach for the 5-8 timing-dependent tests
 2. **Add Integration Tests** - Test page components with full data flow
 3. **Increase E2E Coverage** - Add Playwright tests for user workflows
 
 ### Medium Priority
+
 4. **Add Visual Regression Tests** - Use Playwright screenshots
 5. **Performance Tests** - Test with large datasets
 6. **Add PlayerCardComponent Tests** - Dialog behavior and season display logic
 
 ### Low Priority
+
 7. **Code Coverage Metrics** - Set up automated coverage reporting
 8. **CI/CD Integration** - Add GitHub Actions or similar
 9. **Mutation Testing** - Verify test quality with Stryker
@@ -398,13 +433,16 @@ npm test -- --include='**/api.service.spec.ts'
 ## 🛡️ Quality Assurance Requirements
 
 ### Before Committing Changes
+
 1. ✅ Run `npm test` - All tests should pass
 2. ✅ Run `npm run build` - Build should complete without errors
 3. ✅ Run `npm start` - Application should serve without errors
 4. ✅ Check test coverage - Should remain above 90%
 
 ### Test Failure Protocol
+
 **If tests fail after changes:**
+
 1. Identify which test(s) failed
 2. Determine if failure is due to:
    - Bug in production code → Fix the code
@@ -414,14 +452,18 @@ npm test -- --include='**/api.service.spec.ts'
 4. Never commit with failing tests
 
 ### Build Error Protocol
+
 **If build fails:**
+
 1. Check TypeScript errors in output
 2. Fix type issues (missing imports, incorrect types, etc.)
 3. Re-run build to confirm
 4. Never commit with build errors
 
 ### Serve Error Protocol
+
 **If serve fails:**
+
 1. Check for missing dependencies
 2. Verify all imports are correct
 3. Check for circular dependencies
