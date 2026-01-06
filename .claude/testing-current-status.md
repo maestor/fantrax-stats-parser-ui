@@ -1,6 +1,6 @@
 # Testing - Current Status
 
-**Last Updated**: January 5, 2026
+**Last Updated**: January 6, 2026
 **Total Tests**: 200+ (all passing, 0 skipped)
 
 ---
@@ -30,10 +30,11 @@ The following tests were removed because they were testing Angular framework int
 - **Fix**: Removed tests that tested Angular internals (change detection)
 - **Result**: Tests now focus on business logic only
 
-#### 2. StatsTableComponent Tests (sort behavior)
+### 2. StatsTableComponent Tests (sort behavior and headers)
 
 - **Issue (earlier)**: Several sort-related tests either compared `MatSort` objects incorrectly or used partial mocks, causing "undefined where a stream was expected" errors.
 - **Fix**: Reworked the sort specs to use the real `MatSort` instance created from the template and to assert component behavior/wiring instead of Angular Material internals. All StatsTableComponent tests now pass with no skips.
+- **Enhancement**: Tests now also assert the default sort column (`score`) and the presence of compact header labels/tooltips, matching the production UI.
 - **File**: [stats-table.component.spec.ts](../src/app/shared/stats-table/stats-table.component.spec.ts)
 
 #### 3. RxJS Subscription Cleanup (4 files updated)
@@ -95,13 +96,13 @@ ERROR: 'API Error:', HttpErrorResponse ... 'http://localhost:3000/seasons'
 
 ## Test Categories Status
 
-| Category          | Files  | Tests (approx) | Status                                        |
-| ----------------- | ------ | -------------- | --------------------------------------------- |
-| Services          | 4      | 90+            | ✅ Passing                                    |
-| Base Components   | 2      | 15+            | ✅ Passing                                    |
-| Shared Components | 5      | 100+           | ✅ Passing                                    |
-| Page Components   | 3      | 10+            | ✅ Passing                                    |
-| **TOTAL**         | **15** | **200+**       | **⚠️ See issues above (infrastructure only)** |
+| Category          | Files  | Tests (approx) | Status                                                     |
+| ----------------- | ------ | -------------- | ---------------------------------------------------------- |
+| Services          | 4      | 90+            | ✅ Passing                                                 |
+| Base Components   | 2      | 15+            | ✅ Passing                                                 |
+| Shared Components | 5      | 100+           | ✅ Passing                                                 |
+| Page Components   | 3      | 25+            | ✅ Passing (includes PlayerStats, GoalieStats, PlayerCard) |
+| **TOTAL**         | **15** | **200+**       | **⚠️ See issues above (infrastructure only)**              |
 
 ---
 
