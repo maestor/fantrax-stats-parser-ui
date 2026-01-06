@@ -20,6 +20,7 @@ describe('StatsTableComponent', () => {
     {
       name: 'Player 1',
       score: 84.5,
+      scoreAdjustedByGames: 56.03,
       games: 82,
       goals: 50,
       assists: 60,
@@ -35,6 +36,7 @@ describe('StatsTableComponent', () => {
     {
       name: 'Player 2',
       score: 75.3,
+      scoreAdjustedByGames: 80.3,
       games: 75,
       goals: 40,
       assists: 50,
@@ -53,6 +55,7 @@ describe('StatsTableComponent', () => {
     {
       name: 'Goalie 1',
       score: 90.2,
+      scoreAdjustedByGames: 70.15,
       games: 65,
       wins: 40,
       saves: 1800,

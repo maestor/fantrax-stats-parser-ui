@@ -17,6 +17,7 @@ describe('PlayerCardComponent', () => {
   } = {
     name: 'Goalie One',
     score: 0,
+    scoreAdjustedByGames: 0,
     games: 10,
     wins: 8,
     saves: 300,
@@ -67,6 +68,7 @@ describe('PlayerCardComponent', () => {
   const mockSkaterWithoutSeasons: Player = {
     name: 'Player One',
     score: 0,
+    scoreAdjustedByGames: 0,
     games: 82,
     goals: 30,
     assists: 40,

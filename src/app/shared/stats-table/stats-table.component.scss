@@ -7,11 +7,7 @@
   justify-content: flex-start;
 }
 
-/* Score header centered */
-:host ::ng-deep .mat-column-score .mat-sort-header-container {
-  justify-content: center;
-}
-
+.mat-column-score,
 .mat-column-games,
 .mat-column-goals,
 .mat-column-assists,

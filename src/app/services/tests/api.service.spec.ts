@@ -103,6 +103,7 @@ describe('ApiService', () => {
         {
           name: 'Player 1',
           score: 0,
+          scoreAdjustedByGames: 0,
           games: 82,
           goals: 50,
           assists: 60,
@@ -146,6 +147,7 @@ describe('ApiService', () => {
         {
           name: 'Player 1',
           score: 0,
+          scoreAdjustedByGames: 0,
           games: 82,
           goals: 50,
           assists: 60,
@@ -232,6 +234,7 @@ describe('ApiService', () => {
         {
           name: 'Cached Player',
           score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           goals: 5,
           assists: 5,
@@ -283,6 +286,7 @@ describe('ApiService', () => {
         {
           name: 'Goalie 1',
           score: 0,
+          scoreAdjustedByGames: 0,
           games: 65,
           wins: 40,
           saves: 1800,
@@ -397,6 +401,7 @@ describe('ApiService', () => {
         {
           name: 'Cached Goalie',
           score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           wins: 8,
           saves: 300,

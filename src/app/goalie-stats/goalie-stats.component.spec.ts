@@ -48,6 +48,7 @@ describe('GoalieStatsComponent', () => {
       {
         name: 'Goalie 1',
         score: 0,
+        scoreAdjustedByGames: 0,
         games: 20,
         wins: 10,
         saves: 500,
@@ -64,6 +65,7 @@ describe('GoalieStatsComponent', () => {
       {
         name: 'Goalie 2',
         score: 0,
+        scoreAdjustedByGames: 0,
         games: 5,
         wins: 2,
         saves: 100,
@@ -119,6 +121,7 @@ describe('GoalieStatsComponent', () => {
       {
         name: 'Goalie 1',
         score: 0,
+        scoreAdjustedByGames: 0,
         games: 2,
         wins: 2,
         saves: 60,
@@ -159,6 +162,7 @@ describe('GoalieStatsComponent', () => {
       {
         name: 'Goalie 1',
         score: 0,
+        scoreAdjustedByGames: 0,
         games: 20,
         wins: 10,
         saves: 500,
@@ -175,6 +179,7 @@ describe('GoalieStatsComponent', () => {
       {
         name: 'Goalie 2',
         score: 0,
+        scoreAdjustedByGames: 0,
         games: 5,
         wins: 2,
         saves: 100,
@@ -222,6 +227,7 @@ describe('GoalieStatsComponent', () => {
       {
         name: 'Goalie 1',
         score: 0,
+        scoreAdjustedByGames: 0,
         games: 3,
         wins: 2,
         saves: 90,

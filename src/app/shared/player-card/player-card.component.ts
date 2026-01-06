@@ -43,11 +43,10 @@ export class PlayerCardComponent {
   // Track which tab is active (0 = All, 1 = By Season)
   selectedTabIndex = 0;
 
-  // Combined stats (excluding name, seasons and scores)
+  // Combined stats
+  excludedColumns = ['name', 'seasons', 'scores', 'scoreAdjustedByGames'];
   stats: StatRow[] = this.reorderStatsForDisplay(
-    Object.keys(this.data).filter(
-      (key) => !key.includes('name') && key !== 'seasons' && key !== 'scores'
-    )
+    Object.keys(this.data).filter((key) => !this.excludedColumns.includes(key))
   ).map((key) => ({
     label: `tableColumn.${key}`,
     value:
