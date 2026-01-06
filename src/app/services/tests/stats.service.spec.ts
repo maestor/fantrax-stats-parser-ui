@@ -17,6 +17,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'Player 1',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 82,
           goals: 82,
           assists: 41,
@@ -52,6 +54,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'Player 1',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           goals: 10,
           assists: 10,
@@ -66,6 +70,8 @@ describe('StatsService', () => {
         },
         {
           name: 'Player 2',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 20,
           goals: 20,
           assists: 40,
@@ -94,6 +100,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'Test Player',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 50,
           goals: 25,
           assists: 50,
@@ -119,6 +127,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'Player',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 3,
           goals: 10,
           assists: 10,
@@ -145,6 +155,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'One Game Player',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 1,
           goals: 2,
           assists: 3,
@@ -170,6 +182,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'Zero Stats',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           goals: 0,
           assists: 0,
@@ -202,6 +216,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'Negative Player',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           goals: 5,
           assists: 5,
@@ -228,6 +244,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'Goalie 1',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 65,
           wins: 40,
           saves: 1950,
@@ -259,6 +277,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'Goalie 1',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           wins: 8,
           saves: 300,
@@ -274,6 +294,8 @@ describe('StatsService', () => {
         },
         {
           name: 'Goalie 2',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 20,
           wins: 12,
           saves: 600,
@@ -302,6 +324,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'Test Goalie',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 50,
           wins: 30,
           saves: 1500,
@@ -329,6 +353,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'Goalie',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 3,
           wins: 10,
           saves: 100,
@@ -355,6 +381,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'One Game Goalie',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 1,
           wins: 1,
           saves: 35,
@@ -381,6 +409,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'Zero Stats',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           wins: 0,
           saves: 0,
@@ -413,6 +443,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'Goalie Without Stats',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           wins: 5,
           saves: 300,
@@ -438,6 +470,8 @@ describe('StatsService', () => {
       const goalies: Goalie[] = [
         {
           name: 'Scoring Goalie',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 10,
           wins: 6,
           saves: 300,
@@ -466,6 +500,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'High Stats Player',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 1000,
           goals: 500000,
           assists: 750000,
@@ -491,6 +527,8 @@ describe('StatsService', () => {
       const players: Player[] = [
         {
           name: 'Low Stats',
+          score: 0,
+          scoreAdjustedByGames: 0,
           games: 100,
           goals: 1,
           assists: 2,

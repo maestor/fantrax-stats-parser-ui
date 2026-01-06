@@ -3,6 +3,7 @@ import { StatsTableComponent } from './stats-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SimpleChange } from '@angular/core';
@@ -18,6 +19,8 @@ describe('StatsTableComponent', () => {
   const mockPlayerData: Player[] = [
     {
       name: 'Player 1',
+      score: 84.5,
+      scoreAdjustedByGames: 56.03,
       games: 82,
       goals: 50,
       assists: 60,
@@ -32,6 +35,8 @@ describe('StatsTableComponent', () => {
     },
     {
       name: 'Player 2',
+      score: 75.3,
+      scoreAdjustedByGames: 80.3,
       games: 75,
       goals: 40,
       assists: 50,
@@ -49,6 +54,8 @@ describe('StatsTableComponent', () => {
   const mockGoalieData: Goalie[] = [
     {
       name: 'Goalie 1',
+      score: 90.2,
+      scoreAdjustedByGames: 70.15,
       games: 65,
       wins: 40,
       saves: 1800,
@@ -67,6 +74,7 @@ describe('StatsTableComponent', () => {
   const playerColumns = [
     'position',
     'name',
+    'score',
     'games',
     'goals',
     'assists',
@@ -87,6 +95,7 @@ describe('StatsTableComponent', () => {
         TranslateModule.forRoot(),
         MatDialogModule,
         MatSortModule,
+        MatTooltipModule,
         NoopAnimationsModule,
       ],
     }).compileComponents();
@@ -104,7 +113,7 @@ describe('StatsTableComponent', () => {
     it('should initialize with default values', () => {
       expect(component.data).toEqual([]);
       expect(component.columns).toEqual([]);
-      expect(component.defaultSortColumn).toBe('games');
+      expect(component.defaultSortColumn).toBe('score');
       expect(component.loading).toBe(false);
     });
 

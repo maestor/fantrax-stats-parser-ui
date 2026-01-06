@@ -1,3 +1,13 @@
+:host ::ng-deep .mat-sort-header-container {
+  justify-content: flex-end; // default: all headers right
+}
+
+/* Name header left-aligned */
+:host ::ng-deep .mat-column-name .mat-sort-header-container {
+  justify-content: flex-start;
+}
+
+.mat-column-score,
 .mat-column-games,
 .mat-column-goals,
 .mat-column-assists,
@@ -14,6 +24,10 @@
 .mat-column-gaa,
 .mat-column-savePercent,
 .mat-column-saves {
+  text-align: center;
+}
+
+.mat-column-position {
   text-align: center;
 }
 

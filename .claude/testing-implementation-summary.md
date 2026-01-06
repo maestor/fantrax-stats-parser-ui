@@ -106,11 +106,12 @@ This document summarizes the comprehensive testing implementation completed duri
   - Fixed STATIC_COLUMNS filter logic
 - **Coverage**:
   - Data binding with `MatTableDataSource`
-  - Sorting functionality
+  - Sorting functionality (including default sort on the `score` column)
   - Filter/search functionality (`filterItems`)
   - Dialog opening (`selectItem`)
   - Column management (static vs dynamic)
   - Integration scenarios
+  - Header behavior (compact `tableColumnShort.*` labels with `tableColumn.*` tooltips and alignment rules)
 
 #### **MinGamesSliderComponent** ([src/app/shared/control-panel/min-games-slider/min-games-slider.component.spec.ts](../../src/app/shared/control-panel/min-games-slider/min-games-slider.component.spec.ts))
 
@@ -177,6 +178,7 @@ This document summarizes the comprehensive testing implementation completed duri
 #### **PlayerCardComponent** ([src/app/shared/player-card/player-card.component.spec.ts](../../src/app/shared/player-card/player-card.component.spec.ts))
 
 - **New**: Dialog tests cover displaying player/goalie details, tab switching between "All" and "By Season", season table ordering and column reordering for goalie stats, and closing the dialog via the close button. These tests exercise all branches in `setupSeasonData`, `formatSeasonDisplay`, `reorderStatsForDisplay`, `onTabChange` and `onNoClick`.
+- Updated to reflect the current `Player`/`Goalie` models, including the `score` field and the fact that `score` appears in the combined stats list.
 
 ---
 

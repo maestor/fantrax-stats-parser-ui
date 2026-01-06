@@ -13,7 +13,9 @@ Once made lightweight API to parse my NHL fantasy league team stats and print co
 - 📈 **Stats Per Game**: Calculate and display per-game averages
 - 🎯 **Minimum Games Filter**: Filter players/goalies by minimum games played
 - 🔍 **Search & Sort**: Interactive table with search and column sorting
-- 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats and season-by-season breakdown in separate tabs
+- 🧮 **Score Ranking**: Default sort by a composite `score` column to surface highest-impact players and goalies first
+- 🏷️ **Compact Headers**: Short stat abbreviations in the table header with tooltips showing full localized labels
+- 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats and season-by-season breakdown in separate tabs, using the same stat keys (including `score`) as the main tables
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: Multi-language support with ngx-translate
 - 🎨 **Material Design**: Clean UI with Angular Material components
@@ -58,6 +60,7 @@ This project has comprehensive test coverage with **200+ tests** covering all UI
 📖 **[Read the complete Testing Documentation](TESTING.md)**
 
 Quick test commands:
+
 ```bash
 # Run all unit tests (single run, Chrome)
 npm test
@@ -84,7 +87,7 @@ For AI assistants working on this repo, additional E2E-focused context is availa
 - ✅ **Services**: 100% coverage (ApiService, CacheService, StatsService, FilterService)
 - ✅ **Base Components**: 100% coverage (Navigation, Footer)
 - ✅ **Shared Components**: 95% coverage (StatsTable, ControlPanel sub-components)
-- ⚠️ **Page Components**: Basic coverage (PlayerStats, GoalieStats)
+- ✅ **Page Components**: Integration-style coverage (PlayerStats, GoalieStats, PlayerCard)
 
 See [TESTING.md](TESTING.md) for detailed information about test patterns, best practices, and coverage.
 
@@ -132,6 +135,7 @@ This project was originally generated using [Angular CLI](https://github.com/ang
 ## Contributing
 
 When contributing, please ensure:
+
 1. All new features have corresponding tests
 2. Test coverage remains above 90%
 3. Follow existing code style and patterns

@@ -47,10 +47,12 @@ npm test -- --include='**/api.service.spec.ts'
 The project uses **Playwright Test** for end-to-end (E2E) coverage.
 
 **Prerequisites:**
+
 - Playwright browsers installed: `npx playwright install`
 - Backend API running (see project README and backend repo)
 
 The Playwright config is defined in `playwright.config.ts` and:
+
 - Uses `baseURL` `http://localhost:4200`
 - Starts (or reuses) the Angular dev server via `webServer` with `npm start`
 - Runs tests against Chromium, Firefox and WebKit
@@ -72,6 +74,7 @@ npx playwright test --project=chromium
 ```
 
 **Current E2E coverage (high level):**
+
 - Front page rendering and initial UI state (titles, navigation, filters, table)
 - Navigation between **Kenttäpelaajat** and **Maalivahdit** tabs and route changes
 - Opening the **Player Card** dialog from the stats table and switching to the **Kausittain** career tab when present
@@ -80,10 +83,10 @@ npx playwright test --project=chromium
 - Season selection via **Kausivalitsin** and its effect on table contents
 - **Tilastot per ottelu** toggle affecting per-player stats in the table
 - **Otteluja pelattu vähintään** slider reducing the visible rows based on minimum games
- - Goalie stats page behavior (filters, stats-per-game toggle, player card open)
- - Search clear/recovery (from "no results" back to full table)
- - Sorting by **Pisteet** and verifying row order changes
- - Isolation of player vs goalie filters when switching tabs
+- Goalie stats page behavior (filters, stats-per-game toggle, player card open)
+- Search clear/recovery (from "no results" back to full table)
+- Sorting by **Pisteet** and verifying row order changes
+- Isolation of player vs goalie filters when switching tabs
 
 For a Claude-focused overview of how these E2E tests are structured and how they complement the unit suite, see the Playwright sections in [.claude/testing-implementation-summary.md](.claude/testing-implementation-summary.md) and [.claude/TEST-STATUS-FINAL.md](.claude/TEST-STATUS-FINAL.md).
 
@@ -178,12 +181,17 @@ Basic component tests:
 Tests table functionality:
 
 - ✅ Data binding with `MatTableDataSource`
-- ✅ Sorting configuration via `MatSort` (component wires sort to the table and applies default column/direction)
+- ✅ Sorting configuration via `MatSort` (component wires sort to the table and applies default column/direction, defaulting to the `score` column)
 - ✅ Filtering with `filterItems()`
 - ✅ Dialog opening via `selectItem()`
 - ✅ Column management (static vs dynamic)
 - ✅ Loading states
 - ✅ Data transformation handling
+
+Additional UI behavior covered by tests:
+
+- Compact stat headers (from `tableColumnShort.*`) with tooltips showing full labels (`tableColumn.*`)
+- Consistent alignment for numeric/stat columns, while keeping the name column left-aligned
 
 **Example: Testing table filtering**
 

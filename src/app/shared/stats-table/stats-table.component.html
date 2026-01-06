@@ -14,7 +14,9 @@
     <!-- Auto increment position column -->
     <ng-container matColumnDef="position">
       <th mat-header-cell *matHeaderCellDef>
-        {{ "tableColumn.position" | translate }}
+        <span matTooltip="{{ 'tableColumn.position' | translate }}">
+          {{ "tableColumnShort.position" | translate }}
+        </span>
       </th>
       <td mat-cell *matCellDef="let element; let i = index">
         {{ i + 1 }}
@@ -25,7 +27,9 @@
     @for (column of dynamicColumns; track column) {
     <ng-container [matColumnDef]="column">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ "tableColumn." + column | translate }}
+        <span matTooltip="{{ 'tableColumn.' + column | translate }}">
+          {{ "tableColumnShort." + column | translate }}
+        </span>
       </th>
       <td mat-cell *matCellDef="let element">
         {{ element[column] !== "" ? element[column] : "-" }}
