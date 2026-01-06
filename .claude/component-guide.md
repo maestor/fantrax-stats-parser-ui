@@ -113,35 +113,33 @@ API → StatsService → PlayerStatsComponent → StatsTableComponent
 
 **Type**: Presentational Component (Dumb)
 
-**Purpose**: Reusable data table for displaying statistics
+**Purpose**: Reusable data table for displaying player/goalie statistics with search, sorting and Player Card integration.
 
 **Inputs**:
 
 ```typescript
-@Input() data: PlayerStats[] | GoalieStats[] = [];
-@Input() columns: TableColumn[] = [];
-@Input() displayedColumns: string[] = [];
+@Input() data: any[] = [];
+@Input() columns: string[] = [];
+@Input() defaultSortColumn = 'score';
+@Input() loading = false;
 ```
 
-**Outputs**:
-
-```typescript
-@Output() rowClick = new EventEmitter<any>();
-@Output() sortChange = new EventEmitter<Sort>();
-```
+**Outputs**: None — row clicks open `PlayerCardComponent` directly via `MatDialog`.
 
 **Features**:
 
-- Material table with sorting
-- Pagination
-- Column configuration
-- Responsive design
-- Custom cell templates
+- Angular Material table (`MatTableDataSource`) with `MatSort`-backed sorting (defaulting to the `score` column)
+- Search box that filters rows via `filterItems()`
+- Column configuration driven by `columns` and shared definitions in `table-columns.ts`
+- Static `position` column that auto-numbers rows
+- Compact stat headers from `tableColumnShort.*` with tooltips using full labels from `tableColumn.*`
+- Center-aligned numeric/stat headers and cells, with the name column left-aligned for readability
+- Responsive layout with horizontal scrolling on narrow viewports
 
 **Usage**:
 
 ```html
-<app-stats-table [data]="stats" [columns]="tableColumns" [displayedColumns]="displayedCols" (rowClick)="onRowClick($event)" (sortChange)="onSortChange($event)"> </app-stats-table>
+<app-stats-table [data]="tableData" [columns]="tableColumns"></app-stats-table>
 ```
 
 ---
@@ -152,7 +150,7 @@ API → StatsService → PlayerStatsComponent → StatsTableComponent
 
 **Type**: Presentational Component
 
-**Purpose**: Container for all filter controls
+**Purpose**: Container that composes all filter controls for the current context (players or goalies).
 
 **Child Components**:
 
@@ -164,24 +162,13 @@ API → StatsService → PlayerStatsComponent → StatsTableComponent
 **Inputs**:
 
 ```typescript
-@Input() seasons: string[] = [];
-@Input() currentSeason: string = '';
-@Input() reportType: 'regular' | 'playoffs' = 'regular';
-@Input() statsMode: 'combined' | 'separate' = 'combined';
-@Input() minGames: number = 0;
-@Input() maxGames: number = 82;
+@Input() context: 'player' | 'goalie' = 'player';
+@Input() maxGames = 0;
 ```
 
-**Outputs**:
+**Outputs**: None — each child component talks directly to `FilterService`.
 
-```typescript
-@Output() seasonChange = new EventEmitter<string>();
-@Output() reportChange = new EventEmitter<'regular' | 'playoffs'>();
-@Output() modeChange = new EventEmitter<'combined' | 'separate'>();
-@Output() minGamesChange = new EventEmitter<number>();
-```
-
-**Layout**: Horizontal layout with responsive breakpoints
+**Layout**: Horizontal, responsive layout defined in `control-panel.component.scss`.
 
 ---
 
@@ -189,60 +176,60 @@ API → StatsService → PlayerStatsComponent → StatsTableComponent
 
 **Location**: `src/app/shared/control-panel/season-switcher/`
 
-**Type**: Presentational Component (Dumb)
+**Type**: Presentational Component
 
-**Purpose**: Reusable data table for displaying player/goalie statistics with search, sorting and Player Card integration
+**Purpose**: Dropdown/select for choosing the season, wired to `FilterService`.
 
-````typescript
 **Inputs**:
-```typescript
-@Input() data: (Player | Goalie)[] = [];
-@Input() columns: string[] = [];
-@Input() defaultSortColumn = 'score';
-@Input() loading = false;
-````
 
-**Outputs**: None — row clicks open `PlayerCardComponent` directly via `MatDialog`.
+```typescript
+@Input() context: 'player' | 'goalie' = 'player';
+```
+
+**Behavior**:
+
+- Loads seasons from `ApiService`
+- Displays seasons in reverse order (newest first)
+- Updates the appropriate filter stream in `FilterService` when the selection changes
+
+---
 
 ### ReportSwitcherComponent
 
-- Material table with `MatSort`-backed sorting (defaulting to the `score` column)
-- Search box (filtering via `MatTableDataSource.filter`)
-- Column configuration driven by `columns` and shared `table-columns.ts` definitions
-- Static `position` column with automatic row index
-- Compact stat headers from `tableColumnShort.*` with tooltips using full labels from `tableColumn.*`
-- Consistent alignment for numeric/stat columns; player name header/cells remain left-aligned
-- Responsive layout with horizontal scrolling for narrow viewports
+**Location**: `src/app/shared/control-panel/report-switcher/`
+
+**Purpose**: Toggle between regular season and playoffs for the current context.
+
+**Inputs**:
 
 ```typescript
-@Input() reportType: 'regular' | 'playoffs' = 'regular';
+@Input() context: 'player' | 'goalie' = 'player';
 ```
 
-**Outputs**:
+**Behavior**:
 
-````typescript
-></app-stats-table>
-**Uses**: Material Button Toggle
+- Uses `MatButtonToggle` to let the user pick `regular` vs `playoffs`
+- Subscribes to `FilterService` (`playerFilters$`/`goalieFilters$`) to expose `reportType$`
+- Calls `updatePlayerFilters` / `updateGoalieFilters` when the toggle changes
 
 ---
 
 ### StatsModeToggleComponent
+
 **Location**: `src/app/shared/control-panel/stats-mode-toggle/`
 
-**Purpose**: Toggle between combined and separate stats views
+**Purpose**: Toggle between combined stats and per-game stats.
 
 **Inputs**:
-```typescript
-@Input() mode: 'combined' | 'separate' = 'combined';
-````
-
-**Outputs**:
 
 ```typescript
-@Output() modeChange = new EventEmitter<'combined' | 'separate'>();
+@Input() context: 'player' | 'goalie' = 'player';
 ```
 
-**Uses**: Material Slide Toggle
+**Behavior**:
+
+- Uses a `MatSlideToggle` to manipulate the `statsPerGame` flag in `FilterService`
+- Keeps its visual state in sync with the current filter state for the given context
 
 ---
 
@@ -250,27 +237,20 @@ API → StatsService → PlayerStatsComponent → StatsTableComponent
 
 **Location**: `src/app/shared/control-panel/min-games-slider/`
 
-**Purpose**: Slider to filter by minimum games played
+**Purpose**: Slider to filter by minimum games played.
 
 **Inputs**:
 
 ```typescript
-@Input() minGames: number = 0;
-@Input() maxGames: number = 82;
-@Input() value: number = 0;
+@Input() context: 'player' | 'goalie' = 'player';
+@Input() maxGames = 0;
 ```
 
-**Outputs**:
+**Behavior**:
 
-```typescript
-@Output() valueChange = new EventEmitter<number>();
-```
-
-**Features**:
-
-- Material slider
-- Dynamic range based on maxGames
-- Real-time value display
+- Uses `MatSlider` to choose `minGames`
+- Constrains the slider range based on `maxGames`
+- Pushes changes into `FilterService` for the active context
 
 ---
 

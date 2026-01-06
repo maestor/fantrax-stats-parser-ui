@@ -87,7 +87,7 @@ For AI assistants working on this repo, additional E2E-focused context is availa
 - ✅ **Services**: 100% coverage (ApiService, CacheService, StatsService, FilterService)
 - ✅ **Base Components**: 100% coverage (Navigation, Footer)
 - ✅ **Shared Components**: 95% coverage (StatsTable, ControlPanel sub-components)
-- ⚠️ **Page Components**: Basic coverage (PlayerStats, GoalieStats)
+- ✅ **Page Components**: Integration-style coverage (PlayerStats, GoalieStats, PlayerCard)
 
 See [TESTING.md](TESTING.md) for detailed information about test patterns, best practices, and coverage.
 
