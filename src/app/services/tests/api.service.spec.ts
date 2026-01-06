@@ -102,6 +102,7 @@ describe('ApiService', () => {
       const mockPlayers: Player[] = [
         {
           name: 'Player 1',
+          score: 0,
           games: 82,
           goals: 50,
           assists: 60,
@@ -144,6 +145,7 @@ describe('ApiService', () => {
       const mockPlayers: Player[] = [
         {
           name: 'Player 1',
+          score: 0,
           games: 82,
           goals: 50,
           assists: 60,
@@ -229,6 +231,7 @@ describe('ApiService', () => {
       const mockPlayers: Player[] = [
         {
           name: 'Cached Player',
+          score: 0,
           games: 10,
           goals: 5,
           assists: 5,
@@ -279,6 +282,7 @@ describe('ApiService', () => {
       const mockGoalies: Goalie[] = [
         {
           name: 'Goalie 1',
+          score: 0,
           games: 65,
           wins: 40,
           saves: 1800,
@@ -392,6 +396,7 @@ describe('ApiService', () => {
       const mockGoalies: Goalie[] = [
         {
           name: 'Cached Goalie',
+          score: 0,
           games: 10,
           wins: 8,
           saves: 300,

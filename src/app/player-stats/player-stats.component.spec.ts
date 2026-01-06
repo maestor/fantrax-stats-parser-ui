@@ -46,6 +46,7 @@ describe('PlayerStatsComponent', () => {
     const mockPlayers: Player[] = [
       {
         name: 'Player 1',
+        score: 0,
         games: 10,
         goals: 5,
         assists: 5,
@@ -60,6 +61,7 @@ describe('PlayerStatsComponent', () => {
       },
       {
         name: 'Player 2',
+        score: 0,
         games: 5,
         goals: 2,
         assists: 3,
@@ -113,6 +115,7 @@ describe('PlayerStatsComponent', () => {
     const apiData: Player[] = [
       {
         name: 'Player 1',
+        score: 0,
         games: 2,
         goals: 4,
         assists: 2,
@@ -151,6 +154,7 @@ describe('PlayerStatsComponent', () => {
     const mockPlayers: Player[] = [
       {
         name: 'Player 1',
+        score: 0,
         games: 10,
         goals: 5,
         assists: 5,
@@ -165,6 +169,7 @@ describe('PlayerStatsComponent', () => {
       },
       {
         name: 'Player 2',
+        score: 0,
         games: 5,
         goals: 2,
         assists: 3,
@@ -210,6 +215,7 @@ describe('PlayerStatsComponent', () => {
     const mockPlayers: Player[] = [
       {
         name: 'Player 1',
+        score: 0,
         games: 3,
         goals: 1,
         assists: 2,

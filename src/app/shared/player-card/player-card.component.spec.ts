@@ -16,6 +16,7 @@ describe('PlayerCardComponent', () => {
     seasons: GoalieSeasonStats[];
   } = {
     name: 'Goalie One',
+    score: 0,
     games: 10,
     wins: 8,
     saves: 300,
@@ -65,6 +66,7 @@ describe('PlayerCardComponent', () => {
 
   const mockSkaterWithoutSeasons: Player = {
     name: 'Player One',
+    score: 0,
     games: 82,
     goals: 30,
     assists: 40,
@@ -267,7 +269,7 @@ describe('PlayerCardComponent', () => {
       expect(rows.length).toBeGreaterThan(0);
 
       const firstRowText = (rows[0].nativeElement as HTMLElement).textContent;
-      expect(firstRowText).toContain('tableColumn.games');
+      expect(firstRowText).toContain('tableColumn.score');
     });
 
     it('should safely ignore setupSeasonData when there is no seasons array', () => {

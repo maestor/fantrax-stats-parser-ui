@@ -13,7 +13,10 @@
   </mat-card-header>
   <mat-card-content>
     @if (hasSeasons) {
-    <mat-tab-group (selectedIndexChange)="onTabChange($event)">
+    <mat-tab-group
+      (selectedIndexChange)="onTabChange($event)"
+      disablePagination="true"
+    >
       <mat-tab label="{{ 'playerCard.all' | translate }}">
         <div class="tab-content">
           <table mat-table [dataSource]="stats" class="mat-elevation-z2">
@@ -47,7 +50,9 @@
               @for (column of seasonColumns; track column) {
               <ng-container [matColumnDef]="column">
                 <th mat-header-cell *matHeaderCellDef>
-                  {{ "tableColumn." + column | translate }}
+                  <span matTooltip="{{ 'tableColumn.' + column | translate }}">
+                    {{ "tableColumnShort." + column | translate }}
+                  </span>
                 </th>
                 <td mat-cell *matCellDef="let season">
                   {{ season[column] !== "" ? season[column] : "-" }}

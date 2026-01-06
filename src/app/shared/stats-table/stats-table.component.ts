@@ -15,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { STATIC_COLUMNS } from '@shared/table-columns';
 import { Player, Goalie } from '@services/api.service';
@@ -28,8 +29,9 @@ import { PlayerCardComponent } from '@shared/player-card/player-card.component';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
-    MatSortModule
-],
+    MatSortModule,
+    MatTooltipModule,
+  ],
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
 })
@@ -39,7 +41,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
 
   @Input() data: any = [];
   @Input() columns: string[] = [];
-  @Input() defaultSortColumn = 'games';
+  @Input() defaultSortColumn = 'score';
   @Input() loading = false;
 
   dataSource = new MatTableDataSource([]);
@@ -83,7 +85,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
       data,
       maxWidth: '95vw',
       width: 'auto',
-      panelClass: 'player-card-dialog'
+      panelClass: 'player-card-dialog',
     });
   }
 }

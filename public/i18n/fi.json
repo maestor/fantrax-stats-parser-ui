@@ -15,6 +15,7 @@
   "tableColumn": {
     "position": "#",
     "name": "Nimi",
+    "score": "Fantasyarvo (0-100)",
     "season": "Kausi",
     "seasonDisplay": "Kausi",
     "games": "Ottelut",
@@ -33,6 +34,29 @@
     "shutouts": "Nollat",
     "gaa": "GAA",
     "savePercent": "Torjunta%"
+  },
+  "tableColumnShort": {
+    "position": "#",
+    "name": "Nimi",
+    "score": "F",
+    "season": "Kausi",
+    "seasonDisplay": "Kausi",
+    "games": "O",
+    "goals": "M",
+    "assists": "S",
+    "points": "P",
+    "ppp": "YVP",
+    "shp": "AVP",
+    "plusMinus": "+/-",
+    "shots": "V",
+    "penalties": "JM",
+    "hits": "Tkl",
+    "blocks": "Blk",
+    "wins": "V",
+    "saves": "Torj.",
+    "shutouts": "Nol.",
+    "gaa": "GAA",
+    "savePercent": "T%"
   },
   "season": {
     "selector": "Kausivalitsin",

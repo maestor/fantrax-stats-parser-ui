@@ -47,6 +47,7 @@ describe('GoalieStatsComponent', () => {
     const mockGoalies: Goalie[] = [
       {
         name: 'Goalie 1',
+        score: 0,
         games: 20,
         wins: 10,
         saves: 500,
@@ -62,6 +63,7 @@ describe('GoalieStatsComponent', () => {
       },
       {
         name: 'Goalie 2',
+        score: 0,
         games: 5,
         wins: 2,
         saves: 100,
@@ -116,6 +118,7 @@ describe('GoalieStatsComponent', () => {
     const apiData: Goalie[] = [
       {
         name: 'Goalie 1',
+        score: 0,
         games: 2,
         wins: 2,
         saves: 60,
@@ -155,6 +158,7 @@ describe('GoalieStatsComponent', () => {
     const mockGoalies: Goalie[] = [
       {
         name: 'Goalie 1',
+        score: 0,
         games: 20,
         wins: 10,
         saves: 500,
@@ -170,6 +174,7 @@ describe('GoalieStatsComponent', () => {
       },
       {
         name: 'Goalie 2',
+        score: 0,
         games: 5,
         wins: 2,
         saves: 100,
@@ -216,6 +221,7 @@ describe('GoalieStatsComponent', () => {
     const mockGoalies: Goalie[] = [
       {
         name: 'Goalie 1',
+        score: 0,
         games: 3,
         wins: 2,
         saves: 90,
