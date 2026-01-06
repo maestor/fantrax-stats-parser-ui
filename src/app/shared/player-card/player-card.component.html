@@ -15,7 +15,7 @@
     @if (hasSeasons) {
     <mat-tab-group
       (selectedIndexChange)="onTabChange($event)"
-      disablePagination="true"
+      [disablePagination]="true"
     >
       <mat-tab label="{{ 'playerCard.all' | translate }}">
         <div class="tab-content">

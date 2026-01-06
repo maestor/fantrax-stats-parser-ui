@@ -135,17 +135,17 @@ export class PlayerCardComponent {
   private reorderStatsForDisplay(keys: string[]): string[] {
     let reorderedKeys = [...keys];
 
-    // Move season to the top if it exists
-    if (reorderedKeys.includes('season')) {
-      reorderedKeys = reorderedKeys.filter((key) => key !== 'season');
-      reorderedKeys.unshift('season');
-    }
-
     // Move score after name if it exists
     if (reorderedKeys.includes('score')) {
       reorderedKeys = reorderedKeys.filter((key) => key !== 'score');
       const nameIndex = reorderedKeys.indexOf('name');
       reorderedKeys.splice(nameIndex + 1, 0, 'score');
+    }
+
+    // Move season to the top if it exists
+    if (reorderedKeys.includes('season')) {
+      reorderedKeys = reorderedKeys.filter((key) => key !== 'season');
+      reorderedKeys.unshift('season');
     }
 
     // Reorder goalie stats: place savePercent and gaa after saves
