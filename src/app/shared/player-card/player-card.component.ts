@@ -350,7 +350,12 @@ export class PlayerCardComponent {
 
       const tickCount = 5;
       const stepSize = maxValue > 0 ? Math.ceil(maxValue / tickCount) : 1;
-      const max = stepSize * tickCount;
+      let max = stepSize * tickCount;
+
+      // Ensure there is always headroom above the highest value
+      if (max <= maxValue) {
+        max += stepSize;
+      }
 
       yScale.min = 0;
       yScale.max = max;
