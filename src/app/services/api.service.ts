@@ -11,6 +11,8 @@ export type Season = {
 
 export type PlayerSeasonStats = {
   season: number;
+  score: number;
+  scoreAdjustedByGames: number;
   games: number;
   goals: number;
   assists: number;
@@ -44,6 +46,8 @@ export type Player = {
 
 export type GoalieSeasonStats = {
   season: number;
+  score: number;
+  scoreAdjustedByGames: number;
   games: number;
   wins: number;
   saves: number;

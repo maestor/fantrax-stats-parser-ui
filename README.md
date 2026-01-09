@@ -15,7 +15,8 @@ Once made lightweight API to parse my NHL fantasy league team stats and print co
 - 🔍 **Search & Sort**: Interactive table with search and column sorting
 - 🧮 **Score Ranking**: Default sort by a composite `score` column to surface highest-impact players and goalies first
 - 🏷️ **Compact Headers**: Short stat abbreviations in the table header with tooltips showing full localized labels
-- 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats and season-by-season breakdown in separate tabs, using the same stat keys (including `score`) as the main tables
+- 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats, season-by-season breakdown, and a graphs tab in separate tabs, using the same stat keys (including `score`) as the main tables
+	- 📉 Graphs tab shows per-season line charts for key stats (games, goals, assists, points, shots, penalties, hits, blocks for skaters; games, wins, saves, shutouts for goalies) with selectable series and sensible axis scaling
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: Multi-language support with ngx-translate
 - 🎨 **Material Design**: Clean UI with Angular Material components

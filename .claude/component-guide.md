@@ -270,8 +270,8 @@ data: Player | Goalie;
 
 **Key Features**:
 
-- **Tab Navigation**: Switches between "All" (combined stats) and "By Season" (season breakdown)
-- **Dynamic Width**: Auto-adjusts dialog width based on active tab
+- **Tab Navigation**: Switches between "All" (combined stats), "By Season" (season breakdown) and "Graphs" (trend lines)
+- **Dynamic Width**: Auto-adjusts dialog width based on active tab (wider for season table and graphs)
 - **Season Sorting**: Displays seasons from newest to oldest (e.g., 2025-26, 2024-25)
 - **Season Formatting**: All season displays use "YYYY-YY" format (e.g., "2025-26")
 - **Sticky Headers**: Table headers remain visible while scrolling through seasons
@@ -282,6 +282,7 @@ data: Player | Goalie;
 
 1. **All (Kaikki)**: Shows combined career statistics in vertical format (360px-800px wide)
 2. **By Season (Kausittain)**: Shows season-by-season breakdown in horizontal table (auto-width, max 95vw)
+3. **Graphs (Graafit)**: Shows a multi-series line chart of per-season stats with toggles
 
 **Column Ordering Logic**:
 
@@ -313,6 +314,13 @@ For **Goalie Stats**, columns are intelligently reordered:
   - Ensuring `score` is treated as a regular stat key alongside the other per-player metrics
   - Reordering goalie-specific columns (`savePercent`, `gaa`) so they appear immediately after `saves`
 - `setupSeasonData()` method handles season breakdown table column ordering
+- `setupChartData()` + `updateChartData()` build the graphs tab line chart using `ng2-charts` + `chart.js`
+  - X-axis labels use compact `YY-YY` season format (e.g. `12-13`)
+  - X-axis includes empty years between first and last season (gaps rendered as breaks in the lines)
+  - Y-axis always starts at 0 and rounds the upper bound to a clean step (5 ticks)
+- Graph stat toggles:
+  - Players: score, scoreAdjustedByGames (default on), plus games, goals, assists, points, shots, penalties, hits, blocks (toggled on as needed)
+  - Goalies: score, scoreAdjustedByGames (default on), plus games, wins, saves, shutouts (toggled on as needed)
 - Custom scrollbar styling for season table
 - Vertical scrolling with sticky headers (position: sticky, z-index: 10)
 
@@ -330,7 +338,7 @@ this.dialog.open(PlayerCardComponent, {
 
 **Conditional Rendering**:
 
-- If `data.seasons` exists: Shows tab navigation with "All" and "By Season" tabs
+- If `data.seasons` exists: Shows tab navigation with "All", "By Season" and "Graphs" tabs
 - If no seasons data: Shows simple vertical stats list (individual season view)
 
 ## Component Communication Patterns

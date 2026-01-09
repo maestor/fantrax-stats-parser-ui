@@ -31,8 +31,8 @@ This Angular application provides a user-friendly interface for viewing NHL fant
    - Click on any goalie to view detailed stats card
 
 3. **Player/Goalie Detail Cards** (Dialog)
-   - **Tab Navigation**: "All" tab shows combined career stats, "By Season" tab shows season-by-season breakdown
-   - **Dynamic Layout**: Card width adjusts based on active tab
+   - **Tab Navigation**: "All" tab shows combined career stats, "By Season" tab shows season-by-season breakdown, "Graphs" tab shows line charts of per-season trends
+   - **Dynamic Layout**: Card width adjusts based on active tab (wider for season table and graphs)
    - **Season View**: Displays all seasons from newest to oldest (e.g., 2025-26, 2024-25)
    - **Sticky Headers**: Column headers remain visible while scrolling through seasons
    - **Responsive Design**: Adapts to viewport size (max 95vw)
@@ -60,8 +60,9 @@ This Angular application provides a user-friendly interface for viewing NHL fant
    - Adjust minimum games filter
    - Click on any player/goalie row to open detailed stats dialog
    - In detail dialog:
-     - View combined career stats in "All" tab
-     - Switch to "By Season" tab to see season-by-season breakdown
+   - View combined career stats in "All" tab
+   - Switch to "By Season" tab to see season-by-season breakdown
+   - Switch to "Graphs" tab to see visual trend lines by season with selectable stats
      - Scroll through seasons with sticky headers
    - Sort and filter table data
 
