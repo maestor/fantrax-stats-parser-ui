@@ -16,6 +16,7 @@
     "position": "#",
     "name": "Nimi",
     "score": "Fantasy-ranking (0-100)",
+    "scoreAdjustedByGames": "Fantasy-ranking / ottelu",
     "season": "Kausi",
     "seasonDisplay": "Kausi",
     "games": "Ottelut",
@@ -39,6 +40,7 @@
     "position": "#",
     "name": "Nimi",
     "score": "FR",
+    "scoreAdjustedByGames": "FR/O",
     "season": "Kausi",
     "seasonDisplay": "Kausi",
     "games": "O",
@@ -69,6 +71,8 @@
   },
   "playerCard": {
     "all": "Kaikki",
-    "bySeason": "Kausittain"
+    "bySeason": "Kausittain",
+    "graphs": "Graafit",
+    "graphsSelectStats": "Valitse tilastot käyrille"
   }
 }

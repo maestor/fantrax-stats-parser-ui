@@ -1,6 +1,6 @@
 <mat-card
   [class.player-card]="true"
-  [class.season-mode]="hasSeasons && selectedTabIndex === 1"
+  [class.season-mode]="hasSeasons && selectedTabIndex !== 0"
 >
   <button mat-icon-button (click)="onNoClick()">X</button>
   <mat-card-header>
@@ -63,6 +63,33 @@
               <tr mat-header-row *matHeaderRowDef="seasonColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: seasonColumns"></tr>
             </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{ 'playerCard.graphs' | translate }}">
+        <div class="tab-content graphs-tab">
+          <div class="graphs-controls">
+            <div class="graphs-controls-title">
+              {{ "playerCard.graphsSelectStats" | translate }}
+            </div>
+            <div class="graphs-controls-list">
+              @for (statKey of chartStatKeys; track statKey) {
+              <mat-checkbox
+                [checked]="chartSelections[statKey]"
+                (change)="onStatToggle(statKey, $event)"
+              >
+                {{ "tableColumn." + statKey | translate }}
+              </mat-checkbox>
+              }
+            </div>
+          </div>
+          <div class="graphs-chart-container">
+            <canvas
+              baseChart
+              [type]="'line'"
+              [data]="lineChartData"
+              [options]="lineChartOptions"
+            ></canvas>
           </div>
         </div>
       </mat-tab>
