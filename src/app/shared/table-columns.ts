@@ -1,6 +1,6 @@
 // Table column definitions
 
-const BASE_COLUMNS = ['position', 'name', 'score', 'games'];
+const BASE_COLUMNS = ['position', 'name', 'score', 'scoreAdjustedByGames', 'games'];
 
 const COMMON_COLUMNS = [
   'goals',

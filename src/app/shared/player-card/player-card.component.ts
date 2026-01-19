@@ -55,7 +55,7 @@ export class PlayerCardComponent {
   selectedTabIndex = 0;
 
   // Combined stats
-  excludedColumns = ['name', 'seasons', 'scores', 'scoreAdjustedByGames'];
+  excludedColumns = ['name', 'seasons', 'scores'];
   stats: StatRow[] = this.reorderStatsForDisplay(
     Object.keys(this.data).filter((key) => !this.excludedColumns.includes(key))
   ).map((key) => ({
@@ -116,7 +116,7 @@ export class PlayerCardComponent {
     },
     scales: {
       x: {},
-      y: {},
+      y: { offset: true },
     },
   };
 
@@ -231,6 +231,15 @@ export class PlayerCardComponent {
       reorderedKeys = reorderedKeys.filter((key) => key !== 'score');
       const nameIndex = reorderedKeys.indexOf('name');
       reorderedKeys.splice(nameIndex + 1, 0, 'score');
+    }
+
+    // Move scoreAdjustedByGames after score if it exists
+    if (reorderedKeys.includes('scoreAdjustedByGames')) {
+      reorderedKeys = reorderedKeys.filter(
+        (key) => key !== 'scoreAdjustedByGames'
+      );
+      const scoreIndex = reorderedKeys.indexOf('score');
+      reorderedKeys.splice(scoreIndex + 1, 0, 'scoreAdjustedByGames');
     }
 
     // Move season to the top if it exists
