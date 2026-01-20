@@ -76,4 +76,112 @@ describe('ControlPanelComponent', () => {
     expect(minGamesSlider.context).toBe('goalie');
     expect(minGamesSlider.maxGames).toBe(82);
   });
+
+  describe('Mobile toggle functionality', () => {
+    it('should initialize with isExpanded set to false', () => {
+      expect(component.isExpanded).toBe(false);
+    });
+
+    it('should toggle isExpanded when toggleExpanded is called', () => {
+      expect(component.isExpanded).toBe(false);
+
+      component.toggleExpanded();
+      expect(component.isExpanded).toBe(true);
+
+      component.toggleExpanded();
+      expect(component.isExpanded).toBe(false);
+    });
+
+    it('should render toggle button', () => {
+      const toggleButton = fixture.debugElement.query(
+        By.css('.control-panel-toggle')
+      );
+      expect(toggleButton).toBeTruthy();
+    });
+
+    it('should render control panel content', () => {
+      const content = fixture.debugElement.query(
+        By.css('.control-panel-content')
+      );
+      expect(content).toBeTruthy();
+    });
+
+    it('should add expanded class to content when isExpanded is true', () => {
+      component.isExpanded = true;
+      fixture.detectChanges();
+
+      const content = fixture.debugElement.query(
+        By.css('.control-panel-content')
+      );
+      expect(content.nativeElement.classList.contains('expanded')).toBe(true);
+    });
+
+    it('should remove expanded class from content when isExpanded is false', () => {
+      component.isExpanded = false;
+      fixture.detectChanges();
+
+      const content = fixture.debugElement.query(
+        By.css('.control-panel-content')
+      );
+      expect(content.nativeElement.classList.contains('expanded')).toBe(false);
+    });
+
+    it('should toggle content when button is clicked', () => {
+      const toggleButton = fixture.debugElement.query(
+        By.css('.control-panel-toggle')
+      );
+      const content = fixture.debugElement.query(
+        By.css('.control-panel-content')
+      );
+
+      expect(component.isExpanded).toBe(false);
+      expect(content.nativeElement.classList.contains('expanded')).toBe(false);
+
+      toggleButton.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(component.isExpanded).toBe(true);
+      expect(content.nativeElement.classList.contains('expanded')).toBe(true);
+
+      toggleButton.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(component.isExpanded).toBe(false);
+      expect(content.nativeElement.classList.contains('expanded')).toBe(false);
+    });
+
+    it('should show correct icon when collapsed (default)', () => {
+      component.isExpanded = false;
+      fixture.detectChanges();
+
+      const toggleIcon = fixture.debugElement.query(
+        By.css('.toggle-icon')
+      );
+      expect(toggleIcon.nativeElement.textContent).toContain('▼');
+    });
+
+    it('should show correct icon when expanded', () => {
+      component.isExpanded = true;
+      fixture.detectChanges();
+
+      const toggleIcon = fixture.debugElement.query(
+        By.css('.toggle-icon')
+      );
+      expect(toggleIcon.nativeElement.textContent).toContain('▲');
+    });
+
+    it('should set aria-expanded attribute correctly', () => {
+      const toggleButton = fixture.debugElement.query(
+        By.css('.control-panel-toggle')
+      );
+
+      component.isExpanded = true;
+      fixture.detectChanges();
+      expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('true');
+
+      component.isExpanded = false;
+      fixture.detectChanges();
+      expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('false');
+    });
+  });
 });

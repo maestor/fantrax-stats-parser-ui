@@ -44,7 +44,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
   @Input() defaultSortColumn = 'score';
   @Input() loading = false;
 
-  dataSource = new MatTableDataSource([]);
+  dataSource = new MatTableDataSource<any>([]);
   displayedColumns: string[] = [];
   dynamicColumns: string[] = [];
 
@@ -53,6 +53,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data'] && this.data) {
       this.dataSource.data = this.data;
+
       if (this.columns?.length > 0) {
         this.displayedColumns = this.columns;
         this.dynamicColumns = this.displayedColumns.filter(

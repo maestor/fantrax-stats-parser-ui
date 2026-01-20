@@ -54,6 +54,12 @@ export class PlayerCardComponent {
   // Track which tab is active (0 = All, 1 = By Season)
   selectedTabIndex = 0;
 
+  // Track graph controls visibility on mobile
+  graphControlsExpanded = false;
+
+  // Track screen size for season format
+  isMobile = false;
+
   // Combined stats
   excludedColumns = ['name', 'seasons', 'scores'];
   stats: StatRow[] = this.reorderStatsForDisplay(
@@ -121,9 +127,20 @@ export class PlayerCardComponent {
   };
 
   constructor() {
+    this.checkScreenSize();
+    window.addEventListener('resize', () => this.checkScreenSize());
+
     if (this.hasSeasons) {
       this.setupSeasonData();
       this.setupChartData();
+    }
+  }
+
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+    // Update season display if already initialized
+    if (this.hasSeasons && this.seasonDataSource.length > 0) {
+      this.setupSeasonData();
     }
   }
 
@@ -135,10 +152,12 @@ export class PlayerCardComponent {
       (a, b) => b.season - a.season
     );
 
-    // Transform season data to include formatted season display
+    // Transform season data to include formatted season display (short on mobile, full on desktop)
     this.seasonDataSource = sortedSeasons.map((season) => ({
       ...season,
-      seasonDisplay: this.formatSeasonDisplay(season.season),
+      seasonDisplay: this.isMobile
+        ? this.formatSeasonShort(season.season)
+        : this.formatSeasonDisplay(season.season),
     })) as (PlayerSeasonStats | GoalieSeasonStats)[];
 
     // Get column names from the first season object
@@ -387,5 +406,9 @@ export class PlayerCardComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  toggleGraphControls(): void {
+    this.graphControlsExpanded = !this.graphControlsExpanded;
   }
 }

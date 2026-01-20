@@ -1,6 +1,12 @@
 <div class="control-panel">
-  <app-report-switcher [context]="context" />
-  <app-season-switcher [context]="context" />
-  <app-stats-mode-toggle [context]="context" />
-  <app-min-games-slider [context]="context" [maxGames]="maxGames" />
+  <button class="control-panel-toggle" (click)="toggleExpanded()" [attr.aria-expanded]="isExpanded">
+    <span>{{ 'controlPanel.filters' | translate }}</span>
+    <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
+  </button>
+  <div class="control-panel-content" [class.expanded]="isExpanded">
+    <app-report-switcher [context]="context" />
+    <app-season-switcher [context]="context" />
+    <app-stats-mode-toggle [context]="context" />
+    <app-min-games-slider [context]="context" [maxGames]="maxGames" />
+  </div>
 </div>

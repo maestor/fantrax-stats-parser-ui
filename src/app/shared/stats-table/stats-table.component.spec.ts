@@ -430,4 +430,30 @@ describe('StatsTableComponent', () => {
       expect(component.dataSource.data).toEqual(mockGoalieData as any);
     });
   });
+
+  describe('Sticky Headers Feature', () => {
+    it('should have table container with proper overflow styles for scrolling', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
+      fixture.detectChanges();
+
+      const tableContainer = fixture.nativeElement.querySelector('.table-container');
+      expect(tableContainer).toBeTruthy();
+
+      const styles = window.getComputedStyle(tableContainer);
+      expect(['auto', 'scroll']).toContain(styles.overflowY);
+      expect(['auto', 'scroll']).toContain(styles.overflowX);
+    });
+
+    it('should render table headers inside scrollable container', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
+      fixture.detectChanges();
+
+      const tableContainer = fixture.nativeElement.querySelector('.table-container');
+      const headerRow = tableContainer?.querySelector('.mat-mdc-header-row');
+
+      expect(headerRow).toBeTruthy();
+    });
+  });
 });

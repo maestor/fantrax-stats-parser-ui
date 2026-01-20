@@ -7,11 +7,11 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 ## Test Statistics
 
 - **Total Test Files**: 15+
-- **Total Tests**: 200+ (all passing, 0 skipped)
+- **Total Tests**: 256 (all passing)
 - **Test Framework**: Jasmine + Karma
 - **E2E Framework**: Playwright
 - **Coverage**: 100% statements, branches, functions and lines (unit tests)
-- **Pass Rate**: 100% of tests ✅
+- **Pass Rate**: 100% ✅
 - **Skipped Tests**: 0
 
 ## Running Tests
@@ -549,9 +549,15 @@ To achieve 100% coverage:
 - [Playwright Documentation](https://playwright.dev/)
 - [RxJS Testing](https://rxjs.dev/guide/testing)
 
-## Recent Test Fixes (January 2026)
+## Recent Updates (January 2026)
 
-### Issues Fixed
+### Features Added
+
+1. **Sticky Table Headers** - Headers remain visible during vertical scrolling while maintaining horizontal scroll
+2. **Filter Toggle (All Screens)** - Collapsible filter panel available on all screen sizes, collapsed by default
+3. **Bug Fix: scoreAdjustedByGames** - Fixed issue where Fantasy ranking / Game values disappeared with points per game filter
+
+### Test Fixes
 
 1. **Async Subscription Timing** - Fixed 7 tests across control panel components by subscribing before actions
 2. **NavigationComponent** - Removed 3 tests that tested Angular framework internals

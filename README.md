@@ -13,6 +13,7 @@ Once made lightweight API to parse my NHL fantasy league team stats and print co
 - 📈 **Stats Per Game**: Calculate and display per-game averages
 - 🎯 **Minimum Games Filter**: Filter players/goalies by minimum games played
 - 🔍 **Search & Sort**: Interactive table with search and column sorting
+- 📌 **Sticky Headers**: Table headers remain visible while scrolling with full horizontal scroll support
 - 🧮 **Score Ranking**: Default sort by a composite `score` column to surface highest-impact players and goalies first
 - 🏷️ **Compact Headers**: Short stat abbreviations in the table header with tooltips showing full localized labels
 - 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats, season-by-season breakdown, and a graphs tab in separate tabs, using the same stat keys (including `score`) as the main tables
@@ -20,6 +21,7 @@ Once made lightweight API to parse my NHL fantasy league team stats and print co
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: Multi-language support with ngx-translate
 - 🎨 **Material Design**: Clean UI with Angular Material components
+- 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and collapsible controls
 
 ## Installation and use
 
@@ -65,7 +67,7 @@ npm run build           # Build for production
 
 ## Testing
 
-This project has comprehensive test coverage with **200+ tests** covering all UI behaviors and services.
+This project has comprehensive test coverage with **256 tests** (all passing) covering all UI behaviors and services.
 
 📖 **[Read the complete Testing Documentation](TESTING.md)**
 
@@ -141,6 +143,23 @@ This project was originally generated using [Angular CLI](https://github.com/ang
 3. **Type Safety**: Strict TypeScript configuration enforced
 4. **Immutable State**: Filter state updates create new objects
 5. **Path Aliases**: `@base/*`, `@services/*`, `@shared/*` for clean imports
+
+### Mobile Responsiveness
+
+The application is fully responsive with optimized layouts for all screen sizes:
+
+- **Desktop (>960px)**: Full horizontal layout with all controls visible
+- **Tablet (768px-960px)**: Wrapped controls with optimized spacing
+- **Mobile (<768px)**: Collapsible filter panels and graph controls for better space utilization
+- **Small Mobile (<480px)**: Stacked layouts with adjusted font sizes and padding
+
+**Key mobile features:**
+- Control panel filters have a collapsible toggle button on all screen sizes (collapsed by default)
+- Table headers remain sticky during vertical scrolling while maintaining horizontal scroll capability
+- Player card graph controls collapse into a toggle button on mobile (<768px)
+- Horizontal scrolling enabled for wide tables (bySeason view)
+- Optimized table font sizes and padding for small screens
+- All interactive elements remain accessible and touch-friendly
 
 ## Contributing
 
