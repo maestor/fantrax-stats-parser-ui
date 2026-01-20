@@ -43,11 +43,17 @@ mat-card-title {
 .tab-content {
   padding: 8px 0;
   overflow: visible;
+
+  // Add bottom padding on mobile to prevent content cut-off
+  @media (max-width: 768px) {
+    padding-bottom: 16px;
+  }
 }
 
 .all-stats-tab {
   max-height: calc(100vh - 200px);
   overflow-y: auto;
+  padding-bottom: 8px;
 }
 
 .all-stats-container {
@@ -313,7 +319,7 @@ mat-tab-group {
 
   .all-stats-tab,
   .season-table-container {
-    max-height: calc(100vh - 160px);
+    max-height: calc(100vh - 220px);
   }
 
   .season-table {
@@ -339,7 +345,7 @@ mat-tab-group {
 
   .all-stats-tab,
   .season-table-container {
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 200px);
   }
 
   .season-table {

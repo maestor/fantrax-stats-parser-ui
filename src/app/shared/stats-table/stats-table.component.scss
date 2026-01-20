@@ -74,6 +74,13 @@
 .no-results {
   text-align: center;
   height: 56px;
+  padding: 16px;
+
+  // On mobile, ensure text doesn't overflow viewport
+  @media (max-width: 768px) {
+    text-align: left;
+    padding-left: 16px;
+  }
 }
 
 .mat-mdc-row:hover {
