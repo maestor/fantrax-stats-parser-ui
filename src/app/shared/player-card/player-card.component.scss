@@ -45,14 +45,48 @@ mat-card-title {
   overflow: visible;
 }
 
-.season-table-container {
-  max-height: calc(90vh - 250px);
+.all-stats-tab {
+  max-height: calc(100vh - 200px);
   overflow-y: auto;
-  overflow-x: hidden;
+}
+
+.all-stats-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.season-table-container {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: auto;
+  width: 100%;
 
   // Scrollbar styling
   &::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+
+    &:hover {
+      background: #555;
+    }
+  }
+}
+
+// Apply scrollbar styling to all scrollable containers
+.all-stats-container {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
 
   &::-webkit-scrollbar-track {
@@ -74,9 +108,25 @@ mat-card-title {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  position: relative;
+}
+
+.graphs-controls-toggle {
+  display: none;
+}
+
+.graphs-controls-overlay {
+  display: none;
 }
 
 .graphs-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.graphs-controls-content {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -92,12 +142,15 @@ mat-card-title {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 16px;
+  width: 100%;
 }
 
 .graphs-chart-container {
   position: relative;
   width: 100%;
   height: 420px;
+  margin: 0 -8px;
+  padding: 0 8px;
 }
 
 @media (max-width: 600px) {
@@ -107,6 +160,96 @@ mat-card-title {
 
   .graphs-chart-container {
     height: 320px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+// Show toggle button and overlay controls on mobile (<768px)
+@media (max-width: 768px) {
+  .graphs-controls-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 12px 16px;
+    background-color: var(--mdc-theme-surface, #fff);
+    border: 1px solid var(--mdc-theme-outline, #ccc);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    transition: background-color 0.2s;
+    z-index: 1;
+
+    &:hover {
+      background-color: var(--mdc-theme-surface-variant, #f5f5f5);
+    }
+
+    span {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .toggle-icon {
+      margin-left: auto;
+      font-size: 12px;
+    }
+  }
+
+  .graphs-controls-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+
+    &.visible {
+      display: block;
+    }
+  }
+
+  .graphs-controls {
+    position: fixed;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95vw;
+    max-width: 95vw;
+    background: white;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+    transition: bottom 0.3s ease-out;
+    z-index: 1000;
+
+    &.visible {
+      bottom: 0;
+    }
+  }
+
+  .graphs-controls-title {
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .graphs-controls-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .graphs-chart-container {
+    height: 280px;
   }
 }
 
@@ -139,10 +282,27 @@ mat-tab-group {
   width: 100%;
 }
 
-// Responsive handling for season table
+// Tablet landscape and medium screens (≤960px)
+@media (max-width: 960px) {
+  .player-card {
+    max-width: 90vw;
+
+    &.season-mode {
+      max-width: 95vw;
+    }
+  }
+
+  .all-stats-tab,
+  .season-table-container {
+    max-height: calc(100vh - 180px);
+  }
+}
+
+// Tablet portrait and small screens (≤768px)
 @media (max-width: 768px) {
   .player-card {
     min-width: 100%;
+    max-width: 100%;
 
     &.season-mode {
       min-width: 100%;
@@ -151,8 +311,9 @@ mat-tab-group {
     }
   }
 
+  .all-stats-tab,
   .season-table-container {
-    max-height: calc(80vh - 250px);
+    max-height: calc(100vh - 160px);
   }
 
   .season-table {
@@ -162,5 +323,41 @@ mat-tab-group {
     td {
       padding: 8px 4px;
     }
+  }
+
+  mat-card-title {
+    font-size: 20px;
+  }
+}
+
+// Small mobile (≤480px)
+@media (max-width: 480px) {
+  .player-card {
+    min-width: 100%;
+    padding: 4px 0 0 0;
+  }
+
+  .all-stats-tab,
+  .season-table-container {
+    max-height: calc(100vh - 140px);
+  }
+
+  .season-table {
+    font-size: 11px;
+
+    th,
+    td {
+      padding: 6px 2px;
+    }
+  }
+
+  mat-card-title {
+    font-size: 18px;
+  }
+
+  .card-title-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
   }
 }

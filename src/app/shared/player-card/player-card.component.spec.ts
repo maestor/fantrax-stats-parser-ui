@@ -135,8 +135,10 @@ describe('PlayerCardComponent', () => {
       // Season data should be sorted by season, newest first, with seasonDisplay column
       expect(component.seasonDataSource.length).toBe(2);
       expect(component.seasonDataSource[0].season).toBe(2024);
+      // seasonDisplay format depends on screen size (mobile: 24-25, desktop: 2024-25)
+      const expectedFormat = component.isMobile ? '24-25' : '2024-25';
       expect((component.seasonDataSource[0] as any).seasonDisplay).toBe(
-        '2024-25'
+        expectedFormat
       );
 
       expect(component.seasonColumns).toContain('seasonDisplay');
@@ -300,6 +302,154 @@ describe('PlayerCardComponent', () => {
       fixture.detectChanges();
 
       expect(dialogRefSpy.close).toHaveBeenCalled();
+    });
+
+    describe('Graph controls toggle functionality', () => {
+      it('should initialize with graphControlsExpanded set to false', () => {
+        expect(component.graphControlsExpanded).toBe(false);
+      });
+
+      it('should toggle graphControlsExpanded when toggleGraphControls is called', () => {
+        expect(component.graphControlsExpanded).toBe(false);
+
+        component.toggleGraphControls();
+        expect(component.graphControlsExpanded).toBe(true);
+
+        component.toggleGraphControls();
+        expect(component.graphControlsExpanded).toBe(false);
+      });
+
+      it('should render graph controls toggle button', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        const toggleButton = fixture.debugElement.query(
+          By.css('.graphs-controls-toggle')
+        );
+        expect(toggleButton).toBeTruthy();
+      });
+
+      it('should render graph controls panel', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        const controls = fixture.debugElement.query(
+          By.css('.graphs-controls')
+        );
+        expect(controls).toBeTruthy();
+      });
+
+      it('should add visible class to controls when graphControlsExpanded is true', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        component.graphControlsExpanded = true;
+        fixture.detectChanges();
+
+        const controls = fixture.debugElement.query(
+          By.css('.graphs-controls')
+        );
+        expect(controls.nativeElement.classList.contains('visible')).toBe(true);
+      });
+
+      it('should remove visible class from controls when graphControlsExpanded is false', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        component.graphControlsExpanded = false;
+        fixture.detectChanges();
+
+        const controls = fixture.debugElement.query(
+          By.css('.graphs-controls')
+        );
+        expect(controls.nativeElement.classList.contains('visible')).toBe(false);
+      });
+
+      it('should toggle controls when button is clicked', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        const toggleButton = fixture.debugElement.query(
+          By.css('.graphs-controls-toggle')
+        );
+        const controls = fixture.debugElement.query(
+          By.css('.graphs-controls')
+        );
+
+        expect(component.graphControlsExpanded).toBe(false);
+        expect(controls.nativeElement.classList.contains('visible')).toBe(false);
+
+        toggleButton.nativeElement.click();
+        fixture.detectChanges();
+
+        expect(component.graphControlsExpanded).toBe(true);
+        expect(controls.nativeElement.classList.contains('visible')).toBe(true);
+
+        toggleButton.nativeElement.click();
+        fixture.detectChanges();
+
+        expect(component.graphControlsExpanded).toBe(false);
+        expect(controls.nativeElement.classList.contains('visible')).toBe(false);
+      });
+
+      it('should show correct icon when collapsed (default)', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        component.graphControlsExpanded = false;
+        fixture.detectChanges();
+
+        const toggleIcon = fixture.debugElement.query(
+          By.css('.graphs-controls-toggle .toggle-icon')
+        );
+        expect(toggleIcon.nativeElement.textContent).toContain('▼');
+      });
+
+      it('should show correct icon when expanded', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        component.graphControlsExpanded = true;
+        fixture.detectChanges();
+
+        const toggleIcon = fixture.debugElement.query(
+          By.css('.graphs-controls-toggle .toggle-icon')
+        );
+        expect(toggleIcon.nativeElement.textContent).toContain('▲');
+      });
+
+      it('should set aria-expanded attribute correctly', () => {
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        fixture.detectChanges();
+
+        const toggleButton = fixture.debugElement.query(
+          By.css('.graphs-controls-toggle')
+        );
+
+        component.graphControlsExpanded = true;
+        fixture.detectChanges();
+        expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('true');
+
+        component.graphControlsExpanded = false;
+        fixture.detectChanges();
+        expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('false');
+      });
     });
   });
 

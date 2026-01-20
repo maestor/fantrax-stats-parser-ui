@@ -549,5 +549,60 @@ describe('StatsService', () => {
       expect(result[0].assists).toBe(0.02);
       expect(result[0].points).toBe(0.03);
     });
+
+    it('should preserve scoreAdjustedByGames field in per-game stats', () => {
+      const players: Player[] = [
+        {
+          name: 'Player 1',
+          score: 100,
+          scoreAdjustedByGames: 50,
+          games: 82,
+          goals: 41,
+          assists: 41,
+          points: 82,
+          plusMinus: 10,
+          penalties: 20,
+          shots: 246,
+          ppp: 41,
+          shp: 2,
+          hits: 164,
+          blocks: 82,
+        },
+      ];
+
+      const result = service.getPlayerStatsPerGame(players);
+
+      expect(result[0].scoreAdjustedByGames).toBeDefined();
+      expect(result[0].scoreAdjustedByGames).toBe(50);
+      expect(result[0].score).toBe(50); // score field uses scoreAdjustedByGames value
+    });
+
+    it('should preserve scoreAdjustedByGames field in goalie per-game stats', () => {
+      const goalies: Goalie[] = [
+        {
+          name: 'Goalie 1',
+          score: 100,
+          scoreAdjustedByGames: 45,
+          games: 60,
+          wins: 30,
+          saves: 1800,
+          shutouts: 5,
+          goals: 0,
+          assists: 0,
+          points: 0,
+          penalties: 0,
+          ppp: 0,
+          shp: 0,
+          gaa: '2.50',
+          savePercent: '0.915',
+        },
+      ];
+
+      const result = service.getGoalieStatsPerGame(goalies);
+
+      expect(result[0].scoreAdjustedByGames).toBeDefined();
+      expect(result[0].scoreAdjustedByGames).toBe(45);
+      expect(result[0].score).toBe(45);
+    });
   });
 });

@@ -170,6 +170,27 @@ API → StatsService → PlayerStatsComponent → StatsTableComponent
 
 **Layout**: Horizontal, responsive layout defined in `control-panel.component.scss`.
 
+**Mobile Responsiveness**:
+
+- **Desktop (>960px)**: All controls displayed horizontally in a single row
+- **Tablet (768px-960px)**: Controls wrap to 2 columns with optimized spacing
+- **Mobile (<768px)**: Collapsible panel with toggle button
+  - Toggle button shows/hides filter controls
+  - Controls stack vertically when expanded
+  - Smooth expand/collapse animation
+  - Panel is expanded by default on page load
+- **Small Mobile (<480px)**: Full-width controls with reduced padding
+
+**State Management**:
+
+```typescript
+isExpanded = true; // Controls panel visibility on mobile
+
+toggleExpanded(): void {
+  this.isExpanded = !this.isExpanded;
+}
+```
+
 ---
 
 ### SeasonSwitcherComponent
@@ -275,8 +296,9 @@ data: Player | Goalie;
 - **Season Sorting**: Displays seasons from newest to oldest (e.g., 2025-26, 2024-25)
 - **Season Formatting**: All season displays use "YYYY-YY" format (e.g., "2025-26")
 - **Sticky Headers**: Table headers remain visible while scrolling through seasons
-- **Responsive Design**: Adapts to mobile and desktop viewports
+- **Responsive Design**: Adapts to mobile and desktop viewports with optimized layouts
 - **Intelligent Column Ordering**: Automatically reorders columns for optimal readability
+- **Mobile-Optimized Controls**: Collapsible graph controls on mobile devices
 
 **Tabs**:
 
@@ -323,6 +345,39 @@ For **Goalie Stats**, columns are intelligently reordered:
   - Goalies: score, scoreAdjustedByGames (default on), plus games, wins, saves, shutouts (toggled on as needed)
 - Custom scrollbar styling for season table
 - Vertical scrolling with sticky headers (position: sticky, z-index: 10)
+- Mobile-responsive layouts with collapsible controls
+
+**Mobile Responsiveness**:
+
+- **Desktop (>960px)**: Full-width card (360px-800px), all controls visible
+- **Tablet (768px-960px)**: Optimized spacing and table height (85vh - 200px)
+- **Mobile (<768px)**:
+  - Full-width card (100vw)
+  - Collapsible graph controls with toggle button
+  - Reduced font sizes (12px for tables)
+  - Optimized table height (80vh - 200px)
+  - Horizontal scrolling enabled for wide tables
+- **Small Mobile (<480px)**:
+  - Further reduced font sizes (11px for tables)
+  - Minimal padding (6px 2px)
+  - Compact chart height (280px)
+  - Smaller icons and titles
+
+**Graph Controls State Management**:
+
+```typescript
+graphControlsExpanded = true; // Controls visibility on mobile
+
+toggleGraphControls(): void {
+  this.graphControlsExpanded = !this.graphControlsExpanded;
+}
+```
+
+**Scrolling Behavior**:
+
+- **All Stats Tab**: Vertical scrolling with max-height constraints
+- **By Season Tab**: Both vertical and horizontal scrolling enabled
+- **Graphs Tab**: Chart scales to available space, controls collapse on mobile
 
 **Usage**:
 

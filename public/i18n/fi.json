@@ -74,5 +74,9 @@
     "bySeason": "Kausittain",
     "graphs": "Graafit",
     "graphsSelectStats": "Valitse tilastot käyrille"
+  },
+  "controlPanel": {
+    "filters": "Suodattimet",
+    "graphControls": "Näytettävät tilastot"
   }
 }

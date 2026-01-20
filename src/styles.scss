@@ -27,6 +27,21 @@ body {
       width: auto !important;
     }
   }
+
+  // Mobile: ensure consistent 95vw width and remove padding
+  @media (max-width: 768px) {
+    .mat-mdc-dialog-container {
+      max-width: 95vw !important;
+      width: 95vw !important;
+      padding: 0 !important;
+
+      .mdc-dialog__surface {
+        max-width: 95vw !important;
+        width: 95vw !important;
+        padding: 0 !important;
+      }
+    }
+  }
 }
 
 .mat-elevation-z1 {
@@ -43,4 +58,12 @@ body {
 }
 .mat-elevation-z5 {
   box-shadow: var(--mat-sys-level5);
+}
+
+// Mobile: smaller h1 title
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5em !important;
+    margin: 1em 0 0 0 !important;
+  }
 }

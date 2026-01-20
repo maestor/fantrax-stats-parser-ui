@@ -30,6 +30,7 @@ export class StatsService {
       return {
         ...perGameStats,
         score: scoreAdjustedByGames,
+        scoreAdjustedByGames: scoreAdjustedByGames,
         ...Object.fromEntries(fixedFields.map((field) => [field, item[field]])),
       } as unknown as T;
     });
