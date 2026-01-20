@@ -83,7 +83,7 @@ TypeError: You provided 'undefined' where a stream was expected
 **Symptom**: Console shows errors like:
 
 ```
-ERROR: 'API Error:', HttpErrorResponse ... 'http://localhost:3000/seasons'
+ERROR: 'API Error:', HttpErrorResponse ... '${environment.apiUrl}/seasons' (value comes from the active Angular environment)
 ```
 
 **Cause**: Tests that don't mock the API service properly

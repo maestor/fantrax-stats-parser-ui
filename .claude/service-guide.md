@@ -117,7 +117,9 @@ class ApiService {
 
 **Configuration**:
 ```typescript
-private readonly API_BASE_URL = 'http://localhost:3000/api';
+import { environment } from '../../environments/environment';
+
+private readonly API_URL = environment.apiUrl;
 ```
 
 **Error Handling**:

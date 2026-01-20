@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CacheService } from './cache.service';
+import { environment } from '../../environments/environment';
 
 export type Season = {
   season: number;
@@ -94,7 +95,7 @@ export type ApiParams = {
 export class ApiService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
-  private readonly API_URL = 'http://localhost:3000';
+  private readonly API_URL = environment.apiUrl;
 
   // Fetching available seasons
   getSeasons(): Observable<Season[]> {

@@ -27,6 +27,15 @@ Once made lightweight API to parse my NHL fantasy league team stats and print co
 
 Running backend, instructions find from [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser).
 
+### Backend API URL configuration
+
+The backend base URL is configured via Angular environment files:
+
+- Development: `src/environments/environment.ts` → `apiUrl: 'http://localhost:3000'`
+- Production: `src/environments/environment.production.ts` → `apiUrl: 'https://colorado-ffhl-stats.onrender.com'`
+
+`npm start` uses the development environment. Production builds use the production environment automatically.
+
 ```bash
 1. Install Node.js (version 22.x or higher recommended)
 2. Clone this repository
