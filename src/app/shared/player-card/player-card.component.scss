@@ -51,9 +51,11 @@ mat-card-title {
 }
 
 .all-stats-tab {
-  max-height: calc(100vh - 200px);
+  max-height: calc(var(--app-height) - 200px);
   overflow-y: auto;
-  padding-bottom: 8px;
+  padding-bottom: calc(8px + var(--safe-bottom));
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 
 .all-stats-container {
@@ -62,10 +64,13 @@ mat-card-title {
 }
 
 .season-table-container {
-  max-height: calc(100vh - 200px);
+  max-height: calc(var(--app-height) - 200px);
   overflow-y: auto;
   overflow-x: auto;
   width: 100%;
+  padding-bottom: calc(8px + var(--safe-bottom));
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 
   // Scrollbar styling
   &::-webkit-scrollbar {
@@ -231,13 +236,16 @@ mat-card-title {
     border-top-right-radius: 16px;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    max-height: 70vh;
+    padding-bottom: calc(20px + var(--safe-bottom));
+    max-height: min(70vh, calc(var(--app-height) - 140px));
     overflow-y: auto;
     transition: bottom 0.3s ease-out;
     z-index: 1000;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 
     &.visible {
-      bottom: 0;
+      bottom: var(--safe-bottom);
     }
   }
 
@@ -300,7 +308,7 @@ mat-tab-group {
 
   .all-stats-tab,
   .season-table-container {
-    max-height: calc(100vh - 180px);
+    max-height: calc(var(--app-height) - 180px);
   }
 }
 
@@ -319,7 +327,7 @@ mat-tab-group {
 
   .all-stats-tab,
   .season-table-container {
-    max-height: calc(100vh - 220px);
+    max-height: calc(var(--app-height) - 220px);
   }
 
   .season-table {
@@ -345,7 +353,7 @@ mat-tab-group {
 
   .all-stats-tab,
   .season-table-container {
-    max-height: calc(100vh - 200px);
+    max-height: calc(var(--app-height) - 200px);
   }
 
   .season-table {

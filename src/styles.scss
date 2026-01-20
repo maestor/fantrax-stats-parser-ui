@@ -1,4 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+// Mobile viewport helpers
+// - 100vh is unreliable on mobile browsers (address bar / bottom bar).
+// - Prefer 100dvh when supported.
+:root {
+  --app-height: 100vh;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --app-height: 100dvh;
+  }
+}
+
 html,
 body {
   height: 100%;
@@ -21,10 +36,14 @@ body {
   .mat-mdc-dialog-container {
     max-width: 95vw !important;
     width: auto !important;
+    max-height: calc(var(--app-height) - 16px) !important;
 
     .mdc-dialog__surface {
       max-width: 95vw !important;
       width: auto !important;
+      max-height: calc(var(--app-height) - 16px) !important;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
     }
   }
 
@@ -34,11 +53,13 @@ body {
       max-width: 95vw !important;
       width: 95vw !important;
       padding: 0 !important;
+      max-height: calc(var(--app-height) - 8px) !important;
 
       .mdc-dialog__surface {
         max-width: 95vw !important;
         width: 95vw !important;
         padding: 0 !important;
+        max-height: calc(var(--app-height) - 8px) !important;
       }
     }
   }
