@@ -17,33 +17,46 @@
 
 const rateLimitState = new Map();
 
+function toOrigin(value) {
+  if (!value) return null;
+  const raw = String(value).trim();
+  if (!raw) return null;
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return raw.replace(/\/+$/, '');
+  }
+}
+
 function getAllowedOrigins() {
   const raw = process.env.ALLOWED_ORIGINS;
   if (!raw) return null;
 
   const origins = raw
     .split(',')
-    .map((s) => s.trim())
+    .map((s) => toOrigin(s))
     .filter(Boolean);
 
   return origins.length ? origins : null;
 }
 
 function isAllowedByOriginOrReferer(req, allowedOrigins) {
-  const origin = req.headers.origin;
-  if (origin) return allowedOrigins.includes(origin);
+  const originHeader = req.headers.origin;
+  const requestOrigin = toOrigin(originHeader);
+  if (requestOrigin) return allowedOrigins.includes(requestOrigin);
 
-  const referer = req.headers.referer;
-  if (referer) return allowedOrigins.some((o) => referer.startsWith(o + '/') || referer === o);
+  const refererHeader = req.headers.referer;
+  const refererOrigin = toOrigin(refererHeader);
+  if (refererOrigin) return allowedOrigins.includes(refererOrigin);
 
   // No Origin/Referer (e.g. curl). Deny by default.
   return false;
 }
 
 function applyCors(req, res, allowedOrigins) {
-  const origin = req.headers.origin;
-  if (origin && allowedOrigins.includes(origin)) {
-    res.setHeader('access-control-allow-origin', origin);
+  const requestOrigin = toOrigin(req.headers.origin);
+  if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
+    res.setHeader('access-control-allow-origin', requestOrigin);
     res.setHeader('vary', 'Origin');
   }
   res.setHeader('access-control-allow-methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
@@ -153,8 +166,11 @@ async function handler(req, res) {
     }
 
     if (!isAllowedByOriginOrReferer(req, allowedOrigins)) {
+      const requestOrigin = toOrigin(req.headers.origin) || toOrigin(req.headers.referer);
       sendJson(res, 403, {
         error: 'Forbidden origin',
+        origin: requestOrigin,
+        hint: 'Set ALLOWED_ORIGINS to a comma-separated list of site origins (no path), e.g. https://ffhl-stats.vercel.app',
       });
       return;
     }
