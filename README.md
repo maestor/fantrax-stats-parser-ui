@@ -4,6 +4,8 @@
 
 Once made lightweight API to parse my NHL fantasy league team stats and print combined seasons results by player (regular season &amp; playoffs separately) as JSON, [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser). It have been useful but without UI it's quite tricky to use. So here is one simple UI for those stats. Selected Angular framework as a base because I haven't use it in work related stuff since 2016, and thinking this is better for me learning and developing skills than do it with for example something like React or Vue.js which I have working experience in recent years.
 
+Live showcase: https://ffhl-stats.vercel.app/
+
 ## Features
 
 - 📊 **Player Statistics**: View and analyze player performance across seasons
@@ -31,12 +33,33 @@ Running backend, instructions find from [node-fantrax-stats-parser](https://gith
 
 ### Backend API URL configuration
 
-The backend base URL is configured via Angular environment files:
+This UI talks to a separate backend (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
 
-- Development: `src/environments/environment.ts` → `apiUrl: 'http://localhost:3000'`
-- Production: `src/environments/environment.production.ts` → `apiUrl: 'https://colorado-ffhl-stats.onrender.com'`
+**Development**
 
-`npm start` uses the development environment. Production builds use the production environment automatically.
+- Angular calls the backend directly:
+	- `src/environments/environment.ts` → `apiUrl: 'http://localhost:3000'`
+
+**Production / “Showcase” (Vercel)**
+
+- The UI is deployed at https://ffhl-stats.vercel.app/
+- Angular does **not** call the backend directly in production. Instead it calls `'/api'`:
+	- `src/environments/environment.production.ts` → `apiUrl: '/api'`
+- Vercel rewrites `/api/<path>` to a Serverless Function (`/api/proxy`) which:
+	- forwards the request to your real backend (`API_URL`)
+	- injects a secret `x-api-key` header (`API_KEY`) so the browser never sees the key
+
+**Vercel environment variables (required)**
+
+- `API_URL` = absolute backend base URL (e.g. `https://your-backend.example.com`)
+- `API_KEY` = backend API key (kept server-side)
+- `ALLOWED_ORIGINS` = comma-separated allowed origins for browser requests (e.g. `https://ffhl-stats.vercel.app`)
+
+**Vercel environment variables (optional)**
+
+- `RATE_LIMIT_MAX` (default `120`) and `RATE_LIMIT_WINDOW_SEC` (default `60`) for best-effort per-IP rate limiting
+
+After changing Vercel env vars, redeploy so they take effect.
 
 ```bash
 1. Install Node.js (version 22.x or higher recommended)
