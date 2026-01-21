@@ -115,6 +115,7 @@ describe('StatsTableComponent', () => {
           loading: 'Ladataan dataa...',
           loadingWarmup:
             'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin',
+          apiUnavailable: 'Rajapinta ei ole saatavilla juuri nyt.',
         },
       },
       true
@@ -461,6 +462,24 @@ describe('StatsTableComponent', () => {
         'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin'
       );
       expect(fixture.nativeElement.textContent).toContain('Ei hakutuloksia');
+    }));
+
+    it('should show API unavailable message when apiError is true', fakeAsync(() => {
+      component.data = [];
+      component.columns = playerColumns;
+      component.loading = false;
+      component.apiError = true;
+
+      component.ngOnChanges({
+        apiError: new SimpleChange(false, true, false),
+        data: new SimpleChange(null, [], true),
+      });
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain(
+        'Rajapinta ei ole saatavilla juuri nyt.'
+      );
+      expect(fixture.nativeElement.textContent).not.toContain('Ladataan dataa...');
     }));
   });
 

@@ -32,6 +32,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   tableData: Player[] = [];
   tableColumns = PLAYER_COLUMNS;
   loading = false;
+  apiError = false;
 
   ngOnInit() {
     combineLatest([this.filterService.playerFilters$])
@@ -53,17 +54,26 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
 
   fetchData(params: ApiParams = {}) {
     this.loading = true;
+    this.apiError = false;
 
     this.apiService
       .getPlayerData(params)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        const baseData = this.statsPerGame
-          ? this.statsService.getPlayerStatsPerGame(data)
-          : data;
-        this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
-        this.tableData = baseData.filter((g) => g.games >= this.minGames);
-        this.loading = false;
+      .subscribe({
+        next: (data) => {
+          const baseData = this.statsPerGame
+            ? this.statsService.getPlayerStatsPerGame(data)
+            : data;
+          this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
+          this.tableData = baseData.filter((g) => g.games >= this.minGames);
+          this.loading = false;
+        },
+        error: () => {
+          this.tableData = [];
+          this.maxGames = 0;
+          this.loading = false;
+          this.apiError = true;
+        },
       });
   }
 }

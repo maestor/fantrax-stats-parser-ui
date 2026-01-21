@@ -55,6 +55,11 @@
   padding-bottom: 8px;
 }
 
+.loading-bar {
+  width: 100%;
+  margin-top: 10px;
+}
+
 .table-container {
   overflow-x: auto;
   overflow-y: auto;
@@ -88,16 +93,4 @@
   cursor: pointer;
 }
 
-.loading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  padding-top: 60px;
-  align-items: flex-start;
-  justify-content: center;
-}
+

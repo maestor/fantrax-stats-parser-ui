@@ -12,7 +12,7 @@ import {
 
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -29,7 +29,7 @@ import { PlayerCardComponent } from '@shared/player-card/player-card.component';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatSortModule,
     MatTooltipModule,
   ],
@@ -41,12 +41,18 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   readonly dialog = inject(MatDialog);
 
   private warmupTimeoutId?: ReturnType<typeof setTimeout>;
+  private loadingIntervalId?: ReturnType<typeof setInterval>;
+  private loadingStartMs?: number;
+
+  loadingProgress = 0;
+  loadingBuffer = 0;
   showWarmupMessage = false;
 
   @Input() data: any = [];
   @Input() columns: string[] = [];
   @Input() defaultSortColumn = 'score';
   @Input() loading = false;
+  @Input() apiError = false;
 
   dataSource = new MatTableDataSource<any>([]);
   displayedColumns: string[] = [];
@@ -76,20 +82,50 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   ngOnDestroy(): void {
     this.clearWarmupTimer();
+    this.clearLoadingProgressTimer();
   }
 
   private onLoadingChanged(isLoading: boolean) {
     this.clearWarmupTimer();
+    this.clearLoadingProgressTimer();
     this.showWarmupMessage = false;
 
     if (!isLoading) {
+      this.loadingProgress = 0;
+      this.loadingBuffer = 0;
       return;
     }
+
+    this.loadingStartMs = Date.now();
+    this.updateLoadingProgress();
+    this.loadingIntervalId = setInterval(() => {
+      this.updateLoadingProgress();
+      this.cdr.markForCheck();
+    }, 200);
 
     this.warmupTimeoutId = setTimeout(() => {
       this.showWarmupMessage = true;
       this.cdr.markForCheck();
     }, 2000);
+  }
+
+  private updateLoadingProgress() {
+    const elapsedMs = Math.max(0, Date.now() - (this.loadingStartMs ?? Date.now()));
+    const expectedMs = 60_000;
+    const progress = Math.min(100, Math.round((elapsedMs / expectedMs) * 100));
+    const buffer = Math.min(100, progress + 15);
+
+    this.loadingProgress = progress;
+    this.loadingBuffer = buffer;
+  }
+
+  private clearLoadingProgressTimer() {
+    if (this.loadingIntervalId) {
+      clearInterval(this.loadingIntervalId);
+      this.loadingIntervalId = undefined;
+    }
+
+    this.loadingStartMs = undefined;
   }
 
   private clearWarmupTimer() {

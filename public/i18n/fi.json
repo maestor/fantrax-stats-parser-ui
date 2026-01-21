@@ -1,5 +1,5 @@
 {
-  "pageTitle": "Colorado Avalance - FFHL pelaajatilastot",
+  "pageTitle": "FFHL tilastopalvelu",
   "link": {
     "playerStats": "Kenttäpelaajat",
     "goalieStats": "Maalivahdit"
@@ -12,7 +12,8 @@
     "playerSearch": "Pelaajahaku",
     "noSearchResults": "Ei hakutuloksia",
     "loading": "Ladataan dataa...",
-    "loadingWarmup": "Rajapintapalvelu käynnistyy, voi kestää jopa minuutin..."
+    "loadingWarmup": "Rajapintapalvelu käynnistyy, voi kestää jopa minuutin...",
+    "apiUnavailable": "Rajapinta ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen."
   },
   "tableColumn": {
     "position": "#",
