@@ -49,7 +49,15 @@
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell no-results" [colSpan]="displayedColumns.length">
           <span>
-            {{ "table.noSearchResults" | translate }}
+              @if (loading) {
+              @if (showWarmupMessage) {
+                {{ "table.loadingWarmup" | translate }}
+              } @else {
+                {{ "table.loading" | translate }}
+              }
+              } @else {
+                {{ "table.noSearchResults" | translate }}
+              }
           </span>
         </td>
       </tr>

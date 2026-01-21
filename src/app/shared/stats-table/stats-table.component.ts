@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   OnChanges,
   AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -35,9 +36,12 @@ import { PlayerCardComponent } from '@shared/player-card/player-card.component';
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
 })
-export class StatsTableComponent implements OnChanges, AfterViewInit {
+export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   readonly dialog = inject(MatDialog);
+
+  private warmupTimeoutId?: ReturnType<typeof setTimeout>;
+  showWarmupMessage = false;
 
   @Input() data: any = [];
   @Input() columns: string[] = [];
@@ -51,6 +55,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes['loading']) {
+      this.onLoadingChanged(this.loading);
+    }
+
     if (changes['data'] && this.data) {
       this.dataSource.data = this.data;
 
@@ -63,6 +71,31 @@ export class StatsTableComponent implements OnChanges, AfterViewInit {
       if (this.sort) {
         this.dataSource.sort = this.sort;
       }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.clearWarmupTimer();
+  }
+
+  private onLoadingChanged(isLoading: boolean) {
+    this.clearWarmupTimer();
+    this.showWarmupMessage = false;
+
+    if (!isLoading) {
+      return;
+    }
+
+    this.warmupTimeoutId = setTimeout(() => {
+      this.showWarmupMessage = true;
+      this.cdr.markForCheck();
+    }, 2000);
+  }
+
+  private clearWarmupTimer() {
+    if (this.warmupTimeoutId) {
+      clearTimeout(this.warmupTimeoutId);
+      this.warmupTimeoutId = undefined;
     }
   }
 

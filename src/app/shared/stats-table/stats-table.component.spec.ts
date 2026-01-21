@@ -1,10 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { StatsTableComponent } from './stats-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SimpleChange } from '@angular/core';
 import { Player, Goalie } from '@services/api.service';
@@ -15,6 +15,7 @@ describe('StatsTableComponent', () => {
   let component: StatsTableComponent;
   let fixture: ComponentFixture<StatsTableComponent>;
   let dialog: MatDialog;
+  let translate: TranslateService;
 
   const mockPlayerData: Player[] = [
     {
@@ -103,6 +104,22 @@ describe('StatsTableComponent', () => {
     fixture = TestBed.createComponent(StatsTableComponent);
     component = fixture.componentInstance;
     dialog = TestBed.inject(MatDialog);
+    translate = TestBed.inject(TranslateService);
+
+    translate.setTranslation(
+      'fi',
+      {
+        table: {
+          playerSearch: 'Pelaajahaku',
+          noSearchResults: 'Ei hakutuloksia',
+          loading: 'Ladataan dataa...',
+          loadingWarmup:
+            'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin',
+        },
+      },
+      true
+    );
+    translate.use('fi');
   });
 
   it('should create', () => {
@@ -376,6 +393,75 @@ describe('StatsTableComponent', () => {
       component.loading = true;
       expect(component.loading).toBe(true);
     });
+  });
+
+  describe('loading messages', () => {
+    it('should show short loading message during the first 2 seconds', fakeAsync(() => {
+      component.data = [];
+      component.columns = playerColumns;
+      component.loading = true;
+
+      component.ngOnChanges({
+        loading: new SimpleChange(false, true, false),
+        data: new SimpleChange(null, [], true),
+      });
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain('Ladataan dataa...');
+      expect(fixture.nativeElement.textContent).not.toContain(
+        'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin'
+      );
+
+      tick(1999);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.textContent).toContain('Ladataan dataa...');
+    }));
+
+    it('should switch to warmup message after 2 seconds of loading', fakeAsync(() => {
+      component.data = [];
+      component.columns = playerColumns;
+      component.loading = true;
+
+      component.ngOnChanges({
+        loading: new SimpleChange(false, true, false),
+        data: new SimpleChange(null, [], true),
+      });
+      fixture.detectChanges();
+
+      tick(2000);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain(
+        'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin'
+      );
+    }));
+
+    it('should not show warmup message if loading ends before 2 seconds', fakeAsync(() => {
+      component.data = [];
+      component.columns = playerColumns;
+      component.loading = true;
+
+      component.ngOnChanges({
+        loading: new SimpleChange(false, true, false),
+        data: new SimpleChange(null, [], true),
+      });
+      fixture.detectChanges();
+
+      tick(1000);
+      component.loading = false;
+      component.ngOnChanges({
+        loading: new SimpleChange(true, false, false),
+      });
+      fixture.detectChanges();
+
+      tick(2000);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).not.toContain(
+        'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin'
+      );
+      expect(fixture.nativeElement.textContent).toContain('Ei hakutuloksia');
+    }));
   });
 
   describe('integration scenarios', () => {
