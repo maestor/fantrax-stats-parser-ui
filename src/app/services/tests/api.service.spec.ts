@@ -4,7 +4,7 @@ import {
   provideHttpClientTesting,
 } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { ApiService, Season, Player, Goalie, ApiParams } from '../api.service';
+import { ApiService, Season, Player, Goalie, ApiParams, Team } from '../api.service';
 import { CacheService } from '../cache.service';
 
 describe('ApiService', () => {
@@ -46,7 +46,7 @@ describe('ApiService', () => {
         done();
       });
 
-      const req = httpMock.expectOne(`${API_URL}/seasons`);
+      const req = httpMock.expectOne(`${API_URL}/seasons/regular`);
       expect(req.request.method).toBe('GET');
       req.flush(mockSeasons);
     });
@@ -55,25 +55,55 @@ describe('ApiService', () => {
       const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
 
       service.getSeasons().subscribe(() => {
-        const cachedData = cacheService.get<Season[]>('seasons');
+        const cachedData = cacheService.get<Season[]>('seasons-regular');
         expect(cachedData).toEqual(mockSeasons);
         done();
       });
 
-      const req = httpMock.expectOne(`${API_URL}/seasons`);
+      const req = httpMock.expectOne(`${API_URL}/seasons/regular`);
       req.flush(mockSeasons);
     });
 
     it('should return cached data on subsequent requests', (done) => {
       const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
-      cacheService.set('seasons', mockSeasons);
+      cacheService.set('seasons-regular', mockSeasons);
 
       service.getSeasons().subscribe((seasons) => {
         expect(seasons).toEqual(mockSeasons);
         done();
       });
 
-      httpMock.expectNone(`${API_URL}/seasons`);
+      httpMock.expectNone(`${API_URL}/seasons/regular`);
+    });
+
+    it('should fetch playoffs seasons from API when reportType is playoffs', (done) => {
+      const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
+
+      service.getSeasons('playoffs').subscribe((seasons) => {
+        expect(seasons).toEqual(mockSeasons);
+        done();
+      });
+
+      const req = httpMock.expectOne(`${API_URL}/seasons/playoffs`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockSeasons);
+    });
+
+    it('should include teamId as query param when provided (non-default)', (done) => {
+      const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
+
+      service.getSeasons('regular', '2').subscribe((seasons) => {
+        expect(seasons).toEqual(mockSeasons);
+        const cachedData = cacheService.get<Season[]>('seasons-regular-team-2');
+        expect(cachedData).toEqual(mockSeasons);
+        done();
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return r.url === `${API_URL}/seasons/regular` && r.params.get('teamId') === '2';
+      });
+      expect(req.request.method).toBe('GET');
+      req.flush(mockSeasons);
     });
 
     it('should handle API errors gracefully', (done) => {
@@ -88,11 +118,29 @@ describe('ApiService', () => {
         },
       });
 
-      const req = httpMock.expectOne(`${API_URL}/seasons`);
+      const req = httpMock.expectOne(`${API_URL}/seasons/regular`);
       req.error(new ProgressEvent('Network error'), {
         status: 500,
         statusText: 'Server Error',
       });
+    });
+  });
+
+  describe('getTeams', () => {
+    it('should fetch teams from API', (done) => {
+      const mockTeams: Team[] = [
+        { id: '1', name: 'colorado' },
+        { id: '2', name: 'carolina' },
+      ];
+
+      service.getTeams().subscribe((teams) => {
+        expect(teams).toEqual(mockTeams);
+        done();
+      });
+
+      const req = httpMock.expectOne(`${API_URL}/teams`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockTeams);
     });
   });
 

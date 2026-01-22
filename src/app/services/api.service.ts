@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CacheService } from './cache.service';
@@ -87,6 +88,12 @@ export type ReportType = 'regular' | 'playoffs';
 export type ApiParams = {
   reportType?: ReportType;
   season?: number;
+  teamId?: string;
+};
+
+export type Team = {
+  id: string;
+  name: string;
 };
 
 @Injectable({
@@ -97,42 +104,82 @@ export class ApiService {
   private cacheService = inject(CacheService);
   private readonly API_URL = environment.apiUrl;
 
+  // Fetching available teams
+  getTeams(): Observable<Team[]> {
+    return this.handleRequest<Team[]>('teams', 'teams');
+  }
+
   // Fetching available seasons
-  getSeasons(): Observable<Season[]> {
-    return this.handleRequest<Season[]>('seasons', 'seasons');
+  getSeasons(reportType: ReportType = 'regular', teamId?: string): Observable<Season[]> {
+    const normalizedTeamId = this.normalizeTeamId(teamId);
+    const cacheKey = `seasons-${reportType}${this.teamCacheKeySuffix(normalizedTeamId)}`;
+    return this.handleRequest<Season[]>(
+      `seasons/${reportType}`,
+      cacheKey,
+      this.teamQueryParams(normalizedTeamId)
+    );
   }
 
   // Fetching players data
   getPlayerData(params: ApiParams): Observable<Player[]> {
-    const { reportType = 'regular', season } = params;
-    const cacheKey = `playerStats-${reportType}-${season ?? 'combined'}`;
+    const { reportType = 'regular', season, teamId } = params;
+    const normalizedTeamId = this.normalizeTeamId(teamId);
+    const cacheKey = `playerStats-${reportType}-${season ?? 'combined'}${this.teamCacheKeySuffix(normalizedTeamId)}`;
     const path = season
       ? `players/season/${reportType}/${season}`
       : `players/combined/${reportType}`;
 
-    return this.handleRequest<Player[]>(path, cacheKey);
+    return this.handleRequest<Player[]>(
+      path,
+      cacheKey,
+      this.teamQueryParams(normalizedTeamId)
+    );
   }
 
   // Fetching goalies data
   getGoalieData(params: ApiParams): Observable<Goalie[]> {
-    const { reportType = 'regular', season } = params;
-    const cacheKey = `goalieStats-${reportType}-${season ?? 'combined'}`;
+    const { reportType = 'regular', season, teamId } = params;
+    const normalizedTeamId = this.normalizeTeamId(teamId);
+    const cacheKey = `goalieStats-${reportType}-${season ?? 'combined'}${this.teamCacheKeySuffix(normalizedTeamId)}`;
     const path = season
       ? `goalies/season/${reportType}/${season}`
       : `goalies/combined/${reportType}`;
 
-    return this.handleRequest<Goalie[]>(path, cacheKey);
+    return this.handleRequest<Goalie[]>(
+      path,
+      cacheKey,
+      this.teamQueryParams(normalizedTeamId)
+    );
   }
 
   // Helper to get data from cache or make API call
-  private handleRequest<T>(path: string, cacheKey: string) {
+  private handleRequest<T>(
+    path: string,
+    cacheKey: string,
+    queryParams?: Record<string, string>
+  ) {
     const cachedData = this.cacheService.get<T>(cacheKey);
     if (cachedData) return of(cachedData);
 
-    return this.http.get<T>(`${this.API_URL}/${path}`).pipe(
+    const params = queryParams ? new HttpParams({ fromObject: queryParams }) : undefined;
+
+    return this.http.get<T>(`${this.API_URL}/${path}`, { params }).pipe(
       tap((data) => this.cacheService.set<T>(cacheKey, data)),
       catchError(this.handleError)
     );
+  }
+
+  private normalizeTeamId(teamId?: string): string | undefined {
+    if (!teamId) return undefined;
+    return teamId === '1' ? undefined : teamId;
+  }
+
+  private teamQueryParams(teamId?: string): Record<string, string> | undefined {
+    return teamId ? { teamId } : undefined;
+  }
+
+  private teamCacheKeySuffix(teamId?: string): string {
+    return teamId ? `-team-${teamId}` : '';
   }
 
   // Error handling function

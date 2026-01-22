@@ -21,7 +21,9 @@ describe('SeasonSwitcherComponent', () => {
 
   beforeEach(async () => {
     const apiServiceMock = {
-      getSeasons: jasmine.createSpy('getSeasons').and.returnValue(of(mockSeasons)),
+      getSeasons: jasmine
+        .createSpy('getSeasons')
+        .and.returnValue(of(mockSeasons)),
     };
 
     await TestBed.configureTestingModule({
@@ -60,7 +62,7 @@ describe('SeasonSwitcherComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(apiService.getSeasons).toHaveBeenCalled();
+      expect(apiService.getSeasons).toHaveBeenCalledWith('regular');
       expect(component.seasons.length).toBe(3);
     }));
 
@@ -100,6 +102,19 @@ describe('SeasonSwitcherComponent', () => {
       tick();
 
       expect(component.selectedSeason).toBe(2023);
+    }));
+
+    it('should refetch seasons when reportType changes', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
+      tick();
+
+      (apiService.getSeasons as jasmine.Spy).calls.reset();
+
+      filterService.updatePlayerFilters({ reportType: 'playoffs' });
+      tick();
+
+      expect(apiService.getSeasons).toHaveBeenCalledWith('playoffs');
     }));
   });
 

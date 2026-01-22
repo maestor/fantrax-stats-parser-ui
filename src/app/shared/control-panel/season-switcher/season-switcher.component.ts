@@ -5,9 +5,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, takeUntil } from 'rxjs';
-import { ApiService, Season } from '@services/api.service';
+import { Subject, combineLatest, distinctUntilChanged, map, takeUntil } from 'rxjs';
+import { ApiService, ReportType, Season } from '@services/api.service';
 import { FilterService, FilterState } from '@services/filter.service';
+import { TeamService } from '@services/team.service';
 
 @Component({
   selector: 'app-season-switcher',
@@ -28,23 +29,68 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
 
   apiService = inject(ApiService);
   filterService = inject(FilterService);
+  teamService = inject(TeamService);
   destroy$ = new Subject<void>();
 
   ngOnInit() {
-    this.apiService.getSeasons().subscribe((data) => {
-      this.seasons = [...data].reverse();
-    });
-
     const filters$ =
       this.context === 'goalie'
         ? this.filterService.goalieFilters$
         : this.filterService.playerFilters$;
 
-    filters$
+    const reportType$ = filters$.pipe(
+      map((filters: FilterState) => filters.reportType),
+      distinctUntilChanged()
+    );
+
+    const season$ = filters$.pipe(
+      map((filters: FilterState) => filters.season),
+      distinctUntilChanged()
+    );
+
+    season$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((filters: FilterState) => {
-        this.selectedSeason = filters.season;
+      .subscribe((season: number | undefined) => {
+        this.selectedSeason = season;
       });
+
+    combineLatest([
+      reportType$,
+      this.teamService.selectedTeamId$.pipe(distinctUntilChanged()),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([reportType, teamId]) => {
+        const apiTeamId = this.toApiTeamId(teamId);
+        this.loadSeasons(reportType, apiTeamId);
+      });
+  }
+
+  private loadSeasons(reportType: ReportType, teamId?: string) {
+    const seasons$ = teamId
+      ? this.apiService.getSeasons(reportType, teamId)
+      : this.apiService.getSeasons(reportType);
+
+    seasons$.subscribe({
+      next: (data) => {
+        this.seasons = [...data].reverse();
+
+        if (
+          this.selectedSeason !== undefined &&
+          !this.seasons.some((s) => s.season === this.selectedSeason)
+        ) {
+          this.context === 'goalie'
+            ? this.filterService.updateGoalieFilters({ season: undefined })
+            : this.filterService.updatePlayerFilters({ season: undefined });
+        }
+      },
+      error: () => {
+        this.seasons = [];
+      },
+    });
+  }
+
+  private toApiTeamId(teamId: string): string | undefined {
+    return teamId === '1' ? undefined : teamId;
   }
 
   changeSeason(event: MatSelectChange): void {

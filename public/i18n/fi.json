@@ -67,6 +67,19 @@
     "selector": "Kausivalitsin",
     "allSeasons": "Kaikki kaudet"
   },
+  "team": {
+    "selector": "Joukkue"
+  },
+  "teams": {
+    "colorado": "Colorado Avalanche",
+    "carolina": "Carolina Hurricanes",
+    "calgary": "Calgary Flames",
+    "vancouver": "Vancouver Canucks",
+    "montreal": "Montreal Canadiens",
+    "detroit": "Detroit Red Wings",
+    "edmonton": "Edmonton Oilers",
+    "sanjose": "San Jose Sharks"
+  },
   "statsModeToggle": "Tilastot per ottelu",
   "minGamesSlider": {
     "label": "Otteluja pelattu vähintään",

@@ -1,0 +1,28 @@
+<div class="team-selector">
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>{{ 'team.selector' | translate }}</mat-label>
+    <mat-select
+      [value]="selectedTeamId"
+      (selectionChange)="changeTeam($event)"
+      [disabled]="loading || loadError"
+    >
+      <mat-select-trigger>
+        @if (selectedTeam) {
+          {{ ('teams.' + selectedTeam.name) | translate }}
+        } @else {
+          {{ selectedTeamId }}
+        }
+      </mat-select-trigger>
+
+      @for (team of teams; track team.id) {
+        <mat-option [value]="team.id">
+          {{ ('teams.' + team.name) | translate }}
+        </mat-option>
+      }
+    </mat-select>
+
+    @if (loadError) {
+      <mat-hint class="team-selector-error">{{ 'table.apiUnavailable' | translate }}</mat-hint>
+    }
+  </mat-form-field>
+</div>

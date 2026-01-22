@@ -58,4 +58,9 @@ export class FilterService {
       minGames: 0,
     });
   }
+
+  resetAll() {
+    this.resetPlayerFilters();
+    this.resetGoalieFilters();
+  }
 }

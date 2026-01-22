@@ -8,6 +8,7 @@ import {
 } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
+import { TeamService } from '@services/team.service';
 import { ControlPanelComponent } from '@shared/control-panel/control-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
@@ -22,6 +23,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private filterService = inject(FilterService);
   private statsService = inject(StatsService);
+  private teamService = inject(TeamService);
   private destroy$ = new Subject<void>();
 
   reportType: ReportType = 'regular';
@@ -35,9 +37,12 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   apiError = false;
 
   ngOnInit() {
-    combineLatest([this.filterService.goalieFilters$])
+    combineLatest([
+      this.filterService.goalieFilters$,
+      this.teamService.selectedTeamId$,
+    ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([filters]) => {
+      .subscribe(([filters, teamId]) => {
         const { reportType, season, statsPerGame, minGames } = filters;
         this.reportType = reportType;
         this.season = season;
@@ -46,7 +51,8 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
         this.tableColumns = this.season
           ? GOALIE_SEASON_COLUMNS
           : GOALIE_COLUMNS;
-        this.fetchData({ reportType, season });
+        const apiTeamId = this.toApiTeamId(teamId);
+        this.fetchData(apiTeamId ? { reportType, season, teamId: apiTeamId } : { reportType, season });
       });
   }
 
@@ -78,5 +84,9 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
           this.apiError = true;
         },
       });
+  }
+
+  private toApiTeamId(teamId: string): string | undefined {
+    return teamId === '1' ? undefined : teamId;
   }
 }
