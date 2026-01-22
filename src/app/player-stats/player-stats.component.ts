@@ -8,6 +8,7 @@ import {
 } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
+import { TeamService } from '@services/team.service';
 import { ControlPanelComponent } from '@shared/control-panel/control-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
@@ -22,6 +23,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   private apiService = inject(ApiService);
   private filterService = inject(FilterService);
   private statsService = inject(StatsService);
+  private teamService = inject(TeamService);
   private destroy$ = new Subject<void>();
 
   reportType: ReportType = 'regular';
@@ -35,15 +37,19 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   apiError = false;
 
   ngOnInit() {
-    combineLatest([this.filterService.playerFilters$])
+    combineLatest([
+      this.filterService.playerFilters$,
+      this.teamService.selectedTeamId$,
+    ])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(([filters]) => {
+      .subscribe(([filters, teamId]) => {
         const { reportType, season, statsPerGame, minGames } = filters;
         this.reportType = reportType;
         this.season = season;
         this.statsPerGame = statsPerGame;
         this.minGames = minGames;
-        this.fetchData({ reportType, season });
+        const apiTeamId = this.toApiTeamId(teamId);
+        this.fetchData(apiTeamId ? { reportType, season, teamId: apiTeamId } : { reportType, season });
       });
   }
 
@@ -75,5 +81,9 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
           this.apiError = true;
         },
       });
+  }
+
+  private toApiTeamId(teamId: string): string | undefined {
+    return teamId === '1' ? undefined : teamId;
   }
 }

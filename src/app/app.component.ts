@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 import { FooterComponent } from '@base/footer/footer.component';
 import { NavigationComponent } from './base/navigation/navigation.component';
+import { TeamSelectorComponent } from '@shared/team-selector/team-selector.component';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { NavigationComponent } from './base/navigation/navigation.component';
     MatTabsModule,
     FooterComponent,
     NavigationComponent,
+    TeamSelectorComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

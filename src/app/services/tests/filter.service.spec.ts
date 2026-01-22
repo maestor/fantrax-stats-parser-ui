@@ -305,6 +305,41 @@ describe('FilterService', () => {
     });
   });
 
+  describe('resetAll', () => {
+    it('should reset both player and goalie filters to defaults', (done) => {
+      service.updatePlayerFilters({
+        reportType: 'playoffs',
+        season: 2024,
+        statsPerGame: true,
+        minGames: 10,
+      });
+
+      service.updateGoalieFilters({
+        reportType: 'playoffs',
+        season: 2023,
+        statsPerGame: true,
+        minGames: 5,
+      });
+
+      service.resetAll();
+
+      service.playerFilters$.pipe(take(1)).subscribe((playerFilters) => {
+        expect(playerFilters.reportType).toBe('regular');
+        expect(playerFilters.season).toBeUndefined();
+        expect(playerFilters.statsPerGame).toBe(false);
+        expect(playerFilters.minGames).toBe(0);
+
+        service.goalieFilters$.pipe(take(1)).subscribe((goalieFilters) => {
+          expect(goalieFilters.reportType).toBe('regular');
+          expect(goalieFilters.season).toBeUndefined();
+          expect(goalieFilters.statsPerGame).toBe(false);
+          expect(goalieFilters.minGames).toBe(0);
+          done();
+        });
+      });
+    });
+  });
+
   describe('multiple subscribers', () => {
     it('should emit to multiple player filter subscribers', (done) => {
       const emissions1: FilterState[] = [];
