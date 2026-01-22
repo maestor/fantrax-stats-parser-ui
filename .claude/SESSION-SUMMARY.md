@@ -4,6 +4,8 @@
 **Starting Status**: 206 specs, 22 failures
 **Ending Status**: 201 specs passing, 5 skipped ✅
 
+Note: These counts are specific to that session; run `npm test` for the current suite status.
+
 ---
 
 ## Overview

@@ -7,12 +7,14 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 ## Test Statistics
 
 - **Total Test Files**: 15+
-- **Total Tests**: 256 (all passing)
+- **Total Tests**: Run `npm test` to see the current count and status
 - **Test Framework**: Jasmine + Karma
 - **E2E Framework**: Playwright
 - **Coverage**: 100% statements, branches, functions and lines (unit tests)
 - **Pass Rate**: 100% ✅
 - **Skipped Tests**: 0
+
+**Last verified (snapshot)**: January 22, 2026 — 269 passing, 0 skipped
 
 ## Running Tests
 
@@ -23,7 +25,7 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 npm test
 
 # Run all tests with watch mode (opens Chrome browser)
-npm test:watch
+npm run test:watch
 
 # Run tests in headless mode (has Karma infrastructure issues)
 npm run test:headless
@@ -99,6 +101,8 @@ For a Claude-focused overview of how these E2E tests are structured and how they
 Tests HTTP API interactions and caching:
 
 - ✅ `getSeasons()` - Fetches available seasons
+- ✅ `getTeams()` - Fetches available teams
+- ✅ `getSeasons(reportType?: 'regular' | 'playoffs', teamId?: string)` - Fetches available seasons for the selected report type (and optionally a team)
 - ✅ `getPlayerData()` - Fetches player statistics (combined & seasonal)
 - ✅ `getGoalieData()` - Fetches goalie statistics (combined & seasonal)
 - ✅ Caching behavior validation
@@ -111,14 +115,14 @@ Tests HTTP API interactions and caching:
 // Example: Testing API caching
 it("should return cached data on subsequent requests", (done) => {
   const mockSeasons: Season[] = [{ season: 2024, text: "2024-25" }];
-  cacheService.set("seasons", mockSeasons);
+  cacheService.set("seasons-regular", mockSeasons);
 
-  service.getSeasons().subscribe((seasons) => {
+  service.getSeasons('regular').subscribe((seasons) => {
     expect(seasons).toEqual(mockSeasons);
     done();
   });
 
-  httpMock.expectNone(`${API_URL}/seasons`); // No HTTP call made
+  httpMock.expectNone(`${API_URL}/seasons/regular`); // No HTTP call made
 });
 ```
 
@@ -304,7 +308,7 @@ Mock dependencies properly in tests:
 
 ```typescript
 const apiServiceMock = {
-  getSeasons: jasmine.createSpy("getSeasons").and.returnValue(of(mockSeasons)),
+  getSeasons: jasmine.createSpy("getSeasons").and.callFake(() => of(mockSeasons)),
 };
 
 await TestBed.configureTestingModule({

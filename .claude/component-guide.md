@@ -64,9 +64,10 @@ This application uses Angular's standalone component architecture. Components ar
 
 **Key Dependencies**:
 
-- `StatsService` - Data fetching
-- `FilterService` - Data filtering
-- `CacheService` - Response caching
+- `ApiService` - Data fetching (team-aware via `teamId`)
+- `TeamService` - Selected team state (refetch trigger)
+- `FilterService` - Filter state
+- `StatsService` - Per-game calculations
 
 **Child Components**:
 
@@ -76,9 +77,11 @@ This application uses Angular's standalone component architecture. Components ar
 **Data Flow**:
 
 ```
-API → StatsService → PlayerStatsComponent → StatsTableComponent
-                            ↓
-                      ControlPanelComponent
+API → ApiService → PlayerStatsComponent → StatsTableComponent
+          ↓
+        ControlPanelComponent
+
+TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 ```
 
 ---
@@ -99,13 +102,27 @@ API → StatsService → PlayerStatsComponent → StatsTableComponent
 
 **Key Dependencies**:
 
-- `StatsService` - Data fetching
-- `FilterService` - Data filtering
-- `CacheService` - Response caching
+- `ApiService` - Data fetching (team-aware via `teamId`)
+- `TeamService` - Selected team state (refetch trigger)
+- `FilterService` - Filter state
+- `StatsService` - Per-game calculations
 
 **Similar structure to PlayerStatsComponent but for goalies**
 
 ## Shared Components
+
+### TeamSelectorComponent
+
+**Location**: `src/app/shared/team-selector/`
+
+**Type**: Presentational Component (with lightweight side effects)
+
+**Purpose**: Team selector UI shown under the app header
+
+**Behavior**:
+- Loads available teams from the backend (`ApiService.getTeams()`)
+- Disables the selector while loading (and on error)
+- On team change: updates `TeamService`, resets filters, and navigates back to the players route
 
 ### StatsTableComponent
 

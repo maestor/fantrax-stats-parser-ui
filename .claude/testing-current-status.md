@@ -1,7 +1,7 @@
 # Testing - Current Status
 
-**Last Updated**: January 6, 2026
-**Total Tests**: 200+ (all passing, 0 skipped)
+**Last Updated**: January 22, 2026
+**Total Tests**: Run `npm test` to see the current count and status
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Summary
 
-- **Total Test Specs**: 200+ (unit tests)
+- **Total Test Specs**: Run `npm test` to see the current count (unit tests)
 - **Coverage**: 100% statements, branches, functions and lines for unit-tested code
 - **Removed Tests**: 3 (tests that were testing Angular framework internals)
 - **Known Issues**: RxJS/Karma infrastructure warnings and occasional headless timeouts
@@ -84,6 +84,10 @@ TypeError: You provided 'undefined' where a stream was expected
 
 ```
 ERROR: 'API Error:', HttpErrorResponse ... '${environment.apiUrl}/seasons' (value comes from the active Angular environment)
+
+Example (current endpoint shape):
+
+ERROR: 'API Error:', HttpErrorResponse ... '${environment.apiUrl}/seasons/regular'
 ```
 
 **Cause**: Tests that don't mock the API service properly
@@ -139,7 +143,7 @@ npm test -- --include='**/navigation.component.spec.ts'
 - NavigationComponent change detection tests (removed - testing framework not business logic)
 - StatsTableComponent MatSort tests (rewritten to use real MatSort instance; all sort-related specs now enabled and passing)
 - Missing ngOnDestroy() calls in test cleanup
-- Test file count reduced from 209 to 206 tests
+- Historical note: an earlier session reduced a suite from 209 to 206 tests
 
 ### ⚠️ Remains
 
@@ -153,7 +157,7 @@ npm test -- --include='**/navigation.component.spec.ts'
 
 ---
 
-##Recommendations
+## Recommendations
 
 ### For Development
 
@@ -206,7 +210,9 @@ npm test -- --include='**/navigation.component.spec.ts'
 
 ## Conclusion
 
-The test suite has **206 comprehensive tests** covering all critical business logic. While there are some infrastructure issues (RxJS cleanup warnings, occasional timeouts), these do not affect the core functionality testing. The tests successfully validate:
+The unit test suite covers all critical business logic. While there are some infrastructure issues (RxJS cleanup warnings, occasional timeouts), these do not affect the core functionality testing. The tests successfully validate:
+
+**Last verified (snapshot)**: January 22, 2026 — 269 passing, 0 skipped
 
 - ✅ Service layer (API, caching, stats calculations, filters)
 - ✅ Component initialization and lifecycle

@@ -52,8 +52,9 @@ This Angular application provides a user-friendly interface for viewing NHL fant
 ## User Flow
 
 1. User opens app at http://localhost:4200
-2. App loads default view (player stats, latest season)
+2. App loads default view (player stats, combined season view) for the default team (Colorado, team id `"1"`)
 3. User can:
+   - Change team from the team selector under the header (selection is persisted)
    - Switch between players and goalies tabs
    - Select different seasons
    - Toggle between regular season and playoffs
@@ -82,17 +83,18 @@ This Angular application provides a user-friendly interface for viewing NHL fant
 
 ### Routing
 - Simple routing with two main routes:
-  - `/players` - Player statistics view
-  - `/goalies` - Goalie statistics view
+   - `/player-stats` - Player statistics view
+   - `/goalie-stats` - Goalie statistics view
 
 ## Data Flow
 
 ```
-Backend API → ApiService → StatsService → Component → Template
-                              ↓
-                         CacheService
-                              ↓
-                         FilterService → Table Display
+Backend API → ApiService → Component → Template
+         ↓
+      CacheService
+
+TeamService → Component
+FilterService → Component → Table Display
 ```
 
 ## Build & Deployment

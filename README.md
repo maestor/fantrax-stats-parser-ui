@@ -10,6 +10,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 
 - 📊 **Player Statistics**: View and analyze player performance across seasons
 - 🥅 **Goalie Statistics**: Dedicated view for goalie-specific metrics
+- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`). Selection is remembered across reloads, and changing team resets filters
 - 🔄 **Report Switching**: Toggle between regular season and playoffs
 - 📅 **Season Selection**: Filter data by specific seasons or view combined stats
 - 📈 **Stats Per Game**: Calculate and display per-game averages
@@ -90,7 +91,7 @@ npm run build           # Build for production
 
 ## Testing
 
-This project has comprehensive test coverage with **256 tests** (all passing) covering all UI behaviors and services.
+This project has comprehensive unit test coverage (Jasmine + Karma). Run `npm test` to see the current test count and status.
 
 📖 **[Read the complete Testing Documentation](TESTING.md)**
 
@@ -119,7 +120,7 @@ For AI assistants working on this repo, additional E2E-focused context is availa
 
 ### Test Coverage Summary
 
-- ✅ **Services**: 100% coverage (ApiService, CacheService, StatsService, FilterService)
+- ✅ **Services**: 100% coverage (ApiService, CacheService, StatsService, FilterService, TeamService)
 - ✅ **Base Components**: 100% coverage (Navigation, Footer)
 - ✅ **Shared Components**: 95% coverage (StatsTable, ControlPanel sub-components)
 - ✅ **Page Components**: Integration-style coverage (PlayerStats, GoalieStats, PlayerCard)
@@ -142,10 +143,11 @@ See [TESTING.md](TESTING.md) for detailed information about test patterns, best 
 src/
 ├── app/
 │   ├── base/              # Base components (navigation, footer)
-│   ├── services/          # Core services (API, cache, stats, filters)
+│   ├── services/          # Core services (API, cache, stats, filters, team)
 │   │   └── tests/         # Service unit tests
 │   ├── shared/            # Shared components
 │   │   ├── control-panel/ # Filter controls
+│   │   ├── team-selector/  # Team selector under header
 │   │   ├── player-card/   # Player detail dialog
 │   │   └── stats-table/   # Reusable stats table
 │   ├── player-stats/      # Player stats page

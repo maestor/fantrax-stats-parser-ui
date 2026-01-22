@@ -164,7 +164,7 @@ These E2E tests run independently of Karma and provide an additional safety net 
 
 ## Conclusion
 
-✅ **206 tests pass, 0 skipped**
+✅ **Snapshot: 206 tests pass, 0 skipped**
 ✅ **Build works without errors**
 ✅ **Application serves without errors**
 ⚠️ **Chrome Headless mode has Karma infrastructure issues (not test issues)**
@@ -179,7 +179,7 @@ The test suite provides comprehensive coverage of:
 
 The 5 skipped tests were testing Angular Material's internal MatTableDataSource + MatSort integration, which is already tested by the framework. All user-facing component functionality is fully tested.
 
-**Use `npm test` (regular Chrome) for reliable test execution.**
+**Run `npm test` to see the current test count and status (regular Chrome is most reliable).**
 
 ## Disabled Tests
 

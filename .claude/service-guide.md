@@ -6,6 +6,25 @@ Services in this application handle data fetching, business logic, state managem
 
 ## Core Services
 
+### TeamService
+**Location**: `src/app/services/team.service.ts`
+
+**Purpose**: Global selected-team state with persistence
+
+**Responsibilities**:
+- Provide current team id as an observable (`selectedTeamId$`)
+- Persist selection to `localStorage` (`fantrax.selectedTeamId`)
+- Default to Colorado (team id `"1"`) — there is no "no team" state
+
+**Key API**:
+```typescript
+class TeamService {
+  readonly selectedTeamId$: Observable<string>;
+  get selectedTeamId(): string;
+  setTeamId(teamId: string): void;
+}
+```
+
 ### ApiService
 **Location**: `src/app/services/api.service.ts`
 
@@ -20,6 +39,13 @@ Services in this application handle data fetching, business logic, state managem
 
 **Type Definitions**:
 ```typescript
+export type ReportType = 'regular' | 'playoffs';
+
+export type Team = {
+  id: string;
+  name: string;
+};
+
 // Season selector type
 export type Season = {
   season: number;
@@ -96,22 +122,26 @@ export type Goalie = {
 
 // API request parameters
 export type ApiParams = {
-  reportType?: 'regular' | 'playoffs';
+  reportType?: ReportType;
   season?: number;
+  teamId?: string;
 };
 ```
 
 **Key Methods**:
 ```typescript
 class ApiService {
+  // Fetch available teams
+  getTeams(): Observable<Team[]>;
+
   // Fetch player statistics
   getPlayerData(params: ApiParams): Observable<Player[]>
 
   // Fetch goalie statistics
   getGoalieData(params: ApiParams): Observable<Goalie[]>
 
-  // Fetch available seasons
-  getSeasons(): Observable<Season[]>
+  // Fetch available seasons for a given report type (regular/playoffs)
+  getSeasons(reportType?: ReportType, teamId?: string): Observable<Season[]>
 }
 ```
 
@@ -133,7 +163,7 @@ export class MyComponent {
   private apiService = inject(ApiService);
 
   loadData(): void {
-    this.apiService.getPlayerStats('2023-2024')
+    this.apiService.getPlayerData({ reportType: 'regular', season: undefined })
       .subscribe({
         next: (data) => console.log(data),
         error: (err) => console.error('API Error:', err)
@@ -147,52 +177,17 @@ export class MyComponent {
 ### StatsService
 **Location**: `src/app/services/stats.service.ts`
 
-**Purpose**: Business logic layer for statistics data
+**Purpose**: Compute per-game statistics from already-fetched data
 
 **Responsibilities**:
-- Transform raw API data
-- Calculate derived statistics
-- Combine and format data
-- Manage stats-related state
+- Convert totals to per-game averages (while preserving fixed fields)
+- Keep formatting consistent (2 decimals)
 
 **Key Methods**:
 ```typescript
 class StatsService {
-  // Get processed player statistics
-  getProcessedPlayerStats(season: string): Observable<ProcessedPlayerStats[]>
-
-  // Get processed goalie statistics
-  getProcessedGoalieStats(season: string): Observable<ProcessedGoalieStats[]>
-
-  // Calculate additional metrics
-  calculateAdvancedStats(stats: PlayerStats): EnhancedStats
-
-  // Combine regular season and playoff stats
-  combineSeasonStats(regular: Stats[], playoffs: Stats[]): CombinedStats[]
-}
-```
-
-**Data Transformations**:
-- Points calculation (goals + assists)
-- Plus/minus adjustments
-- Percentage calculations (shooting %, save %)
-- Per-game averages
-- Totals across multiple seasons
-
-**Caching Strategy**:
-- Works with CacheService for data caching
-- Implements shareReplay for observable sharing
-
-**Usage Example**:
-```typescript
-export class PlayerStatsComponent {
-  private statsService = inject(StatsService);
-
-  stats$ = this.statsService.getProcessedPlayerStats('2023-2024')
-    .pipe(
-      map(stats => this.filterStats(stats)),
-      catchError(err => this.handleError(err))
-    );
+  getPlayerStatsPerGame(data: Player[]): Player[];
+  getGoalieStatsPerGame(data: Goalie[]): Goalie[];
 }
 ```
 
@@ -201,62 +196,25 @@ export class PlayerStatsComponent {
 ### FilterService
 **Location**: `src/app/services/filter.service.ts`
 
-**Purpose**: Data filtering and table operations
+**Purpose**: Reactive UI filter state for player/goalie pages
 
 **Responsibilities**:
-- Filter stats by various criteria
-- Sort table data
-- Search/filter by player name
-- Apply minimum games filter
-- Manage filter state
+- Maintain independent filter state for players and goalies
+- Expose filter state as observables for components
+- Provide reset helpers (including a global reset)
 
 **Key Methods**:
 ```typescript
 class FilterService {
-  // Filter by minimum games played
-  filterByMinGames(stats: Stats[], minGames: number): Stats[]
+  playerFilters$: Observable<FilterState>;
+  goalieFilters$: Observable<FilterState>;
 
-  // Filter by player name (search)
-  filterByName(stats: Stats[], searchTerm: string): Stats[]
+  updatePlayerFilters(change: Partial<FilterState>): void;
+  updateGoalieFilters(change: Partial<FilterState>): void;
 
-  // Filter by position
-  filterByPosition(stats: Stats[], position: string): Stats[]
-
-  // Sort statistics
-  sortStats(stats: Stats[], sortBy: string, direction: 'asc' | 'desc'): Stats[]
-
-  // Apply multiple filters
-  applyFilters(stats: Stats[], filters: FilterConfig): Stats[]
-}
-```
-
-**Filter Configuration**:
-```typescript
-interface FilterConfig {
-  minGames?: number;
-  searchTerm?: string;
-  position?: string;
-  season?: string;
-  reportType?: 'regular' | 'playoffs';
-}
-```
-
-**State Management**:
-- Maintains current filter settings
-- Exposes filter state as observables
-- Updates filters reactively
-
-**Usage Example**:
-```typescript
-export class StatsTableComponent {
-  private filterService = inject(FilterService);
-
-  filteredStats$ = combineLatest([
-    this.stats$,
-    this.filterService.filterConfig$
-  ]).pipe(
-    map(([stats, config]) => this.filterService.applyFilters(stats, config))
-  );
+  resetPlayerFilters(): void;
+  resetGoalieFilters(): void;
+  resetAll(): void;
 }
 ```
 
