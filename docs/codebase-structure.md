@@ -22,15 +22,19 @@ fantrax-stats-parser-ui/
 │   │   │   ├── api.service.ts
 │   │   │   ├── cache.service.ts
 │   │   │   ├── filter.service.ts
-│   │   │   └── stats.service.ts
+│   │   │   ├── stats.service.ts
+│   │   │   └── team.service.ts
 │   │   ├── shared/           # Shared components
-│   │   │   ├── control-panel/
+│   │   │   ├── help-dialog/
+│   │   │   ├── player-card/
+│   │   │   ├── settings-panel/
 │   │   │   │   ├── min-games-slider/
+│   │   │   │   └── stats-mode-toggle/
+│   │   │   ├── stats-table/
+│   │   │   ├── top-controls/
 │   │   │   │   ├── report-switcher/
 │   │   │   │   ├── season-switcher/
-│   │   │   │   └── stats-mode-toggle/
-│   │   │   ├── player-card/
-│   │   │   ├── stats-table/
+│   │   │   │   └── team-switcher/
 │   │   │   └── table-columns.ts
 │   │   ├── app.component.ts
 │   │   ├── app.config.ts
@@ -70,16 +74,24 @@ Application-wide services:
 - **stats.service.ts** - Business logic for stats data transformation
 - **filter.service.ts** - Table filtering and sorting logic
 - **cache.service.ts** - In-memory caching for API responses
+- **team.service.ts** - Selected team state (used by top controls + pages)
 
 ### `/src/app/shared/`
 Reusable presentational components:
 
-#### `control-panel/`
-Container for all filter controls:
-- **min-games-slider/** - Material slider for minimum games filter
-- **report-switcher/** - Toggle between regular season/playoffs
-- **season-switcher/** - Dropdown for season selection
-- **stats-mode-toggle/** - Toggle for combined/separate stats view
+#### `top-controls/`
+Header control strip shown under the app title:
+- **team-switcher/** - Select team
+- **season-switcher/** - Select season
+- **report-switcher/** - Regular vs playoffs
+
+#### `settings-panel/`
+Expandable per-page settings area:
+- **min-games-slider/** - Minimum games filter
+- **stats-mode-toggle/** - Toggle per-game stats mode
+
+#### `help-dialog/`
+Help/instructions dialog opened from the info icon (and `?` shortcut)
 
 #### `stats-table/`
 Main data table component:

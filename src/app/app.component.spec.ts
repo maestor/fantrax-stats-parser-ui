@@ -4,16 +4,22 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { of, Subject } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('AppComponent', () => {
   let translateService: TranslateService;
   let titleService: Title;
+  let dialog: { open: jasmine.Spy };
 
   beforeEach(async () => {
+    dialog = { open: jasmine.createSpy('open') };
+
     await TestBed.configureTestingModule({
       imports: [AppComponent, TranslateModule.forRoot()],
       providers: [provideRouter([]), Title],
-    }).compileComponents();
+    })
+      .overrideProvider(MatDialog, { useValue: dialog })
+      .compileComponents();
 
     translateService = TestBed.inject(TranslateService);
     titleService = TestBed.inject(Title);
@@ -60,6 +66,53 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     expect(fixture.componentInstance.tabPanel).toBeDefined();
+  });
+
+  it('should open help dialog when openHelpDialog is called', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+
+    app.openHelpDialog();
+    expect(dialog.open).toHaveBeenCalled();
+  });
+
+  it('should open help dialog on ? keydown', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+
+    const event = new KeyboardEvent('keydown', { key: '?', bubbles: true });
+    document.dispatchEvent(event);
+
+    expect(dialog.open).toHaveBeenCalled();
+  });
+
+  it('should open help dialog on Shift+/ keydown', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+
+    const event = new KeyboardEvent('keydown', {
+      key: '/',
+      shiftKey: true,
+      bubbles: true,
+    });
+    document.dispatchEvent(event);
+
+    expect(dialog.open).toHaveBeenCalled();
+  });
+
+  it('should not open help dialog on ? keydown when typing in input', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    input.focus();
+
+    const event = new KeyboardEvent('keydown', { key: '?', bubbles: true });
+    input.dispatchEvent(event);
+
+    expect(dialog.open).not.toHaveBeenCalled();
+    document.body.removeChild(input);
   });
 
   describe('controls context', () => {

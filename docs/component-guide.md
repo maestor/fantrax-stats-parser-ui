@@ -411,6 +411,38 @@ this.dialog.open(PlayerCardComponent, {
 - If `data.seasons` exists: Shows tab navigation with "All", "By Season" and "Graphs" tabs
 - If no seasons data: Shows simple vertical stats list (individual season view)
 
+---
+
+### HelpDialogComponent
+
+**Location**: `src/app/shared/help-dialog/`
+
+**Type**: Dialog Component
+
+**Purpose**: Show short instructions for what the application does and how to use it (localized, Finnish-first).
+
+**How it's opened**:
+
+- From the app shell title row in `AppComponent` (info icon next to the title)
+- Keyboard shortcut: `?` (also supports `Shift + /` on layouts where that is how `?` is produced)
+
+**Content model (flexible order)**:
+
+- Content is defined in i18n JSON as an ordered list of blocks under `helpDialog`.
+- Blocks are rendered in sequence, so you can freely reorder subtitles, paragraphs and lists by editing `public/i18n/fi.json`.
+
+Supported block types:
+
+- `h2` (subtitle)
+- `h3` (sub-subtitle)
+- `p` (paragraph)
+- `ul` (bullet list)
+
+**Accessibility**:
+
+- The info icon button is icon-only and must have `aria-label`.
+- The dialog provides a close button and keeps interactions keyboard-first.
+
 ## Component Communication Patterns
 
 ### Parent to Child (Input)

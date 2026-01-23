@@ -120,7 +120,7 @@ describe('ReportSwitcherComponent', () => {
       });
     }));
 
-    it('should not be affected by player filter changes', fakeAsync(() => {
+    it('should be updated when player filter reportType changes (global sync)', fakeAsync(() => {
       component.context = 'goalie';
       component.ngOnInit();
       tick();
@@ -129,7 +129,7 @@ describe('ReportSwitcherComponent', () => {
       tick();
 
       component.reportType$.subscribe((value) => {
-        expect(value).toBe('regular');
+        expect(value).toBe('playoffs');
       });
     }));
   });
@@ -159,7 +159,7 @@ describe('ReportSwitcherComponent', () => {
       expect(component.reportType).toBe('playoffs');
     });
 
-    it('should not affect goalie filters', fakeAsync(() => {
+    it('should sync reportType to goalie filters', fakeAsync(() => {
       component.context = 'player';
       const event = { value: 'playoffs' } as MatButtonToggleChange;
 
@@ -167,7 +167,7 @@ describe('ReportSwitcherComponent', () => {
       tick();
 
       filterService.goalieFilters$.subscribe((filters) => {
-        expect(filters.reportType).toBe('regular');
+        expect(filters.reportType).toBe('playoffs');
       });
     }));
 
@@ -204,7 +204,7 @@ describe('ReportSwitcherComponent', () => {
       expect(result).toBe('playoffs');
     }));
 
-    it('should not affect player filters', fakeAsync(() => {
+    it('should sync reportType to player filters', fakeAsync(() => {
       component.context = 'goalie';
       const event = { value: 'playoffs' } as MatButtonToggleChange;
 
@@ -212,7 +212,7 @@ describe('ReportSwitcherComponent', () => {
       tick();
 
       filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.reportType).toBe('regular');
+        expect(filters.reportType).toBe('playoffs');
       });
     }));
   });
@@ -295,7 +295,7 @@ describe('ReportSwitcherComponent', () => {
       tick();
 
       component.reportType$.subscribe((value) => {
-        expect(value).toBe('regular');
+        expect(value).toBe('playoffs');
       });
     }));
   });

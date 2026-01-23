@@ -52,7 +52,7 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
     season$
       .pipe(takeUntil(this.destroy$))
       .subscribe((season: number | undefined) => {
-        this.selectedSeason = season ?? 'all';
+        this.selectedSeason = this.normalizeSelectedSeason(season);
         this.updateSelectedSeasonText();
       });
 
@@ -74,7 +74,12 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
 
     seasons$.subscribe({
       next: (data) => {
-        this.seasons = [...data].reverse();
+        this.seasons = [...data]
+          .reverse()
+          .map((s) => {
+            const normalizedSeason = this.toSeasonNumber((s as any).season);
+            return normalizedSeason === undefined ? s : { ...s, season: normalizedSeason };
+          });
 
         this.updateSelectedSeasonText();
 
@@ -105,12 +110,30 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
     )?.text;
   }
 
+  private toSeasonNumber(raw: unknown): number | undefined {
+    if (typeof raw === 'number' && Number.isFinite(raw)) return raw;
+    if (typeof raw === 'string') {
+      const parsed = Number(raw);
+      return Number.isFinite(parsed) ? parsed : undefined;
+    }
+    return undefined;
+  }
+
+  private normalizeSelectedSeason(raw: unknown): number | 'all' {
+    return this.toSeasonNumber(raw) ?? 'all';
+  }
+
   private toApiTeamId(teamId: string): string | undefined {
     return teamId === '1' ? undefined : teamId;
   }
 
   changeSeason(event: MatSelectChange): void {
-    const value = event.value as number | 'all';
+    const value =
+      event.value === 'all' ? 'all' : this.normalizeSelectedSeason(event.value);
+
+    this.selectedSeason = value;
+    this.updateSelectedSeasonText();
+
     const season = value === 'all' ? undefined : value;
     this.context === 'goalie'
       ? this.filterService.updateGoalieFilters({ season })

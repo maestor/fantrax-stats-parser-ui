@@ -18,7 +18,100 @@
   "a11y": {
     "skipToTable": "Siirry taulukkoon",
     "openPlayerCard": "Avaa pelaajakortti: {{name}}",
-    "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin."
+    "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin.",
+    "openHelpDialog": "Avaa ohje",
+    "closeHelpDialog": "Sulje ohje"
+  },
+  "helpDialog": {
+    "title": "Tietoja sovelluksesta ja ohjeita käyttöön",
+    "close": "Sulje",
+    "blocks": [
+      {
+        "type": "p",
+        "text": "Tämä sovellus näyttää Fantraxissa pelattavan Suomalaisen FFHL-fantsyliigan tilastoja. Liigaa on pelattu kaudesta 2012-13 lähtien ja se on mahdollisesti suurin Suomalainen alati jatkuva NHL-fantasyliiga."
+      },
+      {
+        "type": "h2",
+        "text": "Miksi tämä palvelu?"
+      },
+      {
+        "type": "p",
+        "text": "Tekijä on innokas NHL-jääkiekon seuraaja ja ohjelmistokehittäjä, tämä harrasteprojekti tuo sekä lisäiloa fantasytaistoihin että tarjoaa mahdollisuuden harjoitella uusia asioita web-kehityksen saralla."
+      },
+      {
+        "type": "h2",
+        "text": "Mitä tarjolla?"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Kenttäpelaajien ja maalivahtien tilastot",
+          "Runkosarja ja playoffs erikseen",
+          "Yksittäinen kausi tai uratilastot (Kaikki kaudet)",
+          "Fantasy-ranking (FR) ja Fantasy-ranking / ottelu (FR/O) helpottamaan vertailua"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Valinnat ja suodattimet"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Joukkue: valitse tarkasteltava joukkue",
+          "Kausi: valitse kausi tai Kaikki kaudet",
+          "Raportti: runkosarja tai playoffs",
+          "Tilastot per ottelu: normalisoi tilastot pelattujen ottelujen mukaan",
+          "Otteluja pelattu vähintään: suodata pienillä otantamäärillä näkyvät pois",
+          "Haku ja lajittelu: etsi pelaajaa nimellä ja klikkaa sarakeotsikoita lajitteluun"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Taulukon käyttö"
+      },
+      {
+        "type": "p",
+        "text": "Taulukkoa voi käyttää hiirellä tai näppäimistöllä. Haku rajaa tuloksia, ja sarakeotsikoista voi lajitella. Taulukon otsikot pysyvät näkyvissä, ja leveissä taulukoissa voit rullata vaakasuunnassa."
+      },
+      {
+        "type": "h2",
+        "text": "Pelaajakortti"
+      },
+      {
+        "type": "p",
+        "text": "Klikkaa riviä (aukeaa myös Enterillä tai välilyönnillä) avataksesi pelaajakortin. Kortista löydät pelaajan tai maalivahdin yhteenvedon, kausittaisen erittelyn sekä graafeja valituille tilastoille."
+      },
+      {
+        "type": "h2",
+        "text": "Vinkkejä tulkintaan"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Sisältää vain tilastot jotka ovat kirjautuneet FFHL:n otteluissa",
+          "FR (Fantasy-ranking) yrittää kuvata voimasuhteita eri pelaajien välillä",
+          "FR/O auttaa vertaamaan eri määrän pelanneita pelaajia",
+          "FR-arvot vertaavat joukkueen sisällä olevia pelaajia keskenään, maalivahdeilla oma vertailunsa",
+          "Löydät FR-algoritmista lisätietoja GitHubista (sivun alaosa, API-linkki)",
+          "Minimiottelusuodatin vähentää satunnaisvaihtelua",
+          "Jos tulokset näyttävät tyhjiltä, tarkista kausi, raportti ja hakusuodatin"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Muuta"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Tilastot on kerätty Fantraxin joukkuesivuilta eivätkä ne sisällä mitään henkilökohtaisia tietoja, vain oikeiden NHL-pelaajien suorituksia tässä fantasyliigan kontekstissa",
+          "Sovellus on avoimen lähdekoodin, löydät lähteet GitHubista (sivun alaosa, UI- ja API-linkit)",
+          "Jos satut olemaan FFHL-manageri ja haluat napista tilastojen puutteista tai virheistä, ota yhteyttä. Reilu pelaajakauppaehdotus nopeuttaa toimenpiteitä!",
+          "Jos haluat kiittää, antaa palautetta (tai vaikka mukaan manageroimaan), löydät LinkedIn-profiilini sivun alaosasta"
+        ]
+      }
+    ]
   },
   "tableColumn": {
     "position": "#",

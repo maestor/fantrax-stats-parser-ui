@@ -1,0 +1,42 @@
+@if (model; as model) {
+  <div class="help-titlebar" mat-dialog-title>
+    <span class="help-title">{{ model.title }}</span>
+    <button
+      mat-icon-button
+      type="button"
+      (click)="close()"
+      [attr.aria-label]="'a11y.closeHelpDialog' | translate"
+    >
+      <mat-icon fontIcon="close" />
+    </button>
+  </div>
+
+  <div class="help-content" mat-dialog-content>
+    @for (block of model.blocks; track $index) {
+      @switch (block.type) {
+        @case ('h2') {
+          <h2 class="help-h2">{{ block.text }}</h2>
+        }
+        @case ('h3') {
+          <h3 class="help-h3">{{ block.text }}</h3>
+        }
+        @case ('p') {
+          <p class="help-p">{{ block.text }}</p>
+        }
+        @case ('ul') {
+          <ul class="help-ul">
+            @for (item of block.items ?? []; track $index) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        }
+      }
+    }
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()">
+      {{ 'helpDialog.close' | translate }}
+    </button>
+  </div>
+}
