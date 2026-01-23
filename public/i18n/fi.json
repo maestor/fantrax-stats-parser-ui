@@ -18,7 +18,76 @@
   "a11y": {
     "skipToTable": "Siirry taulukkoon",
     "openPlayerCard": "Avaa pelaajakortti: {{name}}",
-    "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin."
+    "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin.",
+    "openHelpDialog": "Avaa ohje",
+    "closeHelpDialog": "Sulje ohje"
+  },
+  "helpDialog": {
+    "title": "Ohje",
+    "close": "Sulje",
+    "blocks": [
+      {
+        "type": "p",
+        "text": "Tämä sovellus näyttää Fantrax-liigan tilastoja selattavassa muodossa. Voit vaihtaa joukkuetta, kautta ja raporttia (runkosarja / playoffs), sekä suodattaa ja lajitella tuloksia. Valinnat vaikuttavat taulukoihin ja pelaajakortin tietoihin."
+      },
+      {
+        "type": "h2",
+        "text": "Mitä täällä näytetään?"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Kenttäpelaajien ja maalivahtien tilastot omissa näkymissään",
+          "Runkosarja ja playoffs erikseen",
+          "Yksittäinen kausi tai useamman kauden yhdistelmä (Kaikki kaudet)",
+          "Fantasy-ranking (FR) ja Fantasy-ranking / ottelu (FR/O) helpottamaan vertailua"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Valinnat ja suodattimet"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Joukkue: valitse tarkasteltava joukkue",
+          "Kausi: valitse kausi tai Kaikki kaudet",
+          "Raportti: runkosarja tai playoffs",
+          "Tilastot per ottelu: normalisoi tilastot pelattujen ottelujen mukaan",
+          "Otteluja pelattu vähintään: suodata pienillä otantamäärillä näkyvät pois",
+          "Haku ja lajittelu: etsi pelaajaa nimellä ja klikkaa sarakeotsikoita lajitteluun"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Taulukon käyttö"
+      },
+      {
+        "type": "p",
+        "text": "Taulukkoa voi käyttää hiirellä tai näppäimistöllä. Haku rajaa tuloksia, ja sarakeotsikoista voi lajitella. Taulukon otsikot pysyvät näkyvissä, ja leveissä taulukoissa voit rullata vaakasuunnassa."
+      },
+      {
+        "type": "h2",
+        "text": "Pelaajakortti"
+      },
+      {
+        "type": "p",
+        "text": "Klikkaa riviä (tai paina Enter/Välilyönti) avataksesi pelaajakortin. Kortista löydät pelaajan tai maalivahdin yhteenvedon, kausittaisen erittelyn sekä graafeja valituille tilastoille."
+      },
+      {
+        "type": "h2",
+        "text": "Vinkkejä tulkintaan"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "FR (Fantasy-ranking) on koontiluku vertailuun — katso myös yksittäiset tilastot",
+          "FR/O auttaa vertaamaan eri määrän pelejä pelanneita",
+          "Minimiottelusuodatin vähentää satunnaisvaihtelua",
+          "Jos tulokset näyttävät tyhjiltä, tarkista kausi, raportti ja hakusuodatin"
+        ]
+      }
+    ]
   },
   "tableColumn": {
     "position": "#",

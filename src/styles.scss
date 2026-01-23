@@ -97,6 +97,35 @@ body {
   }
 }
 
+/* Help dialog styles */
+.help-dialog {
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+    width: auto !important;
+    max-height: calc(var(--app-height) - 16px) !important;
+
+    .mdc-dialog__surface {
+      width: min(720px, 95vw) !important;
+      max-width: 95vw !important;
+      max-height: calc(var(--app-height) - 16px) !important;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mat-mdc-dialog-container {
+      max-width: 95vw !important;
+      max-height: calc(var(--app-height) - 8px) !important;
+
+      .mdc-dialog__surface {
+        width: 95vw !important;
+        max-height: calc(var(--app-height) - 8px) !important;
+      }
+    }
+  }
+}
+
 .mat-elevation-z1 {
   box-shadow: var(--mat-sys-level1);
 }
