@@ -94,5 +94,23 @@
   "controlPanel": {
     "filters": "Suodattimet",
     "graphControls": "Näytettävät tilastot"
+  },
+  "footer": {
+    "copyright": "Copyright © Kalle Haavisto 2025->",
+    "links": {
+      "ariaLabel": "Sosiaaliset linkit",
+      "linkedin": {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/khaavisto/"
+      },
+      "ui": {
+        "label": "UI",
+        "href": "https://github.com/maestor/fantrax-stats-parser-ui"
+      },
+      "api": {
+        "label": "API",
+        "href": "https://github.com/maestor/node-fantrax-stats-parser"
+      }
+    }
   }
 }
