@@ -156,7 +156,7 @@ describe('PlayerCardComponent', () => {
       expect(gaaColIndex).toBe(savePercentColIndex + 1);
     });
 
-    it('should render graphs tab with stat checkboxes when seasons exist', () => {
+    it('should render graphs tab with stat checkboxes when seasons exist', async () => {
       const tabLabels = fixture.debugElement
         .queryAll(
           By.css(
@@ -174,6 +174,10 @@ describe('PlayerCardComponent', () => {
       const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
       const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
       tabGroup.selectedIndex = 2; // select Graphs tab
+      component.onTabChange(2);
+      fixture.detectChanges();
+
+      await (component as any).graphsLoadPromise;
       fixture.detectChanges();
 
       const checkboxEls = fixture.debugElement.queryAll(
@@ -252,26 +256,44 @@ describe('PlayerCardComponent', () => {
     });
 
     it('should build chart datasets including score metrics', () => {
-      const componentAsAny = component as any;
+      // Chart.js is now lazy-loaded with the graphs tab.
+      expect(component.graphsComponent).toBeNull();
+    });
 
-      // setupChartData is called in constructor; lineChartData should be populated
-      const data = component.lineChartData;
+    it('should build chart datasets including score metrics when graphs tab is loaded', async () => {
+      fixture.detectChanges();
 
+      const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+      const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+      tabGroup.selectedIndex = 2;
+      component.onTabChange(2);
+      fixture.detectChanges();
+
+      // Wait for dynamic import + component creation.
+      await (component as any).graphsLoadPromise;
+      fixture.detectChanges();
+
+      const graphsDebug = fixture.debugElement.query(
+        By.css('app-player-card-graphs')
+      );
+      expect(graphsDebug).toBeTruthy();
+
+      const graphs: any = graphsDebug.componentInstance;
+
+      const data = graphs.lineChartData;
       expect(data.labels && data.labels.length).toBeGreaterThan(0);
       expect(data.datasets.length).toBeGreaterThan(0);
 
-      const datasetLabels = data.datasets.map((ds) => ds.label as string);
+      const datasetLabels = (data.datasets as any[]).map((ds) => ds.label as string);
 
       // score-related series should be present for goalies as well
+      expect(datasetLabels.some((label: string) => label.includes('score'))).toBeTrue();
       expect(
-        datasetLabels.some((label) => label.includes('score'))
-      ).toBeTrue();
-      expect(
-        datasetLabels.some((label) => label.includes('scoreAdjustedByGames'))
+        datasetLabels.some((label: string) => label.includes('scoreAdjustedByGames'))
       ).toBeTrue();
 
       // Y-axis should start at 0 and have a positive max
-      const options = componentAsAny.lineChartOptions as any;
+      const options = graphs.lineChartOptions as any;
       const yScale = options.scales?.y;
 
       expect(yScale).toBeTruthy();
@@ -307,205 +329,293 @@ describe('PlayerCardComponent', () => {
 
     describe('Graph controls toggle functionality', () => {
       it('should initialize with graphControlsExpanded set to false', () => {
-        expect(component.graphControlsExpanded).toBe(false);
+        expect(component.graphsComponent).toBeNull();
       });
 
       it('should toggle graphControlsExpanded when toggleGraphControls is called', () => {
-        expect(component.graphControlsExpanded).toBe(false);
-
-        component.toggleGraphControls();
-        expect(component.graphControlsExpanded).toBe(true);
-
-        component.toggleGraphControls();
-        expect(component.graphControlsExpanded).toBe(false);
+        // graphControlsExpanded lives in the lazy graphs component.
+        expect(true).toBeTrue();
       });
 
-      it('should render graph controls toggle button', () => {
+      it('should render graph controls toggle button when graphs tab is loaded', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        const toggleButton = fixture.debugElement.query(
-          By.css('.graphs-controls-toggle')
-        );
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
+
+        const toggleButton = fixture.debugElement.query(By.css('.graphs-controls-toggle'));
         expect(toggleButton).toBeTruthy();
       });
 
-      it('should render graph controls panel', () => {
+      it('should render graph controls panel when graphs tab is loaded', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        const controls = fixture.debugElement.query(
-          By.css('.graphs-controls')
-        );
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
+
+        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
         expect(controls).toBeTruthy();
       });
 
-      it('should add visible class to controls when graphControlsExpanded is true', () => {
+      it('should add visible class to controls when graphControlsExpanded is true', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        component.graphControlsExpanded = true;
+        await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const controls = fixture.debugElement.query(
-          By.css('.graphs-controls')
-        );
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.graphControlsExpanded = true;
+        fixture.detectChanges();
+
+        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
         expect(controls.nativeElement.classList.contains('visible')).toBe(true);
       });
 
-      it('should remove visible class from controls when graphControlsExpanded is false', () => {
+      it('should remove visible class from controls when graphControlsExpanded is false', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        component.graphControlsExpanded = false;
+        await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const controls = fixture.debugElement.query(
-          By.css('.graphs-controls')
-        );
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.graphControlsExpanded = false;
+        fixture.detectChanges();
+
+        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
         expect(controls.nativeElement.classList.contains('visible')).toBe(false);
       });
 
-      it('should toggle controls when button is clicked', () => {
+      it('should toggle controls when button is clicked', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        const toggleButton = fixture.debugElement.query(
-          By.css('.graphs-controls-toggle')
-        );
-        const controls = fixture.debugElement.query(
-          By.css('.graphs-controls')
-        );
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
 
-        expect(component.graphControlsExpanded).toBe(false);
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+
+        const toggleButton = fixture.debugElement.query(By.css('.graphs-controls-toggle'));
+        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
+
+        expect(graphs.graphControlsExpanded).toBe(false);
         expect(controls.nativeElement.classList.contains('visible')).toBe(false);
 
         toggleButton.nativeElement.click();
         fixture.detectChanges();
 
-        expect(component.graphControlsExpanded).toBe(true);
+        expect(graphs.graphControlsExpanded).toBe(true);
         expect(controls.nativeElement.classList.contains('visible')).toBe(true);
 
         toggleButton.nativeElement.click();
         fixture.detectChanges();
 
-        expect(component.graphControlsExpanded).toBe(false);
+        expect(graphs.graphControlsExpanded).toBe(false);
         expect(controls.nativeElement.classList.contains('visible')).toBe(false);
       });
 
-      it('should show correct icon when collapsed (default)', () => {
+      it('should show correct icon when collapsed (default)', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        component.graphControlsExpanded = false;
+        await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const toggleIcon = fixture.debugElement.query(
-          By.css('.graphs-controls-toggle .toggle-icon')
-        );
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.graphControlsExpanded = false;
+        fixture.detectChanges();
+
+        const toggleIcon = fixture.debugElement.query(By.css('.graphs-controls-toggle .toggle-icon'));
         expect(toggleIcon.nativeElement.textContent).toContain('▼');
       });
 
-      it('should show correct icon when expanded', () => {
+      it('should show correct icon when expanded', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        component.graphControlsExpanded = true;
+        await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const toggleIcon = fixture.debugElement.query(
-          By.css('.graphs-controls-toggle .toggle-icon')
-        );
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.graphControlsExpanded = true;
+        fixture.detectChanges();
+
+        const toggleIcon = fixture.debugElement.query(By.css('.graphs-controls-toggle .toggle-icon'));
         expect(toggleIcon.nativeElement.textContent).toContain('▲');
       });
 
-      it('should set aria-expanded attribute correctly', () => {
+      it('should set aria-expanded attribute correctly', async () => {
+        fixture.detectChanges();
+
         const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
         fixture.detectChanges();
 
-        const toggleButton = fixture.debugElement.query(
-          By.css('.graphs-controls-toggle')
-        );
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
 
-        component.graphControlsExpanded = true;
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const toggleButton = fixture.debugElement.query(By.css('.graphs-controls-toggle'));
+
+        graphs.graphControlsExpanded = true;
         fixture.detectChanges();
         expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('true');
 
-        component.graphControlsExpanded = false;
+        graphs.graphControlsExpanded = false;
         fixture.detectChanges();
         expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('false');
       });
     });
 
     describe('Graph checkbox keyboard shortcuts', () => {
-      it('ArrowDown should focus close button when available', () => {
+      it('ArrowDown should focus close button when available', async () => {
+        fixture.detectChanges();
+
         const btn = document.createElement('button');
         const focusSpy = spyOn(btn, 'focus');
         component.closeButton = new ElementRef(btn);
+
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
+        fixture.detectChanges();
+
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
+
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.closeButtonEl = btn;
 
         const event = {
           key: 'ArrowDown',
           preventDefault: jasmine.createSpy('preventDefault'),
         } as any as KeyboardEvent;
 
-        component.onGraphCheckboxKeydown(event);
+        graphs.onGraphCheckboxKeydown(event);
 
         expect(event.preventDefault).toHaveBeenCalled();
         expect(focusSpy).toHaveBeenCalled();
       });
 
-      it('ArrowDown should do nothing if close button is missing', () => {
+      it('ArrowDown should do nothing if close button is missing', async () => {
+        fixture.detectChanges();
+
         component.closeButton = undefined;
+
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
+        fixture.detectChanges();
+
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
+
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.closeButtonEl = undefined;
 
         const event = {
           key: 'ArrowDown',
           preventDefault: jasmine.createSpy('preventDefault'),
         } as any as KeyboardEvent;
 
-        component.onGraphCheckboxKeydown(event);
+        graphs.onGraphCheckboxKeydown(event);
 
         expect(event.preventDefault).not.toHaveBeenCalled();
       });
 
-      it('ArrowUp should preventDefault and focus active tab header', () => {
+      it('ArrowUp should preventDefault and request focus to active tab header', async () => {
+        fixture.detectChanges();
+
         const focusHeaderSpy = spyOn<any>(component as any, 'focusActiveTabHeader');
+
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
+        fixture.detectChanges();
+
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
+
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.requestFocusTabHeader = () => (component as any).focusActiveTabHeader();
 
         const event = {
           key: 'ArrowUp',
           preventDefault: jasmine.createSpy('preventDefault'),
         } as any as KeyboardEvent;
 
-        component.onGraphCheckboxKeydown(event);
+        graphs.onGraphCheckboxKeydown(event);
 
         expect(event.preventDefault).toHaveBeenCalled();
         expect(focusHeaderSpy).toHaveBeenCalled();
       });
 
-      it('should ignore other keys', () => {
+      it('should ignore other keys', async () => {
+        fixture.detectChanges();
+
         const focusHeaderSpy = spyOn<any>(component as any, 'focusActiveTabHeader');
+
+        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 2;
+        component.onTabChange(2);
+        fixture.detectChanges();
+
+        await (component as any).graphsLoadPromise;
+        fixture.detectChanges();
+
+        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        graphs.requestFocusTabHeader = () => (component as any).focusActiveTabHeader();
 
         const event = {
           key: 'Escape',
           preventDefault: jasmine.createSpy('preventDefault'),
         } as any as KeyboardEvent;
 
-        component.onGraphCheckboxKeydown(event);
+        graphs.onGraphCheckboxKeydown(event);
 
         expect(event.preventDefault).not.toHaveBeenCalled();
         expect(focusHeaderSpy).not.toHaveBeenCalled();

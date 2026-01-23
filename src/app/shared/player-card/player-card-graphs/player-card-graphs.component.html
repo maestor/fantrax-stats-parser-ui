@@ -1,0 +1,47 @@
+@if (hasSeasons) {
+  <div class="tab-content graphs-tab">
+    <button
+      class="graphs-controls-toggle"
+      (click)="toggleGraphControls()"
+      [attr.aria-expanded]="graphControlsExpanded"
+    >
+      <span>{{ 'controlPanel.graphControls' | translate }}</span>
+      <span class="toggle-icon">{{ graphControlsExpanded ? '▲' : '▼' }}</span>
+    </button>
+
+    <div
+      class="graphs-controls-overlay"
+      [class.visible]="graphControlsExpanded"
+      (click)="toggleGraphControls()"
+    ></div>
+
+    <div class="graphs-controls" [class.visible]="graphControlsExpanded">
+      <div class="graphs-controls-content">
+        <div class="graphs-controls-title">
+          {{ 'playerCard.graphsSelectStats' | translate }}
+        </div>
+
+        <div class="graphs-controls-list">
+          @for (statKey of chartStatKeys; track statKey) {
+            <mat-checkbox
+              [checked]="chartSelections[statKey]"
+              (change)="onStatToggle(statKey, $event)"
+              (keydown)="onGraphCheckboxKeydown($event)"
+            >
+              {{ 'tableColumn.' + statKey | translate }}
+            </mat-checkbox>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="graphs-chart-container">
+      <canvas
+        baseChart
+        [type]="'line'"
+        [data]="lineChartData"
+        [options]="lineChartOptions"
+      ></canvas>
+    </div>
+  </div>
+}
