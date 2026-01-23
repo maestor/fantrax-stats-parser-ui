@@ -133,6 +133,33 @@ body {
   );
 }
 
+// Hover states: Angular Material state layers can be subtle in dark mode.
+// Make hover affordances more obvious, but only on hover-capable pointers.
+@media (prefers-color-scheme: dark) {
+  @media (hover: hover) and (pointer: fine) {
+    .mat-mdc-tab-header .mdc-tab:not(.mdc-tab--active):hover {
+      background-color: color-mix(
+        in srgb,
+        var(--mat-sys-primary) 6%,
+        var(--mat-sys-surface-container)
+      );
+    }
+
+    .mat-mdc-tab-header .mdc-tab.mdc-tab--active:hover {
+      background-color: color-mix(
+        in srgb,
+        var(--mat-sys-primary) 10%,
+        var(--mat-sys-surface-container)
+      );
+    }
+
+    button[mat-icon-button]:not([disabled]):hover,
+    .mat-mdc-icon-button:not(.mat-mdc-button-disabled):hover {
+      background-color: color-mix(in srgb, var(--mat-sys-primary) 14%, transparent);
+    }
+  }
+}
+
 // Icon buttons (close buttons, info icon, etc.)
 button[mat-icon-button]:focus-visible,
 .mat-mdc-icon-button:focus-visible {
