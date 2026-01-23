@@ -10,7 +10,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 
 - 📊 **Player Statistics**: View and analyze player performance across seasons
 - 🥅 **Goalie Statistics**: Dedicated view for goalie-specific metrics
-- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`). Selection is remembered across reloads, and changing team resets filters
+- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`) via the header controls. Selection is remembered across reloads, and changing team resets filters
 - 🔄 **Report Switching**: Toggle between regular season and playoffs
 - 📅 **Season Selection**: Filter data by specific seasons or view combined stats
 - 📈 **Stats Per Game**: Calculate and display per-game averages
@@ -160,21 +160,26 @@ Accessibility is a core requirement of this project (not optional).
 ## Project Structure
 
 ```
+api/                       # Vercel API proxy
+docs/                      # Project docs (guides, standards)
+e2e/                       # Playwright end-to-end tests
+public/i18n/               # Translation files
+scripts/                   # Helper scripts (coverage, etc.)
 src/
 ├── app/
 │   ├── base/              # Base components (navigation, footer)
 │   ├── services/          # Core services (API, cache, stats, filters, team)
 │   │   └── tests/         # Service unit tests
 │   ├── shared/            # Shared components
-│   │   ├── control-panel/ # Filter controls
-│   │   ├── team-selector/  # Team selector under header
 │   │   ├── player-card/   # Player detail dialog
-│   │   └── stats-table/   # Reusable stats table
+│   │   ├── settings-panel/# Settings UI (toggles/sliders)
+│   │   ├── stats-table/   # Reusable stats table
+│   │   ├── top-controls/  # Header controls (team/season/report switchers)
+│   │   └── table-columns.ts
 │   ├── player-stats/      # Player stats page
 │   ├── goalie-stats/      # Goalie stats page
 │   └── app.component.ts   # Root component
-├── public/i18n/           # Translation files (served from public root)
-└── e2e/                   # End-to-end tests
+└── environments/          # Build-time environment config
 ```
 
 ## Development Notes
