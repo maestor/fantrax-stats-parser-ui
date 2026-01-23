@@ -1,4 +1,23 @@
 <div class="footer">
   <mat-divider></mat-divider>
-  <p class="center">Copyright © Kalle Haavisto 2025</p>
+
+  <nav class="footer-links" [attr.aria-label]="'footer.links.ariaLabel' | translate">
+    @for (link of links; track link.key) {
+      <a
+        class="footer-link"
+        [href]="('footer.links.' + link.key + '.href') | translate"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <fa-icon
+          class="footer-icon"
+          [icon]="link.icon"
+          aria-hidden="true"
+        ></fa-icon>
+        <span>{{ ('footer.links.' + link.key + '.label') | translate }}</span>
+      </a>
+    }
+  </nav>
+
+  <p class="center">{{ 'footer.copyright' | translate }}</p>
 </div>
