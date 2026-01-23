@@ -54,7 +54,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 ## User Flow
 
 1. User opens app at http://localhost:4200
-2. App loads default view (player stats, combined season view) for the default team (Colorado, team id `"1"`)
+2. App loads default view (player stats, combined season view) for the default team (configured team id, e.g. `"1"`)
 3. User can:
    - Change team from the team selector under the header (selection is persisted)
    - Switch between players and goalies tabs
@@ -105,6 +105,20 @@ FilterService → Component → Table Display
 - Production: `npm run build` (outputs to dist/)
 - Testing: `npm test` (unit tests)
 - E2E: Playwright tests in e2e/
+
+### PWA / Installable App
+
+The production build is configured as a Progressive Web App (PWA):
+
+- Web app manifest: `public/manifest.webmanifest`
+- Service worker: Angular service worker (`@angular/service-worker`) using `ngsw-config.json`
+- Icons: `public/icons/` (used for install + iOS)
+- Favicon: `public/favicon.svg` (plus PNG fallbacks under `public/icons/`)
+
+Notes:
+
+- The service worker is only registered in production builds.
+- After changing icons/manifest, installed PWAs may keep old assets due to caching. If an icon doesn’t update, uninstall/reinstall the PWA or clear site data.
 
 ## Browser Support
 
