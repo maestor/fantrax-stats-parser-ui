@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -45,6 +46,11 @@ export class PlayerCardComponent {
   readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
   readonly data = inject<Player | Goalie>(MAT_DIALOG_DATA);
   private translateService = inject(TranslateService);
+  private document = inject(DOCUMENT);
+  private host = inject(ElementRef<HTMLElement>);
+
+  @ViewChild('closeButton', { read: ElementRef })
+  closeButton?: ElementRef<HTMLButtonElement>;
 
   readonly isGoalie = 'wins' in this.data;
 
@@ -410,5 +416,49 @@ export class PlayerCardComponent {
 
   toggleGraphControls(): void {
     this.graphControlsExpanded = !this.graphControlsExpanded;
+  }
+
+  onGraphCheckboxKeydown(event: KeyboardEvent): void {
+    // Quality-of-life navigation when tabbing within long checkbox lists.
+    // - ArrowUp: jump back to active tab header
+    // - ArrowDown: jump to dialog close button
+    switch (event.key) {
+      case 'ArrowUp': {
+        event.preventDefault();
+        this.focusActiveTabHeader();
+        return;
+      }
+      case 'ArrowDown': {
+        const btn = this.closeButton?.nativeElement;
+        if (!btn) {
+          return;
+        }
+        event.preventDefault();
+        btn.focus();
+        return;
+      }
+      default:
+        return;
+    }
+  }
+
+  private focusActiveTabHeader(): void {
+    // Angular Material tabs render the header within the component DOM.
+    // Prefer focusing the active tab label so users can move between tabs.
+    const root = this.host.nativeElement;
+    const activeTab = root.querySelector(
+      '.mat-mdc-tab-header .mdc-tab--active'
+    ) as HTMLElement | null;
+
+    if (activeTab) {
+      activeTab.focus();
+      return;
+    }
+
+    // Fallback: if the component isn't fully rendered yet.
+    const anyTabHeader = this.document.querySelector(
+      '.mat-mdc-tab-header .mdc-tab'
+    ) as HTMLElement | null;
+    anyTabHeader?.focus();
   }
 }

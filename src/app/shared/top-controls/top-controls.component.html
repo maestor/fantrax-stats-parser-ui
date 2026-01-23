@@ -9,7 +9,12 @@
     <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
   </button>
 
-  <div class="top-controls-content" [class.expanded]="isExpanded">
+  <div
+    class="top-controls-content"
+    [class.expanded]="isExpanded"
+    [attr.aria-hidden]="!isExpanded"
+    [attr.inert]="!isExpanded ? '' : null"
+  >
     <div class="top-controls">
       <app-team-switcher class="top-control" />
       <app-season-switcher class="top-control" [context]="context" />

@@ -11,6 +11,7 @@ This directory contains documentation to help contributors understand and work e
 - [Coding Standards](./coding-standards.md) - Conventions and best practices
 - [Component Guide](./component-guide.md) - Angular components reference
 - [Service Guide](./service-guide.md) - Services and state management
+- [Accessibility](./accessibility.md) - Keyboard, focus, ARIA patterns and project a11y requirements
 
 ## About This Project
 

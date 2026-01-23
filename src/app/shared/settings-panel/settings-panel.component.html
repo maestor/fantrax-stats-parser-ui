@@ -8,7 +8,12 @@
     <span>{{ 'settingsPanel.settings' | translate }}</span>
     <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
   </button>
-  <div class="control-panel-content" [class.expanded]="isExpanded">
+  <div
+    class="control-panel-content"
+    [class.expanded]="isExpanded"
+    [attr.aria-hidden]="!isExpanded"
+    [attr.inert]="!isExpanded ? '' : null"
+  >
     <app-stats-mode-toggle [context]="context" />
     <app-min-games-slider [context]="context" [maxGames]="maxGames" />
   </div>

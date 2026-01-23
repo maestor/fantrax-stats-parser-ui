@@ -4,6 +4,8 @@
 
 This Angular application provides a user-friendly interface for viewing NHL fantasy league statistics parsed from Fantrax. It displays player and goalie statistics across different seasons and game types (regular season vs playoffs).
 
+Accessibility is a core requirement: the UI is designed to remain usable via keyboard and assistive technologies.
+
 ## Architecture
 
 ### Frontend Stack

@@ -2,7 +2,7 @@
   [class.player-card]="true"
   [class.season-mode]="hasSeasons && selectedTabIndex !== 0"
 >
-  <button mat-icon-button (click)="onNoClick()">X</button>
+  <button mat-icon-button (click)="onNoClick()" #closeButton>X</button>
   <mat-card-header>
     <mat-icon
       mat-card-avatar
@@ -85,6 +85,7 @@
                 <mat-checkbox
                   [checked]="chartSelections[statKey]"
                   (change)="onStatToggle(statKey, $event)"
+                  (keydown)="onGraphCheckboxKeydown($event)"
                 >
                   {{ "tableColumn." + statKey | translate }}
                 </mat-checkbox>

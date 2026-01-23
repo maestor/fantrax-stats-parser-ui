@@ -22,6 +22,38 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 10000;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-200%);
+  transition: transform 120ms ease-in-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
 .content {
   margin: 12px auto;
   max-width: 1170px;

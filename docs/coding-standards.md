@@ -259,6 +259,34 @@ Always use async pipe for observables in templates:
   {{ data.value }}
 </div>
 
+## Accessibility Standards
+
+Accessibility is a required part of every feature and refactor.
+
+### Keyboard
+
+- Every interactive element must be operable via keyboard.
+- Prefer native semantics (`<button>`, `<a>`, proper form controls).
+- If you implement custom keyboard behavior (tables, lists, roving focus), include unit tests for key handlers.
+
+### Focus
+
+- Focus must always be visible.
+- Avoid focus entering hidden/collapsed UI.
+  - Use `inert` + `aria-hidden` for collapsed containers.
+
+### Labels
+
+- Inputs must have visible labels (`mat-label` / `<label>`).
+- Icon-only buttons must have `aria-label`.
+
+### ARIA
+
+- Use ARIA to complement semantics, not replace them.
+- Avoid conflicting roles/attributes.
+
+For project-specific patterns (skip link, table navigation), see `docs/accessibility.md`.
+
 <!-- Avoid manual subscription in component -->
 ```
 
