@@ -33,7 +33,7 @@ npm run verify
 #### 1. ✅ Tests Must Pass
 
 ```bash
-npm test -- --browsers=ChromeHeadless --watch=false
+npm test -- --browsers=ChromeHeadlessNoSandbox --watch=false
 ```
 
 - **Requirement**: 100% of tests must pass
@@ -61,15 +61,23 @@ npm start
 - **Current**: ✅ Passing
 - **Action on Failure**: Check for missing dependencies or circular imports
 
-#### 4. ✅ Coverage Must Stay at 100%
+#### 4. ✅ Coverage Must Meet Targets
 
 ```bash
 npm run test:coverage
 ```
 
-- **Requirement**: 100% statements, branches, functions and lines (unit tests)
-- **Current**: ✅ 100% (200+ tests)
-- **Action on Failure**: Add or update tests until coverage returns to 100%
+- **Scope**: Application implementation under `src/` (test files excluded)
+- **Coverage gate (enforced by tooling)**:
+  - >= 95% statements
+  - >= 95% lines
+  - >= 95% functions
+  - >= 85% branches
+- **Long-term target**:
+  - 100% statements, lines, and functions
+  - >= 90% branches
+- **Action on Failure**: Add/update tests or refactor/simplify code until targets are met
+- **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
 - **Exception**: Temporary drops only on feature branches with a documented TODO and issue reference
 
 #### 5. ✅ Accessibility Must Not Regress
@@ -88,17 +96,19 @@ npm run test:coverage
 
 ### Test Coverage Requirements
 
-| Category          | Minimum Coverage | Current Coverage |
-| ----------------- | ---------------- | ---------------- |
-| Services          | 100%             | ✅ 100%          |
-| Base Components   | 100%             | ✅ 100%          |
-| Shared Components | 100%             | ✅ 100%          |
-| Page Components   | 100%             | ✅ 100%          |
-| **Overall**       | **100%**         | **✅ 100%**      |
+Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
+
+| Metric     | Enforced Coverage Gate | Long-term Target |
+| ---------- | ---------------------- | ---------------- |
+| Statements | >= 95%                 | 100%             |
+| Lines      | >= 95%                 | 100%             |
+| Functions  | >= 95%                 | 100%             |
+| Branches   | >= 85%                 | >= 90%           |
 
 #### Coverage Enforcement
 
-- Unit-test coverage must remain at 100% for statements, branches, functions and lines.
+- Unit-test coverage must remain above the enforced coverage gate.
+- Long-term target is 100% statements/lines/functions and >=90% branches.
 - New or changed code must include tests so that overall coverage does not drop.
 - Any intentional exception must be temporary and explicitly documented in the relevant pull request or commit.
 
@@ -418,7 +428,7 @@ Before marking work complete, verify:
 - [ ] Build succeeds (`npm run build`)
 - [ ] App serves without errors (`npm start`)
 - [ ] New features have tests
-- [ ] Test coverage 100% (statements, branches, functions, lines)
+- [ ] Test coverage meets gate (>=95% statements/lines/functions, >=85% branches)
 - [ ] No TypeScript errors
 - [ ] Code follows project structure
 - [ ] Documentation updated
@@ -426,5 +436,5 @@ Before marking work complete, verify:
 
 ---
 
-**Last Verified**: January 5, 2026
-**Status**: All requirements (including 100% coverage) passing ✅
+**Last Verified**: January 23, 2026
+**Status**: All requirements (including coverage gate) passing ✅

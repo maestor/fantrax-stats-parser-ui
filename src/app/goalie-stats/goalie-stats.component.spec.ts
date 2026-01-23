@@ -6,8 +6,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ApiService, Goalie } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
+import { TeamService } from '@services/team.service';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('GoalieStatsComponent', () => {
   let component: GoalieStatsComponent;
@@ -30,6 +31,13 @@ describe('GoalieStatsComponent', () => {
       providers: [
         provideHttpClient(),
         { provide: ApiService, useValue: apiServiceMock },
+        {
+          provide: TeamService,
+          useValue: {
+            selectedTeamId$: of('1'),
+            selectedTeamId: '1',
+          },
+        },
       ],
     }).compileComponents();
 
@@ -205,6 +213,23 @@ describe('GoalieStatsComponent', () => {
     expect(component.tableData.length).toBe(1);
     expect(component.tableData[0].name).toBe('Goalie 1');
     expect(component.maxGames).toBe(20);
+  });
+
+  it('should set apiError and clear data when ApiService errors', () => {
+    apiServiceMock.getGoalieData.and.returnValue(
+      throwError(() => new Error('network'))
+    );
+
+    component.statsPerGame = false;
+    component.minGames = 0;
+    component.apiError = false;
+
+    component.fetchData({ reportType: 'regular' });
+
+    expect(component.loading).toBe(false);
+    expect(component.apiError).toBe(true);
+    expect(component.tableData).toEqual([]);
+    expect(component.maxGames).toBe(0);
   });
 
   it('should handle empty goalie data without errors', () => {

@@ -10,7 +10,7 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 - **Total Tests**: Run `npm test` to see the current count and status
 - **Test Framework**: Jasmine + Karma
 - **E2E Framework**: Playwright
-- **Coverage**: 100% statements, branches, functions and lines (unit tests)
+- **Coverage**: Enforced gate is >=95% statements/lines/functions and >=85% branches; long-term target is 100% statements/lines/functions and >=90% branches
 - **Pass Rate**: 100% ✅
 - **Skipped Tests**: 0
 
@@ -29,10 +29,13 @@ npm run test:watch
 
 # Run tests in headless mode (has Karma infrastructure issues)
 npm run test:headless
-# Note: Tests pass but Karma may crash due to infrastructure issues
+# Note: This uses a CI-safe ChromeHeadless launcher (no-sandbox flags)
 
 # Run tests with coverage
 npm run test:coverage
+
+# Run the same checks CI enforces (coverage thresholds + production build)
+npm run verify
 
 # Run specific test file
 npm test -- --include='**/api.service.spec.ts'

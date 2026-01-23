@@ -6,7 +6,22 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ApiService, Player } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
+import { TeamService } from '@services/team.service';
+import { BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs';
+
+class TeamServiceMock {
+  private selectedTeamIdSubject = new BehaviorSubject<string>('1');
+  selectedTeamId$ = this.selectedTeamIdSubject.asObservable();
+
+  get selectedTeamId(): string {
+    return this.selectedTeamIdSubject.value;
+  }
+
+  setTeamId(teamId: string): void {
+    this.selectedTeamIdSubject.next(teamId);
+  }
+}
 
 describe('PlayerStatsComponent', () => {
   let component: PlayerStatsComponent;
@@ -29,6 +44,7 @@ describe('PlayerStatsComponent', () => {
       providers: [
         provideHttpClient(),
         { provide: ApiService, useValue: apiServiceMock },
+        { provide: TeamService, useClass: TeamServiceMock },
       ],
     }).compileComponents();
 

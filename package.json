@@ -13,8 +13,9 @@
     "test": "npm run test:watch -- --watch=false",
     "test:watch": "ng test",
     "test:coverage": "npm test -- --code-coverage",
-    "test:headless": "npm test -- --browsers=ChromeHeadless",
-    "verify": "npm run test:headless && npm run build"
+    "test:coverage:headless": "npm test -- --code-coverage --browsers=ChromeHeadlessNoSandbox",
+    "test:headless": "npm test -- --browsers=ChromeHeadlessNoSandbox",
+    "verify": "npm run test:coverage:headless && npm run build"
   },
   "engines": {
     "node": ">=24 <25"
