@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-1. **Node.js**: Version 22.x or higher recommended
+1. **Node.js**: Version 24.x
 2. **npm**: Comes with Node.js
 3. **Backend**: [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) running
 
@@ -122,6 +122,15 @@ The API endpoint is configured in the service layer. Check:
    npm start
    npm test
    ```
+
+7. **Verify before pushing**
+   
+   Run the same checks CI runs:
+   ```bash
+   npm run verify
+   ```
+
+   This ensures headless unit tests and the production build pass.
 
 ### Fixing a Bug
 

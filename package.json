@@ -13,7 +13,11 @@
     "test": "npm run test:watch -- --watch=false",
     "test:watch": "ng test",
     "test:coverage": "npm test -- --code-coverage",
-    "test:headless": "npm test -- --browsers=ChromeHeadless"
+    "test:headless": "npm test -- --browsers=ChromeHeadless",
+    "verify": "npm run test:headless && npm run build"
+  },
+  "engines": {
+    "node": ">=24 <25"
   },
   "private": true,
   "dependencies": {

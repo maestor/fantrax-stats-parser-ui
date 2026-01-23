@@ -63,7 +63,7 @@ This UI talks to a separate backend (see [node-fantrax-stats-parser](https://git
 After changing Vercel env vars, redeploy so they take effect.
 
 ```bash
-1. Install Node.js (version 22.x or higher recommended)
+1. Install Node.js (version 24.x)
 2. Clone this repository
 3. npm install
 4. npm start
@@ -81,6 +81,9 @@ npm test                # Run all tests once (Chrome)
 npm run test:watch      # Run tests in watch mode
 npm run test:headless   # Run tests in headless Chrome (may be flaky)
 npm run test:coverage   # Run unit tests with coverage
+
+# CI/local verification
+npm run verify           # Headless tests + production build
 
 # E2E tests (Playwright)
 npx playwright test
@@ -109,6 +112,9 @@ npm run test:headless
 
 # Run unit tests with coverage report
 npm run test:coverage
+
+# Verify (what CI runs: headless unit tests + production build)
+npm run verify
 
 # E2E tests (Playwright)
 npx playwright test
@@ -201,7 +207,7 @@ When contributing, please ensure:
 1. All new features have corresponding tests
 2. Test coverage remains above 90%
 3. Follow existing code style and patterns
-4. Run `npm test` before committing
+4. Run `npm run verify` before committing
 5. Update documentation as needed
 
 In addition, treat accessibility as a hard requirement for every change. If a feature is not keyboard-accessible and properly labeled, it is not considered done.
