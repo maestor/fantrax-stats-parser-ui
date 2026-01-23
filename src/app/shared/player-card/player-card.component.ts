@@ -1,18 +1,12 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { DOCUMENT, NgComponentOutlet } from '@angular/common';
+import { Component, ElementRef, Type, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import {
-  MatCheckboxModule,
-  MatCheckboxChange,
-} from '@angular/material/checkbox';
-import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartDataset } from 'chart.js';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   Player,
   Goalie,
@@ -35,9 +29,8 @@ interface StatRow {
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,
-    MatCheckboxModule,
     TranslateModule,
-    BaseChartDirective,
+    NgComponentOutlet,
   ],
   templateUrl: './player-card.component.html',
   styleUrl: './player-card.component.scss',
@@ -45,7 +38,6 @@ interface StatRow {
 export class PlayerCardComponent {
   readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
   readonly data = inject<Player | Goalie>(MAT_DIALOG_DATA);
-  private translateService = inject(TranslateService);
   private document = inject(DOCUMENT);
   private host = inject(ElementRef<HTMLElement>);
 
@@ -59,9 +51,6 @@ export class PlayerCardComponent {
 
   // Track which tab is active (0 = All, 1 = By Season)
   selectedTabIndex = 0;
-
-  // Track graph controls visibility on mobile
-  graphControlsExpanded = false;
 
   // Track screen size for season format
   isMobile = false;
@@ -86,50 +75,16 @@ export class PlayerCardComponent {
   // Columns for season breakdown table
   seasonColumns: string[] = [];
   seasonDataSource: (PlayerSeasonStats | GoalieSeasonStats)[] = [];
+  graphsComponent: Type<unknown> | null = null;
+  graphsLoading = false;
+  graphsLoadPromise: Promise<void> | null = null;
+  // Exposed mainly so tests can await the dynamic import deterministically.
 
-  readonly chartStatKeys: string[] = this.isGoalie
-    ? ['score', 'scoreAdjustedByGames', 'games', 'wins', 'saves', 'shutouts']
-    : [
-        'score',
-        'scoreAdjustedByGames',
-        'games',
-        'goals',
-        'assists',
-        'points',
-        'shots',
-        'penalties',
-        'hits',
-        'blocks',
-      ];
-
-  chartSelections: Record<string, boolean> = this.chartStatKeys.reduce(
-    (acc, key) => ({
-      ...acc,
-      // Default: only score fields selected; others via toggle
-      [key]: key === 'score' || key === 'scoreAdjustedByGames',
-    }),
-    {} as Record<string, boolean>
-  );
-
-  chartLabels: string[] = [];
-  chartYearsRange: number[] = [];
-  lineChartData: ChartConfiguration['data'] = {
-    labels: [],
-    datasets: [],
-  };
-
-  lineChartOptions: NonNullable<ChartConfiguration['options']> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-    },
-    scales: {
-      x: {},
-      y: { offset: true },
-    },
+  // Keep inputs as a TS-visible field (so it isn't considered "template-only" usage).
+  graphsInputs: Record<string, unknown> = {
+    data: this.data,
+    closeButtonEl: undefined,
+    requestFocusTabHeader: () => this.focusActiveTabHeader(),
   };
 
   constructor() {
@@ -138,7 +93,6 @@ export class PlayerCardComponent {
 
     if (this.hasSeasons) {
       this.setupSeasonData();
-      this.setupChartData();
     }
   }
 
@@ -216,24 +170,6 @@ export class PlayerCardComponent {
     }
   }
 
-  private setupChartData(): void {
-    if (!this.data.seasons) return;
-
-    const seasons = [...this.data.seasons];
-    const minYear = Math.min(...seasons.map((s) => s.season));
-    const maxYear = Math.max(...seasons.map((s) => s.season));
-
-    this.chartYearsRange = Array.from(
-      { length: maxYear - minYear + 1 },
-      (_, index) => minYear + index
-    );
-
-    this.chartLabels = this.chartYearsRange.map((year) =>
-      this.formatSeasonShort(year)
-    );
-
-    this.updateChartData(seasons);
-  }
 
   private formatSeasonDisplay(year: number): string {
     const nextYear = year + 1;
@@ -305,141 +241,45 @@ export class PlayerCardComponent {
     return reorderedKeys;
   }
 
-  private updateChartData(
-    sortedSeasons: (PlayerSeasonStats | GoalieSeasonStats)[]
-  ): void {
-    const activeKeys = this.chartStatKeys.filter(
-      (key) => this.chartSelections[key]
-    );
-
-    const palette = [
-      '#1976d2',
-      '#d32f2f',
-      '#388e3c',
-      '#fbc02d',
-      '#7b1fa2',
-      '#00838f',
-    ];
-
-    const seasonByYear = new Map<
-      number,
-      PlayerSeasonStats | GoalieSeasonStats
-    >();
-    sortedSeasons.forEach((season) => {
-      seasonByYear.set(season.season, season);
-    });
-
-    const datasets: ChartDataset<'line', (number | null)[]>[] = activeKeys.map(
-      (key, index) => {
-        const data = this.chartYearsRange.map((year) => {
-          const season = seasonByYear.get(year);
-          if (!season) {
-            return null;
-          }
-
-          const value = (season as any)[key];
-          const numeric = typeof value === 'string' ? parseFloat(value) : value;
-          return Number.isFinite(numeric) ? (numeric as number) : 0;
-        });
-
-        const translatedLabel = this.translateService.instant(
-          `tableColumn.${key}`
-        );
-
-        return {
-          data,
-          label: translatedLabel || `tableColumn.${key}`,
-          borderColor: palette[index % palette.length],
-          backgroundColor: palette[index % palette.length],
-          fill: false,
-          tension: 0.2,
-          pointRadius: 3,
-        };
-      }
-    );
-
-    this.lineChartData = {
-      labels: this.chartLabels,
-      datasets,
-    };
-
-    const allValues = datasets.flatMap((ds) =>
-      (ds.data as (number | null)[]).filter(
-        (value): value is number => typeof value === 'number'
-      )
-    );
-
-    if (allValues.length > 0) {
-      const maxValue = Math.max(...allValues);
-
-      if (!this.lineChartOptions.scales) {
-        this.lineChartOptions.scales = {};
-      }
-
-      if (!this.lineChartOptions.scales['y']) {
-        this.lineChartOptions.scales['y'] = {};
-      }
-
-      const yScale = this.lineChartOptions.scales['y']!;
-
-      const tickCount = 5;
-      const stepSize = maxValue > 0 ? Math.ceil(maxValue / tickCount) : 1;
-      let max = stepSize * tickCount;
-
-      yScale.min = 0;
-      yScale.max = max;
-      yScale.ticks = {
-        ...(yScale.ticks || {}),
-        stepSize,
-      };
-    }
-  }
-
   onTabChange(index: number): void {
     this.selectedTabIndex = index;
-  }
+    this.updateGraphsInputs();
 
-  onStatToggle(key: string, event: MatCheckboxChange): void {
-    this.chartSelections[key] = event.checked;
-
-    if (!this.data.seasons) return;
-
-    const sortedSeasons = [...this.data.seasons].sort(
-      (a, b) => b.season - a.season
-    );
-    this.updateChartData(sortedSeasons);
+    // Graphs tab (index 2) is heavy (Chart.js). Lazy-load it to keep the initial bundle small.
+    if (index === 2) {
+      this.graphsLoadPromise = this.ensureGraphsLoaded();
+      void this.graphsLoadPromise;
+    }
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  toggleGraphControls(): void {
-    this.graphControlsExpanded = !this.graphControlsExpanded;
+  private async ensureGraphsLoaded(): Promise<void> {
+    if (this.graphsComponent || this.graphsLoading) {
+      return this.graphsLoadPromise ?? Promise.resolve();
+    }
+
+    this.graphsLoading = true;
+
+    this.graphsLoadPromise = (async () => {
+      const module = await import('./player-card-graphs/player-card-graphs.component');
+      this.graphsComponent = module.PlayerCardGraphsComponent;
+    })()
+      .finally(() => {
+        this.graphsLoading = false;
+      });
+
+    return this.graphsLoadPromise;
   }
 
-  onGraphCheckboxKeydown(event: KeyboardEvent): void {
-    // Quality-of-life navigation when tabbing within long checkbox lists.
-    // - ArrowUp: jump back to active tab header
-    // - ArrowDown: jump to dialog close button
-    switch (event.key) {
-      case 'ArrowUp': {
-        event.preventDefault();
-        this.focusActiveTabHeader();
-        return;
-      }
-      case 'ArrowDown': {
-        const btn = this.closeButton?.nativeElement;
-        if (!btn) {
-          return;
-        }
-        event.preventDefault();
-        btn.focus();
-        return;
-      }
-      default:
-        return;
-    }
+  private updateGraphsInputs(): void {
+    this.graphsInputs = {
+      data: this.data,
+      closeButtonEl: this.closeButton?.nativeElement,
+      requestFocusTabHeader: () => this.focusActiveTabHeader(),
+    };
   }
 
   private focusActiveTabHeader(): void {

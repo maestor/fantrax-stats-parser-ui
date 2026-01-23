@@ -9,3 +9,8 @@
 	text-align: center;
 }
 
+.title-row button[mat-icon-button],
+.title-row .mat-mdc-icon-button {
+	color: var(--mat-sys-on-surface-variant);
+}
+

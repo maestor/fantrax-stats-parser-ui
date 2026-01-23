@@ -32,6 +32,13 @@ body {
   color: var(--mat-sys-on-surface);
 }
 
+// Dialog close buttons (and similar icon-buttons rendered in overlays) should always
+// inherit the correct token color, regardless of component-specific wrappers.
+.cdk-overlay-container .mat-mdc-dialog-container button[mat-icon-button],
+.cdk-overlay-container .mat-mdc-dialog-container .mat-mdc-icon-button {
+  color: var(--mat-sys-on-surface) !important;
+}
+
 // Backdrop: keep a consistent, not-too-heavy overlay.
 .cdk-overlay-backdrop {
   background: rgb(0 0 0 / 0.4) !important;
@@ -114,6 +121,82 @@ body {
 .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
 .mat-mdc-tab-header .mdc-tab--active .mdc-tab__text-label {
   color: var(--mat-sys-on-surface) !important;
+}
+
+// Focus rings: some MDC focus indicators are too subtle in dark mode.
+// Tabs: match the light-mode behavior (subtle focused background), avoid circular rings.
+.mat-mdc-tab-header .mdc-tab:focus-visible {
+  background-color: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 12%,
+    var(--mat-sys-surface-container)
+  );
+}
+
+// Hover states: Angular Material state layers can be subtle in dark mode.
+// Make hover affordances more obvious, but only on hover-capable pointers.
+@media (prefers-color-scheme: dark) {
+  @media (hover: hover) and (pointer: fine) {
+    .mat-mdc-tab-header .mdc-tab:not(.mdc-tab--active):hover {
+      background-color: color-mix(
+        in srgb,
+        var(--mat-sys-primary) 6%,
+        var(--mat-sys-surface-container)
+      );
+    }
+
+    .mat-mdc-tab-header .mdc-tab.mdc-tab--active:hover {
+      background-color: color-mix(
+        in srgb,
+        var(--mat-sys-primary) 10%,
+        var(--mat-sys-surface-container)
+      );
+    }
+
+    button[mat-icon-button]:not([disabled]):hover,
+    .mat-mdc-icon-button:not(.mat-mdc-button-disabled):hover {
+      background-color: color-mix(in srgb, var(--mat-sys-primary) 14%, transparent);
+    }
+  }
+}
+
+// Icon buttons (close buttons, info icon, etc.)
+button[mat-icon-button]:focus-visible,
+.mat-mdc-icon-button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+  outline-offset: 3px;
+}
+
+// Checkboxes (graphs + elsewhere)
+@supports selector(:has(*)) {
+  .mat-mdc-checkbox:has(.mdc-checkbox__native-control:focus-visible) .mdc-checkbox__background {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mat-sys-primary) 55%, transparent);
+    border-radius: 4px;
+  }
+
+  // Focus outline for the whole checkbox row (checkbox + label), drawn INSIDE to avoid clipping.
+  .mat-mdc-checkbox:has(.mdc-checkbox__native-control:focus-visible) .mdc-form-field {
+    box-sizing: border-box;
+    padding-right: 8px;
+    border-radius: 12px;
+    background-color: color-mix(in srgb, var(--mat-sys-primary) 7%, transparent);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 55%, transparent);
+  }
+}
+
+@supports not selector(:has(*)) {
+  .mat-mdc-checkbox:focus-within .mdc-checkbox__background {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mat-sys-primary) 55%, transparent);
+    border-radius: 4px;
+  }
+
+  .mat-mdc-checkbox:focus-within .mdc-form-field {
+    box-sizing: border-box;
+    padding-right: 8px;
+    border-radius: 12px;
+    background-color: color-mix(in srgb, var(--mat-sys-primary) 7%, transparent);
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 55%, transparent);
+  }
 }
 
 // Button toggles (report type): make inactive readable and active high-contrast.
@@ -207,6 +290,11 @@ body {
 
 // Help dialog: ensure title/body text uses on-surface (defaults can be too dark).
 .help-dialog {
+  button[mat-icon-button],
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
   .mdc-dialog__title,
   .mdc-dialog__content,
   .mat-mdc-dialog-title,
@@ -225,6 +313,11 @@ body {
 
 // Player card graphs: checkbox labels and boxes need contrast in dark mode.
 .player-card-dialog {
+  button[mat-icon-button],
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
   .mat-mdc-checkbox .mdc-form-field > label {
     color: var(--mat-sys-on-surface) !important;
   }
