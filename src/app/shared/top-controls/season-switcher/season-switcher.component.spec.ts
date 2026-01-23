@@ -243,6 +243,23 @@ describe('SeasonSwitcherComponent', () => {
 
       expect(result).toBeUndefined();
     }));
+
+    it('should coerce string season values to numbers', fakeAsync(() => {
+      component.context = 'player';
+      const event = { value: '2024' } as unknown as MatSelectChange;
+
+      let result: number | undefined;
+      filterService.playerFilters$.subscribe((filters) => {
+        result = filters.season;
+      });
+
+      component.seasons = [...mockSeasons];
+      component.changeSeason(event);
+      tick();
+
+      expect(component.selectedSeason).toBe(2024);
+      expect(result).toBe(2024);
+    }));
   });
 
   describe('ngOnDestroy', () => {
