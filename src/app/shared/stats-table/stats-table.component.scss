@@ -93,4 +93,13 @@
   cursor: pointer;
 }
 
+.mat-mdc-row:focus {
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: -2px;
+}
+
+.mat-mdc-row.a11y-active {
+  background-color: var(--mat-sys-primary-container);
+}
+
 

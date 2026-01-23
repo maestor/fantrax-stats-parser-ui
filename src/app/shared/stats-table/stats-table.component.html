@@ -1,13 +1,35 @@
-<div class="stats-table-wrapper mat-elevation-z4">
+<div
+  class="stats-table-wrapper mat-elevation-z4"
+  [attr.id]="tableId"
+  tabindex="-1"
+  #tableRoot
+>
+  <p class="sr-only" [attr.id]="instructionsId">
+    {{ 'a11y.tableNavigationHint' | translate }}
+  </p>
+
   <div class="search-container">
     <mat-form-field subscriptSizing="dynamic">
       <mat-label>{{ "table.playerSearch" | translate }}</mat-label>
-      <input matInput (keyup)="filterItems($event)" #search />
+      <input
+        matInput
+        type="search"
+        autocomplete="off"
+        (input)="filterItems($event)"
+        (keydown)="onSearchKeydown($event)"
+        #searchInput
+      />
     </mat-form-field>
   </div>
 
   <div class="table-container">
-    <table mat-table [dataSource]="dataSource" matSort matSortStart="desc">
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      matSortStart="desc"
+      [attr.aria-describedby]="instructionsId"
+    >
       <!-- Auto increment position column -->
       <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef>
@@ -34,11 +56,23 @@
       </ng-container>
       }
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-header-row
+        (keydown)="onHeaderKeydown($event)"
+        *matHeaderRowDef="displayedColumns"
+      ></tr>
       <tr
         mat-row
+        #dataRow
         (click)="selectItem(row)"
-        *matRowDef="let row; columns: displayedColumns"
+        (focus)="onRowFocus(i)"
+        (keydown)="onRowKeydown($event, row, i)"
+        [attr.tabindex]="getRowTabIndex(i)"
+        [attr.data-row-index]="i"
+        [class.a11y-active]="i === activeRowIndex"
+        [attr.aria-label]="getRowAriaLabel(row)"
+        aria-haspopup="dialog"
+        *matRowDef="let row; columns: displayedColumns; let i = index"
       ></tr>
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell no-results" [colSpan]="displayedColumns.length">

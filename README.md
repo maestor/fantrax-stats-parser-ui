@@ -125,6 +125,16 @@ E2E tests use **Playwright** to cover the main user flows (landing page layout, 
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
+## Accessibility
+
+Accessibility is a core requirement of this project (not optional).
+
+- Keyboard-only users must be able to use every feature
+- Focus must be visible and predictable
+- Collapsed/hidden content must not be tabbable
+
+📖 **[Read the Accessibility Guide](docs/accessibility.md)**
+
 ## Technology Stack
 
 - **Framework**: Angular 21
@@ -193,6 +203,8 @@ When contributing, please ensure:
 3. Follow existing code style and patterns
 4. Run `npm test` before committing
 5. Update documentation as needed
+
+In addition, treat accessibility as a hard requirement for every change. If a feature is not keyboard-accessible and properly labeled, it is not considered done.
 
 ## License
 

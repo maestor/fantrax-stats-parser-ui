@@ -156,6 +156,7 @@ The API endpoint is configured in the service layer. Check:
 - [ ] RxJS subscriptions properly cleaned up
 - [ ] Material components used correctly
 - [ ] Responsive design maintained
+- [ ] Accessibility verified (keyboard, focus, labels; no focus in collapsed content)
 
 ## Debugging Tips
 

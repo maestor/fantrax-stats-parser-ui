@@ -3,6 +3,9 @@ import {
   inject,
   Component,
   Input,
+  ElementRef,
+  QueryList,
+  ViewChildren,
   ViewChild,
   SimpleChanges,
   OnChanges,
@@ -21,6 +24,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { STATIC_COLUMNS } from '@shared/table-columns';
 import { Player, Goalie } from '@services/api.service';
 import { PlayerCardComponent } from '@shared/player-card/player-card.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stats-table',
@@ -39,6 +43,7 @@ import { PlayerCardComponent } from '@shared/player-card/player-card.component';
 export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   readonly dialog = inject(MatDialog);
+  private translate = inject(TranslateService);
 
   private warmupTimeoutId?: ReturnType<typeof setTimeout>;
   private loadingIntervalId?: ReturnType<typeof setInterval>;
@@ -53,14 +58,24 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   @Input() defaultSortColumn = 'score';
   @Input() loading = false;
   @Input() apiError = false;
+  @Input() tableId = 'stats-table';
+
+  instructionsId = 'stats-table-instructions';
+  activeRowIndex = 0;
 
   dataSource = new MatTableDataSource<any>([]);
   displayedColumns: string[] = [];
   dynamicColumns: string[] = [];
 
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('searchInput', { read: ElementRef }) searchInput?: ElementRef<HTMLInputElement>;
+  @ViewChildren('dataRow', { read: ElementRef }) dataRows?: QueryList<ElementRef<HTMLElement>>;
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes['tableId']) {
+      this.instructionsId = `${this.tableId}-instructions`;
+    }
+
     if (changes['loading']) {
       this.onLoadingChanged(this.loading);
     }
@@ -77,6 +92,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       if (this.sort) {
         this.dataSource.sort = this.sort;
       }
+
+      // Reset focus to first row when the dataset changes.
+      this.activeRowIndex = 0;
+      setTimeout(() => this.ensureActiveRowInRange(), 0);
     }
   }
 
@@ -143,11 +162,13 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     }
 
     this.cdr.detectChanges();
+    this.ensureActiveRowInRange();
   }
 
   filterItems(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    setTimeout(() => this.ensureActiveRowInRange(), 0);
   }
 
   selectItem(data: Player | Goalie) {
@@ -157,5 +178,138 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       width: 'auto',
       panelClass: 'player-card-dialog',
     });
+  }
+
+  onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'ArrowDown') {
+      return;
+    }
+
+    if (this.getRowCount() === 0) {
+      return;
+    }
+
+    event.preventDefault();
+    this.focusRow(this.activeRowIndex);
+  }
+
+  onHeaderKeydown(event: KeyboardEvent): void {
+    switch (event.key) {
+      case 'ArrowDown': {
+        if (this.getRowCount() === 0) {
+          return;
+        }
+
+        event.preventDefault();
+        this.focusRow(0);
+        return;
+      }
+      case 'ArrowUp': {
+        const input = this.searchInput?.nativeElement;
+        if (!input) {
+          return;
+        }
+
+        event.preventDefault();
+        input.focus();
+        return;
+      }
+      default:
+        return;
+    }
+  }
+
+  onRowFocus(index: number): void {
+    this.activeRowIndex = index;
+  }
+
+  getRowTabIndex(index: number): number {
+    return index === this.activeRowIndex ? 0 : -1;
+  }
+
+  onRowKeydown(event: KeyboardEvent, row: Player | Goalie, index: number): void {
+    switch (event.key) {
+      case 'Enter':
+      case ' ': {
+        event.preventDefault();
+        this.selectItem(row);
+        return;
+      }
+      case 'PageDown': {
+        event.preventDefault();
+        this.focusRow(index + 10);
+        return;
+      }
+      case 'PageUp': {
+        event.preventDefault();
+        this.focusRow(index - 10);
+        return;
+      }
+      case 'ArrowDown': {
+        event.preventDefault();
+        this.focusRow(index + 1);
+        return;
+      }
+      case 'ArrowUp': {
+        event.preventDefault();
+        this.focusRow(index - 1);
+        return;
+      }
+      case 'Home': {
+        event.preventDefault();
+        this.focusRow(0);
+        return;
+      }
+      case 'End': {
+        event.preventDefault();
+        this.focusRow(this.getRowCount() - 1);
+        return;
+      }
+      default:
+        return;
+    }
+  }
+
+  getRowAriaLabel(row: Player | Goalie): string {
+    const name = (row as any)?.name ?? '';
+    return this.translate.instant('a11y.openPlayerCard', { name });
+  }
+
+  private getRowCount(): number {
+    return this.dataRows?.length ?? 0;
+  }
+
+  private ensureActiveRowInRange(): void {
+    const rowCount = this.getRowCount();
+    if (rowCount === 0) {
+      this.activeRowIndex = 0;
+      return;
+    }
+
+    if (this.activeRowIndex < 0) {
+      this.activeRowIndex = 0;
+    }
+    if (this.activeRowIndex > rowCount - 1) {
+      this.activeRowIndex = rowCount - 1;
+    }
+    this.cdr.markForCheck();
+  }
+
+  private focusRow(index: number): void {
+    const rows = this.dataRows?.toArray() ?? [];
+    if (rows.length === 0) {
+      return;
+    }
+
+    const clampedIndex = Math.max(0, Math.min(index, rows.length - 1));
+    this.activeRowIndex = clampedIndex;
+
+    const el = rows[clampedIndex]?.nativeElement;
+    if (!el) {
+      return;
+    }
+
+    el.focus();
+    el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }

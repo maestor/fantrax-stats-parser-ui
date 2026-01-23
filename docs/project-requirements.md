@@ -7,6 +7,17 @@
 
 ## 🎯 Core Requirements
 
+### Accessibility Is Mandatory
+
+Accessibility is a primary requirement for this project.
+
+- All features must be usable with keyboard only
+- Focus must be visible and predictable
+- Hidden/collapsed UI must not receive focus
+- Interactive controls must be properly labeled (visible label or `aria-label`)
+
+See: `docs/accessibility.md`
+
 ### Mandatory Quality Gates
 
 Before any code can be committed or deployed, ALL of the following must pass:
@@ -52,6 +63,16 @@ npm run test:coverage
 - **Current**: ✅ 100% (200+ tests)
 - **Action on Failure**: Add or update tests until coverage returns to 100%
 - **Exception**: Temporary drops only on feature branches with a documented TODO and issue reference
+
+#### 5. ✅ Accessibility Must Not Regress
+
+- **Requirement**: Every change must preserve (or improve) keyboard and screen-reader usability
+- **Minimum checks (manual)**:
+  - Can you reach and operate the feature with `Tab`, arrow keys (where applicable), and `Enter`/`Space`?
+  - Is focus always visible?
+  - Does focus avoid collapsed/hidden areas?
+  - Are labels/announcements meaningful?
+- **Action on Failure**: Fix before merging
 
 ---
 

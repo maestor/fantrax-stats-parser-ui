@@ -15,6 +15,11 @@
     "loadingWarmup": "Rajapintapalvelu käynnistyy, voi kestää jopa minuutin...",
     "apiUnavailable": "Rajapinta ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen."
   },
+  "a11y": {
+    "skipToTable": "Siirry taulukkoon",
+    "openPlayerCard": "Avaa pelaajakortti: {{name}}",
+    "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin."
+  },
   "tableColumn": {
     "position": "#",
     "name": "Nimi",

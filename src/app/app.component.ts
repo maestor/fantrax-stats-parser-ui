@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, ViewChild, inject, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
   private titleService = inject(Title);
   private translateService = inject(TranslateService);
   private router = inject(Router);
+  private document = inject(DOCUMENT);
 
   ngOnInit(): void {
     this.translateService.get('pageTitle').subscribe((name) => {
@@ -45,5 +47,26 @@ export class AppComponent implements OnInit {
 
   private updateControlsContext(url: string): void {
     this.controlsContext = url.includes('goalie-stats') ? 'goalie' : 'player';
+  }
+
+  skipToTarget(targetId: string, event: MouseEvent): void {
+    event.preventDefault();
+
+    const container = this.document.getElementById(targetId) as HTMLElement | null;
+    if (!container) return;
+
+    // Prefer focusing the first actual data row (if present).
+    const firstRow = container.querySelector(
+      'tr[data-row-index="0"]'
+    ) as HTMLElement | null;
+
+    // If there are no rows yet (loading / no results), keep focus where it is.
+    if (!firstRow) return;
+
+    // Update URL fragment without causing a route reload.
+    this.document.defaultView?.history.replaceState(null, '', `#${targetId}`);
+
+    firstRow.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    firstRow.focus({ preventScroll: true });
   }
 }

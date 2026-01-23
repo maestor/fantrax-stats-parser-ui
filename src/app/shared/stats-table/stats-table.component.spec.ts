@@ -109,6 +109,12 @@ describe('StatsTableComponent', () => {
     translate.setTranslation(
       'fi',
       {
+        a11y: {
+          skipToTable: 'Siirry taulukkoon',
+          openPlayerCard: 'Avaa pelaajakortti: {{name}}',
+          tableNavigationHint:
+            'Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin.',
+        },
         table: {
           playerSearch: 'Pelaajahaku',
           noSearchResults: 'Ei hakutuloksia',
@@ -125,6 +131,42 @@ describe('StatsTableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('keyboard interaction', () => {
+    it('should set activeRowIndex on row focus', () => {
+      component.activeRowIndex = 0;
+      component.onRowFocus(1);
+      expect(component.activeRowIndex).toBe(1);
+      expect(component.getRowTabIndex(1)).toBe(0);
+      expect(component.getRowTabIndex(0)).toBe(-1);
+    });
+
+    it('should open player card on Enter key', () => {
+      const selectSpy = spyOn(component, 'selectItem');
+      const event = {
+        key: 'Enter',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onRowKeydown(event, mockPlayerData[0], 0);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(selectSpy).toHaveBeenCalledWith(mockPlayerData[0]);
+    });
+
+    it('should open player card on Space key', () => {
+      const selectSpy = spyOn(component, 'selectItem');
+      const event = {
+        key: ' ',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onRowKeydown(event, mockPlayerData[0], 0);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(selectSpy).toHaveBeenCalledWith(mockPlayerData[0]);
+    });
   });
 
   describe('initialization', () => {
