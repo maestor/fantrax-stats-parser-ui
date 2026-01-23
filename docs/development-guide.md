@@ -39,6 +39,27 @@ npm run build
 - Optimized and minified
 - Ready for deployment
 
+### Theming / Automatic Dark Mode
+
+The UI follows the device/browser color scheme automatically (no manual toggle).
+
+Key files:
+
+- `src/theme.scss`: Angular Material theme configuration (emits `--mat-sys-*` tokens via `theme-type: color-scheme`)
+- `src/styles.scss`: global styles + targeted overrides for overlays/tabs/toggles to ensure dark mode renders consistently
+
+#### Debugging dark mode
+
+In DevTools Console:
+
+- Check preference: `window.matchMedia('(prefers-color-scheme: dark)').matches`
+- Check a token: `getComputedStyle(document.documentElement).getPropertyValue('--mat-sys-surface')`
+
+If the page looks like it’s using a stale/light bundle (common during theming work):
+
+- Hard refresh: `Cmd+Shift+R`
+- If still wrong under `ng serve`, restart `npm start` (browser/dev-server caching can keep older CSS around)
+
 ### PWA (Installable App)
 
 The app is configured as a PWA in production builds.

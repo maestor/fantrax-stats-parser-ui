@@ -24,7 +24,14 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: Multi-language support with ngx-translate
 - 🎨 **Material Design**: Clean UI with Angular Material components
+- 🌓 **Automatic Dark Mode**: Follows device/browser `prefers-color-scheme` (no manual toggle)
+- 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)
 - 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and collapsible controls
+
+More details:
+
+- **Theming / Automatic Dark Mode**: [docs/project-overview.md](docs/project-overview.md)
+- **PWA / Installable App**: [docs/project-overview.md](docs/project-overview.md)
 
 ## Installation and use
 

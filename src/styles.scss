@@ -21,6 +21,226 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+// Material: ensure overlays/dialogs/tabs/toggles follow theme tokens.
+// Some MDC-based components can look incorrect in dark mode if defaults bleed through.
+
+.cdk-overlay-container {
+  color: var(--mat-sys-on-surface);
+}
+
+// Backdrop: keep a consistent, not-too-heavy overlay.
+.cdk-overlay-backdrop {
+  background: rgb(0 0 0 / 0.4) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .cdk-overlay-backdrop {
+    background: rgb(0 0 0 / 0.55) !important;
+  }
+}
+
+// Dialog surfaces (player card + help dialog) should not default to white.
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: var(--mat-sys-surface-container-high) !important;
+  color: var(--mat-sys-on-surface) !important;
+}
+
+// Cards are used in dialogs (player card) and should not default to white.
+.mat-mdc-card {
+  background-color: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface);
+}
+
+// Dropdown/menu/autocomplete panels (rendered in cdk overlay).
+.mat-mdc-select-panel,
+.mat-mdc-menu-panel,
+.mat-mdc-autocomplete-panel,
+.mat-datepicker-content {
+  background-color: var(--mat-sys-surface-container-high) !important;
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-option,
+.mat-mdc-menu-item,
+.mat-mdc-autocomplete-panel .mat-mdc-option {
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-option:hover:not(.mdc-list-item--disabled),
+.mat-mdc-menu-item:hover:not(.mat-mdc-menu-item-disabled) {
+  background-color: var(--mat-sys-surface-container-highest) !important;
+}
+
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+  background-color: var(--mat-sys-primary-container) !important;
+  color: var(--mat-sys-on-primary-container) !important;
+}
+
+// Form fields (selects + search): prevent light containers in dark mode.
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background-color: var(--mat-sys-surface-container-high) !important;
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-form-field .mdc-floating-label {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-input-element,
+.mat-mdc-form-field .mat-mdc-select-min-line,
+.mat-mdc-form-field .mat-mdc-select-value-text {
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-select-arrow {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+// Tabs: avoid black-on-black by explicitly mapping to system tokens.
+.mat-mdc-tab-header {
+  background-color: var(--mat-sys-surface-container);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.mat-mdc-tab .mdc-tab__text-label,
+.mat-mdc-tab-header .mdc-tab__text-label {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab-header .mdc-tab--active .mdc-tab__text-label {
+  color: var(--mat-sys-on-surface) !important;
+}
+
+// Button toggles (report type): make inactive readable and active high-contrast.
+.mat-button-toggle-group {
+  background-color: var(--mat-sys-surface-container) !important;
+  border: 1px solid var(--mat-sys-outline-variant) !important;
+}
+
+.mat-button-toggle {
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--mat-sys-primary-container) !important;
+  color: var(--mat-sys-on-primary-container) !important;
+}
+
+// The checkmark shown on selected toggles should match the selected text color.
+// Material uses a pseudo-checkbox with its own internal styles; use high specificity.
+.mat-button-toggle-group .mat-button-toggle .mat-pseudo-checkbox {
+  color: currentColor !important;
+  border-color: currentColor !important;
+}
+
+.mat-button-toggle-group .mat-button-toggle-checked .mat-pseudo-checkbox {
+  color: currentColor !important;
+  border-color: currentColor !important;
+  opacity: 1 !important;
+}
+
+// Checkmark stroke is typically drawn using borders on a pseudo-element.
+.mat-button-toggle-group .mat-button-toggle-checked .mat-pseudo-checkbox::after {
+  border-color: currentColor !important;
+  opacity: 1 !important;
+}
+
+// Some variants use an additional "checked" class.
+.mat-button-toggle-group .mat-button-toggle-checked .mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
+  color: currentColor !important;
+  border-color: currentColor !important;
+  opacity: 1 !important;
+}
+
+// Material's "minimal" pseudo-checkbox uses a CSS variable for the checkmark.
+// Override it for checked toggles so it stays readable (matches selected text).
+.mat-button-toggle-group .mat-button-toggle-checked .mat-pseudo-checkbox-minimal {
+  --mat-pseudo-checkbox-minimal-selected-checkmark-color: currentColor;
+}
+
+.mat-button-toggle-group .mat-button-toggle-checked .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+  color: currentColor !important;
+}
+
+// If the selected indicator is rendered as an icon instead of a pseudo-checkbox.
+.mat-button-toggle-group .mat-button-toggle-checked mat-icon,
+.mat-button-toggle-group .mat-button-toggle-checked .mat-icon {
+  color: currentColor !important;
+  opacity: 1 !important;
+}
+
+.mat-button-toggle-button {
+  color: inherit !important;
+}
+
+.mat-button-toggle-label-content {
+  color: inherit !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  // Slides toggles (points per game): ensure readable + modern dark styling.
+  .mat-mdc-slide-toggle .mdc-switch__track {
+    background-color: var(--mat-sys-surface-container-high) !important;
+  }
+
+  .mat-mdc-slide-toggle .mdc-switch__handle {
+    background-color: var(--mat-sys-on-surface-variant) !important;
+  }
+
+  .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__track {
+    background-color: var(--mat-sys-primary) !important;
+  }
+
+  .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__handle {
+    background-color: var(--mat-sys-on-primary) !important;
+  }
+
+  .mat-mdc-slide-toggle .mdc-form-field > label {
+    color: var(--mat-sys-on-surface) !important;
+  }
+}
+
+// Help dialog: ensure title/body text uses on-surface (defaults can be too dark).
+.help-dialog {
+  .mdc-dialog__title,
+  .mdc-dialog__content,
+  .mat-mdc-dialog-title,
+  .mat-mdc-dialog-content {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  // Dialog action (e.g. "Sulje") should use a readable accent in dark mode.
+  .mat-mdc-dialog-actions .mat-mdc-button,
+  .mat-mdc-dialog-actions .mat-mdc-unelevated-button,
+  .mat-mdc-dialog-actions .mat-mdc-outlined-button,
+  .mat-mdc-dialog-actions a {
+    color: var(--mat-sys-primary) !important;
+  }
+}
+
+// Player card graphs: checkbox labels and boxes need contrast in dark mode.
+.player-card-dialog {
+  .mat-mdc-checkbox .mdc-form-field > label {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  .mat-mdc-checkbox .mdc-checkbox__background {
+    border-color: var(--mat-sys-outline) !important;
+  }
+
+  .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: var(--mat-sys-primary) !important;
+    border-color: var(--mat-sys-primary) !important;
+  }
+
+  .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__checkmark-path {
+    stroke: var(--mat-sys-on-primary) !important;
+  }
 }
 
 .sr-only {
@@ -42,9 +262,9 @@ body {
   z-index: 10000;
   padding: 8px 12px;
   border-radius: 6px;
-  background: #fff;
-  color: #000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  box-shadow: var(--mat-sys-level2);
   transform: translateY(-200%);
   transition: transform 120ms ease-in-out;
 }

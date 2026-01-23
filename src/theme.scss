@@ -1,0 +1,62 @@
+@use "@angular/material" as mat;
+
+// Material theme setup
+// Auto dark mode (no manual toggle): use `theme-type: color-scheme`, which emits CSS `light-dark()`
+// values and lets the browser pick the correct value based on the user's preferred color scheme.
+//
+// We keep colors aligned with the previous prebuilt theme choice (azure-blue).
+
+$primary: mat.$azure-palette;
+$tertiary: mat.$blue-palette;
+
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: color-scheme,
+      primary: $primary,
+      tertiary: $tertiary,
+    ),
+    typography: (
+      plain-family: (Roboto, sans-serif),
+      brand-family: (Roboto, sans-serif),
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+@include mat.core();
+
+:root {
+  // Ensure the browser's *used* color-scheme matches the user's preference.
+  // This matters because the generated theme tokens rely on CSS `light-dark()`.
+  color-scheme: light;
+
+  // System-level variables (e.g. --mat-sys-*)
+  @include mat.theme(
+    (
+      color: (
+        theme-type: color-scheme,
+        primary: $primary,
+        tertiary: $tertiary,
+      ),
+      typography: (
+        plain-family: (Roboto, sans-serif),
+        brand-family: (Roboto, sans-serif),
+      ),
+      density: (
+        scale: 0,
+      ),
+    )
+  );
+
+  // Component token variables (e.g. --mat-*)
+  @include mat.all-component-themes($theme);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}

@@ -11,6 +11,20 @@
   }
 }
 
+mat-card {
+  background-color: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface);
+}
+
+table.mat-mdc-table {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+.mat-mdc-cell {
+  color: var(--mat-sys-on-surface);
+}
+
 .card-title-icon {
   width: 30px;
   height: 30px;
@@ -32,7 +46,8 @@ mat-card-title {
 }
 
 .mat-cell-label {
-  background-color: #eeeeee;
+  background-color: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface);
   font-weight: bold;
 }
 
@@ -79,16 +94,16 @@ mat-card-title {
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--mat-sys-surface-container);
     border-radius: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #888;
+    background: var(--mat-sys-outline);
     border-radius: 4px;
 
     &:hover {
-      background: #555;
+      background: var(--mat-sys-on-surface-variant);
     }
   }
 }
@@ -101,16 +116,16 @@ mat-card-title {
   }
 
   &::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: var(--mat-sys-surface-container);
     border-radius: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #888;
+    background: var(--mat-sys-outline);
     border-radius: 4px;
 
     &:hover {
-      background: #555;
+      background: var(--mat-sys-on-surface-variant);
     }
   }
 }
@@ -184,8 +199,9 @@ mat-card-title {
     align-items: center;
     width: 100%;
     padding: 12px 16px;
-    background-color: var(--mdc-theme-surface, #fff);
-    border: 1px solid var(--mdc-theme-outline, #ccc);
+    background-color: var(--mat-sys-surface-container);
+    border: 1px solid var(--mat-sys-outline-variant);
+    color: var(--mat-sys-on-surface);
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
@@ -195,7 +211,7 @@ mat-card-title {
     z-index: 1;
 
     &:hover {
-      background-color: var(--mdc-theme-surface-variant, #f5f5f5);
+      background-color: var(--mat-sys-surface-container-high);
     }
 
     span {
@@ -231,7 +247,8 @@ mat-card-title {
     transform: translateX(-50%);
     width: 95vw;
     max-width: 95vw;
-    background: white;
+    background: var(--mat-sys-surface-container-high);
+    color: var(--mat-sys-on-surface);
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
@@ -272,7 +289,8 @@ mat-card-title {
 
   th {
     font-weight: bold;
-    background-color: #f5f5f5;
+    background-color: var(--mat-sys-surface-container);
+    color: var(--mat-sys-on-surface);
     text-align: center;
     position: sticky;
     top: 0;
@@ -287,7 +305,8 @@ mat-card-title {
   th:first-child,
   td:first-child {
     font-weight: bold;
-    background-color: #eeeeee;
+    background-color: var(--mat-sys-surface-container-high);
+    color: var(--mat-sys-on-surface);
   }
 }
 
