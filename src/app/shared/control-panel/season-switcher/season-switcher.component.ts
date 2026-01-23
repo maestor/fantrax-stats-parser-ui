@@ -25,7 +25,8 @@ import { TeamService } from '@services/team.service';
 export class SeasonSwitcherComponent implements OnInit, OnDestroy {
   @Input() context: 'player' | 'goalie' = 'player';
   seasons: Season[] = [];
-  selectedSeason?: number;
+  selectedSeason: number | 'all' = 'all';
+  selectedSeasonText?: string;
 
   apiService = inject(ApiService);
   filterService = inject(FilterService);
@@ -51,7 +52,8 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
     season$
       .pipe(takeUntil(this.destroy$))
       .subscribe((season: number | undefined) => {
-        this.selectedSeason = season;
+        this.selectedSeason = season ?? 'all';
+        this.updateSelectedSeasonText();
       });
 
     combineLatest([
@@ -74,19 +76,33 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.seasons = [...data].reverse();
 
-        if (
-          this.selectedSeason !== undefined &&
-          !this.seasons.some((s) => s.season === this.selectedSeason)
-        ) {
-          this.context === 'goalie'
-            ? this.filterService.updateGoalieFilters({ season: undefined })
-            : this.filterService.updatePlayerFilters({ season: undefined });
+        this.updateSelectedSeasonText();
+
+        if (this.selectedSeason !== 'all') {
+          const selectedSeason = this.selectedSeason;
+          if (!this.seasons.some((s) => s.season === selectedSeason)) {
+            this.context === 'goalie'
+              ? this.filterService.updateGoalieFilters({ season: undefined })
+              : this.filterService.updatePlayerFilters({ season: undefined });
+          }
         }
       },
       error: () => {
         this.seasons = [];
+        this.updateSelectedSeasonText();
       },
     });
+  }
+
+  private updateSelectedSeasonText(): void {
+    if (this.selectedSeason === 'all') {
+      this.selectedSeasonText = undefined;
+      return;
+    }
+
+    this.selectedSeasonText = this.seasons.find(
+      (s) => s.season === this.selectedSeason
+    )?.text;
   }
 
   private toApiTeamId(teamId: string): string | undefined {
@@ -94,7 +110,8 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
   }
 
   changeSeason(event: MatSelectChange): void {
-    const season = event.value;
+    const value = event.value as number | 'all';
+    const season = value === 'all' ? undefined : value;
     this.context === 'goalie'
       ? this.filterService.updateGoalieFilters({ season })
       : this.filterService.updatePlayerFilters({ season });

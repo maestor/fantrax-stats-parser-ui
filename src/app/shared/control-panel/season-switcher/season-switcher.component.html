@@ -1,7 +1,15 @@
 <mat-form-field subscriptSizing="dynamic">
   <mat-label>{{ "season.selector" | translate }}</mat-label>
   <mat-select [value]="selectedSeason" (selectionChange)="changeSeason($event)">
-    <mat-option [value]="undefined">
+    <mat-select-trigger>
+      @if (selectedSeason === 'all') {
+        {{ "season.allSeasons" | translate }}
+      } @else {
+        {{ selectedSeasonText || selectedSeason }}
+      }
+    </mat-select-trigger>
+
+    <mat-option [value]="'all'">
       {{ "season.allSeasons" | translate }}
     </mat-option>
 

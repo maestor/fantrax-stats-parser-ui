@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { SeasonSwitcherComponent } from './season-switcher.component';
 import { ApiService, Season } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
@@ -12,6 +12,7 @@ describe('SeasonSwitcherComponent', () => {
   let fixture: ComponentFixture<SeasonSwitcherComponent>;
   let apiService: ApiService;
   let filterService: FilterService;
+  let translate: TranslateService;
 
   const mockSeasons: Season[] = [
     { season: 2024, text: '2024-25' },
@@ -43,6 +44,19 @@ describe('SeasonSwitcherComponent', () => {
     component = fixture.componentInstance;
     apiService = TestBed.inject(ApiService);
     filterService = TestBed.inject(FilterService);
+    translate = TestBed.inject(TranslateService);
+
+    translate.setTranslation(
+      'fi',
+      {
+        season: {
+          selector: 'Kausivalitsin',
+          allSeasons: 'Kaikki kaudet',
+        },
+      },
+      true
+    );
+    translate.use('fi');
   });
 
   afterEach(() => {
@@ -79,7 +93,7 @@ describe('SeasonSwitcherComponent', () => {
       component.ngOnInit();
       tick();
 
-      expect(component.selectedSeason).toBeUndefined();
+      expect(component.selectedSeason).toBe('all');
     }));
 
     it('should update selectedSeason when player filters change', fakeAsync(() => {
@@ -116,6 +130,21 @@ describe('SeasonSwitcherComponent', () => {
 
       expect(apiService.getSeasons).toHaveBeenCalledWith('playoffs');
     }));
+
+    it('should show all seasons label when selectedSeason is undefined', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
+      tick();
+      fixture.detectChanges();
+
+      const compiled = fixture.nativeElement as HTMLElement;
+      const trigger = compiled.querySelector(
+        '.mat-mdc-select-trigger'
+      ) as HTMLElement | null;
+
+      expect(trigger).toBeTruthy();
+      expect(trigger?.textContent).toContain('Kaikki kaudet');
+    }));
   });
 
   describe('changeSeason', () => {
@@ -151,7 +180,7 @@ describe('SeasonSwitcherComponent', () => {
 
     it('should handle undefined season', fakeAsync(() => {
       component.context = 'player';
-      const event = { value: undefined } as MatSelectChange;
+      const event = { value: 'all' } as MatSelectChange;
 
       let result: number | undefined;
       filterService.playerFilters$.subscribe((filters) => {
