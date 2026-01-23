@@ -11,8 +11,9 @@
 	align-items: center;
 	width: 100%;
 	padding: 10px 16px;
-	background-color: var(--mdc-theme-surface, #fff);
-	border: 1px solid var(--mdc-theme-outline, #ccc);
+	background-color: var(--mat-sys-surface-container);
+	border: 1px solid var(--mat-sys-outline-variant);
+	color: var(--mat-sys-on-surface);
 	border-radius: 4px;
 	cursor: pointer;
 	font-size: 14px;
@@ -21,7 +22,7 @@
 	transition: background-color 0.2s;
 
 	&:hover {
-		background-color: var(--mdc-theme-surface-variant, #f5f5f5);
+		background-color: var(--mat-sys-surface-container-high);
 	}
 
 	span {

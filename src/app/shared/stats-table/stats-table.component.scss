@@ -50,7 +50,7 @@
 .search-container {
   position: sticky;
   top: 0;
-  background: white;
+  background: var(--mat-sys-surface);
   z-index: 2;
   padding-bottom: 8px;
 }
@@ -68,12 +68,26 @@
 }
 
 .mat-mdc-table {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+.mat-mdc-table {
   .mat-mdc-header-row {
     position: sticky;
     top: 0;
     z-index: 1;
-    background: white;
+    background: var(--mat-sys-surface-container);
+    color: var(--mat-sys-on-surface);
   }
+}
+
+.mat-mdc-header-cell {
+  color: var(--mat-sys-on-surface);
+}
+
+.mat-mdc-cell {
+  color: var(--mat-sys-on-surface);
 }
 
 .no-results {
@@ -90,6 +104,7 @@
 
 .mat-mdc-row:hover {
   background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
   cursor: pointer;
 }
 
@@ -100,6 +115,7 @@
 
 .mat-mdc-row.a11y-active {
   background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
 }
 
 

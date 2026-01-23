@@ -106,6 +106,20 @@ FilterService → Component → Table Display
 - Testing: `npm test` (unit tests)
 - E2E: Playwright tests in e2e/
 
+### Theming / Automatic Dark Mode
+
+The UI uses Angular Material theming with automatic light/dark mode based on the device/browser preference.
+
+- Theme entrypoint: `src/theme.scss`
+- Global styles + a few component overrides: `src/styles.scss`
+- Build/test wiring: `angular.json` includes `src/theme.scss` in the `styles` array.
+
+Implementation notes:
+
+- Uses Material `theme-type: color-scheme` which emits CSS `light-dark(...)` tokens.
+- `src/theme.scss` sets `color-scheme` to match `prefers-color-scheme` so the browser resolves `light-dark(...)` correctly.
+- Visual consistency in dark mode relies on Material system tokens like `--mat-sys-surface` / `--mat-sys-on-surface`.
+
 ### PWA / Installable App
 
 The production build is configured as a Progressive Web App (PWA):
