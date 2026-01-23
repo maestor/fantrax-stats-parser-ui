@@ -71,7 +71,7 @@ This application uses Angular's standalone component architecture. Components ar
 
 **Child Components**:
 
-- `ControlPanelComponent` - Filters and controls
+- `SettingsPanelComponent` - Per-page settings (filters)
 - `StatsTableComponent` - Data table display
 
 **Data Flow**:
@@ -79,7 +79,7 @@ This application uses Angular's standalone component architecture. Components ar
 ```
 API → ApiService → PlayerStatsComponent → StatsTableComponent
           ↓
-        ControlPanelComponent
+  SettingsPanelComponent
 
 TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 ```
@@ -111,9 +111,9 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 ## Shared Components
 
-### TeamSelectorComponent
+### TeamSwitcherComponent
 
-**Location**: `src/app/shared/team-selector/`
+**Location**: `src/app/shared/top-controls/team-switcher/`
 
 **Type**: Presentational Component (with lightweight side effects)
 
@@ -161,18 +161,16 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 ---
 
-### ControlPanelComponent
+### SettingsPanelComponent
 
-**Location**: `src/app/shared/control-panel/`
+**Location**: `src/app/shared/settings-panel/`
 
 **Type**: Presentational Component
 
-**Purpose**: Container that composes all filter controls for the current context (players or goalies).
+**Purpose**: Expandable settings container for the current context (players or goalies).
 
 **Child Components**:
 
-- SeasonSwitcherComponent
-- ReportSwitcherComponent
 - StatsModeToggleComponent
 - MinGamesSliderComponent
 
@@ -185,7 +183,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Outputs**: None — each child component talks directly to `FilterService`.
 
-**Layout**: Horizontal, responsive layout defined in `control-panel.component.scss`.
+**Layout**: Horizontal, responsive layout defined in `settings-panel.component.scss`.
 
 **Mobile Responsiveness**:
 
@@ -212,7 +210,7 @@ toggleExpanded(): void {
 
 ### SeasonSwitcherComponent
 
-**Location**: `src/app/shared/control-panel/season-switcher/`
+**Location**: `src/app/shared/top-controls/season-switcher/`
 
 **Type**: Presentational Component
 
@@ -234,7 +232,7 @@ toggleExpanded(): void {
 
 ### ReportSwitcherComponent
 
-**Location**: `src/app/shared/control-panel/report-switcher/`
+**Location**: `src/app/shared/top-controls/report-switcher/`
 
 **Purpose**: Toggle between regular season and playoffs for the current context.
 
@@ -254,7 +252,7 @@ toggleExpanded(): void {
 
 ### StatsModeToggleComponent
 
-**Location**: `src/app/shared/control-panel/stats-mode-toggle/`
+**Location**: `src/app/shared/settings-panel/stats-mode-toggle/`
 
 **Purpose**: Toggle between combined stats and per-game stats.
 
@@ -273,7 +271,7 @@ toggleExpanded(): void {
 
 ### MinGamesSliderComponent
 
-**Location**: `src/app/shared/control-panel/min-games-slider/`
+**Location**: `src/app/shared/settings-panel/min-games-slider/`
 
 **Purpose**: Slider to filter by minimum games played.
 

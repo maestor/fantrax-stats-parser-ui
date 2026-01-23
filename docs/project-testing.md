@@ -90,7 +90,7 @@ npx playwright test --project=chromium
 - Sorting by **Pisteet** and verifying row order changes
 - Isolation of player vs goalie filters when switching tabs
 
-For a Claude-focused overview of how these E2E tests are structured and how they complement the unit suite, see the Playwright sections in [.claude/testing-implementation-summary.md](.claude/testing-implementation-summary.md) and [.claude/TEST-STATUS-FINAL.md](.claude/TEST-STATUS-FINAL.md).
+For contributor-oriented notes and architectural context, see the docs under `docs/`.
 
 ## Test Structure
 
@@ -577,8 +577,7 @@ To achieve 100% coverage:
 
 ### Documentation
 
-- [.claude/TEST-STATUS-FINAL.md](.claude/TEST-STATUS-FINAL.md) - Current test status
-- [.claude/SESSION-SUMMARY.md](.claude/SESSION-SUMMARY.md) - Detailed fix summary
+- [docs/README.md](./README.md) - Index of internal docs
 
 ---
 

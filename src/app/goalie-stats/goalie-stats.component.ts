@@ -9,13 +9,13 @@ import {
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
-import { ControlPanelComponent } from '@shared/control-panel/control-panel.component';
+import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
 
 @Component({
   selector: 'app-goalie-stats',
-  imports: [ControlPanelComponent, StatsTableComponent],
+  imports: [SettingsPanelComponent, StatsTableComponent],
   templateUrl: './goalie-stats.component.html',
   styleUrl: './goalie-stats.component.scss',
 })

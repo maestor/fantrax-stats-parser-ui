@@ -9,13 +9,13 @@ import {
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
-import { ControlPanelComponent } from '@shared/control-panel/control-panel.component';
+import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
 
 @Component({
   selector: 'app-player-stats',
-  imports: [StatsTableComponent, ControlPanelComponent],
+  imports: [StatsTableComponent, SettingsPanelComponent],
   templateUrl: './player-stats.component.html',
   styleUrl: './player-stats.component.scss',
 })

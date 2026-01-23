@@ -92,8 +92,14 @@
     "graphsSelectStats": "Valitse tilastot käyrille"
   },
   "controlPanel": {
-    "filters": "Suodattimet",
+    "filters": "Asetukset",
     "graphControls": "Näytettävät tilastot"
+  },
+  "settingsPanel": {
+    "settings": "Asetukset"
+  },
+  "topControls": {
+    "controls": "Tarkasteltavat tilastot"
   },
   "footer": {
     "copyright": "Copyright © Kalle Haavisto 2025->",

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { TeamSelectorComponent } from './team-selector.component';
+import { TeamSwitcherComponent } from './team-switcher.component';
 import { ApiService, Team } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
@@ -22,9 +22,9 @@ class TeamServiceMock {
   }
 }
 
-describe('TeamSelectorComponent', () => {
-  let component: TeamSelectorComponent;
-  let fixture: ComponentFixture<TeamSelectorComponent>;
+describe('TeamSwitcherComponent', () => {
+  let component: TeamSwitcherComponent;
+  let fixture: ComponentFixture<TeamSwitcherComponent>;
   let apiService: jasmine.SpyObj<ApiService>;
   let filterService: jasmine.SpyObj<FilterService>;
   let router: jasmine.SpyObj<Router>;
@@ -43,7 +43,7 @@ describe('TeamSelectorComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
-        TeamSelectorComponent,
+        TeamSwitcherComponent,
         TranslateModule.forRoot(),
         NoopAnimationsModule,
       ],
@@ -55,7 +55,7 @@ describe('TeamSelectorComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TeamSelectorComponent);
+    fixture = TestBed.createComponent(TeamSwitcherComponent);
     component = fixture.componentInstance;
   });
 

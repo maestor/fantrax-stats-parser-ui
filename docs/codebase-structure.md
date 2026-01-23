@@ -5,7 +5,7 @@
 ```
 fantrax-stats-parser-ui/
 ├── .angular/           # Angular build cache
-├── .claude/            # Claude documentation (this directory)
+├── docs/               # Project documentation
 ├── .vscode/            # VSCode configuration
 ├── dist/               # Production build output
 ├── e2e/                # Playwright E2E tests

@@ -376,9 +376,8 @@ describe("getPlayerStatsPerGame", () => {
 
 ## 📖 Reference Documentation
 
-- **Testing Guide**: [TESTING.md](../../TESTING.md)
-- **Session Summary**: [testing-implementation-summary.md](./testing-implementation-summary.md)
-- **Project README**: [README.md](../../README.md)
+- **Testing Guide**: [project-testing.md](./project-testing.md)
+- **Project README**: [README.md](../README.md)
 
 ---
 

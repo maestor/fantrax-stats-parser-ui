@@ -1,0 +1,19 @@
+<div class="top-controls-panel">
+  <button
+    class="top-controls-toggle"
+    (click)="toggleExpanded()"
+    type="button"
+    [attr.aria-expanded]="isExpanded"
+  >
+    <span>{{ 'topControls.controls' | translate }}</span>
+    <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
+  </button>
+
+  <div class="top-controls-content" [class.expanded]="isExpanded">
+    <div class="top-controls">
+      <app-team-switcher class="top-control" />
+      <app-season-switcher class="top-control" [context]="context" />
+      <app-report-switcher class="top-control" [context]="context" />
+    </div>
+  </div>
+</div>

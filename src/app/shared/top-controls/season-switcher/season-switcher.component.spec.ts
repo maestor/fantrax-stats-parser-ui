@@ -131,16 +131,21 @@ describe('SeasonSwitcherComponent', () => {
       expect(apiService.getSeasons).toHaveBeenCalledWith('playoffs');
     }));
 
-    it('should show all seasons label when selectedSeason is undefined', fakeAsync(() => {
+    it('should show all seasons label when selectedSeason is all', fakeAsync(() => {
       component.context = 'player';
       component.ngOnInit();
       tick();
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      expect(component.selectedSeason).toBe('all');
 
       const compiled = fixture.nativeElement as HTMLElement;
-      const trigger = compiled.querySelector(
-        '.mat-mdc-select-trigger'
-      ) as HTMLElement | null;
+      const trigger =
+        (compiled.querySelector('.mat-mdc-select-min-line') as HTMLElement | null) ??
+        (compiled.querySelector('.mat-mdc-select-value-text') as HTMLElement | null) ??
+        (compiled.querySelector('.mat-mdc-select-trigger') as HTMLElement | null);
 
       expect(trigger).toBeTruthy();
       expect(trigger?.textContent).toContain('Kaikki kaudet');

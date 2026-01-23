@@ -93,7 +93,7 @@ npm run build           # Build for production
 
 This project has comprehensive unit test coverage (Jasmine + Karma). Run `npm test` to see the current test count and status.
 
-📖 **[Read the complete Testing Documentation](TESTING.md)**
+📖 **[Read the complete Testing Documentation](docs/project-testing.md)**
 
 Quick test commands:
 
@@ -114,9 +114,7 @@ npm run test:coverage
 npx playwright test
 ```
 
-E2E tests use **Playwright** to cover the main user flows (landing page layout, navigation between player/goalie stats, and opening the Player Card with its career view). See TESTING.md for detailed E2E scenarios and options.
-
-For AI assistants working on this repo, additional E2E-focused context is available in the Claude docs under [.claude/testing-implementation-summary.md](.claude/testing-implementation-summary.md) and [.claude/TEST-STATUS-FINAL.md](.claude/TEST-STATUS-FINAL.md).
+E2E tests use **Playwright** to cover the main user flows (landing page layout, navigation between player/goalie stats, and opening the Player Card with its career view). See docs/project-testing.md for detailed E2E scenarios and options.
 
 ### Test Coverage Summary
 
@@ -125,7 +123,7 @@ For AI assistants working on this repo, additional E2E-focused context is availa
 - ✅ **Shared Components**: 95% coverage (StatsTable, ControlPanel sub-components)
 - ✅ **Page Components**: Integration-style coverage (PlayerStats, GoalieStats, PlayerCard)
 
-See [TESTING.md](TESTING.md) for detailed information about test patterns, best practices, and coverage.
+See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
 ## Technology Stack
 

@@ -1,11 +1,12 @@
-# Claude Documentation for Fantrax Stats Parser UI
+# Project Documentation for Fantrax Stats Parser UI
 
-This directory contains documentation to help Claude understand and work effectively with this codebase.
+This directory contains documentation to help contributors understand and work effectively with this codebase.
 
 ## Quick Reference
 
 - [Project Overview](./project-overview.md) - High-level architecture and purpose
 - [Development Guide](./development-guide.md) - Setup, commands, and workflows
+- [Project Testing](./project-testing.md) - Unit/E2E testing guide
 - [Codebase Structure](./codebase-structure.md) - Directory layout and organization
 - [Coding Standards](./coding-standards.md) - Conventions and best practices
 - [Component Guide](./component-guide.md) - Angular components reference
@@ -27,12 +28,12 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 
 ## Testing Overview
 
-- Unit tests are implemented with Jasmine/Karma and focus on services, shared components, and page-level wiring (see TESTING.md and the various `*.spec.ts` files under `src/app`).
+- Unit tests are implemented with Jasmine/Karma and focus on services, shared components, and page-level wiring (see project-testing.md and the various `*.spec.ts` files under `src/app`).
 - End-to-end tests are implemented with Playwright in the `e2e` directory and exercise real user flows against a running dev server.
 - Playwright is configured via `playwright.config.ts` to start `npm start` automatically and run tests against `http://localhost:4200` in Chromium, Firefox and WebKit.
 - The main E2E suite in `e2e/App.spec.ts` covers front-page layout, navigation between player/goalie views, Player Card behavior, filters (search/report type/season/stats-per-game/min-games), sorting, and isolation of player vs. goalie filters.
 
-## Common Tasks for Claude
+## Common Tasks
 
 ### Making Changes
 1. Read relevant files before making changes
