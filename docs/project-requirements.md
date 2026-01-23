@@ -22,6 +22,14 @@ See: `docs/accessibility.md`
 
 Before any code can be committed or deployed, ALL of the following must pass:
 
+**Primary command (recommended)**
+
+Run the same command CI runs (headless unit tests + production build):
+
+```bash
+npm run verify
+```
+
 #### 1. ✅ Tests Must Pass
 
 ```bash
