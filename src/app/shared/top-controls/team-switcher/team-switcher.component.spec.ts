@@ -3,7 +3,7 @@ import { TeamSwitcherComponent } from './team-switcher.component';
 import { ApiService, Team } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
@@ -28,10 +28,11 @@ describe('TeamSwitcherComponent', () => {
   let apiService: jasmine.SpyObj<ApiService>;
   let filterService: jasmine.SpyObj<FilterService>;
   let router: jasmine.SpyObj<Router>;
+  let translate: TranslateService;
 
   const mockTeams: Team[] = [
-    { id: '1', name: 'colorado' },
     { id: '2', name: 'carolina' },
+    { id: '1', name: 'colorado' },
   ];
 
   beforeEach(async () => {
@@ -57,6 +58,19 @@ describe('TeamSwitcherComponent', () => {
 
     fixture = TestBed.createComponent(TeamSwitcherComponent);
     component = fixture.componentInstance;
+
+    translate = TestBed.inject(TranslateService);
+    translate.setTranslation(
+      'fi',
+      {
+        teams: {
+          colorado: 'Colorado Avalanche',
+          carolina: 'Carolina Hurricanes',
+        },
+      },
+      true
+    );
+    translate.use('fi');
   });
 
   it('should create', () => {
@@ -73,6 +87,15 @@ describe('TeamSwitcherComponent', () => {
     expect(component.loading).toBe(false);
     expect(component.loadError).toBe(false);
     expect(component.teams.length).toBe(2);
+  }));
+
+  it('should sort teams alphabetically by translated label', fakeAsync(() => {
+    apiService.getTeams.and.returnValue(of(mockTeams));
+
+    component.ngOnInit();
+    tick();
+
+    expect(component.teams.map((t) => t.name)).toEqual(['carolina', 'colorado']);
   }));
 
   it('should set loadError on API failure', fakeAsync(() => {

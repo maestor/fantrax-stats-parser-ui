@@ -126,6 +126,8 @@ E2E tests use **Playwright** to cover the main user flows (landing page layout, 
 
 Coverage is enforced in CI via `npm run verify` (headless unit tests with coverage + production build).
 
+In addition: every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
+
 - **Enforced coverage gate** (implementation under `src/`, test files excluded):
 	- >= 95% statements
 	- >= 95% lines
@@ -208,7 +210,7 @@ The application is fully responsive with optimized layouts for all screen sizes:
 
 When contributing, please ensure:
 
-1. All new features have corresponding tests
+1. All new/changed code has corresponding tests (aim 100% coverage for the code you touched)
 2. `npm run verify` passes (includes coverage gate + production build)
 3. Follow existing code style and patterns
 4. Run `npm run verify` before committing

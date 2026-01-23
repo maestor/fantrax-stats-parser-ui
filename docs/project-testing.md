@@ -14,6 +14,13 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 - **Pass Rate**: 100% ✅
 - **Skipped Tests**: 0
 
+## Contribution Requirement: 100% Tested Changes
+
+Every contribution must include tests for all new/changed behavior.
+
+- **Rule**: new/changed logic should be tested to 100% (no uncovered touched lines/branches; include error and edge cases)
+- **CI Gate**: the repo’s enforced global coverage thresholds are the minimum bar; they are not a substitute for fully testing your change
+
 **Last verified (snapshot)**: January 22, 2026 — 269 passing, 0 skipped
 
 ## Running Tests

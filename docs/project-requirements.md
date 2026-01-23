@@ -1,7 +1,7 @@
 # Project Requirements & Standards
 
 **Project**: Fantrax Stats Parser UI
-**Last Updated**: January 5, 2026
+**Last Updated**: January 23, 2026
 
 ---
 
@@ -39,7 +39,7 @@ npm test -- --browsers=ChromeHeadlessNoSandbox --watch=false
 - **Requirement**: 100% of tests must pass
 - **Current**: 100% pass rate (200+ tests)
 - **Action on Failure**: Fix the failing test or update it if code changed
-- **Exception**: 5-8 known flaky tests (documented below)
+- **Exception**: None (don’t merge flaky tests; fix them)
 
 #### 2. ✅ Build Must Succeed
 
@@ -78,7 +78,8 @@ npm run test:coverage
   - >= 90% branches
 - **Action on Failure**: Add/update tests or refactor/simplify code until targets are met
 - **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
-- **Exception**: Temporary drops only on feature branches with a documented TODO and issue reference
+- **Contribution rule (required)**: every new/changed code path must be covered by tests (aim 100% coverage for the code you touched, including error/edge cases)
+- **Exception**: None for uncovered new/changed logic
 
 #### 5. ✅ Accessibility Must Not Regress
 
@@ -109,8 +110,8 @@ Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
 
 - Unit-test coverage must remain above the enforced coverage gate.
 - Long-term target is 100% statements/lines/functions and >=90% branches.
-- New or changed code must include tests so that overall coverage does not drop.
-- Any intentional exception must be temporary and explicitly documented in the relevant pull request or commit.
+- New/changed logic must be fully tested (aim 100% coverage for the code you touched, including error/edge cases).
+- Don’t merge changes that add uncovered new behavior.
 
 ### Testing Best Practices
 
@@ -169,27 +170,15 @@ describe("ComponentName", () => {
 
 ## ⚠️ Known Issues & Exceptions
 
-### Flaky Tests (May Fail Intermittently)
+### Headless Karma Infrastructure
 
-These tests have timing dependencies and may occasionally fail. This is acceptable:
+Sometimes Chrome headless launch can fail due to local environment issues (not the tests themselves).
 
-1. **NavigationComponent** (3 tests):
+**Protocol**:
 
-   - Tests involving change detection
-   - Tests involving router navigation timing
-
-2. **SeasonSwitcherComponent** (2 tests):
-
-   - Tests with filter updates (observable timing)
-
-3. **ReportSwitcherComponent** (1 test):
-   - Observable synchronization test
-
-**Protocol**: If these tests fail:
-
-1. Re-run the test suite
-2. If still failing after 2 retries, consider removing the test
-3. Document the decision in git commit message
+1. Re-run `npm run verify`
+2. If it still fails, run `npm ci` and retry
+3. If it still fails, treat it as a blocker and fix the root cause (don’t merge)
 
 ### Build Warnings (Acceptable)
 
