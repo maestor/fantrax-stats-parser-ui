@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -13,6 +14,7 @@ import type { Goalie, GoalieSeasonStats, Player, PlayerSeasonStats } from '@serv
   providers: [provideCharts(withDefaultRegisterables())],
 })
 export class PlayerCardGraphsComponent {
+  private document = inject(DOCUMENT);
   private translateService = inject(TranslateService);
 
   @Input({ required: true }) data!: Player | Goalie;
@@ -77,8 +79,108 @@ export class PlayerCardGraphsComponent {
   }
 
   ngOnInit(): void {
+    this.applyThemeToChartOptions();
+
     if (this.hasSeasons) {
       this.setupChartData();
+    }
+  }
+
+  private applyThemeToChartOptions(): void {
+    // Note: Angular Material v21 can emit token values using CSS `light-dark()`.
+    // Reading a CSS variable directly returns the raw `light-dark(...)` string, which
+    // Chart.js does not understand. Resolve via computed styles instead.
+    const textColor = this.resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f');
+    const gridColor = this.resolveCssColorVar('--mat-sys-outline-variant', 'rgba(0,0,0,0.2)');
+    const tooltipBg = this.resolveCssColorVar(
+      '--mat-sys-surface-container-high',
+      'rgba(0,0,0,0.8)',
+      'backgroundColor'
+    );
+
+    const plugins = this.lineChartOptions.plugins ?? {};
+    const scales = this.lineChartOptions.scales ?? {};
+
+    this.lineChartOptions = {
+      ...this.lineChartOptions,
+      plugins: {
+        ...plugins,
+        legend: {
+          ...(plugins.legend ?? {}),
+          labels: {
+            ...((plugins.legend as any)?.labels ?? {}),
+            color: textColor,
+          },
+        },
+        tooltip: {
+          ...((plugins as any).tooltip ?? {}),
+          titleColor: textColor,
+          bodyColor: textColor,
+          footerColor: textColor,
+          backgroundColor: tooltipBg,
+          borderColor: gridColor,
+          borderWidth: 1,
+        } as any,
+      },
+      scales: {
+        ...scales,
+        x: {
+          ...(scales['x'] ?? {}),
+          ticks: {
+            ...(((scales['x'] as any) ?? {})?.ticks ?? {}),
+            color: textColor,
+          },
+          grid: {
+            ...(((scales['x'] as any) ?? {})?.grid ?? {}),
+            color: gridColor,
+          },
+        },
+        y: {
+          ...(scales['y'] ?? {}),
+          ticks: {
+            ...(((scales['y'] as any) ?? {})?.ticks ?? {}),
+            color: textColor,
+          },
+          grid: {
+            ...(((scales['y'] as any) ?? {})?.grid ?? {}),
+            color: gridColor,
+          },
+        },
+      },
+    };
+  }
+
+  private resolveCssColorVar(
+    name: string,
+    fallback: string,
+    cssProperty: 'color' | 'backgroundColor' = 'color'
+  ): string {
+    try {
+      const body = this.document.body;
+      if (!body) {
+        return fallback;
+      }
+
+      const probe = this.document.createElement('span');
+      probe.setAttribute('aria-hidden', 'true');
+      probe.style.position = 'absolute';
+      probe.style.width = '0';
+      probe.style.height = '0';
+      probe.style.overflow = 'hidden';
+
+      if (cssProperty === 'backgroundColor') {
+        probe.style.backgroundColor = `var(${name})`;
+      } else {
+        probe.style.color = `var(${name})`;
+      }
+
+      body.appendChild(probe);
+      const computed = getComputedStyle(probe)[cssProperty];
+      probe.remove();
+
+      return computed?.trim() ? computed.trim() : fallback;
+    } catch {
+      return fallback;
     }
   }
 

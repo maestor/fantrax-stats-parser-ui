@@ -112,4 +112,155 @@ describe('PlayerCardGraphsComponent', () => {
     component.onGraphCheckboxKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
     expect(closeBtn.focus).toHaveBeenCalled();
   });
+
+  it('should apply themed colors when token-resolver returns values', () => {
+    // Do not stub global getComputedStyle: Chart.js also uses it during canvas init.
+    // Instead, stub the component's resolver and call the private theme method.
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+    themed.data = mockPlayer;
+
+    spyOn<any>(themed, 'resolveCssColorVar').and.callFake(
+      (name: string, fallback: string, cssProperty: 'color' | 'backgroundColor' = 'color') => {
+        if (name === '--mat-sys-on-surface') return 'rgb(10, 10, 10)';
+        if (name === '--mat-sys-outline-variant') return 'rgba(255, 0, 0, 0.3)';
+        if (name === '--mat-sys-surface-container-high' && cssProperty === 'backgroundColor') {
+          return 'rgb(20, 20, 20)';
+        }
+        return fallback;
+      }
+    );
+
+    (themed as any).applyThemeToChartOptions();
+
+    const plugins: any = themed.lineChartOptions.plugins;
+    expect(plugins.legend.labels.color).toBe('rgb(10, 10, 10)');
+    expect(plugins.tooltip.titleColor).toBe('rgb(10, 10, 10)');
+
+    const scales: any = themed.lineChartOptions.scales;
+    expect(scales.x.ticks.color).toBe('rgb(10, 10, 10)');
+    expect(scales.y.grid.color).toBe('rgba(255, 0, 0, 0.3)');
+  });
+
+  it('should ignore unrelated keydowns without side-effects', () => {
+    const event = {
+      key: 'Enter',
+      preventDefault: jasmine.createSpy('preventDefault'),
+    } as any;
+
+    component.onGraphCheckboxKeydown(event);
+    expect(event.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('should not throw on ArrowDown when close button is not provided', () => {
+    const event = {
+      key: 'ArrowDown',
+      preventDefault: jasmine.createSpy('preventDefault'),
+    } as any;
+
+    component.closeButtonEl = undefined;
+    component.onGraphCheckboxKeydown(event);
+
+    // No close button => no focus move, no preventDefault.
+    expect(event.preventDefault).not.toHaveBeenCalled();
+  });
+
+  it('should handle missing seasons and non-numeric values in chart data', () => {
+    // Force a year-gap so updateChartData hits the missing-season branch.
+    (component as any).chartYearsRange = [2023, 2024];
+    (component as any).chartLabels = ['23-24', '24-25'];
+
+    // Ensure score series is active.
+    component.chartSelections = { ...component.chartSelections, score: true };
+
+    // Provide only one season + a non-numeric string to hit parsing branches.
+    const seasonsWithGap: any[] = [
+      {
+        season: 2024,
+        score: 'abc',
+      },
+    ];
+
+    (component as any).updateChartData(seasonsWithGap);
+
+    const firstDataset: any = component.lineChartData.datasets[0];
+    expect(firstDataset.data[0]).toBeNull();
+    expect(firstDataset.data[1]).toBe(0);
+  });
+
+  it('should not rescale y-axis when there are no active series values', () => {
+    // Disable all series to hit the allValues.length === 0 branch.
+    component.chartSelections = component.chartStatKeys.reduce(
+      (acc, key) => ({ ...acc, [key]: false }),
+      {} as Record<string, boolean>
+    );
+
+    (component as any).chartYearsRange = [2024];
+    (component as any).chartLabels = ['24-25'];
+
+    (component as any).updateChartData([{ season: 2024, score: 10 } as any]);
+    expect(component.lineChartData.datasets.length).toBe(0);
+  });
+
+  it('resolveCssColorVar should compute a background color string when possible', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+
+    const value = (themed as any).resolveCssColorVar(
+      '--mat-sys-surface-container-high',
+      'rgba(0,0,0,0.8)',
+      'backgroundColor'
+    );
+
+    expect(typeof value).toBe('string');
+    expect(value.length).toBeGreaterThan(0);
+  });
+
+  it('onStatToggle should no-op when seasons are missing', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+    themed.data = { ...mockPlayer, seasons: undefined as any };
+
+    expect(() => themed.onStatToggle('score', { checked: true } as any)).not.toThrow();
+  });
+
+  it('should initialize missing y-scale options when rescaling', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+    themed.data = mockPlayer;
+
+    (themed as any).chartYearsRange = [2024];
+    (themed as any).chartLabels = ['24-25'];
+    themed.lineChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+    } as any;
+
+    // Ensure at least one series is active.
+    themed.chartSelections = { ...themed.chartSelections, score: true };
+    (themed as any).updateChartData([{ season: 2024, score: 10 } as any]);
+
+    const y: any = (themed.lineChartOptions.scales as any).y;
+    expect(y).toBeTruthy();
+    expect(y.min).toBe(0);
+    expect(y.max).toBeGreaterThan(0);
+    expect(y.ticks.stepSize).toBeGreaterThan(0);
+  });
+
+  it('resolveCssColorVar should fall back to the provided fallback on errors', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+
+    // Force an error from inside the resolver.
+    spyOn((themed as any).document, 'createElement').and.throwError('boom');
+
+    expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
+    expect(
+      (themed as any).resolveCssColorVar(
+        '--mat-sys-surface-container-high',
+        'rgba(0,0,0,0.8)',
+        'backgroundColor'
+      )
+    ).toBe('rgba(0,0,0,0.8)');
+  });
 });
