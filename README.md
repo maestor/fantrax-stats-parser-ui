@@ -124,10 +124,14 @@ E2E tests use **Playwright** to cover the main user flows (landing page layout, 
 
 ### Test Coverage Summary
 
-- ✅ **Services**: 100% coverage (ApiService, CacheService, StatsService, FilterService, TeamService)
-- ✅ **Base Components**: 100% coverage (Navigation, Footer)
-- ✅ **Shared Components**: 95% coverage (StatsTable, ControlPanel sub-components)
-- ✅ **Page Components**: Integration-style coverage (PlayerStats, GoalieStats, PlayerCard)
+Coverage is enforced in CI via `npm run verify` (headless unit tests with coverage + production build).
+
+- **Enforced coverage gate** (implementation under `src/`, test files excluded):
+	- >= 95% statements
+	- >= 95% lines
+	- >= 95% functions
+	- >= 85% branches
+- **Long-term target**: 100% statements/lines/functions and >= 90% branches
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
@@ -205,10 +209,10 @@ The application is fully responsive with optimized layouts for all screen sizes:
 When contributing, please ensure:
 
 1. All new features have corresponding tests
-2. Test coverage remains above 90%
+2. `npm run verify` passes (includes coverage gate + production build)
 3. Follow existing code style and patterns
 4. Run `npm run verify` before committing
-5. Update documentation as needed
+5. Update documentation when changes affect usage/behavior, scripts/workflows, or project standards
 
 In addition, treat accessibility as a hard requirement for every change. If a feature is not keyboard-accessible and properly labeled, it is not considered done.
 

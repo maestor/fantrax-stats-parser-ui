@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PlayerCardComponent } from './player-card.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -449,6 +450,96 @@ describe('PlayerCardComponent', () => {
         component.graphControlsExpanded = false;
         fixture.detectChanges();
         expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('false');
+      });
+    });
+
+    describe('Graph checkbox keyboard shortcuts', () => {
+      it('ArrowDown should focus close button when available', () => {
+        const btn = document.createElement('button');
+        const focusSpy = spyOn(btn, 'focus');
+        component.closeButton = new ElementRef(btn);
+
+        const event = {
+          key: 'ArrowDown',
+          preventDefault: jasmine.createSpy('preventDefault'),
+        } as any as KeyboardEvent;
+
+        component.onGraphCheckboxKeydown(event);
+
+        expect(event.preventDefault).toHaveBeenCalled();
+        expect(focusSpy).toHaveBeenCalled();
+      });
+
+      it('ArrowDown should do nothing if close button is missing', () => {
+        component.closeButton = undefined;
+
+        const event = {
+          key: 'ArrowDown',
+          preventDefault: jasmine.createSpy('preventDefault'),
+        } as any as KeyboardEvent;
+
+        component.onGraphCheckboxKeydown(event);
+
+        expect(event.preventDefault).not.toHaveBeenCalled();
+      });
+
+      it('ArrowUp should preventDefault and focus active tab header', () => {
+        const focusHeaderSpy = spyOn<any>(component as any, 'focusActiveTabHeader');
+
+        const event = {
+          key: 'ArrowUp',
+          preventDefault: jasmine.createSpy('preventDefault'),
+        } as any as KeyboardEvent;
+
+        component.onGraphCheckboxKeydown(event);
+
+        expect(event.preventDefault).toHaveBeenCalled();
+        expect(focusHeaderSpy).toHaveBeenCalled();
+      });
+
+      it('should ignore other keys', () => {
+        const focusHeaderSpy = spyOn<any>(component as any, 'focusActiveTabHeader');
+
+        const event = {
+          key: 'Escape',
+          preventDefault: jasmine.createSpy('preventDefault'),
+        } as any as KeyboardEvent;
+
+        component.onGraphCheckboxKeydown(event);
+
+        expect(event.preventDefault).not.toHaveBeenCalled();
+        expect(focusHeaderSpy).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('focusActiveTabHeader', () => {
+      it('should focus active tab element when present in host DOM', () => {
+        const active: { focus: () => void } = {
+          focus: jasmine.createSpy('focus'),
+        };
+
+        const hostEl = (component as any).host.nativeElement as HTMLElement;
+        spyOn(hostEl, 'querySelector').and.returnValue(active as any);
+
+        (component as any).focusActiveTabHeader();
+
+        expect(active.focus).toHaveBeenCalled();
+      });
+
+      it('should fall back to document query when host does not contain tab header', () => {
+        const hostEl = (component as any).host.nativeElement as HTMLElement;
+        spyOn(hostEl, 'querySelector').and.returnValue(null);
+
+        const doc = (component as any).document as Document;
+        const fallback: { focus: () => void } = {
+          focus: jasmine.createSpy('focus'),
+        };
+
+        spyOn(doc, 'querySelector').and.returnValue(fallback as any);
+
+        (component as any).focusActiveTabHeader();
+
+        expect(fallback.focus).toHaveBeenCalled();
       });
     });
   });

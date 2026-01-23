@@ -2,10 +2,25 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { SeasonSwitcherComponent } from './season-switcher.component';
 import { ApiService, Season } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
+import { TeamService } from '@services/team.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { of, throwError } from 'rxjs';
+
+class TeamServiceMock {
+  private selectedTeamIdSubject = new BehaviorSubject<string>('1');
+  selectedTeamId$ = this.selectedTeamIdSubject.asObservable();
+
+  get selectedTeamId(): string {
+    return this.selectedTeamIdSubject.value;
+  }
+
+  setTeamId(teamId: string): void {
+    this.selectedTeamIdSubject.next(teamId);
+  }
+}
 
 describe('SeasonSwitcherComponent', () => {
   let component: SeasonSwitcherComponent;
@@ -37,6 +52,7 @@ describe('SeasonSwitcherComponent', () => {
       providers: [
         { provide: ApiService, useValue: apiServiceMock },
         FilterService,
+        { provide: TeamService, useClass: TeamServiceMock },
       ],
     }).compileComponents();
 
@@ -131,6 +147,20 @@ describe('SeasonSwitcherComponent', () => {
       expect(apiService.getSeasons).toHaveBeenCalledWith('playoffs');
     }));
 
+    it('should include teamId when a non-default team is selected', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
+      tick();
+
+      (apiService.getSeasons as jasmine.Spy).calls.reset();
+
+      const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+      teamService.setTeamId('2');
+      tick();
+
+      expect(apiService.getSeasons).toHaveBeenCalledWith('regular', '2');
+    }));
+
     it('should show all seasons label when selectedSeason is all', fakeAsync(() => {
       component.context = 'player';
       component.ngOnInit();
@@ -150,6 +180,22 @@ describe('SeasonSwitcherComponent', () => {
       expect(trigger).toBeTruthy();
       expect(trigger?.textContent).toContain('Kaikki kaudet');
     }));
+  });
+
+  describe('loadSeasons', () => {
+    it('should clear seasons and updateSelectedSeasonText on API error', () => {
+      component.selectedSeason = 2024;
+      component.seasons = [...mockSeasons];
+
+      (apiService.getSeasons as jasmine.Spy).and.returnValue(
+        throwError(() => new Error('boom'))
+      );
+
+      (component as any).loadSeasons('regular');
+
+      expect(component.seasons).toEqual([]);
+      expect(component.selectedSeasonText).toBeUndefined();
+    });
   });
 
   describe('changeSeason', () => {

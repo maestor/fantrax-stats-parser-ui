@@ -159,6 +159,7 @@ The API endpoint is configured in the service layer. Check:
 - [ ] Code follows Angular style guide
 - [ ] No console.log statements in production code
 - [ ] Unit tests updated/added
+- [ ] `npm run verify` passes (coverage thresholds + production build)
 - [ ] No TypeScript errors
 - [ ] No linting errors
 - [ ] Components properly typed
@@ -166,6 +167,7 @@ The API endpoint is configured in the service layer. Check:
 - [ ] Material components used correctly
 - [ ] Responsive design maintained
 - [ ] Accessibility verified (keyboard, focus, labels; no focus in collapsed content)
+- [ ] Documentation updated when changes affect usage/behavior or project standards
 
 ## Debugging Tips
 

@@ -6,7 +6,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SimpleChange } from '@angular/core';
+import { ElementRef, SimpleChange } from '@angular/core';
 import { Player, Goalie } from '@services/api.service';
 import { PlayerCardComponent } from '@shared/player-card/player-card.component';
 import { of } from 'rxjs';
@@ -166,6 +166,227 @@ describe('StatsTableComponent', () => {
 
       expect(event.preventDefault).toHaveBeenCalled();
       expect(selectSpy).toHaveBeenCalledWith(mockPlayerData[0]);
+    });
+
+    it('should move focus with Arrow keys, Home/End and PageUp/PageDown', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+      const event = {
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onRowKeydown({ ...event, key: 'ArrowDown' } as any, mockPlayerData[0], 5);
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(focusSpy).toHaveBeenCalledWith(6);
+
+      component.onRowKeydown({ ...event, key: 'ArrowUp' } as any, mockPlayerData[0], 5);
+      expect(focusSpy).toHaveBeenCalledWith(4);
+
+      component.onRowKeydown({ ...event, key: 'Home' } as any, mockPlayerData[0], 5);
+      expect(focusSpy).toHaveBeenCalledWith(0);
+
+      spyOn<any>(component as any, 'getRowCount').and.returnValue(20);
+      component.onRowKeydown({ ...event, key: 'End' } as any, mockPlayerData[0], 5);
+      expect(focusSpy).toHaveBeenCalledWith(19);
+
+      component.onRowKeydown({ ...event, key: 'PageDown' } as any, mockPlayerData[0], 5);
+      expect(focusSpy).toHaveBeenCalledWith(15);
+
+      component.onRowKeydown({ ...event, key: 'PageUp' } as any, mockPlayerData[0], 5);
+      expect(focusSpy).toHaveBeenCalledWith(-5);
+    });
+
+    it('should ignore unhandled keys on row', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+      const event = {
+        key: 'Escape',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onRowKeydown(event, mockPlayerData[0], 0);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+      expect(focusSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('search and header key handling', () => {
+    it('onSearchKeydown should ignore other keys', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+      const event = {
+        key: 'ArrowUp',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onSearchKeydown(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+      expect(focusSpy).not.toHaveBeenCalled();
+    });
+
+    it('onSearchKeydown should not move focus when there are no rows', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+      spyOn<any>(component as any, 'getRowCount').and.returnValue(0);
+
+      const event = {
+        key: 'ArrowDown',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onSearchKeydown(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+      expect(focusSpy).not.toHaveBeenCalled();
+    });
+
+    it('onSearchKeydown should focus the active row when ArrowDown is pressed', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+      spyOn<any>(component as any, 'getRowCount').and.returnValue(2);
+      component.activeRowIndex = 1;
+
+      const event = {
+        key: 'ArrowDown',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onSearchKeydown(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(focusSpy).toHaveBeenCalledWith(1);
+    });
+
+    it('onHeaderKeydown ArrowDown should focus first row when rows exist', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+      spyOn<any>(component as any, 'getRowCount').and.returnValue(3);
+
+      const event = {
+        key: 'ArrowDown',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onHeaderKeydown(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(focusSpy).toHaveBeenCalledWith(0);
+    });
+
+    it('onHeaderKeydown ArrowDown should do nothing when there are no rows', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+      spyOn<any>(component as any, 'getRowCount').and.returnValue(0);
+
+      const event = {
+        key: 'ArrowDown',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onHeaderKeydown(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+      expect(focusSpy).not.toHaveBeenCalled();
+    });
+
+    it('onHeaderKeydown ArrowUp should focus the search input when available', () => {
+      const input = document.createElement('input');
+      const focusSpy = spyOn(input, 'focus');
+      component.searchInput = new ElementRef(input);
+
+      const event = {
+        key: 'ArrowUp',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onHeaderKeydown(event);
+
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(focusSpy).toHaveBeenCalled();
+    });
+
+    it('onHeaderKeydown ArrowUp should do nothing when search input is missing', () => {
+      component.searchInput = undefined;
+      const event = {
+        key: 'ArrowUp',
+        preventDefault: jasmine.createSpy('preventDefault'),
+      } as any as KeyboardEvent;
+
+      component.onHeaderKeydown(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('focus management helpers', () => {
+    it('ensureActiveRowInRange should reset to 0 when there are no rows', () => {
+      spyOn<any>(component as any, 'getRowCount').and.returnValue(0);
+      component.activeRowIndex = 5;
+
+      (component as any).ensureActiveRowInRange();
+
+      expect(component.activeRowIndex).toBe(0);
+    });
+
+    it('ensureActiveRowInRange should clamp negative and too-large indices', () => {
+      spyOn<any>(component as any, 'getRowCount').and.returnValue(3);
+
+      component.activeRowIndex = -10;
+      (component as any).ensureActiveRowInRange();
+      expect(component.activeRowIndex).toBe(0);
+
+      component.activeRowIndex = 999;
+      (component as any).ensureActiveRowInRange();
+      expect(component.activeRowIndex).toBe(2);
+    });
+
+    it('focusRow should no-op when there are no rendered rows', () => {
+      component.dataRows = {
+        toArray: () => [],
+        length: 0,
+      } as any;
+
+      component.activeRowIndex = 2;
+      (component as any).focusRow(1);
+
+      expect(component.activeRowIndex).toBe(2);
+    });
+
+    it('focusRow should clamp index and focus/scroll the row element', () => {
+      const row0 = document.createElement('div');
+      row0.tabIndex = 0;
+      const row1 = document.createElement('div');
+      row1.tabIndex = 0;
+
+      const focus0 = spyOn(row0, 'focus');
+      const focus1 = spyOn(row1, 'focus');
+
+      // scrollIntoView isn't implemented in JSDOM; stub as needed.
+      (row0 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
+      (row1 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
+
+      component.dataRows = {
+        toArray: () => [new ElementRef(row0), new ElementRef(row1)],
+        length: 2,
+      } as any;
+
+      (component as any).focusRow(999);
+      expect(component.activeRowIndex).toBe(1);
+      expect(focus1).toHaveBeenCalled();
+
+      (component as any).focusRow(-10);
+      expect(component.activeRowIndex).toBe(0);
+      expect(focus0).toHaveBeenCalled();
+    });
+  });
+
+  describe('accessibility labeling', () => {
+    it('getRowAriaLabel should include player name when present', () => {
+      const instantSpy = spyOn(translate, 'instant').and.callThrough();
+      const label = component.getRowAriaLabel({ name: 'Test Name' } as any);
+      expect(instantSpy).toHaveBeenCalledWith('a11y.openPlayerCard', { name: 'Test Name' });
+      expect(label).toContain('Test Name');
+    });
+
+    it('getRowAriaLabel should still call translate with empty name when missing', () => {
+      const instantSpy = spyOn(translate, 'instant').and.callThrough();
+      component.getRowAriaLabel({} as any);
+      expect(instantSpy).toHaveBeenCalledWith('a11y.openPlayerCard', { name: '' });
     });
   });
 
