@@ -106,7 +106,7 @@ describe('FilterService', () => {
       });
     });
 
-    it('should update player filters independently of goalie filters', (done) => {
+    it('should sync reportType and season to goalie filters', (done) => {
       service.updatePlayerFilters({ reportType: 'playoffs', season: 2020 });
 
       service.playerFilters$.pipe(take(1)).subscribe((playerFilters) => {
@@ -114,8 +114,8 @@ describe('FilterService', () => {
         expect(playerFilters.season).toBe(2020);
 
         service.goalieFilters$.pipe(take(1)).subscribe((goalieFilters) => {
-          expect(goalieFilters.reportType).toBe('regular');
-          expect(goalieFilters.season).toBeUndefined();
+          expect(goalieFilters.reportType).toBe('playoffs');
+          expect(goalieFilters.season).toBe(2020);
           done();
         });
       });
@@ -223,6 +223,21 @@ describe('FilterService', () => {
         });
       });
     });
+
+    it('should sync reportType and season to player filters', (done) => {
+      service.updateGoalieFilters({ reportType: 'playoffs', season: 2021 });
+
+      service.goalieFilters$.pipe(take(1)).subscribe((goalieFilters) => {
+        expect(goalieFilters.reportType).toBe('playoffs');
+        expect(goalieFilters.season).toBe(2021);
+
+        service.playerFilters$.pipe(take(1)).subscribe((playerFilters) => {
+          expect(playerFilters.reportType).toBe('playoffs');
+          expect(playerFilters.season).toBe(2021);
+          done();
+        });
+      });
+    });
   });
 
   describe('resetPlayerFilters', () => {
@@ -237,8 +252,9 @@ describe('FilterService', () => {
       service.resetPlayerFilters();
 
       service.playerFilters$.pipe(take(1)).subscribe((filters) => {
-        expect(filters.reportType).toBe('regular');
-        expect(filters.season).toBeUndefined();
+        // Global filters are shared across contexts and are not reset here.
+        expect(filters.reportType).toBe('playoffs');
+        expect(filters.season).toBe(2024);
         expect(filters.statsPerGame).toBe(false);
         expect(filters.minGames).toBe(0);
         done();
@@ -246,20 +262,14 @@ describe('FilterService', () => {
     });
 
     it('should not affect goalie filters when resetting player filters', (done) => {
-      service.updateGoalieFilters({
-        reportType: 'playoffs',
-        season: 2023,
-      });
-      service.updatePlayerFilters({
-        reportType: 'playoffs',
-        season: 2024,
-      });
+      service.updateGoalieFilters({ statsPerGame: true, minGames: 5 });
+      service.updatePlayerFilters({ statsPerGame: true, minGames: 20 });
 
       service.resetPlayerFilters();
 
       service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
-        expect(filters.reportType).toBe('playoffs');
-        expect(filters.season).toBe(2023);
+        expect(filters.statsPerGame).toBe(true);
+        expect(filters.minGames).toBe(5);
         done();
       });
     });
@@ -277,8 +287,9 @@ describe('FilterService', () => {
       service.resetGoalieFilters();
 
       service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
-        expect(filters.reportType).toBe('regular');
-        expect(filters.season).toBeUndefined();
+        // Global filters are shared across contexts and are not reset here.
+        expect(filters.reportType).toBe('playoffs');
+        expect(filters.season).toBe(2024);
         expect(filters.statsPerGame).toBe(false);
         expect(filters.minGames).toBe(0);
         done();
@@ -286,20 +297,14 @@ describe('FilterService', () => {
     });
 
     it('should not affect player filters when resetting goalie filters', (done) => {
-      service.updatePlayerFilters({
-        reportType: 'playoffs',
-        season: 2024,
-      });
-      service.updateGoalieFilters({
-        reportType: 'playoffs',
-        season: 2023,
-      });
+      service.updatePlayerFilters({ statsPerGame: true, minGames: 10 });
+      service.updateGoalieFilters({ statsPerGame: true, minGames: 5 });
 
       service.resetGoalieFilters();
 
       service.playerFilters$.pipe(take(1)).subscribe((filters) => {
-        expect(filters.reportType).toBe('playoffs');
-        expect(filters.season).toBe(2024);
+        expect(filters.statsPerGame).toBe(true);
+        expect(filters.minGames).toBe(10);
         done();
       });
     });
