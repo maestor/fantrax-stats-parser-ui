@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { ApiService, Team } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
@@ -19,6 +19,7 @@ export class TeamSwitcherComponent implements OnInit, OnDestroy {
   private teamService = inject(TeamService);
   private filterService = inject(FilterService);
   private router = inject(Router);
+  private translate = inject(TranslateService);
   private destroy$ = new Subject<void>();
 
   teams: Team[] = [];
@@ -39,7 +40,7 @@ export class TeamSwitcherComponent implements OnInit, OnDestroy {
 
     this.apiService.getTeams().pipe(takeUntil(this.destroy$)).subscribe({
       next: (teams) => {
-        this.teams = teams;
+        this.teams = this.sortTeamsByLabel(teams);
         this.loading = false;
         this.loadError = false;
       },
@@ -49,6 +50,22 @@ export class TeamSwitcherComponent implements OnInit, OnDestroy {
         this.loadError = true;
       },
     });
+  }
+
+  private sortTeamsByLabel(teams: Team[]): Team[] {
+    const collator = new Intl.Collator(undefined, { sensitivity: 'base' });
+
+    return [...teams].sort((a, b) => {
+      const labelA = this.getTeamLabel(a);
+      const labelB = this.getTeamLabel(b);
+      return collator.compare(labelA, labelB);
+    });
+  }
+
+  private getTeamLabel(team: Team): string {
+    const key = `teams.${team.name}`;
+    const translated = this.translate.instant(key);
+    return translated === key ? team.name : translated;
   }
 
   changeTeam(event: MatSelectChange): void {
