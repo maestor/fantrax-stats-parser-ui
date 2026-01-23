@@ -170,6 +170,20 @@ describe("ComponentName", () => {
 
 ## ⚠️ Known Issues & Exceptions
 
+### npm Warning About Node 24
+
+If you see a warning like:
+
+```text
+npm WARN npm npm does not support Node.js v24.x
+```
+
+You can ignore it for this project.
+
+- The project is intended to run on **Node.js 24.x** (see `package.json` `engines`).
+- The warning is emitted by npm and does not indicate a project incompatibility.
+- Treat only errors that stop scripts (non-zero exit codes) as blockers.
+
 ### Headless Karma Infrastructure
 
 Sometimes Chrome headless launch can fail due to local environment issues (not the tests themselves).

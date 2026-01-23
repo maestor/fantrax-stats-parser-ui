@@ -97,6 +97,18 @@ On desktop, the Graphs tab shows a long list of stat checkboxes. To keep tab nav
   - `ArrowUp` focuses the active tab header (quickly return to tab navigation)
   - `ArrowDown` focuses the dialog close button
 
+### Help dialog shortcut
+
+The app provides a small help dialog (opened from the info icon next to the title) and a global keyboard shortcut:
+
+- Press `?` to open the help dialog
+  - Also supports `Shift + /` (common layout behavior)
+- The shortcut must **not** trigger while typing in:
+  - `<input>`, `<textarea>`, `<select>`
+  - contenteditable elements
+
+This keeps the shortcut discoverable without interfering with normal text entry.
+
 ## Development Checklist (Always)
 
 Before you consider a feature “done”:

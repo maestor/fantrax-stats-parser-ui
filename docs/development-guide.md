@@ -6,6 +6,8 @@
 2. **npm**: Comes with Node.js
 3. **Backend**: [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) running
 
+Note: If you see `npm WARN npm npm does not support Node.js v24.x`, see `docs/project-requirements.md` → "npm Warning About Node 24".
+
 ## Initial Setup
 
 ```bash
