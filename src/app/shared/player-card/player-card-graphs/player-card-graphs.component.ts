@@ -24,29 +24,24 @@ export class PlayerCardGraphsComponent {
   // Track graph controls visibility on mobile
   graphControlsExpanded = false;
 
-  readonly chartStatKeys: string[] = this.isGoalie
-    ? ['score', 'scoreAdjustedByGames', 'games', 'wins', 'saves', 'shutouts']
-    : [
-        'score',
-        'scoreAdjustedByGames',
-        'games',
-        'goals',
-        'assists',
-        'points',
-        'shots',
-        'penalties',
-        'hits',
-        'blocks',
-      ];
+  get chartStatKeys(): string[] {
+    return this.isGoalie
+      ? ['score', 'scoreAdjustedByGames', 'games', 'wins', 'saves', 'shutouts']
+      : [
+          'score',
+          'scoreAdjustedByGames',
+          'games',
+          'goals',
+          'assists',
+          'points',
+          'shots',
+          'penalties',
+          'hits',
+          'blocks',
+        ];
+  }
 
-  chartSelections: Record<string, boolean> = this.chartStatKeys.reduce(
-    (acc, key) => ({
-      ...acc,
-      // Default: only score fields selected; others via toggle
-      [key]: key === 'score' || key === 'scoreAdjustedByGames',
-    }),
-    {} as Record<string, boolean>
-  );
+  chartSelections: Record<string, boolean> = {};
 
   chartLabels: string[] = [];
   chartYearsRange: number[] = [];
@@ -80,6 +75,17 @@ export class PlayerCardGraphsComponent {
 
   ngOnInit(): void {
     this.applyThemeToChartOptions();
+
+    if (Object.keys(this.chartSelections).length === 0) {
+      this.chartSelections = this.chartStatKeys.reduce(
+        (acc, key) => ({
+          ...acc,
+          // Default: only score fields selected; others via toggle
+          [key]: key === 'score' || key === 'scoreAdjustedByGames',
+        }),
+        {} as Record<string, boolean>
+      );
+    }
 
     if (this.hasSeasons) {
       this.setupChartData();

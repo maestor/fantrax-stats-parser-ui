@@ -260,6 +260,59 @@ describe('SeasonSwitcherComponent', () => {
       expect(component.selectedSeason).toBe(2024);
       expect(result).toBe(2024);
     }));
+
+    it('should treat non-numeric season strings as all (undefined filter season)', fakeAsync(() => {
+      component.context = 'player';
+
+      const updateSpy = spyOn(filterService, 'updatePlayerFilters').and.callThrough();
+      const event = { value: 'not-a-season' } as unknown as MatSelectChange;
+
+      component.changeSeason(event);
+      tick();
+
+      expect(component.selectedSeason).toBe('all');
+      expect(updateSpy).toHaveBeenCalledWith({ season: undefined });
+    }));
+  });
+
+  describe('loadSeasons normalization + invalid selected season handling', () => {
+    it('should normalize numeric-string seasons and keep invalid seasons unchanged', () => {
+      (apiService.getSeasons as jasmine.Spy).and.returnValue(
+        of([
+          { season: '2024', text: '2024-25' } as any,
+          { season: 'oops', text: 'N/A' } as any,
+        ])
+      );
+
+      (component as any).loadSeasons('regular');
+
+      expect(component.seasons.some((s) => s.season === 2024)).toBeTrue();
+      expect(component.seasons.some((s: any) => s.season === 'oops')).toBeTrue();
+    });
+
+    it('should reset player season filter when selectedSeason is not present in loaded seasons', () => {
+      component.context = 'player';
+      component.selectedSeason = 2099;
+
+      const updateSpy = spyOn(filterService, 'updatePlayerFilters').and.callThrough();
+
+      (apiService.getSeasons as jasmine.Spy).and.returnValue(of(mockSeasons));
+      (component as any).loadSeasons('regular');
+
+      expect(updateSpy).toHaveBeenCalledWith({ season: undefined });
+    });
+
+    it('should reset goalie season filter when selectedSeason is not present in loaded seasons', () => {
+      component.context = 'goalie';
+      component.selectedSeason = 2099;
+
+      const updateSpy = spyOn(filterService, 'updateGoalieFilters').and.callThrough();
+
+      (apiService.getSeasons as jasmine.Spy).and.returnValue(of(mockSeasons));
+      (component as any).loadSeasons('regular');
+
+      expect(updateSpy).toHaveBeenCalledWith({ season: undefined });
+    });
   });
 
   describe('ngOnDestroy', () => {

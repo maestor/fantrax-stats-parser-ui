@@ -106,6 +106,23 @@ describe('ApiService', () => {
       req.flush(mockSeasons);
     });
 
+    it('should treat teamId "1" as default (no query param, no team cache suffix)', (done) => {
+      const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
+
+      service.getSeasons('regular', '1').subscribe((seasons) => {
+        expect(seasons).toEqual(mockSeasons);
+        const cachedData = cacheService.get<Season[]>('seasons-regular');
+        expect(cachedData).toEqual(mockSeasons);
+        done();
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return r.url === `${API_URL}/seasons/regular` && !r.params.has('teamId');
+      });
+      expect(req.request.method).toBe('GET');
+      req.flush(mockSeasons);
+    });
+
     it('should handle API errors gracefully', (done) => {
       const consoleErrorSpy = spyOn(console, 'error');
 

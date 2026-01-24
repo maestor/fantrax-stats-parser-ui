@@ -9,7 +9,20 @@ import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
 import { ViewportService } from '@services/viewport.service';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
+
+class TeamServiceMock {
+  private selectedTeamIdSubject = new BehaviorSubject<string>('1');
+  selectedTeamId$ = this.selectedTeamIdSubject.asObservable();
+
+  get selectedTeamId(): string {
+    return this.selectedTeamIdSubject.value;
+  }
+
+  setTeamId(teamId: string): void {
+    this.selectedTeamIdSubject.next(teamId);
+  }
+}
 
 describe('GoalieStatsComponent', () => {
   let component: GoalieStatsComponent;
@@ -33,13 +46,7 @@ describe('GoalieStatsComponent', () => {
         provideHttpClient(),
         { provide: ApiService, useValue: apiServiceMock },
         { provide: ViewportService, useValue: { isMobile$: of(false) } },
-        {
-          provide: TeamService,
-          useValue: {
-            selectedTeamId$: of('1'),
-            selectedTeamId: '1',
-          },
-        },
+        { provide: TeamService, useClass: TeamServiceMock },
       ],
     }).compileComponents();
 
@@ -285,6 +292,22 @@ describe('GoalieStatsComponent', () => {
     expect(component.tableData).toEqual(mockGoalies);
     expect(component.maxGames).toBe(3);
     expect(component.loading).toBe(false);
+  });
+
+  it('should include teamId when a non-default team is selected', () => {
+    apiServiceMock.getGoalieData.and.returnValue(of([]));
+    component.ngOnInit();
+
+    apiServiceMock.getGoalieData.calls.reset();
+
+    const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+    teamService.setTeamId('2');
+
+    expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: undefined,
+      teamId: '2',
+    });
   });
 
   it('should complete destroy$ on ngOnDestroy', () => {

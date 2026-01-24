@@ -263,4 +263,89 @@ describe('PlayerCardGraphsComponent', () => {
       )
     ).toBe('rgba(0,0,0,0.8)');
   });
+
+  it('should use goalie stat keys when data is a goalie', () => {
+    const goalieSeasons: any[] = [
+      { season: 2024, score: 10, scoreAdjustedByGames: 0.2, games: 40, wins: 20, saves: 900, shutouts: 4 },
+      { season: 2023, score: 8, scoreAdjustedByGames: 0.18, games: 38, wins: 18, saves: 850, shutouts: 3 },
+    ];
+
+    const goalie: any = {
+      name: 'Goalie One',
+      score: 0,
+      scoreAdjustedByGames: 0,
+      games: 40,
+      wins: 20,
+      saves: 900,
+      shutouts: 4,
+      seasons: goalieSeasons,
+    };
+
+    const goalieFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const goalieComponent = goalieFixture.componentInstance;
+
+    goalieComponent.data = goalie;
+    goalieFixture.detectChanges();
+
+    expect(goalieComponent.isGoalie).toBeTrue();
+    expect(goalieComponent.chartStatKeys).toContain('wins');
+    expect(goalieComponent.chartStatKeys).toContain('saves');
+    expect(goalieComponent.chartStatKeys).toContain('shutouts');
+
+    goalieComponent.onStatToggle('wins', { checked: true } as any);
+    goalieFixture.detectChanges();
+    expect(goalieComponent.lineChartData.datasets.length).toBeGreaterThan(0);
+  });
+
+  it('should set y-axis stepSize to 1 when maxValue is 0', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+    themed.data = mockPlayer;
+
+    (themed as any).chartYearsRange = [2024];
+    (themed as any).chartLabels = ['24-25'];
+    themed.chartSelections = { score: true } as any;
+
+    (themed as any).updateChartData([{ season: 2024, score: 0 } as any]);
+
+    const y: any = (themed.lineChartOptions.scales as any).y;
+    expect(y.ticks.stepSize).toBe(1);
+    expect(y.max).toBe(5);
+  });
+
+  it('resolveCssColorVar should fall back when document.body is missing', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+
+    (themed as any).document = { body: null };
+    expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
+  });
+
+  it('resolveCssColorVar should fall back when computed style is empty', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+
+    spyOn(window as any, 'getComputedStyle').and.returnValue({
+      color: '   ',
+      backgroundColor: '   ',
+    } as any);
+
+    expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
+  });
+
+  it('applyThemeToChartOptions should initialize missing plugins/scales', () => {
+    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+    const themed = themedFixture.componentInstance;
+
+    themed.lineChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+    } as any;
+
+    spyOn<any>(themed, 'resolveCssColorVar').and.returnValue('rgb(1, 2, 3)');
+    (themed as any).applyThemeToChartOptions();
+
+    expect(themed.lineChartOptions.plugins).toBeTruthy();
+    expect(themed.lineChartOptions.scales).toBeTruthy();
+  });
 });

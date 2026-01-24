@@ -511,4 +511,54 @@ describe('AppComponent', () => {
       expect(snackBar.open.calls.count()).toBe(2);
     }));
   });
+
+  describe('activateUpdateAndReload', () => {
+    it('should delegate to PwaUpdateService.activateAndReload', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      app.activateUpdateAndReload();
+
+      expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
+    });
+  });
+
+  describe('help keydown guards', () => {
+    it('should not open help dialog when modifier keys are pressed', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      app.onDocumentKeydown({
+        key: '?',
+        altKey: true,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        preventDefault: jasmine.createSpy('preventDefault'),
+        target: document.body,
+      } as any);
+
+      expect(dialog.open).not.toHaveBeenCalled();
+    });
+
+    it('should not open help dialog when target is contentEditable', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      const editable = document.createElement('div');
+      editable.contentEditable = 'true';
+
+      app.onDocumentKeydown({
+        key: '?',
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        preventDefault: jasmine.createSpy('preventDefault'),
+        target: editable,
+      } as any);
+
+      expect(dialog.open).not.toHaveBeenCalled();
+    });
+  });
 });
