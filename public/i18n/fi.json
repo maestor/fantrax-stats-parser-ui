@@ -25,6 +25,10 @@
     "closeSettingsDrawer": "Sulje asetuspaneeli",
     "reloadToUpdate": "Päivitä sovellus"
   },
+  "pwa": {
+    "updateAvailable": "Päivitys tarjolla!",
+    "updateAction": "Päivitä"
+  },
   "helpDialog": {
     "title": "Tietoja sovelluksesta",
     "close": "Sulje",

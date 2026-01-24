@@ -1,14 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { BehaviorSubject, filter, firstValueFrom, of, Subject, throwError } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ViewportService } from '@services/viewport.service';
 import { ApiService } from '@services/api.service';
 import { TeamService } from '@services/team.service';
 import { DrawerContextService } from '@services/drawer-context.service';
+import { PwaUpdateService } from '@services/pwa-update.service';
 
 class TeamServiceMock {
   private readonly selectedTeamIdSubject = new BehaviorSubject<string>('1');
@@ -23,14 +25,41 @@ class TeamServiceMock {
   }
 }
 
+class PwaUpdateServiceMock {
+  private readonly updateAvailableSubject = new BehaviorSubject(false);
+  readonly updateAvailable$ = this.updateAvailableSubject.asObservable();
+
+  readonly activateAndReload = jasmine.createSpy('activateAndReload');
+
+  setUpdateAvailable(value: boolean): void {
+    this.updateAvailableSubject.next(value);
+  }
+}
+
 describe('AppComponent', () => {
   let translateService: TranslateService;
   let titleService: Title;
   let dialog: { open: jasmine.Spy };
   let apiServiceMock: jasmine.SpyObj<Pick<ApiService, 'getTeams' | 'getSeasons'>>;
+  let pwaUpdateService: PwaUpdateServiceMock;
+  let snackBar: jasmine.SpyObj<Pick<MatSnackBar, 'open'>>;
+  let snackBarAction$: Subject<void>;
+  let snackBarAfterDismissed$: Subject<{ dismissedByAction: boolean }>;
 
   beforeEach(async () => {
     dialog = { open: jasmine.createSpy('open') };
+
+    pwaUpdateService = new PwaUpdateServiceMock();
+
+    snackBarAction$ = new Subject<void>();
+    snackBarAfterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
+    snackBar = jasmine.createSpyObj<Pick<MatSnackBar, 'open'>>('MatSnackBar', [
+      'open',
+    ]);
+    snackBar.open.and.returnValue({
+      onAction: () => snackBarAction$.asObservable(),
+      afterDismissed: () => snackBarAfterDismissed$.asObservable(),
+    } as any);
 
     apiServiceMock = jasmine.createSpyObj<Pick<ApiService, 'getTeams' | 'getSeasons'>>(
       'ApiService',
@@ -51,6 +80,8 @@ describe('AppComponent', () => {
       ],
     })
       .overrideProvider(MatDialog, { useValue: dialog })
+      .overrideProvider(PwaUpdateService, { useValue: pwaUpdateService })
+      .overrideProvider(MatSnackBar, { useValue: snackBar })
       .compileComponents();
 
     translateService = TestBed.inject(TranslateService);
@@ -281,5 +312,203 @@ describe('AppComponent', () => {
       expect((firstRow as any).scrollIntoView).toHaveBeenCalled();
       expect((firstRow as any).focus).toHaveBeenCalledWith({ preventScroll: true });
     });
+  });
+
+  describe('PWA update snackbar', () => {
+    it('should not open snackbar before an update is available (defensive no-op)', fakeAsync(() => {
+      spyOn(translateService, 'get').and.returnValue(of('Test Title'));
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      (fixture.componentInstance as any).openUpdateAvailableSnackbar();
+      tick();
+
+      expect(snackBar.open).not.toHaveBeenCalled();
+    }));
+
+    it('should open a persistent snackbar when an update becomes available', fakeAsync(() => {
+      spyOn(translateService, 'get').and.callFake((key: any) => {
+        if (key === 'pageTitle') return of('Test Title');
+        if (Array.isArray(key) && key.includes('pwa.updateAvailable')) {
+          return of({
+            'pwa.updateAvailable': 'Päivitys tarjolla!',
+            'pwa.updateAction': 'Päivitä',
+          });
+        }
+        return of('');
+      });
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+
+      expect(snackBar.open).toHaveBeenCalledWith(
+        'Päivitys tarjolla!',
+        'Päivitä',
+        jasmine.objectContaining({
+          duration: undefined,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        })
+      );
+    }));
+
+    it('should not open snackbar if update is no longer available when translations resolve', fakeAsync(() => {
+      const translations$ = new Subject<any>();
+      spyOn(translateService, 'get').and.callFake((key: any) => {
+        if (key === 'pageTitle') return of('Test Title');
+        if (Array.isArray(key) && key.includes('pwa.updateAvailable')) {
+          return translations$.asObservable();
+        }
+        return of('');
+      });
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+
+      // Simulate state flip before translations arrive.
+      (fixture.componentInstance as any).isUpdateAvailable = false;
+
+      translations$.next({
+        'pwa.updateAvailable': 'Päivitys tarjolla!',
+        'pwa.updateAction': 'Päivitä',
+      });
+      tick();
+
+      expect(snackBar.open).not.toHaveBeenCalled();
+    }));
+
+    it('should not open snackbar if one was created before translations resolve', fakeAsync(() => {
+      const translations$ = new Subject<any>();
+      spyOn(translateService, 'get').and.callFake((key: any) => {
+        if (key === 'pageTitle') return of('Test Title');
+        if (Array.isArray(key) && key.includes('pwa.updateAvailable')) {
+          return translations$.asObservable();
+        }
+        return of('');
+      });
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+
+      // Simulate another code path setting the snackbar reference before translations arrive.
+      (fixture.componentInstance as any).updateSnackRef = {};
+
+      translations$.next({
+        'pwa.updateAvailable': 'Päivitys tarjolla!',
+        'pwa.updateAction': 'Päivitä',
+      });
+      tick();
+
+      expect(snackBar.open).not.toHaveBeenCalled();
+    }));
+
+    it('should not re-open snackbar when dismissed by action', fakeAsync(() => {
+      spyOn(translateService, 'get').and.callFake((key: any) => {
+        if (key === 'pageTitle') return of('Test Title');
+        if (Array.isArray(key) && key.includes('pwa.updateAvailable')) {
+          return of({
+            'pwa.updateAvailable': 'Päivitys tarjolla!',
+            'pwa.updateAction': 'Päivitä',
+          });
+        }
+        return of('');
+      });
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+
+      expect(snackBar.open.calls.count()).toBe(1);
+
+      snackBarAfterDismissed$.next({ dismissedByAction: true });
+      tick();
+
+      expect(snackBar.open.calls.count()).toBe(1);
+    }));
+
+    it('should open snackbar only once even if updateAvailable emits again', fakeAsync(() => {
+      spyOn(translateService, 'get').and.callFake((key: any) => {
+        if (key === 'pageTitle') return of('Test Title');
+        if (Array.isArray(key) && key.includes('pwa.updateAvailable')) {
+          return of({
+            'pwa.updateAvailable': 'Päivitys tarjolla!',
+            'pwa.updateAction': 'Päivitä',
+          });
+        }
+        return of('');
+      });
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+
+      expect(snackBar.open.calls.count()).toBe(1);
+    }));
+
+    it('should trigger update activation when snackbar action is clicked', fakeAsync(() => {
+      spyOn(translateService, 'get').and.callFake((key: any) => {
+        if (key === 'pageTitle') return of('Test Title');
+        if (Array.isArray(key) && key.includes('pwa.updateAvailable')) {
+          return of({
+            'pwa.updateAvailable': 'Päivitys tarjolla!',
+            'pwa.updateAction': 'Päivitä',
+          });
+        }
+        return of('');
+      });
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+
+      snackBarAction$.next();
+      tick();
+
+      expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
+    }));
+
+    it('should re-open snackbar if dismissed without action while update is available', fakeAsync(() => {
+      spyOn(translateService, 'get').and.callFake((key: any) => {
+        if (key === 'pageTitle') return of('Test Title');
+        if (Array.isArray(key) && key.includes('pwa.updateAvailable')) {
+          return of({
+            'pwa.updateAvailable': 'Päivitys tarjolla!',
+            'pwa.updateAction': 'Päivitä',
+          });
+        }
+        return of('');
+      });
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      tick();
+
+      expect(snackBar.open.calls.count()).toBe(1);
+
+      snackBarAfterDismissed$.next({ dismissedByAction: false });
+      tick();
+
+      expect(snackBar.open.calls.count()).toBe(2);
+    }));
   });
 });
