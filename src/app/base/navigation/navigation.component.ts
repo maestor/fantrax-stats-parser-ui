@@ -28,9 +28,17 @@ export class NavigationComponent implements OnInit {
 
   ngOnInit() {
     this.router.events.subscribe(() => {
-      this.activeLink = this.router.url;
+      this.activeLink = this.normalizeActiveLink(this.router.url);
       this.cdr.detectChanges();
     });
+  }
+
+  private normalizeActiveLink(url: string): string {
+    // The root route renders the player stats view; map it so the tab highlight matches.
+    if (url === '/' || url === '') {
+      return '/player-stats';
+    }
+    return url;
   }
 
   setActiveTab(path: string) {

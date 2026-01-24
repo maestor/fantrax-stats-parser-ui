@@ -2,6 +2,14 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadComponent: () =>
+      import('./player-stats/player-stats.component').then(
+        (m) => m.PlayerStatsComponent
+      ),
+    pathMatch: 'full',
+  },
+  {
     path: 'player-stats',
     loadComponent: () =>
       import('./player-stats/player-stats.component').then(
@@ -15,5 +23,5 @@ export const routes: Routes = [
         (m) => m.GoalieStatsComponent
       ),
   },
-  { path: '', redirectTo: '/player-stats', pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

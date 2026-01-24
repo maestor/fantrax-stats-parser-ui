@@ -16,6 +16,7 @@ describe('NavigationComponent', () => {
       imports: [NavigationComponent, TranslateModule.forRoot(), MatTabsModule],
       providers: [
         provideRouter([
+          { path: '', component: NavigationComponent },
           { path: 'player-stats', component: NavigationComponent },
           { path: 'goalie-stats', component: NavigationComponent },
         ]),
@@ -66,6 +67,14 @@ describe('NavigationComponent', () => {
     it('should update activeLink when router URL changes', (done) => {
       component.ngOnInit();
       router.navigate(['/player-stats']).then(() => {
+        expect(component.activeLink).toBe('/player-stats');
+        done();
+      });
+    });
+
+    it('should map the root route to player-stats for tab highlighting', (done) => {
+      component.ngOnInit();
+      router.navigate(['']).then(() => {
         expect(component.activeLink).toBe('/player-stats');
         done();
       });
