@@ -1,5 +1,12 @@
 import { AsyncPipe, DOCUMENT } from '@angular/common';
-import { Component, ViewChild, inject, OnInit, HostListener } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  inject,
+  OnInit,
+  HostListener,
+  DestroyRef,
+} from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -7,12 +14,14 @@ import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FooterComponent } from '@base/footer/footer.component';
 import { NavigationComponent } from './base/navigation/navigation.component';
 import { TopControlsComponent } from '@shared/top-controls/top-controls.component';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   BehaviorSubject,
   combineLatest,
@@ -22,6 +31,7 @@ import {
   catchError,
   of,
   shareReplay,
+  take,
 } from 'rxjs';
 import { HelpDialogComponent } from '@shared/help-dialog/help-dialog.component';
 import { ViewportService } from '@services/viewport.service';
@@ -43,6 +53,7 @@ import { PwaUpdateService } from '@services/pwa-update.service';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatSnackBarModule,
     MatSidenavModule,
     MatTooltipModule,
     FooterComponent,
@@ -98,6 +109,11 @@ export class AppComponent implements OnInit {
 
   private readonly pwaUpdateService = inject(PwaUpdateService);
   readonly isUpdateAvailable$ = this.pwaUpdateService.updateAvailable$;
+  private isUpdateAvailable = false;
+  private updateSnackRef?: ReturnType<MatSnackBar['open']>;
+
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly snackBar = inject(MatSnackBar);
 
   private titleService = inject(Title);
   private translateService = inject(TranslateService);
@@ -110,12 +126,63 @@ export class AppComponent implements OnInit {
       this.titleService.setTitle(name);
     });
 
+    this.isUpdateAvailable$
+      .pipe(
+        filter((available) => available),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(() => {
+        this.isUpdateAvailable = true;
+        this.openUpdateAvailableSnackbar();
+      });
+
     this.updateControlsContext(this.router.url);
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event) => {
         this.updateControlsContext(event.urlAfterRedirects);
         this.settingsDrawer?.close();
+      });
+  }
+
+  private openUpdateAvailableSnackbar(): void {
+    if (this.updateSnackRef) return;
+    if (!this.isUpdateAvailable) return;
+
+    this.translateService
+      .get(['pwa.updateAvailable', 'pwa.updateAction'])
+      .pipe(take(1))
+      .subscribe((t) => {
+        if (this.updateSnackRef) return;
+        if (!this.isUpdateAvailable) return;
+
+        const ref = this.snackBar.open(t['pwa.updateAvailable'], t['pwa.updateAction'], {
+          duration: undefined,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+          politeness: 'assertive',
+        });
+        this.updateSnackRef = ref;
+
+        ref
+          .onAction()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => {
+            this.activateUpdateAndReload();
+          });
+
+        ref
+          .afterDismissed()
+          .pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe((info) => {
+            this.updateSnackRef = undefined;
+
+            // Prevent dismissing the snackbar without updating: if it's closed
+            // by other means (e.g. Escape), re-open it while an update is available.
+            if (this.isUpdateAvailable && !info.dismissedByAction) {
+              setTimeout(() => this.openUpdateAvailableSnackbar(), 0);
+            }
+          });
       });
   }
 
