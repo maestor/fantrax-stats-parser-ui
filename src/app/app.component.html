@@ -70,15 +70,29 @@
 
             <h1 class="mat-display-1">{{ "pageTitle" | translate }}</h1>
 
-            <button
-              mat-icon-button
-              type="button"
-              (click)="openHelpDialog()"
-              [attr.aria-label]="'a11y.openHelpDialog' | translate"
-              [matTooltip]="'a11y.openHelpDialog' | translate"
-            >
-              <mat-icon fontIcon="info" />
-            </button>
+            <div class="title-row-actions">
+              @if (isUpdateAvailable$ | async) {
+                <button
+                  mat-icon-button
+                  type="button"
+                  (click)="activateUpdateAndReload()"
+                  [attr.aria-label]="'a11y.reloadToUpdate' | translate"
+                  [matTooltip]="'a11y.reloadToUpdate' | translate"
+                >
+                  <mat-icon fontIcon="system_update" />
+                </button>
+              }
+
+              <button
+                mat-icon-button
+                type="button"
+                (click)="openHelpDialog()"
+                [attr.aria-label]="'a11y.openHelpDialog' | translate"
+                [matTooltip]="'a11y.openHelpDialog' | translate"
+              >
+                <mat-icon fontIcon="info" />
+              </button>
+            </div>
           </div>
 
           <div class="mobile-team-summary">
@@ -99,15 +113,30 @@
     } @else {
       <div class="title-row">
         <h1 class="mat-display-1">{{ "pageTitle" | translate }}</h1>
-        <button
-          mat-icon-button
-          type="button"
-          (click)="openHelpDialog()"
-          [attr.aria-label]="'a11y.openHelpDialog' | translate"
-          [matTooltip]="'a11y.openHelpDialog' | translate"
-        >
-          <mat-icon fontIcon="info" />
-        </button>
+
+        <div class="title-row-actions">
+          @if (isUpdateAvailable$ | async) {
+            <button
+              mat-icon-button
+              type="button"
+              (click)="activateUpdateAndReload()"
+              [attr.aria-label]="'a11y.reloadToUpdate' | translate"
+              [matTooltip]="'a11y.reloadToUpdate' | translate"
+            >
+              <mat-icon fontIcon="system_update" />
+            </button>
+          }
+
+          <button
+            mat-icon-button
+            type="button"
+            (click)="openHelpDialog()"
+            [attr.aria-label]="'a11y.openHelpDialog' | translate"
+            [matTooltip]="'a11y.openHelpDialog' | translate"
+          >
+            <mat-icon fontIcon="info" />
+          </button>
+        </div>
       </div>
 
       <app-top-controls [context]="controlsContext" />

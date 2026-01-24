@@ -31,6 +31,7 @@ import {
 } from '@services/drawer-context.service';
 import { ApiService, Team } from '@services/api.service';
 import { TeamService } from '@services/team.service';
+import { PwaUpdateService } from '@services/pwa-update.service';
 
 @Component({
   selector: 'app-root',
@@ -94,6 +95,9 @@ export class AppComponent implements OnInit {
   );
 
   isSettingsDrawerOpen = false;
+
+  private readonly pwaUpdateService = inject(PwaUpdateService);
+  readonly isUpdateAvailable$ = this.pwaUpdateService.updateAvailable$;
 
   private titleService = inject(Title);
   private translateService = inject(TranslateService);
@@ -165,5 +169,9 @@ export class AppComponent implements OnInit {
       autoFocus: 'first-tabbable',
       restoreFocus: true,
     });
+  }
+
+  activateUpdateAndReload(): void {
+    void this.pwaUpdateService.activateAndReload();
   }
 }

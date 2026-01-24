@@ -22,7 +22,8 @@
     "openHelpDialog": "Avaa ohje",
     "closeHelpDialog": "Sulje ohje",
     "openSettingsDrawer": "Avaa asetuspaneeli",
-    "closeSettingsDrawer": "Sulje asetuspaneeli"
+    "closeSettingsDrawer": "Sulje asetuspaneeli",
+    "reloadToUpdate": "Päivitä sovellus"
   },
   "helpDialog": {
     "title": "Tietoja sovelluksesta",

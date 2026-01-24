@@ -14,6 +14,12 @@
 	color: var(--mat-sys-on-surface-variant);
 }
 
+.title-row-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
 @media (max-width: 768px) {
 	.title-row {
 		display: grid;
@@ -22,6 +28,10 @@
 		justify-content: initial;
 		margin: 0 8px 0 8px;
 		padding: 6px;
+	}
+
+	.title-row-actions {
+		justify-self: end;
 	}
 
 	.title-row h1 {
