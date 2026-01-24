@@ -1,10 +1,70 @@
-:host ::ng-deep .mat-sort-header-container {
-  justify-content: flex-end; // default: all headers right
+// MatSort header alignment:
+// Use a 3-column grid so the header label remains centered even when the sort arrow
+// appears/disappears (avoids the "label shifts left" problem in centered columns).
+// Center-aligned sortable headers (all except Name): center the LABEL, not the
+// (label+arrow) group. The arrow exists in DOM even when not active, so flex centering
+// will shift the label left. A 3-column grid keeps the label centered regardless.
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name)
+  .mat-sort-header-container {
+  display: grid !important;
+  grid-template-columns: 1fr max-content 1fr !important;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+// Some Material builds wrap/supplement the container with a button element.
+// Ensure it stretches so centering is calculated against the full header cell.
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name)
+  .mat-sort-header-button {
+  width: 100%;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name)
+  .mat-sort-header-content {
+  grid-column: 2;
+  justify-self: center;
+  text-align: center;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name)
+  .mat-sort-header-arrow {
+  grid-column: 3;
+  justify-self: start;
+  margin-left: 6px;
+  position: absolute;
 }
 
 /* Name header left-aligned */
-:host ::ng-deep .mat-column-name .mat-sort-header-container {
+:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header]
+  .mat-sort-header-container {
+  display: flex;
   justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header]
+  .mat-sort-header-content {
+  text-align: left;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header]
+  .mat-sort-header-arrow {
+  margin-left: 6px;
+}
+
+// MatSort arrow/icon color: follow theme tokens (fixes dark mode visibility).
+:host ::ng-deep .mat-sort-header-arrow,
+:host ::ng-deep .mat-sort-header-indicator {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+:host ::ng-deep .mat-sort-header-arrow svg {
+  fill: currentColor !important;
 }
 
 .mat-column-score,
