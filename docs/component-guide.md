@@ -163,6 +163,28 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 ---
 
+### TopControlsComponent
+
+**Location**: `src/app/shared/top-controls/`
+
+**Type**: Presentational Component
+
+**Purpose**: Renders the "top controls" (team/season/report) for the active context.
+
+**Inputs**:
+
+```typescript
+@Input() context: 'player' | 'goalie' = 'player';
+@Input() contentOnly = false;
+```
+
+**Notes**:
+
+- Default mode renders a collapsible panel (toggle button + collapsible content).
+- In the mobile settings drawer, it is rendered with `contentOnly=true` to show only the controls (no toggle UI).
+
+---
+
 ### SettingsPanelComponent
 
 **Location**: `src/app/shared/settings-panel/`
@@ -181,22 +203,18 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 ```typescript
 @Input() context: 'player' | 'goalie' = 'player';
 @Input() maxGames = 0;
+@Input() contentOnly = false;
 ```
 
 **Outputs**: None — each child component talks directly to `FilterService`.
 
 **Layout**: Horizontal, responsive layout defined in `settings-panel.component.scss`.
 
-**Mobile Responsiveness**:
+**Mobile / Drawer Behavior**:
 
-- **Desktop (>960px)**: All controls displayed horizontally in a single row
-- **Tablet (768px-960px)**: Controls wrap to 2 columns with optimized spacing
-- **Mobile (<768px)**: Collapsible panel with toggle button
-  - Toggle button shows/hides filter controls
-  - Controls stack vertically when expanded
-  - Smooth expand/collapse animation
-  - Panel is collapsed by default on page load
-- **Small Mobile (<480px)**: Full-width controls with reduced padding
+- The component is an expandable panel by default.
+- On mobile, the stats pages do not render this panel inline. Instead, the app shell renders it inside a left-side settings drawer using `contentOnly=true`.
+  - `contentOnly=true` renders only the inner controls (no toggle button / no collapse state).
 
 **State Management**:
 
@@ -204,6 +222,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 isExpanded = false; // Controls panel visibility
 
 toggleExpanded(): void {
+  if (this.contentOnly) return;
   this.isExpanded = !this.isExpanded;
 }
 ```

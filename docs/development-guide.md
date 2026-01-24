@@ -54,6 +54,8 @@ npm run build
 - Optimized and minified
 - Ready for deployment
 
+Note: If the production build fails with a Node "heap out of memory" error, the repo scripts set a higher heap size via `NODE_OPTIONS` for `npm run build`.
+
 ### Theming / Automatic Dark Mode
 
 The UI follows the device/browser color scheme automatically (no manual toggle).

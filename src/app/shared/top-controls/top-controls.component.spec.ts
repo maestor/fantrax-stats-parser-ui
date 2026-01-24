@@ -73,4 +73,18 @@ describe('TopControlsComponent', () => {
     component.toggleExpanded();
     expect(localStorage.getItem('fantrax.topControls.expanded')).toBe('true');
   });
+
+  it('should force expanded and disable toggling when contentOnly is true', () => {
+    localStorage.setItem('fantrax.topControls.expanded', 'false');
+
+    fixture = TestBed.createComponent(TopControlsComponent);
+    component = fixture.componentInstance;
+    component.contentOnly = true;
+    fixture.detectChanges();
+
+    expect(component.isExpanded).toBe(true);
+
+    component.toggleExpanded();
+    expect(localStorage.getItem('fantrax.topControls.expanded')).toBe('false');
+  });
 });

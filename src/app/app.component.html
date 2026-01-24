@@ -8,25 +8,115 @@
 
 <main class="main">
   <div class="content">
-    <div class="title-row">
-      <h1 class="mat-display-1">{{ "pageTitle" | translate }}</h1>
-      <button
-        mat-icon-button
-        type="button"
-        (click)="openHelpDialog()"
-        [attr.aria-label]="'a11y.openHelpDialog' | translate"
-        [matTooltip]="'a11y.openHelpDialog' | translate"
-      >
-        <mat-icon fontIcon="info" />
-      </button>
-    </div>
+    @if (isMobile$ | async) {
+      <mat-sidenav-container class="mobile-shell">
+        <mat-sidenav
+          #settingsDrawer="matSidenav"
+          class="settings-drawer"
+          mode="over"
+          position="start"
+          (openedChange)="isSettingsDrawerOpen = $event"
+        >
+          <div class="settings-drawer-header">
+            <button
+              mat-icon-button
+              type="button"
+              (click)="settingsDrawer.close()"
+              [attr.aria-label]="'a11y.closeSettingsDrawer' | translate"
+              [matTooltip]="'a11y.closeSettingsDrawer' | translate"
+            >
+              <mat-icon fontIcon="close" />
+            </button>
+          </div>
 
-    <app-top-controls [context]="controlsContext" />
+          <div class="settings-drawer-section settings-drawer-section--top-controls">
+            <h3 class="settings-drawer-section-title">
+              {{ 'topControls.controls' | translate }}
+            </h3>
+            <app-top-controls [context]="controlsContext" [contentOnly]="true" />
+          </div>
 
-    <app-navigation [tabPanel]="tabPanel" />
-    <mat-tab-nav-panel #tabPanel>
-      <router-outlet />
-    </mat-tab-nav-panel>
+          <div class="settings-drawer-section settings-drawer-section--settings">
+            <h3 class="settings-drawer-section-title">
+              {{ 'settingsPanel.settings' | translate }}
+            </h3>
+            <app-settings-panel
+              [context]="controlsContext"
+              [maxGames]="(drawerMaxGames$ | async) ?? 0"
+              [contentOnly]="true"
+            />
+          </div>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+          <div class="title-row">
+            <button
+              mat-icon-button
+              type="button"
+              (click)="settingsDrawer.toggle()"
+              [attr.aria-label]="(
+                isSettingsDrawerOpen
+                  ? 'a11y.closeSettingsDrawer'
+                  : 'a11y.openSettingsDrawer'
+              ) | translate"
+              [matTooltip]="(
+                isSettingsDrawerOpen
+                  ? 'a11y.closeSettingsDrawer'
+                  : 'a11y.openSettingsDrawer'
+              ) | translate"
+            >
+              <mat-icon fontIcon="settings" />
+            </button>
+
+            <h1 class="mat-display-1">{{ "pageTitle" | translate }}</h1>
+
+            <button
+              mat-icon-button
+              type="button"
+              (click)="openHelpDialog()"
+              [attr.aria-label]="'a11y.openHelpDialog' | translate"
+              [matTooltip]="'a11y.openHelpDialog' | translate"
+            >
+              <mat-icon fontIcon="info" />
+            </button>
+          </div>
+
+          <div class="mobile-team-summary">
+            {{ 'team.selector' | translate }}:
+            @if (selectedTeamNameKey$ | async; as teamKey) {
+              <span class="mobile-team-name">{{ teamKey | translate }}</span>
+            } @else {
+              <span class="mobile-team-name">{{ selectedTeamId$ | async }}</span>
+            }
+          </div>
+
+          <app-navigation [tabPanel]="tabPanel" />
+          <mat-tab-nav-panel #tabPanel>
+            <router-outlet />
+          </mat-tab-nav-panel>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    } @else {
+      <div class="title-row">
+        <h1 class="mat-display-1">{{ "pageTitle" | translate }}</h1>
+        <button
+          mat-icon-button
+          type="button"
+          (click)="openHelpDialog()"
+          [attr.aria-label]="'a11y.openHelpDialog' | translate"
+          [matTooltip]="'a11y.openHelpDialog' | translate"
+        >
+          <mat-icon fontIcon="info" />
+        </button>
+      </div>
+
+      <app-top-controls [context]="controlsContext" />
+
+      <app-navigation [tabPanel]="tabPanel" />
+      <mat-tab-nav-panel #tabPanel>
+        <router-outlet />
+      </mat-tab-nav-panel>
+    }
   </div>
 </main>
 <app-footer />

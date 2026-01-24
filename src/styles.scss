@@ -56,6 +56,12 @@ body {
   color: var(--mat-sys-on-surface) !important;
 }
 
+// Center dialogs vertically within the overlay.
+// Fixes cases where dialogs appear stuck near the top on some viewports.
+.cdk-overlay-container .mat-mdc-dialog-inner-container {
+  justify-content: center !important;
+}
+
 // Cards are used in dialogs (player card) and should not default to white.
 .mat-mdc-card {
   background-color: var(--mat-sys-surface-container-high);

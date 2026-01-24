@@ -20,10 +20,12 @@
     "openPlayerCard": "Avaa pelaajakortti: {{name}}",
     "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin.",
     "openHelpDialog": "Avaa ohje",
-    "closeHelpDialog": "Sulje ohje"
+    "closeHelpDialog": "Sulje ohje",
+    "openSettingsDrawer": "Avaa asetuspaneeli",
+    "closeSettingsDrawer": "Sulje asetuspaneeli"
   },
   "helpDialog": {
-    "title": "Tietoja sovelluksesta ja ohjeita käyttöön",
+    "title": "Tietoja sovelluksesta",
     "close": "Sulje",
     "blocks": [
       {

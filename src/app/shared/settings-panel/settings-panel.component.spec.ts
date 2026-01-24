@@ -166,4 +166,35 @@ describe('SettingsPanelComponent', () => {
       expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('false');
     });
   });
+
+  describe('content-only mode', () => {
+    it('should not render the toggle button when contentOnly is true', () => {
+      component.contentOnly = true;
+      fixture.detectChanges();
+
+      const toggleButton = fixture.debugElement.query(
+        By.css('.control-panel-toggle')
+      );
+      expect(toggleButton).toBeNull();
+    });
+
+    it('should render the content in expanded layout when contentOnly is true', () => {
+      component.contentOnly = true;
+      fixture.detectChanges();
+
+      const content = fixture.debugElement.query(
+        By.css('.control-panel-content.expanded')
+      );
+      expect(content).toBeTruthy();
+    });
+
+    it('toggleExpanded should no-op when contentOnly is true', () => {
+      component.contentOnly = true;
+      fixture.detectChanges();
+
+      expect(component.isExpanded).toBe(false);
+      component.toggleExpanded();
+      expect(component.isExpanded).toBe(false);
+    });
+  });
 });

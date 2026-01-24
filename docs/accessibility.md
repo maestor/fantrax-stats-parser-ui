@@ -85,9 +85,11 @@ Notes:
 
 ### Collapsible controls
 
-- Top controls and settings panel are collapsible.
+- On desktop, top controls and the per-page settings panel are collapsible.
 - When collapsed, their content must not be focusable:
   - `inert` + `aria-hidden` is applied on the content container
+
+On mobile, top controls + settings are shown inside a left-side settings drawer (opened via the settings icon in the app header). The drawer content is rendered in a non-collapsible "content-only" mode.
 
 ### Player Card (Graphs tab) focus shortcuts
 

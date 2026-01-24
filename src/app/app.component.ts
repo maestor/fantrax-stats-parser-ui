@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { AsyncPipe, DOCUMENT } from '@angular/common';
 import { Component, ViewChild, inject, OnInit, HostListener } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -7,34 +7,93 @@ import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FooterComponent } from '@base/footer/footer.component';
 import { NavigationComponent } from './base/navigation/navigation.component';
 import { TopControlsComponent } from '@shared/top-controls/top-controls.component';
-import { filter } from 'rxjs';
+import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
+import {
+  BehaviorSubject,
+  combineLatest,
+  filter,
+  map,
+  distinctUntilChanged,
+  catchError,
+  of,
+  shareReplay,
+} from 'rxjs';
 import { HelpDialogComponent } from '@shared/help-dialog/help-dialog.component';
+import { ViewportService } from '@services/viewport.service';
+import {
+  ControlsContext,
+  DrawerContextService,
+} from '@services/drawer-context.service';
+import { ApiService, Team } from '@services/api.service';
+import { TeamService } from '@services/team.service';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
+    AsyncPipe,
     TranslateModule,
     MatTabsModule,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatSidenavModule,
     MatTooltipModule,
     FooterComponent,
     NavigationComponent,
     TopControlsComponent,
+    SettingsPanelComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   @ViewChild('tabPanel') tabPanel!: MatTabNavPanel;
+  @ViewChild('settingsDrawer') settingsDrawer?: MatSidenav;
 
-  controlsContext: 'player' | 'goalie' = 'player';
+  controlsContext: ControlsContext = 'player';
+  private readonly controlsContextSubject = new BehaviorSubject<ControlsContext>(
+    this.controlsContext
+  );
+  readonly controlsContext$ = this.controlsContextSubject.asObservable();
+
+  readonly isMobile$ = inject(ViewportService).isMobile$;
+
+  private readonly teamService = inject(TeamService);
+  private readonly apiService = inject(ApiService);
+
+  readonly selectedTeamId$ = this.teamService.selectedTeamId$;
+  private readonly teams$ = this.apiService.getTeams().pipe(
+    catchError(() => of([] as Team[])),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  readonly selectedTeamNameKey$ = combineLatest([
+    this.selectedTeamId$,
+    this.teams$,
+  ]).pipe(
+    map(([teamId, teams]) => {
+      const team = teams.find((t) => t.id === teamId);
+      return team?.name ? `teams.${team.name}` : null;
+    }),
+    distinctUntilChanged()
+  );
+  readonly drawerMaxGames$ = combineLatest([
+    this.controlsContext$,
+    inject(DrawerContextService).state$,
+  ]).pipe(
+    map(([context, state]) =>
+      context === 'player' ? state.playerMaxGames : state.goalieMaxGames
+    ),
+    distinctUntilChanged()
+  );
+
+  isSettingsDrawerOpen = false;
 
   private titleService = inject(Title);
   private translateService = inject(TranslateService);
@@ -52,11 +111,13 @@ export class AppComponent implements OnInit {
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event) => {
         this.updateControlsContext(event.urlAfterRedirects);
+        this.settingsDrawer?.close();
       });
   }
 
   private updateControlsContext(url: string): void {
     this.controlsContext = url.includes('goalie-stats') ? 'goalie' : 'player';
+    this.controlsContextSubject.next(this.controlsContext);
   }
 
   skipToTarget(targetId: string, event: MouseEvent): void {

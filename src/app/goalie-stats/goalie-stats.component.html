@@ -1,4 +1,6 @@
-<app-settings-panel context="goalie" [maxGames]="maxGames" />
+@if (!(isMobile$ | async)) {
+  <app-settings-panel context="goalie" [maxGames]="maxGames" />
+}
 
 <app-stats-table
   [data]="tableData"

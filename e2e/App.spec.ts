@@ -265,6 +265,32 @@ test('Sorting by points changes row order', async ({ page }) => {
   expect(sortedTwice).not.toEqual(sortedOnce);
 });
 
+test('Mobile: settings drawer toggles and contains controls', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const openSettings = page.getByRole('button', { name: 'Avaa asetuspaneeli' });
+  await expect(openSettings).toBeVisible();
+  await openSettings.click();
+
+  const drawer = page.locator('.settings-drawer');
+  await expect(drawer).toBeVisible();
+
+  // Top controls section (team/season/report)
+  await expect(
+    drawer.getByRole('heading', { name: 'Tarkasteltavat tilastot' })
+  ).toBeVisible();
+  await expect(drawer.getByRole('combobox', { name: 'Kausivalitsin' })).toBeVisible();
+  await expect(drawer.getByRole('radiogroup')).toBeVisible();
+
+  // Settings section (stats-per-game + min games)
+  await expect(drawer.getByRole('switch', { name: 'Tilastot per ottelu' })).toBeVisible();
+
+  // Close via Escape (expected to work with Material drawer)
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'Avaa asetuspaneeli' })).toBeVisible();
+});
+
 test('Player and goalie filters are isolated', async ({ page }) => {
   const playerTab = page.getByRole('tab', { name: 'Kenttäpelaajat' });
   const goalieTab = page.getByRole('tab', { name: 'Maalivahdit' });
@@ -295,4 +321,51 @@ test('Player and goalie filters are isolated', async ({ page }) => {
   const playerRowsAfterReturn = await playerRows.count();
   expect(playerRowsAfterReturn).toBe(playerRowsAfterToggle);
   expect(goalieRowsCount).toBeGreaterThan(0);
+});
+
+test.describe('Mobile settings drawer', () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+  });
+
+  test('Settings icon opens drawer with top controls and settings', async ({
+    page,
+  }) => {
+    // Inline per-page settings accordion should not render on mobile.
+    await expect(
+      page.getByRole('switch', { name: 'Tilastot per ottelu' })
+    ).toHaveCount(0);
+
+    const openDrawerButton = page.getByRole('button', {
+      name: 'Avaa asetuspaneeli',
+    });
+    await expect(openDrawerButton).toBeVisible();
+
+    await openDrawerButton.click();
+
+    // Drawer headings (matching the existing accordion section labels)
+    await expect(page.getByText('Tarkasteltavat tilastot')).toBeVisible();
+    await expect(page.getByText('Asetukset')).toBeVisible();
+
+    // Per-page settings should now be available inside the drawer.
+    await expect(
+      page.getByRole('switch', { name: 'Tilastot per ottelu' })
+    ).toBeVisible();
+    await expect(
+      page.getByLabel('Otteluja pelattu vähintään')
+    ).toBeVisible();
+
+    const closeDrawerButton = page.getByRole('button', {
+      name: 'Sulje asetuspaneeli',
+    });
+    await expect(closeDrawerButton).toBeVisible();
+
+    await closeDrawerButton.click();
+
+    await expect(
+      page.getByRole('switch', { name: 'Tilastot per ottelu' })
+    ).toHaveCount(0);
+  });
 });

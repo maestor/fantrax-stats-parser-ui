@@ -140,7 +140,24 @@ mat-card-title {
 }
 
 .season-table {
-  width: 100%;
+  // Let the table grow wider than the container (so columns keep a readable width)
+  // and rely on `.season-table-container { overflow-x: auto; }` for horizontal scrolling.
+  // Note: Angular Material applies table sizing defaults on `.mat-mdc-table`.
+  // We override those here to avoid the season table being squeezed into equal-width columns.
+  width: max-content !important;
+  min-width: 100%;
+  table-layout: auto !important;
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    // Prevent tiny/narrow columns on mobile.
+    min-width: 52px;
+  }
+
+  .mat-mdc-header-cell:first-child,
+  .mat-mdc-cell:first-child {
+    min-width: 58px;
+  }
 
   th {
     font-weight: bold;
@@ -150,10 +167,12 @@ mat-card-title {
     position: sticky;
     top: 0;
     z-index: 10;
+    white-space: nowrap;
   }
 
   td {
     text-align: center;
+    white-space: nowrap;
   }
 
   // Make season column stand out
