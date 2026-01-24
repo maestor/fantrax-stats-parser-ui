@@ -33,10 +33,10 @@ module.exports = function (config) {
       check: {
         emitWarning: false,
         global: {
-          statements: 95,
-          lines: 95,
-          functions: 95,
-          branches: 85,
+          statements: 98,
+          lines: 98,
+          functions: 98,
+          branches: 96,
           excludes: [
             '**/*.spec.ts',
             '**/*.test.ts',

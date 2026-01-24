@@ -9,7 +9,7 @@ import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
 import { ViewportService } from '@services/viewport.service';
 import { BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 class TeamServiceMock {
   private selectedTeamIdSubject = new BehaviorSubject<string>('1');
@@ -236,6 +236,39 @@ describe('PlayerStatsComponent', () => {
     expect(component.tableData).toEqual([]);
     expect(component.maxGames).toBe(0);
     expect(component.loading).toBe(false);
+  });
+
+  it('should set apiError and clear data when ApiService errors', () => {
+    apiServiceMock.getPlayerData.and.returnValue(
+      throwError(() => new Error('network'))
+    );
+
+    component.statsPerGame = false;
+    component.minGames = 0;
+    component.apiError = false;
+
+    component.fetchData({ reportType: 'regular' });
+
+    expect(component.loading).toBe(false);
+    expect(component.apiError).toBe(true);
+    expect(component.tableData).toEqual([]);
+    expect(component.maxGames).toBe(0);
+  });
+
+  it('should include teamId when a non-default team is selected', () => {
+    apiServiceMock.getPlayerData.and.returnValue(of([]));
+    component.ngOnInit();
+
+    apiServiceMock.getPlayerData.calls.reset();
+
+    const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+    teamService.setTeamId('2');
+
+    expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: undefined,
+      teamId: '2',
+    });
   });
 
   it('should call getPlayerData with default params when fetchData is called without arguments', () => {

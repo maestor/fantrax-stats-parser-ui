@@ -9,7 +9,7 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 - **Total Test Files / Tests**: Run `npm test` to see the current count and status
 - **Test Framework**: Jasmine + Karma
 - **E2E Framework**: Playwright
-- **Coverage**: Enforced gate is >=95% statements/lines/functions and >=85% branches; long-term target is 100% statements/lines/functions and >=90% branches
+- **Coverage**: Enforced gate is >=98% statements/lines/functions and >=96% branches; long-term target is 100% statements/lines/functions and >=96% branches
 Note: avoid hard-coding a “current test count” in docs; it becomes stale quickly.
 
 ## Contribution Requirement: 100% Tested Changes

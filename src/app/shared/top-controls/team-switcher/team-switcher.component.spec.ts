@@ -124,4 +124,28 @@ describe('TeamSwitcherComponent', () => {
     expect(filterService.resetAll).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/player-stats']);
   }));
+
+  it('should fall back to team.name when translation key is missing', () => {
+    spyOn(translate, 'instant').and.callFake((key: string) => key);
+
+    const label = (component as any).getTeamLabel({ id: '99', name: 'unknown-team' });
+    expect(label).toBe('unknown-team');
+  });
+
+  it('should no-op when teamId is falsy', fakeAsync(() => {
+    apiService.getTeams.and.returnValue(of(mockTeams));
+    component.ngOnInit();
+    tick();
+
+    const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+    const setTeamSpy = spyOn(teamService, 'setTeamId').and.callThrough();
+
+    const event = { value: '' } as unknown as MatSelectChange;
+    component.changeTeam(event);
+    tick();
+
+    expect(setTeamSpy).not.toHaveBeenCalled();
+    expect(filterService.resetAll).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  }));
 });

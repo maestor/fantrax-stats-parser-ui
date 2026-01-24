@@ -652,6 +652,38 @@ describe('PlayerCardComponent', () => {
         expect(fallback.focus).toHaveBeenCalled();
       });
     });
+
+    it('should format season as short form on mobile', () => {
+      const short = (component as any).formatSeasonShort(2024);
+      expect(short).toBe('24-25');
+    });
+
+    it('should update graphsInputs with close button element when available', () => {
+      const btn = document.createElement('button');
+      component.closeButton = new ElementRef(btn);
+
+      (component as any).updateGraphsInputs();
+
+      expect((component as any).graphsInputs.closeButtonEl).toBe(btn);
+      expect(typeof (component as any).graphsInputs.requestFocusTabHeader).toBe('function');
+    });
+
+    it('should call checkScreenSize when window resize event fires', () => {
+      const checkSpy = spyOn<any>(component as any, 'checkScreenSize').and.callThrough();
+
+      window.dispatchEvent(new Event('resize'));
+
+      expect(checkSpy).toHaveBeenCalled();
+    });
+
+    it('graphsInputs.requestFocusTabHeader should invoke focusActiveTabHeader', () => {
+      const focusSpy = spyOn<any>(component as any, 'focusActiveTabHeader').and.callThrough();
+      (component as any).updateGraphsInputs();
+
+      (component as any).graphsInputs.requestFocusTabHeader();
+
+      expect(focusSpy).toHaveBeenCalled();
+    });
   });
 
   describe('without seasons data', () => {

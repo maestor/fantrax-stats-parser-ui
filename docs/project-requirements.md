@@ -69,13 +69,13 @@ npm run test:coverage
 
 - **Scope**: Application implementation under `src/` (test files excluded)
 - **Coverage gate (enforced by tooling)**:
-  - >= 95% statements
-  - >= 95% lines
-  - >= 95% functions
-  - >= 85% branches
+  - >= 98% statements
+  - >= 98% lines
+  - >= 98% functions
+  - >= 96% branches
 - **Long-term target**:
   - 100% statements, lines, and functions
-  - >= 90% branches
+  - >= 96% branches
 - **Action on Failure**: Add/update tests or refactor/simplify code until targets are met
 - **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
 - **Contribution rule (required)**: every new/changed code path must be covered by tests (aim 100% coverage for the code you touched, including error/edge cases)
@@ -101,10 +101,10 @@ Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
 
 | Metric     | Enforced Coverage Gate | Long-term Target |
 | ---------- | ---------------------- | ---------------- |
-| Statements | >= 95%                 | 100%             |
-| Lines      | >= 95%                 | 100%             |
-| Functions  | >= 95%                 | 100%             |
-| Branches   | >= 85%                 | >= 90%           |
+| Statements | >= 98%                 | 100%             |
+| Lines      | >= 98%                 | 100%             |
+| Functions  | >= 98%                 | 100%             |
+| Branches   | >= 96%                 | >= 96%           |
 
 #### Coverage Enforcement
 
@@ -431,7 +431,7 @@ Before marking work complete, verify:
 - [ ] Build succeeds (`npm run build`)
 - [ ] App serves without errors (`npm start`)
 - [ ] New features have tests
-- [ ] Test coverage meets gate (>=95% statements/lines/functions, >=85% branches)
+- [ ] Test coverage meets gate (>=98% statements/lines/functions, >=96% branches)
 - [ ] No TypeScript errors
 - [ ] Code follows project structure
 - [ ] Documentation updated

@@ -373,6 +373,18 @@ describe('StatsTableComponent', () => {
       expect(component.activeRowIndex).toBe(0);
       expect(focus0).toHaveBeenCalled();
     });
+
+    it('focusRow should no-op when the row element is missing', () => {
+      component.dataRows = {
+        toArray: () => [{ nativeElement: null }],
+        length: 1,
+      } as any;
+
+      component.activeRowIndex = 0;
+      (component as any).focusRow(0);
+
+      expect(component.activeRowIndex).toBe(0);
+    });
   });
 
   describe('accessibility labeling', () => {
@@ -533,6 +545,33 @@ describe('StatsTableComponent', () => {
       fixture.detectChanges();
 
       expect(component.sort.direction).toBe('desc');
+    });
+
+    it('should fall back to first non-position column when desired sort column is not displayed', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
+      fixture.detectChanges();
+
+      component.displayedColumns = ['position', 'name', 'games'];
+      component.defaultSortColumn = 'nonexistent';
+
+      (component as any).applyDefaultSort();
+
+      expect(component.sort.active).toBe('name');
+      expect(component.sort.direction).toBe('desc');
+    });
+
+    it('should fall back to first column when only position column exists', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
+      fixture.detectChanges();
+
+      component.displayedColumns = ['position'];
+      component.defaultSortColumn = 'nonexistent';
+
+      (component as any).applyDefaultSort();
+
+      expect(component.sort.active).toBe('position');
     });
   });
 
