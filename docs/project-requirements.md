@@ -74,8 +74,7 @@ npm run test:coverage
   - >= 98% functions
   - >= 96% branches
 - **Long-term target**:
-  - 100% statements, lines, and functions
-  - >= 96% branches
+  - 100% statements, lines, functions, and branches
 - **Action on Failure**: Add/update tests or refactor/simplify code until targets are met
 - **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
 - **Contribution rule (required)**: every new/changed code path must be covered by tests (aim 100% coverage for the code you touched, including error/edge cases)
@@ -104,12 +103,12 @@ Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
 | Statements | >= 98%                 | 100%             |
 | Lines      | >= 98%                 | 100%             |
 | Functions  | >= 98%                 | 100%             |
-| Branches   | >= 96%                 | >= 96%           |
+| Branches   | >= 96%                 | 100%             |
 
 #### Coverage Enforcement
 
 - Unit-test coverage must remain above the enforced coverage gate.
-- Long-term target is 100% statements/lines/functions and >=90% branches.
+- Long-term target is 100% statements/lines/functions/branches.
 - New/changed logic must be fully tested (aim 100% coverage for the code you touched, including error/edge cases).
 - Don’t merge changes that add uncovered new behavior.
 

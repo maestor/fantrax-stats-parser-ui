@@ -136,11 +136,11 @@ Coverage is enforced in CI via `npm run verify` (headless unit tests with covera
 In addition: every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
 
 - **Enforced coverage gate** (implementation under `src/`, test files excluded):
-	- >= 95% statements
-	- >= 95% lines
-	- >= 95% functions
-	- >= 85% branches
-- **Long-term target**: 100% statements/lines/functions and >= 90% branches
+	- >= 98% statements
+	- >= 98% lines
+	- >= 98% functions
+	- >= 96% branches
+- **Long-term target**: 100% statements/lines/functions/branches
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
