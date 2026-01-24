@@ -14,3 +14,90 @@
 	color: var(--mat-sys-on-surface-variant);
 }
 
+@media (max-width: 768px) {
+	.title-row {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		justify-content: initial;
+		margin: 0 8px 0 8px;
+		padding: 6px;
+	}
+
+	.title-row h1 {
+		margin: 0 !important;
+		text-align: center;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
+.mobile-shell {
+	width: 100%;
+	background: var(--mat-sys-surface);
+	color: var(--mat-sys-on-surface);
+}
+
+.settings-drawer {
+	width: min(320px, 85vw);
+	padding: 12px;
+	background: var(--mat-sys-surface);
+	color: var(--mat-sys-on-surface);
+}
+
+.settings-drawer-header {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	margin-bottom: 0;
+	padding: 6px;
+}
+
+.settings-drawer-header button[mat-icon-button],
+.settings-drawer-header .mat-mdc-icon-button {
+	color: var(--mat-sys-on-surface);
+}
+
+.settings-drawer-section {
+	padding-top: 0;
+	margin-top: 0;
+	border-top: 0;
+}
+
+.settings-drawer-section--settings {
+	margin-top: 16px;
+}
+
+.settings-drawer-section-title {
+	margin: 0 0 8px 0;
+	padding-left: 16px;
+	font-size: 0.95rem;
+	color: var(--mat-sys-on-surface-variant);
+}
+
+// Drawer-only spacing fix: SettingsPanel content-only adds padding-top on .expanded,
+// which makes the gap under the section title larger than in TopControls.
+.settings-drawer ::ng-deep app-settings-panel .control-panel-content.expanded {
+	padding-top: 0;
+}
+
+// Drawer-only request: use a larger vertical gap between SettingsPanel controls on small mobile.
+.settings-drawer ::ng-deep app-settings-panel .control-panel-content {
+	gap: 16px;
+}
+
+.mobile-team-summary {
+	margin: 0 8px 8px 8px;
+	padding: 0 4px;
+	font-size: 0.9rem;
+	color: var(--mat-sys-on-surface-variant);
+	text-align: center;
+}
+
+.mobile-team-name {
+	color: var(--mat-sys-on-surface);
+}
+

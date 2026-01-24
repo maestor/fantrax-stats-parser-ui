@@ -17,16 +17,18 @@ import { SeasonSwitcherComponent } from './season-switcher/season-switcher.compo
 })
 export class TopControlsComponent implements OnInit {
   @Input() context: 'player' | 'goalie' = 'player';
+  @Input() contentOnly = false;
 
   isExpanded = true;
 
   private readonly storageKey = 'fantrax.topControls.expanded';
 
   ngOnInit(): void {
-    this.isExpanded = this.readExpanded();
+    this.isExpanded = this.contentOnly ? true : this.readExpanded();
   }
 
   toggleExpanded(): void {
+    if (this.contentOnly) return;
     this.isExpanded = !this.isExpanded;
     this.writeExpanded(this.isExpanded);
   }

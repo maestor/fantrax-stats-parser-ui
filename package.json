@@ -8,7 +8,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production",
+    "build": "NODE_OPTIONS=--max-old-space-size=6144 ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "npm run test:watch -- --watch=false --progress=false",
     "test:watch": "ng test --progress=false",

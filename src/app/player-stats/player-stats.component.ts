@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { OnInit, OnDestroy, Component, inject } from '@angular/core';
 import { Subject, combineLatest, takeUntil } from 'rxjs';
 import {
@@ -9,13 +10,15 @@ import {
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
+import { DrawerContextService } from '@services/drawer-context.service';
+import { ViewportService } from '@services/viewport.service';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
 
 @Component({
   selector: 'app-player-stats',
-  imports: [StatsTableComponent, SettingsPanelComponent],
+  imports: [AsyncPipe, StatsTableComponent, SettingsPanelComponent],
   templateUrl: './player-stats.component.html',
   styleUrl: './player-stats.component.scss',
 })
@@ -24,7 +27,10 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   private filterService = inject(FilterService);
   private statsService = inject(StatsService);
   private teamService = inject(TeamService);
+  private drawerContextService = inject(DrawerContextService);
   private destroy$ = new Subject<void>();
+
+  readonly isMobile$ = inject(ViewportService).isMobile$;
 
   reportType: ReportType = 'regular';
   season?: number;
@@ -81,6 +87,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
             ? this.statsService.getPlayerStatsPerGame(data)
             : data;
           this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
+          this.drawerContextService.setMaxGames('player', this.maxGames);
           this.tableData = baseData.filter((g) => g.games >= this.minGames);
           this.loading = false;
         },

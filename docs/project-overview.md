@@ -50,6 +50,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
        - Stats per game toggle
        - Minimum games slider
 
+    On **mobile**, these controls are accessed via a left-side **settings drawer** (opened from the settings icon next to the title). Desktop layout remains unchanged.
+
 5. **Data Management**
    - Caching service to reduce API calls
    - Filter service for reactive UI filter state

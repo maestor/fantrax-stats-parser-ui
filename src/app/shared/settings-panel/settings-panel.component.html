@@ -1,20 +1,27 @@
-<div class="control-panel">
-  <button
-    class="control-panel-toggle"
-    (click)="toggleExpanded()"
-    type="button"
-    [attr.aria-expanded]="isExpanded"
-  >
-    <span>{{ 'settingsPanel.settings' | translate }}</span>
-    <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
-  </button>
-  <div
-    class="control-panel-content"
-    [class.expanded]="isExpanded"
-    [attr.aria-hidden]="!isExpanded"
-    [attr.inert]="!isExpanded ? '' : null"
-  >
+@if (contentOnly) {
+  <div class="control-panel-content expanded">
     <app-stats-mode-toggle [context]="context" />
     <app-min-games-slider [context]="context" [maxGames]="maxGames" />
   </div>
-</div>
+} @else {
+  <div class="control-panel">
+    <button
+      class="control-panel-toggle"
+      (click)="toggleExpanded()"
+      type="button"
+      [attr.aria-expanded]="isExpanded"
+    >
+      <span>{{ 'settingsPanel.settings' | translate }}</span>
+      <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
+    </button>
+    <div
+      class="control-panel-content"
+      [class.expanded]="isExpanded"
+      [attr.aria-hidden]="!isExpanded"
+      [attr.inert]="!isExpanded ? '' : null"
+    >
+      <app-stats-mode-toggle [context]="context" />
+      <app-min-games-slider [context]="context" [maxGames]="maxGames" />
+    </div>
+  </div>
+}

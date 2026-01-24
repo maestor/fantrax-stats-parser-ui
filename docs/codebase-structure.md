@@ -21,9 +21,11 @@ fantrax-stats-parser-ui/
 │   │   ├── services/         # Application services
 │   │   │   ├── api.service.ts
 │   │   │   ├── cache.service.ts
+│   │   │   ├── drawer-context.service.ts
 │   │   │   ├── filter.service.ts
 │   │   │   ├── stats.service.ts
-│   │   │   └── team.service.ts
+│   │   │   ├── team.service.ts
+│   │   │   └── viewport.service.ts
 │   │   ├── shared/           # Shared components
 │   │   │   ├── help-dialog/
 │   │   │   ├── player-card/
@@ -75,6 +77,8 @@ Application-wide services:
 - **filter.service.ts** - Reactive UI filter state (season/report/statsPerGame/minGames)
 - **cache.service.ts** - In-memory caching for API responses
 - **team.service.ts** - Selected team state (used by top controls + pages)
+- **viewport.service.ts** - Viewport breakpoint detection (mobile vs desktop)
+- **drawer-context.service.ts** - Provides per-page context (e.g. max games) to the mobile settings drawer
 
 ### `/src/app/shared/`
 Reusable presentational components:

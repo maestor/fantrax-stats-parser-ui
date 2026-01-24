@@ -7,6 +7,7 @@ import { ApiService, Player } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
+import { ViewportService } from '@services/viewport.service';
 import { BehaviorSubject } from 'rxjs';
 import { of } from 'rxjs';
 
@@ -45,6 +46,7 @@ describe('PlayerStatsComponent', () => {
         provideHttpClient(),
         { provide: ApiService, useValue: apiServiceMock },
         { provide: TeamService, useClass: TeamServiceMock },
+        { provide: ViewportService, useValue: { isMobile$: of(false) } },
       ],
     }).compileComponents();
 

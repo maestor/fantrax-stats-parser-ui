@@ -3,20 +3,52 @@ import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, of, Subject, throwError } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
+import { ViewportService } from '@services/viewport.service';
+import { ApiService } from '@services/api.service';
+import { TeamService } from '@services/team.service';
+import { DrawerContextService } from '@services/drawer-context.service';
+
+class TeamServiceMock {
+  private readonly selectedTeamIdSubject = new BehaviorSubject<string>('1');
+  readonly selectedTeamId$ = this.selectedTeamIdSubject.asObservable();
+
+  get selectedTeamId(): string {
+    return this.selectedTeamIdSubject.value;
+  }
+
+  setTeamId(teamId: string): void {
+    this.selectedTeamIdSubject.next(teamId);
+  }
+}
 
 describe('AppComponent', () => {
   let translateService: TranslateService;
   let titleService: Title;
   let dialog: { open: jasmine.Spy };
+  let apiServiceMock: jasmine.SpyObj<Pick<ApiService, 'getTeams' | 'getSeasons'>>;
 
   beforeEach(async () => {
     dialog = { open: jasmine.createSpy('open') };
 
+    apiServiceMock = jasmine.createSpyObj<Pick<ApiService, 'getTeams' | 'getSeasons'>>(
+      'ApiService',
+      ['getTeams', 'getSeasons']
+    );
+    apiServiceMock.getTeams.and.returnValue(of([]));
+    apiServiceMock.getSeasons.and.returnValue(of([]));
+
     await TestBed.configureTestingModule({
       imports: [AppComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([]), Title],
+      providers: [
+        provideRouter([]),
+        Title,
+        { provide: ViewportService, useValue: { isMobile$: of(false) } },
+        { provide: ApiService, useValue: apiServiceMock },
+        { provide: TeamService, useClass: TeamServiceMock },
+        DrawerContextService,
+      ],
     })
       .overrideProvider(MatDialog, { useValue: dialog })
       .compileComponents();
@@ -130,6 +162,58 @@ describe('AppComponent', () => {
 
       (app as any).updateControlsContext('/player-stats');
       expect(app.controlsContext).toBe('player');
+    });
+  });
+
+  describe('mobile drawer context wiring', () => {
+    it('should map selectedTeamId to a translated team key when available', async () => {
+      apiServiceMock.getTeams.and.returnValue(
+        of([
+          {
+            id: '1',
+            name: 'vegas',
+          } as any,
+        ])
+      );
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      const value = await firstValueFrom(
+        fixture.componentInstance.selectedTeamNameKey$.pipe(
+          filter((v): v is string => v !== null)
+        )
+      );
+
+      expect(value).toBe('teams.vegas');
+    });
+
+    it('should emit null when teams fetch fails (catchError fallback)', async () => {
+      apiServiceMock.getTeams.and.returnValue(
+        throwError(() => new Error('network error'))
+      );
+
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      const value = await firstValueFrom(fixture.componentInstance.selectedTeamNameKey$);
+      expect(value).toBeNull();
+    });
+
+    it('should switch drawerMaxGames based on controlsContext', async () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      const drawerContext = TestBed.inject(DrawerContextService);
+      drawerContext.setMaxGames('player', 12);
+      drawerContext.setMaxGames('goalie', 20);
+
+      const app = fixture.componentInstance;
+
+      expect(await firstValueFrom(app.drawerMaxGames$)).toBe(12);
+
+      (app as any).updateControlsContext('/goalie-stats');
+      expect(await firstValueFrom(app.drawerMaxGames$)).toBe(20);
     });
   });
 

@@ -7,6 +7,7 @@ import { ApiService, Goalie } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
+import { ViewportService } from '@services/viewport.service';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
 import { of, throwError } from 'rxjs';
 
@@ -31,6 +32,7 @@ describe('GoalieStatsComponent', () => {
       providers: [
         provideHttpClient(),
         { provide: ApiService, useValue: apiServiceMock },
+        { provide: ViewportService, useValue: { isMobile$: of(false) } },
         {
           provide: TeamService,
           useValue: {

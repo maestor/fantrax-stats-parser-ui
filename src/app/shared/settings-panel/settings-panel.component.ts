@@ -16,9 +16,11 @@ import { MinGamesSliderComponent } from './min-games-slider/min-games-slider.com
 export class SettingsPanelComponent {
   @Input() context: 'player' | 'goalie' = 'player';
   @Input() maxGames = 0;
+  @Input() contentOnly = false;
   isExpanded = false;
 
   toggleExpanded(): void {
+    if (this.contentOnly) return;
     this.isExpanded = !this.isExpanded;
   }
 }
