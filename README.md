@@ -22,7 +22,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats, season-by-season breakdown, and a graphs tab in separate tabs, using the same stat keys (including `score`) as the main tables
 	- 📉 Graphs tab shows per-season line charts for key stats (games, goals, assists, points, shots, penalties, hits, blocks for skaters; games, wins, saves, shutouts for goalies) with selectable series and sensible axis scaling
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
-- 🌐 **Internationalization**: Multi-language support with ngx-translate
+- 🌐 **Internationalization**: i18n support with ngx-translate (currently ships with Finnish UI; additional languages can be added under `public/i18n/`)
 - 🎨 **Material Design**: Clean UI with Angular Material components
 - 🌓 **Automatic Dark Mode**: Follows device/browser `prefers-color-scheme` (no manual toggle)
 - 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)

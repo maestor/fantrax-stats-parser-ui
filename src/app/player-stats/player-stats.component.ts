@@ -33,6 +33,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   maxGames: number = 0;
   tableData: Player[] = [];
   tableColumns = PLAYER_COLUMNS;
+  defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
   loading = false;
   apiError = false;
 
@@ -48,9 +49,18 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
         this.season = season;
         this.statsPerGame = statsPerGame;
         this.minGames = minGames;
+
+        this.tableColumns = this.getTableColumns(statsPerGame);
+        this.defaultSortColumn = statsPerGame ? 'scoreAdjustedByGames' : 'score';
+
         const apiTeamId = this.toApiTeamId(teamId);
         this.fetchData(apiTeamId ? { reportType, season, teamId: apiTeamId } : { reportType, season });
       });
+  }
+
+  private getTableColumns(statsPerGame: boolean): string[] {
+    if (!statsPerGame) return PLAYER_COLUMNS;
+    return PLAYER_COLUMNS.filter((c) => c !== 'score');
   }
 
   ngOnDestroy(): void {

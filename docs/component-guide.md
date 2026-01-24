@@ -139,6 +139,8 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 @Input() columns: string[] = [];
 @Input() defaultSortColumn = 'score';
 @Input() loading = false;
+@Input() apiError = false;
+@Input() tableId = 'stats-table';
 ```
 
 **Outputs**: None — row clicks open `PlayerCardComponent` directly via `MatDialog`.
@@ -193,13 +195,13 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
   - Toggle button shows/hides filter controls
   - Controls stack vertically when expanded
   - Smooth expand/collapse animation
-  - Panel is expanded by default on page load
+  - Panel is collapsed by default on page load
 - **Small Mobile (<480px)**: Full-width controls with reduced padding
 
 **State Management**:
 
 ```typescript
-isExpanded = true; // Controls panel visibility on mobile
+isExpanded = false; // Controls panel visibility
 
 toggleExpanded(): void {
   this.isExpanded = !this.isExpanded;
@@ -254,7 +256,7 @@ toggleExpanded(): void {
 
 **Location**: `src/app/shared/settings-panel/stats-mode-toggle/`
 
-**Purpose**: Toggle between combined stats and per-game stats.
+**Purpose**: Toggle between totals and per-game stats.
 
 **Inputs**:
 

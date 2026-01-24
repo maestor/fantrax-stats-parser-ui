@@ -16,6 +16,7 @@ There isn’t a reliable “reuse one terminal only” switch that can be set fr
 
 - Use Command Palette → “Terminal: Kill All Terminals” (fast cleanup).
 - When you work with Copilot, ask it to “batch commands into one run” so it uses fewer tool calls.
+- By default, Copilot should not create git commits unless you explicitly ask for a commit.
 
 If Copilot Chat (or VS Code) shows “Enable shell integration to improve command detection”, ensure both of these settings are enabled:
 
@@ -43,7 +44,7 @@ npm run start
 ```
 - Runs on http://localhost:4200
 - Auto-reloads on file changes
-- Opens browser automatically
+- Does not open a browser automatically (open the URL manually)
 
 ### Build for Production
 ```bash
@@ -123,9 +124,14 @@ npm run watch
 ```bash
 npm test
 ```
-- Runs Jasmine/Karma tests
-- Opens browser with test results
-- Re-runs on file changes
+- Runs Jasmine/Karma tests once (Chrome)
+- Opens a browser window with test results
+
+For watch mode (re-run on file changes):
+
+```bash
+npm run test:watch
+```
 
 ### Run E2E Tests
 ```bash

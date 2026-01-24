@@ -51,7 +51,9 @@ module.exports = function (config) {
         },
       },
     },
-    reporters: ['progress', 'kjhtml'],
+    // 'progress' uses dynamic TTY updates which can appear as "no output" in some terminals/log collectors.
+    // 'dots' is stable and works well both locally and in CI/log capture.
+    reporters: ['dots', 'kjhtml'],
     browsers: ['Chrome'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {

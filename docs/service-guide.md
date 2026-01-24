@@ -55,6 +55,8 @@ export type Season = {
 // Player season-specific stats
 export type PlayerSeasonStats = {
   season: number;
+  score: number;
+  scoreAdjustedByGames: number;
   games: number;
   goals: number;
   assists: number;
@@ -71,6 +73,8 @@ export type PlayerSeasonStats = {
 // Combined player stats with optional seasons array
 export type Player = {
   name: string;
+  score: number;
+  scoreAdjustedByGames: number;
   games: number;
   goals: number;
   assists: number;
@@ -88,6 +92,8 @@ export type Player = {
 // Goalie season-specific stats
 export type GoalieSeasonStats = {
   season: number;
+  score: number;
+  scoreAdjustedByGames: number;
   games: number;
   wins: number;
   saves: number;
@@ -105,6 +111,8 @@ export type GoalieSeasonStats = {
 // Combined goalie stats with optional seasons array
 export type Goalie = {
   name: string;
+  score: number;
+  scoreAdjustedByGames: number;
   games: number;
   wins: number;
   saves: number;
@@ -182,6 +190,7 @@ export class MyComponent {
 **Responsibilities**:
 - Convert totals to per-game averages (while preserving fixed fields)
 - Keep formatting consistent (2 decimals)
+- In per-game mode, uses `scoreAdjustedByGames` as the per-game `score`
 
 **Key Methods**:
 ```typescript
@@ -201,6 +210,7 @@ class StatsService {
 **Responsibilities**:
 - Maintain independent filter state for players and goalies
 - Expose filter state as observables for components
+- Keep `season` and `reportType` in sync globally between players and goalies
 - Provide reset helpers (including a global reset)
 
 **Key Methods**:
@@ -238,7 +248,7 @@ class CacheService {
   get<T>(key: string): T | null
 
   // Set cache data with optional TTL
-  set<T>(key: string, data: T, ttlSeconds?: number): void
+  set<T>(key: string, data: T, ttlMs?: number): void
 
   // Check if cache has data
   has(key: string): boolean
@@ -252,20 +262,27 @@ class CacheService {
 ```
 
 **Cache Strategy**:
-- Time-based expiration (TTL)
-- LRU (Least Recently Used) eviction
-- Cache size limits
-- Cache keys based on request parameters
+- Time-based expiration (TTL only)
+- No LRU or size-based eviction (current implementation is a simple `Map`)
+- Cache keys are chosen by the caller (primarily `ApiService`)
 
-**Cache Keys**:
-```typescript
-// Format: 'service:method:params'
-'stats:player:2023-2024:regular'
-'stats:goalie:2023-2024:playoffs'
-'api:seasons'
+**Cache Keys (current conventions)**:
+
+```text
+teams
+seasons-regular
+seasons-playoffs
+seasons-regular-team-<teamId>
+playerStats-regular-combined
+playerStats-regular-<season>
+goalieStats-playoffs-combined
+goalieStats-playoffs-<season>
+
+# Many keys have an optional suffix when a non-default team is selected:
+# ...-team-<teamId>
 ```
 
-**Default TTL**: 5 minutes (300 seconds)
+**Default TTL**: 5 minutes (300,000 ms)
 
 **Usage Example**:
 ```typescript
@@ -291,16 +308,14 @@ export class ApiService {
 
 ## Service Interaction Patterns
 
-### Layered Architecture
+### Practical Data Flow (as implemented)
 
 ```
-Component Layer
-      ↓
-  StatsService (Business Logic)
-      ↓
-  ApiService (HTTP) → CacheService
-      ↓
-  FilterService (Data Processing)
+FilterService (UI filter state) ─┐
+TeamService (team state)        ├─> Feature page (PlayerStats/GoalieStats)
+ApiService (HTTP + cache) ──────┘           │
+StatsService (per-game transform) ──────────┤
+                      └─> StatsTable (search/sort/keyboard + Player Card)
 ```
 
 ### Example: Fetching and Displaying Stats

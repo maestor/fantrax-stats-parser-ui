@@ -33,6 +33,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   maxGames: number = 0;
   tableData: Goalie[] = [];
   tableColumns = GOALIE_COLUMNS;
+  defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
   loading = false;
   apiError = false;
 
@@ -48,9 +49,14 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
         this.season = season;
         this.statsPerGame = statsPerGame;
         this.minGames = minGames;
-        this.tableColumns = this.season
-          ? GOALIE_SEASON_COLUMNS
-          : GOALIE_COLUMNS;
+
+        const baseColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
+        this.tableColumns = statsPerGame
+          ? baseColumns.filter((c) => c !== 'score')
+          : baseColumns;
+
+        this.defaultSortColumn = statsPerGame ? 'scoreAdjustedByGames' : 'score';
+
         const apiTeamId = this.toApiTeamId(teamId);
         this.fetchData(apiTeamId ? { reportType, season, teamId: apiTeamId } : { reportType, season });
       });

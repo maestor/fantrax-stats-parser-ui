@@ -72,7 +72,7 @@ Application-wide services:
 
 - **api.service.ts** - HTTP client wrapper for backend API
 - **stats.service.ts** - Business logic for stats data transformation
-- **filter.service.ts** - Table filtering and sorting logic
+- **filter.service.ts** - Reactive UI filter state (season/report/statsPerGame/minGames)
 - **cache.service.ts** - In-memory caching for API responses
 - **team.service.ts** - Selected team state (used by top controls + pages)
 
@@ -96,7 +96,6 @@ Help/instructions dialog opened from the info icon (and `?` shortcut)
 #### `stats-table/`
 Main data table component:
 - Material table with sorting
-- Pagination
 - Column configuration
 - Row selection
 

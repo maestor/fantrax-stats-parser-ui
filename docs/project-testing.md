@@ -6,13 +6,11 @@ This project has comprehensive test coverage for all UI behaviors, services, and
 
 ## Test Statistics
 
-- **Total Test Files**: 15+
-- **Total Tests**: Run `npm test` to see the current count and status
+- **Total Test Files / Tests**: Run `npm test` to see the current count and status
 - **Test Framework**: Jasmine + Karma
 - **E2E Framework**: Playwright
 - **Coverage**: Enforced gate is >=95% statements/lines/functions and >=85% branches; long-term target is 100% statements/lines/functions and >=90% branches
-- **Pass Rate**: 100% ✅
-- **Skipped Tests**: 0
+Note: avoid hard-coding a “current test count” in docs; it becomes stale quickly.
 
 ## Contribution Requirement: 100% Tested Changes
 
@@ -20,8 +18,6 @@ Every contribution must include tests for all new/changed behavior.
 
 - **Rule**: new/changed logic should be tested to 100% (no uncovered touched lines/branches; include error and edge cases)
 - **CI Gate**: the repo’s enforced global coverage thresholds are the minimum bar; they are not a substitute for fully testing your change
-
-**Last verified (snapshot)**: January 22, 2026 — 269 passing, 0 skipped
 
 ## Running Tests
 
@@ -40,6 +36,9 @@ npm run test:headless
 
 # Run tests with coverage
 npm run test:coverage
+
+# Run tests with coverage in headless mode (what CI uses via `npm run verify`)
+npm run test:coverage:headless
 
 # Run the same checks CI enforces (coverage thresholds + production build)
 npm run verify

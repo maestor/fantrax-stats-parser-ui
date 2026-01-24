@@ -493,6 +493,22 @@ describe('StatsTableComponent', () => {
 
       expect(component.dataSource.sort).toBe(component.sort);
     });
+
+    it('should update sort.active when defaultSortColumn changes after view init', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
+      fixture.detectChanges();
+
+      expect(component.sort.active).toBe('score');
+
+      component.defaultSortColumn = 'points';
+      component.ngOnChanges({
+        defaultSortColumn: new SimpleChange('score', 'points', false),
+      });
+
+      expect(component.sort.active).toBe('points');
+      expect(component.sort.direction).toBe('desc');
+    });
   });
 
   describe('ngAfterViewInit', () => {

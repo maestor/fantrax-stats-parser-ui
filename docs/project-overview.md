@@ -40,14 +40,19 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - **Responsive Design**: Adapts to viewport size (max 95vw)
 
 4. **Control Panel**
-   - Season switcher (multiple seasons)
-   - Report type switcher (regular/playoffs)
-   - Stats mode toggle (combined/separate views)
-   - Minimum games filter slider
+    The controls are split into two areas:
+
+    - **Top controls (header)**
+       - Team selector
+       - Season selector
+       - Report type selector (regular/playoffs)
+    - **Settings panel (per page)**
+       - Stats per game toggle
+       - Minimum games slider
 
 5. **Data Management**
    - Caching service to reduce API calls
-   - Filter service for table data
+   - Filter service for reactive UI filter state
    - Stats service for data transformation
    - Support for optional season breakdown data
 

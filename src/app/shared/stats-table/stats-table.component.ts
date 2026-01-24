@@ -80,6 +80,9 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       this.onLoadingChanged(this.loading);
     }
 
+    const sortRelevantChange =
+      Boolean(changes['defaultSortColumn']) || Boolean(changes['columns']);
+
     if (changes['data'] && this.data) {
       this.dataSource.data = this.data;
 
@@ -93,9 +96,18 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
         this.dataSource.sort = this.sort;
       }
 
+      if (this.sort && sortRelevantChange) {
+        this.applyDefaultSort();
+      }
+
       // Reset focus to first row when the dataset changes.
       this.activeRowIndex = 0;
       setTimeout(() => this.ensureActiveRowInRange(), 0);
+    }
+
+    if (this.sort && sortRelevantChange && !(changes['data'] && this.data)) {
+      // When only the sort inputs changed, apply immediately.
+      this.applyDefaultSort();
     }
   }
 
@@ -157,12 +169,28 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   ngAfterViewInit(): void {
     if (this.sort) {
       this.dataSource.sort = this.sort;
-      this.sort.active = this.defaultSortColumn;
-      this.sort.direction = 'desc';
+      this.applyDefaultSort();
     }
 
     this.cdr.detectChanges();
     this.ensureActiveRowInRange();
+  }
+
+  private applyDefaultSort(): void {
+    const desired = this.defaultSortColumn;
+
+    // Prefer the desired sort column. If columns are not known yet (common during init), still apply.
+    // If the desired column is not currently displayed, fall back to the first non-static column.
+    const hasColumns = Array.isArray(this.displayedColumns) && this.displayedColumns.length > 0;
+    const canUseDesired =
+      Boolean(desired) && (!hasColumns || this.displayedColumns.includes(desired));
+
+    const fallback = hasColumns
+      ? this.displayedColumns.find((c) => c !== 'position') ?? this.displayedColumns[0]
+      : desired;
+
+    this.sort.active = canUseDesired ? desired : (fallback ?? desired);
+    this.sort.direction = 'desc';
   }
 
   filterItems(event: Event) {

@@ -10,11 +10,11 @@
     "start": "ng serve",
     "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "npm run test:watch -- --watch=false",
-    "test:watch": "ng test",
-    "test:coverage": "npm test -- --code-coverage",
-    "test:coverage:headless": "npm test -- --code-coverage --browsers=ChromeHeadlessNoSandbox",
-    "test:headless": "npm test -- --browsers=ChromeHeadlessNoSandbox",
+    "test": "npm run test:watch -- --watch=false --progress=false",
+    "test:watch": "ng test --progress=false",
+    "test:coverage": "npm test -- --code-coverage --progress=false",
+    "test:coverage:headless": "npm test -- --watch=false --code-coverage --browsers=ChromeHeadlessNoSandbox --progress=false",
+    "test:headless": "npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox --progress=false",
     "verify": "npm run test:coverage:headless && npm run build"
   },
   "engines": {
