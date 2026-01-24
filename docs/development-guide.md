@@ -8,6 +8,20 @@
 
 Note: If you see `npm WARN npm npm does not support Node.js v24.x`, see `docs/project-requirements.md` → "npm Warning About Node 24".
 
+## VS Code + Copilot Terminal Notes
+
+If you work on this repo using GitHub Copilot Chat in VS Code, you may notice multiple terminals get created during command execution. This is normal: Copilot may start separate terminal sessions so it can run and/or poll long-running commands without disrupting your existing terminal.
+
+There isn’t a reliable “reuse one terminal only” switch that can be set from the project. Practical mitigations:
+
+- Use Command Palette → “Terminal: Kill All Terminals” (fast cleanup).
+- When you work with Copilot, ask it to “batch commands into one run” so it uses fewer tool calls.
+
+If Copilot Chat (or VS Code) shows “Enable shell integration to improve command detection”, ensure both of these settings are enabled:
+
+- `terminal.integrated.inheritEnv`: `true`
+- `terminal.integrated.shellIntegration.enabled`: `true`
+
 ## Initial Setup
 
 ```bash
