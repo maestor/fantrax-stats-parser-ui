@@ -17,6 +17,8 @@ There isn’t a reliable “reuse one terminal only” switch that can be set fr
 - Use Command Palette → “Terminal: Kill All Terminals” (fast cleanup).
 - When you work with Copilot, ask it to “batch commands into one run” so it uses fewer tool calls.
 - By default, Copilot should not create git commits unless you explicitly ask for a commit.
+   - This is **per task**, not “once per chat session”: earlier permission to commit does not carry forward.
+   - If you want a commit, say it explicitly (e.g. “commit this change now”). If you don’t, Copilot should leave changes uncommitted.
 
 If Copilot Chat (or VS Code) shows “Enable shell integration to improve command detection”, ensure both of these settings are enabled:
 
