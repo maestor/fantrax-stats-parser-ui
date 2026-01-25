@@ -31,6 +31,7 @@ import {
   catchError,
   of,
   shareReplay,
+  startWith,
   take,
 } from 'rxjs';
 import { HelpDialogComponent } from '@shared/help-dialog/help-dialog.component';
@@ -74,7 +75,11 @@ export class AppComponent implements OnInit {
   );
   readonly controlsContext$ = this.controlsContextSubject.asObservable();
 
-  readonly isMobile$ = inject(ViewportService).isMobile$;
+  readonly mobileState$ = inject(ViewportService).isMobile$.pipe(
+    map((isMobile) => ({ ready: true, isMobile })),
+    startWith({ ready: false, isMobile: false }),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
 
   private readonly teamService = inject(TeamService);
   private readonly apiService = inject(ApiService);

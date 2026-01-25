@@ -6,6 +6,7 @@ import {
 import { provideHttpClient } from '@angular/common/http';
 import { ApiService, Season, Player, Goalie, ApiParams, Team } from '../api.service';
 import { CacheService } from '../cache.service';
+import { forkJoin } from 'rxjs';
 
 describe('ApiService', () => {
   let service: ApiService;
@@ -190,6 +191,48 @@ describe('ApiService', () => {
 
       const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
       expect(req.request.method).toBe('GET');
+      req.flush(mockPlayers);
+    });
+    
+    it('should dedupe in-flight requests for identical params (single HTTP call)', (done) => {
+      const params: ApiParams = { reportType: 'regular', season: undefined, teamId: '2' };
+      const mockPlayers: Player[] = [
+        {
+          name: 'Player 1',
+          score: 0,
+          scoreAdjustedByGames: 0,
+          games: 82,
+          goals: 50,
+          assists: 60,
+          points: 110,
+          plusMinus: 25,
+          penalties: 20,
+          shots: 300,
+          ppp: 40,
+          shp: 2,
+          hits: 100,
+          blocks: 50,
+        },
+      ];
+
+      forkJoin([
+        service.getPlayerData(params),
+        service.getPlayerData(params),
+      ]).subscribe(([a, b]) => {
+        expect(a).toEqual(mockPlayers);
+        expect(b).toEqual(mockPlayers);
+        done();
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return r.url === `${API_URL}/players/combined/regular` && r.params.get('teamId') === '2';
+      });
+      expect(req.request.method).toBe('GET');
+
+      httpMock.expectNone((r) => {
+        return r.url === `${API_URL}/players/combined/regular` && r.params.get('teamId') === '2';
+      });
+
       req.flush(mockPlayers);
     });
 
