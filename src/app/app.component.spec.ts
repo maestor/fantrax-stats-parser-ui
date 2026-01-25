@@ -315,6 +315,120 @@ describe('AppComponent', () => {
   });
 
   describe('PWA update snackbar', () => {
+    beforeEach(() => {
+      const existingSpy = (translateService.get as any)?.and;
+      const install = existingSpy?.callFake
+        ? (fn: any) => (translateService.get as any).and.callFake(fn)
+        : (fn: any) => spyOn(translateService, 'get').and.callFake(fn);
+
+      install((key: any) => {
+        if (Array.isArray(key)) {
+          return of({
+            'pwa.updateAvailable': 'Update available',
+            'pwa.updateAction': 'Reload',
+          } as any);
+        }
+        return of('Test Title');
+      });
+    });
+
+    it('should open snackbar once when update becomes available', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+
+      expect(snackBar.open).toHaveBeenCalledTimes(1);
+
+      // Re-emitting should not open a second snackbar while one is active.
+      pwaUpdateService.setUpdateAvailable(true);
+      expect(snackBar.open).toHaveBeenCalledTimes(1);
+    });
+
+    it('should open snackbar when invoked directly (covers translate callback)', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      // Ensure the snackbar path is taken.
+      (app as any).isUpdateAvailable = true;
+      (app as any).openUpdateAvailableSnackbar();
+
+      expect(snackBar.open).toHaveBeenCalledTimes(1);
+    });
+
+    it('should activate update when snackbar action is clicked', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      snackBarAction$.next();
+
+      expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
+    });
+
+    it('should re-open snackbar if dismissed without action while update is available', fakeAsync(() => {
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      expect(snackBar.open).toHaveBeenCalledTimes(1);
+
+      snackBarAfterDismissed$.next({ dismissedByAction: false });
+      tick(0);
+
+      expect(snackBar.open).toHaveBeenCalledTimes(2);
+    }));
+
+    it('should not re-open snackbar if dismissed by action', fakeAsync(() => {
+      const fixture = TestBed.createComponent(AppComponent);
+      fixture.detectChanges();
+
+      pwaUpdateService.setUpdateAvailable(true);
+      expect(snackBar.open).toHaveBeenCalledTimes(1);
+
+      snackBarAfterDismissed$.next({ dismissedByAction: true });
+      tick(0);
+
+      expect(snackBar.open).toHaveBeenCalledTimes(1);
+    }));
+  });
+
+  describe('help hotkey (direct handler coverage)', () => {
+    it('should ignore ? keydown when target is a form control (input/textarea/select)', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      (app as any).onDocumentKeydown({
+        key: '?',
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        preventDefault: jasmine.createSpy('preventDefault'),
+        target: { tagName: 'INPUT', isContentEditable: false },
+      } as any);
+
+      expect(dialog.open).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('mobileState$', () => {
+    it('should emit not-ready then ready state', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const emissions: Array<{ ready: boolean; isMobile: boolean }> = [];
+      const sub = fixture.componentInstance.mobileState$.subscribe((v) => emissions.push(v));
+
+      // StartWith should provide an initial non-ready value.
+      expect(emissions[0]).toEqual({ ready: false, isMobile: false });
+
+      // The mocked ViewportService emits `false`, so the second emission is ready/false.
+      expect(emissions[1]).toEqual({ ready: true, isMobile: false });
+
+      sub.unsubscribe();
+    });
+  });
+
+  describe('PWA update snackbar', () => {
     it('should not open snackbar before an update is available (defensive no-op)', fakeAsync(() => {
       spyOn(translateService, 'get').and.returnValue(of('Test Title'));
 

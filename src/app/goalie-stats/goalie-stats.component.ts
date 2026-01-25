@@ -1,6 +1,16 @@
 import { AsyncPipe } from '@angular/common';
 import { OnInit, Component, inject, OnDestroy } from '@angular/core';
-import { Subject, combineLatest, takeUntil } from 'rxjs';
+import {
+  Subject,
+  auditTime,
+  catchError,
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  of,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import {
   ApiParams,
   ApiService,
@@ -48,23 +58,69 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
       this.filterService.goalieFilters$,
       this.teamService.selectedTeamId$,
     ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([filters, teamId]) => {
-        const { reportType, season, statsPerGame, minGames } = filters;
-        this.reportType = reportType;
-        this.season = season;
-        this.statsPerGame = statsPerGame;
-        this.minGames = minGames;
+      .pipe(
+        auditTime(0),
+        map(([filters, teamId]) => {
+          const apiTeamId = this.toApiTeamId(teamId);
+          const params: ApiParams = apiTeamId
+            ? { reportType: filters.reportType, season: filters.season, teamId: apiTeamId }
+            : { reportType: filters.reportType, season: filters.season };
 
-        const baseColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
-        this.tableColumns = statsPerGame
-          ? baseColumns.filter((c) => c !== 'score')
-          : baseColumns;
+          return {
+            filters,
+            params,
+            apiTeamId,
+          };
+        }),
+        distinctUntilChanged((a, b) => {
+          return (
+            a.filters.reportType === b.filters.reportType &&
+            a.filters.season === b.filters.season &&
+            a.filters.statsPerGame === b.filters.statsPerGame &&
+            a.filters.minGames === b.filters.minGames &&
+            a.apiTeamId === b.apiTeamId
+          );
+        }),
+        switchMap(({ filters, params }) => {
+          const { reportType, season, statsPerGame, minGames } = filters;
+          this.reportType = reportType;
+          this.season = season;
+          this.statsPerGame = statsPerGame;
+          this.minGames = minGames;
 
-        this.defaultSortColumn = statsPerGame ? 'scoreAdjustedByGames' : 'score';
+          const baseColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
+          this.tableColumns = statsPerGame
+            ? baseColumns.filter((c) => c !== 'score')
+            : baseColumns;
+          this.defaultSortColumn = statsPerGame ? 'scoreAdjustedByGames' : 'score';
+          this.loading = true;
+          this.apiError = false;
 
-        const apiTeamId = this.toApiTeamId(teamId);
-        this.fetchData(apiTeamId ? { reportType, season, teamId: apiTeamId } : { reportType, season });
+          return this.apiService.getGoalieData(params).pipe(
+            map((data) => ({ data, isError: false as const })),
+            catchError(() => of({ data: [] as Goalie[], isError: true as const }))
+          );
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: ({ data, isError }) => {
+          if (isError) {
+            this.tableData = [];
+            this.maxGames = 0;
+            this.loading = false;
+            this.apiError = true;
+            return;
+          }
+          const baseData = this.statsPerGame
+            ? this.statsService.getGoalieStatsPerGame(data)
+            : data;
+          this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
+          this.drawerContextService.setMaxGames('goalie', this.maxGames);
+          this.tableData = baseData.filter((g) => g.games >= this.minGames);
+          this.loading = false;
+        },
+        // Stream should not error due to catchError above.
       });
   }
 

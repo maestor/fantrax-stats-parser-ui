@@ -182,8 +182,8 @@ describe('SeasonSwitcherComponent', () => {
     }));
   });
 
-  describe('loadSeasons', () => {
-    it('should clear seasons and updateSelectedSeasonText on API error', () => {
+  describe('API error handling', () => {
+    it('should clear seasons and selectedSeasonText on API error', fakeAsync(() => {
       component.selectedSeason = 2024;
       component.seasons = [...mockSeasons];
 
@@ -191,11 +191,12 @@ describe('SeasonSwitcherComponent', () => {
         throwError(() => new Error('boom'))
       );
 
-      (component as any).loadSeasons('regular');
+      component.ngOnInit();
+      tick();
 
       expect(component.seasons).toEqual([]);
       expect(component.selectedSeasonText).toBeUndefined();
-    });
+    }));
   });
 
   describe('changeSeason', () => {
@@ -275,8 +276,8 @@ describe('SeasonSwitcherComponent', () => {
     }));
   });
 
-  describe('loadSeasons normalization + invalid selected season handling', () => {
-    it('should normalize numeric-string seasons and keep invalid seasons unchanged', () => {
+  describe('seasons normalization + invalid selected season handling', () => {
+    it('should normalize numeric-string seasons and keep invalid seasons unchanged', fakeAsync(() => {
       (apiService.getSeasons as jasmine.Spy).and.returnValue(
         of([
           { season: '2024', text: '2024-25' } as any,
@@ -284,35 +285,41 @@ describe('SeasonSwitcherComponent', () => {
         ])
       );
 
-      (component as any).loadSeasons('regular');
+      component.ngOnInit();
+      tick(1);
 
       expect(component.seasons.some((s) => s.season === 2024)).toBeTrue();
       expect(component.seasons.some((s: any) => s.season === 'oops')).toBeTrue();
-    });
+    }));
 
-    it('should reset player season filter when selectedSeason is not present in loaded seasons', () => {
+    it('should reset player season filter when selected season is not present in loaded seasons', fakeAsync(() => {
       component.context = 'player';
-      component.selectedSeason = 2099;
+
+      // Drive selectedSeason via FilterService (ngOnInit subscribes to filters).
+      filterService.updatePlayerFilters({ season: 2099 });
 
       const updateSpy = spyOn(filterService, 'updatePlayerFilters').and.callThrough();
 
       (apiService.getSeasons as jasmine.Spy).and.returnValue(of(mockSeasons));
-      (component as any).loadSeasons('regular');
+      component.ngOnInit();
+      tick(1);
 
       expect(updateSpy).toHaveBeenCalledWith({ season: undefined });
-    });
+    }));
 
-    it('should reset goalie season filter when selectedSeason is not present in loaded seasons', () => {
+    it('should reset goalie season filter when selected season is not present in loaded seasons', fakeAsync(() => {
       component.context = 'goalie';
-      component.selectedSeason = 2099;
+
+      filterService.updateGoalieFilters({ season: 2099 });
 
       const updateSpy = spyOn(filterService, 'updateGoalieFilters').and.callThrough();
 
       (apiService.getSeasons as jasmine.Spy).and.returnValue(of(mockSeasons));
-      (component as any).loadSeasons('regular');
+      component.ngOnInit();
+      tick(1);
 
       expect(updateSpy).toHaveBeenCalledWith({ season: undefined });
-    });
+    }));
   });
 
   describe('ngOnDestroy', () => {

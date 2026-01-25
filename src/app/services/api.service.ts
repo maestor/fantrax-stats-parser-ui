@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, finalize, shareReplay, tap } from 'rxjs/operators';
 import { CacheService } from './cache.service';
 import { environment } from '../../environments/environment';
 
@@ -104,6 +104,11 @@ export class ApiService {
   private cacheService = inject(CacheService);
   private readonly API_URL = environment.apiUrl;
 
+  private readonly inFlightRequests = new Map<
+    string,
+    { observable: Observable<unknown>; cacheKeys: Set<string> }
+  >();
+
   // Fetching available teams
   getTeams(): Observable<Team[]> {
     return this.handleRequest<Team[]>('teams', 'teams');
@@ -157,16 +162,58 @@ export class ApiService {
     path: string,
     cacheKey: string,
     queryParams?: Record<string, string>
-  ) {
+  ): Observable<T> {
+    const requestKey = this.buildRequestKey(path, queryParams);
+    const requestCacheKey = `req:${requestKey}`;
+
+    const cachedByRequest = this.cacheService.get<T>(requestCacheKey);
+    if (cachedByRequest !== null) return of(cachedByRequest);
+
     const cachedData = this.cacheService.get<T>(cacheKey);
-    if (cachedData) return of(cachedData);
+    if (cachedData !== null) return of(cachedData);
+
+    const existingInFlight = this.inFlightRequests.get(requestKey);
+    if (existingInFlight) {
+      existingInFlight.cacheKeys.add(cacheKey);
+      return existingInFlight.observable as Observable<T>;
+    }
+
+    const cacheKeys = new Set<string>([cacheKey, requestCacheKey]);
 
     const params = queryParams ? new HttpParams({ fromObject: queryParams }) : undefined;
 
-    return this.http.get<T>(`${this.API_URL}/${path}`, { params }).pipe(
-      tap((data) => this.cacheService.set<T>(cacheKey, data)),
-      catchError(this.handleError)
+    const request$ = this.http.get<T>(`${this.API_URL}/${path}`, { params }).pipe(
+      tap((data) => {
+        for (const key of cacheKeys) {
+          this.cacheService.set<T>(key, data);
+        }
+      }),
+      catchError(this.handleError),
+      finalize(() => this.inFlightRequests.delete(requestKey)),
+      shareReplay({ bufferSize: 1, refCount: false })
     );
+
+    this.inFlightRequests.set(requestKey, { observable: request$, cacheKeys });
+    return request$;
+  }
+
+  private buildRequestKey(
+    path: string,
+    queryParams?: Record<string, string>
+  ): string {
+    if (!queryParams) return path;
+
+    const keys = Object.keys(queryParams).sort();
+    if (keys.length === 0) return path;
+
+    const query = keys
+      .map((key) => {
+        const value = queryParams[key];
+        return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+      })
+      .join('&');
+
+    return `${path}?${query}`;
   }
 
   private normalizeTeamId(teamId?: string): string | undefined {

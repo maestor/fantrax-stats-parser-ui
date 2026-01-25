@@ -8,7 +8,8 @@
 
 <main class="main">
   <div class="content">
-    @if (isMobile$ | async) {
+    @if (mobileState$ | async; as mobileState) {
+      @if (mobileState.ready && mobileState.isMobile) {
       <mat-sidenav-container class="mobile-shell">
         <mat-sidenav
           #settingsDrawer="matSidenav"
@@ -110,7 +111,7 @@
           </mat-tab-nav-panel>
         </mat-sidenav-content>
       </mat-sidenav-container>
-    } @else {
+      } @else if (mobileState.ready) {
       <div class="title-row">
         <h1 class="mat-display-1">{{ "pageTitle" | translate }}</h1>
 
@@ -145,6 +146,7 @@
       <mat-tab-nav-panel #tabPanel>
         <router-outlet />
       </mat-tab-nav-panel>
+      }
     }
   </div>
 </main>

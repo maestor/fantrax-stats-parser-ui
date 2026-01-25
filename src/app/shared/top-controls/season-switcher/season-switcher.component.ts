@@ -5,8 +5,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, combineLatest, distinctUntilChanged, map, takeUntil } from 'rxjs';
-import { ApiService, ReportType, Season } from '@services/api.service';
+import {
+  Subject,
+  auditTime,
+  catchError,
+  combineLatest,
+  distinctUntilChanged,
+  map,
+  of,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
+import { ApiService, Season } from '@services/api.service';
 import { FilterService, FilterState } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
 
@@ -60,43 +70,46 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
       reportType$,
       this.teamService.selectedTeamId$.pipe(distinctUntilChanged()),
     ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([reportType, teamId]) => {
-        const apiTeamId = this.toApiTeamId(teamId);
-        this.loadSeasons(reportType, apiTeamId);
-      });
-  }
+      .pipe(
+        // Team switch + filter reset can happen in the same tick.
+        // Coalesce and only fetch seasons once for the final state.
+        auditTime(0),
+        map(([reportType, teamId]) => ({ reportType, teamId: this.toApiTeamId(teamId) })),
+        distinctUntilChanged((a, b) => a.reportType === b.reportType && a.teamId === b.teamId),
+        switchMap(({ reportType, teamId }) => {
+          const seasons$ = teamId
+            ? this.apiService.getSeasons(reportType, teamId)
+            : this.apiService.getSeasons(reportType);
 
-  private loadSeasons(reportType: ReportType, teamId?: string) {
-    const seasons$ = teamId
-      ? this.apiService.getSeasons(reportType, teamId)
-      : this.apiService.getSeasons(reportType);
+          return seasons$.pipe(
+            map((data) => ({ data })),
+            catchError(() => of({ data: [] as Season[] }))
+          );
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: ({ data }) => {
+          this.seasons = [...data]
+            .reverse()
+            .map((s) => {
+              const normalizedSeason = this.toSeasonNumber((s as any).season);
+              return normalizedSeason === undefined ? s : { ...s, season: normalizedSeason };
+            });
 
-    seasons$.subscribe({
-      next: (data) => {
-        this.seasons = [...data]
-          .reverse()
-          .map((s) => {
-            const normalizedSeason = this.toSeasonNumber((s as any).season);
-            return normalizedSeason === undefined ? s : { ...s, season: normalizedSeason };
-          });
+          this.updateSelectedSeasonText();
 
-        this.updateSelectedSeasonText();
-
-        if (this.selectedSeason !== 'all') {
-          const selectedSeason = this.selectedSeason;
-          if (!this.seasons.some((s) => s.season === selectedSeason)) {
-            this.context === 'goalie'
-              ? this.filterService.updateGoalieFilters({ season: undefined })
-              : this.filterService.updatePlayerFilters({ season: undefined });
+          if (this.selectedSeason !== 'all') {
+            const selectedSeason = this.selectedSeason;
+            if (!this.seasons.some((s) => s.season === selectedSeason)) {
+              this.context === 'goalie'
+                ? this.filterService.updateGoalieFilters({ season: undefined })
+                : this.filterService.updatePlayerFilters({ season: undefined });
+            }
           }
-        }
-      },
-      error: () => {
-        this.seasons = [];
-        this.updateSelectedSeasonText();
-      },
-    });
+        },
+        // Stream should not error due to catchError above.
+      });
   }
 
   private updateSelectedSeasonText(): void {

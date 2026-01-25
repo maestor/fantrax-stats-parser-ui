@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { PlayerStatsComponent } from './player-stats.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
@@ -60,7 +60,7 @@ describe('PlayerStatsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should subscribe to player filters on init and fetch data with defaults and updates', () => {
+  it('should subscribe to player filters on init and fetch data with defaults and updates', fakeAsync(() => {
     const mockPlayers: Player[] = [
       {
         name: 'Player 1',
@@ -99,6 +99,7 @@ describe('PlayerStatsComponent', () => {
     apiServiceMock.getPlayerData.and.returnValue(of(mockPlayers));
 
     component.ngOnInit();
+    tick(1);
 
     expect(component.reportType).toBe('regular');
     expect(component.season).toBeUndefined();
@@ -122,6 +123,7 @@ describe('PlayerStatsComponent', () => {
       statsPerGame: true,
       minGames: 5,
     });
+    tick(1);
 
     expect(component.reportType).toBe('playoffs');
     expect(component.season).toBe(2024);
@@ -133,7 +135,21 @@ describe('PlayerStatsComponent', () => {
       reportType: 'playoffs',
       season: 2024,
     });
-  });
+  }));
+
+  it('should set apiError and clear data when getPlayerData errors during init stream', fakeAsync(() => {
+    apiServiceMock.getPlayerData.and.returnValue(
+      throwError(() => new Error('network'))
+    );
+
+    component.ngOnInit();
+    tick(1);
+
+    expect(component.loading).toBe(false);
+    expect(component.apiError).toBe(true);
+    expect(component.tableData).toEqual([]);
+    expect(component.maxGames).toBe(0);
+  }));
 
   it('should use per-game stats when statsPerGame is true', () => {
     const apiData: Player[] = [
@@ -255,21 +271,46 @@ describe('PlayerStatsComponent', () => {
     expect(component.maxGames).toBe(0);
   });
 
-  it('should include teamId when a non-default team is selected', () => {
+  it('should include teamId when a non-default team is selected', fakeAsync(() => {
     apiServiceMock.getPlayerData.and.returnValue(of([]));
     component.ngOnInit();
+    tick(1);
 
     apiServiceMock.getPlayerData.calls.reset();
 
     const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
     teamService.setTeamId('2');
+    tick(1);
 
     expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
       reportType: 'regular',
       season: undefined,
       teamId: '2',
     });
-  });
+  }));
+
+  it('should coalesce team change + filter reset into a single fetch', fakeAsync(() => {
+    apiServiceMock.getPlayerData.and.returnValue(of([]));
+
+    component.ngOnInit();
+    tick(1);
+    apiServiceMock.getPlayerData.calls.reset();
+
+    const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+
+    // Simulate TeamSwitcher behavior: team change then resetAll (same tick).
+    teamService.setTeamId('2');
+    filterService.resetAll();
+
+    tick(1);
+
+    expect(apiServiceMock.getPlayerData).toHaveBeenCalledTimes(1);
+    expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: undefined,
+      teamId: '2',
+    });
+  }));
 
   it('should call getPlayerData with default params when fetchData is called without arguments', () => {
     const mockPlayers: Player[] = [
