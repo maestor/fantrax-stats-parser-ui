@@ -77,6 +77,34 @@ describe('ApiService', () => {
       httpMock.expectNone(`${API_URL}/seasons/regular`);
     });
 
+    it('should return cached data by request signature even if specific cacheKey is cleared', (done) => {
+      const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
+
+      service.getSeasons('regular', '2').subscribe((seasons) => {
+        expect(seasons).toEqual(mockSeasons);
+
+        // Simulate an alternate caller that doesn't have the feature cache key,
+        // but should still benefit from request-signature caching.
+        cacheService.clear('seasons-regular-team-2');
+        const requestCacheKey = 'req:seasons/regular?teamId=2';
+        expect(cacheService.get<Season[]>(requestCacheKey)).toEqual(mockSeasons);
+
+        service.getSeasons('regular', '2').subscribe((again) => {
+          expect(again).toEqual(mockSeasons);
+          done();
+        });
+
+        httpMock.expectNone((r) => {
+          return r.url === `${API_URL}/seasons/regular` && r.params.get('teamId') === '2';
+        });
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return r.url === `${API_URL}/seasons/regular` && r.params.get('teamId') === '2';
+      });
+      req.flush(mockSeasons);
+    });
+
     it('should fetch playoffs seasons from API when reportType is playoffs', (done) => {
       const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
 
@@ -159,6 +187,33 @@ describe('ApiService', () => {
       const req = httpMock.expectOne(`${API_URL}/teams`);
       expect(req.request.method).toBe('GET');
       req.flush(mockTeams);
+    });
+
+    it('should treat cached empty array as a cache hit (no HTTP request)', (done) => {
+      cacheService.set<Team[]>('req:teams', []);
+
+      service.getTeams().subscribe((teams) => {
+        expect(teams).toEqual([]);
+        done();
+      });
+
+      httpMock.expectNone(`${API_URL}/teams`);
+    });
+  });
+
+  describe('request key building', () => {
+    it('should build deterministic, encoded request keys', () => {
+      const buildRequestKey = (service as any).buildRequestKey.bind(service) as (
+        path: string,
+        queryParams?: Record<string, string>
+      ) => string;
+
+      expect(buildRequestKey('players', { b: '2', a: '1' })).toBe('players?a=1&b=2');
+      expect(buildRequestKey('seasons/regular', { teamId: 'a b' })).toBe(
+        'seasons/regular?teamId=a%20b'
+      );
+      expect(buildRequestKey('teams', {})).toBe('teams');
+      expect(buildRequestKey('teams')).toBe('teams');
     });
   });
 

@@ -139,6 +139,20 @@ describe('GoalieStatsComponent', () => {
     });
   }));
 
+  it('should set apiError and clear data when getGoalieData errors during init stream', fakeAsync(() => {
+    apiServiceMock.getGoalieData.and.returnValue(
+      throwError(() => new Error('network'))
+    );
+
+    component.ngOnInit();
+    tick(1);
+
+    expect(component.loading).toBe(false);
+    expect(component.apiError).toBe(true);
+    expect(component.tableData).toEqual([]);
+    expect(component.maxGames).toBe(0);
+  }));
+
   it('should coalesce team change + filter reset into a single fetch', fakeAsync(() => {
     apiServiceMock.getGoalieData.and.returnValue(of([]));
 

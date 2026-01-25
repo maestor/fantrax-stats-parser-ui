@@ -137,6 +137,20 @@ describe('PlayerStatsComponent', () => {
     });
   }));
 
+  it('should set apiError and clear data when getPlayerData errors during init stream', fakeAsync(() => {
+    apiServiceMock.getPlayerData.and.returnValue(
+      throwError(() => new Error('network'))
+    );
+
+    component.ngOnInit();
+    tick(1);
+
+    expect(component.loading).toBe(false);
+    expect(component.apiError).toBe(true);
+    expect(component.tableData).toEqual([]);
+    expect(component.maxGames).toBe(0);
+  }));
+
   it('should use per-game stats when statsPerGame is true', () => {
     const apiData: Player[] = [
       {
