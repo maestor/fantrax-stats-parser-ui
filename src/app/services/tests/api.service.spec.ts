@@ -135,6 +135,27 @@ describe('ApiService', () => {
       req.flush(mockSeasons);
     });
 
+    it('should include startFrom as query param when provided', (done) => {
+      const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
+
+      service.getSeasons('regular', '2', 2018).subscribe((seasons) => {
+        expect(seasons).toEqual(mockSeasons);
+        const cachedData = cacheService.get<Season[]>('seasons-regular-team-2-startFrom-2018');
+        expect(cachedData).toEqual(mockSeasons);
+        done();
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return (
+          r.url === `${API_URL}/seasons/regular` &&
+          r.params.get('teamId') === '2' &&
+          r.params.get('startFrom') === '2018'
+        );
+      });
+      expect(req.request.method).toBe('GET');
+      req.flush(mockSeasons);
+    });
+
     it('should treat teamId "1" as default (no query param, no team cache suffix)', (done) => {
       const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
 
@@ -376,6 +397,45 @@ describe('ApiService', () => {
       req.flush(mockPlayers);
     });
 
+    it('should include startFrom for combined player data and use a distinct cache key', (done) => {
+      const params: ApiParams = { reportType: 'regular', startFrom: 2018 };
+      const mockPlayers: Player[] = [];
+
+      service.getPlayerData(params).subscribe((players) => {
+        expect(players).toEqual(mockPlayers);
+        const cachedData = cacheService.get<Player[]>('playerStats-regular-combined-startFrom-2018');
+        expect(cachedData).toEqual(mockPlayers);
+        done();
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return (
+          r.url === `${API_URL}/players/combined/regular` &&
+          r.params.get('startFrom') === '2018'
+        );
+      });
+      expect(req.request.method).toBe('GET');
+      req.flush(mockPlayers);
+    });
+
+    it('should not include startFrom for season-specific player data', (done) => {
+      const params: ApiParams = { reportType: 'regular', season: 2024, startFrom: 2018 };
+      const mockPlayers: Player[] = [];
+
+      service.getPlayerData(params).subscribe((players) => {
+        expect(players).toEqual(mockPlayers);
+        done();
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return (
+          r.url === `${API_URL}/players/season/regular/2024` &&
+          !r.params.has('startFrom')
+        );
+      });
+      req.flush(mockPlayers);
+    });
+
     it('should cache player data with correct key for season data', (done) => {
       const params: ApiParams = { reportType: 'playoffs', season: 2024 };
       const mockPlayers: Player[] = [];
@@ -471,6 +531,27 @@ describe('ApiService', () => {
       });
 
       const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockGoalies);
+    });
+
+    it('should include startFrom for combined goalie data and use a distinct cache key', (done) => {
+      const params: ApiParams = { reportType: 'regular', startFrom: 2018 };
+      const mockGoalies: Goalie[] = [];
+
+      service.getGoalieData(params).subscribe((goalies) => {
+        expect(goalies).toEqual(mockGoalies);
+        const cachedData = cacheService.get<Goalie[]>('goalieStats-regular-combined-startFrom-2018');
+        expect(cachedData).toEqual(mockGoalies);
+        done();
+      });
+
+      const req = httpMock.expectOne((r) => {
+        return (
+          r.url === `${API_URL}/goalies/combined/regular` &&
+          r.params.get('startFrom') === '2018'
+        );
+      });
       expect(req.request.method).toBe('GET');
       req.flush(mockGoalies);
     });

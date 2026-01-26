@@ -89,6 +89,7 @@ export type ApiParams = {
   reportType?: ReportType;
   season?: number;
   teamId?: string;
+  startFrom?: number;
 };
 
 export type Team = {
@@ -115,21 +116,26 @@ export class ApiService {
   }
 
   // Fetching available seasons
-  getSeasons(reportType: ReportType = 'regular', teamId?: string): Observable<Season[]> {
+  getSeasons(
+    reportType: ReportType = 'regular',
+    teamId?: string,
+    startFrom?: number
+  ): Observable<Season[]> {
     const normalizedTeamId = this.normalizeTeamId(teamId);
-    const cacheKey = `seasons-${reportType}${this.teamCacheKeySuffix(normalizedTeamId)}`;
+    const cacheKey = `seasons-${reportType}${this.teamCacheKeySuffix(normalizedTeamId)}${this.startFromCacheKeySuffix(startFrom)}`;
     return this.handleRequest<Season[]>(
       `seasons/${reportType}`,
       cacheKey,
-      this.teamQueryParams(normalizedTeamId)
+      this.queryParams(normalizedTeamId, startFrom)
     );
   }
 
   // Fetching players data
   getPlayerData(params: ApiParams): Observable<Player[]> {
-    const { reportType = 'regular', season, teamId } = params;
+    const { reportType = 'regular', season, teamId, startFrom } = params;
     const normalizedTeamId = this.normalizeTeamId(teamId);
-    const cacheKey = `playerStats-${reportType}-${season ?? 'combined'}${this.teamCacheKeySuffix(normalizedTeamId)}`;
+    const startFromForRequest = season ? undefined : startFrom;
+    const cacheKey = `playerStats-${reportType}-${season ?? 'combined'}${this.startFromCacheKeySuffix(startFromForRequest)}${this.teamCacheKeySuffix(normalizedTeamId)}`;
     const path = season
       ? `players/season/${reportType}/${season}`
       : `players/combined/${reportType}`;
@@ -137,15 +143,16 @@ export class ApiService {
     return this.handleRequest<Player[]>(
       path,
       cacheKey,
-      this.teamQueryParams(normalizedTeamId)
+      this.queryParams(normalizedTeamId, startFromForRequest)
     );
   }
 
   // Fetching goalies data
   getGoalieData(params: ApiParams): Observable<Goalie[]> {
-    const { reportType = 'regular', season, teamId } = params;
+    const { reportType = 'regular', season, teamId, startFrom } = params;
     const normalizedTeamId = this.normalizeTeamId(teamId);
-    const cacheKey = `goalieStats-${reportType}-${season ?? 'combined'}${this.teamCacheKeySuffix(normalizedTeamId)}`;
+    const startFromForRequest = season ? undefined : startFrom;
+    const cacheKey = `goalieStats-${reportType}-${season ?? 'combined'}${this.startFromCacheKeySuffix(startFromForRequest)}${this.teamCacheKeySuffix(normalizedTeamId)}`;
     const path = season
       ? `goalies/season/${reportType}/${season}`
       : `goalies/combined/${reportType}`;
@@ -153,7 +160,7 @@ export class ApiService {
     return this.handleRequest<Goalie[]>(
       path,
       cacheKey,
-      this.teamQueryParams(normalizedTeamId)
+      this.queryParams(normalizedTeamId, startFromForRequest)
     );
   }
 
@@ -221,12 +228,27 @@ export class ApiService {
     return teamId === '1' ? undefined : teamId;
   }
 
-  private teamQueryParams(teamId?: string): Record<string, string> | undefined {
-    return teamId ? { teamId } : undefined;
+  private queryParams(
+    teamId?: string,
+    startFrom?: number
+  ): Record<string, string> | undefined {
+    const params: Record<string, string> = {};
+    if (teamId) params['teamId'] = teamId;
+    if (startFrom !== undefined && Number.isFinite(startFrom)) {
+      params['startFrom'] = String(startFrom);
+    }
+
+    return Object.keys(params).length > 0 ? params : undefined;
   }
 
   private teamCacheKeySuffix(teamId?: string): string {
     return teamId ? `-team-${teamId}` : '';
+  }
+
+  private startFromCacheKeySuffix(startFrom?: number): string {
+    return startFrom !== undefined && Number.isFinite(startFrom)
+      ? `-startFrom-${startFrom}`
+      : '';
   }
 
   // Error handling function
