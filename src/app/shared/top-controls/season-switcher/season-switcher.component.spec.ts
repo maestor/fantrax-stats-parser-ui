@@ -3,6 +3,7 @@ import { SeasonSwitcherComponent } from './season-switcher.component';
 import { ApiService, Season } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
+import { SettingsService } from '@services/settings.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +29,7 @@ describe('SeasonSwitcherComponent', () => {
   let apiService: ApiService;
   let filterService: FilterService;
   let translate: TranslateService;
+  let startFromSeasonSubject: BehaviorSubject<number | undefined>;
 
   const mockSeasons: Season[] = [
     { season: 2024, text: '2024-25' },
@@ -41,6 +43,7 @@ describe('SeasonSwitcherComponent', () => {
         .createSpy('getSeasons')
         .and.returnValue(of(mockSeasons)),
     };
+  startFromSeasonSubject = new BehaviorSubject<number | undefined>(undefined);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -53,6 +56,7 @@ describe('SeasonSwitcherComponent', () => {
         { provide: ApiService, useValue: apiServiceMock },
         FilterService,
         { provide: TeamService, useClass: TeamServiceMock },
+        { provide: SettingsService, useValue: { startFromSeason$: startFromSeasonSubject.asObservable() } },
       ],
     }).compileComponents();
 
@@ -158,7 +162,28 @@ describe('SeasonSwitcherComponent', () => {
       teamService.setTeamId('2');
       tick();
 
+      // On team change we first show the unfiltered season list.
       expect(apiService.getSeasons).toHaveBeenCalledWith('regular', '2');
+
+      // Once startFromSeason is resolved, SeasonSwitcher refetches filtered seasons.
+      (apiService.getSeasons as jasmine.Spy).calls.reset();
+      startFromSeasonSubject.next(2018);
+      tick(1);
+
+      expect(apiService.getSeasons).toHaveBeenCalledWith('regular', '2', 2018);
+    }));
+
+    it('should refetch seasons with startFrom when startFromSeason changes', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
+      tick();
+
+      (apiService.getSeasons as jasmine.Spy).calls.reset();
+
+      startFromSeasonSubject.next(2018);
+      tick(1);
+
+      expect(apiService.getSeasons).toHaveBeenCalledWith('regular', undefined, 2018);
     }));
 
     it('should show all seasons label when selectedSeason is all', fakeAsync(() => {

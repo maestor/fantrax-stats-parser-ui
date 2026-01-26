@@ -6,6 +6,7 @@ import {
   catchError,
   combineLatest,
   distinctUntilChanged,
+  EMPTY,
   map,
   of,
   switchMap,
@@ -20,6 +21,7 @@ import {
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
+import { SettingsService } from '@services/settings.service';
 import { DrawerContextService } from '@services/drawer-context.service';
 import { ViewportService } from '@services/viewport.service';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
@@ -37,6 +39,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   private filterService = inject(FilterService);
   private statsService = inject(StatsService);
   private teamService = inject(TeamService);
+  private settingsService = inject(SettingsService);
   private drawerContextService = inject(DrawerContextService);
   private destroy$ = new Subject<void>();
 
@@ -57,19 +60,32 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
     combineLatest([
       this.filterService.goalieFilters$,
       this.teamService.selectedTeamId$,
+      this.settingsService.startFromSeason$,
     ])
       .pipe(
         auditTime(0),
-        map(([filters, teamId]) => {
+        map(([filters, teamId, startFromSeason]) => {
           const apiTeamId = this.toApiTeamId(teamId);
+          const startFrom = filters.season === undefined ? startFromSeason : undefined;
+
           const params: ApiParams = apiTeamId
-            ? { reportType: filters.reportType, season: filters.season, teamId: apiTeamId }
-            : { reportType: filters.reportType, season: filters.season };
+            ? {
+                reportType: filters.reportType,
+                season: filters.season,
+                teamId: apiTeamId,
+                ...(startFrom === undefined ? {} : { startFrom }),
+              }
+            : {
+                reportType: filters.reportType,
+                season: filters.season,
+                ...(startFrom === undefined ? {} : { startFrom }),
+              };
 
           return {
             filters,
             params,
             apiTeamId,
+            startFrom,
           };
         }),
         distinctUntilChanged((a, b) => {
@@ -78,7 +94,8 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
             a.filters.season === b.filters.season &&
             a.filters.statsPerGame === b.filters.statsPerGame &&
             a.filters.minGames === b.filters.minGames &&
-            a.apiTeamId === b.apiTeamId
+            a.apiTeamId === b.apiTeamId &&
+            a.startFrom === b.startFrom
           );
         }),
         switchMap(({ filters, params }) => {
@@ -95,6 +112,16 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
           this.defaultSortColumn = statsPerGame ? 'scoreAdjustedByGames' : 'score';
           this.loading = true;
           this.apiError = false;
+
+          // During team changes, startFromSeason is briefly cleared so we don't fetch with the
+          // previous team's value. Wait until StartFromSeasonSwitcher resolves the new team's
+          // oldest season.
+          if (filters.season === undefined && (params as any).startFrom === undefined) {
+            this.tableData = [];
+            this.maxGames = 0;
+            this.drawerContextService.setMaxGames('goalie', 0);
+            return EMPTY;
+          }
 
           return this.apiService.getGoalieData(params).pipe(
             map((data) => ({ data, isError: false as const })),

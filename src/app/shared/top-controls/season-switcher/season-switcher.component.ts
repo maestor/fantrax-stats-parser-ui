@@ -13,12 +13,14 @@ import {
   distinctUntilChanged,
   map,
   of,
+  scan,
   switchMap,
   takeUntil,
 } from 'rxjs';
 import { ApiService, Season } from '@services/api.service';
 import { FilterService, FilterState } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'app-season-switcher',
@@ -41,6 +43,7 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
   apiService = inject(ApiService);
   filterService = inject(FilterService);
   teamService = inject(TeamService);
+  settingsService = inject(SettingsService);
   destroy$ = new Subject<void>();
 
   ngOnInit() {
@@ -69,17 +72,51 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
     combineLatest([
       reportType$,
       this.teamService.selectedTeamId$.pipe(distinctUntilChanged()),
+      this.settingsService.startFromSeason$.pipe(distinctUntilChanged()),
     ])
       .pipe(
         // Team switch + filter reset can happen in the same tick.
         // Coalesce and only fetch seasons once for the final state.
         auditTime(0),
-        map(([reportType, teamId]) => ({ reportType, teamId: this.toApiTeamId(teamId) })),
-        distinctUntilChanged((a, b) => a.reportType === b.reportType && a.teamId === b.teamId),
-        switchMap(({ reportType, teamId }) => {
-          const seasons$ = teamId
-            ? this.apiService.getSeasons(reportType, teamId)
-            : this.apiService.getSeasons(reportType);
+        map(([reportType, teamId, startFrom]) => ({
+          reportType,
+          teamId: this.toApiTeamId(teamId),
+          startFrom,
+        })),
+        scan(
+          (state, next) => ({
+            prevTeamId: state.teamId,
+            ...next,
+            initialized: true,
+            teamChanged: state.initialized && state.teamId !== next.teamId,
+          }),
+          {
+            prevTeamId: undefined as string | undefined,
+            reportType: 'regular' as any,
+            teamId: undefined as string | undefined,
+            startFrom: undefined as number | undefined,
+            initialized: false,
+            teamChanged: false,
+          }
+        ),
+        distinctUntilChanged(
+          (a, b) =>
+            a.reportType === b.reportType &&
+            a.teamId === b.teamId &&
+            a.startFrom === b.startFrom &&
+            a.teamChanged === b.teamChanged
+        ),
+        switchMap(({ reportType, teamId, startFrom }) => {
+          // Team changes temporarily clear startFromSeason to prevent stale *combined stats* requests.
+          // For the season dropdown, it's better UX to show the unfiltered season list while startFrom
+          // is being resolved for the new team, then re-fetch filtered once available.
+          const seasons$ = startFrom === undefined
+            ? teamId
+              ? this.apiService.getSeasons(reportType, teamId)
+              : this.apiService.getSeasons(reportType)
+            : teamId
+              ? this.apiService.getSeasons(reportType, teamId, startFrom)
+              : this.apiService.getSeasons(reportType, undefined, startFrom);
 
           return seasons$.pipe(
             map((data) => ({ data })),
