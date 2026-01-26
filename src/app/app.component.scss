@@ -50,6 +50,26 @@
 	color: var(--mat-sys-on-surface);
 }
 
+// On mobile, the footer can be visible when the table is short.
+// MatSidenav overlays are sized/positioned relative to the container by default,
+// which can make the drawer/backdrop stop above the footer.
+// Force both the backdrop and the drawer to be viewport-based.
+.mobile-shell {
+	::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+		position: fixed;
+		inset: 0;
+	}
+
+	::ng-deep .mat-drawer.settings-drawer {
+		height: var(--app-height);
+		max-height: var(--app-height);
+	}
+
+	::ng-deep .mat-drawer-inner-container {
+		height: 100%;
+	}
+}
+
 .settings-drawer {
 	width: min(320px, 85vw);
 	padding: 12px;
