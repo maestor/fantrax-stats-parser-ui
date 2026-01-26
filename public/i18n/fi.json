@@ -5,8 +5,10 @@
     "goalieStats": "Maalivahdit"
   },
   "reportType": {
+    "selector": "Raportti",
     "regular": "Runkosarja",
-    "playoffs": "Playoffs"
+    "playoffs": "Playoffs",
+    "both": "Molemmat"
   },
   "table": {
     "playerSearch": "Pelaajahaku",

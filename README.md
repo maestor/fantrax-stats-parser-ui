@@ -1,4 +1,4 @@
-# fantrax-stats-parser-ui
+# FFHL Stats application
 
 ## Purpose
 

@@ -118,6 +118,19 @@ describe('ApiService', () => {
       req.flush(mockSeasons);
     });
 
+    it('should fetch both seasons from API when reportType is both', (done) => {
+      const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
+
+      service.getSeasons('both').subscribe((seasons) => {
+        expect(seasons).toEqual(mockSeasons);
+        done();
+      });
+
+      const req = httpMock.expectOne(`${API_URL}/seasons/both`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockSeasons);
+    });
+
     it('should include teamId as query param when provided (non-default)', (done) => {
       const mockSeasons: Season[] = [{ season: 2024, text: '2024-25' }];
 

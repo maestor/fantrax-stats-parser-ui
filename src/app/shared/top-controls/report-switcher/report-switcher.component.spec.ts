@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ReportSwitcherComponent } from './report-switcher.component';
 import { FilterService } from '@services/filter.service';
-import { MatButtonToggleModule, MatButtonToggleChange } from '@angular/material/button-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -14,7 +13,6 @@ describe('ReportSwitcherComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         ReportSwitcherComponent,
-        MatButtonToggleModule,
         TranslateModule.forRoot(),
         NoopAnimationsModule,
       ],
@@ -44,7 +42,7 @@ describe('ReportSwitcherComponent', () => {
     });
 
     it('should initialize reportType to regular', () => {
-      expect(component.reportType).toBe('regular');
+      expect(component.reportTypeControl.value).toBe('regular');
     });
 
     it('should initialize reportType$ observable', () => {
@@ -70,6 +68,8 @@ describe('ReportSwitcherComponent', () => {
 
       filterService.updatePlayerFilters({ reportType: 'playoffs' });
       tick();
+
+      expect(component.reportTypeControl.value).toBe('playoffs');
 
       component.reportType$.subscribe((value) => {
         expect(value).toBe('playoffs');
@@ -115,6 +115,8 @@ describe('ReportSwitcherComponent', () => {
       filterService.updateGoalieFilters({ reportType: 'playoffs' });
       tick();
 
+      expect(component.reportTypeControl.value).toBe('playoffs');
+
       component.reportType$.subscribe((value) => {
         expect(value).toBe('playoffs');
       });
@@ -128,42 +130,37 @@ describe('ReportSwitcherComponent', () => {
       filterService.updatePlayerFilters({ reportType: 'playoffs' });
       tick();
 
+      expect(component.reportTypeControl.value).toBe('playoffs');
+
       component.reportType$.subscribe((value) => {
         expect(value).toBe('playoffs');
       });
     }));
   });
 
-  describe('changeReportType - player context', () => {
-    it('should update player filters on change', fakeAsync(() => {
+  describe('user interactions', () => {
+    it('should update player filters when control value changes', fakeAsync(() => {
       component.context = 'player';
-      const event = { value: 'playoffs' } as MatButtonToggleChange;
+      component.ngOnInit();
+      tick();
 
       let result: string | undefined;
       filterService.playerFilters$.subscribe((filters) => {
         result = filters.reportType;
       });
 
-      component.changeReportType(event);
+      component.reportTypeControl.setValue('playoffs');
       tick();
 
       expect(result).toBe('playoffs');
     }));
 
-    it('should update component reportType property', () => {
+    it('should sync reportType to goalie filters (global sync)', fakeAsync(() => {
       component.context = 'player';
-      const event = { value: 'playoffs' } as MatButtonToggleChange;
+      component.ngOnInit();
+      tick();
 
-      component.changeReportType(event);
-
-      expect(component.reportType).toBe('playoffs');
-    });
-
-    it('should sync reportType to goalie filters', fakeAsync(() => {
-      component.context = 'player';
-      const event = { value: 'playoffs' } as MatButtonToggleChange;
-
-      component.changeReportType(event);
+      component.reportTypeControl.setValue('playoffs');
       tick();
 
       filterService.goalieFilters$.subscribe((filters) => {
@@ -171,49 +168,40 @@ describe('ReportSwitcherComponent', () => {
       });
     }));
 
-    it('should handle switching back to regular', fakeAsync(() => {
+    it('should support selecting both', fakeAsync(() => {
       component.context = 'player';
-
-      let event = { value: 'playoffs' } as MatButtonToggleChange;
-      component.changeReportType(event);
+      component.ngOnInit();
       tick();
 
-      event = { value: 'regular' } as MatButtonToggleChange;
-      component.changeReportType(event);
+      component.reportTypeControl.setValue('both');
       tick();
 
       filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.reportType).toBe('regular');
+        expect(filters.reportType).toBe('both');
       });
     }));
-  });
 
-  describe('changeReportType - goalie context', () => {
-    it('should update goalie filters on change', fakeAsync(() => {
-      component.context = 'goalie';
-      const event = { value: 'playoffs' } as MatButtonToggleChange;
-
-      let result: string | undefined;
-      filterService.goalieFilters$.subscribe((filters) => {
-        result = filters.reportType;
-      });
-
-      component.changeReportType(event);
+    it('should work correctly after context change', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
       tick();
 
-      expect(result).toBe('playoffs');
-    }));
-
-    it('should sync reportType to player filters', fakeAsync(() => {
-      component.context = 'goalie';
-      const event = { value: 'playoffs' } as MatButtonToggleChange;
-
-      component.changeReportType(event);
+      component.reportTypeControl.setValue('playoffs');
       tick();
 
-      filterService.playerFilters$.subscribe((filters) => {
-        expect(filters.reportType).toBe('playoffs');
+      // simulate input change
+      component.context = 'goalie';
+      component.ngOnChanges({
+        context: {
+          currentValue: 'goalie',
+          previousValue: 'player',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
       });
+      tick();
+
+      expect(component.reportTypeControl.value).toBe('playoffs');
     }));
   });
 
@@ -284,19 +272,21 @@ describe('ReportSwitcherComponent', () => {
       component.ngOnInit();
       tick();
 
-      const event = { value: 'playoffs' } as MatButtonToggleChange;
-      component.changeReportType(event);
+      filterService.updatePlayerFilters({ reportType: 'playoffs' });
       tick();
-
-      component.ngOnDestroy();
 
       component.context = 'goalie';
-      component.ngOnInit();
+      component.ngOnChanges({
+        context: {
+          currentValue: 'goalie',
+          previousValue: 'player',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
       tick();
 
-      component.reportType$.subscribe((value) => {
-        expect(value).toBe('playoffs');
-      });
+      expect(component.reportTypeControl.value).toBe('playoffs');
     }));
   });
 });
