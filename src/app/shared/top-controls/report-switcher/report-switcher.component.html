@@ -1,13 +1,25 @@
-<mat-button-toggle-group
-  name="reportType"
-  aria-label="Stats report type"
-  [value]="reportType$ | async"
-  (change)="changeReportType($event)"
->
-  <mat-button-toggle value="regular">
-    {{ "reportType.regular" | translate }}
-  </mat-button-toggle>
-  <mat-button-toggle value="playoffs">
-    {{ "reportType.playoffs" | translate }}
-  </mat-button-toggle>
-</mat-button-toggle-group>
+<mat-form-field subscriptSizing="dynamic">
+  <mat-label>{{ 'reportType.selector' | translate }}</mat-label>
+
+  <mat-select
+    name="reportType"
+    aria-label="Stats report type"
+    [formControl]="reportTypeControl"
+  >
+    <mat-select-trigger>
+      {{ ('reportType.' + reportTypeControl.value) | translate }}
+    </mat-select-trigger>
+
+    <mat-option value="regular">
+      {{ 'reportType.regular' | translate }}
+    </mat-option>
+
+    <mat-option value="playoffs">
+      {{ 'reportType.playoffs' | translate }}
+    </mat-option>
+
+    <mat-option value="both">
+      {{ 'reportType.both' | translate }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

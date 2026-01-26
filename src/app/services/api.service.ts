@@ -83,7 +83,7 @@ export type Goalie = {
   seasons?: GoalieSeasonStats[];
 };
 
-export type ReportType = 'regular' | 'playoffs';
+export type ReportType = 'regular' | 'playoffs' | 'both';
 
 export type ApiParams = {
   reportType?: ReportType;

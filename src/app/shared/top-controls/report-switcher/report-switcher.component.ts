@@ -1,45 +1,74 @@
-import { Component, Input, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, inject, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, takeUntil, map, Observable, of } from 'rxjs';
-import {
-  MatButtonToggleModule,
-  MatButtonToggleChange,
-} from '@angular/material/button-toggle';
+import { Subject, takeUntil, map, Observable, of, BehaviorSubject, distinctUntilChanged, switchMap, withLatestFrom, filter } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ReportType } from '@services/api.service';
 import { FilterService, FilterState } from '@services/filter.service';
 
 @Component({
   selector: 'app-report-switcher',
-  imports: [MatButtonToggleModule, FormsModule, TranslateModule, CommonModule],
+  imports: [MatFormFieldModule, MatSelectModule, TranslateModule, CommonModule, ReactiveFormsModule],
   templateUrl: './report-switcher.component.html',
   styleUrl: './report-switcher.component.scss',
 })
-export class ReportSwitcherComponent implements OnInit, OnDestroy {
+export class ReportSwitcherComponent implements OnInit, OnDestroy, OnChanges {
   @Input() context: 'player' | 'goalie' = 'player';
-  reportType: ReportType = 'regular';
+  readonly reportTypeOptions: ReportType[] = ['regular', 'playoffs', 'both'];
   destroy$ = new Subject<void>();
 
   filterService = inject(FilterService);
   reportType$: Observable<ReportType> = of('regular');
 
-  ngOnInit() {
-    this.reportType$ = (
-      this.context === 'goalie'
-        ? this.filterService.goalieFilters$
-        : this.filterService.playerFilters$
-    ).pipe(
-      map((filters: FilterState) => filters.reportType),
-      takeUntil(this.destroy$)
-    );
+  readonly reportTypeControl = new FormControl<ReportType>('regular', {
+    nonNullable: true,
+  });
+
+  private readonly context$ = new BehaviorSubject<'player' | 'goalie'>(this.context);
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['context']) {
+      this.context$.next(this.context);
+    }
   }
 
-  changeReportType(event: MatButtonToggleChange): void {
-    this.reportType = event.value;
-    this.context === 'goalie'
-      ? this.filterService.updateGoalieFilters({ reportType: this.reportType })
-      : this.filterService.updatePlayerFilters({ reportType: this.reportType });
+  ngOnInit() {
+    const filters$ = this.context$.pipe(
+      distinctUntilChanged(),
+      switchMap((context) =>
+        context === 'goalie'
+          ? this.filterService.goalieFilters$
+          : this.filterService.playerFilters$
+      )
+    );
+
+    this.reportType$ = filters$.pipe(
+      map((filters: FilterState) => filters.reportType),
+      distinctUntilChanged(),
+      takeUntil(this.destroy$)
+    );
+
+    // Drive the control from the filter state (source of truth).
+    this.reportType$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => this.reportTypeControl.setValue(value, { emitEvent: false }));
+
+    // Push user changes back into the filter state.
+    this.reportTypeControl.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        withLatestFrom(this.context$),
+        filter(([value]) => !!value),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(([value, context]) => {
+        const reportType = value as ReportType;
+        context === 'goalie'
+          ? this.filterService.updateGoalieFilters({ reportType })
+          : this.filterService.updatePlayerFilters({ reportType });
+      });
   }
 
   ngOnDestroy(): void {
