@@ -7,6 +7,7 @@ import { ApiService, Player } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
+import { SettingsService } from '@services/settings.service';
 import { ViewportService } from '@services/viewport.service';
 import { BehaviorSubject } from 'rxjs';
 import { of, throwError } from 'rxjs';
@@ -30,11 +31,16 @@ describe('PlayerStatsComponent', () => {
   let apiServiceMock: jasmine.SpyObj<ApiService>;
   let filterService: FilterService;
   let statsService: StatsService;
+  let startFromSeasonSubject: BehaviorSubject<number | undefined>;
 
   beforeEach(async () => {
     apiServiceMock = jasmine.createSpyObj<ApiService>('ApiService', [
       'getPlayerData',
     ]);
+
+    // In the real app, startFromSeason is resolved from seasons and persisted.
+    // PlayerStats waits until it is available before fetching combined stats.
+    startFromSeasonSubject = new BehaviorSubject<number | undefined>(2012);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -46,6 +52,10 @@ describe('PlayerStatsComponent', () => {
         provideHttpClient(),
         { provide: ApiService, useValue: apiServiceMock },
         { provide: TeamService, useClass: TeamServiceMock },
+        {
+          provide: SettingsService,
+          useValue: { startFromSeason$: startFromSeasonSubject.asObservable() },
+        },
         { provide: ViewportService, useValue: { isMobile$: of(false) } },
       ],
     }).compileComponents();
@@ -110,6 +120,7 @@ describe('PlayerStatsComponent', () => {
     expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
       reportType: 'regular',
       season: undefined,
+      startFrom: 2012,
     });
     expect(component.loading).toBe(false);
     expect(component.tableData).toEqual(mockPlayers);
@@ -286,6 +297,7 @@ describe('PlayerStatsComponent', () => {
       reportType: 'regular',
       season: undefined,
       teamId: '2',
+      startFrom: 2012,
     });
   }));
 
@@ -309,6 +321,68 @@ describe('PlayerStatsComponent', () => {
       reportType: 'regular',
       season: undefined,
       teamId: '2',
+      startFrom: 2012,
+    });
+  }));
+
+  it('should include startFrom when in combined mode and a startFromSeason is selected', fakeAsync(() => {
+    apiServiceMock.getPlayerData.and.returnValue(of([]));
+
+    component.ngOnInit();
+    tick(1);
+    apiServiceMock.getPlayerData.calls.reset();
+
+    startFromSeasonSubject.next(2023);
+    tick(1);
+
+    expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: undefined,
+      startFrom: 2023,
+    });
+  }));
+
+  it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', fakeAsync(() => {
+    apiServiceMock.getPlayerData.and.returnValue(of([]));
+
+    component.ngOnInit();
+    tick(1);
+    apiServiceMock.getPlayerData.calls.reset();
+
+    // Simulate clearing startFromSeason before the new team's oldest season is resolved.
+    startFromSeasonSubject.next(undefined);
+    const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+    teamService.setTeamId('2');
+
+    tick(1);
+    expect(apiServiceMock.getPlayerData).not.toHaveBeenCalled();
+
+    // Once resolved, fetch should happen with the correct startFrom.
+    startFromSeasonSubject.next(2021);
+    tick(1);
+
+    expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: undefined,
+      teamId: '2',
+      startFrom: 2021,
+    });
+  }));
+
+  it('should not include startFrom when a specific season is selected', fakeAsync(() => {
+    apiServiceMock.getPlayerData.and.returnValue(of([]));
+
+    component.ngOnInit();
+    tick(1);
+    apiServiceMock.getPlayerData.calls.reset();
+
+    startFromSeasonSubject.next(2023);
+    filterService.updatePlayerFilters({ season: 2024 });
+    tick(1);
+
+    expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: 2024,
     });
   }));
 

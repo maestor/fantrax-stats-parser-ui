@@ -8,14 +8,40 @@ describe('TeamService', () => {
   });
 
   it('should default to stored team id when present', () => {
-    localStorage.setItem('fantrax.selectedTeamId', '7');
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        version: 1,
+        selectedTeamId: '7',
+        startFromSeason: null,
+        topControlsExpanded: true,
+      })
+    );
     const service = TestBed.inject(TeamService);
 
     expect(service.selectedTeamId).toBe('7');
   });
 
+  it('should migrate legacy selectedTeamId when fantrax.settings is missing', () => {
+    localStorage.setItem('fantrax.selectedTeamId', '7');
+    const service = TestBed.inject(TeamService);
+
+    expect(service.selectedTeamId).toBe('7');
+
+    const persisted = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+    expect(persisted.selectedTeamId).toBe('7');
+  });
+
   it('should fall back to default team id when stored value is blank', () => {
-    localStorage.setItem('fantrax.selectedTeamId', '   ');
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        version: 1,
+        selectedTeamId: '   ',
+        startFromSeason: null,
+        topControlsExpanded: true,
+      })
+    );
     const service = TestBed.inject(TeamService);
 
     expect(service.selectedTeamId).toBe('1');
@@ -29,9 +55,9 @@ describe('TeamService', () => {
   });
 
   it('setTeamId should ignore falsy values', () => {
-    localStorage.setItem('fantrax.selectedTeamId', '3');
     const service = TestBed.inject(TeamService);
 
+    service.setTeamId('3');
     const setItemSpy = spyOn(localStorage, 'setItem');
 
     service.setTeamId('');
@@ -41,7 +67,15 @@ describe('TeamService', () => {
   });
 
   it('setTeamId should ignore unchanged values', () => {
-    localStorage.setItem('fantrax.selectedTeamId', '3');
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        version: 1,
+        selectedTeamId: '3',
+        startFromSeason: null,
+        topControlsExpanded: true,
+      })
+    );
     const service = TestBed.inject(TeamService);
 
     const setItemSpy = spyOn(localStorage, 'setItem');
@@ -59,12 +93,15 @@ describe('TeamService', () => {
     const sub = service.selectedTeamId$.subscribe((v) => values.push(v));
 
     const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
+    setItemSpy.calls.reset();
 
     service.setTeamId('9');
 
     expect(service.selectedTeamId).toBe('9');
     expect(values).toContain('9');
-    expect(setItemSpy).toHaveBeenCalledWith('fantrax.selectedTeamId', '9');
+    expect(setItemSpy).toHaveBeenCalled();
+    const persisted = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+    expect(persisted.selectedTeamId).toBe('9');
 
     sub.unsubscribe();
   });
@@ -77,5 +114,24 @@ describe('TeamService', () => {
     service.setTeamId('11');
 
     expect(service.selectedTeamId).toBe('11');
+  });
+
+  it('setTeamId should clear startFromSeason to avoid cross-team stale requests', () => {
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        version: 1,
+        selectedTeamId: '1',
+        startFromSeason: 2012,
+        topControlsExpanded: true,
+      })
+    );
+
+    const service = TestBed.inject(TeamService);
+    service.setTeamId('2');
+
+    const persisted = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+    expect(persisted.selectedTeamId).toBe('2');
+    expect(persisted.startFromSeason).toBeNull();
   });
 });

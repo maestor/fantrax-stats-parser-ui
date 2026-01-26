@@ -67,6 +67,7 @@
         "items": [
           "Joukkue: valitse tarkasteltava joukkue",
           "Kausi: valitse kausi tai Kaikki kaudet",
+          "Alkaen kaudesta: rajaa tilastot valitusta kaudesta eteenpäin",
           "Raportti: runkosarja tai playoffs",
           "Tilastot per ottelu: normalisoi tilastot pelattujen ottelujen mukaan",
           "Otteluja pelattu vähintään: suodata pienillä otantamäärillä näkyvät pois",
@@ -171,6 +172,9 @@
   "season": {
     "selector": "Kausivalitsin",
     "allSeasons": "Kaikki kaudet"
+  },
+  "startFromSeason": {
+    "selector": "Alkaen kaudesta"
   },
   "team": {
     "selector": "Joukkue"

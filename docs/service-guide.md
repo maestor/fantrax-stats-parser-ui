@@ -6,6 +6,23 @@ Services in this application handle data fetching, business logic, state managem
 
 ## Core Services
 
+### SettingsService
+**Location**: `src/app/services/settings.service.ts`
+
+**Purpose**: Persisted user preferences ("UI rememberings")
+
+**Responsibilities**:
+- Store user settings in a single `localStorage` key: `fantrax.settings`
+- Provide reactive settings slices as observables (team id, start-from season, top-controls expanded)
+- Migrate legacy keys on first run (best-effort):
+  - `fantrax.selectedTeamId`
+  - `fantrax.topControls.expanded`
+
+**Notes**:
+- `startFromSeason` defaults to the oldest available season for the selected team
+- When the selected team changes, `startFromSeason` resets to that team's oldest season
+- Storage failures are ignored (privacy mode, quota, etc.)
+
 ### TeamService
 **Location**: `src/app/services/team.service.ts`
 
@@ -13,7 +30,7 @@ Services in this application handle data fetching, business logic, state managem
 
 **Responsibilities**:
 - Provide current team id as an observable (`selectedTeamId$`)
-- Persist selection to `localStorage` (`fantrax.selectedTeamId`)
+- Persist selection via `SettingsService` (`fantrax.settings` → `selectedTeamId`)
 - Default to Colorado (team id `"1"`) — there is no "no team" state
 
 **Key API**:
@@ -133,6 +150,7 @@ export type ApiParams = {
   reportType?: ReportType;
   season?: number;
   teamId?: string;
+  startFrom?: number;
 };
 ```
 
@@ -149,7 +167,8 @@ class ApiService {
   getGoalieData(params: ApiParams): Observable<Goalie[]>
 
   // Fetch available seasons for a given report type (regular/playoffs)
-  getSeasons(reportType?: ReportType, teamId?: string): Observable<Season[]>
+  // Optional `startFrom` filters out earlier seasons.
+  getSeasons(reportType?: ReportType, teamId?: string, startFrom?: number): Observable<Season[]>
 }
 ```
 

@@ -20,9 +20,6 @@ describe('TopControlsComponent', () => {
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(TopControlsComponent);
-    component = fixture.componentInstance;
-
     const translate = TestBed.inject(TranslateService);
     translate.setTranslation(
       'fi',
@@ -38,24 +35,36 @@ describe('TopControlsComponent', () => {
 
   afterEach(() => {
     try {
-      localStorage.removeItem('fantrax.topControls.expanded');
+      localStorage.removeItem('fantrax.settings');
     } catch {
       // ignore
     }
   });
 
   it('should create', () => {
+    fixture = TestBed.createComponent(TopControlsComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   it('should default to expanded when localStorage is empty', () => {
+    fixture = TestBed.createComponent(TopControlsComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component.isExpanded).toBe(true);
   });
 
   it('should restore collapsed state from localStorage', () => {
-    localStorage.setItem('fantrax.topControls.expanded', 'false');
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        version: 1,
+        selectedTeamId: '1',
+        startFromSeason: null,
+        topControlsExpanded: false,
+      })
+    );
 
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
@@ -65,17 +74,31 @@ describe('TopControlsComponent', () => {
   });
 
   it('should persist toggle state to localStorage', () => {
+    fixture = TestBed.createComponent(TopControlsComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
 
     component.toggleExpanded();
-    expect(localStorage.getItem('fantrax.topControls.expanded')).toBe('false');
+    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}').topControlsExpanded).toBe(
+      false
+    );
 
     component.toggleExpanded();
-    expect(localStorage.getItem('fantrax.topControls.expanded')).toBe('true');
+    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}').topControlsExpanded).toBe(
+      true
+    );
   });
 
   it('should force expanded and disable toggling when contentOnly is true', () => {
-    localStorage.setItem('fantrax.topControls.expanded', 'false');
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        version: 1,
+        selectedTeamId: '1',
+        startFromSeason: null,
+        topControlsExpanded: false,
+      })
+    );
 
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
@@ -85,6 +108,8 @@ describe('TopControlsComponent', () => {
     expect(component.isExpanded).toBe(true);
 
     component.toggleExpanded();
-    expect(localStorage.getItem('fantrax.topControls.expanded')).toBe('false');
+    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}').topControlsExpanded).toBe(
+      false
+    );
   });
 });

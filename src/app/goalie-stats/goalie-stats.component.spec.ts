@@ -7,6 +7,7 @@ import { ApiService, Goalie } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
+import { SettingsService } from '@services/settings.service';
 import { ViewportService } from '@services/viewport.service';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
 import { BehaviorSubject, of, throwError } from 'rxjs';
@@ -30,11 +31,16 @@ describe('GoalieStatsComponent', () => {
   let apiServiceMock: jasmine.SpyObj<ApiService>;
   let filterService: FilterService;
   let statsService: StatsService;
+  let startFromSeasonSubject: BehaviorSubject<number | undefined>;
 
   beforeEach(async () => {
     apiServiceMock = jasmine.createSpyObj<ApiService>('ApiService', [
       'getGoalieData',
     ]);
+
+    // In the real app, startFromSeason is resolved from seasons and persisted.
+    // GoalieStats waits until it is available before fetching combined stats.
+    startFromSeasonSubject = new BehaviorSubject<number | undefined>(2012);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -47,6 +53,10 @@ describe('GoalieStatsComponent', () => {
         { provide: ApiService, useValue: apiServiceMock },
         { provide: ViewportService, useValue: { isMobile$: of(false) } },
         { provide: TeamService, useClass: TeamServiceMock },
+        {
+          provide: SettingsService,
+          useValue: { startFromSeason$: startFromSeasonSubject.asObservable() },
+        },
       ],
     }).compileComponents();
 
@@ -113,6 +123,7 @@ describe('GoalieStatsComponent', () => {
     expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
       reportType: 'regular',
       season: undefined,
+      startFrom: 2012,
     });
     expect(component.loading).toBe(false);
     expect(component.tableData).toEqual(mockGoalies);
@@ -172,6 +183,66 @@ describe('GoalieStatsComponent', () => {
       reportType: 'regular',
       season: undefined,
       teamId: '2',
+      startFrom: 2012,
+    });
+  }));
+
+  it('should include startFrom when in combined mode and a startFromSeason is selected', fakeAsync(() => {
+    apiServiceMock.getGoalieData.and.returnValue(of([]));
+
+    component.ngOnInit();
+    tick(1);
+    apiServiceMock.getGoalieData.calls.reset();
+
+    startFromSeasonSubject.next(2023);
+    tick(1);
+
+    expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: undefined,
+      startFrom: 2023,
+    });
+  }));
+
+  it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', fakeAsync(() => {
+    apiServiceMock.getGoalieData.and.returnValue(of([]));
+
+    component.ngOnInit();
+    tick(1);
+    apiServiceMock.getGoalieData.calls.reset();
+
+    startFromSeasonSubject.next(undefined);
+    const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+    teamService.setTeamId('2');
+    tick(1);
+
+    expect(apiServiceMock.getGoalieData).not.toHaveBeenCalled();
+
+    startFromSeasonSubject.next(2021);
+    tick(1);
+
+    expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: undefined,
+      teamId: '2',
+      startFrom: 2021,
+    });
+  }));
+
+  it('should not include startFrom when a specific season is selected', fakeAsync(() => {
+    apiServiceMock.getGoalieData.and.returnValue(of([]));
+
+    component.ngOnInit();
+    tick(1);
+    apiServiceMock.getGoalieData.calls.reset();
+
+    startFromSeasonSubject.next(2023);
+    filterService.updateGoalieFilters({ season: 2024 });
+    tick(1);
+
+    expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
+      reportType: 'regular',
+      season: 2024,
     });
   }));
 
@@ -347,6 +418,7 @@ describe('GoalieStatsComponent', () => {
       reportType: 'regular',
       season: undefined,
       teamId: '2',
+      startFrom: 2012,
     });
   }));
 

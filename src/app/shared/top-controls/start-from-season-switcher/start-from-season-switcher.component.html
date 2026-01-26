@@ -1,0 +1,17 @@
+<div class="start-from-season-switcher">
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>{{ 'startFromSeason.selector' | translate }}</mat-label>
+    <mat-select
+      [value]="selectedStartFrom"
+      (selectionChange)="changeStartFrom($event)"
+    >
+      <mat-select-trigger>
+        {{ selectedStartFromText || selectedStartFrom }}
+      </mat-select-trigger>
+
+      @for (season of seasons; track season.season) {
+        <mat-option [value]="season.season">{{ season.text }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
