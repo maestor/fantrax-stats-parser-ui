@@ -66,6 +66,7 @@ This application uses Angular's standalone component architecture. Components ar
 
 - `ApiService` - Data fetching (team-aware via `teamId`)
 - `TeamService` - Selected team state (refetch trigger)
+- `SettingsService` - Persisted UI settings (start-from season lower bound)
 - `FilterService` - Filter state
 - `StatsService` - Per-game calculations
 
@@ -104,6 +105,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 - `ApiService` - Data fetching (team-aware via `teamId`)
 - `TeamService` - Selected team state (refetch trigger)
+- `SettingsService` - Persisted UI settings (start-from season lower bound)
 - `FilterService` - Filter state
 - `StatsService` - Per-game calculations
 
@@ -123,6 +125,22 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Loads available teams from the backend (`ApiService.getTeams()`)
 - Disables the selector while loading (and on error)
 - On team change: updates `TeamService`, resets filters, and navigates back to the players route
+
+---
+
+### StartFromSeasonSwitcherComponent
+
+**Location**: `src/app/shared/top-controls/start-from-season-switcher/`
+
+**Type**: Presentational Component (with lightweight side effects)
+
+**Purpose**: "Start from season" selector that sets a lower bound for combined stats.
+
+**Behavior**:
+- Loads available seasons via `ApiService.getSeasons('regular', teamId)` (same value format as the Season selector)
+- Persists selection via `SettingsService` (`fantrax.settings` → `startFromSeason`)
+- Defaults to the oldest available season for the selected team and resets to that default when the team changes
+- When selected, combined stats requests include `startFrom` as a query param
 
 ### StatsTableComponent
 
@@ -169,7 +187,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Type**: Presentational Component
 
-**Purpose**: Renders the "top controls" (team/season/report) for the active context.
+**Purpose**: Renders the "top controls" (team/start-from/season/report) for the active context.
 
 **Inputs**:
 

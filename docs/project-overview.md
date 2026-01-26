@@ -44,6 +44,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 
     - **Top controls (header)**
        - Team selector
+       - Start-from-season selector (lower bound for combined stats)
        - Season selector
        - Report type selector (regular/playoffs)
     - **Settings panel (per page)**

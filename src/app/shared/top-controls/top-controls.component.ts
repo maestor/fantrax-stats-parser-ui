@@ -1,14 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { TeamSwitcherComponent } from './team-switcher/team-switcher.component';
 import { ReportSwitcherComponent } from './report-switcher/report-switcher.component';
 import { SeasonSwitcherComponent } from './season-switcher/season-switcher.component';
+import { StartFromSeasonSwitcherComponent } from './start-from-season-switcher/start-from-season-switcher.component';
+import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'app-top-controls',
   imports: [
     TranslateModule,
     TeamSwitcherComponent,
+    StartFromSeasonSwitcherComponent,
     SeasonSwitcherComponent,
     ReportSwitcherComponent,
   ],
@@ -21,33 +24,15 @@ export class TopControlsComponent implements OnInit {
 
   isExpanded = true;
 
-  private readonly storageKey = 'fantrax.topControls.expanded';
+  private readonly settingsService = inject(SettingsService);
 
   ngOnInit(): void {
-    this.isExpanded = this.contentOnly ? true : this.readExpanded();
+    this.isExpanded = this.contentOnly ? true : this.settingsService.topControlsExpanded;
   }
 
   toggleExpanded(): void {
     if (this.contentOnly) return;
     this.isExpanded = !this.isExpanded;
-    this.writeExpanded(this.isExpanded);
-  }
-
-  private readExpanded(): boolean {
-    try {
-      const stored = localStorage.getItem(this.storageKey);
-      if (stored === null) return true;
-      return stored === 'true';
-    } catch {
-      return true;
-    }
-  }
-
-  private writeExpanded(expanded: boolean): void {
-    try {
-      localStorage.setItem(this.storageKey, String(expanded));
-    } catch {
-      // Ignore storage issues (private mode, SSR, etc.)
-    }
+    this.settingsService.setTopControlsExpanded(this.isExpanded);
   }
 }
