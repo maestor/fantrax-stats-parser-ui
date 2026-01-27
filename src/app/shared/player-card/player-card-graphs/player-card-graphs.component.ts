@@ -4,6 +4,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
   ViewChildren,
   QueryList,
   inject,
@@ -37,7 +38,10 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './player-card-graphs.component.scss',
   providers: [provideCharts(withDefaultRegisterables())],
 })
-export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
+export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestroy {
+  private static readonly RADAR_COMPACT_MAX_WIDTH = 520;
+  private static readonly DEFAULT_VIEWPORT_WIDTH = 1024;
+
   private document = inject(DOCUMENT);
   private translateService = inject(TranslateService);
 
@@ -300,34 +304,9 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
 
       // If CSS reports a non-single token (e.g. "light dark") or nothing, detect the *used*
       // scheme by evaluating a tiny `light-dark()` expression.
-      const usedScheme: 'light' | 'dark' | undefined = (() => {
-        if (scheme) {
-          return scheme;
-        }
+      const usedScheme = this.detectUsedColorScheme(body, scheme);
 
-        const schemeProbe = this.document.createElement('span');
-        schemeProbe.setAttribute('aria-hidden', 'true');
-        schemeProbe.style.position = 'absolute';
-        schemeProbe.style.width = '0';
-        schemeProbe.style.height = '0';
-        schemeProbe.style.overflow = 'hidden';
-        schemeProbe.style.color = 'light-dark(rgb(1, 2, 3), rgb(4, 5, 6))';
-        body.appendChild(schemeProbe);
-
-        const observed = getComputedStyle(schemeProbe).color?.trim();
-        schemeProbe.remove();
-
-        if (observed === 'rgb(1, 2, 3)') return 'light';
-        if (observed === 'rgb(4, 5, 6)') return 'dark';
-        return undefined;
-      })();
-
-      const probe = this.document.createElement('span');
-      probe.setAttribute('aria-hidden', 'true');
-      probe.style.position = 'absolute';
-      probe.style.width = '0';
-      probe.style.height = '0';
-      probe.style.overflow = 'hidden';
+      const probe = this.createHiddenProbeElement();
       // Force the used color-scheme so CSS `light-dark()` tokens resolve correctly.
       // If we can't confidently read the active scheme (some browsers report "normal"),
       // inherit instead of guessing from OS preference.
@@ -351,6 +330,36 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  private createHiddenProbeElement(): HTMLSpanElement {
+    const el = this.document.createElement('span');
+    el.setAttribute('aria-hidden', 'true');
+    el.style.position = 'absolute';
+    el.style.width = '0';
+    el.style.height = '0';
+    el.style.overflow = 'hidden';
+    return el;
+  }
+
+  private detectUsedColorScheme(
+    body: HTMLElement,
+    knownScheme: 'light' | 'dark' | undefined
+  ): 'light' | 'dark' | undefined {
+    if (knownScheme) {
+      return knownScheme;
+    }
+
+    const schemeProbe = this.createHiddenProbeElement();
+    schemeProbe.style.color = 'light-dark(rgb(1, 2, 3), rgb(4, 5, 6))';
+    body.appendChild(schemeProbe);
+
+    const observed = getComputedStyle(schemeProbe).color?.trim();
+    schemeProbe.remove();
+
+    if (observed === 'rgb(1, 2, 3)') return 'light';
+    if (observed === 'rgb(4, 5, 6)') return 'dark';
+    return undefined;
+  }
+
   private applyThemeToRadarChartOptions(): void {
     const textColor = this.resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f');
     const outlineColor = this.resolveCssColorVar('--mat-sys-outline-variant', 'rgba(0,0,0,0.2)');
@@ -360,8 +369,9 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
       'backgroundColor'
     );
 
-    const viewportWidth = this.document.defaultView?.innerWidth ?? 1024;
-    const compact = viewportWidth <= 520;
+    const viewportWidth =
+      this.document.defaultView?.innerWidth ?? PlayerCardGraphsComponent.DEFAULT_VIEWPORT_WIDTH;
+    const compact = viewportWidth <= PlayerCardGraphsComponent.RADAR_COMPACT_MAX_WIDTH;
     const pointLabelFontSize = compact ? 10 : 12;
     const tickFontSize = compact ? 9 : 11;
     const pointLabelPadding = compact ? 2 : 6;
