@@ -1,4 +1,18 @@
 const path = require('node:path');
+const fs = require('node:fs');
+
+// Some environments don't have Google Chrome installed.
+// Since this repo already uses Playwright, prefer its Chromium (if installed) for Karma.
+try {
+  // eslint-disable-next-line global-require
+  const { chromium } = require('playwright');
+  const chromiumPath = chromium?.executablePath?.();
+  if (!process.env.CHROME_BIN && chromiumPath && fs.existsSync(chromiumPath)) {
+    process.env.CHROME_BIN = chromiumPath;
+  }
+} catch {
+  // Optional – fall back to system Chrome if present.
+}
 
 module.exports = function (config) {
   config.set({

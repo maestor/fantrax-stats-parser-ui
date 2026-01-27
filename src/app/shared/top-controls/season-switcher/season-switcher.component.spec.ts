@@ -173,6 +173,21 @@ describe('SeasonSwitcherComponent', () => {
       expect(apiService.getSeasons).toHaveBeenCalledWith('regular', '2', 2018);
     }));
 
+    it('should not refetch when the same teamId re-emits after initialization', fakeAsync(() => {
+      component.context = 'player';
+      component.ngOnInit();
+      tick();
+
+      (apiService.getSeasons as jasmine.Spy).calls.reset();
+
+      const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
+      teamService.setTeamId('1');
+      tick();
+
+      // distinctUntilChanged should prevent redundant API calls, but scan still evaluates teamChanged.
+      expect(apiService.getSeasons).not.toHaveBeenCalled();
+    }));
+
     it('should refetch seasons with startFrom when startFromSeason changes', fakeAsync(() => {
       component.context = 'player';
       component.ngOnInit();

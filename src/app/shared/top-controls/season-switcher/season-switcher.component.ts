@@ -103,8 +103,7 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
           (a, b) =>
             a.reportType === b.reportType &&
             a.teamId === b.teamId &&
-            a.startFrom === b.startFrom &&
-            a.teamChanged === b.teamChanged
+            a.startFrom === b.startFrom
         ),
         switchMap(({ reportType, teamId, startFrom }) => {
           // Team changes temporarily clear startFromSeason to prevent stale *combined stats* requests.

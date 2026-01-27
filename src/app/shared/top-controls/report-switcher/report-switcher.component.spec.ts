@@ -181,6 +181,28 @@ describe('ReportSwitcherComponent', () => {
       });
     }));
 
+    it('should update goalie filters when control value changes in goalie context', fakeAsync(() => {
+      component.context = 'goalie';
+      component.ngOnChanges({
+        context: {
+          currentValue: 'goalie',
+          previousValue: 'player',
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+      });
+
+      component.ngOnInit();
+      tick();
+
+      component.reportTypeControl.setValue('both');
+      tick();
+
+      filterService.goalieFilters$.subscribe((filters) => {
+        expect(filters.reportType).toBe('both');
+      });
+    }));
+
     it('should work correctly after context change', fakeAsync(() => {
       component.context = 'player';
       component.ngOnInit();

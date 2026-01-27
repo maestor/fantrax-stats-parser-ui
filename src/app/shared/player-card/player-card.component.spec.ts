@@ -734,5 +734,109 @@ describe('PlayerCardComponent', () => {
       expect(component.seasonColumns.length).toBe(0);
       expect(component.seasonDataSource.length).toBe(0);
     });
+
+    it('should set viewContext to season for data without seasons', () => {
+      expect(component.viewContext).toBe('season');
+    });
+
+    it('should show Graphs tab when data has scores property', () => {
+      const mockSkaterWithScores: Player = {
+        ...mockSkaterWithoutSeasons,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+      };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithScores },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.showGraphsTab).toBeTrue();
+    });
+
+    it('should not show Graphs tab when data has no scores and no seasons', () => {
+      expect(component.showGraphsTab).toBeFalse();
+    });
+
+    it('should include viewContext in graphsInputs', () => {
+      expect(component.graphsInputs['viewContext']).toBe('season');
+    });
+  });
+
+  describe('viewContext and showGraphsTab', () => {
+    it('should set viewContext to combined for multiple seasons', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.viewContext).toBe('combined');
+      expect(c.showGraphsTab).toBeTrue();
+    });
+
+    it('should set viewContext to season for single season', () => {
+      const singleSeasonData = {
+        ...mockGoalieWithSeasons,
+        seasons: [mockGoalieWithSeasons.seasons[0]],
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: singleSeasonData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.viewContext).toBe('season');
+    });
   });
 });

@@ -226,6 +226,13 @@
     "graphs": "Graafit",
     "graphsSelectStats": "Valitse tilastot käyrille"
   },
+  "graphs": {
+    "seasonalTrends": "Kausittaiset käyrät",
+    "scoreBreakdown": "Fantasy-ranking jakauma",
+    "switchToRadar": "Vaihda fantasy-ranking jakaumaan",
+    "switchToLine": "Vaihda kausikohtaisiin käyriin",
+    "radarInfo": "Joukkueen sisäinen vertailuarvo 0-100 välillä"
+  },
   "controlPanel": {
     "filters": "Asetukset",
     "graphControls": "Näytettävät tilastot"

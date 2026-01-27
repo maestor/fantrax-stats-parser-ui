@@ -173,6 +173,19 @@ describe('StartFromSeasonSwitcherComponent', () => {
     expect(component.seasons[0].season as any).toBe('not-a-season');
   }));
 
+  it('should not persist anything when oldestSeason is not numeric (defensive early return)', fakeAsync(() => {
+    const persistSpy = spyOn(settingsService, 'setStartFromSeason').and.callThrough();
+
+    (apiService.getSeasons as jasmine.Spy).and.returnValue(
+      of([{ season: 'not-a-season', text: '???' } as any])
+    );
+
+    component.ngOnInit();
+    tick();
+
+    expect(persistSpy).not.toHaveBeenCalled();
+  }));
+
   it('should reset startFrom to oldest when selected season is not present in fetched seasons', fakeAsync(() => {
     const resetSpy = spyOn(settingsService, 'setStartFromSeason').and.callThrough();
 
