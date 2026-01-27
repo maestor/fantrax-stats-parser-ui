@@ -1,7 +1,6 @@
 .graphs-tab {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   position: relative;
   color: var(--mat-sys-on-surface);
 }
@@ -52,10 +51,6 @@
 }
 
 @media (max-width: 600px) {
-  .graphs-tab {
-    gap: 12px;
-  }
-
   .graphs-chart-container {
     height: 320px;
     margin: 0;
@@ -160,12 +155,27 @@
 .view-toggle-container {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 
   button {
+    border-radius: 999px;
     mat-icon {
       margin-right: 8px;
+    }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    button {
+      // In dark mode, Material raised buttons can look too bright/contrasty
+      // inside the player card. Override to a darker, theme-token container.
+      background-color: color-mix(
+        in srgb,
+        var(--mat-sys-primary-container) 70%,
+        var(--mat-sys-surface-container-high) 30%
+      ) !important;
+      color: var(--mat-sys-on-primary-container) !important;
+      border: 1px solid var(--mat-sys-outline-variant) !important;
     }
   }
 }
@@ -183,13 +193,33 @@
     margin: 0;
     padding: 0 8px;
     box-sizing: border-box;
+    overflow-x: hidden;
+
+    // On wider screens, a fixed plot width is easier to read and avoids the canvas
+    // collapsing to a narrow column inside the dialog.
+    @media (min-width: 769px) {
+      width: 650px;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0;
+    }
+
+    canvas {
+      display: block;
+      max-width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      padding: 0;
+    }
 
     @media (max-width: 768px) {
-      height: 320px;
+      height: 380px;
     }
 
     @media (max-width: 480px) {
-      height: 280px;
+      height: 340px;
     }
   }
 

@@ -227,11 +227,11 @@
     "graphsSelectStats": "Valitse tilastot käyrille"
   },
   "graphs": {
-    "seasonalTrends": "Kausikohtaiset trendit",
-    "scoreBreakdown": "Pistetilastojen jakauma",
-    "switchToRadar": "Vaihda pistetilastojen jakaumaan",
-    "switchToLine": "Vaihda kausikohtaisiin trendeihin",
-    "radarInfo": "Jokainen tilasto on normalisoitu 0-100 välille joukkueen kontekstissa"
+    "seasonalTrends": "Kausittaiset käyrät",
+    "scoreBreakdown": "Fantasy-ranking jakauma",
+    "switchToRadar": "Vaihda fantasy-ranking jakaumaan",
+    "switchToLine": "Vaihda kausikohtaisiin käyriin",
+    "radarInfo": "Joukkueen sisäinen vertailuarvo 0-100 välillä"
   },
   "controlPanel": {
     "filters": "Asetukset",

@@ -137,4 +137,51 @@ describe('SettingsService', () => {
 
     expect(setItemSpy).not.toHaveBeenCalled();
   });
+
+  it('should emit derived observable values and map startFromSeason null to undefined', () => {
+    const service = TestBed.inject(SettingsService);
+
+    const selectedTeamIds: string[] = [];
+    const startFromSeasons: Array<number | undefined> = [];
+    const topControlsExpandedValues: boolean[] = [];
+
+    const selectedSub = service.selectedTeamId$.subscribe((v) => selectedTeamIds.push(v));
+    const seasonSub = service.startFromSeason$.subscribe((v) => startFromSeasons.push(v));
+    const expandedSub = service.topControlsExpanded$.subscribe((v) => topControlsExpandedValues.push(v));
+
+    // Initial emissions from BehaviorSubject.
+    expect(selectedTeamIds[selectedTeamIds.length - 1]).toBe('1');
+    expect(startFromSeasons[startFromSeasons.length - 1]).toBeUndefined();
+    expect(topControlsExpandedValues[topControlsExpandedValues.length - 1]).toBeTrue();
+
+    // Updates should emit new mapped values.
+    service.setSelectedTeamId('2');
+    service.setStartFromSeason(2022);
+    service.setTopControlsExpanded(false);
+
+    expect(selectedTeamIds[selectedTeamIds.length - 1]).toBe('2');
+    expect(startFromSeasons[startFromSeasons.length - 1]).toBe(2022);
+    expect(topControlsExpandedValues[topControlsExpandedValues.length - 1]).toBeFalse();
+
+    // Setting startFromSeason back to undefined should map to null internally but emit undefined.
+    service.setStartFromSeason(undefined);
+    expect(startFromSeasons[startFromSeasons.length - 1]).toBeUndefined();
+
+    // DistinctUntilChanged should prevent no-op emissions.
+    const selectedCount = selectedTeamIds.length;
+    const seasonCount = startFromSeasons.length;
+    const expandedCount = topControlsExpandedValues.length;
+
+    service.setSelectedTeamId('2');
+    service.setStartFromSeason(undefined);
+    service.setTopControlsExpanded(false);
+
+    expect(selectedTeamIds.length).toBe(selectedCount);
+    expect(startFromSeasons.length).toBe(seasonCount);
+    expect(topControlsExpandedValues.length).toBe(expandedCount);
+
+    selectedSub.unsubscribe();
+    seasonSub.unsubscribe();
+    expandedSub.unsubscribe();
+  });
 });

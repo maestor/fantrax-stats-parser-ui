@@ -1,5 +1,14 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnDestroy,
+  ViewChildren,
+  QueryList,
+  inject,
+} from '@angular/core';
+import type { Subscription } from 'rxjs';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
@@ -17,14 +26,43 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-player-card-graphs',
-  imports: [MatCheckboxModule, MatButtonModule, MatIconModule, TranslateModule, BaseChartDirective],
+  imports: [
+    MatCheckboxModule,
+    MatButtonModule,
+    MatIconModule,
+    TranslateModule,
+    BaseChartDirective,
+  ],
   templateUrl: './player-card-graphs.component.html',
   styleUrl: './player-card-graphs.component.scss',
   providers: [provideCharts(withDefaultRegisterables())],
 })
-export class PlayerCardGraphsComponent {
+export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
   private document = inject(DOCUMENT);
   private translateService = inject(TranslateService);
+
+  @ViewChildren(BaseChartDirective) private charts?: QueryList<BaseChartDirective>;
+
+  private prefersDarkMql?: MediaQueryList;
+  private chartsChangesSub?: Subscription;
+  private onPrefersSchemeChange = () => {
+    this.applyThemeToChartOptions();
+    this.applyThemeToRadarChartOptions();
+    this.refreshChartsLayout();
+  };
+
+  private refreshChartsLayout(): void {
+    // Run after the DOM has settled so Chart.js measures the correct container size.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const charts = this.charts?.toArray() ?? [];
+        charts.forEach((c) => {
+          c.chart?.resize();
+          c.update();
+        });
+      });
+    });
+  }
 
   @Input({ required: true }) data!: Player | Goalie;
   @Input() closeButtonEl?: HTMLButtonElement;
@@ -125,6 +163,12 @@ export class PlayerCardGraphsComponent {
     this.applyThemeToChartOptions();
     this.applyThemeToRadarChartOptions();
 
+    // Keep chart theme in sync with auto color-scheme.
+    this.prefersDarkMql = this.document.defaultView?.matchMedia?.(
+      '(prefers-color-scheme: dark)'
+    );
+    this.prefersDarkMql?.addEventListener?.('change', this.onPrefersSchemeChange);
+
     // For season view, start in radar mode
     if (this.viewContext === 'season') {
       this.chartViewMode = 'radar';
@@ -149,6 +193,20 @@ export class PlayerCardGraphsComponent {
     if (this.chartViewMode === 'radar' || this.viewContext === 'season') {
       this.buildRadarChartData();
     }
+  }
+
+  ngAfterViewInit(): void {
+    // When switching chart view, Angular destroys/recreates the canvas; ensure we resize
+    // *after* the BaseChartDirective QueryList has updated.
+    this.chartsChangesSub = this.charts?.changes.subscribe(() => this.refreshChartsLayout());
+
+    // In dev/HMR, CSS can re-apply slightly after component init; re-resize once.
+    queueMicrotask(() => this.refreshChartsLayout());
+  }
+
+  ngOnDestroy(): void {
+    this.prefersDarkMql?.removeEventListener?.('change', this.onPrefersSchemeChange);
+    this.chartsChangesSub?.unsubscribe();
   }
 
   private applyThemeToChartOptions(): void {
@@ -226,12 +284,56 @@ export class PlayerCardGraphsComponent {
         return fallback;
       }
 
+      // Prefer the app's *actual* active scheme (as computed from CSS) over OS preference.
+      // This matters if the app/theme forces a scheme that differs from `prefers-color-scheme`.
+      const root = this.document.documentElement;
+      const rootStyle = root ? getComputedStyle(root) : undefined;
+      const computedSchemeRaw =
+        (rootStyle as any)?.colorScheme || rootStyle?.getPropertyValue('color-scheme') || '';
+      const schemeTokens = computedSchemeRaw.trim().split(/\s+/).filter(Boolean);
+      const schemeToken = schemeTokens.length === 1 ? schemeTokens[0] : undefined;
+
+      const scheme: 'light' | 'dark' | undefined =
+        schemeToken === 'dark' || schemeToken === 'light'
+          ? (schemeToken as 'light' | 'dark')
+          : undefined;
+
+      // If CSS reports a non-single token (e.g. "light dark") or nothing, detect the *used*
+      // scheme by evaluating a tiny `light-dark()` expression.
+      const usedScheme: 'light' | 'dark' | undefined = (() => {
+        if (scheme) {
+          return scheme;
+        }
+
+        const schemeProbe = this.document.createElement('span');
+        schemeProbe.setAttribute('aria-hidden', 'true');
+        schemeProbe.style.position = 'absolute';
+        schemeProbe.style.width = '0';
+        schemeProbe.style.height = '0';
+        schemeProbe.style.overflow = 'hidden';
+        schemeProbe.style.color = 'light-dark(rgb(1, 2, 3), rgb(4, 5, 6))';
+        body.appendChild(schemeProbe);
+
+        const observed = getComputedStyle(schemeProbe).color?.trim();
+        schemeProbe.remove();
+
+        if (observed === 'rgb(1, 2, 3)') return 'light';
+        if (observed === 'rgb(4, 5, 6)') return 'dark';
+        return undefined;
+      })();
+
       const probe = this.document.createElement('span');
       probe.setAttribute('aria-hidden', 'true');
       probe.style.position = 'absolute';
       probe.style.width = '0';
       probe.style.height = '0';
       probe.style.overflow = 'hidden';
+      // Force the used color-scheme so CSS `light-dark()` tokens resolve correctly.
+      // If we can't confidently read the active scheme (some browsers report "normal"),
+      // inherit instead of guessing from OS preference.
+      if (usedScheme) {
+        probe.style.setProperty('color-scheme', usedScheme);
+      }
 
       if (cssProperty === 'backgroundColor') {
         probe.style.backgroundColor = `var(${name})`;
@@ -258,12 +360,22 @@ export class PlayerCardGraphsComponent {
       'backgroundColor'
     );
 
-    // Use fully opaque grid lines for maximum visibility
-    const gridColor = textColor;
+    const viewportWidth = this.document.defaultView?.innerWidth ?? 1024;
+    const compact = viewportWidth <= 520;
+    const pointLabelFontSize = compact ? 10 : 12;
+    const tickFontSize = compact ? 9 : 11;
+    const pointLabelPadding = compact ? 2 : 6;
+    const layoutPadding = compact ? 0 : 8;
+
+    // Use outline token for grid so it stays readable in light mode.
+    const gridColor = outlineColor;
 
     this.radarChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: layoutPadding,
+      },
       scales: {
         r: {
           min: 0,
@@ -273,22 +385,21 @@ export class PlayerCardGraphsComponent {
             color: textColor,
             callback: (value) => `${value}`,
             backdropColor: 'transparent',
+            font: { size: tickFontSize },
           },
           grid: {
             color: gridColor,
           },
           pointLabels: {
             color: textColor,
-            font: { size: 12 },
+            font: { size: pointLabelFontSize },
+            padding: pointLabelPadding,
           },
         },
       },
       plugins: {
         legend: {
-          position: 'bottom',
-          labels: {
-            color: textColor,
-          },
+          display: false,
         },
         tooltip: {
           callbacks: {
@@ -314,6 +425,9 @@ export class PlayerCardGraphsComponent {
     if (this.chartViewMode === 'radar') {
       this.buildRadarChartData();
     }
+
+    // When swapping via @if, the canvas is destroyed/recreated; force a resize once it's mounted.
+    setTimeout(() => this.refreshChartsLayout(), 0);
   }
 
   private buildRadarChartData(): void {
@@ -330,7 +444,6 @@ export class PlayerCardGraphsComponent {
     const player = this.data as Player;
 
     if (!player.scores) {
-      console.warn('No scores data available for player');
       return;
     }
 
@@ -380,7 +493,6 @@ export class PlayerCardGraphsComponent {
     const goalie = this.data as any;
 
     if (!goalie.scores) {
-      console.warn('No scores data available for goalie');
       return;
     }
 

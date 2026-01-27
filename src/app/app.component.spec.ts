@@ -2,7 +2,8 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
-import { provideRouter } from '@angular/router';
+import { Component } from '@angular/core';
+import { provideRouter, Router } from '@angular/router';
 import { BehaviorSubject, filter, firstValueFrom, of, Subject, throwError } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -45,6 +46,8 @@ describe('AppComponent', () => {
   let snackBar: jasmine.SpyObj<Pick<MatSnackBar, 'open'>>;
   let snackBarAction$: Subject<void>;
   let snackBarAfterDismissed$: Subject<{ dismissedByAction: boolean }>;
+  @Component({ template: '' })
+  class DummyRouteComponent {}
 
   beforeEach(async () => {
     dialog = { open: jasmine.createSpy('open') };
@@ -71,7 +74,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent, TranslateModule.forRoot()],
       providers: [
-        provideRouter([]),
+        provideRouter([{ path: '**', component: DummyRouteComponent }]),
         Title,
         { provide: ViewportService, useValue: { isMobile$: of(false) } },
         { provide: ApiService, useValue: apiServiceMock },
@@ -139,6 +142,18 @@ describe('AppComponent', () => {
     expect(dialog.open).toHaveBeenCalled();
   });
 
+  it('should update controls context and close settings drawer on navigation', fakeAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    const router = TestBed.inject(Router);
+    fixture.detectChanges();
+
+    void router.navigateByUrl('/goalie-stats');
+    tick();
+
+    expect(app.controlsContext).toBe('goalie');
+  }));
+
   it('should open help dialog on ? keydown', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
@@ -165,18 +180,69 @@ describe('AppComponent', () => {
 
   it('should not open help dialog on ? keydown when typing in input', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
+    const app = fixture.componentInstance;
 
-    const input = document.createElement('input');
-    document.body.appendChild(input);
-    input.focus();
-
-    const event = new KeyboardEvent('keydown', { key: '?', bubbles: true });
-    input.dispatchEvent(event);
+    const target = document.createElement('input');
+    app.onDocumentKeydown({
+      key: '?',
+      shiftKey: false,
+      altKey: false,
+      ctrlKey: false,
+      metaKey: false,
+      target,
+      preventDefault: jasmine.createSpy('preventDefault'),
+    } as any);
 
     expect(dialog.open).not.toHaveBeenCalled();
-    document.body.removeChild(input);
   });
+
+  it('should not open help dialog on ? keydown when typing in textarea', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+
+    const target = document.createElement('textarea');
+    app.onDocumentKeydown({
+      key: '?',
+      shiftKey: false,
+      altKey: false,
+      ctrlKey: false,
+      metaKey: false,
+      target,
+      preventDefault: jasmine.createSpy('preventDefault'),
+    } as any);
+
+    expect(dialog.open).not.toHaveBeenCalled();
+  });
+
+  it('should handle update snackbar action and dismissal callbacks', fakeAsync(() => {
+    spyOn(translateService, 'get').and.callFake((key: any) => {
+      if (Array.isArray(key)) {
+        return of({
+          'pwa.updateAvailable': 'Update available',
+          'pwa.updateAction': 'Reload',
+        } as any);
+      }
+      return of('Title');
+    });
+
+    // Make snackbar streams emit synchronously so we definitely execute the callbacks.
+    snackBar.open.and.returnValue({
+      onAction: () => of(void 0),
+      afterDismissed: () => of({ dismissedByAction: true }),
+    } as any);
+
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
+
+    (app as any).isUpdateAvailable = true;
+    (app as any).openUpdateAvailableSnackbar();
+    tick();
+
+    expect(snackBar.open).toHaveBeenCalled();
+    expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
+    expect((app as any).updateSnackRef).toBeUndefined();
+  }));
 
   describe('controls context', () => {
     it('should set controlsContext to goalie when url contains goalie-stats', () => {
@@ -406,6 +472,57 @@ describe('AppComponent', () => {
         shiftKey: false,
         preventDefault: jasmine.createSpy('preventDefault'),
         target: { tagName: 'INPUT', isContentEditable: false },
+      } as any);
+
+      expect(dialog.open).not.toHaveBeenCalled();
+    });
+
+    it('should ignore ? keydown when target is a textarea', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      (app as any).onDocumentKeydown({
+        key: '?',
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        preventDefault: jasmine.createSpy('preventDefault'),
+        target: { tagName: 'TEXTAREA', isContentEditable: false },
+      } as any);
+
+      expect(dialog.open).not.toHaveBeenCalled();
+    });
+
+    it('should ignore ? keydown when target is a select', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      (app as any).onDocumentKeydown({
+        key: '?',
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        preventDefault: jasmine.createSpy('preventDefault'),
+        target: { tagName: 'SELECT', isContentEditable: false },
+      } as any);
+
+      expect(dialog.open).not.toHaveBeenCalled();
+    });
+
+    it('should ignore non-help keys (covers !isQuestionMark branch)', () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      app.onDocumentKeydown({
+        key: 'a',
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        shiftKey: false,
+        preventDefault: jasmine.createSpy('preventDefault'),
+        target: document.body,
       } as any);
 
       expect(dialog.open).not.toHaveBeenCalled();
