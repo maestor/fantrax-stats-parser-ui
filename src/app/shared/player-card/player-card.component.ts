@@ -49,6 +49,12 @@ export class PlayerCardComponent {
   // Check if this data has seasons (combined stats)
   readonly hasSeasons = !!this.data.seasons && this.data.seasons.length > 0;
 
+  // Determine view context (combined vs season)
+  readonly viewContext: 'combined' | 'season' = this.hasSeasons && this.data.seasons!.length > 1 ? 'combined' : 'season';
+
+  // Show Graphs tab if combined data with multiple seasons OR season data with scores
+  readonly showGraphsTab = (this.hasSeasons && this.data.seasons!.length > 1) || (!this.hasSeasons && !!this.data.scores);
+
   // Track which tab is active (0 = All, 1 = By Season)
   selectedTabIndex = 0;
 
@@ -83,6 +89,7 @@ export class PlayerCardComponent {
   // Keep inputs as a TS-visible field (so it isn't considered "template-only" usage).
   graphsInputs: Record<string, unknown> = {
     data: this.data,
+    viewContext: this.viewContext,
     closeButtonEl: undefined,
     requestFocusTabHeader: () => this.focusActiveTabHeader(),
   };
@@ -245,8 +252,10 @@ export class PlayerCardComponent {
     this.selectedTabIndex = index;
     this.updateGraphsInputs();
 
-    // Graphs tab (index 2) is heavy (Chart.js). Lazy-load it to keep the initial bundle small.
-    if (index === 2) {
+    // Graphs tab is heavy (Chart.js). Lazy-load it to keep the initial bundle small.
+    // Tab index: 0=All, 1=By Season (if hasSeasons), 2=Graphs (if hasSeasons) OR 1=Graphs (if !hasSeasons)
+    const graphsTabIndex = this.hasSeasons ? 2 : 1;
+    if (index === graphsTabIndex) {
       this.graphsLoadPromise = this.ensureGraphsLoaded();
       void this.graphsLoadPromise;
     }
@@ -277,6 +286,7 @@ export class PlayerCardComponent {
   private updateGraphsInputs(): void {
     this.graphsInputs = {
       data: this.data,
+      viewContext: this.viewContext,
       closeButtonEl: this.closeButton?.nativeElement,
       requestFocusTabHeader: () => this.focusActiveTabHeader(),
     };

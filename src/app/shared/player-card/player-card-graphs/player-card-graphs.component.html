@@ -1,47 +1,89 @@
-@if (hasSeasons) {
+@if (hasSeasons || data.scores) {
   <div class="tab-content graphs-tab">
-    <button
-      class="graphs-controls-toggle"
-      (click)="toggleGraphControls()"
-      [attr.aria-expanded]="graphControlsExpanded"
-    >
-      <span>{{ 'controlPanel.graphControls' | translate }}</span>
-      <span class="toggle-icon">{{ graphControlsExpanded ? '▲' : '▼' }}</span>
-    </button>
+    <!-- View Toggle Button (only show if multiple seasons available) -->
+    @if (hasMultipleSeasons) {
+      <div class="view-toggle-container">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="toggleChartView()"
+          [attr.aria-label]="
+            (chartViewMode === 'line' ? 'graphs.switchToRadar' : 'graphs.switchToLine') | translate
+          "
+        >
+          <mat-icon>{{ chartViewMode === 'line' ? 'pie_chart' : 'show_chart' }}</mat-icon>
+          <span>{{
+            (chartViewMode === 'line' ? 'graphs.scoreBreakdown' : 'graphs.seasonalTrends')
+              | translate
+          }}</span>
+        </button>
+      </div>
+    }
 
-    <div
-      class="graphs-controls-overlay"
-      [class.visible]="graphControlsExpanded"
-      (click)="toggleGraphControls()"
-    ></div>
+    <!-- Line Charts View (existing) -->
+    @if (chartViewMode === 'line' && hasMultipleSeasons) {
+      <button
+        class="graphs-controls-toggle"
+        (click)="toggleGraphControls()"
+        [attr.aria-expanded]="graphControlsExpanded"
+      >
+        <span>{{ 'controlPanel.graphControls' | translate }}</span>
+        <span class="toggle-icon">{{ graphControlsExpanded ? '▲' : '▼' }}</span>
+      </button>
 
-    <div class="graphs-controls" [class.visible]="graphControlsExpanded">
-      <div class="graphs-controls-content">
-        <div class="graphs-controls-title">
-          {{ 'playerCard.graphsSelectStats' | translate }}
-        </div>
+      <div
+        class="graphs-controls-overlay"
+        [class.visible]="graphControlsExpanded"
+        (click)="toggleGraphControls()"
+      ></div>
 
-        <div class="graphs-controls-list">
-          @for (statKey of chartStatKeys; track statKey) {
-            <mat-checkbox
-              [checked]="chartSelections[statKey]"
-              (change)="onStatToggle(statKey, $event)"
-              (keydown)="onGraphCheckboxKeydown($event)"
-            >
-              {{ 'tableColumn.' + statKey | translate }}
-            </mat-checkbox>
-          }
+      <div class="graphs-controls" [class.visible]="graphControlsExpanded">
+        <div class="graphs-controls-content">
+          <div class="graphs-controls-title">
+            {{ 'playerCard.graphsSelectStats' | translate }}
+          </div>
+
+          <div class="graphs-controls-list">
+            @for (statKey of chartStatKeys; track statKey) {
+              <mat-checkbox
+                [checked]="chartSelections[statKey]"
+                (change)="onStatToggle(statKey, $event)"
+                (keydown)="onGraphCheckboxKeydown($event)"
+              >
+                {{ 'tableColumn.' + statKey | translate }}
+              </mat-checkbox>
+            }
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="graphs-chart-container">
-      <canvas
-        baseChart
-        [type]="'line'"
-        [data]="lineChartData"
-        [options]="lineChartOptions"
-      ></canvas>
-    </div>
+      <div class="graphs-chart-container">
+        <canvas
+          baseChart
+          [type]="'line'"
+          [data]="lineChartData"
+          [options]="lineChartOptions"
+        ></canvas>
+      </div>
+    }
+
+    <!-- Radar Chart View (new) -->
+    @if (chartViewMode === 'radar') {
+      <div class="radar-chart-view">
+        <div class="chart-container radar">
+          <canvas
+            baseChart
+            [type]="'radar'"
+            [data]="radarChartData"
+            [options]="radarChartOptions"
+          ></canvas>
+        </div>
+
+        <!-- Info text -->
+        <p class="chart-info">
+          {{ 'graphs.radarInfo' | translate }}
+        </p>
+      </div>
+    }
   </div>
 }

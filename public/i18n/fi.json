@@ -226,6 +226,13 @@
     "graphs": "Graafit",
     "graphsSelectStats": "Valitse tilastot käyrille"
   },
+  "graphs": {
+    "seasonalTrends": "Kausikohtaiset trendit",
+    "scoreBreakdown": "Pistetilastojen jakauma",
+    "switchToRadar": "Vaihda pistetilastojen jakaumaan",
+    "switchToLine": "Vaihda kausikohtaisiin trendeihin",
+    "radarInfo": "Jokainen tilasto on normalisoitu 0-100 välille joukkueen kontekstissa"
+  },
   "controlPanel": {
     "filters": "Asetukset",
     "graphControls": "Näytettävät tilastot"

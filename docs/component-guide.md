@@ -452,6 +452,128 @@ this.dialog.open(PlayerCardComponent, {
 
 ---
 
+### PlayerCardGraphsComponent
+
+**Location**: `src/app/shared/player-card/player-card-graphs/`
+
+**Type**: Lazy-loaded Child Component (renders within Player Card dialog)
+
+**Purpose**: Displays chart visualizations for player/goalie statistics in the Player Card "Graphs" tab
+
+**Key Features**:
+
+- **Line Charts**: Multi-series seasonal trends with selectable stats (goals, assists, points, etc.)
+- **Radar Charts**: Per-stat score breakdown showing 0-100 normalized fantasy rankings
+- **View Toggle**: Switch between line and radar chart modes
+- **Theme Integration**: Dynamic color resolution from Material theme variables
+- **Lazy Loading**: Component loads only when Graphs tab is clicked (keeps initial bundle small)
+- **Mobile Responsive**: Collapsible controls on mobile (<768px)
+
+**Inputs**:
+
+```typescript
+@Input() data!: Player | Goalie;                    // Player or goalie data with optional seasons array
+@Input() viewContext: 'combined' | 'season' = 'combined';  // Combined (multi-season) vs season-specific data
+@Input() closeButtonEl?: HTMLElement;               // Reference to dialog close button for focus management
+@Input() requestFocusTabHeader!: () => void;        // Callback to return focus to tab header
+```
+
+**Chart Types**:
+
+1. **Line Chart (Combined View Only)**
+   - Shows trends across multiple seasons
+   - User can select which stats to display via checkboxes
+   - Auto-scaled Y-axis based on data range (0 to max value, rounded to 5 ticks)
+   - X-axis shows season labels in YY-YY format (e.g., "12-13")
+   - Includes gaps for missing seasons (line breaks)
+   - Available stats:
+     - **Players**: score, scoreAdjustedByGames (default on), games, goals, assists, points, shots, penalties, hits, blocks
+     - **Goalies**: score, scoreAdjustedByGames (default on), games, wins, saves, shutouts
+
+2. **Radar Chart (Both Views)**
+   - Shows normalized scores (0-100) for individual stats
+   - Available for both combined and season views
+   - Stats shown:
+     - **Players**: goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks (10 stats)
+     - **Goalies (combined)**: wins, saves, shutouts (3 stats)
+     - **Goalies (season)**: wins, saves, shutouts, gaa, savePercent (5 stats)
+   - Filled polygon visualization with customizable colors
+   - 0-100 scale with gridlines at 20, 40, 60, 80
+   - Tooltips show "StatName: Value/100" format
+
+**View Toggle Logic**:
+
+- **Combined data** (multiple seasons): Shows toggle button to switch between line and radar views, defaults to line chart
+- **Season data** (single season or no seasons): Shows only radar chart, no toggle button
+
+**Usage**:
+
+```typescript
+// In player-card.component.html (lazy-loaded with NgComponentOutlet)
+<ng-container *ngComponentOutlet="graphsComponent; inputs: graphsInputs"></ng-container>
+
+// Inputs passed from parent:
+graphsInputs = {
+  data: this.data,
+  viewContext: this.viewContext,
+  closeButtonEl: this.closeButton?.nativeElement,
+  requestFocusTabHeader: () => this.focusActiveTabHeader()
+};
+```
+
+**Chart Configuration**:
+
+- **Line Chart Options**: `lineChartOptions: ChartConfiguration<'line'>['options']`
+  - Responsive, non-aspect-ratio-maintaining
+  - Y-axis starts at 0, scales to clean upper bound
+  - Legend positioned at bottom
+  - Tooltips with theme colors
+
+- **Radar Chart Options**: `radarChartOptions: ChartConfiguration<'radar'>['options']`
+  - Responsive, non-aspect-ratio-maintaining
+  - Radial scale: min 0, max 100, step 20
+  - Grid color derived from theme text color with 0.3 alpha transparency (better dark mode visibility)
+  - Point labels show stat names (translated)
+  - Legend positioned at bottom
+  - Tooltips format: "PlayerName: 75/100"
+
+**Responsive Breakpoints**:
+
+- **Desktop (>768px)**: Chart height 420px, full stat labels, toggle button with icon + text
+- **Tablet (480px-768px)**: Chart height 320px, full stat labels
+- **Mobile (<480px)**: Chart height 280px, abbreviated stat labels, toggle icon only
+
+**Dependencies**:
+
+- Chart.js 4.5.1 (peer dependency, lazy-loaded)
+- ng2-charts 8.0 (Angular wrapper for Chart.js)
+- Angular Material (for toggle button)
+- ngx-translate (for stat labels)
+
+**Theme Integration**:
+
+Uses `resolveCssColorVar()` helper to read CSS variables from Material theme:
+- `--mat-sys-on-surface` for text colors
+- `--mat-sys-surface-container-high` for tooltip backgrounds
+- `--mat-sys-outline-variant` for borders
+- Derived grid color with alpha transparency for dark mode compatibility
+
+**Error Handling**:
+
+- Missing `scores` data: Logs warning, skips radar chart rendering
+- Missing `document.body`: Falls back to default colors
+- Empty computed style: Falls back to provided defaults
+- Non-RGB color format: Falls back to `rgba(128, 128, 128, 0.3)` for grid
+
+**Accessibility**:
+
+- Toggle button has descriptive aria-label that changes based on current view
+- Keyboard accessible (Tab to focus, Space/Enter to activate)
+- Focus management returns to tab header when Escape is pressed (via parent callback)
+- Chart canvas has implicit role="img" (provided by Chart.js)
+
+---
+
 ### HelpDialogComponent
 
 **Location**: `src/app/shared/help-dialog/`

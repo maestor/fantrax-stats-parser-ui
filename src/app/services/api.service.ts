@@ -11,6 +11,33 @@ export type Season = {
   text: string;
 };
 
+// Player scores object (0-100 normalized rankings per stat)
+export type PlayerScores = {
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+  penalties: number;
+  shots: number;
+  ppp: number;
+  shp: number;
+  hits: number;
+  blocks: number;
+};
+
+// Goalie scores object for combined endpoint
+export type GoalieScoresCombined = {
+  wins: number;
+  saves: number;
+  shutouts: number;
+};
+
+// Goalie scores object for season endpoint (includes gaa/savePercent)
+export type GoalieScoresSeason = GoalieScoresCombined & {
+  gaa: number;
+  savePercent: number;
+};
+
 export type PlayerSeasonStats = {
   season: number;
   score: number;
@@ -26,6 +53,7 @@ export type PlayerSeasonStats = {
   shp: number;
   hits: number;
   blocks: number;
+  scores?: PlayerScores;
 };
 
 export type Player = {
@@ -43,6 +71,7 @@ export type Player = {
   shp: number;
   hits: number;
   blocks: number;
+  scores?: PlayerScores;
   seasons?: PlayerSeasonStats[];
 };
 
@@ -62,6 +91,7 @@ export type GoalieSeasonStats = {
   shp: number;
   gaa?: string;
   savePercent?: string;
+  scores?: GoalieScoresSeason;
 };
 
 export type Goalie = {
@@ -80,6 +110,7 @@ export type Goalie = {
   shp: number;
   gaa?: string;
   savePercent?: string;
+  scores?: GoalieScoresCombined | GoalieScoresSeason;
   seasons?: GoalieSeasonStats[];
 };
 

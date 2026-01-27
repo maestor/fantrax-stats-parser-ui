@@ -33,7 +33,11 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Click on any goalie to view detailed stats card
 
 3. **Player/Goalie Detail Cards** (Dialog)
-   - **Tab Navigation**: "All" tab shows combined career stats, "By Season" tab shows season-by-season breakdown, "Graphs" tab shows line charts of per-season trends
+   - **Tab Navigation**: "All" tab shows combined career stats, "By Season" tab shows season-by-season breakdown, "Graphs" tab shows visual analysis
+   - **Graphs Tab**:
+     - Line charts showing per-season trends (multi-series, selectable stats)
+     - 🎯 **Radar charts** showing per-stat score breakdown (0-100 normalized rankings)
+     - Toggle button to switch between line and radar views
    - **Dynamic Layout**: Card width adjusts based on active tab (wider for season table and graphs)
    - **Season View**: Displays all seasons from newest to oldest (e.g., 2025-26, 2024-25)
    - **Sticky Headers**: Column headers remain visible while scrolling through seasons

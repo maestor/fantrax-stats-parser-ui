@@ -2,13 +2,22 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Input, inject } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import type { ChartConfiguration, ChartDataset } from 'chart.js';
+import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import type { Goalie, GoalieSeasonStats, Player, PlayerSeasonStats } from '@services/api.service';
+import type {
+  Goalie,
+  GoalieSeasonStats,
+  Player,
+  PlayerScores,
+  PlayerSeasonStats,
+} from '@services/api.service';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-player-card-graphs',
-  imports: [MatCheckboxModule, TranslateModule, BaseChartDirective],
+  imports: [MatCheckboxModule, MatButtonModule, MatIconModule, TranslateModule, BaseChartDirective],
   templateUrl: './player-card-graphs.component.html',
   styleUrl: './player-card-graphs.component.scss',
   providers: [provideCharts(withDefaultRegisterables())],
@@ -20,9 +29,44 @@ export class PlayerCardGraphsComponent {
   @Input({ required: true }) data!: Player | Goalie;
   @Input() closeButtonEl?: HTMLButtonElement;
   @Input() requestFocusTabHeader?: () => void;
+  @Input() viewContext: 'combined' | 'season' = 'combined';
 
   // Track graph controls visibility on mobile
   graphControlsExpanded = false;
+
+  // Chart view mode
+  chartViewMode: 'line' | 'radar' = 'line';
+
+  // Radar chart data and options
+  radarChartData: ChartData<'radar'> = { labels: [], datasets: [] };
+  radarChartOptions: ChartConfiguration<'radar'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      r: {
+        min: 0,
+        max: 100,
+        ticks: {
+          stepSize: 20,
+          callback: (value) => `${value}`,
+        },
+      },
+    },
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context: any) => {
+            const label = context.dataset.label || '';
+            const value = context.parsed.r;
+            return `${label}: ${value}/100`;
+          },
+        },
+      } as any,
+    },
+  };
 
   get chartStatKeys(): string[] {
     return this.isGoalie
@@ -73,8 +117,18 @@ export class PlayerCardGraphsComponent {
     return !!this.data?.seasons && this.data.seasons.length > 0;
   }
 
+  get hasMultipleSeasons(): boolean {
+    return this.viewContext === 'combined' && this.hasSeasons && this.data.seasons!.length > 1;
+  }
+
   ngOnInit(): void {
     this.applyThemeToChartOptions();
+    this.applyThemeToRadarChartOptions();
+
+    // For season view, start in radar mode
+    if (this.viewContext === 'season') {
+      this.chartViewMode = 'radar';
+    }
 
     if (Object.keys(this.chartSelections).length === 0) {
       this.chartSelections = this.chartStatKeys.reduce(
@@ -89,6 +143,11 @@ export class PlayerCardGraphsComponent {
 
     if (this.hasSeasons) {
       this.setupChartData();
+    }
+
+    // Build radar chart data if in radar mode or if season view
+    if (this.chartViewMode === 'radar' || this.viewContext === 'season') {
+      this.buildRadarChartData();
     }
   }
 
@@ -188,6 +247,174 @@ export class PlayerCardGraphsComponent {
     } catch {
       return fallback;
     }
+  }
+
+  private applyThemeToRadarChartOptions(): void {
+    const textColor = this.resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f');
+    const outlineColor = this.resolveCssColorVar('--mat-sys-outline-variant', 'rgba(0,0,0,0.2)');
+    const tooltipBg = this.resolveCssColorVar(
+      '--mat-sys-surface-container-high',
+      'rgba(0,0,0,0.8)',
+      'backgroundColor'
+    );
+
+    // Use fully opaque grid lines for maximum visibility
+    const gridColor = textColor;
+
+    this.radarChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          min: 0,
+          max: 100,
+          ticks: {
+            stepSize: 20,
+            color: textColor,
+            callback: (value) => `${value}`,
+            backdropColor: 'transparent',
+          },
+          grid: {
+            color: gridColor,
+          },
+          pointLabels: {
+            color: textColor,
+            font: { size: 12 },
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: textColor,
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: (context: any) => {
+              const label = context.dataset.label || '';
+              const value = context.parsed.r;
+              return `${label}: ${value}/100`;
+            },
+          },
+          titleColor: textColor,
+          bodyColor: textColor,
+          footerColor: textColor,
+          backgroundColor: tooltipBg,
+          borderColor: outlineColor,
+          borderWidth: 1,
+        } as any,
+      },
+    };
+  }
+
+  toggleChartView(): void {
+    this.chartViewMode = this.chartViewMode === 'line' ? 'radar' : 'line';
+    if (this.chartViewMode === 'radar') {
+      this.buildRadarChartData();
+    }
+  }
+
+  private buildRadarChartData(): void {
+    const isGoalie = 'wins' in this.data;
+
+    if (isGoalie) {
+      this.buildGoalieRadarData();
+    } else {
+      this.buildPlayerRadarData();
+    }
+  }
+
+  private buildPlayerRadarData(): void {
+    const player = this.data as Player;
+
+    if (!player.scores) {
+      console.warn('No scores data available for player');
+      return;
+    }
+
+    // Define stat keys and get labels
+    const statKeys: (keyof PlayerScores)[] = [
+      'goals',
+      'assists',
+      'points',
+      'plusMinus',
+      'penalties',
+      'shots',
+      'ppp',
+      'shp',
+      'hits',
+      'blocks',
+    ];
+
+    // Get translated labels
+    const labels = statKeys.map((key) =>
+      this.translateService.instant(`tableColumn.${key}`)
+    );
+
+    // Get score values
+    const data = statKeys.map((key) => player.scores![key]);
+
+    this.radarChartData = {
+      labels,
+      datasets: [
+        {
+          label: player.name,
+          data,
+          fill: true,
+          backgroundColor: 'rgba(25, 118, 210, 0.3)',
+          borderColor: '#1976d2',
+          pointBackgroundColor: '#1976d2',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: '#1976d2',
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        },
+      ],
+    };
+  }
+
+  private buildGoalieRadarData(): void {
+    const goalie = this.data as any;
+
+    if (!goalie.scores) {
+      console.warn('No scores data available for goalie');
+      return;
+    }
+
+    // Check if gaa/savePercent are available (season endpoint)
+    const hasExtendedStats = 'gaa' in goalie.scores;
+
+    const statKeys = hasExtendedStats
+      ? ['wins', 'saves', 'shutouts', 'gaa', 'savePercent']
+      : ['wins', 'saves', 'shutouts'];
+
+    const labels = statKeys.map((key) =>
+      this.translateService.instant(`tableColumn.${key}`)
+    );
+
+    const data = statKeys.map((key) => goalie.scores[key]);
+
+    this.radarChartData = {
+      labels,
+      datasets: [
+        {
+          label: goalie.name,
+          data,
+          fill: true,
+          backgroundColor: 'rgba(25, 118, 210, 0.3)',
+          borderColor: '#1976d2',
+          pointBackgroundColor: '#1976d2',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: '#1976d2',
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        },
+      ],
+    };
   }
 
   toggleGraphControls(): void {
