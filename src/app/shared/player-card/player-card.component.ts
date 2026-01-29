@@ -18,6 +18,13 @@ import { FilterService, PositionFilter } from '@services/filter.service';
 import { take } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
+
+export type PlayerCardDialogData = {
+  player: Player | Goalie;
+  initialTab?: PlayerCardTab;
+};
+
 interface StatRow {
   label: string;
   value: string | number;
@@ -41,7 +48,7 @@ interface StatRow {
 })
 export class PlayerCardComponent {
   readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
-  readonly data = inject<Player | Goalie>(MAT_DIALOG_DATA);
+  private rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
   private document = inject(DOCUMENT);
   private host = inject(ElementRef<HTMLElement>);
   private filterService = inject(FilterService);
@@ -52,7 +59,19 @@ export class PlayerCardComponent {
   @ViewChild('closeButton', { read: ElementRef })
   closeButton?: ElementRef<HTMLButtonElement>;
 
+  // Support both wrapped format { player, initialTab } and direct Player/Goalie
+  readonly data: Player | Goalie = this.isWrappedData(this.rawDialogData)
+    ? this.rawDialogData.player
+    : this.rawDialogData;
+  readonly initialTab: PlayerCardTab | undefined = this.isWrappedData(this.rawDialogData)
+    ? this.rawDialogData.initialTab
+    : undefined;
+
   readonly isGoalie = 'wins' in this.data;
+
+  private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
+    return 'player' in data && (data as PlayerCardDialogData).player !== undefined;
+  }
 
   // Check if this data has seasons (combined stats)
   readonly hasSeasons = !!this.data.seasons && this.data.seasons.length > 0;
@@ -134,6 +153,33 @@ export class PlayerCardComponent {
       }
       this.updateGraphsInputs();
     });
+
+    // Set initial tab from dialog data if provided
+    if (this.initialTab) {
+      this.selectedTabIndex = this.getTabIndexFromName(this.initialTab);
+      // Pre-load graphs if that's the initial tab
+      const graphsTabIndex = this.hasSeasons ? 2 : 1;
+      if (this.selectedTabIndex === graphsTabIndex && this.showGraphsTab) {
+        this.graphsLoadPromise = this.ensureGraphsLoaded();
+        void this.graphsLoadPromise;
+      }
+    }
+  }
+
+  private getTabIndexFromName(tabName: PlayerCardTab): number {
+    switch (tabName) {
+      case 'all':
+        return 0;
+      case 'by-season':
+        // Only valid if hasSeasons, otherwise fall back to 0
+        return this.hasSeasons ? 1 : 0;
+      case 'graphs':
+        // Graphs is at index 2 if hasSeasons, otherwise index 1
+        if (!this.showGraphsTab) return 0;
+        return this.hasSeasons ? 2 : 1;
+      default:
+        return 0;
+    }
   }
 
   private buildStats(): void {

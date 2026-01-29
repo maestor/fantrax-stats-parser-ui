@@ -111,6 +111,49 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Similar structure to PlayerStatsComponent but for goalies**
 
+---
+
+### PlayerRouteComponent
+
+**Location**: `src/app/player-route/`
+
+**Type**: Smart Component (Route Handler)
+
+**Purpose**: Handle direct URL navigation to player cards via `/player/:teamSlug/:playerSlug`
+
+**Key Features**:
+
+- Extracts team and player slugs from route parameters
+- Supports optional `?tab=all|by-season|graphs` query parameter
+- Team lookup by slug (e.g., `colorado`) or ID (e.g., `1`)
+- Displays PlayerStatsComponent as background
+- Opens PlayerCardComponent modal automatically
+- Navigates to `/player-stats` on modal close
+
+**Route Pattern**: `/player/:teamSlug/:playerSlug`
+
+**Examples**:
+- `/player/colorado/jamie-benn`
+- `/player/1/jamie-benn?tab=graphs`
+
+**Error Handling**:
+- Shows error overlay if team or player not found
+- Provides navigation button to return to stats page
+
+---
+
+### GoalieRouteComponent
+
+**Location**: `src/app/goalie-route/`
+
+**Type**: Smart Component (Route Handler)
+
+**Purpose**: Handle direct URL navigation to goalie cards via `/goalie/:teamSlug/:goalieSlug`
+
+**Similar structure to PlayerRouteComponent but for goalies**
+
+**Route Pattern**: `/goalie/:teamSlug/:goalieSlug`
+
 ## Shared Components
 
 ### TeamSwitcherComponent
@@ -365,8 +408,21 @@ toggleExpanded(): void {
 **Data Input**: Injected via `MAT_DIALOG_DATA`
 
 ```typescript
+// Supports both formats:
+// 1. Direct player/goalie object (legacy)
 data: Player | Goalie;
+
+// 2. Wrapped format with optional initial tab (for URL routing)
+data: {
+  player: Player | Goalie;
+  initialTab?: 'all' | 'by-season' | 'graphs';
+};
 ```
+
+**Initial Tab Support**:
+- When `initialTab` is provided, the dialog opens directly to that tab
+- Used by route components to support `?tab=...` query parameter
+- Falls back to tab 0 if the requested tab is not available (e.g., `by-season` when no seasons exist)
 
 **Key Features**:
 
@@ -471,9 +527,17 @@ toggleGraphControls(): void {
 **Usage**:
 
 ```typescript
-// In stats-table.component.ts
+// In stats-table.component.ts (wrapped format)
 this.dialog.open(PlayerCardComponent, {
-  data: playerOrGoalieData,
+  data: { player: playerOrGoalieData },
+  maxWidth: "95vw",
+  width: "auto",
+  panelClass: "player-card-dialog",
+});
+
+// In route components (with initial tab)
+this.dialog.open(PlayerCardComponent, {
+  data: { player: playerOrGoalieData, initialTab: 'graphs' },
   maxWidth: "95vw",
   width: "auto",
   panelClass: "player-card-dialog",

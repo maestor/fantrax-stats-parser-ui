@@ -24,6 +24,12 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats, season-by-season breakdown, and a graphs tab in separate tabs, using the same stat keys (including `score`) as the main tables
 	- 📉 Graphs tab shows per-season line charts for key stats (games, goals, assists, points, shots, penalties, hits, blocks for skaters; games, wins, saves, shutouts for goalies) with selectable series and sensible axis scaling
 	- 🎯 Radar chart view showing 0-100 normalized score breakdown for individual stats, toggleable with line charts
+- 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
+	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
+	- Goalies: `/goalie/:teamSlug/:goalieSlug` (e.g., `/goalie/colorado/philipp-grubauer`)
+	- Optional tab: `?tab=all|by-season|graphs` to open directly to a specific tab
+	- Team can be specified by slug (e.g., `colorado`) or ID (e.g., `1`)
+	- Slugs are generated at runtime from names (e.g., "Jamie Benn" → "jamie-benn")
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: i18n support with ngx-translate (currently ships with Finnish UI; additional languages can be added under `public/i18n/`)
 - 🎨 **Material Design**: Clean UI with Angular Material components
@@ -189,6 +195,9 @@ src/
 │   │   └── table-columns.ts
 │   ├── player-stats/      # Player stats page
 │   ├── goalie-stats/      # Goalie stats page
+│   ├── player-route/      # Direct player card route handler
+│   ├── goalie-route/      # Direct goalie card route handler
+│   ├── utils/             # Utility functions (slug generation)
 │   └── app.component.ts   # Root component
 └── environments/          # Build-time environment config
 ```
