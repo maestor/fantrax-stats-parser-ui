@@ -48,6 +48,12 @@
               [contentOnly]="true"
             />
           </div>
+
+          @if (lastModifiedText$ | async; as lastModifiedText) {
+            <div class="settings-drawer-last-modified">
+              {{ 'lastModified.label' | translate }}: {{ lastModifiedText }}
+            </div>
+          }
         </mat-sidenav>
 
         <mat-sidenav-content>
@@ -140,6 +146,12 @@
           </button>
         </div>
       </div>
+
+      @if (lastModifiedText$ | async; as lastModifiedText) {
+        <div class="last-modified">
+          {{ 'lastModified.label' | translate }}: {{ lastModifiedText }}
+        </div>
+      }
 
       <app-top-controls [context]="controlsContext" />
 

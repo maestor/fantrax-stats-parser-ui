@@ -31,6 +31,9 @@
     "updateAvailable": "Päivitys tarjolla!",
     "updateAction": "Päivitä"
   },
+  "lastModified": {
+    "label": "Tilastot päivitetty"
+  },
   "helpDialog": {
     "title": "Tietoja sovelluksesta",
     "close": "Sulje",

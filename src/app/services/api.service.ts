@@ -128,6 +128,10 @@ export type Team = {
   name: string;
 };
 
+export type LastModifiedResponse = {
+  lastModified: string;
+};
+
 @Injectable({
   providedIn: 'root', // Provides service globally
 })
@@ -144,6 +148,11 @@ export class ApiService {
   // Fetching available teams
   getTeams(): Observable<Team[]> {
     return this.handleRequest<Team[]>('teams', 'teams');
+  }
+
+  // Fetch last modified information for the backend data
+  getLastModified(): Observable<LastModifiedResponse> {
+    return this.handleRequest<LastModifiedResponse>('last-modified', 'last-modified');
   }
 
   // Fetching available seasons

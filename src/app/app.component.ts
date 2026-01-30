@@ -84,9 +84,25 @@ export class AppComponent implements OnInit {
   private readonly teamService = inject(TeamService);
   private readonly apiService = inject(ApiService);
 
+  private readonly fiLastModifiedFormatter = new Intl.DateTimeFormat('fi-FI', {
+    timeZone: 'Europe/Helsinki',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
   readonly selectedTeamId$ = this.teamService.selectedTeamId$;
   private readonly teams$ = this.apiService.getTeams().pipe(
     catchError(() => of([] as Team[])),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  readonly lastModifiedText$ = this.apiService.getLastModified().pipe(
+    map((res) => this.formatLastModified(res?.lastModified)),
+    catchError(() => of(null)),
+    distinctUntilChanged(),
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
@@ -148,6 +164,13 @@ export class AppComponent implements OnInit {
         this.updateControlsContext(event.urlAfterRedirects);
         this.settingsDrawer?.close();
       });
+  }
+
+  private formatLastModified(iso: string | undefined): string | null {
+    if (!iso) return null;
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return null;
+    return this.fiLastModifiedFormatter.format(date);
   }
 
   private openUpdateAvailableSnackbar(): void {

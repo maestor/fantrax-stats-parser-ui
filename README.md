@@ -29,6 +29,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 🌓 **Automatic Dark Mode**: Follows device/browser `prefers-color-scheme` (no manual toggle)
 - 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)
 - 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and collapsible controls
+- 🕒 **Last Updated Indicator**: Shows backend data last-modified timestamp under the title (desktop) and in the settings drawer (mobile)
 
 More details:
 
