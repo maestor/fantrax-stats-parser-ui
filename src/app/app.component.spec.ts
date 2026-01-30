@@ -37,11 +37,23 @@ class PwaUpdateServiceMock {
   }
 }
 
+class ViewportServiceMock {
+  private readonly isMobileSubject = new BehaviorSubject<boolean>(false);
+  readonly isMobile$ = this.isMobileSubject.asObservable();
+
+  setMobile(value: boolean): void {
+    this.isMobileSubject.next(value);
+  }
+}
+
 describe('AppComponent', () => {
   let translateService: TranslateService;
   let titleService: Title;
   let dialog: { open: jasmine.Spy };
-  let apiServiceMock: jasmine.SpyObj<Pick<ApiService, 'getTeams' | 'getSeasons'>>;
+  let apiServiceMock: jasmine.SpyObj<
+    Pick<ApiService, 'getTeams' | 'getSeasons' | 'getLastModified'>
+  >;
+  let viewportServiceMock: ViewportServiceMock;
   let pwaUpdateService: PwaUpdateServiceMock;
   let snackBar: jasmine.SpyObj<Pick<MatSnackBar, 'open'>>;
   let snackBarAction$: Subject<void>;
@@ -54,6 +66,8 @@ describe('AppComponent', () => {
 
     pwaUpdateService = new PwaUpdateServiceMock();
 
+    viewportServiceMock = new ViewportServiceMock();
+
     snackBarAction$ = new Subject<void>();
     snackBarAfterDismissed$ = new Subject<{ dismissedByAction: boolean }>();
     snackBar = jasmine.createSpyObj<Pick<MatSnackBar, 'open'>>('MatSnackBar', [
@@ -64,19 +78,24 @@ describe('AppComponent', () => {
       afterDismissed: () => snackBarAfterDismissed$.asObservable(),
     } as any);
 
-    apiServiceMock = jasmine.createSpyObj<Pick<ApiService, 'getTeams' | 'getSeasons'>>(
+    apiServiceMock = jasmine.createSpyObj<
+      Pick<ApiService, 'getTeams' | 'getSeasons' | 'getLastModified'>
+    >(
       'ApiService',
-      ['getTeams', 'getSeasons']
+      ['getTeams', 'getSeasons', 'getLastModified']
     );
     apiServiceMock.getTeams.and.returnValue(of([]));
     apiServiceMock.getSeasons.and.returnValue(of([]));
+    apiServiceMock.getLastModified.and.returnValue(
+      of({ lastModified: '2026-01-30T11:03:07.210Z' })
+    );
 
     await TestBed.configureTestingModule({
       imports: [AppComponent, TranslateModule.forRoot()],
       providers: [
         provideRouter([{ path: '**', component: DummyRouteComponent }]),
         Title,
-        { provide: ViewportService, useValue: { isMobile$: of(false) } },
+        { provide: ViewportService, useValue: viewportServiceMock },
         { provide: ApiService, useValue: apiServiceMock },
         { provide: TeamService, useClass: TeamServiceMock },
         DrawerContextService,
@@ -96,6 +115,46 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
+
+  it('should render last modified under the title on desktop', fakeAsync(() => {
+    viewportServiceMock.setMobile(false);
+    apiServiceMock.getLastModified.and.returnValue(
+      of({ lastModified: '2026-01-30T11:03:07.210Z' })
+    );
+
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    const lastModified = el.querySelector('.last-modified');
+    expect(lastModified).toBeTruthy();
+
+    const text = (lastModified?.textContent || '').replace(/\s+/g, ' ').trim();
+    // Europe/Helsinki: 11:03Z -> 13:03 local in January
+    expect(text).toContain('30.01.2026');
+    expect(text).toContain('13.03');
+  }));
+
+  it('should render last modified in the settings drawer on mobile (not under title)', fakeAsync(() => {
+    viewportServiceMock.setMobile(true);
+    apiServiceMock.getLastModified.and.returnValue(
+      of({ lastModified: '2026-01-30T11:03:07.210Z' })
+    );
+
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+
+    const el: HTMLElement = fixture.nativeElement;
+    const drawerLastModified = el.querySelector('.settings-drawer-last-modified');
+    expect(drawerLastModified).toBeTruthy();
+
+    const desktopLastModified = el.querySelector('.last-modified');
+    expect(desktopLastModified).toBeFalsy();
+  }));
 
   it('should set page title on init', (done) => {
     spyOn(translateService, 'get').and.returnValue(of('Test Title'));

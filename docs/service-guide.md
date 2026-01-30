@@ -63,6 +63,11 @@ export type Team = {
   name: string;
 };
 
+// Backend metadata
+export type LastModifiedResponse = {
+  lastModified: string; // ISO datetime string
+};
+
 // Season selector type
 export type Season = {
   season: number;
@@ -159,6 +164,9 @@ export type ApiParams = {
 class ApiService {
   // Fetch available teams
   getTeams(): Observable<Team[]>;
+
+  // Fetch last modified timestamp for backend data
+  getLastModified(): Observable<LastModifiedResponse>;
 
   // Fetch player statistics
   getPlayerData(params: ApiParams): Observable<Player[]>
