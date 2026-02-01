@@ -370,6 +370,7 @@ data: Player | Goalie;
 
 **Key Features**:
 
+- **Position Filter Toggle**: For player cards (not goalies), shows a slide toggle to switch between position-relative (H/P) and all-player rankings. Syncs with global position filter in `FilterService`.
 - **Tab Navigation**: Switches between "All" (combined stats), "By Season" (season breakdown) and "Graphs" (trend lines)
 - **Dynamic Width**: Auto-adjusts dialog width based on active tab (wider for season table and graphs)
 - **Season Sorting**: Displays seasons from newest to oldest (e.g., 2025-26, 2024-25)
@@ -378,6 +379,15 @@ data: Player | Goalie;
 - **Responsive Design**: Adapts to mobile and desktop viewports with optimized layouts
 - **Intelligent Column Ordering**: Automatically reorders columns for optimal readability
 - **Mobile-Optimized Controls**: Collapsible graph controls on mobile devices
+
+**Position Filter Toggle (Players Only)**:
+
+- Appears between the card header and tabs for player cards (hidden for goalies)
+- Label shows "Ranking hyökkääjät" for forwards or "Ranking puolustajat" for defensemen
+- When toggled ON: Displays position-relative scores (`scoreByPosition`, `scoreByPositionAdjustedByGames`, `scoresByPosition`)
+- When toggled OFF: Displays all-player scores (regular `score`, `scoreAdjustedByGames`, `scores`)
+- Affects all views: stats table, season table, radar chart, and line chart
+- Updates global `FilterService.playerFilters$` when changed
 
 **Tabs**:
 
@@ -499,9 +509,17 @@ this.dialog.open(PlayerCardComponent, {
 ```typescript
 @Input() data!: Player | Goalie;                    // Player or goalie data with optional seasons array
 @Input() viewContext: 'combined' | 'season' = 'combined';  // Combined (multi-season) vs season-specific data
+@Input() positionFilter: PositionFilter = 'all';    // Position filter state ('all', 'F', or 'D')
 @Input() closeButtonEl?: HTMLElement;               // Reference to dialog close button for focus management
 @Input() requestFocusTabHeader!: () => void;        // Callback to return focus to tab header
 ```
+
+**Position Filter Integration**:
+
+When `positionFilter` is not `'all'` (i.e., filtering by position):
+- **Radar Chart**: Uses `scoresByPosition` instead of `scores` for position-relative comparisons
+- **Line Chart**: Uses `scoreByPosition` and `scoreByPositionAdjustedByGames` for score trend lines
+- Charts automatically rebuild when `positionFilter` input changes via `ngOnChanges`
 
 **Chart Types**:
 
@@ -511,6 +529,7 @@ this.dialog.open(PlayerCardComponent, {
    - Auto-scaled Y-axis based on data range (0 to max value, rounded to 5 ticks)
    - X-axis shows season labels in YY-YY format (e.g., "12-13")
    - Includes gaps for missing seasons (line breaks)
+   - When position filter is active, score values use position-relative equivalents
    - Available stats:
      - **Players**: score, scoreAdjustedByGames (default on), games, goals, assists, points, shots, penalties, hits, blocks
      - **Goalies**: score, scoreAdjustedByGames (default on), games, wins, saves, shutouts
@@ -518,6 +537,7 @@ this.dialog.open(PlayerCardComponent, {
 2. **Radar Chart (Both Views)**
    - Shows normalized scores (0-100) for individual stats
    - Available for both combined and season views
+   - When position filter is active, uses `scoresByPosition` for position-relative comparisons
    - Stats shown:
      - **Players**: goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks (10 stats)
      - **Goalies (combined)**: wins, saves, shutouts (3 stats)

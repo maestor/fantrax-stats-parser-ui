@@ -171,6 +171,9 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   private transformToPositionScores(data: Player[], statsPerGame: boolean): Player[] {
     return data.map((player) => ({
       ...player,
+      // Preserve original scores so player card can access them when toggling filter off
+      _originalScore: player.score,
+      _originalScoreAdjustedByGames: player.scoreAdjustedByGames,
       // In per-game mode, score was set to scoreAdjustedByGames, so use position-adjusted equivalent
       score: statsPerGame
         ? (player.scoreByPositionAdjustedByGames ?? player.score)

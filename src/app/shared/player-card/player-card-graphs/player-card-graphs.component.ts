@@ -204,12 +204,17 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Rebuild radar chart when positionFilter changes
+    // Rebuild charts when positionFilter changes
     if (changes['positionFilter'] && !changes['positionFilter'].firstChange) {
+      // Rebuild radar chart if in radar mode or season view
       if (this.chartViewMode === 'radar' || this.viewContext === 'season') {
         this.buildRadarChartData();
-        this.refreshChartsLayout();
       }
+      // Rebuild line chart if has seasons
+      if (this.hasSeasons && this.data.seasons) {
+        this.updateChartData([...this.data.seasons]);
+      }
+      this.refreshChartsLayout();
     }
   }
 
@@ -626,6 +631,9 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
       seasonByYear.set(season.season, season);
     });
 
+    // Determine if we should use position-based scores
+    const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
+
     const datasets: ChartDataset<'line', (number | null)[]>[] = activeKeys.map((key, index) => {
       const data = this.chartYearsRange.map((year) => {
         const season = seasonByYear.get(year);
@@ -633,7 +641,18 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
           return null;
         }
 
-        const value = (season as any)[key];
+        // Use position-based score values when filter is active
+        let value: any;
+        if (usePositionScores && key === 'score') {
+          const playerSeason = season as PlayerSeasonStats;
+          value = playerSeason.scoreByPosition ?? (season as any)[key];
+        } else if (usePositionScores && key === 'scoreAdjustedByGames') {
+          const playerSeason = season as PlayerSeasonStats;
+          value = playerSeason.scoreByPositionAdjustedByGames ?? (season as any)[key];
+        } else {
+          value = (season as any)[key];
+        }
+
         const numeric = typeof value === 'string' ? parseFloat(value) : value;
         return Number.isFinite(numeric) ? (numeric as number) : 0;
       });

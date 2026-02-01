@@ -1598,5 +1598,160 @@ describe('PlayerCardComponent', () => {
       scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
       expect(scoreStat?.value).toBe(mockDefenseman.scoreByPosition);
     });
+
+    it('should rebuild season data when toggling position filter', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      const mockPlayerWithSeasons = {
+        name: 'Player With Seasons',
+        position: 'D' as const,
+        score: 80,
+        scoreAdjustedByGames: 4,
+        scoreByPosition: 90,
+        scoreByPositionAdjustedByGames: 4.5,
+        games: 82,
+        goals: 10,
+        assists: 30,
+        points: 40,
+        plusMinus: 15,
+        penalties: 25,
+        shots: 150,
+        ppp: 10,
+        shp: 2,
+        hits: 100,
+        blocks: 80,
+        seasons: [
+          {
+            season: 2024,
+            games: 82,
+            score: 100,
+            scoreAdjustedByGames: 1.22,
+            scoreByPosition: 85,
+            scoreByPositionAdjustedByGames: 1.04,
+            goals: 10,
+            assists: 30,
+            points: 40,
+            plusMinus: 15,
+            penalties: 25,
+            shots: 150,
+            ppp: 10,
+            shp: 2,
+            hits: 100,
+            blocks: 80,
+          },
+        ],
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockPlayerWithSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'all' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Initially should use regular score in season data
+      expect((c.seasonDataSource[0] as any).score).toBe(100);
+
+      // Toggle position filter on
+      c.onPositionFilterToggle(true);
+
+      // Now should use position-based score in season data
+      expect((c.seasonDataSource[0] as any).score).toBe(85);
+      expect((c.seasonDataSource[0] as any).scoreAdjustedByGames).toBe(1.04);
+    });
+
+    it('should fall back to regular scores when position-based values missing in season', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      const mockPlayerWithSeasonsNoPositionScores = {
+        name: 'Player With Seasons',
+        position: 'D' as const,
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 82,
+        goals: 10,
+        assists: 30,
+        points: 40,
+        plusMinus: 15,
+        penalties: 25,
+        shots: 150,
+        ppp: 10,
+        shp: 2,
+        hits: 100,
+        blocks: 80,
+        seasons: [
+          {
+            season: 2024,
+            games: 82,
+            score: 100,
+            scoreAdjustedByGames: 1.22,
+            // No position-based scores
+            goals: 10,
+            assists: 30,
+            points: 40,
+            plusMinus: 15,
+            penalties: 25,
+            shots: 150,
+            ppp: 10,
+            shp: 2,
+            hits: 100,
+            blocks: 80,
+          },
+        ],
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockPlayerWithSeasonsNoPositionScores },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'D' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Should still use regular scores (fallback)
+      expect((c.seasonDataSource[0] as any).score).toBe(100);
+      expect((c.seasonDataSource[0] as any).scoreAdjustedByGames).toBe(1.22);
+    });
   });
 });

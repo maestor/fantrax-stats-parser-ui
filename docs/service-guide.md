@@ -74,12 +74,11 @@ export type Season = {
   text: string;
 };
 
-// Player season-specific stats
-export type PlayerSeasonStats = {
-  season: number;
-  score: number;
-  scoreAdjustedByGames: number;
-  games: number;
+// Player position type
+export type PlayerPosition = 'F' | 'D';
+
+// Per-stat breakdown scores (0-100 normalized)
+export type PlayerScores = {
   goals: number;
   assists: number;
   points: number;
@@ -92,11 +91,13 @@ export type PlayerSeasonStats = {
   blocks: number;
 };
 
-// Combined player stats with optional seasons array
-export type Player = {
-  name: string;
+// Player season-specific stats
+export type PlayerSeasonStats = {
+  season: number;
   score: number;
   scoreAdjustedByGames: number;
+  scoreByPosition?: number;                    // Position-relative score (0-100)
+  scoreByPositionAdjustedByGames?: number;     // Position-relative per-game score
   games: number;
   goals: number;
   assists: number;
@@ -108,7 +109,32 @@ export type Player = {
   shp: number;
   hits: number;
   blocks: number;
-  seasons?: PlayerSeasonStats[]; // Optional season breakdown
+  scores?: PlayerScores;                       // Per-stat breakdown
+  scoresByPosition?: PlayerScores;             // Per-stat breakdown vs same position
+};
+
+// Combined player stats with optional seasons array
+export type Player = {
+  name: string;
+  position?: PlayerPosition;                   // Forward or Defenseman
+  score: number;
+  scoreAdjustedByGames: number;
+  scoreByPosition?: number;                    // Position-relative score (0-100)
+  scoreByPositionAdjustedByGames?: number;     // Position-relative per-game score
+  games: number;
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+  penalties: number;
+  shots: number;
+  ppp: number;
+  shp: number;
+  hits: number;
+  blocks: number;
+  scores?: PlayerScores;                       // Per-stat breakdown (for radar charts)
+  scoresByPosition?: PlayerScores;             // Per-stat breakdown vs same position
+  seasons?: PlayerSeasonStats[];               // Optional season breakdown
 };
 
 // Goalie season-specific stats

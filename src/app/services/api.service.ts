@@ -69,6 +69,9 @@ export type Player = {
   scoreAdjustedByGames: number;
   scoreByPosition?: number;
   scoreByPositionAdjustedByGames?: number;
+  // Preserved original scores when position filter transforms the data
+  _originalScore?: number;
+  _originalScoreAdjustedByGames?: number;
   games: number;
   goals: number;
   assists: number;

@@ -1,5 +1,5 @@
 import { DOCUMENT, NgComponentOutlet } from '@angular/common';
-import { Component, ElementRef, Type, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Type, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -45,6 +45,7 @@ export class PlayerCardComponent {
   private document = inject(DOCUMENT);
   private host = inject(ElementRef<HTMLElement>);
   private filterService = inject(FilterService);
+  private cdr = inject(ChangeDetectorRef);
   positionFilter: PositionFilter = 'all';
   statsPerGame = false;
 
@@ -77,6 +78,8 @@ export class PlayerCardComponent {
     'scoresByPosition',
     'scoreByPosition',
     'scoreByPositionAdjustedByGames',
+    '_originalScore',
+    '_originalScoreAdjustedByGames',
   ];
 
   // Getter for excluded columns (for compatibility/testing)
@@ -157,6 +160,12 @@ export class PlayerCardComponent {
         value = player.scoreByPosition;
       } else if (usePositionScores && key === 'scoreAdjustedByGames' && player.scoreByPositionAdjustedByGames != null) {
         value = player.scoreByPositionAdjustedByGames;
+      } else if (!usePositionScores && key === 'score' && player._originalScore != null) {
+        // Use preserved original score when filter is 'all' (data may have been transformed)
+        value = player._originalScore;
+      } else if (!usePositionScores && key === 'scoreAdjustedByGames' && player._originalScoreAdjustedByGames != null) {
+        // Use preserved original per-game score when filter is 'all'
+        value = player._originalScoreAdjustedByGames;
       } else {
         value = this.data[key as keyof typeof this.data] as string | number;
       }
@@ -206,6 +215,7 @@ export class PlayerCardComponent {
       this.setupSeasonData();
     }
     this.updateGraphsInputs();
+    this.cdr.detectChanges();
   }
 
   private checkScreenSize(): void {

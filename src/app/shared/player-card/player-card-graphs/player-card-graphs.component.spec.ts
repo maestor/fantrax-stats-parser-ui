@@ -1613,5 +1613,215 @@ describe('PlayerCardGraphsComponent', () => {
 
       expect(buildRadarSpy).toHaveBeenCalled();
     });
+
+    it('should use position-based scores in line chart when filter is active', () => {
+      const mockPlayerWithSeasons: Player & { seasons: PlayerSeasonStats[] } = {
+        name: 'Test Forward',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 82,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        seasons: [
+          {
+            season: 2024,
+            games: 82,
+            score: 100,
+            scoreAdjustedByGames: 1.22,
+            scoreByPosition: 85,
+            scoreByPositionAdjustedByGames: 1.04,
+            goals: 30,
+            assists: 40,
+            points: 70,
+            plusMinus: 10,
+            penalties: 20,
+            shots: 200,
+            ppp: 15,
+            shp: 1,
+            hits: 50,
+            blocks: 30,
+          },
+        ],
+      };
+
+      component.data = mockPlayerWithSeasons;
+      component.positionFilter = 'F';
+      component.chartSelections = { score: true, scoreAdjustedByGames: true };
+
+      (component as any).chartYearsRange = [2024];
+      (component as any).chartLabels = ['24-25'];
+      (component as any).updateChartData(mockPlayerWithSeasons.seasons);
+
+      // Should use position-based score values
+      expect(component.lineChartData.datasets[0].data[0]).toBe(85);
+      expect(component.lineChartData.datasets[1].data[0]).toBe(1.04);
+    });
+
+    it('should use regular scores in line chart when filter is all', () => {
+      const mockPlayerWithSeasons: Player & { seasons: PlayerSeasonStats[] } = {
+        name: 'Test Forward',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 82,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        seasons: [
+          {
+            season: 2024,
+            games: 82,
+            score: 100,
+            scoreAdjustedByGames: 1.22,
+            scoreByPosition: 85,
+            scoreByPositionAdjustedByGames: 1.04,
+            goals: 30,
+            assists: 40,
+            points: 70,
+            plusMinus: 10,
+            penalties: 20,
+            shots: 200,
+            ppp: 15,
+            shp: 1,
+            hits: 50,
+            blocks: 30,
+          },
+        ],
+      };
+
+      component.data = mockPlayerWithSeasons;
+      component.positionFilter = 'all';
+      component.chartSelections = { score: true, scoreAdjustedByGames: true };
+
+      (component as any).chartYearsRange = [2024];
+      (component as any).chartLabels = ['24-25'];
+      (component as any).updateChartData(mockPlayerWithSeasons.seasons);
+
+      // Should use regular score values
+      expect(component.lineChartData.datasets[0].data[0]).toBe(100);
+      expect(component.lineChartData.datasets[1].data[0]).toBe(1.22);
+    });
+
+    it('should fall back to regular score when position-based values are missing', () => {
+      const mockPlayerWithSeasons: Player & { seasons: PlayerSeasonStats[] } = {
+        name: 'Test Forward',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 82,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        seasons: [
+          {
+            season: 2024,
+            games: 82,
+            score: 100,
+            scoreAdjustedByGames: 1.22,
+            // No scoreByPosition or scoreByPositionAdjustedByGames
+            goals: 30,
+            assists: 40,
+            points: 70,
+            plusMinus: 10,
+            penalties: 20,
+            shots: 200,
+            ppp: 15,
+            shp: 1,
+            hits: 50,
+            blocks: 30,
+          },
+        ],
+      };
+
+      component.data = mockPlayerWithSeasons;
+      component.positionFilter = 'F';
+      component.chartSelections = { score: true, scoreAdjustedByGames: true };
+
+      (component as any).chartYearsRange = [2024];
+      (component as any).chartLabels = ['24-25'];
+      (component as any).updateChartData(mockPlayerWithSeasons.seasons);
+
+      // Should fall back to regular score values
+      expect(component.lineChartData.datasets[0].data[0]).toBe(100);
+      expect(component.lineChartData.datasets[1].data[0]).toBe(1.22);
+    });
+
+    it('should rebuild line chart in ngOnChanges when positionFilter changes and has seasons', () => {
+      component.data = mockPlayer;
+      component.chartViewMode = 'line';
+      component.viewContext = 'combined';
+
+      const updateChartDataSpy = spyOn<any>(component, 'updateChartData');
+
+      component.ngOnChanges({
+        positionFilter: {
+          currentValue: 'F',
+          previousValue: 'all',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      expect(updateChartDataSpy).toHaveBeenCalled();
+    });
+
+    it('should not rebuild line chart in ngOnChanges when no seasons', () => {
+      const mockPlayerNoSeasons: Player = {
+        name: 'Test Player',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 20,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+      };
+
+      component.data = mockPlayerNoSeasons;
+      component.chartViewMode = 'line';
+      component.viewContext = 'combined';
+
+      const updateChartDataSpy = spyOn<any>(component, 'updateChartData');
+
+      component.ngOnChanges({
+        positionFilter: {
+          currentValue: 'F',
+          previousValue: 'all',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      expect(updateChartDataSpy).not.toHaveBeenCalled();
+    });
   });
 });
