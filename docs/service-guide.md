@@ -240,6 +240,19 @@ class StatsService {
 - Keep `season` and `reportType` in sync globally between players and goalies
 - Provide reset helpers (including a global reset)
 
+**Type Definitions**:
+```typescript
+export type PositionFilter = 'all' | 'F' | 'D';
+
+export interface FilterState {
+  reportType: ReportType;
+  season?: number;
+  statsPerGame: boolean;
+  minGames: number;
+  positionFilter: PositionFilter;  // Filter by player position (players only)
+}
+```
+
 **Key Methods**:
 ```typescript
 class FilterService {
@@ -254,6 +267,14 @@ class FilterService {
   resetAll(): void;
 }
 ```
+
+**Position Filter Behavior**:
+- `positionFilter` defaults to `'all'` (show all players)
+- When set to `'F'` (forwards) or `'D'` (defensemen):
+  - Stats table filters to show only players of that position
+  - Score columns display position-relative values (`scoreByPosition`, `scoreByPositionAdjustedByGames`)
+  - Player card radar charts use `scoresByPosition` for position-relative comparisons
+- Position filter is reset to `'all'` when `resetPlayerFilters()` is called
 
 ---
 

@@ -25,6 +25,9 @@ export type PlayerScores = {
   blocks: number;
 };
 
+// Player position type
+export type PlayerPosition = 'F' | 'D';
+
 // Goalie scores object for combined endpoint
 export type GoalieScoresCombined = {
   wins: number;
@@ -42,6 +45,8 @@ export type PlayerSeasonStats = {
   season: number;
   score: number;
   scoreAdjustedByGames: number;
+  scoreByPosition?: number;
+  scoreByPositionAdjustedByGames?: number;
   games: number;
   goals: number;
   assists: number;
@@ -54,12 +59,16 @@ export type PlayerSeasonStats = {
   hits: number;
   blocks: number;
   scores?: PlayerScores;
+  scoresByPosition?: PlayerScores;
 };
 
 export type Player = {
   name: string;
+  position?: PlayerPosition;
   score: number;
   scoreAdjustedByGames: number;
+  scoreByPosition?: number;
+  scoreByPositionAdjustedByGames?: number;
   games: number;
   goals: number;
   assists: number;
@@ -72,6 +81,7 @@ export type Player = {
   hits: number;
   blocks: number;
   scores?: PlayerScores;
+  scoresByPosition?: PlayerScores;
   seasons?: PlayerSeasonStats[];
 };
 

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { PositionFilterToggleComponent } from './position-filter-toggle/position-filter-toggle.component';
 import { StatsModeToggleComponent } from './stats-mode-toggle/stats-mode-toggle.component';
 import { MinGamesSliderComponent } from './min-games-slider/min-games-slider.component';
 
@@ -7,6 +8,7 @@ import { MinGamesSliderComponent } from './min-games-slider/min-games-slider.com
   selector: 'app-settings-panel',
   imports: [
     TranslateModule,
+    PositionFilterToggleComponent,
     StatsModeToggleComponent,
     MinGamesSliderComponent,
   ],

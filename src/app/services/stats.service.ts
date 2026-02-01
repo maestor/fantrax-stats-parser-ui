@@ -6,7 +6,15 @@ import { Player, Goalie } from './api.service';
 })
 export class StatsService {
   getPlayerStatsPerGame(data: Player[]): Player[] {
-    return this.getStatsPerGame(data, ['name', 'games', 'plusMinus']);
+    return this.getStatsPerGame(data, [
+      'name',
+      'games',
+      'plusMinus',
+      'position',
+      'scoreByPosition',
+      'scoreByPositionAdjustedByGames',
+      'scoresByPosition',
+    ]);
   }
 
   getGoalieStatsPerGame(data: Goalie[]): Goalie[] {

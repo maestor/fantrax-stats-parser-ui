@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   Player,
@@ -13,6 +14,8 @@ import {
   PlayerSeasonStats,
   GoalieSeasonStats,
 } from '@services/api.service';
+import { FilterService, PositionFilter } from '@services/filter.service';
+import { take } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface StatRow {
@@ -28,6 +31,7 @@ interface StatRow {
     MatCardModule,
     MatTableModule,
     MatTabsModule,
+    MatSlideToggleModule,
     MatTooltipModule,
     TranslateModule,
     NgComponentOutlet,
@@ -40,6 +44,9 @@ export class PlayerCardComponent {
   readonly data = inject<Player | Goalie>(MAT_DIALOG_DATA);
   private document = inject(DOCUMENT);
   private host = inject(ElementRef<HTMLElement>);
+  private filterService = inject(FilterService);
+  positionFilter: PositionFilter = 'all';
+  statsPerGame = false;
 
   @ViewChild('closeButton', { read: ElementRef })
   closeButton?: ElementRef<HTMLButtonElement>;
@@ -61,19 +68,28 @@ export class PlayerCardComponent {
   // Track screen size for season format
   isMobile = false;
 
-  // Combined stats
-  excludedColumns = ['name', 'seasons', 'scores'];
-  stats: StatRow[] = this.reorderStatsForDisplay(
-    Object.keys(this.data).filter((key) => !this.excludedColumns.includes(key))
-  ).map((key) => ({
-    label: `tableColumn.${key}`,
-    value:
-      key === 'season'
-        ? this.formatSeasonDisplay(
-            this.data[key as keyof typeof this.data] as number
-          )
-        : (this.data[key as keyof typeof this.data] as string | number),
-  }));
+  // Base excluded columns (always excluded)
+  private baseExcludedColumns = [
+    'name',
+    'seasons',
+    'scores',
+    'position',
+    'scoresByPosition',
+    'scoreByPosition',
+    'scoreByPositionAdjustedByGames',
+  ];
+
+  // Getter for excluded columns (for compatibility/testing)
+  get excludedColumns(): string[] {
+    const excluded = [...this.baseExcludedColumns];
+    if (this.statsPerGame) {
+      excluded.push('score');
+    }
+    return excluded;
+  }
+
+  // Combined stats - will be populated in constructor after getting filter state
+  stats: StatRow[] = [];
 
   // Columns for combined stats table
   displayedColumns: string[] = ['label', 'value'];
@@ -90,6 +106,7 @@ export class PlayerCardComponent {
   graphsInputs: Record<string, unknown> = {
     data: this.data,
     viewContext: this.viewContext,
+    positionFilter: this.positionFilter,
     closeButtonEl: undefined,
     requestFocusTabHeader: () => this.focusActiveTabHeader(),
   };
@@ -98,9 +115,97 @@ export class PlayerCardComponent {
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
 
+    // Get filter state for proper column display
+    const filterObservable = this.isGoalie
+      ? this.filterService.goalieFilters$
+      : this.filterService.playerFilters$;
+
+    filterObservable.pipe(take(1)).subscribe((f) => {
+      this.statsPerGame = f.statsPerGame;
+      if (!this.isGoalie) {
+        this.positionFilter = f.positionFilter;
+      }
+      this.buildStats();
+      if (this.hasSeasons) {
+        this.setupSeasonData();
+      }
+      this.updateGraphsInputs();
+    });
+  }
+
+  private buildStats(): void {
+    // Build excluded columns based on current filter state
+    const excludedColumns = [...this.baseExcludedColumns];
+    if (this.statsPerGame) {
+      excludedColumns.push('score');
+    }
+
+    // Determine if we should use position-based scores
+    const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
+    const player = this.data as Player;
+
+    this.stats = this.reorderStatsForDisplay(
+      Object.keys(this.data).filter((key) => !excludedColumns.includes(key))
+    ).map((key) => {
+      let value: string | number;
+
+      if (key === 'season') {
+        value = this.formatSeasonDisplay(
+          this.data[key as keyof typeof this.data] as number
+        );
+      } else if (usePositionScores && key === 'score' && player.scoreByPosition != null) {
+        value = player.scoreByPosition;
+      } else if (usePositionScores && key === 'scoreAdjustedByGames' && player.scoreByPositionAdjustedByGames != null) {
+        value = player.scoreByPositionAdjustedByGames;
+      } else {
+        value = this.data[key as keyof typeof this.data] as string | number;
+      }
+
+      return {
+        label: `tableColumn.${key}`,
+        value,
+      };
+    });
+  }
+
+  get positionAbbreviation(): string {
+    if (this.isGoalie) return 'M';
+    const player = this.data as Player;
+    return player.position === 'D' ? 'P' : 'H';
+  }
+
+  get positionTooltip(): string {
+    if (this.isGoalie) return 'Maalivahti';
+    const player = this.data as Player;
+    return player.position === 'D' ? 'Puolustaja' : 'Hyökkääjä';
+  }
+
+  // Getter for position filter switch label
+  get positionSwitchLabel(): string {
+    if (this.isGoalie) return '';
+    const player = this.data as Player;
+    return player.position === 'D'
+      ? 'playerCardPositionFilter.defensemen'
+      : 'playerCardPositionFilter.forwards';
+  }
+
+  // Check if position filter is enabled (specific position selected, not 'all')
+  get isPositionFilterEnabled(): boolean {
+    return this.positionFilter !== 'all';
+  }
+
+  // Toggle position filter between player's position and 'all'
+  onPositionFilterToggle(checked: boolean): void {
+    if (this.isGoalie) return;
+    const player = this.data as Player;
+    const newFilter: PositionFilter = checked ? (player.position ?? 'F') : 'all';
+    this.filterService.updatePlayerFilters({ positionFilter: newFilter });
+    this.positionFilter = newFilter;
+    this.buildStats();
     if (this.hasSeasons) {
       this.setupSeasonData();
     }
+    this.updateGraphsInputs();
   }
 
   private checkScreenSize(): void {
@@ -120,17 +225,46 @@ export class PlayerCardComponent {
     );
 
     // Transform season data to include formatted season display (short on mobile, full on desktop)
-    this.seasonDataSource = sortedSeasons.map((season) => ({
-      ...season,
-      seasonDisplay: this.isMobile
-        ? this.formatSeasonShort(season.season)
-        : this.formatSeasonDisplay(season.season),
-    })) as (PlayerSeasonStats | GoalieSeasonStats)[];
+    // Determine if we should use position-based scores for seasons
+    const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
+
+    this.seasonDataSource = sortedSeasons.map((season) => {
+      const seasonData = {
+        ...season,
+        seasonDisplay: this.isMobile
+          ? this.formatSeasonShort(season.season)
+          : this.formatSeasonDisplay(season.season),
+      };
+
+      // Transform score values when position filter is active
+      if (usePositionScores) {
+        const playerSeason = season as PlayerSeasonStats;
+        if (playerSeason.scoreByPosition != null) {
+          (seasonData as any).score = playerSeason.scoreByPosition;
+        }
+        if (playerSeason.scoreByPositionAdjustedByGames != null) {
+          (seasonData as any).scoreAdjustedByGames = playerSeason.scoreByPositionAdjustedByGames;
+        }
+      }
+
+      return seasonData;
+    }) as (PlayerSeasonStats | GoalieSeasonStats)[];
 
     // Get column names from the first season object
     if (this.data.seasons.length > 0) {
       const columns = Object.keys(this.data.seasons[0]);
-      const excludedSeasonColumns = ['scores'];
+      const excludedSeasonColumns = [
+        'position',
+        'scores',
+        'scoresByPosition',
+        'scoreByPosition',
+        'scoreByPositionAdjustedByGames',
+      ];
+
+      // Also exclude 'score' in statsPerGame mode
+      if (this.statsPerGame) {
+        excludedSeasonColumns.push('score');
+      }
 
       // Replace 'season' with 'seasonDisplay' for display and drop internal columns
       let orderedColumns = columns
@@ -194,27 +328,22 @@ export class PlayerCardComponent {
   private reorderStatsForDisplay(keys: string[]): string[] {
     let reorderedKeys = [...keys];
 
-    // Move score after name if it exists
-    if (reorderedKeys.includes('score')) {
-      reorderedKeys = reorderedKeys.filter((key) => key !== 'score');
-      const nameIndex = reorderedKeys.indexOf('name');
-      reorderedKeys.splice(nameIndex + 1, 0, 'score');
-    }
+    // Define the priority order for score-related columns
+    // Order should be: season (if exists), score, scoreAdjustedByGames, games, then rest
+    const priorityColumns = ['season', 'score', 'scoreAdjustedByGames', 'games'];
 
-    // Move scoreAdjustedByGames after score if it exists
-    if (reorderedKeys.includes('scoreAdjustedByGames')) {
-      reorderedKeys = reorderedKeys.filter(
-        (key) => key !== 'scoreAdjustedByGames'
-      );
-      const scoreIndex = reorderedKeys.indexOf('score');
-      reorderedKeys.splice(scoreIndex + 1, 0, 'scoreAdjustedByGames');
-    }
+    // Extract priority columns that exist in the keys
+    const existingPriorityColumns = priorityColumns.filter((col) =>
+      reorderedKeys.includes(col)
+    );
 
-    // Move season to the top if it exists
-    if (reorderedKeys.includes('season')) {
-      reorderedKeys = reorderedKeys.filter((key) => key !== 'season');
-      reorderedKeys.unshift('season');
-    }
+    // Get remaining columns (not in priority list)
+    const remainingColumns = reorderedKeys.filter(
+      (key) => !priorityColumns.includes(key)
+    );
+
+    // Combine: priority columns first, then remaining
+    reorderedKeys = [...existingPriorityColumns, ...remainingColumns];
 
     // Reorder goalie stats: place savePercent and gaa after saves
     if (
@@ -287,6 +416,7 @@ export class PlayerCardComponent {
     this.graphsInputs = {
       data: this.data,
       viewContext: this.viewContext,
+      positionFilter: this.positionFilter,
       closeButtonEl: this.closeButton?.nativeElement,
       requestFocusTabHeader: () => this.focusActiveTabHeader(),
     };

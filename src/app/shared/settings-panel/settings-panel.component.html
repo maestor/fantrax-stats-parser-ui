@@ -1,5 +1,8 @@
 @if (contentOnly) {
   <div class="control-panel-content expanded">
+    @if (context === 'player') {
+      <app-position-filter-toggle [context]="context" />
+    }
     <app-stats-mode-toggle [context]="context" />
     <app-min-games-slider [context]="context" [maxGames]="maxGames" />
   </div>
@@ -20,6 +23,9 @@
       [attr.aria-hidden]="!isExpanded"
       [attr.inert]="!isExpanded ? '' : null"
     >
+      @if (context === 'player') {
+        <app-position-filter-toggle [context]="context" />
+      }
       <app-stats-mode-toggle [context]="context" />
       <app-min-games-slider [context]="context" [maxGames]="maxGames" />
     </div>

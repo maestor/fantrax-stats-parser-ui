@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ReportType } from './api.service';
 
+export type PositionFilter = 'all' | 'F' | 'D';
+
 export interface FilterState {
   reportType: ReportType;
   season?: number;
   statsPerGame: boolean;
   minGames: number;
+  positionFilter: PositionFilter;
 }
 
 @Injectable({
@@ -19,12 +22,14 @@ export class FilterService {
       season: undefined,
       statsPerGame: false,
       minGames: 0,
+      positionFilter: 'all',
     }),
     goalies: new BehaviorSubject<FilterState>({
       reportType: 'regular',
       season: undefined,
       statsPerGame: false,
       minGames: 0,
+      positionFilter: 'all',
     }),
   };
 
@@ -68,6 +73,7 @@ export class FilterService {
       ...current,
       statsPerGame: false,
       minGames: 0,
+      positionFilter: 'all',
     });
   }
 

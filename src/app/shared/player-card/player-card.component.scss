@@ -28,12 +28,28 @@ table.mat-mdc-table {
 .card-title-icon {
   width: 30px;
   height: 30px;
-  font-size: 30px;
+}
+
+.letter-avatar {
+  font-family: var(--mat-card-title-text-font, var(--mat-sys-title-large-font));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  border-radius: 50%;
 }
 
 mat-card-title {
   font-size: 24px;
   font-weight: bold;
+}
+
+.position-filter-switch {
+  margin: 0 16px 16px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .mat-mdc-row {
@@ -265,6 +281,7 @@ mat-tab-group {
   .card-title-icon {
     width: 24px;
     height: 24px;
-    font-size: 24px;
+    font-size: 20px;
+    margin-bottom: 8px;
   }
 }

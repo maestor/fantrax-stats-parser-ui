@@ -6,11 +6,22 @@
   <mat-card-header>
     <mat-icon
       mat-card-avatar
-      fontIcon="account_circle"
-      class="card-title-icon"
-    />
+      class="card-title-icon letter-avatar"
+      [matTooltip]="positionTooltip"
+      >{{ positionAbbreviation }}</mat-icon>
     <mat-card-title>{{ data.name }}</mat-card-title>
   </mat-card-header>
+  @if (!isGoalie) {
+  <div class="position-filter-switch">
+    <mat-slide-toggle
+      labelPosition="before"
+      [checked]="isPositionFilterEnabled"
+      (change)="onPositionFilterToggle($event.checked)"
+    >
+      {{ positionSwitchLabel | translate }}
+    </mat-slide-toggle>
+  </div>
+  }
   <mat-card-content>
     @if (hasSeasons || showGraphsTab) {
     <mat-tab-group

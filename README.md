@@ -16,6 +16,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📅 **Season Selection**: Filter data by specific seasons or view combined stats
 - 📈 **Stats Per Game**: Calculate and display per-game averages
 - 🎯 **Minimum Games Filter**: Filter players/goalies by minimum games played
+- 🏒 **Position Filter**: Filter players by position (Forwards/Defensemen) with position-relative scoring comparisons
 - 🔍 **Search & Sort**: Interactive table with search and column sorting
 - 📌 **Sticky Headers**: Table headers remain visible while scrolling with full horizontal scroll support
 - 🧮 **Score Ranking**: Default sort by a composite `score` column to surface highest-impact players and goalies first

@@ -213,6 +213,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Child Components**:
 
+- PositionFilterToggleComponent (players only)
 - StatsModeToggleComponent
 - MinGamesSliderComponent
 
@@ -286,6 +287,30 @@ toggleExpanded(): void {
 - Uses `MatButtonToggle` to let the user pick `regular` vs `playoffs`
 - Subscribes to `FilterService` (`playerFilters$`/`goalieFilters$`) to expose `reportType$`
 - Calls `updatePlayerFilters` / `updateGoalieFilters` when the toggle changes
+
+---
+
+### PositionFilterToggleComponent
+
+**Location**: `src/app/shared/settings-panel/position-filter-toggle/`
+
+**Purpose**: 3-way toggle for filtering players by position (All/Forwards/Defensemen)
+
+**Inputs**:
+
+```typescript
+@Input() context: 'player' | 'goalie' = 'player';
+```
+
+**Behavior**:
+
+- Only renders for player context (not goalies)
+- Uses `MatButtonToggle` for Kaikki/H/P selection (All/Forwards/Defensemen)
+- Updates `FilterService.playerFilters$` with `positionFilter` value
+- When position filter is active (H or P):
+  - Stats table shows only players of that position
+  - Score columns display position-relative values (`scoreByPosition`, `scoreByPositionAdjustedByGames`)
+  - Radar charts use `scoresByPosition` for position-relative comparisons
 
 ---
 

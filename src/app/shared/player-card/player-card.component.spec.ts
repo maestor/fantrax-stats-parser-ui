@@ -73,6 +73,7 @@ describe('PlayerCardComponent', () => {
 
   const mockSkaterWithoutSeasons: Player = {
     name: 'Player One',
+    position: 'F',
     score: 0,
     scoreAdjustedByGames: 0,
     games: 82,
@@ -86,6 +87,38 @@ describe('PlayerCardComponent', () => {
     shp: 1,
     hits: 50,
     blocks: 30,
+  };
+
+  const mockDefenseman: Player = {
+    name: 'Defenseman One',
+    position: 'D',
+    score: 0,
+    scoreAdjustedByGames: 0,
+    scoreByPosition: 75,
+    scoreByPositionAdjustedByGames: 3.5,
+    games: 82,
+    goals: 10,
+    assists: 30,
+    points: 40,
+    plusMinus: 15,
+    penalties: 25,
+    shots: 150,
+    ppp: 10,
+    shp: 2,
+    hits: 100,
+    blocks: 80,
+    scoresByPosition: {
+      goals: 70,
+      assists: 75,
+      points: 72,
+      plusMinus: 80,
+      penalties: 60,
+      shots: 65,
+      ppp: 55,
+      shp: 50,
+      hits: 85,
+      blocks: 90,
+    },
   };
 
   describe('with seasons data', () => {
@@ -784,6 +817,111 @@ describe('PlayerCardComponent', () => {
     });
   });
 
+  describe('position display', () => {
+    it('should display H for forward players', async () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.positionAbbreviation).toBe('H');
+      expect(c.positionTooltip).toBe('Hyökkääjä');
+    });
+
+    it('should display P for defensemen', async () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.positionAbbreviation).toBe('P');
+      expect(c.positionTooltip).toBe('Puolustaja');
+    });
+
+    it('should display M for goalies', async () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.positionAbbreviation).toBe('M');
+      expect(c.positionTooltip).toBe('Maalivahti');
+    });
+
+    it('should exclude position-related fields from stats display', async () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      const statLabels = c.stats.map((s) => s.label);
+      expect(statLabels).not.toContain('tableColumn.position');
+      expect(statLabels).not.toContain('tableColumn.scoreByPosition');
+      expect(statLabels).not.toContain('tableColumn.scoreByPositionAdjustedByGames');
+      expect(statLabels).not.toContain('tableColumn.scoresByPosition');
+    });
+  });
+
   describe('viewContext and showGraphsTab', () => {
     it('should set viewContext to combined for multiple seasons', () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
@@ -837,6 +975,628 @@ describe('PlayerCardComponent', () => {
       const c = f.componentInstance;
 
       expect(c.viewContext).toBe('season');
+    });
+  });
+
+  describe('statsPerGame mode', () => {
+    it('should exclude score from stats when statsPerGame is true', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ statsPerGame: true });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      expect(c.statsPerGame).toBeTrue();
+      const statLabels = c.stats.map((s) => s.label);
+      expect(statLabels).not.toContain('tableColumn.score');
+      expect(statLabels).toContain('tableColumn.scoreAdjustedByGames');
+    });
+
+    it('should include score in stats when statsPerGame is false', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ statsPerGame: false });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      expect(c.statsPerGame).toBeFalse();
+      const statLabels = c.stats.map((s) => s.label);
+      expect(statLabels).toContain('tableColumn.score');
+      expect(statLabels).toContain('tableColumn.scoreAdjustedByGames');
+    });
+
+    it('should include score in excludedColumns getter when statsPerGame is true', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ statsPerGame: true });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      expect(c.excludedColumns).toContain('score');
+    });
+
+    it('should place games after score columns in stats order', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      const statLabels = c.stats.map((s) => s.label);
+      const scoreIndex = statLabels.indexOf('tableColumn.score');
+      const scoreAdjustedIndex = statLabels.indexOf('tableColumn.scoreAdjustedByGames');
+      const gamesIndex = statLabels.indexOf('tableColumn.games');
+
+      // Games should come after score and scoreAdjustedByGames
+      expect(gamesIndex).toBeGreaterThan(scoreIndex);
+      expect(gamesIndex).toBeGreaterThan(scoreAdjustedIndex);
+      // And games should be immediately after scoreAdjustedByGames
+      expect(gamesIndex).toBe(scoreAdjustedIndex + 1);
+    });
+
+    it('should get statsPerGame from goalie filters for goalies', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updateGoalieFilters({ statsPerGame: true });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      expect(c.statsPerGame).toBeTrue();
+      expect(c.isGoalie).toBeTrue();
+    });
+  });
+
+  describe('position filter toggle in player card', () => {
+    it('should return correct switch label for forwards', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      expect(c.positionSwitchLabel).toBe('playerCardPositionFilter.forwards');
+    });
+
+    it('should return correct switch label for defensemen', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      expect(c.positionSwitchLabel).toBe('playerCardPositionFilter.defensemen');
+    });
+
+    it('should return empty string for goalie switch label', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      expect(c.positionSwitchLabel).toBe('');
+    });
+
+    it('should return true for isPositionFilterEnabled when position filter is not all', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'F' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      expect(c.isPositionFilterEnabled).toBeTrue();
+    });
+
+    it('should return false for isPositionFilterEnabled when position filter is all', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'all' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      expect(c.isPositionFilterEnabled).toBeFalse();
+    });
+
+    it('should update filter service when toggle is turned on', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'all' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      spyOn(filterService, 'updatePlayerFilters').and.callThrough();
+
+      c.onPositionFilterToggle(true);
+
+      expect(filterService.updatePlayerFilters).toHaveBeenCalledWith({ positionFilter: 'F' });
+      expect(c.positionFilter).toBe('F');
+    });
+
+    it('should update filter service when toggle is turned off', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'D' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      spyOn(filterService, 'updatePlayerFilters').and.callThrough();
+
+      c.onPositionFilterToggle(false);
+
+      expect(filterService.updatePlayerFilters).toHaveBeenCalledWith({ positionFilter: 'all' });
+      expect(c.positionFilter).toBe('all');
+    });
+
+    it('should not call filter service when goalie tries to toggle', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      spyOn(filterService, 'updatePlayerFilters');
+
+      c.onPositionFilterToggle(true);
+
+      expect(filterService.updatePlayerFilters).not.toHaveBeenCalled();
+    });
+
+    it('should not render position filter switch for goalies', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+
+      const switchElement = f.debugElement.query(By.css('.position-filter-switch'));
+      expect(switchElement).toBeNull();
+    });
+
+    it('should render position filter switch for players', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+
+      const switchElement = f.debugElement.query(By.css('.position-filter-switch'));
+      expect(switchElement).toBeTruthy();
+    });
+
+    it('should use position-based score values when filter is active', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'D' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Find the score stat and verify it uses position-based value
+      const scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      expect(scoreStat?.value).toBe(mockDefenseman.scoreByPosition);
+    });
+
+    it('should use regular score values when filter is all', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'all' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Find the score stat and verify it uses regular value
+      const scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      expect(scoreStat?.value).toBe(mockDefenseman.score);
+    });
+
+    it('should rebuild stats when toggling position filter on', async () => {
+      const { FilterService } = await import('@services/filter.service');
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          FilterService,
+        ],
+      }).compileComponents();
+
+      const filterService = TestBed.inject(FilterService);
+      filterService.updatePlayerFilters({ positionFilter: 'all' });
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      f.detectChanges();
+      const c = f.componentInstance;
+
+      // Wait for filter subscription to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      // Initially should use regular score
+      let scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      expect(scoreStat?.value).toBe(mockDefenseman.score);
+
+      // Toggle position filter on
+      c.onPositionFilterToggle(true);
+
+      // Now should use position-based score
+      scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      expect(scoreStat?.value).toBe(mockDefenseman.scoreByPosition);
     });
   });
 });

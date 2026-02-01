@@ -1282,4 +1282,336 @@ describe('PlayerCardGraphsComponent', () => {
     // No datasets means no values, so y scale should not be modified
     expect(component.lineChartOptions.scales!['y']).toBeUndefined();
   });
+
+  describe('Position filter in radar chart', () => {
+    it('should use scoresByPosition when positionFilter is active and scoresByPosition exists', () => {
+      const mockPlayerWithPositionScores: Player = {
+        name: 'Test Forward',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        scoreByPosition: 90,
+        scoreByPositionAdjustedByGames: 4.5,
+        games: 20,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+        scoresByPosition: {
+          goals: 85,
+          assists: 88,
+          points: 95,
+          plusMinus: 70,
+          penalties: 50,
+          shots: 78,
+          ppp: 72,
+          shp: 62,
+          hits: 88,
+          blocks: 80,
+        },
+      };
+
+      component.data = mockPlayerWithPositionScores;
+      component.positionFilter = 'F';
+      (component as any).buildRadarChartData();
+
+      // Should use scoresByPosition values
+      expect(component.radarChartData.datasets[0].data).toEqual([
+        85, 88, 95, 70, 50, 78, 72, 62, 88, 80,
+      ]);
+    });
+
+    it('should use scores when positionFilter is active but scoresByPosition is missing', () => {
+      const mockPlayerWithoutPositionScores: Player = {
+        name: 'Test Forward',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 20,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+      };
+
+      component.data = mockPlayerWithoutPositionScores;
+      component.positionFilter = 'D';
+      (component as any).buildRadarChartData();
+
+      // Should fall back to scores values
+      expect(component.radarChartData.datasets[0].data).toEqual([
+        75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
+      ]);
+    });
+
+    it('should use scores when positionFilter is all', () => {
+      const mockPlayerWithBothScores: Player = {
+        name: 'Test Player',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 20,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+        scoresByPosition: {
+          goals: 85,
+          assists: 88,
+          points: 95,
+          plusMinus: 70,
+          penalties: 50,
+          shots: 78,
+          ppp: 72,
+          shp: 62,
+          hits: 88,
+          blocks: 80,
+        },
+      };
+
+      component.data = mockPlayerWithBothScores;
+      component.positionFilter = 'all';
+      (component as any).buildRadarChartData();
+
+      // Should use scores values (not scoresByPosition)
+      expect(component.radarChartData.datasets[0].data).toEqual([
+        75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
+      ]);
+    });
+
+    it('should rebuild radar chart when positionFilter changes via ngOnChanges', () => {
+      const mockPlayerWithBothScores: Player = {
+        name: 'Test Forward',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 20,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+        scoresByPosition: {
+          goals: 85,
+          assists: 88,
+          points: 95,
+          plusMinus: 70,
+          penalties: 50,
+          shots: 78,
+          ppp: 72,
+          shp: 62,
+          hits: 88,
+          blocks: 80,
+        },
+      };
+
+      component.data = mockPlayerWithBothScores;
+      component.positionFilter = 'all';
+      component.chartViewMode = 'radar';
+      (component as any).buildRadarChartData();
+
+      // Initial data should use regular scores
+      expect(component.radarChartData.datasets[0].data[0]).toBe(75);
+
+      // Simulate ngOnChanges with positionFilter change
+      component.positionFilter = 'F';
+      component.ngOnChanges({
+        positionFilter: {
+          currentValue: 'F',
+          previousValue: 'all',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      // Should now use scoresByPosition
+      expect(component.radarChartData.datasets[0].data[0]).toBe(85);
+    });
+
+    it('should not rebuild radar chart on first change via ngOnChanges', () => {
+      const mockPlayerWithScores: Player = {
+        name: 'Test Player',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 20,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+      };
+
+      component.data = mockPlayerWithScores;
+      component.chartViewMode = 'radar';
+
+      const buildRadarSpy = spyOn<any>(component, 'buildRadarChartData');
+
+      // Simulate first change (should be skipped)
+      component.ngOnChanges({
+        positionFilter: {
+          currentValue: 'F',
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+      });
+
+      expect(buildRadarSpy).not.toHaveBeenCalled();
+    });
+
+    it('should not rebuild radar chart when in line mode via ngOnChanges', () => {
+      component.data = mockPlayer;
+      component.chartViewMode = 'line';
+      component.viewContext = 'combined';
+
+      const buildRadarSpy = spyOn<any>(component, 'buildRadarChartData');
+
+      component.ngOnChanges({
+        positionFilter: {
+          currentValue: 'F',
+          previousValue: 'all',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      expect(buildRadarSpy).not.toHaveBeenCalled();
+    });
+
+    it('should rebuild radar chart when viewContext is season via ngOnChanges', () => {
+      const mockPlayerWithScores: Player = {
+        name: 'Test Player',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        games: 20,
+        goals: 25,
+        assists: 40,
+        points: 65,
+        plusMinus: 10,
+        penalties: 20,
+        shots: 200,
+        ppp: 15,
+        shp: 1,
+        hits: 50,
+        blocks: 30,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+      };
+
+      component.data = mockPlayerWithScores;
+      component.chartViewMode = 'line'; // Even in line mode
+      component.viewContext = 'season'; // But season view context
+
+      const buildRadarSpy = spyOn<any>(component, 'buildRadarChartData');
+
+      component.ngOnChanges({
+        positionFilter: {
+          currentValue: 'F',
+          previousValue: 'all',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      expect(buildRadarSpy).toHaveBeenCalled();
+    });
+  });
 });
