@@ -3,8 +3,10 @@ import {
   AfterViewInit,
   Component,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  SimpleChanges,
   ViewChildren,
   QueryList,
   inject,
@@ -21,6 +23,7 @@ import type {
   PlayerScores,
   PlayerSeasonStats,
 } from '@services/api.service';
+import type { PositionFilter } from '@services/filter.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,7 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './player-card-graphs.component.scss',
   providers: [provideCharts(withDefaultRegisterables())],
 })
-export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   private static readonly RADAR_COMPACT_MAX_WIDTH = 520;
   private static readonly DEFAULT_VIEWPORT_WIDTH = 1024;
 
@@ -72,6 +75,7 @@ export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestr
   @Input() closeButtonEl?: HTMLButtonElement;
   @Input() requestFocusTabHeader?: () => void;
   @Input() viewContext: 'combined' | 'season' = 'combined';
+  @Input() positionFilter: PositionFilter = 'all';
 
   // Track graph controls visibility on mobile
   graphControlsExpanded = false;
@@ -196,6 +200,21 @@ export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestr
     // Build radar chart data if in radar mode or if season view
     if (this.chartViewMode === 'radar' || this.viewContext === 'season') {
       this.buildRadarChartData();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Rebuild charts when positionFilter changes
+    if (changes['positionFilter'] && !changes['positionFilter'].firstChange) {
+      // Rebuild radar chart if in radar mode or season view
+      if (this.chartViewMode === 'radar' || this.viewContext === 'season') {
+        this.buildRadarChartData();
+      }
+      // Rebuild line chart if has seasons
+      if (this.hasSeasons && this.data.seasons) {
+        this.updateChartData([...this.data.seasons]);
+      }
+      this.refreshChartsLayout();
     }
   }
 
@@ -453,7 +472,12 @@ export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestr
   private buildPlayerRadarData(): void {
     const player = this.data as Player;
 
-    if (!player.scores) {
+    // Use position-based scores when filter is active
+    const scores = (this.positionFilter !== 'all' && player.scoresByPosition)
+      ? player.scoresByPosition
+      : player.scores;
+
+    if (!scores) {
       return;
     }
 
@@ -477,7 +501,7 @@ export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestr
     );
 
     // Get score values
-    const data = statKeys.map((key) => player.scores![key]);
+    const data = statKeys.map((key) => scores[key]);
 
     this.radarChartData = {
       labels,
@@ -607,6 +631,9 @@ export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestr
       seasonByYear.set(season.season, season);
     });
 
+    // Determine if we should use position-based scores
+    const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
+
     const datasets: ChartDataset<'line', (number | null)[]>[] = activeKeys.map((key, index) => {
       const data = this.chartYearsRange.map((year) => {
         const season = seasonByYear.get(year);
@@ -614,7 +641,18 @@ export class PlayerCardGraphsComponent implements OnInit, AfterViewInit, OnDestr
           return null;
         }
 
-        const value = (season as any)[key];
+        // Use position-based score values when filter is active
+        let value: any;
+        if (usePositionScores && key === 'score') {
+          const playerSeason = season as PlayerSeasonStats;
+          value = playerSeason.scoreByPosition ?? (season as any)[key];
+        } else if (usePositionScores && key === 'scoreAdjustedByGames') {
+          const playerSeason = season as PlayerSeasonStats;
+          value = playerSeason.scoreByPositionAdjustedByGames ?? (season as any)[key];
+        } else {
+          value = (season as any)[key];
+        }
+
         const numeric = typeof value === 'string' ? parseFloat(value) : value;
         return Number.isFinite(numeric) ? (numeric as number) : 0;
       });

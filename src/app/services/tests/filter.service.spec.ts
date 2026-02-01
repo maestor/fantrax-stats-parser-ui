@@ -24,6 +24,7 @@ describe('FilterService', () => {
         expect(filters.season).toBeUndefined();
         expect(filters.statsPerGame).toBe(false);
         expect(filters.minGames).toBe(0);
+        expect(filters.positionFilter).toBe('all');
         done();
       });
     });
@@ -34,6 +35,7 @@ describe('FilterService', () => {
         expect(filters.season).toBeUndefined();
         expect(filters.statsPerGame).toBe(false);
         expect(filters.minGames).toBe(0);
+        expect(filters.positionFilter).toBe('all');
         done();
       });
     });
@@ -317,6 +319,7 @@ describe('FilterService', () => {
         season: 2024,
         statsPerGame: true,
         minGames: 10,
+        positionFilter: 'F',
       });
 
       service.updateGoalieFilters({
@@ -333,12 +336,14 @@ describe('FilterService', () => {
         expect(playerFilters.season).toBeUndefined();
         expect(playerFilters.statsPerGame).toBe(false);
         expect(playerFilters.minGames).toBe(0);
+        expect(playerFilters.positionFilter).toBe('all');
 
         service.goalieFilters$.pipe(take(1)).subscribe((goalieFilters) => {
           expect(goalieFilters.reportType).toBe('regular');
           expect(goalieFilters.season).toBeUndefined();
           expect(goalieFilters.statsPerGame).toBe(false);
           expect(goalieFilters.minGames).toBe(0);
+          expect(goalieFilters.positionFilter).toBe('all');
           done();
         });
       });
@@ -384,6 +389,55 @@ describe('FilterService', () => {
         sub2.unsubscribe();
         done();
       }, 10);
+    });
+  });
+
+  describe('positionFilter', () => {
+    it('should update positionFilter for players to F', (done) => {
+      service.updatePlayerFilters({ positionFilter: 'F' });
+
+      service.playerFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.positionFilter).toBe('F');
+        done();
+      });
+    });
+
+    it('should update positionFilter for players to D', (done) => {
+      service.updatePlayerFilters({ positionFilter: 'D' });
+
+      service.playerFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.positionFilter).toBe('D');
+        done();
+      });
+    });
+
+    it('should update positionFilter for players back to all', (done) => {
+      service.updatePlayerFilters({ positionFilter: 'F' });
+      service.updatePlayerFilters({ positionFilter: 'all' });
+
+      service.playerFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.positionFilter).toBe('all');
+        done();
+      });
+    });
+
+    it('should reset positionFilter when resetPlayerFilters is called', (done) => {
+      service.updatePlayerFilters({ positionFilter: 'D' });
+      service.resetPlayerFilters();
+
+      service.playerFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.positionFilter).toBe('all');
+        done();
+      });
+    });
+
+    it('should not sync positionFilter to goalie filters', (done) => {
+      service.updatePlayerFilters({ positionFilter: 'F' });
+
+      service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.positionFilter).toBe('all');
+        done();
+      });
     });
   });
 

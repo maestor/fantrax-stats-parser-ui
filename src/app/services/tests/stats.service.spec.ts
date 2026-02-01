@@ -604,5 +604,79 @@ describe('StatsService', () => {
       expect(result[0].scoreAdjustedByGames).toBe(45);
       expect(result[0].score).toBe(45);
     });
+
+    it('should preserve position fields in player per-game stats', () => {
+      const players: Player[] = [
+        {
+          name: 'Forward 1',
+          position: 'F',
+          score: 80,
+          scoreAdjustedByGames: 4,
+          scoreByPosition: 90,
+          scoreByPositionAdjustedByGames: 4.5,
+          games: 20,
+          goals: 20,
+          assists: 30,
+          points: 50,
+          plusMinus: 10,
+          penalties: 10,
+          shots: 100,
+          ppp: 10,
+          shp: 2,
+          hits: 40,
+          blocks: 20,
+        },
+      ];
+
+      const result = service.getPlayerStatsPerGame(players);
+
+      // Position fields should be preserved (not divided by games)
+      expect(result[0].position).toBe('F');
+      expect(result[0].scoreByPosition).toBe(90);
+      expect(result[0].scoreByPositionAdjustedByGames).toBe(4.5);
+    });
+
+    it('should preserve scoresByPosition object in player per-game stats', () => {
+      const scoresByPosition = {
+        goals: 85,
+        assists: 75,
+        points: 80,
+        plusMinus: 70,
+        penalties: 65,
+        shots: 82,
+        ppp: 78,
+        shp: 60,
+        hits: 55,
+        blocks: 50,
+      };
+
+      const players: Player[] = [
+        {
+          name: 'Defenseman 1',
+          position: 'D',
+          score: 60,
+          scoreAdjustedByGames: 3,
+          scoreByPosition: 85,
+          scoreByPositionAdjustedByGames: 4.2,
+          scoresByPosition,
+          games: 20,
+          goals: 5,
+          assists: 20,
+          points: 25,
+          plusMinus: 15,
+          penalties: 10,
+          shots: 60,
+          ppp: 5,
+          shp: 0,
+          hits: 50,
+          blocks: 40,
+        },
+      ];
+
+      const result = service.getPlayerStatsPerGame(players);
+
+      // scoresByPosition should be preserved exactly as-is
+      expect(result[0].scoresByPosition).toEqual(scoresByPosition);
+    });
   });
 });

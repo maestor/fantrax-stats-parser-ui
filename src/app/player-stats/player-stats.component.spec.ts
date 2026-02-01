@@ -428,4 +428,227 @@ describe('PlayerStatsComponent', () => {
     expect(nextSpy).toHaveBeenCalled();
     expect(completeSpy).toHaveBeenCalled();
   });
+
+  describe('position filtering', () => {
+    const mockPlayersWithPositions: Player[] = [
+      {
+        name: 'Forward 1',
+        position: 'F',
+        score: 80,
+        scoreAdjustedByGames: 4,
+        scoreByPosition: 90,
+        scoreByPositionAdjustedByGames: 4.5,
+        games: 20,
+        goals: 15,
+        assists: 20,
+        points: 35,
+        plusMinus: 10,
+        penalties: 8,
+        shots: 100,
+        ppp: 10,
+        shp: 2,
+        hits: 30,
+        blocks: 10,
+      },
+      {
+        name: 'Forward 2',
+        position: 'F',
+        score: 70,
+        scoreAdjustedByGames: 3.5,
+        scoreByPosition: 75,
+        scoreByPositionAdjustedByGames: 3.8,
+        games: 20,
+        goals: 10,
+        assists: 15,
+        points: 25,
+        plusMinus: 5,
+        penalties: 6,
+        shots: 80,
+        ppp: 8,
+        shp: 1,
+        hits: 25,
+        blocks: 8,
+      },
+      {
+        name: 'Defenseman 1',
+        position: 'D',
+        score: 60,
+        scoreAdjustedByGames: 3,
+        scoreByPosition: 85,
+        scoreByPositionAdjustedByGames: 4.2,
+        games: 20,
+        goals: 5,
+        assists: 20,
+        points: 25,
+        plusMinus: 15,
+        penalties: 10,
+        shots: 60,
+        ppp: 5,
+        shp: 0,
+        hits: 50,
+        blocks: 40,
+      },
+    ];
+
+    it('should filter by position F when positionFilter is F', fakeAsync(() => {
+      apiServiceMock.getPlayerData.and.returnValue(of(mockPlayersWithPositions));
+
+      component.ngOnInit();
+      tick(1);
+
+      filterService.updatePlayerFilters({ positionFilter: 'F' });
+      tick(1);
+
+      expect(component.positionFilter).toBe('F');
+      expect(component.tableData.length).toBe(2);
+      expect(component.tableData.every(p => p.position === 'F')).toBeTrue();
+    }));
+
+    it('should filter by position D when positionFilter is D', fakeAsync(() => {
+      apiServiceMock.getPlayerData.and.returnValue(of(mockPlayersWithPositions));
+
+      component.ngOnInit();
+      tick(1);
+
+      filterService.updatePlayerFilters({ positionFilter: 'D' });
+      tick(1);
+
+      expect(component.positionFilter).toBe('D');
+      expect(component.tableData.length).toBe(1);
+      expect(component.tableData[0].name).toBe('Defenseman 1');
+    }));
+
+    it('should use scoreByPosition when positionFilter is active', fakeAsync(() => {
+      apiServiceMock.getPlayerData.and.returnValue(of(mockPlayersWithPositions));
+
+      component.ngOnInit();
+      tick(1);
+
+      filterService.updatePlayerFilters({ positionFilter: 'F' });
+      tick(1);
+
+      // Scores should be transformed to position-based values
+      const forward1 = component.tableData.find(p => p.name === 'Forward 1');
+      expect(forward1?.score).toBe(90);
+      expect(forward1?.scoreAdjustedByGames).toBe(4.5);
+    }));
+
+    it('should show all players when positionFilter is all', fakeAsync(() => {
+      apiServiceMock.getPlayerData.and.returnValue(of(mockPlayersWithPositions));
+
+      component.ngOnInit();
+      tick(1);
+
+      filterService.updatePlayerFilters({ positionFilter: 'F' });
+      tick(1);
+
+      expect(component.tableData.length).toBe(2);
+
+      filterService.updatePlayerFilters({ positionFilter: 'all' });
+      tick(1);
+
+      expect(component.positionFilter).toBe('all');
+      expect(component.tableData.length).toBe(3);
+    }));
+
+    it('should use original scores when positionFilter is all', fakeAsync(() => {
+      apiServiceMock.getPlayerData.and.returnValue(of(mockPlayersWithPositions));
+
+      component.ngOnInit();
+      tick(1);
+
+      // Position filter is 'all' by default
+      expect(component.positionFilter).toBe('all');
+
+      const forward1 = component.tableData.find(p => p.name === 'Forward 1');
+      expect(forward1?.score).toBe(80);
+      expect(forward1?.scoreAdjustedByGames).toBe(4);
+    }));
+
+    it('should handle players without scoreByPosition gracefully', fakeAsync(() => {
+      const playersWithoutPositionScores: Player[] = [
+        {
+          name: 'Forward Without Position Scores',
+          position: 'F',
+          score: 70,
+          scoreAdjustedByGames: 3.5,
+          games: 20,
+          goals: 10,
+          assists: 15,
+          points: 25,
+          plusMinus: 5,
+          penalties: 6,
+          shots: 80,
+          ppp: 8,
+          shp: 1,
+          hits: 25,
+          blocks: 8,
+        },
+      ];
+
+      apiServiceMock.getPlayerData.and.returnValue(of(playersWithoutPositionScores));
+
+      component.ngOnInit();
+      tick(1);
+
+      filterService.updatePlayerFilters({ positionFilter: 'F' });
+      tick(1);
+
+      // Should fall back to original score values
+      expect(component.tableData[0].score).toBe(70);
+      expect(component.tableData[0].scoreAdjustedByGames).toBe(3.5);
+    }));
+
+    it('should use scoreByPositionAdjustedByGames for score in per-game mode with position filter', fakeAsync(() => {
+      apiServiceMock.getPlayerData.and.returnValue(of(mockPlayersWithPositions));
+
+      component.ngOnInit();
+      tick(1);
+
+      // Enable both statsPerGame and position filter
+      filterService.updatePlayerFilters({ statsPerGame: true, positionFilter: 'F' });
+      tick(1);
+
+      expect(component.statsPerGame).toBeTrue();
+      expect(component.positionFilter).toBe('F');
+
+      // In per-game mode with position filter, score should use scoreByPositionAdjustedByGames
+      const forward1 = component.tableData.find(p => p.name === 'Forward 1');
+      expect(forward1?.score).toBe(4.5); // scoreByPositionAdjustedByGames
+      expect(forward1?.scoreAdjustedByGames).toBe(4.5);
+    }));
+
+    it('should handle per-game mode with position filter for players without position scores', fakeAsync(() => {
+      const playersWithoutPositionScores: Player[] = [
+        {
+          name: 'Forward Without Position Scores',
+          position: 'F',
+          score: 70,
+          scoreAdjustedByGames: 3.5,
+          games: 20,
+          goals: 10,
+          assists: 15,
+          points: 25,
+          plusMinus: 5,
+          penalties: 6,
+          shots: 80,
+          ppp: 8,
+          shp: 1,
+          hits: 25,
+          blocks: 8,
+        },
+      ];
+
+      apiServiceMock.getPlayerData.and.returnValue(of(playersWithoutPositionScores));
+
+      component.ngOnInit();
+      tick(1);
+
+      filterService.updatePlayerFilters({ statsPerGame: true, positionFilter: 'F' });
+      tick(1);
+
+      // Should fall back to regular per-game score (statsService sets score = scoreAdjustedByGames)
+      expect(component.tableData[0].score).toBe(3.5);
+    }));
+  });
 });

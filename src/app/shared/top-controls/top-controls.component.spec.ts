@@ -33,6 +33,14 @@ describe('TopControlsComponent', () => {
     translate.use('fi');
   });
 
+  beforeEach(() => {
+    try {
+      localStorage.removeItem('fantrax.settings');
+    } catch {
+      // ignore
+    }
+  });
+
   afterEach(() => {
     try {
       localStorage.removeItem('fantrax.settings');

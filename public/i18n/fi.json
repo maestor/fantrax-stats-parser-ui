@@ -224,7 +224,7 @@
     "ariaLabel": "Säädä vähimmäispelien määrää"
   },
   "playerCard": {
-    "all": "Kaikki",
+    "all": "Tilastot",
     "bySeason": "Kausittain",
     "graphs": "Graafit",
     "graphsSelectStats": "Valitse tilastot käyrille"
@@ -242,6 +242,22 @@
   },
   "settingsPanel": {
     "settings": "Asetukset"
+  },
+  "positionFilter": {
+    "label": "Pelipaikka",
+    "ariaLabel": "Suodata pelipaikalla",
+    "all": "Kaikki",
+    "forwards": "H",
+    "defensemen": "P"
+  },
+  "position": {
+    "forward": "Hyökkääjä",
+    "defenseman": "Puolustaja",
+    "goalie": "Maalivahti"
+  },
+  "playerCardPositionFilter": {
+    "forwards": "Ranking hyökkääjät",
+    "defensemen": "Ranking puolustajat"
   },
   "topControls": {
     "controls": "Tarkasteltavat tilastot"

@@ -74,12 +74,11 @@ export type Season = {
   text: string;
 };
 
-// Player season-specific stats
-export type PlayerSeasonStats = {
-  season: number;
-  score: number;
-  scoreAdjustedByGames: number;
-  games: number;
+// Player position type
+export type PlayerPosition = 'F' | 'D';
+
+// Per-stat breakdown scores (0-100 normalized)
+export type PlayerScores = {
   goals: number;
   assists: number;
   points: number;
@@ -92,11 +91,13 @@ export type PlayerSeasonStats = {
   blocks: number;
 };
 
-// Combined player stats with optional seasons array
-export type Player = {
-  name: string;
+// Player season-specific stats
+export type PlayerSeasonStats = {
+  season: number;
   score: number;
   scoreAdjustedByGames: number;
+  scoreByPosition?: number;                    // Position-relative score (0-100)
+  scoreByPositionAdjustedByGames?: number;     // Position-relative per-game score
   games: number;
   goals: number;
   assists: number;
@@ -108,7 +109,32 @@ export type Player = {
   shp: number;
   hits: number;
   blocks: number;
-  seasons?: PlayerSeasonStats[]; // Optional season breakdown
+  scores?: PlayerScores;                       // Per-stat breakdown
+  scoresByPosition?: PlayerScores;             // Per-stat breakdown vs same position
+};
+
+// Combined player stats with optional seasons array
+export type Player = {
+  name: string;
+  position?: PlayerPosition;                   // Forward or Defenseman
+  score: number;
+  scoreAdjustedByGames: number;
+  scoreByPosition?: number;                    // Position-relative score (0-100)
+  scoreByPositionAdjustedByGames?: number;     // Position-relative per-game score
+  games: number;
+  goals: number;
+  assists: number;
+  points: number;
+  plusMinus: number;
+  penalties: number;
+  shots: number;
+  ppp: number;
+  shp: number;
+  hits: number;
+  blocks: number;
+  scores?: PlayerScores;                       // Per-stat breakdown (for radar charts)
+  scoresByPosition?: PlayerScores;             // Per-stat breakdown vs same position
+  seasons?: PlayerSeasonStats[];               // Optional season breakdown
 };
 
 // Goalie season-specific stats
@@ -240,6 +266,19 @@ class StatsService {
 - Keep `season` and `reportType` in sync globally between players and goalies
 - Provide reset helpers (including a global reset)
 
+**Type Definitions**:
+```typescript
+export type PositionFilter = 'all' | 'F' | 'D';
+
+export interface FilterState {
+  reportType: ReportType;
+  season?: number;
+  statsPerGame: boolean;
+  minGames: number;
+  positionFilter: PositionFilter;  // Filter by player position (players only)
+}
+```
+
 **Key Methods**:
 ```typescript
 class FilterService {
@@ -254,6 +293,14 @@ class FilterService {
   resetAll(): void;
 }
 ```
+
+**Position Filter Behavior**:
+- `positionFilter` defaults to `'all'` (show all players)
+- When set to `'F'` (forwards) or `'D'` (defensemen):
+  - Stats table filters to show only players of that position
+  - Score columns display position-relative values (`scoreByPosition`, `scoreByPositionAdjustedByGames`)
+  - Player card radar charts use `scoresByPosition` for position-relative comparisons
+- Position filter is reset to `'all'` when `resetPlayerFilters()` is called
 
 ---
 

@@ -18,7 +18,7 @@ import {
   Player,
   ReportType,
 } from '@services/api.service';
-import { FilterService } from '@services/filter.service';
+import { FilterService, PositionFilter } from '@services/filter.service';
 import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
 import { SettingsService } from '@services/settings.service';
@@ -50,6 +50,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   statsPerGame: boolean = false;
   minGames: number = 0;
   maxGames: number = 0;
+  positionFilter: PositionFilter = 'all';
   tableData: Player[] = [];
   tableColumns = PLAYER_COLUMNS;
   defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
@@ -96,16 +97,18 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
             a.filters.season === b.filters.season &&
             a.filters.statsPerGame === b.filters.statsPerGame &&
             a.filters.minGames === b.filters.minGames &&
+            a.filters.positionFilter === b.filters.positionFilter &&
             a.apiTeamId === b.apiTeamId &&
             a.startFrom === b.startFrom
           );
         }),
         switchMap(({ filters, params }) => {
-          const { reportType, season, statsPerGame, minGames } = filters;
+          const { reportType, season, statsPerGame, minGames, positionFilter } = filters;
           this.reportType = reportType;
           this.season = season;
           this.statsPerGame = statsPerGame;
           this.minGames = minGames;
+          this.positionFilter = positionFilter;
           this.tableColumns = this.getTableColumns(statsPerGame);
           this.defaultSortColumn = statsPerGame ? 'scoreAdjustedByGames' : 'score';
           this.loading = true;
@@ -138,12 +141,22 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
             this.apiError = true;
             return;
           }
-          const baseData = this.statsPerGame
+          let processedData = this.statsPerGame
             ? this.statsService.getPlayerStatsPerGame(data)
             : data;
-          this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
+
+          // Filter by position if position filter is active
+          if (this.positionFilter !== 'all') {
+            processedData = processedData.filter(
+              (player) => player.position === this.positionFilter
+            );
+            // Transform scores to position-based values
+            processedData = this.transformToPositionScores(processedData, this.statsPerGame);
+          }
+
+          this.maxGames = Math.max(0, ...processedData.map(({ games }) => games));
           this.drawerContextService.setMaxGames('player', this.maxGames);
-          this.tableData = baseData.filter((g) => g.games >= this.minGames);
+          this.tableData = processedData.filter((g) => g.games >= this.minGames);
           this.loading = false;
         },
         // Stream should not error due to catchError above.
@@ -153,6 +166,20 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   private getTableColumns(statsPerGame: boolean): string[] {
     if (!statsPerGame) return PLAYER_COLUMNS;
     return PLAYER_COLUMNS.filter((c) => c !== 'score');
+  }
+
+  private transformToPositionScores(data: Player[], statsPerGame: boolean): Player[] {
+    return data.map((player) => ({
+      ...player,
+      // Preserve original scores so player card can access them when toggling filter off
+      _originalScore: player.score,
+      _originalScoreAdjustedByGames: player.scoreAdjustedByGames,
+      // In per-game mode, score was set to scoreAdjustedByGames, so use position-adjusted equivalent
+      score: statsPerGame
+        ? (player.scoreByPositionAdjustedByGames ?? player.score)
+        : (player.scoreByPosition ?? player.score),
+      scoreAdjustedByGames: player.scoreByPositionAdjustedByGames ?? player.scoreAdjustedByGames,
+    }));
   }
 
   ngOnDestroy(): void {

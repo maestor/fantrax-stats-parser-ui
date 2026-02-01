@@ -1,0 +1,19 @@
+:host {
+  display: block;
+}
+
+.position-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.position-filter-label {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+mat-button-toggle-group {
+  margin-bottom: 0;
+}
