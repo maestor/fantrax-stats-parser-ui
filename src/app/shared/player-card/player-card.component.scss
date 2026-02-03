@@ -1,12 +1,12 @@
 .player-card {
   padding: 8px 0 0 0;
-  min-width: 360px;
-  max-width: 800px;
+  min-width: 600px;
+  max-width: 960px;
   width: 100%;
 
   // Wider card when showing season breakdown
   &.season-mode {
-    max-width: 95vw;
+    max-width: 900px;
     width: auto;
   }
 }
@@ -26,8 +26,8 @@ table.mat-mdc-table {
 }
 
 .card-title-icon {
-  width: 30px;
-  height: 30px;
+  margin-bottom: 0;
+  margin-right: 4px;
 }
 
 .letter-avatar {
@@ -48,7 +48,17 @@ mat-card-title {
   gap: 4px;
 }
 
+.player-card-title-text {
+  display: flex;
+  flex-direction: column;
+  .team-name {
+    font-size: 0.875rem;
+    font-weight:normal;
+  }
+}
+
 .copy-link-button {
+  margin-left: 4px;
   width: 28px;
   height: 28px;
   padding: 0;
@@ -73,9 +83,8 @@ mat-card-title {
 }
 
 .position-filter-switch {
-  margin: 0 0 16px 16px;
+  margin-right: 40px;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
 }
 
@@ -219,12 +228,20 @@ mat-card-title {
     white-space: nowrap;
   }
 
-  // Make season column stand out
+  // Make season column stand out and sticky on horizontal scroll
   th:first-child,
   td:first-child {
     font-weight: bold;
     background-color: var(--mat-sys-surface-container-high);
     color: var(--mat-sys-on-surface);
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+
+  // First header cell needs higher z-index (sticky both vertically and horizontally)
+  th:first-child {
+    z-index: 11;
   }
 }
 
@@ -307,9 +324,8 @@ mat-tab-group {
   }
 
   .card-title-icon {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     font-size: 20px;
-    margin-bottom: 8px;
   }
 }
