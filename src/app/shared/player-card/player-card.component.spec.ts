@@ -198,11 +198,15 @@ describe('PlayerCardComponent', () => {
   };
 
   describe('with seasons data', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
     beforeEach(async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
         'MatDialogRef',
         ['close']
       );
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
 
       await TestBed.configureTestingModule({
         imports: [
@@ -213,6 +217,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -796,11 +801,15 @@ describe('PlayerCardComponent', () => {
   });
 
   describe('without seasons data', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
     beforeEach(async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
         'MatDialogRef',
         ['close']
       );
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
 
       await TestBed.configureTestingModule({
         imports: [
@@ -811,6 +820,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -875,6 +885,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithScores },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -894,6 +905,13 @@ describe('PlayerCardComponent', () => {
   });
 
   describe('position display', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
+    beforeEach(() => {
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+    });
+
     it('should display H for forward players', async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
         'MatDialogRef',
@@ -909,6 +927,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -934,6 +953,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -959,6 +979,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -984,6 +1005,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -999,6 +1021,13 @@ describe('PlayerCardComponent', () => {
   });
 
   describe('viewContext and showGraphsTab', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
+    beforeEach(() => {
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+    });
+
     it('should set viewContext to combined for multiple seasons', () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
         'MatDialogRef',
@@ -1014,6 +1043,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -1044,6 +1074,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: singleSeasonData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -1055,6 +1086,13 @@ describe('PlayerCardComponent', () => {
   });
 
   describe('statsPerGame mode', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
+    beforeEach(() => {
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+    });
+
     it('should exclude score from stats when statsPerGame is true', async () => {
       const { FilterService } = await import('@services/filter.service');
 
@@ -1072,6 +1110,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1109,6 +1148,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1146,6 +1186,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1180,6 +1221,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1220,6 +1262,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1240,6 +1283,13 @@ describe('PlayerCardComponent', () => {
   });
 
   describe('position filter toggle in player card', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
+    beforeEach(() => {
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+    });
+
     it('should return correct switch label for forwards', async () => {
       const { FilterService } = await import('@services/filter.service');
 
@@ -1257,6 +1307,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1285,6 +1336,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1313,6 +1365,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1341,6 +1394,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1375,6 +1429,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1409,6 +1464,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1448,6 +1504,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1487,6 +1544,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1521,6 +1579,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockGoalieWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1549,6 +1608,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1577,6 +1637,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1613,6 +1674,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1649,6 +1711,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockDefenseman },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1732,6 +1795,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockPlayerWithSeasons },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1811,6 +1875,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: mockPlayerWithSeasonsNoPositionScores },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
         ],
       }).compileComponents();
@@ -1832,6 +1897,13 @@ describe('PlayerCardComponent', () => {
   });
 
   describe('wrapped dialog data format', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
+    beforeEach(() => {
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+    });
+
     it('should extract player from wrapped data format', () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
         'MatDialogRef',
@@ -1850,6 +1922,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -1878,6 +1951,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -1906,6 +1980,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -1934,6 +2009,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -1961,6 +2037,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -1989,6 +2066,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -2021,6 +2099,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -2048,6 +2127,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
@@ -2091,6 +2171,7 @@ describe('PlayerCardComponent', () => {
         providers: [
           { provide: MAT_DIALOG_DATA, useValue: wrappedData },
           { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
         ],
       }).compileComponents();
 
