@@ -1,16 +1,26 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ElementRef } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { PlayerCardComponent } from './player-card.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatTabGroup } from '@angular/material/tabs';
-import { Goalie, GoalieSeasonStats, Player, ApiService } from '@services/api.service';
-import { TeamService } from '@services/team.service';
-import { of } from 'rxjs';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from "@angular/core/testing";
+import { ElementRef } from "@angular/core";
+import { By } from "@angular/platform-browser";
+import { PlayerCardComponent } from "./player-card.component";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { TranslateModule } from "@ngx-translate/core";
+import { MatTabGroup } from "@angular/material/tabs";
+import {
+  Goalie,
+  GoalieSeasonStats,
+  Player,
+  ApiService,
+} from "@services/api.service";
+import { TeamService } from "@services/team.service";
+import { of } from "rxjs";
 
-describe('PlayerCardComponent', () => {
+describe("PlayerCardComponent", () => {
   let fixture: ComponentFixture<PlayerCardComponent>;
   let component: PlayerCardComponent;
   let dialogRefSpy: jasmine.SpyObj<MatDialogRef<PlayerCardComponent>>;
@@ -19,7 +29,7 @@ describe('PlayerCardComponent', () => {
     season: number;
     seasons: GoalieSeasonStats[];
   } = {
-    name: 'Goalie One',
+    name: "Goalie One",
     score: 0,
     scoreAdjustedByGames: 0,
     games: 10,
@@ -32,8 +42,8 @@ describe('PlayerCardComponent', () => {
     penalties: 0,
     ppp: 0,
     shp: 0,
-    gaa: '2.00',
-    savePercent: '0.920',
+    gaa: "2.00",
+    savePercent: "0.920",
     season: 2024,
     seasons: [
       {
@@ -50,8 +60,8 @@ describe('PlayerCardComponent', () => {
         penalties: 0,
         ppp: 0,
         shp: 0,
-        gaa: '2.00',
-        savePercent: '0.920',
+        gaa: "2.00",
+        savePercent: "0.920",
       },
       {
         season: 2023,
@@ -67,15 +77,15 @@ describe('PlayerCardComponent', () => {
         penalties: 0,
         ppp: 0,
         shp: 0,
-        gaa: '2.10',
-        savePercent: '0.915',
+        gaa: "2.10",
+        savePercent: "0.915",
       },
     ],
   };
 
   const mockSkaterWithoutSeasons: Player = {
-    name: 'Player One',
-    position: 'F',
+    name: "Player One",
+    position: "F",
     score: 0,
     scoreAdjustedByGames: 0,
     games: 82,
@@ -92,8 +102,8 @@ describe('PlayerCardComponent', () => {
   };
 
   const mockDefenseman: Player = {
-    name: 'Defenseman One',
-    position: 'D',
+    name: "Defenseman One",
+    position: "D",
     score: 0,
     scoreAdjustedByGames: 0,
     scoreByPosition: 75,
@@ -123,10 +133,9 @@ describe('PlayerCardComponent', () => {
     },
   };
 
-
   // Combined goalie data (without top-level season field)
   const mockGoalieCombined: Goalie & { seasons: GoalieSeasonStats[] } = {
-    name: 'Goalie One',
+    name: "Goalie One",
     score: 0,
     scoreAdjustedByGames: 0,
     games: 25,
@@ -154,8 +163,8 @@ describe('PlayerCardComponent', () => {
         penalties: 0,
         ppp: 0,
         shp: 0,
-        gaa: '2.00',
-        savePercent: '0.920',
+        gaa: "2.00",
+        savePercent: "0.920",
       },
       {
         season: 2023,
@@ -171,15 +180,15 @@ describe('PlayerCardComponent', () => {
         penalties: 0,
         ppp: 0,
         shp: 0,
-        gaa: '2.10',
-        savePercent: '0.915',
+        gaa: "2.10",
+        savePercent: "0.915",
       },
     ],
   };
 
   // Single season goalie data (with top-level season field, no seasons array)
   const mockGoalieSingleSeason: Goalie & { season: number } = {
-    name: 'Goalie One',
+    name: "Goalie One",
     score: 50,
     scoreAdjustedByGames: 5,
     games: 10,
@@ -192,21 +201,23 @@ describe('PlayerCardComponent', () => {
     penalties: 0,
     ppp: 0,
     shp: 0,
-    gaa: '2.00',
-    savePercent: '0.920',
+    gaa: "2.00",
+    savePercent: "0.920",
     season: 2024,
   };
 
-  describe('with seasons data', () => {
+  describe("with seasons data", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
     beforeEach(async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
 
       await TestBed.configureTestingModule({
         imports: [
@@ -226,23 +237,23 @@ describe('PlayerCardComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should create and display player name', () => {
+    it("should create and display player name", () => {
       expect(component).toBeTruthy();
-      const title = fixture.debugElement.query(By.css('mat-card-title'))
+      const title = fixture.debugElement.query(By.css("mat-card-title"))
         .nativeElement as HTMLElement;
-      expect(title.textContent).toContain('Goalie One');
+      expect(title.textContent).toContain("Goalie One");
     });
 
-    it('should build combined stats and season tables from data', () => {
+    it("should build combined stats and season tables from data", () => {
       // Combined stats should include saves, savePercent and gaa reordered after saves
       const statKeys = component.stats.map((s) => s.label);
-      expect(statKeys).toContain('tableColumn.saves');
-      expect(statKeys).toContain('tableColumn.savePercent');
-      expect(statKeys).toContain('tableColumn.gaa');
+      expect(statKeys).toContain("tableColumn.saves");
+      expect(statKeys).toContain("tableColumn.savePercent");
+      expect(statKeys).toContain("tableColumn.gaa");
 
-      const savesIndex = statKeys.indexOf('tableColumn.saves');
-      const savePercentIndex = statKeys.indexOf('tableColumn.savePercent');
-      const gaaIndex = statKeys.indexOf('tableColumn.gaa');
+      const savesIndex = statKeys.indexOf("tableColumn.saves");
+      const savePercentIndex = statKeys.indexOf("tableColumn.savePercent");
+      const gaaIndex = statKeys.indexOf("tableColumn.gaa");
 
       expect(savePercentIndex).toBe(savesIndex + 1);
       expect(gaaIndex).toBe(savePercentIndex + 1);
@@ -251,31 +262,31 @@ describe('PlayerCardComponent', () => {
       expect(component.seasonDataSource.length).toBe(2);
       expect(component.seasonDataSource[0].season).toBe(2024);
       // seasonDisplay format depends on screen size (mobile: 24-25, desktop: 2024-25)
-      const expectedFormat = component.isMobile ? '24-25' : '2024-25';
+      const expectedFormat = component.isMobile ? "24-25" : "2024-25";
       expect((component.seasonDataSource[0] as any).seasonDisplay).toBe(
-        expectedFormat
+        expectedFormat,
       );
 
-      expect(component.seasonColumns).toContain('seasonDisplay');
-      expect(component.seasonColumns).toContain('saves');
-      expect(component.seasonColumns).toContain('savePercent');
-      expect(component.seasonColumns).toContain('gaa');
+      expect(component.seasonColumns).toContain("seasonDisplay");
+      expect(component.seasonColumns).toContain("saves");
+      expect(component.seasonColumns).toContain("savePercent");
+      expect(component.seasonColumns).toContain("gaa");
 
-      const savesColIndex = component.seasonColumns.indexOf('saves');
+      const savesColIndex = component.seasonColumns.indexOf("saves");
       const savePercentColIndex =
-        component.seasonColumns.indexOf('savePercent');
-      const gaaColIndex = component.seasonColumns.indexOf('gaa');
+        component.seasonColumns.indexOf("savePercent");
+      const gaaColIndex = component.seasonColumns.indexOf("gaa");
 
       expect(savePercentColIndex).toBe(savesColIndex + 1);
       expect(gaaColIndex).toBe(savePercentColIndex + 1);
     });
 
-    it('should render graphs tab with stat checkboxes when seasons exist', async () => {
+    it("should render graphs tab with stat checkboxes when seasons exist", async () => {
       const tabLabels = fixture.debugElement
         .queryAll(
           By.css(
-            'mat-tab-group mat-tab-header .mat-mdc-tab-labels .mdc-tab__text-label'
-          )
+            "mat-tab-group mat-tab-header .mat-mdc-tab-labels .mdc-tab__text-label",
+          ),
         )
         .map((el) => (el.nativeElement as HTMLElement).textContent?.trim());
 
@@ -285,7 +296,7 @@ describe('PlayerCardComponent', () => {
       // Third tab should exist regardless of exact translated label
       expect(tabLabels[2]).toBeDefined();
 
-      const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+      const tabGroupDebug = fixture.debugElement.query(By.css("mat-tab-group"));
       const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
       tabGroup.selectedIndex = 2; // select Graphs tab
       component.onTabChange(2);
@@ -295,21 +306,21 @@ describe('PlayerCardComponent', () => {
       fixture.detectChanges();
 
       const checkboxEls = fixture.debugElement.queryAll(
-        By.css('.graphs-controls-list mat-checkbox')
+        By.css(".graphs-controls-list mat-checkbox"),
       );
       expect(checkboxEls.length).toBeGreaterThan(0);
 
       const canvas = fixture.debugElement.query(
-        By.css('.graphs-chart-container canvas')
+        By.css(".graphs-chart-container canvas"),
       );
       expect(canvas).toBeTruthy();
     });
 
-    it('should handle goalie seasons without savePercent by placing gaa after saves', () => {
+    it("should handle goalie seasons without savePercent by placing gaa after saves", () => {
       const componentAsAny = component as any;
 
       const seasonsWithoutSavePercent = mockGoalieWithSeasons.seasons.map(
-        ({ savePercent, ...rest }) => rest
+        ({ savePercent, ...rest }) => rest,
       );
 
       componentAsAny.data = {
@@ -322,20 +333,20 @@ describe('PlayerCardComponent', () => {
 
       componentAsAny.setupSeasonData();
 
-      expect(component.seasonColumns).toContain('gaa');
-      expect(component.seasonColumns).not.toContain('savePercent');
+      expect(component.seasonColumns).toContain("gaa");
+      expect(component.seasonColumns).not.toContain("savePercent");
 
-      const savesIndex = component.seasonColumns.indexOf('saves');
-      const gaaIndex = component.seasonColumns.indexOf('gaa');
+      const savesIndex = component.seasonColumns.indexOf("saves");
+      const gaaIndex = component.seasonColumns.indexOf("gaa");
 
       expect(gaaIndex).toBe(savesIndex + 1);
     });
 
-    it('should handle goalie seasons without gaa by placing savePercent after saves', () => {
+    it("should handle goalie seasons without gaa by placing savePercent after saves", () => {
       const componentAsAny = component as any;
 
       const seasonsWithoutGaa = mockGoalieWithSeasons.seasons.map(
-        ({ gaa, ...rest }) => rest
+        ({ gaa, ...rest }) => rest,
       );
 
       componentAsAny.data = {
@@ -348,36 +359,36 @@ describe('PlayerCardComponent', () => {
 
       componentAsAny.setupSeasonData();
 
-      expect(component.seasonColumns).toContain('savePercent');
-      expect(component.seasonColumns).not.toContain('gaa');
+      expect(component.seasonColumns).toContain("savePercent");
+      expect(component.seasonColumns).not.toContain("gaa");
 
-      const savesIndex = component.seasonColumns.indexOf('saves');
-      const savePercentIndex = component.seasonColumns.indexOf('savePercent');
+      const savesIndex = component.seasonColumns.indexOf("saves");
+      const savePercentIndex = component.seasonColumns.indexOf("savePercent");
 
       expect(savePercentIndex).toBe(savesIndex + 1);
     });
 
-    it('should reorder stats keys correctly when only gaa is present', () => {
+    it("should reorder stats keys correctly when only gaa is present", () => {
       const componentAsAny = component as any;
-      const keys = ['games', 'saves', 'gaa'];
+      const keys = ["games", "saves", "gaa"];
 
       const reordered = componentAsAny.reorderStatsForDisplay(keys);
 
-      const savesIndex = reordered.indexOf('saves');
-      const gaaIndex = reordered.indexOf('gaa');
+      const savesIndex = reordered.indexOf("saves");
+      const gaaIndex = reordered.indexOf("gaa");
 
       expect(gaaIndex).toBe(savesIndex + 1);
     });
 
-    it('should build chart datasets including score metrics', () => {
+    it("should build chart datasets including score metrics", () => {
       // Chart.js is now lazy-loaded with the graphs tab.
       expect(component.graphsComponent).toBeNull();
     });
 
-    it('should build chart datasets including score metrics when graphs tab is loaded', async () => {
+    it("should build chart datasets including score metrics when graphs tab is loaded", async () => {
       fixture.detectChanges();
 
-      const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+      const tabGroupDebug = fixture.debugElement.query(By.css("mat-tab-group"));
       const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
       tabGroup.selectedIndex = 2;
       component.onTabChange(2);
@@ -388,7 +399,7 @@ describe('PlayerCardComponent', () => {
       fixture.detectChanges();
 
       const graphsDebug = fixture.debugElement.query(
-        By.css('app-player-card-graphs')
+        By.css("app-player-card-graphs"),
       );
       expect(graphsDebug).toBeTruthy();
 
@@ -398,12 +409,18 @@ describe('PlayerCardComponent', () => {
       expect(data.labels && data.labels.length).toBeGreaterThan(0);
       expect(data.datasets.length).toBeGreaterThan(0);
 
-      const datasetLabels = (data.datasets as any[]).map((ds) => ds.label as string);
+      const datasetLabels = (data.datasets as any[]).map(
+        (ds) => ds.label as string,
+      );
 
       // score-related series should be present for goalies as well
-      expect(datasetLabels.some((label: string) => label.includes('score'))).toBeTrue();
       expect(
-        datasetLabels.some((label: string) => label.includes('scoreAdjustedByGames'))
+        datasetLabels.some((label: string) => label.includes("score")),
+      ).toBeTrue();
+      expect(
+        datasetLabels.some((label: string) =>
+          label.includes("scoreAdjustedByGames"),
+        ),
       ).toBeTrue();
 
       // Y-axis should start at 0 and have a positive max
@@ -412,49 +429,51 @@ describe('PlayerCardComponent', () => {
 
       expect(yScale).toBeTruthy();
       expect(yScale.min).toBe(0);
-      expect(typeof yScale.max).toBe('number');
+      expect(typeof yScale.max).toBe("number");
       expect(yScale.max).toBeGreaterThan(0);
       expect(yScale.ticks && yScale.ticks.stepSize).toBeGreaterThan(0);
     });
 
-    it('should toggle season mode class when switching to season tab', () => {
-      const cardElement = fixture.debugElement.query(By.css('mat-card'))
+    it("should toggle season mode class when switching to season tab", () => {
+      const cardElement = fixture.debugElement.query(By.css("mat-card"))
         .nativeElement as HTMLElement;
 
-      expect(cardElement.classList.contains('season-mode')).toBeFalse();
+      expect(cardElement.classList.contains("season-mode")).toBeFalse();
 
       component.onTabChange(1);
       fixture.detectChanges();
 
       expect(component.selectedTabIndex).toBe(1);
-      expect(cardElement.classList.contains('season-mode')).toBeTrue();
+      expect(cardElement.classList.contains("season-mode")).toBeTrue();
     });
 
-    it('should close dialog when close button is clicked', () => {
+    it("should close dialog when close button is clicked", () => {
       const closeButton = fixture.debugElement.query(
-        By.css('button[mat-icon-button]')
+        By.css("button[mat-icon-button]"),
       );
 
-      closeButton.triggerEventHandler('click');
+      closeButton.triggerEventHandler("click");
       fixture.detectChanges();
 
       expect(dialogRefSpy.close).toHaveBeenCalled();
     });
 
-    describe('Graph controls toggle functionality', () => {
-      it('should initialize with graphControlsExpanded set to false', () => {
+    describe("Graph controls toggle functionality", () => {
+      it("should initialize with graphControlsExpanded set to false", () => {
         expect(component.graphsComponent).toBeNull();
       });
 
-      it('should toggle graphControlsExpanded when toggleGraphControls is called', () => {
+      it("should toggle graphControlsExpanded when toggleGraphControls is called", () => {
         // graphControlsExpanded lives in the lazy graphs component.
         expect(true).toBeTrue();
       });
 
-      it('should render graph controls toggle button when graphs tab is loaded', async () => {
+      it("should render graph controls toggle button when graphs tab is loaded", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -463,14 +482,18 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const toggleButton = fixture.debugElement.query(By.css('.graphs-controls-toggle'));
+        const toggleButton = fixture.debugElement.query(
+          By.css(".graphs-controls-toggle"),
+        );
         expect(toggleButton).toBeTruthy();
       });
 
-      it('should render graph controls panel when graphs tab is loaded', async () => {
+      it("should render graph controls panel when graphs tab is loaded", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -479,14 +502,16 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
+        const controls = fixture.debugElement.query(By.css(".graphs-controls"));
         expect(controls).toBeTruthy();
       });
 
-      it('should add visible class to controls when graphControlsExpanded is true', async () => {
+      it("should add visible class to controls when graphControlsExpanded is true", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -495,18 +520,22 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
         graphs.graphControlsExpanded = true;
         fixture.detectChanges();
 
-        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
-        expect(controls.nativeElement.classList.contains('visible')).toBe(true);
+        const controls = fixture.debugElement.query(By.css(".graphs-controls"));
+        expect(controls.nativeElement.classList.contains("visible")).toBe(true);
       });
 
-      it('should remove visible class from controls when graphControlsExpanded is false', async () => {
+      it("should remove visible class from controls when graphControlsExpanded is false", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -515,18 +544,24 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
         graphs.graphControlsExpanded = false;
         fixture.detectChanges();
 
-        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
-        expect(controls.nativeElement.classList.contains('visible')).toBe(false);
+        const controls = fixture.debugElement.query(By.css(".graphs-controls"));
+        expect(controls.nativeElement.classList.contains("visible")).toBe(
+          false,
+        );
       });
 
-      it('should toggle controls when button is clicked', async () => {
+      it("should toggle controls when button is clicked", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -535,31 +570,41 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
 
-        const toggleButton = fixture.debugElement.query(By.css('.graphs-controls-toggle'));
-        const controls = fixture.debugElement.query(By.css('.graphs-controls'));
+        const toggleButton = fixture.debugElement.query(
+          By.css(".graphs-controls-toggle"),
+        );
+        const controls = fixture.debugElement.query(By.css(".graphs-controls"));
 
         expect(graphs.graphControlsExpanded).toBe(false);
-        expect(controls.nativeElement.classList.contains('visible')).toBe(false);
+        expect(controls.nativeElement.classList.contains("visible")).toBe(
+          false,
+        );
 
         toggleButton.nativeElement.click();
         fixture.detectChanges();
 
         expect(graphs.graphControlsExpanded).toBe(true);
-        expect(controls.nativeElement.classList.contains('visible')).toBe(true);
+        expect(controls.nativeElement.classList.contains("visible")).toBe(true);
 
         toggleButton.nativeElement.click();
         fixture.detectChanges();
 
         expect(graphs.graphControlsExpanded).toBe(false);
-        expect(controls.nativeElement.classList.contains('visible')).toBe(false);
+        expect(controls.nativeElement.classList.contains("visible")).toBe(
+          false,
+        );
       });
 
-      it('should show correct icon when collapsed (default)', async () => {
+      it("should show correct icon when collapsed (default)", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -568,18 +613,24 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
         graphs.graphControlsExpanded = false;
         fixture.detectChanges();
 
-        const toggleIcon = fixture.debugElement.query(By.css('.graphs-controls-toggle .toggle-icon'));
-        expect(toggleIcon.nativeElement.textContent).toContain('▼');
+        const toggleIcon = fixture.debugElement.query(
+          By.css(".graphs-controls-toggle .toggle-icon"),
+        );
+        expect(toggleIcon.nativeElement.textContent).toContain("▼");
       });
 
-      it('should show correct icon when expanded', async () => {
+      it("should show correct icon when expanded", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -588,18 +639,24 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
         graphs.graphControlsExpanded = true;
         fixture.detectChanges();
 
-        const toggleIcon = fixture.debugElement.query(By.css('.graphs-controls-toggle .toggle-icon'));
-        expect(toggleIcon.nativeElement.textContent).toContain('▲');
+        const toggleIcon = fixture.debugElement.query(
+          By.css(".graphs-controls-toggle .toggle-icon"),
+        );
+        expect(toggleIcon.nativeElement.textContent).toContain("▲");
       });
 
-      it('should set aria-expanded attribute correctly', async () => {
+      it("should set aria-expanded attribute correctly", async () => {
         fixture.detectChanges();
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -608,28 +665,38 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
-        const toggleButton = fixture.debugElement.query(By.css('.graphs-controls-toggle'));
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
+        const toggleButton = fixture.debugElement.query(
+          By.css(".graphs-controls-toggle"),
+        );
 
         graphs.graphControlsExpanded = true;
         fixture.detectChanges();
-        expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('true');
+        expect(toggleButton.nativeElement.getAttribute("aria-expanded")).toBe(
+          "true",
+        );
 
         graphs.graphControlsExpanded = false;
         fixture.detectChanges();
-        expect(toggleButton.nativeElement.getAttribute('aria-expanded')).toBe('false');
+        expect(toggleButton.nativeElement.getAttribute("aria-expanded")).toBe(
+          "false",
+        );
       });
     });
 
-    describe('Graph checkbox keyboard shortcuts', () => {
-      it('ArrowDown should focus close button when available', async () => {
+    describe("Graph checkbox keyboard shortcuts", () => {
+      it("ArrowDown should focus close button when available", async () => {
         fixture.detectChanges();
 
-        const btn = document.createElement('button');
-        const focusSpy = spyOn(btn, 'focus');
+        const btn = document.createElement("button");
+        const focusSpy = spyOn(btn, "focus");
         component.closeButton = new ElementRef(btn);
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -638,12 +705,14 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
         graphs.closeButtonEl = btn;
 
         const event = {
-          key: 'ArrowDown',
-          preventDefault: jasmine.createSpy('preventDefault'),
+          key: "ArrowDown",
+          preventDefault: jasmine.createSpy("preventDefault"),
         } as any as KeyboardEvent;
 
         graphs.onGraphCheckboxKeydown(event);
@@ -652,12 +721,14 @@ describe('PlayerCardComponent', () => {
         expect(focusSpy).toHaveBeenCalled();
       });
 
-      it('ArrowDown should do nothing if close button is missing', async () => {
+      it("ArrowDown should do nothing if close button is missing", async () => {
         fixture.detectChanges();
 
         component.closeButton = undefined;
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -666,12 +737,14 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
         graphs.closeButtonEl = undefined;
 
         const event = {
-          key: 'ArrowDown',
-          preventDefault: jasmine.createSpy('preventDefault'),
+          key: "ArrowDown",
+          preventDefault: jasmine.createSpy("preventDefault"),
         } as any as KeyboardEvent;
 
         graphs.onGraphCheckboxKeydown(event);
@@ -679,12 +752,17 @@ describe('PlayerCardComponent', () => {
         expect(event.preventDefault).not.toHaveBeenCalled();
       });
 
-      it('ArrowUp should preventDefault and request focus to active tab header', async () => {
+      it("ArrowUp should preventDefault and request focus to active tab header", async () => {
         fixture.detectChanges();
 
-        const focusHeaderSpy = spyOn<any>(component as any, 'focusActiveTabHeader');
+        const focusHeaderSpy = spyOn<any>(
+          component as any,
+          "focusActiveTabHeader",
+        );
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -693,12 +771,15 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
-        graphs.requestFocusTabHeader = () => (component as any).focusActiveTabHeader();
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
+        graphs.requestFocusTabHeader = () =>
+          (component as any).focusActiveTabHeader();
 
         const event = {
-          key: 'ArrowUp',
-          preventDefault: jasmine.createSpy('preventDefault'),
+          key: "ArrowUp",
+          preventDefault: jasmine.createSpy("preventDefault"),
         } as any as KeyboardEvent;
 
         graphs.onGraphCheckboxKeydown(event);
@@ -707,12 +788,17 @@ describe('PlayerCardComponent', () => {
         expect(focusHeaderSpy).toHaveBeenCalled();
       });
 
-      it('should ignore other keys', async () => {
+      it("should ignore other keys", async () => {
         fixture.detectChanges();
 
-        const focusHeaderSpy = spyOn<any>(component as any, 'focusActiveTabHeader');
+        const focusHeaderSpy = spyOn<any>(
+          component as any,
+          "focusActiveTabHeader",
+        );
 
-        const tabGroupDebug = fixture.debugElement.query(By.css('mat-tab-group'));
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
         const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
         tabGroup.selectedIndex = 2;
         component.onTabChange(2);
@@ -721,12 +807,15 @@ describe('PlayerCardComponent', () => {
         await (component as any).graphsLoadPromise;
         fixture.detectChanges();
 
-        const graphs: any = fixture.debugElement.query(By.css('app-player-card-graphs')).componentInstance;
-        graphs.requestFocusTabHeader = () => (component as any).focusActiveTabHeader();
+        const graphs: any = fixture.debugElement.query(
+          By.css("app-player-card-graphs"),
+        ).componentInstance;
+        graphs.requestFocusTabHeader = () =>
+          (component as any).focusActiveTabHeader();
 
         const event = {
-          key: 'Escape',
-          preventDefault: jasmine.createSpy('preventDefault'),
+          key: "Escape",
+          preventDefault: jasmine.createSpy("preventDefault"),
         } as any as KeyboardEvent;
 
         graphs.onGraphCheckboxKeydown(event);
@@ -736,30 +825,30 @@ describe('PlayerCardComponent', () => {
       });
     });
 
-    describe('focusActiveTabHeader', () => {
-      it('should focus active tab element when present in host DOM', () => {
+    describe("focusActiveTabHeader", () => {
+      it("should focus active tab element when present in host DOM", () => {
         const active: { focus: () => void } = {
-          focus: jasmine.createSpy('focus'),
+          focus: jasmine.createSpy("focus"),
         };
 
         const hostEl = (component as any).host.nativeElement as HTMLElement;
-        spyOn(hostEl, 'querySelector').and.returnValue(active as any);
+        spyOn(hostEl, "querySelector").and.returnValue(active as any);
 
         (component as any).focusActiveTabHeader();
 
         expect(active.focus).toHaveBeenCalled();
       });
 
-      it('should fall back to document query when host does not contain tab header', () => {
+      it("should fall back to document query when host does not contain tab header", () => {
         const hostEl = (component as any).host.nativeElement as HTMLElement;
-        spyOn(hostEl, 'querySelector').and.returnValue(null);
+        spyOn(hostEl, "querySelector").and.returnValue(null);
 
         const doc = (component as any).document as Document;
         const fallback: { focus: () => void } = {
-          focus: jasmine.createSpy('focus'),
+          focus: jasmine.createSpy("focus"),
         };
 
-        spyOn(doc, 'querySelector').and.returnValue(fallback as any);
+        spyOn(doc, "querySelector").and.returnValue(fallback as any);
 
         (component as any).focusActiveTabHeader();
 
@@ -767,31 +856,39 @@ describe('PlayerCardComponent', () => {
       });
     });
 
-    it('should format season as short form on mobile', () => {
+    it("should format season as short form on mobile", () => {
       const short = (component as any).formatSeasonShort(2024);
-      expect(short).toBe('24-25');
+      expect(short).toBe("24-25");
     });
 
-    it('should update graphsInputs with close button element when available', () => {
-      const btn = document.createElement('button');
+    it("should update graphsInputs with close button element when available", () => {
+      const btn = document.createElement("button");
       component.closeButton = new ElementRef(btn);
 
       (component as any).updateGraphsInputs();
 
       expect((component as any).graphsInputs.closeButtonEl).toBe(btn);
-      expect(typeof (component as any).graphsInputs.requestFocusTabHeader).toBe('function');
+      expect(typeof (component as any).graphsInputs.requestFocusTabHeader).toBe(
+        "function",
+      );
     });
 
-    it('should call checkScreenSize when window resize event fires', () => {
-      const checkSpy = spyOn<any>(component as any, 'checkScreenSize').and.callThrough();
+    it("should call checkScreenSize when window resize event fires", () => {
+      const checkSpy = spyOn<any>(
+        component as any,
+        "checkScreenSize",
+      ).and.callThrough();
 
-      window.dispatchEvent(new Event('resize'));
+      window.dispatchEvent(new Event("resize"));
 
       expect(checkSpy).toHaveBeenCalled();
     });
 
-    it('graphsInputs.requestFocusTabHeader should invoke focusActiveTabHeader', () => {
-      const focusSpy = spyOn<any>(component as any, 'focusActiveTabHeader').and.callThrough();
+    it("graphsInputs.requestFocusTabHeader should invoke focusActiveTabHeader", () => {
+      const focusSpy = spyOn<any>(
+        component as any,
+        "focusActiveTabHeader",
+      ).and.callThrough();
       (component as any).updateGraphsInputs();
 
       (component as any).graphsInputs.requestFocusTabHeader();
@@ -800,16 +897,18 @@ describe('PlayerCardComponent', () => {
     });
   });
 
-  describe('without seasons data', () => {
+  describe("without seasons data", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
     beforeEach(async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
 
       await TestBed.configureTestingModule({
         imports: [
@@ -829,20 +928,20 @@ describe('PlayerCardComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should render stats table without tabs when no seasons', () => {
+    it("should render stats table without tabs when no seasons", () => {
       expect(component.hasSeasons).toBeFalse();
 
-      const tabGroup = fixture.debugElement.query(By.css('mat-tab-group'));
+      const tabGroup = fixture.debugElement.query(By.css("mat-tab-group"));
       expect(tabGroup).toBeNull();
 
-      const rows = fixture.debugElement.queryAll(By.css('tr[mat-row]'));
+      const rows = fixture.debugElement.queryAll(By.css("tr[mat-row]"));
       expect(rows.length).toBeGreaterThan(0);
 
       const firstRowText = (rows[0].nativeElement as HTMLElement).textContent;
-      expect(firstRowText).toContain('tableColumn.score');
+      expect(firstRowText).toContain("tableColumn.score");
     });
 
-    it('should safely ignore setupSeasonData when there is no seasons array', () => {
+    it("should safely ignore setupSeasonData when there is no seasons array", () => {
       const componentAsAny = component as any;
 
       expect(component.seasonColumns.length).toBe(0);
@@ -854,11 +953,11 @@ describe('PlayerCardComponent', () => {
       expect(component.seasonDataSource.length).toBe(0);
     });
 
-    it('should set viewContext to season for data without seasons', () => {
-      expect(component.viewContext).toBe('season');
+    it("should set viewContext to season for data without seasons", () => {
+      expect(component.viewContext).toBe("season");
     });
 
-    it('should show Graphs tab when data has scores property', () => {
+    it("should show Graphs tab when data has scores property", () => {
       const mockSkaterWithScores: Player = {
         ...mockSkaterWithoutSeasons,
         scores: {
@@ -895,27 +994,29 @@ describe('PlayerCardComponent', () => {
       expect(c.showGraphsTab).toBeTrue();
     });
 
-    it('should not show Graphs tab when data has no scores and no seasons', () => {
+    it("should not show Graphs tab when data has no scores and no seasons", () => {
       expect(component.showGraphsTab).toBeFalse();
     });
 
-    it('should include viewContext in graphsInputs', () => {
-      expect(component.graphsInputs['viewContext']).toBe('season');
+    it("should include viewContext in graphsInputs", () => {
+      expect(component.graphsInputs["viewContext"]).toBe("season");
     });
   });
 
-  describe('position display', () => {
+  describe("position display", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
     beforeEach(() => {
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
     });
 
-    it('should display H for forward players', async () => {
+    it("should display H for forward players", async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -934,14 +1035,14 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.positionAbbreviation).toBe('H');
-      expect(c.positionTooltip).toBe('Hyökkääjä');
+      expect(c.positionAbbreviation).toBe("H");
+      expect(c.positionTooltip).toBe("Hyökkääjä");
     });
 
-    it('should display P for defensemen', async () => {
+    it("should display P for defensemen", async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -960,14 +1061,14 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.positionAbbreviation).toBe('P');
-      expect(c.positionTooltip).toBe('Puolustaja');
+      expect(c.positionAbbreviation).toBe("P");
+      expect(c.positionTooltip).toBe("Puolustaja");
     });
 
-    it('should display M for goalies', async () => {
+    it("should display M for goalies", async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -986,14 +1087,14 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.positionAbbreviation).toBe('M');
-      expect(c.positionTooltip).toBe('Maalivahti');
+      expect(c.positionAbbreviation).toBe("M");
+      expect(c.positionTooltip).toBe("Maalivahti");
     });
 
-    it('should exclude position-related fields from stats display', async () => {
+    it("should exclude position-related fields from stats display", async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1013,25 +1114,29 @@ describe('PlayerCardComponent', () => {
       const c = f.componentInstance;
 
       const statLabels = c.stats.map((s) => s.label);
-      expect(statLabels).not.toContain('tableColumn.position');
-      expect(statLabels).not.toContain('tableColumn.scoreByPosition');
-      expect(statLabels).not.toContain('tableColumn.scoreByPositionAdjustedByGames');
-      expect(statLabels).not.toContain('tableColumn.scoresByPosition');
+      expect(statLabels).not.toContain("tableColumn.position");
+      expect(statLabels).not.toContain("tableColumn.scoreByPosition");
+      expect(statLabels).not.toContain(
+        "tableColumn.scoreByPositionAdjustedByGames",
+      );
+      expect(statLabels).not.toContain("tableColumn.scoresByPosition");
     });
   });
 
-  describe('viewContext and showGraphsTab', () => {
+  describe("viewContext and showGraphsTab", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
     beforeEach(() => {
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
     });
 
-    it('should set viewContext to combined for multiple seasons', () => {
+    it("should set viewContext to combined for multiple seasons", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       TestBed.configureTestingModule({
@@ -1050,19 +1155,19 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.viewContext).toBe('combined');
+      expect(c.viewContext).toBe("combined");
       expect(c.showGraphsTab).toBeTrue();
     });
 
-    it('should set viewContext to season for single season', () => {
+    it("should set viewContext to season for single season", () => {
       const singleSeasonData = {
         ...mockGoalieWithSeasons,
         seasons: [mockGoalieWithSeasons.seasons[0]],
       };
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       TestBed.configureTestingModule({
@@ -1081,24 +1186,26 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.viewContext).toBe('season');
+      expect(c.viewContext).toBe("season");
     });
   });
 
-  describe('statsPerGame mode', () => {
+  describe("statsPerGame mode", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
     beforeEach(() => {
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
     });
 
-    it('should exclude score from stats when statsPerGame is true', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should exclude score from stats when statsPerGame is true", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1127,16 +1234,16 @@ describe('PlayerCardComponent', () => {
 
       expect(c.statsPerGame).toBeTrue();
       const statLabels = c.stats.map((s) => s.label);
-      expect(statLabels).not.toContain('tableColumn.score');
-      expect(statLabels).toContain('tableColumn.scoreAdjustedByGames');
+      expect(statLabels).not.toContain("tableColumn.score");
+      expect(statLabels).toContain("tableColumn.scoreAdjustedByGames");
     });
 
-    it('should include score in stats when statsPerGame is false', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should include score in stats when statsPerGame is false", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1165,16 +1272,16 @@ describe('PlayerCardComponent', () => {
 
       expect(c.statsPerGame).toBeFalse();
       const statLabels = c.stats.map((s) => s.label);
-      expect(statLabels).toContain('tableColumn.score');
-      expect(statLabels).toContain('tableColumn.scoreAdjustedByGames');
+      expect(statLabels).toContain("tableColumn.score");
+      expect(statLabels).toContain("tableColumn.scoreAdjustedByGames");
     });
 
-    it('should include score in excludedColumns getter when statsPerGame is true', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should include score in excludedColumns getter when statsPerGame is true", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1201,15 +1308,15 @@ describe('PlayerCardComponent', () => {
       // Wait for filter subscription to complete
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(c.excludedColumns).toContain('score');
+      expect(c.excludedColumns).toContain("score");
     });
 
-    it('should place games after score columns in stats order', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should place games after score columns in stats order", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1234,9 +1341,11 @@ describe('PlayerCardComponent', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       const statLabels = c.stats.map((s) => s.label);
-      const scoreIndex = statLabels.indexOf('tableColumn.score');
-      const scoreAdjustedIndex = statLabels.indexOf('tableColumn.scoreAdjustedByGames');
-      const gamesIndex = statLabels.indexOf('tableColumn.games');
+      const scoreIndex = statLabels.indexOf("tableColumn.score");
+      const scoreAdjustedIndex = statLabels.indexOf(
+        "tableColumn.scoreAdjustedByGames",
+      );
+      const gamesIndex = statLabels.indexOf("tableColumn.games");
 
       // Games should come after score and scoreAdjustedByGames
       expect(gamesIndex).toBeGreaterThan(scoreIndex);
@@ -1245,12 +1354,12 @@ describe('PlayerCardComponent', () => {
       expect(gamesIndex).toBe(scoreAdjustedIndex + 1);
     });
 
-    it('should get statsPerGame from goalie filters for goalies', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should get statsPerGame from goalie filters for goalies", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1282,20 +1391,22 @@ describe('PlayerCardComponent', () => {
     });
   });
 
-  describe('position filter toggle in player card', () => {
+  describe("position filter toggle in player card", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
     beforeEach(() => {
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
     });
 
-    it('should return correct switch label for forwards', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should return correct switch label for forwards", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1316,15 +1427,15 @@ describe('PlayerCardComponent', () => {
       f.detectChanges();
       const c = f.componentInstance;
 
-      expect(c.positionSwitchLabel).toBe('playerCardPositionFilter.forwards');
+      expect(c.positionSwitchLabel).toBe("playerCardPositionFilter.forwards");
     });
 
-    it('should return correct switch label for defensemen', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should return correct switch label for defensemen", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1345,15 +1456,15 @@ describe('PlayerCardComponent', () => {
       f.detectChanges();
       const c = f.componentInstance;
 
-      expect(c.positionSwitchLabel).toBe('playerCardPositionFilter.defensemen');
+      expect(c.positionSwitchLabel).toBe("playerCardPositionFilter.defensemen");
     });
 
-    it('should return empty string for goalie switch label', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should return empty string for goalie switch label", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1374,15 +1485,15 @@ describe('PlayerCardComponent', () => {
       f.detectChanges();
       const c = f.componentInstance;
 
-      expect(c.positionSwitchLabel).toBe('');
+      expect(c.positionSwitchLabel).toBe("");
     });
 
-    it('should return true for isPositionFilterEnabled when position filter is not all', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should return true for isPositionFilterEnabled when position filter is not all", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1400,7 +1511,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'F' });
+      filterService.updatePlayerFilters({ positionFilter: "F" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1412,12 +1523,12 @@ describe('PlayerCardComponent', () => {
       expect(c.isPositionFilterEnabled).toBeTrue();
     });
 
-    it('should return false for isPositionFilterEnabled when position filter is all', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should return false for isPositionFilterEnabled when position filter is all", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1435,7 +1546,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'all' });
+      filterService.updatePlayerFilters({ positionFilter: "all" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1447,12 +1558,12 @@ describe('PlayerCardComponent', () => {
       expect(c.isPositionFilterEnabled).toBeFalse();
     });
 
-    it('should update filter service when toggle is turned on', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should update filter service when toggle is turned on", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1470,7 +1581,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'all' });
+      filterService.updatePlayerFilters({ positionFilter: "all" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1479,20 +1590,22 @@ describe('PlayerCardComponent', () => {
       // Wait for filter subscription to complete
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      spyOn(filterService, 'updatePlayerFilters').and.callThrough();
+      spyOn(filterService, "updatePlayerFilters").and.callThrough();
 
       c.onPositionFilterToggle(true);
 
-      expect(filterService.updatePlayerFilters).toHaveBeenCalledWith({ positionFilter: 'F' });
-      expect(c.positionFilter).toBe('F');
+      expect(filterService.updatePlayerFilters).toHaveBeenCalledWith({
+        positionFilter: "F",
+      });
+      expect(c.positionFilter).toBe("F");
     });
 
-    it('should update filter service when toggle is turned off', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should update filter service when toggle is turned off", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1510,7 +1623,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'D' });
+      filterService.updatePlayerFilters({ positionFilter: "D" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1519,20 +1632,22 @@ describe('PlayerCardComponent', () => {
       // Wait for filter subscription to complete
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      spyOn(filterService, 'updatePlayerFilters').and.callThrough();
+      spyOn(filterService, "updatePlayerFilters").and.callThrough();
 
       c.onPositionFilterToggle(false);
 
-      expect(filterService.updatePlayerFilters).toHaveBeenCalledWith({ positionFilter: 'all' });
-      expect(c.positionFilter).toBe('all');
+      expect(filterService.updatePlayerFilters).toHaveBeenCalledWith({
+        positionFilter: "all",
+      });
+      expect(c.positionFilter).toBe("all");
     });
 
-    it('should not call filter service when goalie tries to toggle', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should not call filter service when goalie tries to toggle", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1555,19 +1670,19 @@ describe('PlayerCardComponent', () => {
       f.detectChanges();
       const c = f.componentInstance;
 
-      spyOn(filterService, 'updatePlayerFilters');
+      spyOn(filterService, "updatePlayerFilters");
 
       c.onPositionFilterToggle(true);
 
       expect(filterService.updatePlayerFilters).not.toHaveBeenCalled();
     });
 
-    it('should not render position filter switch for goalies', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should not render position filter switch for goalies", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1587,16 +1702,18 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
 
-      const switchElement = f.debugElement.query(By.css('.position-filter-switch'));
+      const switchElement = f.debugElement.query(
+        By.css(".position-filter-switch"),
+      );
       expect(switchElement).toBeNull();
     });
 
-    it('should render position filter switch for players', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should render position filter switch for players", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1616,16 +1733,18 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
 
-      const switchElement = f.debugElement.query(By.css('.position-filter-switch'));
+      const switchElement = f.debugElement.query(
+        By.css(".position-filter-switch"),
+      );
       expect(switchElement).toBeTruthy();
     });
 
-    it('should use position-based score values when filter is active', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should use position-based score values when filter is active", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1643,7 +1762,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'D' });
+      filterService.updatePlayerFilters({ positionFilter: "D" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1653,16 +1772,16 @@ describe('PlayerCardComponent', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       // Find the score stat and verify it uses position-based value
-      const scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      const scoreStat = c.stats.find((s) => s.label === "tableColumn.score");
       expect(scoreStat?.value).toBe(mockDefenseman.scoreByPosition);
     });
 
-    it('should use regular score values when filter is all', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should use regular score values when filter is all", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1680,7 +1799,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'all' });
+      filterService.updatePlayerFilters({ positionFilter: "all" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1690,16 +1809,16 @@ describe('PlayerCardComponent', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       // Find the score stat and verify it uses regular value
-      const scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      const scoreStat = c.stats.find((s) => s.label === "tableColumn.score");
       expect(scoreStat?.value).toBe(mockDefenseman.score);
     });
 
-    it('should rebuild stats when toggling position filter on', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should rebuild stats when toggling position filter on", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1717,7 +1836,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'all' });
+      filterService.updatePlayerFilters({ positionFilter: "all" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1727,23 +1846,23 @@ describe('PlayerCardComponent', () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       // Initially should use regular score
-      let scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      let scoreStat = c.stats.find((s) => s.label === "tableColumn.score");
       expect(scoreStat?.value).toBe(mockDefenseman.score);
 
       // Toggle position filter on
       c.onPositionFilterToggle(true);
 
       // Now should use position-based score
-      scoreStat = c.stats.find((s) => s.label === 'tableColumn.score');
+      scoreStat = c.stats.find((s) => s.label === "tableColumn.score");
       expect(scoreStat?.value).toBe(mockDefenseman.scoreByPosition);
     });
 
-    it('should rebuild season data when toggling position filter', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should rebuild season data when toggling position filter", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       const mockPlayerWithSeasons = {
-        name: 'Player With Seasons',
-        position: 'D' as const,
+        name: "Player With Seasons",
+        position: "D" as const,
         score: 80,
         scoreAdjustedByGames: 4,
         scoreByPosition: 90,
@@ -1782,8 +1901,8 @@ describe('PlayerCardComponent', () => {
       };
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1801,7 +1920,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'all' });
+      filterService.updatePlayerFilters({ positionFilter: "all" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1821,12 +1940,12 @@ describe('PlayerCardComponent', () => {
       expect((c.seasonDataSource[0] as any).scoreAdjustedByGames).toBe(1.04);
     });
 
-    it('should fall back to regular scores when position-based values missing in season', async () => {
-      const { FilterService } = await import('@services/filter.service');
+    it("should fall back to regular scores when position-based values missing in season", async () => {
+      const { FilterService } = await import("@services/filter.service");
 
       const mockPlayerWithSeasonsNoPositionScores = {
-        name: 'Player With Seasons',
-        position: 'D' as const,
+        name: "Player With Seasons",
+        position: "D" as const,
         score: 80,
         scoreAdjustedByGames: 4,
         games: 82,
@@ -1862,8 +1981,8 @@ describe('PlayerCardComponent', () => {
       };
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       await TestBed.configureTestingModule({
@@ -1873,7 +1992,10 @@ describe('PlayerCardComponent', () => {
           NoopAnimationsModule,
         ],
         providers: [
-          { provide: MAT_DIALOG_DATA, useValue: mockPlayerWithSeasonsNoPositionScores },
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: mockPlayerWithSeasonsNoPositionScores,
+          },
           { provide: MatDialogRef, useValue: dialogRefSpy },
           { provide: ApiService, useValue: apiServiceSpy },
           FilterService,
@@ -1881,7 +2003,7 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       const filterService = TestBed.inject(FilterService);
-      filterService.updatePlayerFilters({ positionFilter: 'D' });
+      filterService.updatePlayerFilters({ positionFilter: "D" });
 
       const f = TestBed.createComponent(PlayerCardComponent);
       f.detectChanges();
@@ -1896,18 +2018,20 @@ describe('PlayerCardComponent', () => {
     });
   });
 
-  describe('wrapped dialog data format', () => {
+  describe("wrapped dialog data format", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
 
     beforeEach(() => {
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      apiServiceSpy.getTeams.and.returnValue(of([{ id: '1', name: 'Colorado' }]));
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
     });
 
-    it('should extract player from wrapped data format', () => {
+    it("should extract player from wrapped data format", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       const wrappedData = { player: mockGoalieWithSeasons };
@@ -1933,13 +2057,16 @@ describe('PlayerCardComponent', () => {
       expect(c.initialTab).toBeUndefined();
     });
 
-    it('should set initialTab to all and select first tab', () => {
+    it("should set initialTab to all and select first tab", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
-      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'all' as const };
+      const wrappedData = {
+        player: mockGoalieWithSeasons,
+        initialTab: "all" as const,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -1958,17 +2085,20 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.initialTab).toBe('all');
+      expect(c.initialTab).toBe("all");
       expect(c.selectedTabIndex).toBe(0);
     });
 
-    it('should set initialTab to by-season and select second tab when hasSeasons', () => {
+    it("should set initialTab to by-season and select second tab when hasSeasons", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
-      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'by-season' as const };
+      const wrappedData = {
+        player: mockGoalieWithSeasons,
+        initialTab: "by-season" as const,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -1987,17 +2117,20 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.initialTab).toBe('by-season');
+      expect(c.initialTab).toBe("by-season");
       expect(c.selectedTabIndex).toBe(1);
     });
 
-    it('should fall back to tab 0 for by-season when no seasons exist', () => {
+    it("should fall back to tab 0 for by-season when no seasons exist", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
-      const wrappedData = { player: mockSkaterWithoutSeasons, initialTab: 'by-season' as const };
+      const wrappedData = {
+        player: mockSkaterWithoutSeasons,
+        initialTab: "by-season" as const,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -2019,13 +2152,16 @@ describe('PlayerCardComponent', () => {
       expect(c.selectedTabIndex).toBe(0);
     });
 
-    it('should set initialTab to graphs and select third tab when hasSeasons', () => {
+    it("should set initialTab to graphs and select third tab when hasSeasons", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
-      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'graphs' as const };
+      const wrappedData = {
+        player: mockGoalieWithSeasons,
+        initialTab: "graphs" as const,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -2044,17 +2180,20 @@ describe('PlayerCardComponent', () => {
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
 
-      expect(c.initialTab).toBe('graphs');
+      expect(c.initialTab).toBe("graphs");
       expect(c.selectedTabIndex).toBe(2);
     });
 
-    it('should pre-load graphs component when initialTab is graphs', async () => {
+    it("should pre-load graphs component when initialTab is graphs", async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
-      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'graphs' as const };
+      const wrappedData = {
+        player: mockGoalieWithSeasons,
+        initialTab: "graphs" as const,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -2080,14 +2219,17 @@ describe('PlayerCardComponent', () => {
       expect(c.graphsComponent).toBeTruthy();
     });
 
-    it('should fall back to tab 0 for graphs when showGraphsTab is false', () => {
+    it("should fall back to tab 0 for graphs when showGraphsTab is false", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       // mockSkaterWithoutSeasons has no scores and no seasons, so showGraphsTab is false
-      const wrappedData = { player: mockSkaterWithoutSeasons, initialTab: 'graphs' as const };
+      const wrappedData = {
+        player: mockSkaterWithoutSeasons,
+        initialTab: "graphs" as const,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -2109,13 +2251,16 @@ describe('PlayerCardComponent', () => {
       expect(c.selectedTabIndex).toBe(0);
     });
 
-    it('should handle unknown tab name by falling back to 0', () => {
+    it("should handle unknown tab name by falling back to 0", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
-      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'unknown' as any };
+      const wrappedData = {
+        player: mockGoalieWithSeasons,
+        initialTab: "unknown" as any,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -2137,10 +2282,10 @@ describe('PlayerCardComponent', () => {
       expect(c.selectedTabIndex).toBe(0);
     });
 
-    it('should select graphs at index 1 when no seasons but has scores', () => {
+    it("should select graphs at index 1 when no seasons but has scores", () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
 
       const playerWithScores: Player = {
@@ -2159,7 +2304,10 @@ describe('PlayerCardComponent', () => {
         },
       };
 
-      const wrappedData = { player: playerWithScores, initialTab: 'graphs' as const };
+      const wrappedData = {
+        player: playerWithScores,
+        initialTab: "graphs" as const,
+      };
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -2183,25 +2331,25 @@ describe('PlayerCardComponent', () => {
     });
   });
 
-  describe('copyLinkToClipboard', () => {
+  describe("copyLinkToClipboard", () => {
     let apiServiceSpy: jasmine.SpyObj<ApiService>;
     let teamServiceSpy: jasmine.SpyObj<TeamService>;
 
     beforeEach(async () => {
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
-        'MatDialogRef',
-        ['close']
+        "MatDialogRef",
+        ["close"],
       );
-      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
-      teamServiceSpy = jasmine.createSpyObj('TeamService', [], {
-        selectedTeamId: '1',
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      teamServiceSpy = jasmine.createSpyObj("TeamService", [], {
+        selectedTeamId: "1",
       });
 
       apiServiceSpy.getTeams.and.returnValue(
         of([
-          { id: '1', name: 'Colorado' },
-          { id: '2', name: 'Dallas' },
-        ])
+          { id: "1", name: "colorado", presentName: "Colorado Avalanche" },
+          { id: "2", name: "dallas", presentName: "Dallas Stars" },
+        ]),
       );
 
       await TestBed.configureTestingModule({
@@ -2224,22 +2372,25 @@ describe('PlayerCardComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should copy player link to clipboard', fakeAsync(() => {
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+    it("should copy player link to clipboard", fakeAsync(() => {
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       component.copyLinkToClipboard();
       tick();
 
       expect(apiServiceSpy.getTeams).toHaveBeenCalled();
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one$/)
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one$/),
       );
     }));
 
-    it('should set linkCopied to true after copying', fakeAsync(() => {
-      spyOn(navigator.clipboard, 'writeText').and.returnValue(Promise.resolve());
+    it("should set linkCopied to true after copying", fakeAsync(() => {
+      spyOn(navigator.clipboard, "writeText").and.returnValue(
+        Promise.resolve(),
+      );
 
       expect(component.linkCopied).toBeFalse();
 
@@ -2249,8 +2400,10 @@ describe('PlayerCardComponent', () => {
       expect(component.linkCopied).toBeTrue();
     }));
 
-    it('should reset linkCopied to false after 2 seconds', fakeAsync(() => {
-      spyOn(navigator.clipboard, 'writeText').and.returnValue(Promise.resolve());
+    it("should reset linkCopied to false after 2 seconds", fakeAsync(() => {
+      spyOn(navigator.clipboard, "writeText").and.returnValue(
+        Promise.resolve(),
+      );
 
       component.copyLinkToClipboard();
       tick();
@@ -2262,9 +2415,9 @@ describe('PlayerCardComponent', () => {
       expect(component.linkCopied).toBeFalse();
     }));
 
-    it('should not copy if team not found', fakeAsync(() => {
+    it("should not copy if team not found", fakeAsync(() => {
       component.selectedTeam = undefined;
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText');
+      const writeTextSpy = spyOn(navigator.clipboard, "writeText");
 
       component.copyLinkToClipboard();
       tick();
@@ -2272,7 +2425,7 @@ describe('PlayerCardComponent', () => {
       expect(writeTextSpy).not.toHaveBeenCalled();
     }));
 
-    it('should generate player link for non-goalie', fakeAsync(() => {
+    it("should generate player link for non-goalie", fakeAsync(() => {
       // Reset with player data
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -2290,29 +2443,31 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       apiServiceSpy.getTeams.and.returnValue(
-        of([{ id: '1', name: 'Colorado' }])
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
       );
 
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
       f.detectChanges();
 
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       c.copyLinkToClipboard();
       tick();
 
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/player\/colorado\/player-one$/)
+        jasmine.stringMatching(/\/player\/colorado\/player-one$/),
       );
     }));
 
-    it('should include tab=by-season query param when on by-season tab', fakeAsync(() => {
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+    it("should include tab=by-season query param when on by-season tab", fakeAsync(() => {
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       // Switch to by-season tab (index 1)
       component.onTabChange(1);
@@ -2320,14 +2475,17 @@ describe('PlayerCardComponent', () => {
       tick();
 
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\?tab=by-season$/)
+        jasmine.stringMatching(
+          /\/goalie\/colorado\/goalie-one\?tab=by-season$/,
+        ),
       );
     }));
 
-    it('should include tab=graphs query param when on graphs tab', fakeAsync(() => {
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+    it("should include tab=graphs query param when on graphs tab", fakeAsync(() => {
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       // Switch to graphs tab (index 2 when hasSeasons)
       component.onTabChange(2);
@@ -2335,14 +2493,15 @@ describe('PlayerCardComponent', () => {
       tick();
 
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\?tab=graphs$/)
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\?tab=graphs$/),
       );
     }));
 
-    it('should not include tab query param when on all tab', fakeAsync(() => {
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+    it("should not include tab query param when on all tab", fakeAsync(() => {
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       // Ensure we're on all tab (index 0)
       component.onTabChange(0);
@@ -2350,15 +2509,15 @@ describe('PlayerCardComponent', () => {
       tick();
 
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one$/)
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one$/),
       );
       // Verify no query params
       expect(writeTextSpy).not.toHaveBeenCalledWith(
-        jasmine.stringMatching(/\?tab=/)
+        jasmine.stringMatching(/\?tab=/),
       );
     }));
 
-    it('should include tab=graphs for player without seasons on graphs tab', fakeAsync(() => {
+    it("should include tab=graphs for player without seasons on graphs tab", fakeAsync(() => {
       // Reset with player that has scores but no seasons
       const playerWithScores = {
         ...mockSkaterWithoutSeasons,
@@ -2392,16 +2551,17 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       apiServiceSpy.getTeams.and.returnValue(
-        of([{ id: '1', name: 'Colorado' }])
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
       );
 
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
       f.detectChanges();
 
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       // Switch to graphs tab (index 1 when no seasons)
       c.onTabChange(1);
@@ -2409,11 +2569,11 @@ describe('PlayerCardComponent', () => {
       tick();
 
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/player\/colorado\/player-one\?tab=graphs$/)
+        jasmine.stringMatching(/\/player\/colorado\/player-one\?tab=graphs$/),
       );
     }));
 
-    it('should include season in path for single-season data', fakeAsync(() => {
+    it("should include season in path for single-season data", fakeAsync(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         imports: [
@@ -2430,27 +2590,28 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       apiServiceSpy.getTeams.and.returnValue(
-        of([{ id: '1', name: 'Colorado' }])
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
       );
 
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
       f.detectChanges();
 
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       c.copyLinkToClipboard();
       tick();
 
       // Season is now in the path, not query param
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\/2024$/)
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\/2024$/),
       );
     }));
 
-    it('should include season in path and tab as query param for single-season data on graphs tab', fakeAsync(() => {
+    it("should include season in path and tab as query param for single-season data on graphs tab", fakeAsync(() => {
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         imports: [
@@ -2474,16 +2635,17 @@ describe('PlayerCardComponent', () => {
       }).compileComponents();
 
       apiServiceSpy.getTeams.and.returnValue(
-        of([{ id: '1', name: 'Colorado' }])
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
       );
 
       const f = TestBed.createComponent(PlayerCardComponent);
       const c = f.componentInstance;
       f.detectChanges();
 
-      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
-        Promise.resolve()
-      );
+      const writeTextSpy = spyOn(
+        navigator.clipboard,
+        "writeText",
+      ).and.returnValue(Promise.resolve());
 
       // Switch to graphs tab (index 1 for single season data with scores)
       c.onTabChange(1);
@@ -2492,7 +2654,9 @@ describe('PlayerCardComponent', () => {
 
       // Season in path, tab as query param
       expect(writeTextSpy).toHaveBeenCalledWith(
-        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\/2024\?tab=graphs$/)
+        jasmine.stringMatching(
+          /\/goalie\/colorado\/goalie-one\/2024\?tab=graphs$/,
+        ),
       );
     }));
   });

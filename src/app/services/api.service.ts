@@ -1,10 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { HttpParams } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, finalize, shareReplay, tap } from 'rxjs/operators';
-import { CacheService } from './cache.service';
-import { environment } from '../../environments/environment';
+import { Injectable, inject } from "@angular/core";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpParams } from "@angular/common/http";
+import { Observable, of, throwError } from "rxjs";
+import { catchError, finalize, shareReplay, tap } from "rxjs/operators";
+import { CacheService } from "./cache.service";
+import { environment } from "../../environments/environment";
 
 export type Season = {
   season: number;
@@ -26,7 +26,7 @@ export type PlayerScores = {
 };
 
 // Player position type
-export type PlayerPosition = 'F' | 'D';
+export type PlayerPosition = "F" | "D";
 
 // Goalie scores object for combined endpoint
 export type GoalieScoresCombined = {
@@ -127,7 +127,7 @@ export type Goalie = {
   seasons?: GoalieSeasonStats[];
 };
 
-export type ReportType = 'regular' | 'playoffs' | 'both';
+export type ReportType = "regular" | "playoffs" | "both";
 
 export type ApiParams = {
   reportType?: ReportType;
@@ -139,6 +139,7 @@ export type ApiParams = {
 export type Team = {
   id: string;
   name: string;
+  presentName: string;
 };
 
 export type LastModifiedResponse = {
@@ -146,7 +147,7 @@ export type LastModifiedResponse = {
 };
 
 @Injectable({
-  providedIn: 'root', // Provides service globally
+  providedIn: "root", // Provides service globally
 })
 export class ApiService {
   private http = inject(HttpClient);
@@ -160,35 +161,38 @@ export class ApiService {
 
   // Fetching available teams
   getTeams(): Observable<Team[]> {
-    return this.handleRequest<Team[]>('teams', 'teams');
+    return this.handleRequest<Team[]>("teams", "teams");
   }
 
   // Fetch last modified information for the backend data
   getLastModified(): Observable<LastModifiedResponse> {
-    return this.handleRequest<LastModifiedResponse>('last-modified', 'last-modified');
+    return this.handleRequest<LastModifiedResponse>(
+      "last-modified",
+      "last-modified",
+    );
   }
 
   // Fetching available seasons
   getSeasons(
-    reportType: ReportType = 'regular',
+    reportType: ReportType = "regular",
     teamId?: string,
-    startFrom?: number
+    startFrom?: number,
   ): Observable<Season[]> {
     const normalizedTeamId = this.normalizeTeamId(teamId);
     const cacheKey = `seasons-${reportType}${this.teamCacheKeySuffix(normalizedTeamId)}${this.startFromCacheKeySuffix(startFrom)}`;
     return this.handleRequest<Season[]>(
       `seasons/${reportType}`,
       cacheKey,
-      this.queryParams(normalizedTeamId, startFrom)
+      this.queryParams(normalizedTeamId, startFrom),
     );
   }
 
   // Fetching players data
   getPlayerData(params: ApiParams): Observable<Player[]> {
-    const { reportType = 'regular', season, teamId, startFrom } = params;
+    const { reportType = "regular", season, teamId, startFrom } = params;
     const normalizedTeamId = this.normalizeTeamId(teamId);
     const startFromForRequest = season ? undefined : startFrom;
-    const cacheKey = `playerStats-${reportType}-${season ?? 'combined'}${this.startFromCacheKeySuffix(startFromForRequest)}${this.teamCacheKeySuffix(normalizedTeamId)}`;
+    const cacheKey = `playerStats-${reportType}-${season ?? "combined"}${this.startFromCacheKeySuffix(startFromForRequest)}${this.teamCacheKeySuffix(normalizedTeamId)}`;
     const path = season
       ? `players/season/${reportType}/${season}`
       : `players/combined/${reportType}`;
@@ -196,16 +200,16 @@ export class ApiService {
     return this.handleRequest<Player[]>(
       path,
       cacheKey,
-      this.queryParams(normalizedTeamId, startFromForRequest)
+      this.queryParams(normalizedTeamId, startFromForRequest),
     );
   }
 
   // Fetching goalies data
   getGoalieData(params: ApiParams): Observable<Goalie[]> {
-    const { reportType = 'regular', season, teamId, startFrom } = params;
+    const { reportType = "regular", season, teamId, startFrom } = params;
     const normalizedTeamId = this.normalizeTeamId(teamId);
     const startFromForRequest = season ? undefined : startFrom;
-    const cacheKey = `goalieStats-${reportType}-${season ?? 'combined'}${this.startFromCacheKeySuffix(startFromForRequest)}${this.teamCacheKeySuffix(normalizedTeamId)}`;
+    const cacheKey = `goalieStats-${reportType}-${season ?? "combined"}${this.startFromCacheKeySuffix(startFromForRequest)}${this.teamCacheKeySuffix(normalizedTeamId)}`;
     const path = season
       ? `goalies/season/${reportType}/${season}`
       : `goalies/combined/${reportType}`;
@@ -213,7 +217,7 @@ export class ApiService {
     return this.handleRequest<Goalie[]>(
       path,
       cacheKey,
-      this.queryParams(normalizedTeamId, startFromForRequest)
+      this.queryParams(normalizedTeamId, startFromForRequest),
     );
   }
 
@@ -221,7 +225,7 @@ export class ApiService {
   private handleRequest<T>(
     path: string,
     cacheKey: string,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
   ): Observable<T> {
     const requestKey = this.buildRequestKey(path, queryParams);
     const requestCacheKey = `req:${requestKey}`;
@@ -240,18 +244,22 @@ export class ApiService {
 
     const cacheKeys = new Set<string>([cacheKey, requestCacheKey]);
 
-    const params = queryParams ? new HttpParams({ fromObject: queryParams }) : undefined;
+    const params = queryParams
+      ? new HttpParams({ fromObject: queryParams })
+      : undefined;
 
-    const request$ = this.http.get<T>(`${this.API_URL}/${path}`, { params }).pipe(
-      tap((data) => {
-        for (const key of cacheKeys) {
-          this.cacheService.set<T>(key, data);
-        }
-      }),
-      catchError(this.handleError),
-      finalize(() => this.inFlightRequests.delete(requestKey)),
-      shareReplay({ bufferSize: 1, refCount: false })
-    );
+    const request$ = this.http
+      .get<T>(`${this.API_URL}/${path}`, { params })
+      .pipe(
+        tap((data) => {
+          for (const key of cacheKeys) {
+            this.cacheService.set<T>(key, data);
+          }
+        }),
+        catchError(this.handleError),
+        finalize(() => this.inFlightRequests.delete(requestKey)),
+        shareReplay({ bufferSize: 1, refCount: false }),
+      );
 
     this.inFlightRequests.set(requestKey, { observable: request$, cacheKeys });
     return request$;
@@ -259,7 +267,7 @@ export class ApiService {
 
   private buildRequestKey(
     path: string,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
   ): string {
     if (!queryParams) return path;
 
@@ -271,42 +279,42 @@ export class ApiService {
         const value = queryParams[key];
         return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
       })
-      .join('&');
+      .join("&");
 
     return `${path}?${query}`;
   }
 
   private normalizeTeamId(teamId?: string): string | undefined {
     if (!teamId) return undefined;
-    return teamId === '1' ? undefined : teamId;
+    return teamId === "1" ? undefined : teamId;
   }
 
   private queryParams(
     teamId?: string,
-    startFrom?: number
+    startFrom?: number,
   ): Record<string, string> | undefined {
     const params: Record<string, string> = {};
-    if (teamId) params['teamId'] = teamId;
+    if (teamId) params["teamId"] = teamId;
     if (startFrom !== undefined && Number.isFinite(startFrom)) {
-      params['startFrom'] = String(startFrom);
+      params["startFrom"] = String(startFrom);
     }
 
     return Object.keys(params).length > 0 ? params : undefined;
   }
 
   private teamCacheKeySuffix(teamId?: string): string {
-    return teamId ? `-team-${teamId}` : '';
+    return teamId ? `-team-${teamId}` : "";
   }
 
   private startFromCacheKeySuffix(startFrom?: number): string {
     return startFrom !== undefined && Number.isFinite(startFrom)
       ? `-startFrom-${startFrom}`
-      : '';
+      : "";
   }
 
   // Error handling function
   private handleError(error: HttpErrorResponse) {
-    console.error('API Error:', error);
-    return throwError(() => new Error('Something went wrong with the API!'));
+    console.error("API Error:", error);
+    return throwError(() => new Error("Something went wrong with the API!"));
   }
 }

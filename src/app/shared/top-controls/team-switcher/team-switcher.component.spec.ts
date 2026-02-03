@@ -1,16 +1,21 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { TeamSwitcherComponent } from './team-switcher.component';
-import { ApiService, Team } from '@services/api.service';
-import { FilterService } from '@services/filter.service';
-import { TeamService } from '@services/team.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BehaviorSubject, of, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { MatSelectChange } from '@angular/material/select';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from "@angular/core/testing";
+import { TeamSwitcherComponent } from "./team-switcher.component";
+import { ApiService, Team } from "@services/api.service";
+import { FilterService } from "@services/filter.service";
+import { TeamService } from "@services/team.service";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { BehaviorSubject, of, throwError } from "rxjs";
+import { Router } from "@angular/router";
+import { MatSelectChange } from "@angular/material/select";
 
 class TeamServiceMock {
-  private selectedTeamIdSubject = new BehaviorSubject<string>('1');
+  private selectedTeamIdSubject = new BehaviorSubject<string>("1");
   selectedTeamId$ = this.selectedTeamIdSubject.asObservable();
 
   get selectedTeamId(): string {
@@ -22,7 +27,7 @@ class TeamServiceMock {
   }
 }
 
-describe('TeamSwitcherComponent', () => {
+describe("TeamSwitcherComponent", () => {
   let component: TeamSwitcherComponent;
   let fixture: ComponentFixture<TeamSwitcherComponent>;
   let apiService: jasmine.SpyObj<ApiService>;
@@ -31,16 +36,16 @@ describe('TeamSwitcherComponent', () => {
   let translate: TranslateService;
 
   const mockTeams: Team[] = [
-    { id: '2', name: 'carolina' },
-    { id: '1', name: 'colorado' },
+    { id: "2", name: "carolina", presentName: "Carolina Hurricanes" },
+    { id: "1", name: "colorado", presentName: "Colorado Avalanche" },
   ];
 
   beforeEach(async () => {
-    apiService = jasmine.createSpyObj<ApiService>('ApiService', ['getTeams']);
-    filterService = jasmine.createSpyObj<FilterService>('FilterService', [
-      'resetAll',
+    apiService = jasmine.createSpyObj<ApiService>("ApiService", ["getTeams"]);
+    filterService = jasmine.createSpyObj<FilterService>("FilterService", [
+      "resetAll",
     ]);
-    router = jasmine.createSpyObj<Router>('Router', ['navigate']);
+    router = jasmine.createSpyObj<Router>("Router", ["navigate"]);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -60,24 +65,14 @@ describe('TeamSwitcherComponent', () => {
     component = fixture.componentInstance;
 
     translate = TestBed.inject(TranslateService);
-    translate.setTranslation(
-      'fi',
-      {
-        teams: {
-          colorado: 'Colorado Avalanche',
-          carolina: 'Carolina Hurricanes',
-        },
-      },
-      true
-    );
-    translate.use('fi');
+    translate.use("fi");
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load teams on init', fakeAsync(() => {
+  it("should load teams on init", fakeAsync(() => {
     apiService.getTeams.and.returnValue(of(mockTeams));
 
     component.ngOnInit();
@@ -89,18 +84,21 @@ describe('TeamSwitcherComponent', () => {
     expect(component.teams.length).toBe(2);
   }));
 
-  it('should sort teams alphabetically by translated label', fakeAsync(() => {
+  it("should sort teams alphabetically by presentName", fakeAsync(() => {
     apiService.getTeams.and.returnValue(of(mockTeams));
 
     component.ngOnInit();
     tick();
 
-    expect(component.teams.map((t) => t.name)).toEqual(['carolina', 'colorado']);
+    expect(component.teams.map((t) => t.name)).toEqual([
+      "carolina",
+      "colorado",
+    ]);
   }));
 
-  it('should set loadError on API failure', fakeAsync(() => {
+  it("should set loadError on API failure", fakeAsync(() => {
     apiService.getTeams.and.returnValue(
-      throwError(() => new Error('backend unavailable'))
+      throwError(() => new Error("backend unavailable")),
     );
 
     component.ngOnInit();
@@ -111,36 +109,31 @@ describe('TeamSwitcherComponent', () => {
     expect(component.teams).toEqual([]);
   }));
 
-  it('should reset filters and navigate on team change', fakeAsync(() => {
+  it("should reset filters and navigate on team change", fakeAsync(() => {
     apiService.getTeams.and.returnValue(of(mockTeams));
     component.ngOnInit();
     tick();
 
-    const event = { value: '2' } as MatSelectChange;
+    const event = { value: "2" } as MatSelectChange;
     component.changeTeam(event);
     tick();
 
-    expect(component.selectedTeamId).toBe('2');
+    expect(component.selectedTeamId).toBe("2");
     expect(filterService.resetAll).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/player-stats']);
+    expect(router.navigate).toHaveBeenCalledWith(["/player-stats"]);
   }));
 
-  it('should fall back to team.name when translation key is missing', () => {
-    spyOn(translate, 'instant').and.callFake((key: string) => key);
-
-    const label = (component as any).getTeamLabel({ id: '99', name: 'unknown-team' });
-    expect(label).toBe('unknown-team');
-  });
-
-  it('should no-op when teamId is falsy', fakeAsync(() => {
+  it("should no-op when teamId is falsy", fakeAsync(() => {
     apiService.getTeams.and.returnValue(of(mockTeams));
     component.ngOnInit();
     tick();
 
-    const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
-    const setTeamSpy = spyOn(teamService, 'setTeamId').and.callThrough();
+    const teamService = TestBed.inject(
+      TeamService,
+    ) as unknown as TeamServiceMock;
+    const setTeamSpy = spyOn(teamService, "setTeamId").and.callThrough();
 
-    const event = { value: '' } as unknown as MatSelectChange;
+    const event = { value: "" } as unknown as MatSelectChange;
     component.changeTeam(event);
     tick();
 

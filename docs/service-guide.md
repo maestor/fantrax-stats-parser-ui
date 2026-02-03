@@ -61,6 +61,7 @@ export type ReportType = 'regular' | 'playoffs';
 export type Team = {
   id: string;
   name: string;
+  presentName: string;
 };
 
 // Backend metadata
