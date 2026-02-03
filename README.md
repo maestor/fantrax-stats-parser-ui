@@ -30,6 +30,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- Optional tab: `?tab=all|by-season|graphs` to open directly to a specific tab
 	- Team can be specified by slug (e.g., `colorado`) or ID (e.g., `1`)
 	- Slugs are generated at runtime from names (e.g., "Jamie Benn" → "jamie-benn")
+	- Copy link button in player card header for easy sharing
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: i18n support with ngx-translate (currently ships with Finnish UI; additional languages can be added under `public/i18n/`)
 - 🎨 **Material Design**: Clean UI with Angular Material components

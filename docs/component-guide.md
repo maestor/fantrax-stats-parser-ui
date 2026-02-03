@@ -434,6 +434,7 @@ data: {
 - **Sticky Headers**: Table headers remain visible while scrolling through seasons
 - **Responsive Design**: Adapts to mobile and desktop viewports with optimized layouts
 - **Intelligent Column Ordering**: Automatically reorders columns for optimal readability
+- **Copy Link**: Link icon button next to player name copies shareable URL to clipboard
 - **Mobile-Optimized Controls**: Collapsible graph controls on mobile devices
 
 **Position Filter Toggle (Players Only)**:

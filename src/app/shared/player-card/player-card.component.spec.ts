@@ -123,6 +123,7 @@ describe('PlayerCardComponent', () => {
     },
   };
 
+
   // Combined goalie data (without top-level season field)
   const mockGoalieCombined: Goalie & { seasons: GoalieSeasonStats[] } = {
     name: 'Goalie One',

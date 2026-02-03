@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, combineLatest, of, switchMap, takeUntil, tap, take } from 'rxjs';
 import { ApiService, Goalie, Team } from '@services/api.service';
 import { TeamService } from '@services/team.service';
+import { FilterService } from '@services/filter.service';
 import { GoalieStatsComponent } from '../goalie-stats/goalie-stats.component';
 import {
   PlayerCardComponent,
@@ -69,6 +70,7 @@ export class GoalieRouteComponent implements OnInit, OnDestroy {
   private dialog = inject(MatDialog);
   private apiService = inject(ApiService);
   private teamService = inject(TeamService);
+  private filterService = inject(FilterService);
   private destroy$ = new Subject<void>();
 
   error: string | null = null;
@@ -85,6 +87,9 @@ export class GoalieRouteComponent implements OnInit, OnDestroy {
           const teamSlug = params.get('teamSlug');
           const goalieSlug = params.get('goalieSlug');
           const tab = queryParams.get('tab') as PlayerCardTab | null;
+          // Season is now a path segment, not a query param (better for SEO)
+          const seasonParam = params.get('season');
+          const season = seasonParam ? parseInt(seasonParam, 10) : undefined;
 
           if (!teamSlug || !goalieSlug) {
             this.error = 'Invalid URL';
@@ -102,10 +107,16 @@ export class GoalieRouteComponent implements OnInit, OnDestroy {
               // Set the team so the background stats page loads correctly
               this.teamService.setTeamId(team.id);
 
+              // Set the season in filter service so season switcher shows correct selection
+              if (season) {
+                this.filterService.updateGoalieFilters({ season });
+              }
+
               // Fetch goalies for this team (use 'regular' as default report type)
               return this.apiService.getGoalieData({
                 reportType: 'regular',
                 teamId: team.id,
+                season,
               }).pipe(
                 tap((goalies) => {
                   const goalie = this.findGoalie(goalies, goalieSlug);

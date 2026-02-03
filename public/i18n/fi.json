@@ -227,7 +227,9 @@
     "all": "Tilastot",
     "bySeason": "Kausittain",
     "graphs": "Graafit",
-    "graphsSelectStats": "Valitse tilastot käyrille"
+    "graphsSelectStats": "Valitse tilastot käyrille",
+    "copyLink": "Kopioi linkki leikepöydälle",
+    "linkCopied": "Linkki kopioitu!"
   },
   "graphs": {
     "seasonalTrends": "Kausittaiset käyrät",

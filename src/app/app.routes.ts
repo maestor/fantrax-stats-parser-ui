@@ -24,10 +24,24 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'player/:teamSlug/:playerSlug/:season',
+    loadComponent: () =>
+      import('./player-route/player-route.component').then(
+        (m) => m.PlayerRouteComponent
+      ),
+  },
+  {
     path: 'player/:teamSlug/:playerSlug',
     loadComponent: () =>
       import('./player-route/player-route.component').then(
         (m) => m.PlayerRouteComponent
+      ),
+  },
+  {
+    path: 'goalie/:teamSlug/:goalieSlug/:season',
+    loadComponent: () =>
+      import('./goalie-route/goalie-route.component').then(
+        (m) => m.GoalieRouteComponent
       ),
   },
   {

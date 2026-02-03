@@ -13,10 +13,13 @@ import {
   Goalie,
   PlayerSeasonStats,
   GoalieSeasonStats,
+  ApiService,
 } from '@services/api.service';
 import { FilterService, PositionFilter } from '@services/filter.service';
+import { TeamService } from '@services/team.service';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { toSlug } from '../../utils/slug.utils';
 import { take } from 'rxjs';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
 
@@ -51,8 +54,13 @@ export class PlayerCardComponent {
   private rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
   private document = inject(DOCUMENT);
   private host = inject(ElementRef<HTMLElement>);
+  private apiService = inject(ApiService);
+  private teamService = inject(TeamService);
   private filterService = inject(FilterService);
   private cdr = inject(ChangeDetectorRef);
+
+  // Copy link feedback state
+  linkCopied = false;
   positionFilter: PositionFilter = 'all';
   statsPerGame = false;
 
@@ -448,6 +456,51 @@ export class PlayerCardComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  copyLinkToClipboard(tooltip?: MatTooltip): void {
+    this.apiService.getTeams().pipe(take(1)).subscribe((teams) => {
+      const team = teams.find((t) => t.id === this.teamService.selectedTeamId);
+      if (!team) return;
+
+      const teamSlug = toSlug(team.name);
+      const playerSlug = toSlug(this.data.name);
+      const type = this.isGoalie ? 'goalie' : 'player';
+
+      // Build path - season is now in path for better SEO
+      const season = (this.data as { season?: number }).season;
+      const seasonPath = season !== undefined ? `/${season}` : '';
+
+      // Tab stays as query param (UI detail)
+      const tabName = this.getCurrentTabName();
+      const queryString = tabName !== 'all' ? `?tab=${tabName}` : '';
+
+      const url = `${this.document.location.origin}/${type}/${teamSlug}/${playerSlug}${seasonPath}${queryString}`;
+
+      navigator.clipboard.writeText(url).then(() => {
+        this.linkCopied = true;
+        // Show the tooltip with the "copied" message
+        tooltip?.show();
+        setTimeout(() => {
+          this.linkCopied = false;
+          tooltip?.hide();
+        }, 2000);
+      });
+    });
+  }
+
+  private getCurrentTabName(): PlayerCardTab {
+    if (this.hasSeasons) {
+      // Tabs: 0=all, 1=by-season, 2=graphs
+      switch (this.selectedTabIndex) {
+        case 1: return 'by-season';
+        case 2: return 'graphs';
+        default: return 'all';
+      }
+    } else {
+      // Tabs: 0=all, 1=graphs (no by-season tab)
+      return this.selectedTabIndex === 1 ? 'graphs' : 'all';
+    }
   }
 
   private async ensureGraphsLoaded(): Promise<void> {
