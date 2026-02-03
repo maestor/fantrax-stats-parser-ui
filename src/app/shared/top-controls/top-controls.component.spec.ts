@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { TopControlsComponent } from './top-controls.component';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { TopControlsComponent } from "./top-controls.component";
 
-describe('TopControlsComponent', () => {
+describe("TopControlsComponent", () => {
   let component: TopControlsComponent;
   let fixture: ComponentFixture<TopControlsComponent>;
 
@@ -22,56 +22,50 @@ describe('TopControlsComponent', () => {
 
     const translate = TestBed.inject(TranslateService);
     translate.setTranslation(
-      'fi',
+      "fi",
       {
         topControls: {
-          controls: 'Valinnat',
+          controls: "Valinnat",
         },
       },
-      true
+      true,
     );
-    translate.use('fi');
-  });
-
-  beforeEach(() => {
-    try {
-      localStorage.removeItem('fantrax.settings');
-    } catch {
-      // ignore
-    }
+    translate.use("fi");
   });
 
   afterEach(() => {
     try {
-      localStorage.removeItem('fantrax.settings');
+      localStorage.removeItem("fantrax.settings");
     } catch {
       // ignore
     }
   });
 
-  it('should create', () => {
+  it("should create", () => {
+    localStorage.removeItem("fantrax.settings");
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
-  it('should default to expanded when localStorage is empty', () => {
+  it("should default to expanded when localStorage is empty", () => {
+    localStorage.removeItem("fantrax.settings");
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
     expect(component.isExpanded).toBe(true);
   });
 
-  it('should restore collapsed state from localStorage', () => {
+  it("should restore collapsed state from localStorage", () => {
     localStorage.setItem(
-      'fantrax.settings',
+      "fantrax.settings",
       JSON.stringify({
         version: 1,
-        selectedTeamId: '1',
+        selectedTeamId: "1",
         startFromSeason: null,
         topControlsExpanded: false,
-      })
+      }),
     );
 
     fixture = TestBed.createComponent(TopControlsComponent);
@@ -81,31 +75,34 @@ describe('TopControlsComponent', () => {
     expect(component.isExpanded).toBe(false);
   });
 
-  it('should persist toggle state to localStorage', () => {
+  it("should persist toggle state to localStorage", () => {
+    localStorage.removeItem("fantrax.settings");
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
 
     component.toggleExpanded();
-    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}').topControlsExpanded).toBe(
-      false
-    );
+    expect(
+      JSON.parse(localStorage.getItem("fantrax.settings") ?? "{}")
+        .topControlsExpanded,
+    ).toBe(false);
 
     component.toggleExpanded();
-    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}').topControlsExpanded).toBe(
-      true
-    );
+    expect(
+      JSON.parse(localStorage.getItem("fantrax.settings") ?? "{}")
+        .topControlsExpanded,
+    ).toBe(true);
   });
 
-  it('should force expanded and disable toggling when contentOnly is true', () => {
+  it("should force expanded and disable toggling when contentOnly is true", () => {
     localStorage.setItem(
-      'fantrax.settings',
+      "fantrax.settings",
       JSON.stringify({
         version: 1,
-        selectedTeamId: '1',
+        selectedTeamId: "1",
         startFromSeason: null,
         topControlsExpanded: false,
-      })
+      }),
     );
 
     fixture = TestBed.createComponent(TopControlsComponent);
@@ -116,8 +113,9 @@ describe('TopControlsComponent', () => {
     expect(component.isExpanded).toBe(true);
 
     component.toggleExpanded();
-    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}').topControlsExpanded).toBe(
-      false
-    );
+    expect(
+      JSON.parse(localStorage.getItem("fantrax.settings") ?? "{}")
+        .topControlsExpanded,
+    ).toBe(false);
   });
 });

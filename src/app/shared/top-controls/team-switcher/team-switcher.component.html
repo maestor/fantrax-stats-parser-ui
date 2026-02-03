@@ -1,6 +1,6 @@
 <div class="team-switcher">
   <mat-form-field subscriptSizing="dynamic">
-    <mat-label>{{ 'team.selector' | translate }}</mat-label>
+    <mat-label>{{ "team.selector" | translate }}</mat-label>
     <mat-select
       [value]="selectedTeamId"
       (selectionChange)="changeTeam($event)"
@@ -8,7 +8,7 @@
     >
       <mat-select-trigger>
         @if (selectedTeam) {
-          {{ ('teams.' + selectedTeam.name) | translate }}
+          {{ selectedTeam.presentName }}
         } @else {
           {{ selectedTeamId }}
         }
@@ -16,13 +16,15 @@
 
       @for (team of teams; track team.id) {
         <mat-option [value]="team.id">
-          {{ ('teams.' + team.name) | translate }}
+          {{ team.presentName }}
         </mat-option>
       }
     </mat-select>
 
     @if (loadError) {
-      <mat-hint class="team-switcher-error">{{ 'table.apiUnavailable' | translate }}</mat-hint>
+      <mat-hint class="team-switcher-error">{{
+        "table.apiUnavailable" | translate
+      }}</mat-hint>
     }
   </mat-form-field>
 </div>
