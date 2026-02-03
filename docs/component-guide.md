@@ -124,17 +124,22 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 **Key Features**:
 
 - Extracts team and player slugs from route parameters
+- Supports optional season as path segment (e.g., `/player/colorado/jamie-benn/2024`)
 - Supports optional `?tab=all|by-season|graphs` query parameter
 - Team lookup by slug (e.g., `colorado`) or ID (e.g., `1`)
+- Sets season in FilterService so season switcher shows correct selection
 - Displays PlayerStatsComponent as background
 - Opens PlayerCardComponent modal automatically
 - Navigates to `/player-stats` on modal close
 
-**Route Pattern**: `/player/:teamSlug/:playerSlug`
+**Route Patterns**:
+- `/player/:teamSlug/:playerSlug` - Combined stats (all seasons)
+- `/player/:teamSlug/:playerSlug/:season` - Single season stats
 
 **Examples**:
-- `/player/colorado/jamie-benn`
-- `/player/1/jamie-benn?tab=graphs`
+- `/player/colorado/jamie-benn` - Combined stats
+- `/player/colorado/jamie-benn/2024` - 2024-25 season stats
+- `/player/colorado/jamie-benn/2024?tab=graphs` - Season stats with graphs tab
 
 **Error Handling**:
 - Shows error overlay if team or player not found
@@ -152,7 +157,9 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Similar structure to PlayerRouteComponent but for goalies**
 
-**Route Pattern**: `/goalie/:teamSlug/:goalieSlug`
+**Route Patterns**:
+- `/goalie/:teamSlug/:goalieSlug` - Combined stats
+- `/goalie/:teamSlug/:goalieSlug/:season` - Single season stats
 
 ## Shared Components
 

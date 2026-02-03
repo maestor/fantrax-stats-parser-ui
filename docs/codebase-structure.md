@@ -74,13 +74,14 @@ Smart component for goalie statistics view:
 
 ### `/src/app/player-route/`
 Route handler for direct player card URLs:
-- Handles `/player/:teamSlug/:playerSlug` routes
-- Opens player card modal with optional tab selection
+- Handles `/player/:teamSlug/:playerSlug` and `/player/:teamSlug/:playerSlug/:season` routes
+- Opens player card modal with optional tab selection (`?tab=all|by-season|graphs`)
+- Season in URL sets the season switcher in background
 - Shows player stats page as background
 
 ### `/src/app/goalie-route/`
 Route handler for direct goalie card URLs:
-- Handles `/goalie/:teamSlug/:goalieSlug` routes
+- Handles `/goalie/:teamSlug/:goalieSlug` and `/goalie/:teamSlug/:goalieSlug/:season` routes
 - Opens goalie card modal with optional tab selection
 - Shows goalie stats page as background
 
