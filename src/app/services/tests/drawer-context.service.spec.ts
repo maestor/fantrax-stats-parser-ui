@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
-import { DrawerContextService } from './drawer-context.service';
+import { DrawerContextService } from '../drawer-context.service';
 
 describe('DrawerContextService', () => {
   it('should default maxGames to 0', async () => {

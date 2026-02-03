@@ -2182,7 +2182,7 @@ describe('PlayerCardComponent', () => {
     }));
 
     it('should not copy if team not found', fakeAsync(() => {
-      apiServiceSpy.getTeams.and.returnValue(of([]));
+      component.selectedTeam = undefined;
       const writeTextSpy = spyOn(navigator.clipboard, 'writeText');
 
       component.copyLinkToClipboard();

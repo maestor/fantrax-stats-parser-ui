@@ -258,8 +258,8 @@
     "goalie": "Maalivahti"
   },
   "playerCardPositionFilter": {
-    "forwards": "Ranking hyökkääjät",
-    "defensemen": "Ranking puolustajat"
+    "forwards": "Vertaa hyökkääjiin",
+    "defensemen": "Vertaa puolustajiin"
   },
   "topControls": {
     "controls": "Tarkasteltavat tilastot"

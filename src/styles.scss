@@ -56,6 +56,14 @@ body {
   color: var(--mat-sys-on-surface) !important;
 }
 
+// Player card header overrides
+.mat-mdc-card-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
 // Center dialogs vertically within the overlay.
 // Fixes cases where dialogs appear stuck near the top on some viewports.
 .cdk-overlay-container .mat-mdc-dialog-inner-container {

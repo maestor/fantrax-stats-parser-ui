@@ -14,6 +14,7 @@ import {
   PlayerSeasonStats,
   GoalieSeasonStats,
   ApiService,
+  Team,
 } from '@services/api.service';
 import { FilterService, PositionFilter } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
@@ -63,6 +64,7 @@ export class PlayerCardComponent {
   linkCopied = false;
   positionFilter: PositionFilter = 'all';
   statsPerGame = false;
+  selectedTeam: Team | undefined;
 
   @ViewChild('closeButton', { read: ElementRef })
   closeButton?: ElementRef<HTMLButtonElement>;
@@ -144,6 +146,11 @@ export class PlayerCardComponent {
   constructor() {
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
+
+    // Fetch selected team once
+    this.apiService.getTeams().pipe(take(1)).subscribe((teams) => {
+      this.selectedTeam = teams.find((t) => t.id === this.teamService.selectedTeamId);
+    });
 
     // Get filter state for proper column display
     const filterObservable = this.isGoalie
@@ -459,33 +466,30 @@ export class PlayerCardComponent {
   }
 
   copyLinkToClipboard(tooltip?: MatTooltip): void {
-    this.apiService.getTeams().pipe(take(1)).subscribe((teams) => {
-      const team = teams.find((t) => t.id === this.teamService.selectedTeamId);
-      if (!team) return;
+    if (!this.selectedTeam) return;
 
-      const teamSlug = toSlug(team.name);
-      const playerSlug = toSlug(this.data.name);
-      const type = this.isGoalie ? 'goalie' : 'player';
+    const teamSlug = toSlug(this.selectedTeam.name);
+    const playerSlug = toSlug(this.data.name);
+    const type = this.isGoalie ? 'goalie' : 'player';
 
-      // Build path - season is now in path for better SEO
-      const season = (this.data as { season?: number }).season;
-      const seasonPath = season !== undefined ? `/${season}` : '';
+    // Build path - season is now in path for better SEO
+    const season = (this.data as { season?: number }).season;
+    const seasonPath = season !== undefined ? `/${season}` : '';
 
-      // Tab stays as query param (UI detail)
-      const tabName = this.getCurrentTabName();
-      const queryString = tabName !== 'all' ? `?tab=${tabName}` : '';
+    // Tab stays as query param (UI detail)
+    const tabName = this.getCurrentTabName();
+    const queryString = tabName !== 'all' ? `?tab=${tabName}` : '';
 
-      const url = `${this.document.location.origin}/${type}/${teamSlug}/${playerSlug}${seasonPath}${queryString}`;
+    const url = `${this.document.location.origin}/${type}/${teamSlug}/${playerSlug}${seasonPath}${queryString}`;
 
-      navigator.clipboard.writeText(url).then(() => {
-        this.linkCopied = true;
-        // Show the tooltip with the "copied" message
-        tooltip?.show();
-        setTimeout(() => {
-          this.linkCopied = false;
-          tooltip?.hide();
-        }, 2000);
-      });
+    navigator.clipboard.writeText(url).then(() => {
+      this.linkCopied = true;
+      // Show the tooltip with the "copied" message
+      tooltip?.show();
+      setTimeout(() => {
+        this.linkCopied = false;
+        tooltip?.hide();
+      }, 2000);
     });
   }
 

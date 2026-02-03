@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { firstValueFrom, of } from 'rxjs';
-import { ViewportService } from './viewport.service';
+import { ViewportService } from '../viewport.service';
 
 describe('ViewportService', () => {
   it('should emit true when BreakpointObserver matches', async () => {
