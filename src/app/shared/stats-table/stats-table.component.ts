@@ -23,7 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { STATIC_COLUMNS } from '@shared/table-columns';
 import { Player, Goalie } from '@services/api.service';
-import { PlayerCardComponent } from '@shared/player-card/player-card.component';
+import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -200,8 +200,9 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   selectItem(data: Player | Goalie) {
+    const dialogData: PlayerCardDialogData = { player: data };
     this.dialog.open(PlayerCardComponent, {
-      data,
+      data: dialogData,
       maxWidth: '95vw',
       width: 'auto',
       panelClass: 'player-card-dialog',

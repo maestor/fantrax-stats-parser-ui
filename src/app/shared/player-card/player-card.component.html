@@ -9,7 +9,19 @@
       class="card-title-icon letter-avatar"
       [matTooltip]="positionTooltip"
       >{{ positionAbbreviation }}</mat-icon>
-    <mat-card-title>{{ data.name }}</mat-card-title>
+    <mat-card-title>
+      {{ data.name }}
+      <button
+        mat-icon-button
+        class="copy-link-button"
+        (click)="copyLinkToClipboard(copyTooltip)"
+        [matTooltip]="linkCopied ? ('playerCard.linkCopied' | translate) : ('playerCard.copyLink' | translate)"
+        [attr.aria-label]="'playerCard.copyLink' | translate"
+        #copyTooltip="matTooltip"
+      >
+        <mat-icon fontIcon="link" />
+      </button>
+    </mat-card-title>
   </mat-card-header>
   @if (!isGoalie) {
   <div class="position-filter-switch">
@@ -24,6 +36,7 @@
   <mat-card-content>
     @if (hasSeasons || showGraphsTab) {
     <mat-tab-group
+      [selectedIndex]="selectedTabIndex"
       (selectedIndexChange)="onTabChange($event)"
       [disablePagination]="true"
     >

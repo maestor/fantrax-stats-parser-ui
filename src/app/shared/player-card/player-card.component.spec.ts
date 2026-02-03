@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ElementRef } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { PlayerCardComponent } from './player-card.component';
@@ -6,7 +6,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTabGroup } from '@angular/material/tabs';
-import { Goalie, GoalieSeasonStats, Player } from '@services/api.service';
+import { Goalie, GoalieSeasonStats, Player, ApiService } from '@services/api.service';
+import { TeamService } from '@services/team.service';
+import { of } from 'rxjs';
 
 describe('PlayerCardComponent', () => {
   let fixture: ComponentFixture<PlayerCardComponent>;
@@ -119,6 +121,80 @@ describe('PlayerCardComponent', () => {
       hits: 85,
       blocks: 90,
     },
+  };
+
+
+  // Combined goalie data (without top-level season field)
+  const mockGoalieCombined: Goalie & { seasons: GoalieSeasonStats[] } = {
+    name: 'Goalie One',
+    score: 0,
+    scoreAdjustedByGames: 0,
+    games: 25,
+    wins: 18,
+    saves: 750,
+    shutouts: 5,
+    goals: 0,
+    assists: 3,
+    points: 3,
+    penalties: 0,
+    ppp: 0,
+    shp: 0,
+    seasons: [
+      {
+        season: 2024,
+        games: 10,
+        score: 50,
+        scoreAdjustedByGames: 5,
+        wins: 8,
+        saves: 300,
+        shutouts: 2,
+        goals: 0,
+        assists: 1,
+        points: 1,
+        penalties: 0,
+        ppp: 0,
+        shp: 0,
+        gaa: '2.00',
+        savePercent: '0.920',
+      },
+      {
+        season: 2023,
+        games: 15,
+        score: 55,
+        scoreAdjustedByGames: 5.5,
+        wins: 10,
+        saves: 450,
+        shutouts: 3,
+        goals: 0,
+        assists: 2,
+        points: 2,
+        penalties: 0,
+        ppp: 0,
+        shp: 0,
+        gaa: '2.10',
+        savePercent: '0.915',
+      },
+    ],
+  };
+
+  // Single season goalie data (with top-level season field, no seasons array)
+  const mockGoalieSingleSeason: Goalie & { season: number } = {
+    name: 'Goalie One',
+    score: 50,
+    scoreAdjustedByGames: 5,
+    games: 10,
+    wins: 8,
+    saves: 300,
+    shutouts: 2,
+    goals: 0,
+    assists: 1,
+    points: 1,
+    penalties: 0,
+    ppp: 0,
+    shp: 0,
+    gaa: '2.00',
+    savePercent: '0.920',
+    season: 2024,
   };
 
   describe('with seasons data', () => {
@@ -1753,5 +1829,590 @@ describe('PlayerCardComponent', () => {
       expect((c.seasonDataSource[0] as any).score).toBe(100);
       expect((c.seasonDataSource[0] as any).scoreAdjustedByGames).toBe(1.22);
     });
+  });
+
+  describe('wrapped dialog data format', () => {
+    it('should extract player from wrapped data format', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const wrappedData = { player: mockGoalieWithSeasons };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.data).toEqual(mockGoalieWithSeasons);
+      expect(c.initialTab).toBeUndefined();
+    });
+
+    it('should set initialTab to all and select first tab', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'all' as const };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.initialTab).toBe('all');
+      expect(c.selectedTabIndex).toBe(0);
+    });
+
+    it('should set initialTab to by-season and select second tab when hasSeasons', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'by-season' as const };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.initialTab).toBe('by-season');
+      expect(c.selectedTabIndex).toBe(1);
+    });
+
+    it('should fall back to tab 0 for by-season when no seasons exist', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const wrappedData = { player: mockSkaterWithoutSeasons, initialTab: 'by-season' as const };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.selectedTabIndex).toBe(0);
+    });
+
+    it('should set initialTab to graphs and select third tab when hasSeasons', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'graphs' as const };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.initialTab).toBe('graphs');
+      expect(c.selectedTabIndex).toBe(2);
+    });
+
+    it('should pre-load graphs component when initialTab is graphs', async () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'graphs' as const };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Wait for the graphs to load
+      await (c as any).graphsLoadPromise;
+
+      expect(c.graphsComponent).toBeTruthy();
+    });
+
+    it('should fall back to tab 0 for graphs when showGraphsTab is false', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      // mockSkaterWithoutSeasons has no scores and no seasons, so showGraphsTab is false
+      const wrappedData = { player: mockSkaterWithoutSeasons, initialTab: 'graphs' as const };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.selectedTabIndex).toBe(0);
+    });
+
+    it('should handle unknown tab name by falling back to 0', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const wrappedData = { player: mockGoalieWithSeasons, initialTab: 'unknown' as any };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      expect(c.selectedTabIndex).toBe(0);
+    });
+
+    it('should select graphs at index 1 when no seasons but has scores', () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+
+      const playerWithScores: Player = {
+        ...mockSkaterWithoutSeasons,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+      };
+
+      const wrappedData = { player: playerWithScores, initialTab: 'graphs' as const };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: wrappedData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+
+      // No seasons, so graphs is at index 1
+      expect(c.selectedTabIndex).toBe(1);
+    });
+  });
+
+  describe('copyLinkToClipboard', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+    let teamServiceSpy: jasmine.SpyObj<TeamService>;
+
+    beforeEach(async () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        'MatDialogRef',
+        ['close']
+      );
+      apiServiceSpy = jasmine.createSpyObj('ApiService', ['getTeams']);
+      teamServiceSpy = jasmine.createSpyObj('TeamService', [], {
+        selectedTeamId: '1',
+      });
+
+      apiServiceSpy.getTeams.and.returnValue(
+        of([
+          { id: '1', name: 'Colorado' },
+          { id: '2', name: 'Dallas' },
+        ])
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          // Use combined goalie data (without top-level season field)
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieCombined },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(PlayerCardComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('should copy player link to clipboard', fakeAsync(() => {
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      component.copyLinkToClipboard();
+      tick();
+
+      expect(apiServiceSpy.getTeams).toHaveBeenCalled();
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one$/)
+      );
+    }));
+
+    it('should set linkCopied to true after copying', fakeAsync(() => {
+      spyOn(navigator.clipboard, 'writeText').and.returnValue(Promise.resolve());
+
+      expect(component.linkCopied).toBeFalse();
+
+      component.copyLinkToClipboard();
+      tick();
+
+      expect(component.linkCopied).toBeTrue();
+    }));
+
+    it('should reset linkCopied to false after 2 seconds', fakeAsync(() => {
+      spyOn(navigator.clipboard, 'writeText').and.returnValue(Promise.resolve());
+
+      component.copyLinkToClipboard();
+      tick();
+
+      expect(component.linkCopied).toBeTrue();
+
+      tick(2000);
+
+      expect(component.linkCopied).toBeFalse();
+    }));
+
+    it('should not copy if team not found', fakeAsync(() => {
+      apiServiceSpy.getTeams.and.returnValue(of([]));
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText');
+
+      component.copyLinkToClipboard();
+      tick();
+
+      expect(writeTextSpy).not.toHaveBeenCalled();
+    }));
+
+    it('should generate player link for non-goalie', fakeAsync(() => {
+      // Reset with player data
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: '1', name: 'Colorado' }])
+      );
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      c.copyLinkToClipboard();
+      tick();
+
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/player\/colorado\/player-one$/)
+      );
+    }));
+
+    it('should include tab=by-season query param when on by-season tab', fakeAsync(() => {
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      // Switch to by-season tab (index 1)
+      component.onTabChange(1);
+      component.copyLinkToClipboard();
+      tick();
+
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\?tab=by-season$/)
+      );
+    }));
+
+    it('should include tab=graphs query param when on graphs tab', fakeAsync(() => {
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      // Switch to graphs tab (index 2 when hasSeasons)
+      component.onTabChange(2);
+      component.copyLinkToClipboard();
+      tick();
+
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\?tab=graphs$/)
+      );
+    }));
+
+    it('should not include tab query param when on all tab', fakeAsync(() => {
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      // Ensure we're on all tab (index 0)
+      component.onTabChange(0);
+      component.copyLinkToClipboard();
+      tick();
+
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one$/)
+      );
+      // Verify no query params
+      expect(writeTextSpy).not.toHaveBeenCalledWith(
+        jasmine.stringMatching(/\?tab=/)
+      );
+    }));
+
+    it('should include tab=graphs for player without seasons on graphs tab', fakeAsync(() => {
+      // Reset with player that has scores but no seasons
+      const playerWithScores = {
+        ...mockSkaterWithoutSeasons,
+        scores: {
+          goals: 75,
+          assists: 82,
+          points: 90,
+          plusMinus: 60,
+          penalties: 45,
+          shots: 70,
+          ppp: 65,
+          shp: 55,
+          hits: 80,
+          blocks: 72,
+        },
+      };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: playerWithScores },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: '1', name: 'Colorado' }])
+      );
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      // Switch to graphs tab (index 1 when no seasons)
+      c.onTabChange(1);
+      c.copyLinkToClipboard();
+      tick();
+
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/player\/colorado\/player-one\?tab=graphs$/)
+      );
+    }));
+
+    it('should include season in path for single-season data', fakeAsync(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: mockGoalieSingleSeason },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: '1', name: 'Colorado' }])
+      );
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      c.copyLinkToClipboard();
+      tick();
+
+      // Season is now in the path, not query param
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\/2024$/)
+      );
+    }));
+
+    it('should include season in path and tab as query param for single-season data on graphs tab', fakeAsync(() => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          // Single season with scores (so graphs tab is available)
+          {
+            provide: MAT_DIALOG_DATA,
+            useValue: {
+              ...mockGoalieSingleSeason,
+              scores: { wins: 80, saves: 90, shutouts: 70 },
+            },
+          },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: '1', name: 'Colorado' }])
+      );
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const writeTextSpy = spyOn(navigator.clipboard, 'writeText').and.returnValue(
+        Promise.resolve()
+      );
+
+      // Switch to graphs tab (index 1 for single season data with scores)
+      c.onTabChange(1);
+      c.copyLinkToClipboard();
+      tick();
+
+      // Season in path, tab as query param
+      expect(writeTextSpy).toHaveBeenCalledWith(
+        jasmine.stringMatching(/\/goalie\/colorado\/goalie-one\/2024\?tab=graphs$/)
+      );
+    }));
   });
 });

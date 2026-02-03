@@ -23,5 +23,33 @@ export const routes: Routes = [
         (m) => m.GoalieStatsComponent
       ),
   },
+  {
+    path: 'player/:teamSlug/:playerSlug/:season',
+    loadComponent: () =>
+      import('./player-route/player-route.component').then(
+        (m) => m.PlayerRouteComponent
+      ),
+  },
+  {
+    path: 'player/:teamSlug/:playerSlug',
+    loadComponent: () =>
+      import('./player-route/player-route.component').then(
+        (m) => m.PlayerRouteComponent
+      ),
+  },
+  {
+    path: 'goalie/:teamSlug/:goalieSlug/:season',
+    loadComponent: () =>
+      import('./goalie-route/goalie-route.component').then(
+        (m) => m.GoalieRouteComponent
+      ),
+  },
+  {
+    path: 'goalie/:teamSlug/:goalieSlug',
+    loadComponent: () =>
+      import('./goalie-route/goalie-route.component').then(
+        (m) => m.GoalieRouteComponent
+      ),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

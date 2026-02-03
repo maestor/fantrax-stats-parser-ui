@@ -111,6 +111,56 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Similar structure to PlayerStatsComponent but for goalies**
 
+---
+
+### PlayerRouteComponent
+
+**Location**: `src/app/player-route/`
+
+**Type**: Smart Component (Route Handler)
+
+**Purpose**: Handle direct URL navigation to player cards via `/player/:teamSlug/:playerSlug`
+
+**Key Features**:
+
+- Extracts team and player slugs from route parameters
+- Supports optional season as path segment (e.g., `/player/colorado/jamie-benn/2024`)
+- Supports optional `?tab=all|by-season|graphs` query parameter
+- Team lookup by slug (e.g., `colorado`) or ID (e.g., `1`)
+- Sets season in FilterService so season switcher shows correct selection
+- Displays PlayerStatsComponent as background
+- Opens PlayerCardComponent modal automatically
+- Navigates to `/player-stats` on modal close
+
+**Route Patterns**:
+- `/player/:teamSlug/:playerSlug` - Combined stats (all seasons)
+- `/player/:teamSlug/:playerSlug/:season` - Single season stats
+
+**Examples**:
+- `/player/colorado/jamie-benn` - Combined stats
+- `/player/colorado/jamie-benn/2024` - 2024-25 season stats
+- `/player/colorado/jamie-benn/2024?tab=graphs` - Season stats with graphs tab
+
+**Error Handling**:
+- Shows error overlay if team or player not found
+- Provides navigation button to return to stats page
+
+---
+
+### GoalieRouteComponent
+
+**Location**: `src/app/goalie-route/`
+
+**Type**: Smart Component (Route Handler)
+
+**Purpose**: Handle direct URL navigation to goalie cards via `/goalie/:teamSlug/:goalieSlug`
+
+**Similar structure to PlayerRouteComponent but for goalies**
+
+**Route Patterns**:
+- `/goalie/:teamSlug/:goalieSlug` - Combined stats
+- `/goalie/:teamSlug/:goalieSlug/:season` - Single season stats
+
 ## Shared Components
 
 ### TeamSwitcherComponent
@@ -365,8 +415,21 @@ toggleExpanded(): void {
 **Data Input**: Injected via `MAT_DIALOG_DATA`
 
 ```typescript
+// Supports both formats:
+// 1. Direct player/goalie object (legacy)
 data: Player | Goalie;
+
+// 2. Wrapped format with optional initial tab (for URL routing)
+data: {
+  player: Player | Goalie;
+  initialTab?: 'all' | 'by-season' | 'graphs';
+};
 ```
+
+**Initial Tab Support**:
+- When `initialTab` is provided, the dialog opens directly to that tab
+- Used by route components to support `?tab=...` query parameter
+- Falls back to tab 0 if the requested tab is not available (e.g., `by-season` when no seasons exist)
 
 **Key Features**:
 
@@ -378,6 +441,7 @@ data: Player | Goalie;
 - **Sticky Headers**: Table headers remain visible while scrolling through seasons
 - **Responsive Design**: Adapts to mobile and desktop viewports with optimized layouts
 - **Intelligent Column Ordering**: Automatically reorders columns for optimal readability
+- **Copy Link**: Link icon button next to player name copies shareable URL to clipboard
 - **Mobile-Optimized Controls**: Collapsible graph controls on mobile devices
 
 **Position Filter Toggle (Players Only)**:
@@ -471,9 +535,17 @@ toggleGraphControls(): void {
 **Usage**:
 
 ```typescript
-// In stats-table.component.ts
+// In stats-table.component.ts (wrapped format)
 this.dialog.open(PlayerCardComponent, {
-  data: playerOrGoalieData,
+  data: { player: playerOrGoalieData },
+  maxWidth: "95vw",
+  width: "auto",
+  panelClass: "player-card-dialog",
+});
+
+// In route components (with initial tab)
+this.dialog.open(PlayerCardComponent, {
+  data: { player: playerOrGoalieData, initialTab: 'graphs' },
   maxWidth: "95vw",
   width: "auto",
   panelClass: "player-card-dialog",

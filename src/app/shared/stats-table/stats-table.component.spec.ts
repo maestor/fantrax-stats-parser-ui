@@ -635,7 +635,7 @@ describe('StatsTableComponent', () => {
       component.selectItem(mockPlayerData[0]);
 
       expect(dialog.open).toHaveBeenCalledWith(PlayerCardComponent, {
-        data: mockPlayerData[0],
+        data: { player: mockPlayerData[0] },
         maxWidth: '95vw',
         width: 'auto',
         panelClass: 'player-card-dialog',
@@ -653,7 +653,7 @@ describe('StatsTableComponent', () => {
       expect(dialog.open).toHaveBeenCalledWith(
         PlayerCardComponent,
         jasmine.objectContaining({
-          data: player,
+          data: { player },
         })
       );
     });
@@ -669,7 +669,7 @@ describe('StatsTableComponent', () => {
       expect(dialog.open).toHaveBeenCalledWith(
         PlayerCardComponent,
         jasmine.objectContaining({
-          data: goalie,
+          data: { player: goalie },
         })
       );
     });

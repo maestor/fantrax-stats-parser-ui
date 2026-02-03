@@ -13,10 +13,20 @@ import {
   Goalie,
   PlayerSeasonStats,
   GoalieSeasonStats,
+  ApiService,
 } from '@services/api.service';
 import { FilterService, PositionFilter } from '@services/filter.service';
+import { TeamService } from '@services/team.service';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { toSlug } from '../../utils/slug.utils';
 import { take } from 'rxjs';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
+export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
+
+export type PlayerCardDialogData = {
+  player: Player | Goalie;
+  initialTab?: PlayerCardTab;
+};
 
 interface StatRow {
   label: string;
@@ -41,18 +51,35 @@ interface StatRow {
 })
 export class PlayerCardComponent {
   readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
-  readonly data = inject<Player | Goalie>(MAT_DIALOG_DATA);
+  private rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
   private document = inject(DOCUMENT);
   private host = inject(ElementRef<HTMLElement>);
+  private apiService = inject(ApiService);
+  private teamService = inject(TeamService);
   private filterService = inject(FilterService);
   private cdr = inject(ChangeDetectorRef);
+
+  // Copy link feedback state
+  linkCopied = false;
   positionFilter: PositionFilter = 'all';
   statsPerGame = false;
 
   @ViewChild('closeButton', { read: ElementRef })
   closeButton?: ElementRef<HTMLButtonElement>;
 
+  // Support both wrapped format { player, initialTab } and direct Player/Goalie
+  readonly data: Player | Goalie = this.isWrappedData(this.rawDialogData)
+    ? this.rawDialogData.player
+    : this.rawDialogData;
+  readonly initialTab: PlayerCardTab | undefined = this.isWrappedData(this.rawDialogData)
+    ? this.rawDialogData.initialTab
+    : undefined;
+
   readonly isGoalie = 'wins' in this.data;
+
+  private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
+    return 'player' in data && (data as PlayerCardDialogData).player !== undefined;
+  }
 
   // Check if this data has seasons (combined stats)
   readonly hasSeasons = !!this.data.seasons && this.data.seasons.length > 0;
@@ -134,6 +161,33 @@ export class PlayerCardComponent {
       }
       this.updateGraphsInputs();
     });
+
+    // Set initial tab from dialog data if provided
+    if (this.initialTab) {
+      this.selectedTabIndex = this.getTabIndexFromName(this.initialTab);
+      // Pre-load graphs if that's the initial tab
+      const graphsTabIndex = this.hasSeasons ? 2 : 1;
+      if (this.selectedTabIndex === graphsTabIndex && this.showGraphsTab) {
+        this.graphsLoadPromise = this.ensureGraphsLoaded();
+        void this.graphsLoadPromise;
+      }
+    }
+  }
+
+  private getTabIndexFromName(tabName: PlayerCardTab): number {
+    switch (tabName) {
+      case 'all':
+        return 0;
+      case 'by-season':
+        // Only valid if hasSeasons, otherwise fall back to 0
+        return this.hasSeasons ? 1 : 0;
+      case 'graphs':
+        // Graphs is at index 2 if hasSeasons, otherwise index 1
+        if (!this.showGraphsTab) return 0;
+        return this.hasSeasons ? 2 : 1;
+      default:
+        return 0;
+    }
   }
 
   private buildStats(): void {
@@ -402,6 +456,51 @@ export class PlayerCardComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  copyLinkToClipboard(tooltip?: MatTooltip): void {
+    this.apiService.getTeams().pipe(take(1)).subscribe((teams) => {
+      const team = teams.find((t) => t.id === this.teamService.selectedTeamId);
+      if (!team) return;
+
+      const teamSlug = toSlug(team.name);
+      const playerSlug = toSlug(this.data.name);
+      const type = this.isGoalie ? 'goalie' : 'player';
+
+      // Build path - season is now in path for better SEO
+      const season = (this.data as { season?: number }).season;
+      const seasonPath = season !== undefined ? `/${season}` : '';
+
+      // Tab stays as query param (UI detail)
+      const tabName = this.getCurrentTabName();
+      const queryString = tabName !== 'all' ? `?tab=${tabName}` : '';
+
+      const url = `${this.document.location.origin}/${type}/${teamSlug}/${playerSlug}${seasonPath}${queryString}`;
+
+      navigator.clipboard.writeText(url).then(() => {
+        this.linkCopied = true;
+        // Show the tooltip with the "copied" message
+        tooltip?.show();
+        setTimeout(() => {
+          this.linkCopied = false;
+          tooltip?.hide();
+        }, 2000);
+      });
+    });
+  }
+
+  private getCurrentTabName(): PlayerCardTab {
+    if (this.hasSeasons) {
+      // Tabs: 0=all, 1=by-season, 2=graphs
+      switch (this.selectedTabIndex) {
+        case 1: return 'by-season';
+        case 2: return 'graphs';
+        default: return 'all';
+      }
+    } else {
+      // Tabs: 0=all, 1=graphs (no by-season tab)
+      return this.selectedTabIndex === 1 ? 'graphs' : 'all';
+    }
   }
 
   private async ensureGraphsLoaded(): Promise<void> {

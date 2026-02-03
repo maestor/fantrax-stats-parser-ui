@@ -17,7 +17,10 @@ fantrax-stats-parser-ui/
 │   │   │   ├── footer/
 │   │   │   └── navigation/
 │   │   ├── goalie-stats/     # Goalie stats page
+│   │   ├── goalie-route/     # Direct goalie card route handler
 │   │   ├── player-stats/     # Player stats page
+│   │   ├── player-route/     # Direct player card route handler
+│   │   ├── utils/            # Utility functions (slug generation)
 │   │   ├── services/         # Application services
 │   │   │   ├── api.service.ts
 │   │   │   ├── cache.service.ts
@@ -68,6 +71,23 @@ Smart component for goalie statistics view:
 - Fetches goalie data from API
 - Manages goalie-specific state
 - Renders stats table and controls
+
+### `/src/app/player-route/`
+Route handler for direct player card URLs:
+- Handles `/player/:teamSlug/:playerSlug` and `/player/:teamSlug/:playerSlug/:season` routes
+- Opens player card modal with optional tab selection (`?tab=all|by-season|graphs`)
+- Season in URL sets the season switcher in background
+- Shows player stats page as background
+
+### `/src/app/goalie-route/`
+Route handler for direct goalie card URLs:
+- Handles `/goalie/:teamSlug/:goalieSlug` and `/goalie/:teamSlug/:goalieSlug/:season` routes
+- Opens goalie card modal with optional tab selection
+- Shows goalie stats page as background
+
+### `/src/app/utils/`
+Utility functions:
+- **slug.utils.ts** - URL slug generation from names (e.g., "Jamie Benn" → "jamie-benn")
 
 ### `/src/app/services/`
 Application-wide services:

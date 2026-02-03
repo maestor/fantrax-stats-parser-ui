@@ -43,6 +43,33 @@ table.mat-mdc-table {
 mat-card-title {
   font-size: 24px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-link-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .position-filter-switch {
@@ -56,7 +83,8 @@ mat-card-title {
   height: 48px;
 }
 
-.mdc-icon-button {
+// Close button positioning (exclude copy-link-button which is inside the title)
+.mdc-icon-button:not(.copy-link-button) {
   position: absolute;
   right: 8px;
 }
