@@ -46,3 +46,9 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Playwright MCP screenshots
+.playwright-mcp/
+
+# Claude Code local configuration
+.claude/

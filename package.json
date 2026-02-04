@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run clean:playwright && ng serve",
     "build": "NODE_OPTIONS=--max-old-space-size=6144 ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "npm run test:watch -- --watch=false --progress=false",
@@ -15,7 +15,8 @@
     "test:coverage": "npm test -- --code-coverage --progress=false",
     "test:coverage:headless": "npm test -- --watch=false --code-coverage --browsers=ChromeHeadlessNoSandbox --progress=false",
     "test:headless": "npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox --progress=false",
-    "verify": "npm run test:coverage:headless && npm run build"
+    "verify": "npm run test:coverage:headless && npm run build",
+    "clean:playwright": "rm -rf .playwright-mcp"
   },
   "engines": {
     "node": ">=24 <25"

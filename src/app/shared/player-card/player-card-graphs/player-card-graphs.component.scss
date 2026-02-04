@@ -186,6 +186,17 @@
   flex-direction: column;
   gap: 16px;
 
+  // Ensure consistent modal height with line chart on mobile
+  @media (max-width: 768px) {
+    min-height: 310px;  // Match line chart height on mobile (579px modal)
+  }
+
+  // Ensure consistent modal dimensions with line chart on desktop
+  @media (min-width: 769px) {
+    min-width: 868px;
+    min-height: 551px;  // Match line chart height (770px modal)
+  }
+
   .chart-container.radar {
     position: relative;
     width: 100%;
@@ -195,13 +206,9 @@
     box-sizing: border-box;
     overflow-x: hidden;
 
-    // On wider screens, a fixed plot width is easier to read and avoids the canvas
-    // collapsing to a narrow column inside the dialog.
+    // Removed fixed width constraint to match line chart behavior
+    // and maintain consistent modal width across chart types
     @media (min-width: 769px) {
-      width: 650px;
-      max-width: 650px;
-      margin-left: auto;
-      margin-right: auto;
       padding: 0;
     }
 
@@ -215,11 +222,11 @@
     }
 
     @media (max-width: 768px) {
-      height: 380px;
+      height: 330px;  // Reduced to match line chart modal height
     }
 
     @media (max-width: 480px) {
-      height: 340px;
+      height: 290px;  // Reduced to match line chart modal height
     }
   }
 
