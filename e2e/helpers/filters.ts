@@ -88,7 +88,8 @@ export async function selectPosition(
       buttonName = FILTER_LABELS.POSITION_DEFENSE;
       break;
   }
-  await page.getByText(buttonName).click();
+  // Use getByRole to be more specific (avoids matching dropdown text)
+  await page.getByRole('button', { name: buttonName }).click();
   await waitForFilterUpdate(page);
 }
 
