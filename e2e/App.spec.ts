@@ -1,3 +1,9 @@
+/**
+ * DEPRECATED: Tests are being migrated to feature-based spec files.
+ * See e2e/specs/ directory for new test organization.
+ * This file will be removed once migration is complete.
+ */
+
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
