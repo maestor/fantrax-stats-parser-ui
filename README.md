@@ -135,10 +135,22 @@ npm run test:coverage
 npm run verify
 
 # E2E tests (Playwright)
-npx playwright test
+npx playwright test                   # Run all tests (headless, all browsers)
+npx playwright test --headed          # Run with visible browser
+npx playwright test --project=chromium # Run in specific browser
+npx playwright test e2e/specs/smoke.spec.ts # Run specific test file
 ```
 
-E2E tests use **Playwright** to cover the main user flows (landing page layout, navigation between player/goalie stats, and opening the Player Card with its career view). See docs/project-testing.md for detailed E2E scenarios and options.
+**Prerequisites:** Backend API must be running (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
+
+E2E tests use **Playwright** organized into feature-based specs:
+- `smoke.spec.ts` - Core page rendering and navigation
+- `player-card.spec.ts` - Player card dialog functionality
+- `team-switching.spec.ts` - Team selector behavior
+- `filters.spec.ts` - Report type, season, and stats filters
+- `mobile.spec.ts` - Mobile-responsive UI
+
+See docs/project-testing.md for detailed E2E architecture and best practices.
 
 ### Test Coverage Summary
 
