@@ -104,6 +104,10 @@ export async function switchReportType(
     type === 'regular'
       ? FILTER_LABELS.REPORT_TYPE_REGULAR
       : FILTER_LABELS.REPORT_TYPE_PLAYOFFS;
-  await page.getByText(label).click();
+  const reportTypeSelector = page.getByRole('combobox', {
+    name: 'Stats report type',
+  });
+  await reportTypeSelector.click();
+  await page.getByRole('option', { name: label }).click();
   await waitForFilterUpdate(page);
 }
