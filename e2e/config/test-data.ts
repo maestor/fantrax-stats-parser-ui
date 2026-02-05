@@ -1,0 +1,38 @@
+/**
+ * Shared test constants and configuration
+ */
+
+export const DEFAULT_TEAM = 'Colorado Avalanche';
+
+export const MOBILE_VIEWPORT = {
+  width: 390,
+  height: 844,
+};
+
+export const DESKTOP_VIEWPORT = {
+  width: 1280,
+  height: 720,
+};
+
+export const WAIT_TIMEOUT = 10000;
+
+export const FILTER_LABELS = {
+  TEAM: 'Joukkue',
+  SEASON: 'Kausivalitsin',
+  START_FROM: 'Alkaen kaudesta',
+  REPORT_TYPE_REGULAR: 'Runkosarja',
+  REPORT_TYPE_PLAYOFFS: 'Playoffs',
+  STATS_PER_GAME: 'Tilastot per ottelu',
+  MIN_GAMES: 'Otteluja pelattu vähintään',
+  POSITION_ALL: 'Kaikki',
+  POSITION_FORWARDS: 'Hyökkääjät',
+  POSITION_DEFENSE: 'Puolustajat',
+};
+
+export const TAB_LABELS = {
+  PLAYERS: 'Kenttäpelaajat',
+  GOALIES: 'Maalivahdit',
+  PLAYER_CARD_STATS: 'Tilastot',
+  PLAYER_CARD_BY_SEASON: 'Kausittain',
+  PLAYER_CARD_GRAPHS: 'Graafit',
+};
