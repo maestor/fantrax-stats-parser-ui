@@ -16,7 +16,13 @@
     "test:coverage:headless": "npm test -- --watch=false --code-coverage --browsers=ChromeHeadlessNoSandbox --progress=false",
     "test:headless": "npm test -- --watch=false --browsers=ChromeHeadlessNoSandbox --progress=false",
     "verify": "npm run test:coverage:headless && npm run build",
-    "clean:playwright": "rm -rf .playwright-mcp"
+    "clean:playwright": "rm -rf .playwright-mcp",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:headed": "playwright test --headed",
+    "e2e:debug": "playwright test --debug",
+    "e2e:mobile": "playwright test e2e/specs/mobile.spec.ts",
+    "e2e:smoke": "playwright test e2e/specs/smoke.spec.ts"
   },
   "engines": {
     "node": ">=24 <25"

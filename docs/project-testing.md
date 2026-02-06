@@ -55,7 +55,7 @@ npm test -- --include='**/api.service.spec.ts'
 
 ### E2E Tests (Playwright)
 
-The project uses **Playwright Test** for end-to-end (E2E) coverage.
+The project uses **Playwright Test** for end-to-end (E2E) coverage with a feature-based test organization.
 
 **Prerequisites:**
 
@@ -78,26 +78,132 @@ npx playwright test
 npx playwright test --headed
 
 # Run specific test file
-npx playwright test e2e/App.spec.ts
+npx playwright test e2e/specs/smoke.spec.ts
 
 # Run only in a single browser, e.g. Chromium
 npx playwright test --project=chromium
 ```
 
-**Current E2E coverage (high level):**
+#### Test Organization
 
-- Front page rendering and initial UI state (titles, navigation, filters, table)
-- Navigation between **Kenttäpelaajat** and **Maalivahdit** tabs and route changes
-- Opening the **Player Card** dialog from the stats table and switching to the **Kausittain** career tab when present
-- Search filtering via **Pelaajahaku**, including "no results" state
-- Report type switching (**Runkosarja** ↔ **Playoffs**) and its effect on table contents
-- Season selection via **Kausivalitsin** and its effect on table contents
-- **Tilastot per ottelu** toggle affecting per-player stats in the table
-- **Otteluja pelattu vähintään** slider reducing the visible rows based on minimum games
-- Goalie stats page behavior (filters, stats-per-game toggle, player card open)
-- Search clear/recovery (from "no results" back to full table)
-- Sorting by **Pisteet** and verifying row order changes
-- Isolation of player vs goalie filters when switching tabs
+E2E tests are organized into feature-based spec files under `e2e/specs/`:
+
+- **smoke.spec.ts** - Core functionality and navigation
+  - Initial page load and UI elements
+  - Tab navigation (player/goalie stats)
+  - Basic table interactions
+
+- **player-card.spec.ts** - Player detail dialog
+  - Opening player cards from table
+  - Career tabs (combined/by-season/graphs)
+  - Dialog interactions and data verification
+
+- **team-switching.spec.ts** - Team selector behavior
+  - Team selection dropdown
+  - Filter reset on team change
+  - URL updates and state persistence
+
+- **filters.spec.ts** - Report type, season, and stats filters
+  - Report type switching (regular/playoffs)
+  - Season selection
+  - Stats per game toggle
+  - Minimum games slider
+  - Search filtering
+  - Filter isolation between player/goalie views
+
+- **mobile.spec.ts** - Mobile-responsive UI
+  - Settings drawer on mobile viewports
+  - Collapsible controls
+  - Touch interactions
+
+**Supporting files:**
+
+- `e2e/page-objects/` - Page Object Model classes for reusable interactions
+- `e2e/helpers/` - Utility functions (viewport helpers, wait utilities)
+
+#### Best Practices
+
+**1. Accessibility-First Selectors**
+
+Use semantic selectors that reflect how users interact with the UI:
+
+```typescript
+// ✅ Good - Accessibility-first
+await page.getByRole('button', { name: 'Avaa asetuspaneeli' });
+await page.getByRole('combobox', { name: 'Kausivalitsin' });
+await page.getByLabel('Pelaajahaku');
+
+// ❌ Avoid - Brittle CSS selectors
+await page.locator('.settings-button');
+await page.locator('#season-select');
+```
+
+**2. Wait for Stable State**
+
+Always wait for data to load before assertions:
+
+```typescript
+// Wait for first row to be visible
+const rows = page.locator('tr[mat-row]');
+await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+
+// Then verify data
+expect(await rows.count()).toBeGreaterThan(0);
+```
+
+**3. Test User Flows, Not Implementation**
+
+Focus on what users do, not how the code works:
+
+```typescript
+// ✅ Good - Tests user behavior
+test('User can filter players by name', async ({ page }) => {
+  await page.getByLabel('Pelaajahaku').fill('Gretzky');
+  await expect(page.locator('tr[mat-row]')).toHaveCount(1);
+});
+
+// ❌ Avoid - Tests implementation details
+test('filterItems() updates dataSource.filter property', async ({ page }) => {
+  // Don't test internal component methods in E2E tests
+});
+```
+
+**4. Use Page Objects for Reusability**
+
+```typescript
+import { PlayerStatsPage } from '../page-objects/player-stats.page';
+
+test('Filter by season', async ({ page }) => {
+  const playerStats = new PlayerStatsPage(page);
+  await playerStats.goto();
+  await playerStats.selectSeason('2023-24');
+  await playerStats.expectTableHasRows();
+});
+```
+
+#### Current E2E Coverage
+
+**Core Functionality:**
+- ✅ Front page rendering and initial UI state
+- ✅ Navigation between Kenttäpelaajat and Maalivahdit tabs
+- ✅ Opening Player Card dialog with career tabs
+- ✅ Search filtering with "no results" state
+- ✅ Report type switching (Runkosarja ↔ Playoffs)
+- ✅ Season selection and data updates
+- ✅ Stats per game toggle
+- ✅ Minimum games slider
+- ✅ Table sorting by columns
+- ✅ Filter isolation between player/goalie views
+
+**Mobile:**
+- ✅ Settings drawer toggle
+- ✅ Collapsible controls
+- ✅ Touch-friendly interactions
+
+**Team Switching:**
+- ✅ Team selector dropdown
+- ✅ Filter reset on team change
+- ✅ Start season selection
 
 For contributor-oriented notes and architectural context, see the docs under `docs/`.
 

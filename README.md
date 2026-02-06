@@ -91,54 +91,42 @@ After changing Vercel env vars, redeploy so they take effect.
 ### Available Scripts
 
 ```bash
-# Development server
-npm start               # Runs on http://localhost:4200
+# Development
+npm start                              # Dev server on http://localhost:4200
 
 # Unit tests (Jasmine + Karma)
-npm test                # Run all tests once (Chrome)
-npm run test:watch      # Run tests in watch mode
-npm run test:headless   # Run tests in headless Chrome (may be flaky)
-npm run test:coverage   # Run unit tests with coverage
+npm test                               # Run once (Chrome)
+npm run test:watch                     # Watch mode
+npm run test:headless                  # Headless Chrome (may be flaky)
+npm run test:coverage                  # With coverage report
 
-# CI/local verification
-npm run verify           # Headless tests + production build
+# E2E tests (Playwright) — requires backend running
+npm run e2e                            # Run all (headless)
+npm run e2e:headed                     # Run with visible browser
+npm run e2e:ui                         # Interactive UI mode
+npm run e2e:smoke                      # Smoke tests only
 
-# E2E tests (Playwright)
-npx playwright test
+# CI / verification
+npm run verify                         # Headless unit tests + production build
 
 # Production build
-npm run build           # Build for production
+npm run build
 ```
 
 ## Testing
 
-This project has comprehensive unit test coverage (Jasmine + Karma). Run `npm test` to see the current test count and status.
+This project uses **Jasmine + Karma** for unit tests and **Playwright** for end-to-end tests. Run `npm test` to see the current unit test count and status.
 
 📖 **[Read the complete Testing Documentation](docs/project-testing.md)**
 
-Quick test commands:
+E2E tests are organized into feature-based specs under `e2e/specs/`:
+- `smoke.spec.ts` — Core page rendering and navigation
+- `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
+- `team-switching.spec.ts` — Team selector and filter reset behavior
+- `filters.spec.ts` — Report type, season, position, stats-per-game, and min games filters
+- `mobile.spec.ts` — Mobile-responsive UI, settings drawer, and mobile player card
 
-```bash
-# Run all unit tests (single run, Chrome)
-npm test
-
-# Run unit tests in watch mode
-npm run test:watch
-
-# Run unit tests in headless mode (may be flaky due to Karma infra)
-npm run test:headless
-
-# Run unit tests with coverage report
-npm run test:coverage
-
-# Verify (what CI runs: headless unit tests + production build)
-npm run verify
-
-# E2E tests (Playwright)
-npx playwright test
-```
-
-E2E tests use **Playwright** to cover the main user flows (landing page layout, navigation between player/goalie stats, and opening the Player Card with its career view). See docs/project-testing.md for detailed E2E scenarios and options.
+**Prerequisites:** Backend API must be running for E2E tests (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
 
 ### Test Coverage Summary
 
