@@ -25,14 +25,16 @@ export async function getAvailableTabs(page: Page): Promise<string[]> {
  */
 export async function hasLineGraphs(page: Page): Promise<boolean> {
   const dialog = page.getByRole('dialog');
-  // Look for graph series selection checkboxes (desktop) or accordion (mobile)
-  const checkboxes = dialog.locator('input[type="checkbox"]');
-  const accordion = dialog.getByText('Näytettävät tilastot');
+  // Wait briefly for graph content to load
+  await page.waitForTimeout(500);
+  // Look for graph series selection checkboxes or series selection heading
+  const checkboxes = dialog.getByRole('checkbox');
+  const seriesHeading = dialog.getByText('Valitse tilastot käyrille');
 
   const hasCheckboxes = (await checkboxes.count()) > 0;
-  const hasAccordion = (await accordion.count()) > 0;
+  const hasSeriesHeading = (await seriesHeading.count()) > 0;
 
-  return hasCheckboxes || hasAccordion;
+  return hasCheckboxes || hasSeriesHeading;
 }
 
 /**

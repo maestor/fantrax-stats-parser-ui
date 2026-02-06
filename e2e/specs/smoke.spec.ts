@@ -10,10 +10,15 @@ test.describe('Smoke Tests', () => {
     // Check page title
     await expect(page).toHaveTitle(/FFHL tilastopalvelu/);
 
-    // Check main heading contains default team
+    // Check heading
     await expect(
-      page.getByRole('heading', { name: new RegExp(DEFAULT_TEAM) })
+      page.getByRole('heading', { name: /FFHL tilastopalvelu/ })
     ).toBeVisible();
+
+    // Check default team is selected
+    await expect(
+      page.getByRole('combobox', { name: 'Joukkue' })
+    ).toContainText(DEFAULT_TEAM);
   });
 
   test('navigation tabs are visible', async ({ page }) => {
@@ -35,8 +40,10 @@ test.describe('Smoke Tests', () => {
       page.getByRole('combobox', { name: 'Kausivalitsin' })
     ).toBeVisible();
 
-    // Report type toggle
-    await expect(page.getByRole('radiogroup')).toBeVisible();
+    // Report type selector
+    await expect(
+      page.getByRole('combobox', { name: 'Stats report type' })
+    ).toBeVisible();
   });
 
   test('table renders with data', async ({ page }) => {

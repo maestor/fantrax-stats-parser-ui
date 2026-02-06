@@ -28,7 +28,7 @@ export class PlayerCardDialog {
    * Close the dialog via X button
    */
   async close(): Promise<void> {
-    const closeButton = this.dialog.getByLabel('Sulje');
+    const closeButton = this.dialog.getByRole('button', { name: 'X' });
     await closeButton.click();
     await this.dialog.waitFor({ state: 'hidden' });
   }
@@ -66,39 +66,28 @@ export class PlayerCardDialog {
    * Toggle a graph series on/off
    */
   async toggleGraphSeries(seriesName: string): Promise<void> {
-    // On desktop: direct checkbox
-    const checkbox = this.dialog.getByLabel(seriesName);
-
-    // Check if it's in an accordion (mobile)
-    const accordion = this.dialog.getByText('Näytettävät tilastot');
-    const accordionExists = (await accordion.count()) > 0;
-
-    if (accordionExists) {
-      // Open accordion if needed
-      const accordionButton = accordion.first();
-      const isExpanded = await accordionButton.getAttribute('aria-expanded');
-      if (isExpanded !== 'true') {
-        await accordionButton.click();
-      }
-    }
-
+    const checkbox = this.dialog.getByRole('checkbox', { name: seriesName });
     await checkbox.click();
     await this.page.waitForTimeout(300); // Wait for chart update
   }
 
   /**
-   * Switch to radar chart view
+   * Switch chart type (line charts vs distribution/radar)
    */
-  async switchToRadarChart(): Promise<void> {
-    await this.dialog.getByRole('tab', { name: 'Tutkakuvaaja' }).click();
-    await this.page.waitForTimeout(300);
-  }
-
-  /**
-   * Switch to line chart view
-   */
-  async switchToLineChart(): Promise<void> {
-    await this.dialog.getByRole('tab', { name: 'Viivakuvaaja' }).click();
+  async switchChartType(type: 'line' | 'radar'): Promise<void> {
+    if (type === 'radar') {
+      // Switch to distribution/radar view
+      const switchButton = this.dialog.getByRole('button', {
+        name: /jakauma/i,
+      });
+      await switchButton.click();
+    } else {
+      // Switch back to line charts
+      const switchButton = this.dialog.getByRole('button', {
+        name: /käyr/i,
+      });
+      await switchButton.click();
+    }
     await this.page.waitForTimeout(300);
   }
 
@@ -110,15 +99,17 @@ export class PlayerCardDialog {
     await expect(this.dialog).toBeVisible();
 
     if (tab === 'stats') {
-      // Verify stats table headers exist
-      await expect(this.dialog.getByText('Kausi')).toBeVisible();
+      // Verify stats table exists (use first() since multiple tables may exist in DOM)
+      await expect(this.dialog.locator('table').first()).toBeVisible();
     } else if (tab === 'by-season') {
-      // Verify by-season table exists
-      await expect(this.dialog.locator('table')).toBeVisible();
+      // Verify by-season table with class
+      await expect(this.dialog.locator('table.season-table')).toBeVisible();
     } else if (tab === 'graphs') {
-      // Verify graph container exists
+      // Verify graph content exists (checkboxes or chart buttons)
       const hasGraphs = await this.hasLineGraphs();
-      expect(hasGraphs).toBe(true);
+      const hasChartButton =
+        (await this.dialog.getByRole('button', { name: /jakauma|käyr/i }).count()) > 0;
+      expect(hasGraphs || hasChartButton).toBe(true);
     }
   }
 

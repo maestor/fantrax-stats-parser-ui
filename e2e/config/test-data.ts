@@ -25,8 +25,8 @@ export const FILTER_LABELS = {
   STATS_PER_GAME: 'Tilastot per ottelu',
   MIN_GAMES: 'Otteluja pelattu vähintään',
   POSITION_ALL: 'Kaikki',
-  POSITION_FORWARDS: 'Hyökkääjät',
-  POSITION_DEFENSE: 'Puolustajat',
+  POSITION_FORWARDS: 'H',
+  POSITION_DEFENSE: 'P',
 };
 
 export const TAB_LABELS = {

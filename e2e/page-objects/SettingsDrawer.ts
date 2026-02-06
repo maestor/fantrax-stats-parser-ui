@@ -19,44 +19,57 @@ export class SettingsDrawer {
   async open(): Promise<void> {
     const settingsButton = this.page.getByLabel('Avaa asetuspaneeli');
     await settingsButton.click();
-    // Wait for drawer animation
-    await this.page.waitForTimeout(300);
+    // Wait for drawer open animation to complete (not just start)
+    await this.page
+      .locator('mat-sidenav.mat-drawer-opened:not(.mat-drawer-animating)')
+      .waitFor({ state: 'visible', timeout: 5000 });
   }
 
   /**
    * Close settings drawer via button
    */
   async close(): Promise<void> {
-    // Wait a moment for any ongoing animations
+    // Wait for any pending operations before closing
     await this.page.waitForTimeout(300);
-
-    // Click the settings icon to toggle (close) the drawer
-    const settingsIcon = this.page.locator('mat-sidenav-content button[aria-label*="Sulje"]');
-    await settingsIcon.waitFor({ state: 'visible', timeout: 5000 });
-    await settingsIcon.click({ force: true, timeout: 5000 });
-
-    // Wait for drawer to close
-    await this.page.waitForTimeout(800);
+    // Check if drawer is already closed (e.g. auto-closed on route change)
+    const isCurrentlyOpen = await this.isOpen();
+    if (!isCurrentlyOpen) {
+      return;
+    }
+    // The close button inside the drawer
+    const closeButton = this.page.getByLabel('Sulje asetuspaneeli').first();
+    await closeButton.click({ timeout: 5000 });
+    // Wait for drawer close animation to complete
+    await this.page
+      .locator('mat-sidenav.mat-drawer-opened')
+      .waitFor({ state: 'hidden', timeout: 5000 })
+      .catch(() => {});
+    await this.page.waitForTimeout(300);
   }
 
   /**
    * Close via Escape key
    */
   async closeViaEscape(): Promise<void> {
-    // Press Escape key
+    // Ensure open animation is complete before pressing Escape
+    await this.page
+      .locator('mat-sidenav.mat-drawer-opened:not(.mat-drawer-animating)')
+      .waitFor({ state: 'visible', timeout: 5000 });
     await this.page.keyboard.press('Escape');
-    // Wait for drawer to close
-    await this.page.waitForTimeout(800);
+    // Wait for drawer close animation to complete
+    await this.page
+      .locator('mat-sidenav.mat-drawer-opened')
+      .waitFor({ state: 'hidden', timeout: 5000 })
+      .catch(() => {});
+    await this.page.waitForTimeout(300);
   }
 
   /**
    * Check if drawer is open
    */
   async isOpen(): Promise<boolean> {
-    // Check if drawer container is visible (mobile drawer is position="start")
-    const drawer = this.page.locator('mat-sidenav[position="start"]');
-    const classes = await drawer.getAttribute('class');
-    return classes?.includes('mat-drawer-opened') || false;
+    const openDrawer = this.page.locator('mat-sidenav.mat-drawer-opened');
+    return (await openDrawer.count()) > 0;
   }
 
   /**

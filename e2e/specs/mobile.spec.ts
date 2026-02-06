@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 import { PlayerCardDialog } from '../page-objects/PlayerCardDialog';
-import { StatsTable } from '../page-objects/StatsTable';
 import { MOBILE_VIEWPORT, DEFAULT_TEAM } from '../config/test-data';
 import { waitForTableData } from '../helpers/table';
 import { waitForTeamChange } from '../helpers/wait';
@@ -10,12 +9,10 @@ test.describe('Mobile', () => {
   test.use({ viewport: MOBILE_VIEWPORT });
 
   let settingsDrawer: SettingsDrawer;
-  let statsTable: StatsTable;
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     settingsDrawer = new SettingsDrawer(page);
-    statsTable = new StatsTable(page);
     await waitForTableData(page);
   });
 
@@ -65,7 +62,7 @@ test.describe('Mobile', () => {
       await expect(teamSelector).toBeVisible();
     });
 
-    test('closes drawer via button', async ({ page }) => {
+    test('closes drawer via button', async () => {
       // Open drawer first
       await settingsDrawer.open();
       const isOpenBefore = await settingsDrawer.isOpen();
@@ -79,7 +76,7 @@ test.describe('Mobile', () => {
       expect(isOpenAfter).toBe(false);
     });
 
-    test('closes drawer via Escape key', async ({ page }) => {
+    test('closes drawer via Escape key', async () => {
       // Open drawer
       await settingsDrawer.open();
       const isOpenBefore = await settingsDrawer.isOpen();
@@ -110,10 +107,7 @@ test.describe('Mobile', () => {
       await page.waitForTimeout(500);
       await settingsDrawer.open();
 
-      const drawer = page.locator('mat-sidenav[position="start"]');
-      const statsToggle = drawer.getByRole('switch', {
-        name: 'Tilastot per ottelu',
-      });
+      const statsToggle = page.getByLabel('Tilastot per ottelu');
       await expect(statsToggle).toBeChecked();
 
       await settingsDrawer.close();
@@ -133,13 +127,10 @@ test.describe('Mobile', () => {
       await settingsDrawer.open();
 
       // Verify filters are still set
-      const drawer = page.locator('mat-sidenav[position="start"]');
-      const statsToggle = drawer.getByRole('switch', {
-        name: 'Tilastot per ottelu',
-      });
+      const statsToggle = page.getByLabel('Tilastot per ottelu');
       await expect(statsToggle).toBeChecked();
 
-      const minGamesSlider = drawer.locator('input[type="range"]');
+      const minGamesSlider = page.locator('#min-games-slider input[type="range"]');
       const sliderValue = await minGamesSlider.inputValue();
       expect(parseInt(sliderValue)).toBeGreaterThanOrEqual(30);
     });

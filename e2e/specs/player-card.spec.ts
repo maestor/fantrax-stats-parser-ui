@@ -138,8 +138,8 @@ test.describe('Player Card', () => {
   });
 
   test('opens player card via direct URL', async ({ page }) => {
-    // Navigate directly to player card URL
-    await page.goto('/?playerId=8471214'); // Jamie Benn's ID
+    // Navigate directly to player card URL using slug-based routing
+    await page.goto('/player/colorado/jamie-benn');
 
     // Wait for dialog to open
     const dialog = page.getByRole('dialog');
@@ -153,7 +153,7 @@ test.describe('Player Card', () => {
     page,
   }) => {
     // Navigate directly to player card with graphs tab
-    await page.goto('/?playerId=8471214&tab=graphs');
+    await page.goto('/player/colorado/jamie-benn?tab=graphs');
 
     // Wait for dialog to open
     const dialog = page.getByRole('dialog');

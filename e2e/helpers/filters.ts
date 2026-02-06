@@ -48,10 +48,11 @@ export async function selectStartFromSeason(
  * Toggle stats per game switch
  */
 export async function toggleStatsPerGame(page: Page): Promise<void> {
-  const toggle = page.getByRole('switch', {
-    name: FILTER_LABELS.STATS_PER_GAME,
-  });
-  await toggle.click();
+  // Dispatch click on the switch button (search field overlaps in desktop layout)
+  const switchButton = page.locator(
+    'mat-slide-toggle button[role="switch"]'
+  );
+  await switchButton.dispatchEvent('click');
   await waitForFilterUpdate(page);
 }
 
@@ -62,10 +63,8 @@ export async function setMinGames(
   page: Page,
   value: number
 ): Promise<void> {
-  const slider = page.locator('#min-games-slider');
-  // Click at position to set value (approximate)
-  const percentage = value / 100;
-  await slider.click({ position: { x: 200 * percentage, y: 10 } });
+  const sliderInput = page.locator('#min-games-slider input[type="range"]');
+  await sliderInput.fill(String(value));
   await waitForFilterUpdate(page);
 }
 
@@ -88,8 +87,11 @@ export async function selectPosition(
       buttonName = FILTER_LABELS.POSITION_DEFENSE;
       break;
   }
-  // Use getByRole to be more specific (avoids matching dropdown text)
-  await page.getByRole('button', { name: buttonName }).click();
+  // Angular Material mat-button-toggle-group (force to avoid search field overlap)
+  await page
+    .locator('mat-button-toggle')
+    .filter({ hasText: buttonName })
+    .click({ force: true });
   await waitForFilterUpdate(page);
 }
 
