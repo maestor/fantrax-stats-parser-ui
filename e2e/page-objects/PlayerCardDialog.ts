@@ -105,11 +105,11 @@ export class PlayerCardDialog {
       // Verify by-season table with class
       await expect(this.dialog.locator('table.season-table')).toBeVisible();
     } else if (tab === 'graphs') {
-      // Verify graph content exists (checkboxes or chart buttons)
-      const hasGraphs = await this.hasLineGraphs();
-      const hasChartButton =
-        (await this.dialog.getByRole('button', { name: /jakauma|käyr/i }).count()) > 0;
-      expect(hasGraphs || hasChartButton).toBe(true);
+      // Wait for graph content: either checkboxes (line charts) or chart type buttons (radar)
+      const graphContent = this.dialog
+        .getByRole('checkbox')
+        .or(this.dialog.getByRole('button', { name: /jakauma|käyr/i }));
+      await expect(graphContent.first()).toBeVisible({ timeout: 10000 });
     }
   }
 
@@ -131,7 +131,7 @@ export class PlayerCardDialog {
    * Copy player link
    */
   async copyPlayerLink(): Promise<void> {
-    const linkButton = this.dialog.getByLabel('Kopioi pelaajan linkki');
+    const linkButton = this.dialog.getByLabel('Kopioi linkki leikepöydälle');
     await linkButton.click();
     // Wait for clipboard operation
     await this.page.waitForTimeout(200);

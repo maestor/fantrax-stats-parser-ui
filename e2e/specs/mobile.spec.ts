@@ -161,12 +161,52 @@ test.describe('Mobile', () => {
       // Switch to graphs tab
       await playerCard.switchToTab('graphs');
 
-      // Verify graphs are visible (accordion feature not yet implemented)
+      // Verify graphs are visible
       await playerCard.verifyTabContent('graphs');
 
       // Verify line graphs are visible
       const hasLineGraphs = await playerCard.hasLineGraphs();
       expect(hasLineGraphs).toBe(true);
+    });
+
+    test('graph accordion toggles series on mobile', async ({ page }) => {
+      // Ensure "Kaikki kaudet" is selected for line graphs
+      await settingsDrawer.open();
+      await settingsDrawer.selectSeason('Kaikki kaudet');
+      await settingsDrawer.close();
+
+      // Open player card
+      const playerCard = new PlayerCardDialog(page);
+      await playerCard.open('Jamie Benn');
+
+      // Switch to graphs tab
+      await playerCard.switchToTab('graphs');
+
+      // Open the graph controls accordion
+      const accordionButton = page.locator('button.graphs-controls-toggle');
+      await accordionButton.click();
+
+      // Verify accordion expanded
+      await expect(accordionButton).toHaveAttribute('aria-expanded', 'true');
+
+      // Verify checkboxes are visible in the accordion
+      const controlsList = page.locator('.graphs-controls.visible');
+      await expect(controlsList).toBeVisible();
+
+      // Toggle a series off (e.g., "Pisteet" / Points)
+      const checkbox = controlsList.getByRole('checkbox', { name: 'Pisteet' });
+      await expect(checkbox).toBeVisible();
+      await checkbox.click();
+      await page.waitForTimeout(300);
+
+      // Toggle it back on
+      await checkbox.click();
+      await page.waitForTimeout(300);
+
+      // Close accordion by clicking the overlay backdrop
+      const overlay = page.locator('.graphs-controls-overlay.visible');
+      await overlay.click();
+      await expect(accordionButton).toHaveAttribute('aria-expanded', 'false');
     });
   });
 });

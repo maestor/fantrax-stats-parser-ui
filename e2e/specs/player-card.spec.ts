@@ -137,6 +137,70 @@ test.describe('Player Card', () => {
     expect(hasLineGraphs).toBe(true);
   });
 
+  test('copy link button copies shareable URL', async ({
+    page,
+    browserName,
+  }) => {
+    // Clipboard permissions only supported on Chromium
+    test.skip(
+      browserName !== 'chromium',
+      'Clipboard API permissions not supported'
+    );
+
+    await playerCard.open('Jamie Benn');
+
+    // Grant clipboard permissions (Chromium only)
+    await page
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
+
+    // Click copy link button
+    await playerCard.copyPlayerLink();
+
+    // Verify clipboard contains the player URL
+    const clipboardText = await page.evaluate(() =>
+      navigator.clipboard.readText()
+    );
+    expect(clipboardText).toContain('/player/colorado/jamie-benn');
+  });
+
+  test('compare toggle state persists across tabs', async ({ page }) => {
+    // Ensure "Kaikki kaudet" is selected so all 3 tabs are available
+    const seasonSelector = page.getByRole('combobox', {
+      name: 'Kausivalitsin',
+    });
+    await seasonSelector.click();
+    await page.getByRole('option', { name: 'Kaikki kaudet' }).click();
+
+    await playerCard.open('Jamie Benn');
+
+    // Find the compare toggle (mat-slide-toggle inside .position-filter-switch)
+    const compareToggle = page
+      .getByRole('dialog')
+      .locator('mat-slide-toggle button[role="switch"]');
+
+    // Toggle should be unchecked initially
+    await expect(compareToggle).toHaveAttribute('aria-checked', 'false');
+
+    // Enable the compare toggle
+    await compareToggle.dispatchEvent('click');
+    await expect(compareToggle).toHaveAttribute('aria-checked', 'true');
+
+    // Switch to by-season tab and back
+    await playerCard.switchToTab('by-season');
+    await playerCard.switchToTab('stats');
+
+    // Verify toggle state persisted
+    await expect(compareToggle).toHaveAttribute('aria-checked', 'true');
+
+    // Switch to graphs tab and back
+    await playerCard.switchToTab('graphs');
+    await playerCard.switchToTab('stats');
+
+    // Verify toggle state still persisted
+    await expect(compareToggle).toHaveAttribute('aria-checked', 'true');
+  });
+
   test('opens player card via direct URL', async ({ page }) => {
     // Navigate directly to player card URL using slug-based routing
     await page.goto('/player/colorado/jamie-benn');
