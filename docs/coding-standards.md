@@ -386,6 +386,10 @@ describe('DataService', () => {
 
 ## File Organization
 
+### No `.gitkeep` files
+
+Do not add `.gitkeep` files to directories. If a directory has no tracked files, it does not need to exist in the repository yet — create it when real content is added.
+
 ### Imports Order
 
 1. Angular core imports
