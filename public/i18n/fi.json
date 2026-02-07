@@ -14,7 +14,6 @@
     "playerSearch": "Pelaajahaku",
     "noSearchResults": "Ei hakutuloksia",
     "loading": "Ladataan dataa...",
-    "loadingWarmup": "Rajapintapalvelu käynnistyy, voi kestää jopa minuutin...",
     "apiUnavailable": "Rajapinta ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen."
   },
   "a11y": {

@@ -119,8 +119,6 @@ describe('StatsTableComponent', () => {
           playerSearch: 'Pelaajahaku',
           noSearchResults: 'Ei hakutuloksia',
           loading: 'Ladataan dataa...',
-          loadingWarmup:
-            'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin',
           apiUnavailable: 'Rajapinta ei ole saatavilla juuri nyt.',
         },
       },
@@ -734,52 +732,6 @@ describe('StatsTableComponent', () => {
       tick(1999);
       fixture.detectChanges();
       expect(fixture.nativeElement.textContent).toContain('Ladataan dataa...');
-    }));
-
-    it('should switch to warmup message after 2 seconds of loading', fakeAsync(() => {
-      component.data = [];
-      component.columns = playerColumns;
-      component.loading = true;
-
-      component.ngOnChanges({
-        loading: new SimpleChange(false, true, false),
-        data: new SimpleChange(null, [], true),
-      });
-      fixture.detectChanges();
-
-      tick(2000);
-      fixture.detectChanges();
-
-      expect(fixture.nativeElement.textContent).toContain(
-        'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin'
-      );
-    }));
-
-    it('should not show warmup message if loading ends before 2 seconds', fakeAsync(() => {
-      component.data = [];
-      component.columns = playerColumns;
-      component.loading = true;
-
-      component.ngOnChanges({
-        loading: new SimpleChange(false, true, false),
-        data: new SimpleChange(null, [], true),
-      });
-      fixture.detectChanges();
-
-      tick(1000);
-      component.loading = false;
-      component.ngOnChanges({
-        loading: new SimpleChange(true, false, false),
-      });
-      fixture.detectChanges();
-
-      tick(2000);
-      fixture.detectChanges();
-
-      expect(fixture.nativeElement.textContent).not.toContain(
-        'Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin'
-      );
-      expect(fixture.nativeElement.textContent).toContain('Ei hakutuloksia');
     }));
 
     it('should show API unavailable message when apiError is true', fakeAsync(() => {
