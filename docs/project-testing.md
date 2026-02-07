@@ -57,21 +57,24 @@ npm test -- --include='**/api.service.spec.ts'
 
 The project uses **Playwright Test** for end-to-end (E2E) coverage with a feature-based test organization.
 
-**Prerequisites:**
+**Prerequisites (local):**
 
 - Playwright browsers installed: `npx playwright install`
-- Backend API running (see project README and backend repo)
+- Backend API running on `http://localhost:3000` (see project README and backend repo)
+
+**In CI:** E2E tests run without a live backend. API responses are served from JSON fixtures in `e2e/fixtures/data/` via Playwright's `page.route()` mocking. The production build is served with `npx serve`.
 
 The Playwright config is defined in `playwright.config.ts` and:
 
 - Uses `baseURL` `http://localhost:4200`
-- Starts (or reuses) the Angular dev server via `webServer` with `npm start`
+- Locally: starts (or reuses) the Angular dev server via `npm start`
+- In CI: serves the production build via `npx serve dist/fantrax-stats-parser-ui/browser`
 - Runs tests against Chromium, Firefox and WebKit
 
 **Basic commands:**
 
 ```bash
-# Run all E2E tests (headless, all browsers)
+# Run all E2E tests (headless, all browsers) — requires backend on :3000
 npx playwright test
 
 # Run in headed mode (for debugging)
@@ -82,6 +85,12 @@ npx playwright test e2e/specs/smoke.spec.ts
 
 # Run only in a single browser, e.g. Chromium
 npx playwright test --project=chromium
+
+# Run with API mocking (simulates CI mode)
+CI=true npx playwright test
+
+# Capture/update API fixtures from live backend
+npm run e2e:capture-fixtures
 ```
 
 #### Test Organization
@@ -120,6 +129,10 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
 
 - `e2e/page-objects/` - Page Object Model classes for reusable interactions
 - `e2e/helpers/` - Utility functions (viewport helpers, wait utilities)
+- `e2e/fixtures/test-fixture.ts` - Custom Playwright fixture that activates API mocking in CI
+- `e2e/fixtures/data/` - JSON API response fixtures captured from the live backend
+- `e2e/mocks/api-mock.ts` - Route mocking helper using `page.route()`
+- `e2e/scripts/capture-fixtures.ts` - Script to capture fixtures from the live backend
 
 #### Best Practices
 
@@ -563,21 +576,26 @@ test("should navigate between player and goalie stats", async ({ page }) => {
 
 ## Continuous Integration
 
-### GitHub Actions (if applicable)
+The CI pipeline (`.github/workflows/ci.yml`) runs two parallel jobs on every PR and push to main:
 
-```yaml
-name: Tests
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npm test -- --browsers=ChromeHeadless --watch=false
-      - run: npx playwright test
+1. **Verify** — unit tests with coverage + production build (`npm run verify`)
+2. **E2E Tests** — builds the app, then runs Playwright tests against the production build with API fixtures (no live backend needed)
+
+E2E tests upload the Playwright HTML report and test results as GitHub Actions artifacts when tests fail (retained for 7 days).
+
+### Updating API Fixtures
+
+Re-capture fixtures when:
+
+1. **New E2E tests** need API endpoints or parameter combinations not yet captured — add matching entries to `buildFixtureList()` in `e2e/scripts/capture-fixtures.ts`, then re-run
+2. **New season starts** (regular or playoffs) — the capture script resolves season indices dynamically, so a re-run picks up the new data automatically
+
+```bash
+# Requires backend running on localhost:3000
+npm run e2e:capture-fixtures
 ```
+
+This fetches the API responses the E2E tests depend on and saves them as JSON files in `e2e/fixtures/data/`. Commit the updated fixtures alongside your changes.
 
 ## Writing New Tests
 

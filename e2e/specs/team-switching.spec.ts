@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/test-fixture';
 import { DEFAULT_TEAM } from '../config/test-data';
 import { selectTeam, toggleStatsPerGame } from '../helpers/filters';
 import { waitForTableData, getFirstRowText } from '../helpers/table';

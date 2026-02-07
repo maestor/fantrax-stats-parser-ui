@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/test-fixture';
 import { PlayerCardDialog } from '../page-objects/PlayerCardDialog';
 import { StatsTable } from '../page-objects/StatsTable';
 

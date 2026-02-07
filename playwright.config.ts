@@ -22,7 +22,9 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env['CI'] ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: process.env['CI']
+    ? [['html', { open: 'never' }], ['list']]
+    : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -32,13 +34,20 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-  /* Automatically run the Angular dev server for local E2E runs */
-  webServer: {
-    command: 'npm start',
-    url: 'http://localhost:4200',
-    reuseExistingServer: !process.env['CI'],
-    timeout: 120000,
-  },
+  /* In CI: serve the production build; locally: run Angular dev server */
+  webServer: process.env['CI']
+    ? {
+        command: 'npx serve dist/fantrax-stats-parser-ui/browser -s -l 4200',
+        url: 'http://localhost:4200',
+        reuseExistingServer: false,
+        timeout: 30000,
+      }
+    : {
+        command: 'npm start',
+        url: 'http://localhost:4200',
+        reuseExistingServer: true,
+        timeout: 120000,
+      },
 
   /* Configure projects for major browsers */
   projects: [
