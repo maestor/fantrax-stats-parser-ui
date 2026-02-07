@@ -64,6 +64,7 @@ export type PlayerSeasonStats = {
 
 export type Player = {
   name: string;
+  season?: number;
   position?: PlayerPosition;
   score: number;
   scoreAdjustedByGames: number;
@@ -109,6 +110,7 @@ export type GoalieSeasonStats = {
 
 export type Goalie = {
   name: string;
+  season?: number;
   score: number;
   scoreAdjustedByGames: number;
   games: number;

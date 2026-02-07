@@ -8,6 +8,7 @@ export class StatsService {
   getPlayerStatsPerGame(data: Player[]): Player[] {
     return this.getStatsPerGame(data, [
       'name',
+      'season',
       'games',
       'plusMinus',
       'position',
@@ -18,14 +19,14 @@ export class StatsService {
   }
 
   getGoalieStatsPerGame(data: Goalie[]): Goalie[] {
-    return this.getStatsPerGame(data, ['name', 'games', 'gaa', 'savePercent']);
+    return this.getStatsPerGame(data, ['name', 'season', 'games', 'gaa', 'savePercent']);
   }
 
   private getStatsPerGame<
-    T extends { games: number; scoreAdjustedByGames: number }
+    T extends { games: number; scoreAdjustedByGames: number, season?: number }
   >(data: T[], fixedFields: (keyof T)[]): T[] {
     return data.map((item) => {
-      const { games, scoreAdjustedByGames, ...rest } = item;
+      const { games, scoreAdjustedByGames, season, ...rest } = item;
       // Create the per-game stats for the dynamic fields
       const perGameStats = Object.fromEntries(
         Object.entries(rest).map(([key, value]) => [
@@ -39,6 +40,7 @@ export class StatsService {
         ...perGameStats,
         score: scoreAdjustedByGames,
         scoreAdjustedByGames: scoreAdjustedByGames,
+        seasons: (item as any).seasons, // Preserve seasons if they exist
         ...Object.fromEntries(fixedFields.map((field) => [field, item[field]])),
       } as unknown as T;
     });

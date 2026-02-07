@@ -87,7 +87,7 @@ export class PlayerCardComponent {
   readonly hasSeasons = !!this.data.seasons && this.data.seasons.length > 0;
 
   // Determine view context (combined vs season)
-  readonly viewContext: 'combined' | 'season' = this.hasSeasons && this.data.seasons!.length > 1 ? 'combined' : 'season';
+  readonly viewContext: 'combined' | 'season' = this.hasSeasons ? 'combined' : 'season';
 
   // Show Graphs tab if combined data with multiple seasons OR season data with scores
   readonly showGraphsTab = (this.hasSeasons && this.data.seasons!.length > 1) || (!this.hasSeasons && !!this.data.scores);
@@ -202,6 +202,10 @@ export class PlayerCardComponent {
     const excludedColumns = [...this.baseExcludedColumns];
     if (this.statsPerGame) {
       excludedColumns.push('score');
+    }
+
+    if (this.viewContext === 'combined') {
+      excludedColumns.push('season');
     }
 
     // Determine if we should use position-based scores
