@@ -1,0 +1,35 @@
+<div class="comparison-dialog"
+     [attr.aria-label]="'Vertailu: ' + data.playerA.name + ' vs ' + data.playerB.name">
+  <div class="dialog-header">
+    <h2>{{ title }}</h2>
+    <button mat-icon-button (click)="dialogRef.close()" #closeButton aria-label="Sulje">X</button>
+  </div>
+  @if (isMobile$ | async; as isMobile) {
+    <div class="dialog-ingress">
+      <p class="ingress-names"><strong>{{ getIngressText(true) }}</strong></p>
+      @if (teamName) {
+        <p class="ingress-team">{{ teamName }}</p>
+      }
+    </div>
+  } @else {
+    <div class="dialog-ingress">
+      <p class="ingress-names"><strong>{{ getIngressText(false) }}</strong></p>
+      @if (teamName) {
+        <p class="ingress-team">{{ teamName }}</p>
+      }
+    </div>
+  }
+  <mat-tab-group>
+    <mat-tab [label]="'comparison.statsTab' | translate">
+      <app-comparison-stats
+        [playerA]="data.playerA"
+        [playerB]="data.playerB"
+        [isMobile]="(isMobile$ | async) ?? false" />
+    </mat-tab>
+    <mat-tab [label]="'comparison.graphsTab' | translate">
+      <app-comparison-radar
+        [playerA]="data.playerA"
+        [playerB]="data.playerB" />
+    </mat-tab>
+  </mat-tab-group>
+</div>

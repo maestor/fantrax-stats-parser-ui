@@ -1,0 +1,76 @@
+.comparison-dialog {
+  min-width: 600px;
+  max-width: 960px;
+  width: 100%;
+  padding: 8px 0 0 0;
+  background-color: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  button {
+    flex-shrink: 0;
+  }
+}
+
+.dialog-ingress {
+  text-align: center;
+  padding: 8px 16px 0;
+
+  .ingress-names {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  .ingress-team {
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+mat-tab-group {
+  width: 100%;
+}
+
+// Tablet landscape and medium screens
+@media (max-width: 960px) {
+  .comparison-dialog {
+    max-width: 90vw;
+  }
+}
+
+// Tablet portrait and small screens
+@media (max-width: 768px) {
+  .comparison-dialog {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .dialog-header h2 {
+    font-size: 20px;
+  }
+}
+
+// Small mobile
+@media (max-width: 480px) {
+  .comparison-dialog {
+    min-width: 100%;
+    padding: 4px 0 0 0;
+  }
+
+  .dialog-header h2 {
+    font-size: 18px;
+  }
+}

@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { map, first } from 'rxjs/operators';
 import { ComparisonService } from '@services/comparison.service';
+import { ComparisonDialogComponent, ComparisonDialogData } from '@shared/comparison-dialog/comparison-dialog.component';
 
 @Component({
   selector: 'app-comparison-bar',
@@ -15,6 +17,7 @@ import { ComparisonService } from '@services/comparison.service';
 export class ComparisonBarComponent {
   private comparisonService = inject(ComparisonService);
   private translateService = inject(TranslateService);
+  private dialog = inject(MatDialog);
 
   readonly selection$ = this.comparisonService.selection$;
 
@@ -45,9 +48,13 @@ export class ComparisonBarComponent {
   onCompare(): void {
     this.comparisonService.orderedSelection$.pipe(first()).subscribe((ordered) => {
       if (ordered) {
-        // ComparisonDialogComponent will be created in Task 6
-        // For now, just log to verify wiring works
-        console.log('Compare:', ordered.playerA.name, 'vs', ordered.playerB.name);
+        const dialogData: ComparisonDialogData = ordered;
+        this.dialog.open(ComparisonDialogComponent, {
+          data: dialogData,
+          maxWidth: '95vw',
+          width: 'auto',
+          panelClass: 'comparison-dialog-panel',
+        });
       }
     });
   }
