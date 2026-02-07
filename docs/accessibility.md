@@ -99,17 +99,17 @@ On desktop, the Graphs tab shows a long list of stat checkboxes. To keep tab nav
   - `ArrowUp` focuses the active tab header (quickly return to tab navigation)
   - `ArrowDown` focuses the dialog close button
 
-### Help dialog shortcut
+### Global keyboard shortcuts
 
-The app provides a small help dialog (opened from the info icon next to the title) and a global keyboard shortcut:
+The app provides global keyboard shortcuts (handled in `AppComponent`):
 
-- Press `?` to open the help dialog
-  - Also supports `Shift + /` (common layout behavior)
-- The shortcut must **not** trigger while typing in:
+- Press `/` to focus the search field (GitHub-style)
+- Press `?` to open the help dialog (detection uses `event.key`, so it works regardless of keyboard layout)
+- Shortcuts must **not** trigger while typing in:
   - `<input>`, `<textarea>`, `<select>`
   - contenteditable elements
 
-This keeps the shortcut discoverable without interfering with normal text entry.
+This keeps the shortcuts discoverable without interfering with normal text entry.
 
 ## Development Checklist (Always)
 

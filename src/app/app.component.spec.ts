@@ -229,9 +229,15 @@ describe("AppComponent", () => {
     expect(dialog.open).toHaveBeenCalled();
   });
 
-  it("should open help dialog on Shift+/ keydown", () => {
+  it("should focus search on / keydown even with shiftKey (Finnish keyboard layout)", () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
+
+    const searchInput = document.createElement("input");
+    searchInput.type = "search";
+    document.body.appendChild(searchInput);
+    const focusSpy = spyOn(searchInput, "focus");
+    const selectSpy = spyOn(searchInput, "select");
 
     const event = new KeyboardEvent("keydown", {
       key: "/",
@@ -240,7 +246,10 @@ describe("AppComponent", () => {
     });
     document.dispatchEvent(event);
 
-    expect(dialog.open).toHaveBeenCalled();
+    expect(focusSpy).toHaveBeenCalled();
+    expect(selectSpy).toHaveBeenCalled();
+    expect(dialog.open).not.toHaveBeenCalled();
+    searchInput.remove();
   });
 
   it("should not open help dialog on ? keydown when typing in input", () => {
@@ -829,6 +838,81 @@ describe("AppComponent", () => {
       app.activateUpdateAndReload();
 
       expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
+    });
+  });
+
+  describe("search focus shortcut (/)", () => {
+    it("should focus and select search input on / keydown", () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      const searchInput = document.createElement("input");
+      searchInput.type = "search";
+      document.body.appendChild(searchInput);
+
+      const focusSpy = spyOn(searchInput, "focus");
+      const selectSpy = spyOn(searchInput, "select");
+
+      const preventDefault = jasmine.createSpy("preventDefault");
+      app.onDocumentKeydown({
+        key: "/",
+        shiftKey: false,
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault,
+        target: document.body,
+      } as any);
+
+      expect(preventDefault).toHaveBeenCalled();
+      expect(focusSpy).toHaveBeenCalled();
+      expect(selectSpy).toHaveBeenCalled();
+
+      document.body.removeChild(searchInput);
+    });
+
+    it("should not focus search when / is pressed in an input field", () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      const searchInput = document.createElement("input");
+      searchInput.type = "search";
+      document.body.appendChild(searchInput);
+
+      const focusSpy = spyOn(searchInput, "focus");
+
+      app.onDocumentKeydown({
+        key: "/",
+        shiftKey: false,
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault: jasmine.createSpy("preventDefault"),
+        target: { tagName: "INPUT", isContentEditable: false },
+      } as any);
+
+      expect(focusSpy).not.toHaveBeenCalled();
+
+      document.body.removeChild(searchInput);
+    });
+
+    it("should no-op when no search input exists in DOM", () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      const preventDefault = jasmine.createSpy("preventDefault");
+      app.onDocumentKeydown({
+        key: "/",
+        shiftKey: false,
+        altKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        preventDefault,
+        target: document.body,
+      } as any);
+
+      // Should not throw, just no-op
+      expect(preventDefault).toHaveBeenCalled();
     });
   });
 

@@ -703,6 +703,7 @@ Uses `resolveCssColorVar()` helper to read CSS variables from Material theme:
 
 - From the app shell title row in `AppComponent` (info icon next to the title)
 - Keyboard shortcut: `?` (also supports `Shift + /` on layouts where that is how `?` is produced)
+- Related shortcut: `/` focuses the search field (same guards — ignored in form fields and contenteditable)
 
 **Content model (flexible order)**:
 
@@ -720,6 +721,113 @@ Supported block types:
 
 - The info icon button is icon-only and must have `aria-label`.
 - The dialog provides a close button and keeps interactions keyboard-first.
+
+### ComparisonBarComponent
+
+**Location**: `src/app/shared/comparison-bar/`
+
+**Type**: Presentational Component
+
+**Purpose**: Floating bottom bar that shows the current comparison selection state and a "Compare" button.
+
+**Key Features**:
+
+- Appears when at least one player/goalie is selected for comparison
+- Shows names of selected players (up to 2)
+- "Vertaa" (Compare) button becomes enabled when exactly 2 players are selected
+- "Tyhjennä" (Clear) button to reset the selection
+- Opens `ComparisonDialogComponent` via `MatDialog` when compare is clicked
+
+**Visibility Logic**:
+
+- Hidden when no players are selected
+- Slides up from the bottom when selection starts
+- Auto-hides after the comparison dialog is opened and closed
+
+**Dependencies**:
+
+- `ComparisonService` — selection state
+- `MatDialog` — opens comparison dialog
+
+---
+
+### ComparisonDialogComponent
+
+**Location**: `src/app/shared/comparison-dialog/`
+
+**Type**: Dialog Component
+
+**Purpose**: Side-by-side comparison of two players or goalies with stats and radar chart tabs.
+
+**Data Input**: Injected via `MAT_DIALOG_DATA`
+
+```typescript
+data: {
+  players: [Player | Goalie, Player | Goalie];
+}
+```
+
+**Key Features**:
+
+- **Dynamic Title**: Position-aware — "Hyökkääjävertailu" (forward comparison), "Puolustajavertailu" (defense), "Pelaajavertailu" (mixed positions), "Maalivahtivertailu" (goalies)
+- **Two Tabs**: "Tilastot" (Stats) and "Graafit" (Graphs/Radar)
+- **Responsive**: Narrow layout (≤480px) adjusts padding and sizing via `BreakpointObserver`
+
+**Child Components**:
+
+- `ComparisonStatsComponent` — Stats tab content
+- `ComparisonRadarComponent` — Graphs tab content
+
+---
+
+### ComparisonStatsComponent
+
+**Location**: `src/app/shared/comparison-dialog/comparison-stats/`
+
+**Type**: Presentational Component
+
+**Purpose**: Renders side-by-side stat rows for two players/goalies with visual emphasis on the better value.
+
+**Inputs**:
+
+```typescript
+@Input() players!: [Player | Goalie, Player | Goalie];
+```
+
+**Key Features**:
+
+- Builds stat rows from `PLAYER_STAT_COLUMNS` or `GOALIE_STAT_COLUMNS` (from `table-columns.ts`)
+- **Bold highlighting**: The better value in each row is bolded
+- **Direction-aware**: Higher is better for most stats; lower is better for GAA
+- Stat labels are translated via `ngx-translate`
+
+---
+
+### ComparisonRadarComponent
+
+**Location**: `src/app/shared/comparison-dialog/comparison-radar/`
+
+**Type**: Presentational Component
+
+**Purpose**: Radar chart overlay comparing two players' normalized score breakdowns.
+
+**Inputs**:
+
+```typescript
+@Input() players!: [Player | Goalie, Player | Goalie];
+```
+
+**Key Features**:
+
+- Chart.js radar chart via `ng2-charts`
+- Two overlapping datasets (one per player) with distinct colors
+- **Player stats**: 10 axes (goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks)
+- **Goalie stats**: 3 axes (wins, saves, shutouts) — uses combined-season score breakdown
+- 0-100 normalized scale with gridlines at 20-step intervals
+- Tooltips show "PlayerName: Value/100"
+- Theme-integrated colors via CSS variable resolution
+
+---
 
 ## Component Communication Patterns
 

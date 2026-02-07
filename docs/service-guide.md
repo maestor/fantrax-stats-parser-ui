@@ -381,6 +381,37 @@ export class ApiService {
 }
 ```
 
+### ComparisonService
+**Location**: `src/app/services/comparison.service.ts`
+
+**Purpose**: Manage player/goalie selection state for the comparison feature
+
+**Responsibilities**:
+- Track up to 2 selected players or goalies for comparison
+- Expose selection state as observables
+- Auto-clear selection when team, season, report type, or stats-per-game filter changes
+- Provide toggle/clear helpers
+
+**Key API**:
+```typescript
+class ComparisonService {
+  readonly selected$: Observable<(Player | Goalie)[]>;
+  readonly count$: Observable<number>;
+
+  toggle(item: Player | Goalie): void;  // Add or remove from selection (max 2)
+  clear(): void;                         // Reset selection to empty
+  isSelected(item: Player | Goalie): boolean;
+}
+```
+
+**Auto-Clear Triggers**:
+- `TeamService.selectedTeamId$` changes
+- `FilterService.playerFilters$` or `goalieFilters$` changes (season, reportType, statsPerGame)
+
+This ensures stale selections don't persist across different data views.
+
+---
+
 ## Service Interaction Patterns
 
 ### Practical Data Flow (as implemented)
@@ -390,7 +421,9 @@ FilterService (UI filter state) ─┐
 TeamService (team state)        ├─> Feature page (PlayerStats/GoalieStats)
 ApiService (HTTP + cache) ──────┘           │
 StatsService (per-game transform) ──────────┤
+ComparisonService (2-player selection) ─────┤
                       └─> StatsTable (search/sort/keyboard + Player Card)
+                                            └─> ComparisonBar → ComparisonDialog
 ```
 
 ### Example: Fetching and Displaying Stats

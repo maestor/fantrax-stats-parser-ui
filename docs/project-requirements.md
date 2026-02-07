@@ -433,7 +433,7 @@ Before marking work complete, verify:
 - [ ] Test coverage meets gate (>=98% statements/lines/functions, >=96% branches)
 - [ ] No TypeScript errors
 - [ ] Code follows project structure
-- [ ] Documentation updated
+- [ ] Documentation updated (README, related docs/*.md)
 - [ ] Commit message follows format
 - [ ] New user-facing features have E2E tests (Playwright)
 

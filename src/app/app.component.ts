@@ -253,21 +253,36 @@ export class AppComponent implements OnInit {
 
   @HostListener("document:keydown", ["$event"])
   onDocumentKeydown(event: KeyboardEvent): void {
-    const isQuestionMark =
-      event.key === "?" || (event.key === "/" && event.shiftKey);
-    if (!isQuestionMark) return;
     if (event.altKey || event.ctrlKey || event.metaKey) return;
 
     const target = event.target as HTMLElement | null;
     if (target?.isContentEditable) return;
 
     const tagName = target?.tagName?.toLowerCase();
-    if (tagName === "input" || tagName === "textarea" || tagName === "select") {
+    const isInFormField =
+      tagName === "input" || tagName === "textarea" || tagName === "select";
+
+    if (event.key === "?" && !isInFormField) {
+      event.preventDefault();
+      this.openHelpDialog();
       return;
     }
 
-    event.preventDefault();
-    this.openHelpDialog();
+    if (event.key === "/" && !isInFormField) {
+      event.preventDefault();
+      this.focusSearchField();
+      return;
+    }
+  }
+
+  private focusSearchField(): void {
+    const searchInput = this.document.querySelector<HTMLInputElement>(
+      'input[type="search"]',
+    );
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.select();
+    }
   }
 
   openHelpDialog(): void {

@@ -24,12 +24,17 @@ fantrax-stats-parser-ui/
 │   │   ├── services/         # Application services
 │   │   │   ├── api.service.ts
 │   │   │   ├── cache.service.ts
+│   │   │   ├── comparison.service.ts
 │   │   │   ├── drawer-context.service.ts
 │   │   │   ├── filter.service.ts
 │   │   │   ├── stats.service.ts
 │   │   │   ├── team.service.ts
 │   │   │   └── viewport.service.ts
 │   │   ├── shared/           # Shared components
+│   │   │   ├── comparison-bar/
+│   │   │   ├── comparison-dialog/
+│   │   │   │   ├── comparison-stats/
+│   │   │   │   └── comparison-radar/
 │   │   │   ├── help-dialog/
 │   │   │   ├── player-card/
 │   │   │   ├── settings-panel/
@@ -97,6 +102,7 @@ Application-wide services:
 - **filter.service.ts** - Reactive UI filter state (season/report/statsPerGame/minGames)
 - **cache.service.ts** - In-memory caching for API responses
 - **team.service.ts** - Selected team state (used by top controls + pages)
+- **comparison.service.ts** - 2-player selection state for comparison feature (auto-clears on filter/team changes)
 - **viewport.service.ts** - Viewport breakpoint detection (mobile vs desktop)
 - **drawer-context.service.ts** - Provides per-page context (e.g. max games) to the mobile settings drawer
 
@@ -114,8 +120,16 @@ Expandable per-page settings area:
 - **min-games-slider/** - Minimum games filter
 - **stats-mode-toggle/** - Toggle per-game stats mode
 
+#### `comparison-bar/`
+Floating bottom bar showing comparison selection state (0-2 players). Shows "Vertaa" button when 2 selected.
+
+#### `comparison-dialog/`
+Side-by-side comparison dialog with two tabs:
+- **comparison-stats/** - Stat rows with bold highlighting for better values
+- **comparison-radar/** - Chart.js radar chart overlay comparing normalized scores
+
 #### `help-dialog/`
-Help/instructions dialog opened from the info icon (and `?` shortcut)
+Help/instructions dialog opened from the info icon (and `?` shortcut). Global `/` shortcut focuses the search field.
 
 #### `stats-table/`
 Main data table component:
