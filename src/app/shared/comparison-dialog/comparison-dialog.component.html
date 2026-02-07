@@ -24,7 +24,7 @@
       <app-comparison-stats
         [playerA]="data.playerA"
         [playerB]="data.playerB"
-        [isMobile]="(isMobile$ | async) ?? false" />
+        [isMobile]="(isNarrow$ | async) ?? false" />
     </mat-tab>
     <mat-tab [label]="'comparison.graphsTab' | translate">
       <app-comparison-radar

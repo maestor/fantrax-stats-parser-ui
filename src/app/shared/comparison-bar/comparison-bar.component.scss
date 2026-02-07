@@ -33,3 +33,11 @@
   font-size: 14px;
   color: var(--mat-sys-on-surface);
 }
+
+// Clear button: neutral color (white in dark mode, dark in light mode)
+:host ::ng-deep .mat-mdc-outlined-button:not(:disabled) {
+  --mdc-outlined-button-label-text-color: var(--mat-sys-on-surface);
+  --mdc-outlined-button-outline-color: var(--mat-sys-outline);
+  color: var(--mat-sys-on-surface) !important;
+  border-color: var(--mat-sys-outline) !important;
+}

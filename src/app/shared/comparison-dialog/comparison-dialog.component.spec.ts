@@ -258,6 +258,16 @@ describe('ComparisonDialogComponent', () => {
     });
   });
 
+  describe('isNarrow$', () => {
+    it('should emit from BreakpointObserver', (done) => {
+      setup({ playerA: mockForwardA, playerB: mockForwardB });
+      component.isNarrow$.subscribe((isNarrow) => {
+        expect(typeof isNarrow).toBe('boolean');
+        done();
+      });
+    });
+  });
+
   describe('isMixedPosition', () => {
     it('should return true for forward vs defense', () => {
       setup({ playerA: mockForwardA, playerB: mockDefenseA });

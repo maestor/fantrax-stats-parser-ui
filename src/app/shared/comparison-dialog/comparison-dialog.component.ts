@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs';
+import { map, take } from 'rxjs';
 import type { Player, Goalie } from '@services/api.service';
 import { ApiService } from '@services/api.service';
 import { TeamService } from '@services/team.service';
@@ -36,6 +37,9 @@ export class ComparisonDialogComponent {
   readonly data = inject<ComparisonDialogData>(MAT_DIALOG_DATA);
   readonly dialogRef = inject(MatDialogRef<ComparisonDialogComponent>);
   readonly isMobile$ = inject(ViewportService).isMobile$;
+  readonly isNarrow$ = inject(BreakpointObserver)
+    .observe('(max-width: 480px)')
+    .pipe(map((result) => result.matches));
   private translateService = inject(TranslateService);
   private apiService = inject(ApiService);
   private teamService = inject(TeamService);
