@@ -229,9 +229,15 @@ describe("AppComponent", () => {
     expect(dialog.open).toHaveBeenCalled();
   });
 
-  it("should open help dialog on Shift+/ keydown", () => {
+  it("should focus search on / keydown even with shiftKey (Finnish keyboard layout)", () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
+
+    const searchInput = document.createElement("input");
+    searchInput.type = "search";
+    document.body.appendChild(searchInput);
+    const focusSpy = spyOn(searchInput, "focus");
+    const selectSpy = spyOn(searchInput, "select");
 
     const event = new KeyboardEvent("keydown", {
       key: "/",
@@ -240,7 +246,10 @@ describe("AppComponent", () => {
     });
     document.dispatchEvent(event);
 
-    expect(dialog.open).toHaveBeenCalled();
+    expect(focusSpy).toHaveBeenCalled();
+    expect(selectSpy).toHaveBeenCalled();
+    expect(dialog.open).not.toHaveBeenCalled();
+    searchInput.remove();
   });
 
   it("should not open help dialog on ? keydown when typing in input", () => {

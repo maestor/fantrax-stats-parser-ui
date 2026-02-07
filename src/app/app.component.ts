@@ -262,16 +262,13 @@ export class AppComponent implements OnInit {
     const isInFormField =
       tagName === "input" || tagName === "textarea" || tagName === "select";
 
-    const isQuestionMark =
-      event.key === "?" || (event.key === "/" && event.shiftKey);
-
-    if (isQuestionMark && !isInFormField) {
+    if (event.key === "?" && !isInFormField) {
       event.preventDefault();
       this.openHelpDialog();
       return;
     }
 
-    if (event.key === "/" && !event.shiftKey && !isInFormField) {
+    if (event.key === "/" && !isInFormField) {
       event.preventDefault();
       this.focusSearchField();
       return;

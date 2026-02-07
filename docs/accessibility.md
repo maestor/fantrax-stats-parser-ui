@@ -104,8 +104,7 @@ On desktop, the Graphs tab shows a long list of stat checkboxes. To keep tab nav
 The app provides global keyboard shortcuts (handled in `AppComponent`):
 
 - Press `/` to focus the search field (GitHub-style)
-- Press `?` to open the help dialog
-  - Also supports `Shift + /` (common layout behavior)
+- Press `?` to open the help dialog (detection uses `event.key`, so it works regardless of keyboard layout)
 - Shortcuts must **not** trigger while typing in:
   - `<input>`, `<textarea>`, `<select>`
   - contenteditable elements
