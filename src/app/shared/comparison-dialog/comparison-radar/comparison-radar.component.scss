@@ -1,0 +1,43 @@
+.comparison-radar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  margin: 0;
+  padding: 0 8px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+.chart-info {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0;
+  padding: 0 16px;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 330px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    height: 280px;
+  }
+}

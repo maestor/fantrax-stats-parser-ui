@@ -38,4 +38,8 @@ export const GOALIE_SEASON_COLUMNS = [
   ...COMMON_COLUMNS,
 ];
 
-export const STATIC_COLUMNS = ['position'];
+export const PLAYER_STAT_COLUMNS = PLAYER_COLUMNS.filter(c => c !== 'position' && c !== 'name');
+export const GOALIE_STAT_COLUMNS = GOALIE_COLUMNS.filter(c => c !== 'position' && c !== 'name');
+export const GOALIE_SEASON_STAT_COLUMNS = GOALIE_SEASON_COLUMNS.filter(c => c !== 'position' && c !== 'name');
+
+export const STATIC_COLUMNS = ['compare', 'position'];

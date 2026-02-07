@@ -1,0 +1,13 @@
+<div class="comparison-radar">
+  <div class="chart-container">
+    <canvas
+      baseChart
+      [type]="'radar'"
+      [data]="radarChartData"
+      [options]="radarChartOptions"
+    ></canvas>
+  </div>
+  <p class="chart-info">
+    {{ 'graphs.radarInfo' | translate }}
+  </p>
+</div>

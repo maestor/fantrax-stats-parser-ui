@@ -1,0 +1,43 @@
+:host {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.comparison-bar {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: var(--mat-sys-surface-container-high);
+  border-top: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 12px 12px 0 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 16px;
+    gap: 8px;
+    border-radius: 0;
+  }
+}
+
+.bar-text {
+  font-size: 14px;
+  color: var(--mat-sys-on-surface);
+}
+
+// Clear button: neutral color (white in dark mode, dark in light mode)
+:host ::ng-deep .mat-mdc-outlined-button:not(:disabled) {
+  --mdc-outlined-button-label-text-color: var(--mat-sys-on-surface);
+  --mdc-outlined-button-outline-color: var(--mat-sys-outline);
+  color: var(--mat-sys-on-surface) !important;
+  border-color: var(--mat-sys-outline) !important;
+}

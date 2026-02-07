@@ -74,6 +74,14 @@
   text-align: center;
 }
 
+.mat-column-compare {
+  max-width: 44px;
+  width: 44px;
+  padding: 0 2px;
+  text-align: center;
+  overflow: visible;
+}
+
 .mat-column-position {
   text-align: center;
 }
@@ -163,4 +171,37 @@
   color: var(--mat-sys-on-primary-container);
 }
 
+// Brighten enabled checkbox borders for dark mode visibility
+:host ::ng-deep .mat-mdc-checkbox:not(.mat-mdc-checkbox-disabled) .mdc-checkbox__background {
+  border-color: var(--mat-sys-on-surface-variant) !important;
+}
 
+// Improve disabled checkbox visibility in dark mode
+:host ::ng-deep .mat-mdc-checkbox.mat-mdc-checkbox-disabled {
+  opacity: 0.5;
+
+  .mdc-checkbox__background {
+    border-color: var(--mat-sys-outline) !important;
+  }
+}
+
+// Checkbox on active/hovered row: ensure contrast with primary-container background
+:host ::ng-deep .mat-mdc-row:hover,
+:host ::ng-deep .mat-mdc-row.a11y-active {
+  .mat-mdc-checkbox .mdc-checkbox__background {
+    border-color: var(--mat-sys-on-primary-container) !important;
+  }
+
+  .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: var(--mat-sys-on-primary-container) !important;
+    border-color: var(--mat-sys-on-primary-container) !important;
+  }
+
+  .mat-mdc-checkbox .mdc-checkbox__checkmark {
+    color: var(--mat-sys-primary-container) !important;
+  }
+
+  .mat-mdc-checkbox.mat-mdc-checkbox-disabled {
+    opacity: 0.5;
+  }
+}

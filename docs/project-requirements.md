@@ -435,6 +435,7 @@ Before marking work complete, verify:
 - [ ] Code follows project structure
 - [ ] Documentation updated
 - [ ] Commit message follows format
+- [ ] New user-facing features have E2E tests (Playwright)
 
 ---
 

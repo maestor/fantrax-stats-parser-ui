@@ -1,0 +1,13 @@
+@if (visible$ | async) {
+  <div class="comparison-bar" role="status" aria-live="polite">
+    <span class="bar-text">{{ barText$ | async }}</span>
+    @if (showCompareButton$ | async) {
+      <button mat-raised-button color="primary" (click)="onCompare()">
+        {{ 'comparison.compare' | translate }}
+      </button>
+    }
+    <button mat-stroked-button (click)="onClear()">
+      {{ 'comparison.clear' | translate }}
+    </button>
+  </div>
+}

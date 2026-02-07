@@ -191,7 +191,6 @@ button[mat-icon-button]:focus-visible,
   // Focus outline for the whole checkbox row (checkbox + label), drawn INSIDE to avoid clipping.
   .mat-mdc-checkbox:has(.mdc-checkbox__native-control:focus-visible) .mdc-form-field {
     box-sizing: border-box;
-    padding-right: 8px;
     border-radius: 12px;
     background-color: color-mix(in srgb, var(--mat-sys-primary) 7%, transparent);
     box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 55%, transparent);
@@ -206,7 +205,6 @@ button[mat-icon-button]:focus-visible,
 
   .mat-mdc-checkbox:focus-within .mdc-form-field {
     box-sizing: border-box;
-    padding-right: 8px;
     border-radius: 12px;
     background-color: color-mix(in srgb, var(--mat-sys-primary) 7%, transparent);
     box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 55%, transparent);
@@ -407,6 +405,40 @@ button[mat-icon-button]:focus-visible,
   }
 
   // Mobile: ensure consistent 95vw width and remove padding
+  @media (max-width: 768px) {
+    .mat-mdc-dialog-container {
+      max-width: 95vw !important;
+      width: 95vw !important;
+      padding: 0 !important;
+      max-height: calc(var(--app-height) - 8px) !important;
+
+      .mdc-dialog__surface {
+        max-width: 95vw !important;
+        width: 95vw !important;
+        padding: 0 !important;
+        max-height: calc(var(--app-height) - 8px) !important;
+      }
+    }
+  }
+}
+
+/* Comparison dialog styles */
+.comparison-dialog-panel {
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+    width: auto !important;
+    max-height: calc(var(--app-height) - 16px) !important;
+
+    .mdc-dialog__surface {
+      max-width: 95vw !important;
+      width: auto !important;
+      max-height: calc(var(--app-height) - 16px) !important;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  // Mobile: match player card sizing (full width with margins)
   @media (max-width: 768px) {
     .mat-mdc-dialog-container {
       max-width: 95vw !important;
