@@ -34,7 +34,7 @@ test.describe('Smoke Tests', () => {
     ).toBeVisible();
   });
 
-  test('table renders with data', async ({ page }) => {
+  test('table renders with data and / key focuses search', async ({ page }) => {
     await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
     await expect(page.getByRole('table')).toBeVisible();
 
@@ -42,6 +42,11 @@ test.describe('Smoke Tests', () => {
     await rows.first().waitFor({ state: 'visible', timeout: 10000 });
     const count = await rows.count();
     expect(count).toBeGreaterThan(0);
+
+    // Press / to focus search field
+    await page.keyboard.press('/');
+    const searchInput = page.getByLabel('Pelaajahaku');
+    await expect(searchInput).toBeFocused();
   });
 
   test('basic tab switching works', async ({ page }) => {

@@ -88,6 +88,17 @@
       },
       {
         "type": "h2",
+        "text": "Pikanäppäimet"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "/ — kohdista hakukenttä",
+          "? — avaa tämä ohje"
+        ]
+      },
+      {
+        "type": "h2",
         "text": "Pelaajakortti"
       },
       {

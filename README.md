@@ -17,6 +17,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📈 **Stats Per Game**: Calculate and display per-game averages
 - 🎯 **Minimum Games Filter**: Filter players/goalies by minimum games played
 - 🏒 **Position Filter**: Filter players by position (Forwards/Defensemen) with position-relative scoring comparisons
+- ⚖️ **Player Comparison**: Select two players/goalies from the table to compare side-by-side in a dialog with stats and radar chart tabs
 - 🔍 **Search & Sort**: Interactive table with search and column sorting
 - 📌 **Sticky Headers**: Table headers remain visible while scrolling with full horizontal scroll support
 - 🧮 **Score Ranking**: Default sort by a composite `score` column to surface highest-impact players and goalies first
@@ -125,6 +126,7 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
 - `team-switching.spec.ts` — Team selector and filter reset behavior
 - `filters.spec.ts` — Report type, season, position, stats-per-game, and min games filters
+- `player-comparison.spec.ts` — Player comparison selection, dialog, stats and radar tabs
 - `mobile.spec.ts` — Mobile-responsive UI, settings drawer, and mobile player card
 
 **Local:** Backend API must be running on `localhost:3000` (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
@@ -179,6 +181,10 @@ src/
 │   ├── services/          # Core services (API, cache, stats, filters, team)
 │   │   └── tests/         # Service unit tests
 │   ├── shared/            # Shared components
+│   │   ├── comparison-bar/       # Floating comparison selection bar
+│   │   ├── comparison-dialog/    # Comparison dialog (stats + radar)
+│   │   │   ├── comparison-stats/ # Side-by-side stat rows
+│   │   │   └── comparison-radar/ # Radar chart overlay
 │   │   ├── player-card/   # Player detail dialog
 │   │   ├── settings-panel/# Settings UI (toggles/sliders)
 │   │   ├── stats-table/   # Reusable stats table
