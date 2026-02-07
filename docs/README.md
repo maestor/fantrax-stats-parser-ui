@@ -48,6 +48,9 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 2. Follow the component/service structure
 3. Add translations for new UI text
 4. Write unit tests for new functionality
+5. Write E2E to existing scenario for new functionality (primarily), if not suitable one exists make new test case
+6. Update project README and every docs/*.md related
+7. Ask supervisor review what have done and ask if there is anything should fix
 
 ### Debugging
 1. Check browser console for errors
