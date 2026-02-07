@@ -8,38 +8,49 @@
 
 .bold {
   font-weight: bold;
+  color: var(--mat-sys-primary);
 }
 
 // Desktop layout
 .stat-row-desktop {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  padding: 8px 16px;
+  align-items: stretch;
   border-bottom: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.12));
 
   &:last-child {
     border-bottom: none;
   }
 
-  .value-a {
-    text-align: right;
-    padding-right: 24px;
+  .value-a,
+  .value-b {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    background: var(--mat-sys-surface);
     font-variant-numeric: tabular-nums;
   }
 
+  .value-a {
+    justify-content: flex-end;
+    padding-right: 24px;
+  }
+
   .stat-label {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
     font-size: 0.875rem;
     color: var(--mat-sys-on-surface-variant);
     white-space: nowrap;
     min-width: 160px;
+    padding: 0 8px;
   }
 
   .value-b {
-    text-align: left;
+    justify-content: flex-start;
     padding-left: 24px;
-    font-variant-numeric: tabular-nums;
   }
 }
 

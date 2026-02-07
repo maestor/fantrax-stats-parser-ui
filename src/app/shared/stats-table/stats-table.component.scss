@@ -170,4 +170,11 @@
   color: var(--mat-sys-on-primary-container);
 }
 
+// Improve disabled checkbox visibility in dark mode
+:host ::ng-deep .mat-mdc-checkbox.mat-mdc-checkbox-disabled {
+  opacity: 0.6;
 
+  .mdc-checkbox__background {
+    border-color: var(--mat-sys-outline) !important;
+  }
+}
