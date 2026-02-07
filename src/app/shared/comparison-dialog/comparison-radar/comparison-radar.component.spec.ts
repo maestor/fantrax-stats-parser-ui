@@ -53,6 +53,12 @@ const mockPlayerNoScores: Player = {
   penalties: 2, shots: 20, ppp: 0, shp: 0, hits: 5, blocks: 5,
 };
 
+const mockGoalieNoScores: Goalie = {
+  name: 'No Scores Goalie', score: 50, scoreAdjustedByGames: 50,
+  games: 10, wins: 5, saves: 200, shutouts: 1,
+  goals: 0, assists: 0, points: 0, penalties: 0, ppp: 0, shp: 0,
+};
+
 describe('ComparisonRadarComponent', () => {
   let fixture: ComponentFixture<ComparisonRadarComponent>;
   let component: ComparisonRadarComponent;
@@ -212,6 +218,31 @@ describe('ComparisonRadarComponent', () => {
       const plugins = component.radarChartOptions?.plugins as Record<string, unknown>;
       const legend = plugins['legend'] as { position: string };
       expect(legend.position).toBe('bottom');
+    });
+  });
+
+  describe('goalie radar (no scores)', () => {
+    it('should not build datasets when goalies have no scores', () => {
+      createComponent(mockGoalieNoScores, mockGoalieNoScores);
+      expect(component.radarChartData.datasets.length).toBe(0);
+    });
+  });
+
+  describe('tooltip callback', () => {
+    it('should format tooltip label as "name: value/100"', () => {
+      createComponent(mockPlayerA, mockPlayerB);
+      const plugins = component.radarChartOptions?.plugins as Record<string, any>;
+      const labelFn = plugins['tooltip'].callbacks.label;
+      const result = labelFn({ dataset: { label: 'Mikko Rantanen' }, parsed: { r: 80 } });
+      expect(result).toBe('Mikko Rantanen: 80/100');
+    });
+
+    it('should handle missing dataset label gracefully', () => {
+      createComponent(mockPlayerA, mockPlayerB);
+      const plugins = component.radarChartOptions?.plugins as Record<string, any>;
+      const labelFn = plugins['tooltip'].callbacks.label;
+      const result = labelFn({ dataset: {}, parsed: { r: 50 } });
+      expect(result).toBe(': 50/100');
     });
   });
 

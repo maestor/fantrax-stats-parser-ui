@@ -181,6 +181,15 @@ describe('ComparisonStatsComponent', () => {
     });
   });
 
+  describe('missing stat values', () => {
+    it('should show dash for undefined stat values', () => {
+      const playerMissingStat = { ...mockPlayerA, hits: undefined } as unknown as Player;
+      createComponent(playerMissingStat, mockPlayerB);
+      const hitsRow = component.statRows.find((r) => r.key === 'hits')!;
+      expect(hitsRow.valueA).toBe('-');
+    });
+  });
+
   describe('desktop layout', () => {
     it('should render desktop rows when isMobile is false', () => {
       createComponent(mockPlayerA, mockPlayerB, false);

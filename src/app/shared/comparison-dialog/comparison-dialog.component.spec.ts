@@ -186,6 +186,35 @@ describe('ComparisonDialogComponent', () => {
       fixture.detectChanges();
       expect(component.teamName).toBe('Colorado');
     }));
+
+    it('should set empty team name when team is not found', fakeAsync(() => {
+      dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [
+          ComparisonDialogComponent,
+          NoopAnimationsModule,
+          TranslateModule.forRoot(),
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: { playerA: mockForwardA, playerB: mockForwardB } },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          {
+            provide: ApiService,
+            useValue: { getTeams: () => of([{ id: '999', name: 'other', presentName: 'Other' }]) },
+          },
+          { provide: TeamService, useValue: { selectedTeamId: '1' } },
+        ],
+      });
+
+      const localFixture = TestBed.createComponent(ComparisonDialogComponent);
+      localFixture.detectChanges();
+      tick();
+
+      expect(localFixture.componentInstance.teamName).toBe('');
+      localFixture.destroy();
+    }));
   });
 
   describe('dialog actions', () => {

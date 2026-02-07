@@ -174,6 +174,17 @@ describe('ComparisonService', () => {
         done();
       });
     });
+
+    it('should keep order when first selected has higher score', (done) => {
+      service.toggle(mockPlayerB); // FR 100 (higher)
+      service.toggle(mockPlayerA); // FR 94.31
+      service.orderedSelection$.pipe(first()).subscribe((ordered) => {
+        expect(ordered).not.toBeNull();
+        expect(ordered!.playerA.name).toBe('Aaron Ekblad');
+        expect(ordered!.playerB.name).toBe('Mikko Rantanen');
+        done();
+      });
+    });
   });
 
   describe('clearOnDataChange', () => {

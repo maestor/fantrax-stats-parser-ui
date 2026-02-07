@@ -1,4 +1,5 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ComparisonBarComponent } from './comparison-bar.component';
 import { ComparisonService } from '@services/comparison.service';
@@ -143,6 +144,41 @@ describe('ComparisonBarComponent', () => {
 
     compareButton!.click();
     expect(fixture.componentInstance.onCompare).toHaveBeenCalled();
+  }));
+
+  it('should open comparison dialog when onCompare is called with two players', fakeAsync(() => {
+    comparisonService.toggle(mockPlayerA);
+    comparisonService.toggle(mockPlayerB);
+
+    const fixture = TestBed.createComponent(ComparisonBarComponent);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+
+    const dialog = TestBed.inject(MatDialog);
+    spyOn(dialog, 'open');
+
+    fixture.componentInstance.onCompare();
+    tick();
+
+    expect(dialog.open).toHaveBeenCalled();
+  }));
+
+  it('should not open dialog when onCompare is called with fewer than two players', fakeAsync(() => {
+    comparisonService.toggle(mockPlayerA);
+
+    const fixture = TestBed.createComponent(ComparisonBarComponent);
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+
+    const dialog = TestBed.inject(MatDialog);
+    spyOn(dialog, 'open');
+
+    fixture.componentInstance.onCompare();
+    tick();
+
+    expect(dialog.open).not.toHaveBeenCalled();
   }));
 
   it('should show both player names when two players are selected', fakeAsync(() => {
