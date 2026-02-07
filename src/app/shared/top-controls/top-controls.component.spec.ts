@@ -8,6 +8,8 @@ describe("TopControlsComponent", () => {
   let fixture: ComponentFixture<TopControlsComponent>;
 
   beforeEach(async () => {
+    localStorage.removeItem("fantrax.settings");
+
     await TestBed.configureTestingModule({
       imports: [TopControlsComponent, TranslateModule.forRoot()],
     })
