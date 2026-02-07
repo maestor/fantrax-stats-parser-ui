@@ -2,6 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { ComparisonService } from '../comparison.service';
 import { Player } from '../api.service';
 import { first } from 'rxjs';
+import { TeamService } from '../team.service';
+import { FilterService } from '../filter.service';
+import { SettingsService } from '../settings.service';
 
 const mockPlayerA: Player = {
   name: 'Mikko Rantanen',
@@ -168,6 +171,99 @@ describe('ComparisonService', () => {
       service.toggle(mockPlayerA);
       service.orderedSelection$.pipe(first()).subscribe((ordered) => {
         expect(ordered).toBeNull();
+        done();
+      });
+    });
+  });
+
+  describe('clearOnDataChange', () => {
+    let teamService: TeamService;
+    let filterService: FilterService;
+    let settingsService: SettingsService;
+
+    beforeEach(() => {
+      teamService = TestBed.inject(TeamService);
+      filterService = TestBed.inject(FilterService);
+      settingsService = TestBed.inject(SettingsService);
+    });
+
+    it('should clear selection when team changes', (done) => {
+      service.toggle(mockPlayerA);
+      teamService.setTeamId('99');
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s).toEqual([]);
+        done();
+      });
+    });
+
+    it('should clear selection when player report type changes', (done) => {
+      service.toggle(mockPlayerA);
+      filterService.updatePlayerFilters({ reportType: 'playoffs' });
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s).toEqual([]);
+        done();
+      });
+    });
+
+    it('should clear selection when goalie report type changes', (done) => {
+      service.toggle(mockPlayerA);
+      filterService.updateGoalieFilters({ reportType: 'playoffs' });
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s).toEqual([]);
+        done();
+      });
+    });
+
+    it('should clear selection when player season changes', (done) => {
+      service.toggle(mockPlayerA);
+      filterService.updatePlayerFilters({ season: 2024 });
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s).toEqual([]);
+        done();
+      });
+    });
+
+    it('should clear selection when goalie season changes', (done) => {
+      service.toggle(mockPlayerA);
+      filterService.updateGoalieFilters({ season: 2024 });
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s).toEqual([]);
+        done();
+      });
+    });
+
+    it('should clear selection when startFromSeason changes', (done) => {
+      service.toggle(mockPlayerA);
+      settingsService.setStartFromSeason(2020);
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s).toEqual([]);
+        done();
+      });
+    });
+
+    it('should not clear selection when minGames changes', (done) => {
+      service.toggle(mockPlayerA);
+      filterService.updatePlayerFilters({ minGames: 10 });
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s.length).toBe(1);
+        done();
+      });
+    });
+
+    it('should not clear selection when statsPerGame changes', (done) => {
+      service.toggle(mockPlayerA);
+      filterService.updatePlayerFilters({ statsPerGame: true });
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s.length).toBe(1);
+        done();
+      });
+    });
+
+    it('should not clear selection when positionFilter changes', (done) => {
+      service.toggle(mockPlayerA);
+      filterService.updatePlayerFilters({ positionFilter: 'F' });
+      service.selection$.pipe(first()).subscribe((s) => {
+        expect(s.length).toBe(1);
         done();
       });
     });

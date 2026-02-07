@@ -1,7 +1,11 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map, skip } from 'rxjs/operators';
 import { Player, Goalie } from './api.service';
+import { TeamService } from './team.service';
+import { FilterService } from './filter.service';
+import { SettingsService } from './settings.service';
 
 export type OrderedComparison = {
   playerA: Player | Goalie;
@@ -10,6 +14,11 @@ export type OrderedComparison = {
 
 @Injectable({ providedIn: 'root' })
 export class ComparisonService {
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly teamService = inject(TeamService);
+  private readonly filterService = inject(FilterService);
+  private readonly settingsService = inject(SettingsService);
+
   private selectedPlayers = new BehaviorSubject<(Player | Goalie)[]>([]);
 
   readonly selection$ = this.selectedPlayers.asObservable();
@@ -29,6 +38,38 @@ export class ComparisonService {
         : { playerA: b, playerB: a };
     }),
   );
+
+  constructor() {
+    // Clear on team change
+    this.teamService.selectedTeamId$
+      .pipe(skip(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.clear());
+
+    // Clear on report type or season change (player filters)
+    this.filterService.playerFilters$
+      .pipe(
+        map((f) => `${f.reportType}-${f.season ?? ''}`),
+        distinctUntilChanged(),
+        skip(1),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.clear());
+
+    // Clear on report type or season change (goalie filters)
+    this.filterService.goalieFilters$
+      .pipe(
+        map((f) => `${f.reportType}-${f.season ?? ''}`),
+        distinctUntilChanged(),
+        skip(1),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => this.clear());
+
+    // Clear on start-from-season change
+    this.settingsService.startFromSeason$
+      .pipe(skip(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.clear());
+  }
 
   toggle(player: Player | Goalie): void {
     const current = this.selectedPlayers.value;
