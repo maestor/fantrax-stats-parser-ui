@@ -1,0 +1,19 @@
+<div class="comparison-stats" [class.mobile]="isMobile">
+  @for (row of statRows; track row.key) {
+    @if (isMobile) {
+      <div class="stat-row-mobile">
+        <div class="stat-label">{{ row.label }}</div>
+        <div class="stat-values">
+          <span class="value-a" [class.bold]="row.boldA">{{ row.valueA }}</span>
+          <span class="value-b" [class.bold]="row.boldB">{{ row.valueB }}</span>
+        </div>
+      </div>
+    } @else {
+      <div class="stat-row-desktop">
+        <span class="value-a" [class.bold]="row.boldA">{{ row.valueA }}</span>
+        <span class="stat-label">{{ row.label }}</span>
+        <span class="value-b" [class.bold]="row.boldB">{{ row.valueB }}</span>
+      </div>
+    }
+  }
+</div>
