@@ -10,59 +10,32 @@ test.describe('Team Switching', () => {
   });
 
   test('changes team and updates data', async ({ page }) => {
-    // Verify initial team selected
     const teamSelector = page.getByRole('combobox', { name: 'Joukkue' });
     await expect(teamSelector).toContainText(DEFAULT_TEAM);
 
-    // Get initial table data
     const initialData = await getFirstRowText(page);
 
-    // Switch to different team
     const newTeam = 'Tampa Bay Lightning';
     await selectTeam(page, newTeam);
 
-    // Verify team selector updated
     await expect(teamSelector).toContainText(newTeam);
-
-    // Verify data changed
     const newData = await getFirstRowText(page);
     expect(newData).not.toBe(initialData);
   });
 
-  test('resets filters when team changes', async ({ page }) => {
+  test('resets filters on team change and does not restore when switching back', async ({ page }) => {
     // Enable stats per game toggle
     await toggleStatsPerGame(page);
-
-    // Verify toggle is checked
     const statsPerGameToggle = page.getByLabel('Tilastot per ottelu');
     await expect(statsPerGameToggle).toBeChecked();
 
-    // Switch team
+    // Switch team — toggle should reset
     const newTeam = 'Tampa Bay Lightning';
     await selectTeam(page, newTeam);
-
-    // Verify toggle is unchecked (reset)
     await expect(statsPerGameToggle).not.toBeChecked();
-  });
 
-  test('does not restore filters when switching back to original team', async ({
-    page,
-  }) => {
-    // Enable stats per game toggle
-    await toggleStatsPerGame(page);
-
-    // Verify toggle is checked
-    const statsPerGameToggle = page.getByLabel('Tilastot per ottelu');
-    await expect(statsPerGameToggle).toBeChecked();
-
-    // Switch to different team
-    const newTeam = 'Tampa Bay Lightning';
-    await selectTeam(page, newTeam);
-
-    // Switch back to original team
+    // Switch back to original team — toggle should still be unchecked (not restored)
     await selectTeam(page, DEFAULT_TEAM);
-
-    // Verify toggle is still unchecked (not restored)
     await expect(statsPerGameToggle).not.toBeChecked();
   });
 });

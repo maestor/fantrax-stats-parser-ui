@@ -16,197 +16,104 @@ test.describe('Mobile', () => {
     await waitForTableData(page);
   });
 
-  test.describe('Basic Mobile Features', () => {
-    test('displays team name under title', async ({ page }) => {
-      // Verify team name is visible below title in mobile team summary
-      const teamName = page.locator('.mobile-team-name');
-      await expect(teamName).toBeVisible();
-      await expect(teamName).toHaveText(DEFAULT_TEAM);
-    });
+  test('displays team name and updates on team change', async ({ page }) => {
+    // Verify initial team name
+    const teamName = page.locator('.mobile-team-name');
+    await expect(teamName).toBeVisible();
+    await expect(teamName).toHaveText(DEFAULT_TEAM);
 
-    test('team name updates when team changes', async ({ page }) => {
-      // Open settings drawer
-      await settingsDrawer.open();
+    // Change team via drawer
+    await settingsDrawer.open();
+    const newTeam = 'Dallas Stars';
+    await settingsDrawer.selectTeam(newTeam);
+    await settingsDrawer.close();
 
-      // Change team
-      const newTeam = 'Dallas Stars';
-      await settingsDrawer.selectTeam(newTeam);
-
-      // Close drawer
-      await settingsDrawer.close();
-
-      // Wait for team change to complete
-      await waitForTeamChange(page, newTeam);
-
-      // Verify team name updated in mobile team summary
-      const teamName = page.locator('.mobile-team-name');
-      await expect(teamName).toHaveText(newTeam);
-    });
+    await waitForTeamChange(page, newTeam);
+    await expect(teamName).toHaveText(newTeam);
   });
 
-  test.describe('Settings Drawer - Basic Interactions', () => {
-    test('opens settings drawer via gear icon', async ({ page }) => {
-      // Verify drawer is closed initially
-      const isOpenBefore = await settingsDrawer.isOpen();
-      expect(isOpenBefore).toBe(false);
+  test('settings drawer opens via gear, closes via button and Escape', async ({ page }) => {
+    // Initially closed
+    expect(await settingsDrawer.isOpen()).toBe(false);
 
-      // Open drawer
-      await settingsDrawer.open();
+    // Open and verify controls visible
+    await settingsDrawer.open();
+    expect(await settingsDrawer.isOpen()).toBe(true);
+    await expect(page.getByRole('combobox', { name: 'Joukkue' })).toBeVisible();
 
-      // Verify drawer is now open
-      const isOpenAfter = await settingsDrawer.isOpen();
-      expect(isOpenAfter).toBe(true);
+    // Close via button
+    await settingsDrawer.close();
+    expect(await settingsDrawer.isOpen()).toBe(false);
 
-      // Verify settings controls are visible
-      const teamSelector = page.getByRole('combobox', { name: 'Joukkue' });
-      await expect(teamSelector).toBeVisible();
-    });
-
-    test('closes drawer via button', async () => {
-      // Open drawer first
-      await settingsDrawer.open();
-      const isOpenBefore = await settingsDrawer.isOpen();
-      expect(isOpenBefore).toBe(true);
-
-      // Close via button
-      await settingsDrawer.close();
-
-      // Verify drawer is closed
-      const isOpenAfter = await settingsDrawer.isOpen();
-      expect(isOpenAfter).toBe(false);
-    });
-
-    test('closes drawer via Escape key', async () => {
-      // Open drawer
-      await settingsDrawer.open();
-      const isOpenBefore = await settingsDrawer.isOpen();
-      expect(isOpenBefore).toBe(true);
-
-      // Close via Escape
-      await settingsDrawer.closeViaEscape();
-
-      // Verify drawer is closed (check class instead of visibility)
-      const isOpenAfter = await settingsDrawer.isOpen();
-      expect(isOpenAfter).toBe(false);
-    });
+    // Open again, close via Escape
+    await settingsDrawer.open();
+    expect(await settingsDrawer.isOpen()).toBe(true);
+    await settingsDrawer.closeViaEscape();
+    expect(await settingsDrawer.isOpen()).toBe(false);
   });
 
-  test.describe('Settings Drawer - Controls & State', () => {
-    test('changes filters via drawer controls', async ({ page }) => {
-      // Open drawer
-      await settingsDrawer.open();
+  test('drawer filter changes persist when reopening', async ({ page }) => {
+    // Set filters
+    await settingsDrawer.open();
+    await settingsDrawer.toggleStatsPerGame();
+    await settingsDrawer.setMinGames(30);
+    await settingsDrawer.close();
 
-      // Change filters
-      await settingsDrawer.toggleStatsPerGame();
-      await settingsDrawer.setMinGames(20);
+    await page.waitForTimeout(500);
 
-      // Close drawer
-      await settingsDrawer.close();
+    // Reopen and verify filters persisted
+    await settingsDrawer.open();
+    const statsToggle = page.getByLabel('Tilastot per ottelu');
+    await expect(statsToggle).toBeChecked();
 
-      // Verify filters were applied (check stats per game toggle is checked)
-      await page.waitForTimeout(500);
-      await settingsDrawer.open();
-
-      const statsToggle = page.getByLabel('Tilastot per ottelu');
-      await expect(statsToggle).toBeChecked();
-
-      await settingsDrawer.close();
-    });
-
-    test('preserves filter state when reopening drawer', async ({ page }) => {
-      // Open drawer and set filters
-      await settingsDrawer.open();
-      await settingsDrawer.toggleStatsPerGame();
-      await settingsDrawer.setMinGames(30);
-      await settingsDrawer.close();
-
-      // Wait for drawer to fully close
-      await page.waitForTimeout(500);
-
-      // Reopen drawer
-      await settingsDrawer.open();
-
-      // Verify filters are still set
-      const statsToggle = page.getByLabel('Tilastot per ottelu');
-      await expect(statsToggle).toBeChecked();
-
-      const minGamesSlider = page.locator('#min-games-slider input[type="range"]');
-      const sliderValue = await minGamesSlider.inputValue();
-      expect(parseInt(sliderValue)).toBeGreaterThanOrEqual(30);
-    });
-
-    test('shows last updated timestamp in drawer', async ({ page }) => {
-      // Open drawer
-      await settingsDrawer.open();
-
-      // Verify last updated text is visible in the drawer
-      const drawer = page.locator('mat-sidenav[position="start"]');
-      const lastUpdated = drawer.locator('.settings-drawer-last-modified');
-      await expect(lastUpdated).toBeVisible();
-      await expect(lastUpdated).toContainText(/Päivitetty/i);
-    });
+    const minGamesSlider = page.locator('#min-games-slider input[type="range"]');
+    const sliderValue = await minGamesSlider.inputValue();
+    expect(parseInt(sliderValue)).toBeGreaterThanOrEqual(30);
   });
 
-  test.describe('Mobile Player Card', () => {
-    test('player card shows graphs on mobile', async ({ page }) => {
-      // Ensure "Kaikki kaudet" is selected for line graphs
-      await settingsDrawer.open();
-      await settingsDrawer.selectSeason('Kaikki kaudet');
-      await settingsDrawer.close();
+  test('shows last updated timestamp in drawer', async ({ page }) => {
+    await settingsDrawer.open();
 
-      // Open player card
-      const playerCard = new PlayerCardDialog(page);
-      await playerCard.open('Jamie Benn');
+    const drawer = page.locator('mat-sidenav[position="start"]');
+    const lastUpdated = drawer.locator('.settings-drawer-last-modified');
+    await expect(lastUpdated).toBeVisible();
+    await expect(lastUpdated).toContainText(/Päivitetty/i);
+  });
 
-      // Switch to graphs tab
-      await playerCard.switchToTab('graphs');
+  test('player card graphs and accordion work on mobile', async ({ page }) => {
+    // Select all seasons for line graphs
+    await settingsDrawer.open();
+    await settingsDrawer.selectSeason('Kaikki kaudet');
+    await settingsDrawer.close();
 
-      // Verify graphs are visible
-      await playerCard.verifyTabContent('graphs');
+    // Open player card and go to graphs tab
+    const playerCard = new PlayerCardDialog(page);
+    await playerCard.open('Jamie Benn');
+    await playerCard.switchToTab('graphs');
+    await playerCard.verifyTabContent('graphs');
 
-      // Verify line graphs are visible
-      const hasLineGraphs = await playerCard.hasLineGraphs();
-      expect(hasLineGraphs).toBe(true);
-    });
+    const hasLineGraphs = await playerCard.hasLineGraphs();
+    expect(hasLineGraphs).toBe(true);
 
-    test('graph accordion toggles series on mobile', async ({ page }) => {
-      // Ensure "Kaikki kaudet" is selected for line graphs
-      await settingsDrawer.open();
-      await settingsDrawer.selectSeason('Kaikki kaudet');
-      await settingsDrawer.close();
+    // Test accordion toggle
+    const accordionButton = page.locator('button.graphs-controls-toggle');
+    await accordionButton.click();
+    await expect(accordionButton).toHaveAttribute('aria-expanded', 'true');
 
-      // Open player card
-      const playerCard = new PlayerCardDialog(page);
-      await playerCard.open('Jamie Benn');
+    const controlsList = page.locator('.graphs-controls.visible');
+    await expect(controlsList).toBeVisible();
 
-      // Switch to graphs tab
-      await playerCard.switchToTab('graphs');
+    // Toggle series off and back on
+    const checkbox = controlsList.getByRole('checkbox', { name: 'Pisteet' });
+    await expect(checkbox).toBeVisible();
+    await checkbox.click();
+    await page.waitForTimeout(300);
+    await checkbox.click();
+    await page.waitForTimeout(300);
 
-      // Open the graph controls accordion
-      const accordionButton = page.locator('button.graphs-controls-toggle');
-      await accordionButton.click();
-
-      // Verify accordion expanded
-      await expect(accordionButton).toHaveAttribute('aria-expanded', 'true');
-
-      // Verify checkboxes are visible in the accordion
-      const controlsList = page.locator('.graphs-controls.visible');
-      await expect(controlsList).toBeVisible();
-
-      // Toggle a series off (e.g., "Pisteet" / Points)
-      const checkbox = controlsList.getByRole('checkbox', { name: 'Pisteet' });
-      await expect(checkbox).toBeVisible();
-      await checkbox.click();
-      await page.waitForTimeout(300);
-
-      // Toggle it back on
-      await checkbox.click();
-      await page.waitForTimeout(300);
-
-      // Close accordion by clicking the overlay backdrop
-      const overlay = page.locator('.graphs-controls-overlay.visible');
-      await overlay.click();
-      await expect(accordionButton).toHaveAttribute('aria-expanded', 'false');
-    });
+    // Close accordion via overlay
+    const overlay = page.locator('.graphs-controls-overlay.visible');
+    await overlay.click();
+    await expect(accordionButton).toHaveAttribute('aria-expanded', 'false');
   });
 });

@@ -17,162 +17,110 @@ test.describe('Player Comparison', () => {
   });
 
   test.describe('Selection and Floating Bar', () => {
-    test('selecting one player shows floating bar with prompt', async () => {
+    test('selection progression: one player shows prompt, two shows compare button and names', async ({ page }) => {
+      // Select one player — bar visible with prompt
       await comparisonBar.selectPlayer('Jamie Benn');
       expect(await comparisonBar.isVisible()).toBeTruthy();
-      const text = await comparisonBar.getBarText();
+      let text = await comparisonBar.getBarText();
       expect(text).toContain('valitse toinen vertailuun');
-    });
 
-    test('selecting two players shows compare button', async ({ page }) => {
-      await comparisonBar.selectPlayer('Jamie Benn');
+      // Select second player — compare button visible, both names shown
       await comparisonBar.selectPlayer('Vincent Trocheck');
       await expect(page.getByRole('button', { name: 'Vertaile' })).toBeVisible();
+      text = await comparisonBar.getBarText();
+      expect(text).toContain('Jamie Benn');
+      expect(text).toContain('Vincent Trocheck');
     });
 
-    test('clear button removes selection and hides bar', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      expect(await comparisonBar.isVisible()).toBeTruthy();
-      await comparisonBar.clickClear();
-      expect(await comparisonBar.isVisible()).toBeFalsy();
-    });
-
-    test('deselecting a player hides bar when none remain', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      expect(await comparisonBar.isVisible()).toBeTruthy();
-      await comparisonBar.deselectPlayer('Jamie Benn');
-      expect(await comparisonBar.isVisible()).toBeFalsy();
-    });
-
-    test('deselecting one of two players keeps bar visible with prompt', async () => {
+    test('deselecting players updates bar state correctly', async () => {
+      // Select two, deselect one — bar stays with prompt
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
       await comparisonBar.deselectPlayer('Vincent Trocheck');
       expect(await comparisonBar.isVisible()).toBeTruthy();
       const text = await comparisonBar.getBarText();
       expect(text).toContain('valitse toinen vertailuun');
+
+      // Deselect last — bar hides
+      await comparisonBar.deselectPlayer('Jamie Benn');
+      expect(await comparisonBar.isVisible()).toBeFalsy();
     });
 
-    test('remaining checkboxes are disabled when two are selected', async ({ page }) => {
+    test('clear button hides bar and checkboxes disabled at max selection', async ({ page }) => {
+      // Select two players
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
-      // A third player's checkbox should be disabled
+
+      // Third player's checkbox should be disabled
       const thirdRow = page.locator('tr[mat-row]', { hasText: 'Reilly Smith' });
       await expect(thirdRow.getByRole('checkbox')).toBeDisabled();
-    });
 
-    test('bar text shows both names when two are selected', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      await comparisonBar.selectPlayer('Vincent Trocheck');
-      const text = await comparisonBar.getBarText();
-      expect(text).toContain('Jamie Benn');
-      expect(text).toContain('Vincent Trocheck');
+      // Clear removes selection and hides bar
+      await comparisonBar.clickClear();
+      expect(await comparisonBar.isVisible()).toBeFalsy();
     });
   });
 
-  test.describe('Dialog - Opening and Closing', () => {
-    test('compare button opens comparison dialog', async () => {
+  test.describe('Dialog', () => {
+    test('opens via compare button, closes via X and Escape', async () => {
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
-      await comparisonBar.clickCompare();
-      expect(await comparisonDialog.isOpen()).toBeTruthy();
-    });
 
-    test('dialog closes via X button', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      await comparisonBar.selectPlayer('Vincent Trocheck');
+      // Open and close via X
       await comparisonBar.clickCompare();
       expect(await comparisonDialog.isOpen()).toBeTruthy();
       await comparisonDialog.close();
       expect(await comparisonDialog.isOpen()).toBeFalsy();
-    });
 
-    test('dialog closes via Escape key', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      await comparisonBar.selectPlayer('Vincent Trocheck');
+      // Open and close via Escape
       await comparisonBar.clickCompare();
       expect(await comparisonDialog.isOpen()).toBeTruthy();
       await comparisonDialog.closeViaEscape();
       expect(await comparisonDialog.isOpen()).toBeFalsy();
     });
-  });
 
-  test.describe('Dialog - Content', () => {
-    test('shows correct title for same-position forwards', async () => {
+    test('same-position forwards: correct title, ingress names, and team', async () => {
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
       await comparisonBar.clickCompare();
+
       const title = await comparisonDialog.getTitle();
       expect(title).toBe('Hyökkääjävertailu');
-    });
 
-    test('shows correct title for mixed positions (forward vs defense)', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn'); // F
-      await comparisonBar.selectPlayer('Oliver Ekman-Larsson'); // D
-      await comparisonBar.clickCompare();
-      const title = await comparisonDialog.getTitle();
-      expect(title).toBe('Pelaajavertailu');
-    });
-
-    test('shows player names in ingress', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      await comparisonBar.selectPlayer('Vincent Trocheck');
-      await comparisonBar.clickCompare();
       const ingress = await comparisonDialog.getIngress();
       expect(ingress).toContain('Benn');
       expect(ingress).toContain('Trocheck');
-    });
 
-    test('shows team name', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      await comparisonBar.selectPlayer('Vincent Trocheck');
-      await comparisonBar.clickCompare();
       const team = await comparisonDialog.getTeamName();
       expect(team).toContain('Colorado Avalanche');
     });
 
-    test('ingress shows position abbreviations for mixed positions', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn'); // F
-      await comparisonBar.selectPlayer('Oliver Ekman-Larsson'); // D
+    test('mixed positions: correct title and position abbreviations in ingress', async () => {
+      await comparisonBar.selectPlayer('Jamie Benn');
+      await comparisonBar.selectPlayer('Oliver Ekman-Larsson');
       await comparisonBar.clickCompare();
+
+      const title = await comparisonDialog.getTitle();
+      expect(title).toBe('Pelaajavertailu');
+
       const ingress = await comparisonDialog.getIngress();
-      // Finnish: H = hyökkääjä (forward), P = puolustaja (defense)
       expect(ingress).toMatch(/[HP]/);
     });
-  });
 
-  test.describe('Dialog - Stats Tab', () => {
-    test('stats tab shows stat rows with values', async () => {
+    test('stats tab shows correct row count with numeric values', async ({ page }) => {
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
       await comparisonBar.clickCompare();
+
       const rowCount = await comparisonDialog.getStatRowCount();
-      // PLAYER_STAT_COLUMNS has 13 columns for players
       expect(rowCount).toBe(13);
-    });
 
-    test('stat rows contain numeric values', async ({ page }) => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      await comparisonBar.selectPlayer('Vincent Trocheck');
-      await comparisonBar.clickCompare();
-      // Check that at least one value-a span contains a number
       const dialog = page.getByRole('dialog');
-      const values = dialog.locator('.value-a');
-      const firstValue = await values.first().innerText();
+      const firstValue = await dialog.locator('.value-a').first().innerText();
       expect(firstValue).toBeTruthy();
     });
-  });
 
-  test.describe('Dialog - Graphs Tab', () => {
-    test('graphs tab shows radar chart', async () => {
-      await comparisonBar.selectPlayer('Jamie Benn');
-      await comparisonBar.selectPlayer('Vincent Trocheck');
-      await comparisonBar.clickCompare();
-      await comparisonDialog.switchToTab('graphs');
-      expect(await comparisonDialog.isRadarChartVisible()).toBeTruthy();
-    });
-
-    test('can switch between stats and graphs tabs', async () => {
+    test('graphs tab shows radar chart and tab switching works', async () => {
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
       await comparisonBar.clickCompare();
@@ -181,11 +129,11 @@ test.describe('Player Comparison', () => {
       const statRows = await comparisonDialog.getStatRowCount();
       expect(statRows).toBeGreaterThan(0);
 
-      // Switch to graphs tab
+      // Switch to graphs tab — radar chart visible
       await comparisonDialog.switchToTab('graphs');
       expect(await comparisonDialog.isRadarChartVisible()).toBeTruthy();
 
-      // Switch back to stats tab
+      // Switch back to stats tab — rows still there
       await comparisonDialog.switchToTab('stats');
       const rowsAfter = await comparisonDialog.getStatRowCount();
       expect(rowsAfter).toBeGreaterThan(0);
