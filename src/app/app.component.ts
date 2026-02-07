@@ -21,6 +21,7 @@ import { FooterComponent } from "@base/footer/footer.component";
 import { NavigationComponent } from "./base/navigation/navigation.component";
 import { TopControlsComponent } from "@shared/top-controls/top-controls.component";
 import { SettingsPanelComponent } from "@shared/settings-panel/settings-panel.component";
+import { ComparisonBarComponent } from "@shared/comparison-bar/comparison-bar.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
   BehaviorSubject,
@@ -61,6 +62,7 @@ import { PwaUpdateService } from "@services/pwa-update.service";
     NavigationComponent,
     TopControlsComponent,
     SettingsPanelComponent,
+    ComparisonBarComponent,
   ],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.scss",
