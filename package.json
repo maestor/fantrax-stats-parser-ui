@@ -22,7 +22,8 @@
     "e2e:headed": "playwright test --headed",
     "e2e:debug": "playwright test --debug",
     "e2e:mobile": "playwright test e2e/specs/mobile.spec.ts",
-    "e2e:smoke": "playwright test e2e/specs/smoke.spec.ts"
+    "e2e:smoke": "playwright test e2e/specs/smoke.spec.ts",
+    "e2e:capture-fixtures": "npx tsx e2e/scripts/capture-fixtures.ts"
   },
   "engines": {
     "node": ">=24 <25"

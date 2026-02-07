@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/test-fixture';
 import { DEFAULT_TEAM, TAB_LABELS } from '../config/test-data';
 
 test.describe('Smoke Tests', () => {

@@ -100,11 +100,12 @@ npm run test:watch                     # Watch mode
 npm run test:headless                  # Headless Chrome (may be flaky)
 npm run test:coverage                  # With coverage report
 
-# E2E tests (Playwright) — requires backend running
+# E2E tests (Playwright) — requires backend running locally
 npm run e2e                            # Run all (headless)
 npm run e2e:headed                     # Run with visible browser
 npm run e2e:ui                         # Interactive UI mode
 npm run e2e:smoke                      # Smoke tests only
+npm run e2e:capture-fixtures           # Re-capture API fixtures from live backend
 
 # CI / verification
 npm run verify                         # Headless unit tests + production build
@@ -126,7 +127,8 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `filters.spec.ts` — Report type, season, position, stats-per-game, and min games filters
 - `mobile.spec.ts` — Mobile-responsive UI, settings drawer, and mobile player card
 
-**Prerequisites:** Backend API must be running for E2E tests (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
+**Local:** Backend API must be running on `localhost:3000` (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
+**CI:** E2E tests run without a backend — API responses are served from JSON fixtures via Playwright's `page.route()` mocking.
 
 ### Test Coverage Summary
 

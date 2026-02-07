@@ -1,0 +1,1580 @@
+[
+  {
+    "name": "Jake Oettinger",
+    "games": 203,
+    "wins": 117,
+    "saves": 5133,
+    "shutouts": 10,
+    "goals": 0,
+    "assists": 3,
+    "points": 3,
+    "penalties": 6,
+    "ppp": 0,
+    "shp": 0,
+    "score": 100,
+    "scoreAdjustedByGames": 64.41,
+    "seasons": [
+      {
+        "season": 2020,
+        "games": 15,
+        "wins": 6,
+        "saves": 396,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.36",
+        "savePercent": ".917",
+        "score": 100,
+        "scoreAdjustedByGames": 79.77,
+        "scores": {
+          "wins": 92.58,
+          "saves": 96.53,
+          "shutouts": 57.74,
+          "savePercent": 98.53,
+          "gaa": 100
+        }
+      },
+      {
+        "season": 2021,
+        "games": 29,
+        "wins": 17,
+        "saves": 772,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.67",
+        "savePercent": ".914",
+        "score": 73.11,
+        "scoreAdjustedByGames": 80.29,
+        "scores": {
+          "wins": 80.86,
+          "saves": 82.11,
+          "shutouts": 35.36,
+          "savePercent": 83.12,
+          "gaa": 55.77
+        }
+      },
+      {
+        "season": 2022,
+        "games": 47,
+        "wins": 27,
+        "saves": 1266,
+        "shutouts": 4,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.43",
+        "savePercent": ".918",
+        "score": 100,
+        "scoreAdjustedByGames": 75.75,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      },
+      {
+        "season": 2023,
+        "games": 33,
+        "wins": 19,
+        "saves": 827,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.12",
+        "savePercent": ".896",
+        "score": 94.08,
+        "scoreAdjustedByGames": 83.76,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 79.31,
+          "gaa": 74.78
+        }
+      },
+      {
+        "season": 2024,
+        "games": 43,
+        "wins": 26,
+        "saves": 1036,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.68",
+        "savePercent": ".902",
+        "score": 100,
+        "scoreAdjustedByGames": 83.14,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 70.71,
+          "savePercent": 86.67,
+          "gaa": 82.09
+        }
+      },
+      {
+        "season": 2025,
+        "games": 36,
+        "wins": 22,
+        "saves": 836,
+        "shutouts": 2,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.70",
+        "savePercent": ".897",
+        "score": 100,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      }
+    ],
+    "scores": {
+      "wins": 100,
+      "saves": 100,
+      "shutouts": 87.71
+    }
+  },
+  {
+    "name": "Kari Lehtonen",
+    "games": 193,
+    "wins": 98,
+    "saves": 5058,
+    "shutouts": 9,
+    "goals": 0,
+    "assists": 13,
+    "points": 13,
+    "penalties": 10,
+    "ppp": 4,
+    "shp": 0,
+    "score": 95.34,
+    "scoreAdjustedByGames": 61.99,
+    "seasons": [
+      {
+        "season": 2012,
+        "games": 24,
+        "wins": 12,
+        "saves": 684,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "penalties": 0,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": "2.49",
+        "savePercent": ".922",
+        "score": 100,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 84.65
+        }
+      },
+      {
+        "season": 2013,
+        "games": 50,
+        "wins": 23,
+        "saves": 1320,
+        "shutouts": 2,
+        "goals": 0,
+        "assists": 4,
+        "points": 4,
+        "penalties": 4,
+        "ppp": 2,
+        "shp": 0,
+        "gaa": "2.48",
+        "savePercent": ".916",
+        "score": 100,
+        "scoreAdjustedByGames": 85.36,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 80.49,
+          "gaa": 90.03
+        }
+      },
+      {
+        "season": 2014,
+        "games": 55,
+        "wins": 29,
+        "saves": 1439,
+        "shutouts": 4,
+        "goals": 0,
+        "assists": 3,
+        "points": 3,
+        "penalties": 2,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": ".00",
+        "savePercent": ".000",
+        "score": 100,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100
+        }
+      },
+      {
+        "season": 2015,
+        "games": 23,
+        "wins": 14,
+        "saves": 596,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 3,
+        "points": 3,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.70",
+        "savePercent": ".914",
+        "score": 93.34,
+        "scoreAdjustedByGames": 96.61,
+        "scores": {
+          "wins": 85.84,
+          "saves": 84.13,
+          "shutouts": 0,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      },
+      {
+        "season": 2016,
+        "games": 27,
+        "wins": 11,
+        "saves": 683,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.69",
+        "savePercent": ".907",
+        "score": 75.33,
+        "scoreAdjustedByGames": 83.04,
+        "scores": {
+          "wins": 80.44,
+          "saves": 98.01,
+          "shutouts": 40.82,
+          "savePercent": 81.43,
+          "gaa": 50.08
+        }
+      },
+      {
+        "season": 2017,
+        "games": 14,
+        "wins": 9,
+        "saves": 336,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.06",
+        "savePercent": ".923",
+        "score": 84.67,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 58.83,
+          "saves": 51.34,
+          "shutouts": 44.72,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      }
+    ],
+    "scores": {
+      "wins": 91.52,
+      "saves": 99.27,
+      "shutouts": 83.21
+    }
+  },
+  {
+    "name": "Ben Bishop",
+    "games": 129,
+    "wins": 71,
+    "saves": 3481,
+    "shutouts": 13,
+    "goals": 0,
+    "assists": 4,
+    "points": 4,
+    "penalties": 8,
+    "ppp": 2,
+    "shp": 0,
+    "score": 83.47,
+    "scoreAdjustedByGames": 68.62,
+    "seasons": [
+      {
+        "season": 2017,
+        "games": 49,
+        "wins": 26,
+        "saves": 1275,
+        "shutouts": 5,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 4,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": "2.52",
+        "savePercent": ".917",
+        "score": 100,
+        "scoreAdjustedByGames": 98.96,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 91.78,
+          "gaa": 62.78
+        }
+      },
+      {
+        "season": 2018,
+        "games": 40,
+        "wins": 25,
+        "saves": 1103,
+        "shutouts": 6,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "1.93",
+        "savePercent": ".936",
+        "score": 100,
+        "scoreAdjustedByGames": 99.77,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      },
+      {
+        "season": 2019,
+        "games": 40,
+        "wins": 20,
+        "saves": 1103,
+        "shutouts": 2,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "penalties": 2,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": ".00",
+        "savePercent": ".000",
+        "score": 100,
+        "scoreAdjustedByGames": 99.75,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100
+        }
+      }
+    ],
+    "scores": {
+      "wins": 77.9,
+      "saves": 82.35,
+      "shutouts": 100
+    }
+  },
+  {
+    "name": "Jacob Markstrom",
+    "games": 103,
+    "wins": 56,
+    "saves": 2604,
+    "shutouts": 11,
+    "goals": 0,
+    "assists": 6,
+    "points": 6,
+    "penalties": 12,
+    "ppp": 2,
+    "shp": 1,
+    "score": 73.63,
+    "scoreAdjustedByGames": 66.49,
+    "seasons": [
+      {
+        "season": 2021,
+        "games": 43,
+        "wins": 26,
+        "saves": 1145,
+        "shutouts": 8,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "penalties": 10,
+        "ppp": 0,
+        "shp": 1,
+        "gaa": "2.11",
+        "savePercent": ".927",
+        "score": 100,
+        "scoreAdjustedByGames": 91.81,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      },
+      {
+        "season": 2022,
+        "games": 26,
+        "wins": 11,
+        "saves": 586,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "penalties": 2,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": "2.87",
+        "savePercent": ".892",
+        "score": 64.93,
+        "scoreAdjustedByGames": 55.69,
+        "scores": {
+          "wins": 63.83,
+          "saves": 68.03,
+          "shutouts": 50,
+          "savePercent": 61.76,
+          "gaa": 69.82
+        }
+      },
+      {
+        "season": 2023,
+        "games": 27,
+        "wins": 14,
+        "saves": 702,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "penalties": 0,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": "2.71",
+        "savePercent": ".908",
+        "score": 100,
+        "scoreAdjustedByGames": 84.85,
+        "scores": {
+          "wins": 85.84,
+          "saves": 92.13,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      },
+      {
+        "season": 2024,
+        "games": 7,
+        "wins": 5,
+        "saves": 171,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.42",
+        "savePercent": ".910",
+        "score": 78.19,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 43.85,
+          "saves": 40.63,
+          "shutouts": 70.71,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      }
+    ],
+    "scores": {
+      "wins": 69.18,
+      "saves": 71.23,
+      "shutouts": 91.99
+    }
+  },
+  {
+    "name": "Anton Khudobin",
+    "games": 75,
+    "wins": 32,
+    "saves": 2055,
+    "shutouts": 5,
+    "goals": 0,
+    "assists": 3,
+    "points": 3,
+    "penalties": 6,
+    "ppp": 1,
+    "shp": 0,
+    "score": 59.06,
+    "scoreAdjustedByGames": 60.76,
+    "seasons": [
+      {
+        "season": 2018,
+        "games": 32,
+        "wins": 12,
+        "saves": 947,
+        "shutouts": 2,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.53",
+        "savePercent": ".925",
+        "score": 73.35,
+        "scoreAdjustedByGames": 81.68,
+        "scores": {
+          "wins": 69.28,
+          "saves": 92.66,
+          "shutouts": 57.74,
+          "savePercent": 87.21,
+          "gaa": 48.19
+        }
+      },
+      {
+        "season": 2019,
+        "games": 20,
+        "wins": 12,
+        "saves": 605,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "penalties": 4,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": ".00",
+        "savePercent": ".000",
+        "score": 67.35,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 77.46,
+          "saves": 74.06,
+          "shutouts": 0
+        }
+      },
+      {
+        "season": 2020,
+        "games": 19,
+        "wins": 7,
+        "saves": 425,
+        "shutouts": 3,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 0,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": "2.46",
+        "savePercent": ".906",
+        "score": 99.56,
+        "scoreAdjustedByGames": 77.83,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 82.35,
+          "gaa": 92.94
+        }
+      },
+      {
+        "season": 2021,
+        "games": 4,
+        "wins": 1,
+        "saves": 78,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.41",
+        "savePercent": ".876",
+        "score": 18.71,
+        "scoreAdjustedByGames": 47.77,
+        "scores": {
+          "wins": 19.61,
+          "saves": 26.1,
+          "shutouts": 0,
+          "savePercent": 33.77,
+          "gaa": 0
+        }
+      }
+    ],
+    "scores": {
+      "wins": 52.3,
+      "saves": 63.27,
+      "shutouts": 62.02
+    }
+  },
+  {
+    "name": "Antti Niemi",
+    "games": 56,
+    "wins": 28,
+    "saves": 1357,
+    "shutouts": 2,
+    "goals": 0,
+    "assists": 2,
+    "points": 2,
+    "penalties": 2,
+    "ppp": 1,
+    "shp": 0,
+    "score": 49.62,
+    "scoreAdjustedByGames": 58.38,
+    "seasons": [
+      {
+        "season": 2015,
+        "games": 35,
+        "wins": 19,
+        "saves": 842,
+        "shutouts": 2,
+        "goals": 0,
+        "assists": 2,
+        "points": 2,
+        "penalties": 2,
+        "ppp": 1,
+        "shp": 0,
+        "gaa": "2.81",
+        "savePercent": ".900",
+        "score": 100,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 78.13,
+          "gaa": 93.21
+        }
+      },
+      {
+        "season": 2016,
+        "games": 20,
+        "wins": 9,
+        "saves": 506,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.07",
+        "savePercent": ".900",
+        "score": 58.36,
+        "scoreAdjustedByGames": 84.43,
+        "scores": {
+          "wins": 72.76,
+          "saves": 84.36,
+          "shutouts": 0,
+          "savePercent": 71.43,
+          "gaa": 19.48
+        }
+      },
+      {
+        "season": 2017,
+        "games": 1,
+        "wins": 0,
+        "saves": 9,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "25.90",
+        "savePercent": ".692",
+        "score": 2.21,
+        "scoreAdjustedByGames": 16.49,
+        "scores": {
+          "wins": 0,
+          "saves": 8.4,
+          "shutouts": 0,
+          "savePercent": 0,
+          "gaa": 0
+        }
+      }
+    ],
+    "scores": {
+      "wins": 48.92,
+      "saves": 51.42,
+      "shutouts": 39.22
+    }
+  },
+  {
+    "name": "Ben Scrivens",
+    "games": 51,
+    "wins": 21,
+    "saves": 1439,
+    "shutouts": 3,
+    "goals": 0,
+    "assists": 1,
+    "points": 1,
+    "penalties": 6,
+    "ppp": 0,
+    "shp": 0,
+    "score": 48.35,
+    "scoreAdjustedByGames": 60.55,
+    "seasons": [
+      {
+        "season": 2012,
+        "games": 6,
+        "wins": 3,
+        "saves": 183,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.01",
+        "savePercent": ".915",
+        "score": 58.26,
+        "scoreAdjustedByGames": 91.57,
+        "scores": {
+          "wins": 50,
+          "saves": 51.72,
+          "shutouts": 0,
+          "savePercent": 90.28,
+          "gaa": 46.64
+        }
+      },
+      {
+        "season": 2013,
+        "games": 19,
+        "wins": 9,
+        "saves": 587,
+        "shutouts": 2,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 4,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.34",
+        "savePercent": ".932",
+        "score": 89.57,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 62.55,
+          "saves": 66.69,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      },
+      {
+        "season": 2014,
+        "games": 26,
+        "wins": 9,
+        "saves": 669,
+        "shutouts": 1,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": ".00",
+        "savePercent": ".000",
+        "score": 60.61,
+        "scoreAdjustedByGames": 78.76,
+        "scores": {
+          "wins": 55.71,
+          "saves": 68.18,
+          "shutouts": 50
+        }
+      }
+    ],
+    "scores": {
+      "wins": 42.37,
+      "saves": 52.95,
+      "shutouts": 48.04
+    }
+  },
+  {
+    "name": "Peter Budaj",
+    "games": 31,
+    "wins": 17,
+    "saves": 711,
+    "shutouts": 6,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 41.59,
+    "scoreAdjustedByGames": 69.33,
+    "seasons": [
+      {
+        "season": 2016,
+        "games": 31,
+        "wins": 17,
+        "saves": 711,
+        "shutouts": 6,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.07",
+        "savePercent": ".920",
+        "score": 100,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 100,
+          "saves": 100,
+          "shutouts": 100,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      }
+    ],
+    "scores": {
+      "wins": 38.12,
+      "saves": 37.22,
+      "shutouts": 67.94
+    }
+  },
+  {
+    "name": "Sam Montembeault",
+    "games": 36,
+    "wins": 18,
+    "saves": 885,
+    "shutouts": 2,
+    "goals": 0,
+    "assists": 1,
+    "points": 1,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 40.79,
+    "scoreAdjustedByGames": 60.1,
+    "seasons": [
+      {
+        "season": 2024,
+        "games": 25,
+        "wins": 14,
+        "saves": 621,
+        "shutouts": 2,
+        "goals": 0,
+        "assists": 1,
+        "points": 1,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.76",
+        "savePercent": ".903",
+        "score": 88.16,
+        "scoreAdjustedByGames": 86.14,
+        "scores": {
+          "wins": 73.38,
+          "saves": 77.42,
+          "shutouts": 100,
+          "savePercent": 88.33,
+          "gaa": 76.58
+        }
+      },
+      {
+        "season": 2025,
+        "games": 11,
+        "wins": 4,
+        "saves": 264,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.34",
+        "savePercent": ".880",
+        "score": 52.51,
+        "scoreAdjustedByGames": 71.93,
+        "scores": {
+          "wins": 42.64,
+          "saves": 56.2,
+          "shutouts": 0,
+          "savePercent": 63.83,
+          "gaa": 60.49
+        }
+      }
+    ],
+    "scores": {
+      "wins": 39.22,
+      "saves": 41.52,
+      "shutouts": 39.22
+    }
+  },
+  {
+    "name": "Alex Lyon",
+    "games": 12,
+    "wins": 5,
+    "saves": 303,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 20.26,
+    "scoreAdjustedByGames": 53.2,
+    "seasons": [
+      {
+        "season": 2023,
+        "games": 12,
+        "wins": 5,
+        "saves": 303,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.49",
+        "savePercent": ".889",
+        "score": 57.35,
+        "scoreAdjustedByGames": 65.92,
+        "scores": {
+          "wins": 51.3,
+          "saves": 60.53,
+          "shutouts": 0,
+          "savePercent": 67.24,
+          "gaa": 52.03
+        }
+      }
+    ],
+    "scores": {
+      "wins": 20.67,
+      "saves": 24.3,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Alex Nedeljkovic",
+    "games": 5,
+    "wins": 3,
+    "saves": 125,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 2,
+    "ppp": 0,
+    "shp": 0,
+    "score": 14.25,
+    "scoreAdjustedByGames": 62.05,
+    "seasons": [
+      {
+        "season": 2018,
+        "games": 1,
+        "wins": 1,
+        "saves": 24,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.00",
+        "savePercent": ".923",
+        "score": 50.26,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 20,
+          "saves": 14.75,
+          "shutouts": 0,
+          "savePercent": 84.88,
+          "gaa": 93.96
+        }
+      },
+      {
+        "season": 2019,
+        "games": 1,
+        "wins": 0,
+        "saves": 12,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": ".00",
+        "savePercent": ".000",
+        "score": 4.64,
+        "scoreAdjustedByGames": 19.83,
+        "scores": {
+          "wins": 0,
+          "saves": 10.43,
+          "shutouts": 0
+        }
+      },
+      {
+        "season": 2020,
+        "games": 3,
+        "wins": 2,
+        "saves": 89,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 2,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.60",
+        "savePercent": ".918",
+        "score": 70.2,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 53.45,
+          "saves": 45.76,
+          "shutouts": 0,
+          "savePercent": 100,
+          "gaa": 83.05
+        }
+      }
+    ],
+    "scores": {
+      "wins": 16.01,
+      "saves": 15.61,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Karri Ramo",
+    "games": 6,
+    "wins": 2,
+    "saves": 149,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 4,
+    "ppp": 0,
+    "shp": 0,
+    "score": 13.57,
+    "scoreAdjustedByGames": 48.51,
+    "seasons": [
+      {
+        "season": 2013,
+        "games": 6,
+        "wins": 2,
+        "saves": 149,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 4,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.88",
+        "savePercent": ".898",
+        "score": 46.31,
+        "scoreAdjustedByGames": 67,
+        "scores": {
+          "wins": 29.49,
+          "saves": 33.6,
+          "shutouts": 0,
+          "savePercent": 58.54,
+          "gaa": 61.54
+        }
+      }
+    ],
+    "scores": {
+      "wins": 13.07,
+      "saves": 17.04,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Jon Gillies",
+    "games": 6,
+    "wins": 1,
+    "saves": 174,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 12.46,
+    "scoreAdjustedByGames": 45.51,
+    "seasons": [
+      {
+        "season": 2021,
+        "games": 6,
+        "wins": 1,
+        "saves": 174,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.50",
+        "savePercent": ".926",
+        "score": 53.29,
+        "scoreAdjustedByGames": 60.42,
+        "scores": {
+          "wins": 19.61,
+          "saves": 38.98,
+          "shutouts": 0,
+          "savePercent": 98.7,
+          "gaa": 69.19
+        }
+      }
+    ],
+    "scores": {
+      "wins": 9.25,
+      "saves": 18.41,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Jason LaBarbera",
+    "games": 3,
+    "wins": 1,
+    "saves": 59,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 9,
+    "scoreAdjustedByGames": 41.88,
+    "seasons": [
+      {
+        "season": 2012,
+        "games": 3,
+        "wins": 1,
+        "saves": 59,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.28",
+        "savePercent": ".922",
+        "score": 63.04,
+        "scoreAdjustedByGames": 60.05,
+        "scores": {
+          "wins": 28.87,
+          "saves": 29.37,
+          "shutouts": 0,
+          "savePercent": 100,
+          "gaa": 100
+        }
+      }
+    ],
+    "scores": {
+      "wins": 9.25,
+      "saves": 10.72,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Maxime Lagace",
+    "games": 2,
+    "wins": 1,
+    "saves": 52,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 8.71,
+    "scoreAdjustedByGames": 58.33,
+    "seasons": [
+      {
+        "season": 2017,
+        "games": 1,
+        "wins": 0,
+        "saves": 25,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.12",
+        "savePercent": ".893",
+        "score": 22.96,
+        "scoreAdjustedByGames": 45.82,
+        "scores": {
+          "wins": 0,
+          "saves": 14,
+          "shutouts": 0,
+          "savePercent": 58.9,
+          "gaa": 14.24
+        }
+      },
+      {
+        "season": 2021,
+        "games": 1,
+        "wins": 1,
+        "saves": 27,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "4.13",
+        "savePercent": ".871",
+        "score": 14.65,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 19.61,
+          "saves": 15.36,
+          "shutouts": 0,
+          "savePercent": 27.27,
+          "gaa": 0
+        }
+      }
+    ],
+    "scores": {
+      "wins": 9.25,
+      "saves": 10.07,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Anthony Stolarz",
+    "games": 1,
+    "wins": 1,
+    "saves": 39,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 8.1,
+    "scoreAdjustedByGames": 100,
+    "seasons": [
+      {
+        "season": 2022,
+        "games": 1,
+        "wins": 1,
+        "saves": 39,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "4.65",
+        "savePercent": ".886",
+        "score": 21.12,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 19.25,
+          "saves": 17.55,
+          "shutouts": 0,
+          "savePercent": 52.94,
+          "gaa": 0
+        }
+      }
+    ],
+    "scores": {
+      "wins": 9.25,
+      "saves": 8.72,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Jonas Johansson",
+    "games": 1,
+    "wins": 1,
+    "saves": 28,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 7.49,
+    "scoreAdjustedByGames": 85.89,
+    "seasons": [
+      {
+        "season": 2023,
+        "games": 1,
+        "wins": 1,
+        "saves": 28,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.00",
+        "savePercent": ".903",
+        "score": 53.33,
+        "scoreAdjustedByGames": 100,
+        "scores": {
+          "wins": 22.94,
+          "saves": 18.4,
+          "shutouts": 0,
+          "savePercent": 91.38,
+          "gaa": 82.16
+        }
+      }
+    ],
+    "scores": {
+      "wins": 9.25,
+      "saves": 7.39,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Jaxson Stauber",
+    "games": 1,
+    "wins": 1,
+    "saves": 23,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 7.18,
+    "scoreAdjustedByGames": 79.48,
+    "seasons": [
+      {
+        "season": 2022,
+        "games": 1,
+        "wins": 1,
+        "saves": 23,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "2.83",
+        "savePercent": ".885",
+        "score": 36.88,
+        "scoreAdjustedByGames": 79.48,
+        "scores": {
+          "wins": 19.25,
+          "saves": 13.48,
+          "shutouts": 0,
+          "savePercent": 51.47,
+          "gaa": 72.57
+        }
+      }
+    ],
+    "scores": {
+      "wins": 9.25,
+      "saves": 6.69,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Hunter Miska",
+    "games": 1,
+    "wins": 0,
+    "saves": 29,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 3.39,
+    "scoreAdjustedByGames": 37.18,
+    "seasons": [
+      {
+        "season": 2020,
+        "games": 1,
+        "wins": 0,
+        "saves": 29,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "3.99",
+        "savePercent": ".879",
+        "score": 17.1,
+        "scoreAdjustedByGames": 48.87,
+        "scores": {
+          "wins": 0,
+          "saves": 26.12,
+          "shutouts": 0,
+          "savePercent": 42.65,
+          "gaa": 0
+        }
+      }
+    ],
+    "scores": {
+      "wins": 0,
+      "saves": 7.52,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Anders Lindback",
+    "games": 1,
+    "wins": 0,
+    "saves": 22,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 2.95,
+    "scoreAdjustedByGames": 28.2,
+    "seasons": [
+      {
+        "season": 2014,
+        "games": 1,
+        "wins": 0,
+        "saves": 22,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": ".00",
+        "savePercent": ".000",
+        "score": 5.49,
+        "scoreAdjustedByGames": 37.37,
+        "scores": {
+          "wins": 0,
+          "saves": 12.36,
+          "shutouts": 0
+        }
+      }
+    ],
+    "scores": {
+      "wins": 0,
+      "saves": 6.55,
+      "shutouts": 0
+    }
+  },
+  {
+    "name": "Hunter Shepard",
+    "games": 1,
+    "wins": 0,
+    "saves": 22,
+    "shutouts": 0,
+    "goals": 0,
+    "assists": 0,
+    "points": 0,
+    "penalties": 0,
+    "ppp": 0,
+    "shp": 0,
+    "score": 2.95,
+    "scoreAdjustedByGames": 28.2,
+    "seasons": [
+      {
+        "season": 2023,
+        "games": 1,
+        "wins": 0,
+        "saves": 22,
+        "shutouts": 0,
+        "goals": 0,
+        "assists": 0,
+        "points": 0,
+        "penalties": 0,
+        "ppp": 0,
+        "shp": 0,
+        "gaa": "6.01",
+        "savePercent": ".786",
+        "score": 4.05,
+        "scoreAdjustedByGames": 39.28,
+        "scores": {
+          "wins": 0,
+          "saves": 16.31,
+          "shutouts": 0,
+          "savePercent": 0,
+          "gaa": 0
+        }
+      }
+    ],
+    "scores": {
+      "wins": 0,
+      "saves": 6.55,
+      "shutouts": 0
+    }
+  }
+]

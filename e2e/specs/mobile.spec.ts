@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/test-fixture';
 import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 import { PlayerCardDialog } from '../page-objects/PlayerCardDialog';
 import { MOBILE_VIEWPORT, DEFAULT_TEAM } from '../config/test-data';
