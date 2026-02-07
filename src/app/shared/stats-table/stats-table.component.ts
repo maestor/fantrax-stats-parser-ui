@@ -45,13 +45,11 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   readonly dialog = inject(MatDialog);
   private translate = inject(TranslateService);
 
-  private warmupTimeoutId?: ReturnType<typeof setTimeout>;
   private loadingIntervalId?: ReturnType<typeof setInterval>;
   private loadingStartMs?: number;
 
   loadingProgress = 0;
   loadingBuffer = 0;
-  showWarmupMessage = false;
 
   @Input() data: any = [];
   @Input() columns: string[] = [];
@@ -112,14 +110,11 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   ngOnDestroy(): void {
-    this.clearWarmupTimer();
     this.clearLoadingProgressTimer();
   }
 
   private onLoadingChanged(isLoading: boolean) {
-    this.clearWarmupTimer();
     this.clearLoadingProgressTimer();
-    this.showWarmupMessage = false;
 
     if (!isLoading) {
       this.loadingProgress = 0;
@@ -134,10 +129,6 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       this.cdr.markForCheck();
     }, 200);
 
-    this.warmupTimeoutId = setTimeout(() => {
-      this.showWarmupMessage = true;
-      this.cdr.markForCheck();
-    }, 2000);
   }
 
   private updateLoadingProgress() {
@@ -157,13 +148,6 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     }
 
     this.loadingStartMs = undefined;
-  }
-
-  private clearWarmupTimer() {
-    if (this.warmupTimeoutId) {
-      clearTimeout(this.warmupTimeoutId);
-      this.warmupTimeoutId = undefined;
-    }
   }
 
   ngAfterViewInit(): void {
