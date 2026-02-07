@@ -12,6 +12,7 @@ import {
   AfterViewInit,
   OnDestroy,
 } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
@@ -20,15 +21,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { STATIC_COLUMNS } from '@shared/table-columns';
 import { Player, Goalie } from '@services/api.service';
+import { ComparisonService } from '@services/comparison.service';
 import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stats-table',
   imports: [
+    AsyncPipe,
     TranslateModule,
     MatTableModule,
     MatFormFieldModule,
@@ -36,6 +40,7 @@ import { TranslateService } from '@ngx-translate/core';
     MatProgressBarModule,
     MatSortModule,
     MatTooltipModule,
+    MatCheckboxModule,
   ],
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
@@ -44,6 +49,8 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   private cdr = inject(ChangeDetectorRef);
   readonly dialog = inject(MatDialog);
   private translate = inject(TranslateService);
+  readonly comparisonService = inject(ComparisonService);
+  readonly canSelectMore$ = this.comparisonService.canSelectMore$;
 
   private loadingIntervalId?: ReturnType<typeof setInterval>;
   private loadingStartMs?: number;
@@ -85,7 +92,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       this.dataSource.data = this.data;
 
       if (this.columns?.length > 0) {
-        this.displayedColumns = this.columns;
+        this.displayedColumns = ['compare', ...this.columns];
         this.dynamicColumns = this.displayedColumns.filter(
           (column) => !STATIC_COLUMNS.includes(column)
         );
@@ -281,6 +288,14 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       default:
         return;
     }
+  }
+
+  onCompareToggle(player: Player | Goalie): void {
+    this.comparisonService.toggle(player);
+  }
+
+  isCompareSelected(player: Player | Goalie): boolean {
+    return this.comparisonService.isSelected(player);
   }
 
   getRowAriaLabel(row: Player | Goalie): string {

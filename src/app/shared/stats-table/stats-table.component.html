@@ -13,6 +13,19 @@
 
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort matSortStart="desc" [attr.aria-describedby]="instructionsId">
+      <!-- Compare checkbox column -->
+      <ng-container matColumnDef="compare">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+          <mat-checkbox
+            [checked]="isCompareSelected(row)"
+            [disabled]="!isCompareSelected(row) && !(canSelectMore$ | async)"
+            (change)="onCompareToggle(row)"
+            [attr.aria-label]="'Valitse vertailuun: ' + row.name">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
       <!-- Auto increment position column -->
       <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef>

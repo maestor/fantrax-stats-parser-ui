@@ -9,6 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ElementRef, SimpleChange } from '@angular/core';
 import { Player, Goalie } from '@services/api.service';
 import { PlayerCardComponent } from '@shared/player-card/player-card.component';
+import { ComparisonService } from '@services/comparison.service';
 import { of } from 'rxjs';
 
 describe('StatsTableComponent', () => {
@@ -435,7 +436,7 @@ describe('StatsTableComponent', () => {
       expect(component.dataSource.data).toEqual(mockPlayerData as any);
     });
 
-    it('should set displayedColumns when columns are provided', () => {
+    it('should set displayedColumns with compare column prepended when columns are provided', () => {
       const changes = {
         data: new SimpleChange(null, mockPlayerData, true),
       };
@@ -444,7 +445,7 @@ describe('StatsTableComponent', () => {
       component.columns = playerColumns;
       component.ngOnChanges(changes);
 
-      expect(component.displayedColumns).toEqual(playerColumns);
+      expect(component.displayedColumns).toEqual(['compare', ...playerColumns]);
     });
 
     it('should filter static columns to create dynamicColumns', () => {
@@ -456,9 +457,12 @@ describe('StatsTableComponent', () => {
       component.columns = playerColumns;
       component.ngOnChanges(changes);
 
+      expect(component.dynamicColumns).not.toContain('compare');
       expect(component.dynamicColumns).not.toContain('position');
       expect(component.dynamicColumns).toContain('name');
       expect(component.dynamicColumns).toContain('games');
+      // playerColumns has 'position' (static), plus 'compare' is prepended (also static)
+      // dynamicColumns = displayedColumns minus both static columns
       expect(component.dynamicColumns.length).toBe(playerColumns.length - 1);
     });
 
@@ -764,7 +768,7 @@ describe('StatsTableComponent', () => {
       component.ngOnChanges(changes);
 
       expect(component.dataSource.data).toEqual(mockPlayerData as any);
-      expect(component.displayedColumns).toEqual(playerColumns);
+      expect(component.displayedColumns).toEqual(['compare', ...playerColumns]);
       expect(component.dynamicColumns.length).toBeGreaterThan(0);
     });
 
@@ -803,6 +807,41 @@ describe('StatsTableComponent', () => {
       component.ngOnChanges(changes);
 
       expect(component.dataSource.data).toEqual(mockGoalieData as any);
+    });
+  });
+
+  describe('comparison checkboxes', () => {
+    it('should include compare column as first displayed column', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
+      component.ngOnChanges({
+        data: new SimpleChange(null, mockPlayerData, true),
+      });
+
+      expect(component.displayedColumns[0]).toBe('compare');
+    });
+
+    it('should toggle player selection when onCompareToggle called', () => {
+      const comparisonService = TestBed.inject(ComparisonService);
+      spyOn(comparisonService, 'toggle');
+      component.onCompareToggle(mockPlayerData[0]);
+      expect(comparisonService.toggle).toHaveBeenCalledWith(mockPlayerData[0]);
+    });
+
+    it('should check if player is selected', () => {
+      const comparisonService = TestBed.inject(ComparisonService);
+      spyOn(comparisonService, 'isSelected').and.returnValue(true);
+      expect(component.isCompareSelected(mockPlayerData[0])).toBeTrue();
+    });
+
+    it('should report player as not selected when not in comparison', () => {
+      const comparisonService = TestBed.inject(ComparisonService);
+      spyOn(comparisonService, 'isSelected').and.returnValue(false);
+      expect(component.isCompareSelected(mockPlayerData[0])).toBeFalse();
+    });
+
+    it('should expose canSelectMore$ observable from ComparisonService', () => {
+      expect(component.canSelectMore$).toBeDefined();
     });
   });
 

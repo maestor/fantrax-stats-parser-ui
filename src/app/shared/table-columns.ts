@@ -38,4 +38,4 @@ export const GOALIE_SEASON_COLUMNS = [
   ...COMMON_COLUMNS,
 ];
 
-export const STATIC_COLUMNS = ['position'];
+export const STATIC_COLUMNS = ['compare', 'position'];
