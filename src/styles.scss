@@ -448,13 +448,14 @@ mat-checkbox .mdc-label {
       max-width: 95vw !important;
       width: 95vw !important;
       padding: 0 !important;
-      max-height: calc(var(--app-height) - 8px) !important;
+      max-height: calc(var(--app-height) - 12px) !important;
 
       .mdc-dialog__surface {
         max-width: 95vw !important;
         width: 95vw !important;
         padding: 0 !important;
-        max-height: calc(var(--app-height) - 8px) !important;
+        max-height: calc(var(--app-height) - 12px) !important;
+        overflow: hidden;
       }
     }
   }
