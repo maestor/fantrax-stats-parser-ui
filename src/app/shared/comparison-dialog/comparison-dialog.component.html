@@ -1,5 +1,5 @@
 <div class="comparison-dialog" [attr.aria-label]="'Vertailu: ' + data.playerA.name + ' vs ' + data.playerB.name">
-  <button mat-icon-button (click)="dialogRef.close()" #closeButton
+  <button mat-icon-button (click)="closeComparison()" (keypress)="closeComparisonByKeyboard($event)" #closeButton
     [attr.aria-label]="'a11y.closeComparisonDialog' | translate">
     <mat-icon fontIcon="close" />
   </button>
