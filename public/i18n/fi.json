@@ -24,7 +24,9 @@
     "closeHelpDialog": "Sulje ohje",
     "openSettingsDrawer": "Avaa asetuspaneeli",
     "closeSettingsDrawer": "Sulje asetuspaneeli",
-    "reloadToUpdate": "Päivitä sovellus"
+    "reloadToUpdate": "Päivitä sovellus",
+    "closePlayerCard": "Sulje pelaajakortti",
+    "closeComparisonDialog": "Sulje vertailu"
   },
   "pwa": {
     "updateAvailable": "Päivitys tarjolla!",
@@ -215,13 +217,10 @@
     "radarInfo": "Joukkueen sisäinen vertailuarvo 0-100 välillä"
   },
   "comparison": {
-    "selectedOne": "{{name}} valittu — valitse toinen vertailuun",
+    "selectedOne": "{{name}} valittu: valitse toinen vertailuun",
     "compare": "Vertaile",
     "clear": "Tyhjennä",
     "playerTitle": "Pelaajavertailu",
-    "forwardTitle": "Hyökkääjävertailu",
-    "defenseTitle": "Puolustajavertailu",
-    "goalieTitle": "Maalivahtivertailu",
     "statsTab": "Tilastot",
     "graphsTab": "Graafit"
   },

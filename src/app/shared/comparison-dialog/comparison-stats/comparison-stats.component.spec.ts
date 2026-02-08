@@ -93,8 +93,8 @@ describe('ComparisonStatsComponent', () => {
   describe('player stats', () => {
     it('should render all player stat rows', () => {
       createComponent(mockPlayerA, mockPlayerB);
-      // PLAYER_STAT_COLUMNS: score, scoreAdjustedByGames, games, goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks
-      expect(component.statRows.length).toBe(13);
+      // PLAYER_STAT_COLUMNS: name, score, scoreAdjustedByGames, games, goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks
+      expect(component.statRows.length).toBe(14);
     });
 
     it('should have correct stat keys for players', () => {
@@ -105,7 +105,7 @@ describe('ComparisonStatsComponent', () => {
       expect(keys).toContain('assists');
       expect(keys).toContain('hits');
       expect(keys).toContain('blocks');
-      expect(keys).not.toContain('name');
+      expect(keys).toContain('name');
       expect(keys).not.toContain('position');
     });
 
@@ -138,8 +138,8 @@ describe('ComparisonStatsComponent', () => {
   describe('goalie stats (combined)', () => {
     it('should render goalie combined stat rows', () => {
       createComponent(mockGoalieCombinedA, mockGoalieCombinedB);
-      // GOALIE_STAT_COLUMNS: score, scoreAdjustedByGames, games, wins, saves, shutouts, goals, assists, points, penalties, ppp, shp
-      expect(component.statRows.length).toBe(12);
+      // GOALIE_STAT_COLUMNS: name,score, scoreAdjustedByGames, games, wins, saves, shutouts, goals, assists, points, penalties, ppp, shp
+      expect(component.statRows.length).toBe(13);
     });
 
     it('should not include gaa or savePercent for combined goalies', () => {
@@ -153,8 +153,8 @@ describe('ComparisonStatsComponent', () => {
   describe('goalie stats (season)', () => {
     it('should render goalie season stat rows including gaa and savePercent', () => {
       createComponent(mockGoalieSeasonA, mockGoalieSeasonB);
-      // GOALIE_SEASON_STAT_COLUMNS: score, scoreAdjustedByGames, games, wins, saves, gaa, savePercent, shutouts, goals, assists, points, penalties, ppp, shp
-      expect(component.statRows.length).toBe(14);
+      // GOALIE_SEASON_STAT_COLUMNS: name, score, scoreAdjustedByGames, games, wins, saves, gaa, savePercent, shutouts, goals, assists, points, penalties, ppp, shp
+      expect(component.statRows.length).toBe(15);
     });
 
     it('should include gaa and savePercent for season goalies', () => {
@@ -195,7 +195,7 @@ describe('ComparisonStatsComponent', () => {
       createComponent(mockPlayerA, mockPlayerB, false);
       const el: HTMLElement = fixture.nativeElement;
       const desktopRows = el.querySelectorAll('.stat-row-desktop');
-      expect(desktopRows.length).toBe(13);
+      expect(desktopRows.length).toBe(14);
       expect(el.querySelectorAll('.stat-row-mobile').length).toBe(0);
     });
   });
@@ -205,7 +205,7 @@ describe('ComparisonStatsComponent', () => {
       createComponent(mockPlayerA, mockPlayerB, true);
       const el: HTMLElement = fixture.nativeElement;
       const mobileRows = el.querySelectorAll('.stat-row-mobile');
-      expect(mobileRows.length).toBe(13);
+      expect(mobileRows.length).toBe(14);
       expect(el.querySelectorAll('.stat-row-desktop').length).toBe(0);
     });
   });
