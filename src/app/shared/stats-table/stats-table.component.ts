@@ -249,8 +249,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   onRowKeydown(event: KeyboardEvent, row: Player | Goalie, index: number): void {
     switch (event.key) {
-      case 'Enter':
-      case ' ': {
+      case 'Enter': {
         event.preventDefault();
         this.selectItem(row);
         return;

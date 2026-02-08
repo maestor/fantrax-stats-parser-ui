@@ -154,7 +154,7 @@ describe('StatsTableComponent', () => {
       expect(selectSpy).toHaveBeenCalledWith(mockPlayerData[0]);
     });
 
-    it('should open player card on Space key', () => {
+    it('should NOT intercept Space key (allows checkbox toggle)', () => {
       const selectSpy = spyOn(component, 'selectItem');
       const event = {
         key: ' ',
@@ -163,8 +163,8 @@ describe('StatsTableComponent', () => {
 
       component.onRowKeydown(event, mockPlayerData[0], 0);
 
-      expect(event.preventDefault).toHaveBeenCalled();
-      expect(selectSpy).toHaveBeenCalledWith(mockPlayerData[0]);
+      expect(event.preventDefault).not.toHaveBeenCalled();
+      expect(selectSpy).not.toHaveBeenCalled();
     });
 
     it('should move focus with Arrow keys, Home/End and PageUp/PageDown', () => {
