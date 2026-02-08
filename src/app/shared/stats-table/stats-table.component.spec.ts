@@ -389,14 +389,14 @@ describe('StatsTableComponent', () => {
   describe('accessibility labeling', () => {
     it('getRowAriaLabel should include player name when present', () => {
       const instantSpy = spyOn(translate, 'instant').and.callThrough();
-      const label = component.getRowAriaLabel({ name: 'Test Name' } as any);
+      const label = component.getRowAriaLabel({ name: 'Test Name' } as any, 'a11y.openPlayerCard');
       expect(instantSpy).toHaveBeenCalledWith('a11y.openPlayerCard', { name: 'Test Name' });
       expect(label).toContain('Test Name');
     });
 
     it('getRowAriaLabel should still call translate with empty name when missing', () => {
       const instantSpy = spyOn(translate, 'instant').and.callThrough();
-      component.getRowAriaLabel({} as any);
+      component.getRowAriaLabel({} as any, 'a11y.openPlayerCard');
       expect(instantSpy).toHaveBeenCalledWith('a11y.openPlayerCard', { name: '' });
     });
   });

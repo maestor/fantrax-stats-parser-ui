@@ -298,9 +298,9 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     return this.comparisonService.isSelected(player);
   }
 
-  getRowAriaLabel(row: Player | Goalie): string {
+  getRowAriaLabel(row: Player | Goalie, translateKey: string): string {
     const name = (row as any)?.name ?? '';
-    return this.translate.instant('a11y.openPlayerCard', { name });
+    return this.translate.instant(translateKey, { name });
   }
 
   private getRowCount(): number {

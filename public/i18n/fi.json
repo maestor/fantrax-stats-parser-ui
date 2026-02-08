@@ -26,7 +26,8 @@
     "closeSettingsDrawer": "Sulje asetuspaneeli",
     "reloadToUpdate": "Päivitä sovellus",
     "closePlayerCard": "Sulje pelaajakortti",
-    "closeComparisonDialog": "Sulje vertailu"
+    "closeComparisonDialog": "Sulje vertailu",
+    "selectToCompare": "Valitse vertailuun: {{name}}"
   },
   "pwa": {
     "updateAvailable": "Päivitys tarjolla!",
@@ -137,6 +138,9 @@
         ]
       }
     ]
+  },
+  "tooltip": {
+    "comparePositionColumn": "Valitse 2 pelaajaa tilastovertailuun"
   },
   "tableColumn": {
     "position": "#",
