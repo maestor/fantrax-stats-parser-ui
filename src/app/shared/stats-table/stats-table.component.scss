@@ -77,8 +77,13 @@
 }
 
 .mat-column-position {
-  text-align: center;
+  text-align: left;
   padding: 0;
+}
+
+th.mat-column-position {
+  text-align: center;
+  padding-left: 16px;
 }
 
 .mat-column-name {

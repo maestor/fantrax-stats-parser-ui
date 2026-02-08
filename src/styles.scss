@@ -322,6 +322,7 @@ button[mat-icon-button]:focus-visible,
 
 mat-checkbox .mdc-label {
   color: var(--mat-sys-on-surface);
+  padding-right: 8px !important;
 }
 
 // Player card graphs: checkbox labels and boxes need contrast in dark mode.
