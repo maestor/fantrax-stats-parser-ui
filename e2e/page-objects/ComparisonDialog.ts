@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 /**
  * Page object for the comparison dialog.
@@ -13,7 +13,7 @@ import { Page, expect } from '@playwright/test';
  * Graphs tab: canvas (Chart.js radar chart)
  */
 export class ComparisonDialog {
-  constructor(private page: Page) {}
+  constructor(private page: Page) { }
 
   private get dialog() {
     return this.page.getByRole('dialog');
@@ -59,7 +59,7 @@ export class ComparisonDialog {
    * The button has aria-label="Sulje" which takes precedence as the accessible name.
    */
   async close(): Promise<void> {
-    const closeButton = this.dialog.getByRole('button', { name: 'Sulje' });
+    const closeButton = this.dialog.getByRole('button', { name: 'Sulje vertailu' });
     await closeButton.click();
     await this.dialog.waitFor({ state: 'hidden' });
   }

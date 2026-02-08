@@ -24,7 +24,9 @@
     "closeHelpDialog": "Sulje ohje",
     "openSettingsDrawer": "Avaa asetuspaneeli",
     "closeSettingsDrawer": "Sulje asetuspaneeli",
-    "reloadToUpdate": "Päivitä sovellus"
+    "reloadToUpdate": "Päivitä sovellus",
+    "closePlayerCard": "Sulje pelaajakortti",
+    "closeComparisonDialog": "Sulje vertailu"
   },
   "pwa": {
     "updateAvailable": "Päivitys tarjolla!",
