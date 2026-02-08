@@ -164,9 +164,6 @@ th.mat-column-position {
 .mat-mdc-row:focus {
   outline: 2px solid var(--mat-sys-primary);
   outline-offset: -2px;
-}
-
-.mat-mdc-row.a11y-active {
   background-color: var(--mat-sys-primary-container);
   color: var(--mat-sys-on-primary-container);
 }
@@ -185,9 +182,9 @@ th.mat-column-position {
   }
 }
 
-// Checkbox on active/hovered row: ensure contrast with primary-container background
+// Checkbox on focused/hovered row: ensure contrast with primary-container background
 :host ::ng-deep .mat-mdc-row:hover,
-:host ::ng-deep .mat-mdc-row.a11y-active {
+:host ::ng-deep .mat-mdc-row:focus {
   .mat-mdc-checkbox .mdc-checkbox__background {
     border-color: var(--mat-sys-on-primary-container) !important;
   }
