@@ -146,7 +146,7 @@ describe('ComparisonDialogComponent', () => {
     it('should close dialog when close button is clicked', () => {
       setup({ playerA: mockForwardA, playerB: mockForwardB });
       const el: HTMLElement = fixture.nativeElement;
-      const closeButton = el.querySelector('button[aria-label="Sulje"]') as HTMLButtonElement;
+      const closeButton = el.querySelector('button[aria-label="a11y.closeComparisonDialog"]') as HTMLButtonElement;
       expect(closeButton).toBeTruthy();
       closeButton.click();
       expect(dialogRefSpy.close).toHaveBeenCalled();
