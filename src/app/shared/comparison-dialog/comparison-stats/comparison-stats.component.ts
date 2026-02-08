@@ -61,8 +61,6 @@ export class ComparisonStatsComponent implements OnInit {
       columns = columns.filter(column => column !== 'score');
     }
 
-    console.info('Building stat rows with columns:', columns);
-
     const nameRow: StatRow = {
       key: 'name',
       label: this.translateService.instant('tableColumn.name'),

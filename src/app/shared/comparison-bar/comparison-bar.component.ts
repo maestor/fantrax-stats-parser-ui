@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ import { ComparisonDialogComponent, ComparisonDialogData } from '@shared/compari
   templateUrl: './comparison-bar.component.html',
   styleUrl: './comparison-bar.component.scss',
 })
-export class ComparisonBarComponent {
+export class ComparisonBarComponent implements OnChanges {
   @Input() context: 'player' | 'goalie' = 'player';
   private comparisonService = inject(ComparisonService);
   private translateService = inject(TranslateService);
@@ -41,6 +41,13 @@ export class ComparisonBarComponent {
       return '';
     })
   );
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Clear comparison when context changes (but not on initial load)
+    if (changes['context'] && !changes['context'].firstChange) {
+      this.comparisonService.clear();
+    }
+  }
 
   onClear(): void {
     this.comparisonService.clear();
