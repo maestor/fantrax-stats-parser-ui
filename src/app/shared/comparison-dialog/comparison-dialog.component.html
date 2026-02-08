@@ -9,13 +9,18 @@
     <span class="ingress-team">{{ teamName }}</span>
     }
   </div>
+  @if (!statsPerGame) {
   <mat-tab-group>
     <mat-tab [label]="'comparison.statsTab' | translate">
-      <app-comparison-stats [playerA]="data.playerA" [playerB]="data.playerB"
+      <app-comparison-stats [playerA]="data.playerA" [playerB]="data.playerB" [context]="data.context"
         [isMobile]="(isNarrow$ | async) ?? false" />
     </mat-tab>
     <mat-tab [label]="'comparison.graphsTab' | translate">
-      <app-comparison-radar [playerA]="data.playerA" [playerB]="data.playerB" />
+      <app-comparison-radar [playerA]="data.playerA" [playerB]="data.playerB" [context]="data.context" />
     </mat-tab>
   </mat-tab-group>
+  } @else {
+  <app-comparison-stats [playerA]="data.playerA" [playerB]="data.playerB" [context]="data.context"
+    [isMobile]="(isNarrow$ | async) ?? false" />
+  }
 </div>

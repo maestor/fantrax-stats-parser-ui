@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { Player, Goalie } from '@services/api.service';
+import { FilterService } from '@services/filter.service';
+import { take } from 'rxjs';
 import {
   PLAYER_STAT_COLUMNS,
   GOALIE_STAT_COLUMNS,
@@ -25,17 +27,24 @@ export type StatRow = {
 export class ComparisonStatsComponent implements OnInit {
   private translateService = inject(TranslateService);
 
+  @Input() context: 'player' | 'goalie' = 'player';
   @Input({ required: true }) playerA!: Player | Goalie;
   @Input({ required: true }) playerB!: Player | Goalie;
   @Input() isMobile = false;
 
+  private filterService = inject(FilterService);
+
+  statsPerGame = false;
   statRows: StatRow[] = [];
 
-  get isGoalie(): boolean {
-    return 'wins' in this.playerA;
-  }
-
   ngOnInit(): void {
+    const filters$ = this.context === 'goalie'
+      ? this.filterService.goalieFilters$
+      : this.filterService.playerFilters$;
+
+    filters$.pipe(take(1)).subscribe((filters) => {
+      this.statsPerGame = filters.statsPerGame;
+    });
     this.buildStatRows();
   }
 
@@ -45,7 +54,14 @@ export class ComparisonStatsComponent implements OnInit {
   }
 
   private buildStatRows(): void {
-    const columns = this.getStatColumns();
+    let columns = this.getStatColumns();
+
+    if (this.statsPerGame) {
+      // Remove score from columns
+      columns = columns.filter(column => column !== 'score');
+    }
+
+    console.info('Building stat rows with columns:', columns);
 
     const nameRow: StatRow = {
       key: 'name',
@@ -69,7 +85,7 @@ export class ComparisonStatsComponent implements OnInit {
   }
 
   private getStatColumns(): string[] {
-    if (!this.isGoalie) {
+    if (this.context === 'player') {
       return PLAYER_STAT_COLUMNS;
     }
 

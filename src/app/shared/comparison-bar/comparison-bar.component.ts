@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { ComparisonDialogComponent, ComparisonDialogData } from '@shared/compari
   styleUrl: './comparison-bar.component.scss',
 })
 export class ComparisonBarComponent {
+  @Input() context: 'player' | 'goalie' = 'player';
   private comparisonService = inject(ComparisonService);
   private translateService = inject(TranslateService);
   private dialog = inject(MatDialog);
@@ -48,7 +49,7 @@ export class ComparisonBarComponent {
   onCompare(): void {
     this.comparisonService.orderedSelection$.pipe(first()).subscribe((ordered) => {
       if (ordered) {
-        const dialogData: ComparisonDialogData = ordered;
+        const dialogData: ComparisonDialogData = { ...ordered, context: this.context };
         this.dialog.open(ComparisonDialogComponent, {
           data: dialogData,
           maxWidth: '95vw',

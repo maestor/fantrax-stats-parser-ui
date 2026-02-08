@@ -12,10 +12,12 @@ import type { Player, Goalie } from '@services/api.service';
 import { ApiService } from '@services/api.service';
 import { TeamService } from '@services/team.service';
 import { ViewportService } from '@services/viewport.service';
+import { FilterService } from '@services/filter.service';
 import { ComparisonStatsComponent } from './comparison-stats/comparison-stats.component';
 import { ComparisonRadarComponent } from './comparison-radar/comparison-radar.component';
 
 export type ComparisonDialogData = {
+  context: 'player' | 'goalie';
   playerA: Player | Goalie;
   playerB: Player | Goalie;
 };
@@ -44,7 +46,9 @@ export class ComparisonDialogComponent {
     .pipe(map((result) => result.matches));
   private apiService = inject(ApiService);
   private teamService = inject(TeamService);
+  private filterService = inject(FilterService);
 
+  statsPerGame = false;
   teamName = '';
 
   constructor() {
@@ -52,9 +56,14 @@ export class ComparisonDialogComponent {
       const team = teams.find((t) => t.id === this.teamService.selectedTeamId);
       this.teamName = team?.presentName ?? '';
     });
-  }
 
-  get isGoalie(): boolean {
-    return 'wins' in this.data.playerA;
+    // Get statsPerGame value from appropriate filter
+    const filters$ = this.data.context === 'goalie'
+      ? this.filterService.goalieFilters$
+      : this.filterService.playerFilters$;
+
+    filters$.pipe(take(1)).subscribe((filters) => {
+      this.statsPerGame = filters.statsPerGame;
+    });
   }
 }
