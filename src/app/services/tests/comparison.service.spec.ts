@@ -1,10 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { ComparisonService } from '../comparison.service';
-import { Player } from '../api.service';
+import { Player, Goalie } from '../api.service';
 import { first } from 'rxjs';
 import { TeamService } from '../team.service';
 import { FilterService } from '../filter.service';
 import { SettingsService } from '../settings.service';
+import { StatsService } from '../stats.service';
 
 const mockPlayerA: Player = {
   name: 'Mikko Rantanen',
@@ -58,6 +59,38 @@ const mockPlayerC: Player = {
   shp: 5,
   hits: 496,
   blocks: 0,
+};
+
+const mockGoalieA: Goalie = {
+  name: 'Juuse Saros',
+  score: 95.5,
+  scoreAdjustedByGames: 88.2,
+  games: 180,
+  wins: 98,
+  saves: 4850,
+  shutouts: 12,
+  goals: 0,
+  assists: 3,
+  points: 3,
+  penalties: 4,
+  ppp: 0,
+  shp: 0,
+};
+
+const mockGoalieB: Goalie = {
+  name: 'Andrei Vasilevskiy',
+  score: 100,
+  scoreAdjustedByGames: 92.1,
+  games: 220,
+  wins: 135,
+  saves: 6100,
+  shutouts: 18,
+  goals: 0,
+  assists: 5,
+  points: 5,
+  penalties: 6,
+  ppp: 0,
+  shp: 0,
 };
 
 describe('ComparisonService', () => {
@@ -183,6 +216,196 @@ describe('ComparisonService', () => {
         expect(ordered!.playerA.name).toBe('Aaron Ekblad');
         expect(ordered!.playerB.name).toBe('Mikko Rantanen');
         done();
+      });
+    });
+
+    describe('with statsPerGame', () => {
+      let filterService: FilterService;
+      let statsService: StatsService;
+
+      beforeEach(() => {
+        filterService = TestBed.inject(FilterService);
+        statsService = TestBed.inject(StatsService);
+      });
+
+      it('should transform players when statsPerGame is true', (done) => {
+        // Create per-game transformed players with different scores
+        const mockPlayerAPerGame: Player = {
+          ...mockPlayerA,
+          score: 1.2,  // Per-game score
+          goals: 0.45,
+          assists: 0.59,
+          points: 1.04,
+        };
+
+        const mockPlayerBPerGame: Player = {
+          ...mockPlayerB,
+          score: 0.9,  // Per-game score (lower)
+          goals: 0.18,
+          assists: 0.35,
+          points: 0.53,
+        };
+
+        spyOn(statsService, 'getPlayerStatsPerGame').and.callFake((players) => {
+          if (players[0].name === 'Mikko Rantanen') {
+            return [mockPlayerAPerGame];
+          }
+          return [mockPlayerBPerGame];
+        });
+
+        filterService.updatePlayerFilters({ statsPerGame: true });
+        service.toggle(mockPlayerA);
+        service.toggle(mockPlayerB);
+
+        service.orderedSelection$.pipe(first()).subscribe((ordered) => {
+          expect(ordered).not.toBeNull();
+          expect(statsService.getPlayerStatsPerGame).toHaveBeenCalled();
+          // PlayerA should be first because it has higher per-game score
+          expect(ordered!.playerA.score).toBe(1.2);
+          expect(ordered!.playerB.score).toBe(0.9);
+          done();
+        });
+      });
+
+      it('should not transform players when statsPerGame is false', (done) => {
+        spyOn(statsService, 'getPlayerStatsPerGame');
+
+        filterService.updatePlayerFilters({ statsPerGame: false });
+        service.toggle(mockPlayerA);
+        service.toggle(mockPlayerB);
+
+        service.orderedSelection$.pipe(first()).subscribe((ordered) => {
+          expect(ordered).not.toBeNull();
+          expect(statsService.getPlayerStatsPerGame).not.toHaveBeenCalled();
+          // Should use original scores
+          expect(ordered!.playerA.score).toBe(100);  // mockPlayerB
+          expect(ordered!.playerB.score).toBe(94.31); // mockPlayerA
+          done();
+        });
+      });
+
+      it('should order by score after per-game transformation', (done) => {
+        // PlayerA has higher total score but lower per-game score
+        const mockPlayerAPerGame: Player = {
+          ...mockPlayerA,
+          score: 0.5,  // Lower per-game score
+        };
+
+        const mockPlayerBPerGame: Player = {
+          ...mockPlayerB,
+          score: 1.8,  // Higher per-game score
+        };
+
+        spyOn(statsService, 'getPlayerStatsPerGame').and.callFake((players) => {
+          if (players[0].name === 'Mikko Rantanen') {
+            return [mockPlayerAPerGame];
+          }
+          return [mockPlayerBPerGame];
+        });
+
+        filterService.updatePlayerFilters({ statsPerGame: true });
+        service.toggle(mockPlayerA); // Higher total score (94.31)
+        service.toggle(mockPlayerB); // Lower total score but higher per-game
+
+        service.orderedSelection$.pipe(first()).subscribe((ordered) => {
+          expect(ordered).not.toBeNull();
+          // PlayerB should be first because it has higher per-game score
+          expect(ordered!.playerA.name).toBe('Aaron Ekblad');
+          expect(ordered!.playerA.score).toBe(1.8);
+          expect(ordered!.playerB.name).toBe('Mikko Rantanen');
+          expect(ordered!.playerB.score).toBe(0.5);
+          done();
+        });
+      });
+
+      it('should transform goalies when statsPerGame is true', (done) => {
+        // Create per-game transformed goalies with different scores
+        const mockGoalieAPerGame: Goalie = {
+          ...mockGoalieA,
+          score: 1.5,  // Per-game score
+          wins: 0.54,
+          saves: 26.9,
+        };
+
+        const mockGoalieBPerGame: Goalie = {
+          ...mockGoalieB,
+          score: 1.1,  // Per-game score (lower)
+          wins: 0.61,
+          saves: 27.7,
+        };
+
+        spyOn(statsService, 'getGoalieStatsPerGame').and.callFake((goalies) => {
+          if (goalies[0].name === 'Juuse Saros') {
+            return [mockGoalieAPerGame];
+          }
+          return [mockGoalieBPerGame];
+        });
+
+        filterService.updateGoalieFilters({ statsPerGame: true });
+        service.toggle(mockGoalieA);
+        service.toggle(mockGoalieB);
+
+        service.orderedSelection$.pipe(first()).subscribe((ordered) => {
+          expect(ordered).not.toBeNull();
+          expect(statsService.getGoalieStatsPerGame).toHaveBeenCalled();
+          // GoalieA should be first because it has higher per-game score
+          expect(ordered!.playerA.name).toBe('Juuse Saros');
+          expect(ordered!.playerA.score).toBe(1.5);
+          expect(ordered!.playerB.name).toBe('Andrei Vasilevskiy');
+          expect(ordered!.playerB.score).toBe(1.1);
+          done();
+        });
+      });
+
+      it('should not transform goalies when statsPerGame is false', (done) => {
+        spyOn(statsService, 'getGoalieStatsPerGame');
+
+        filterService.updateGoalieFilters({ statsPerGame: false });
+        service.toggle(mockGoalieA);
+        service.toggle(mockGoalieB);
+
+        service.orderedSelection$.pipe(first()).subscribe((ordered) => {
+          expect(ordered).not.toBeNull();
+          expect(statsService.getGoalieStatsPerGame).not.toHaveBeenCalled();
+          // Should use original scores
+          expect(ordered!.playerA.score).toBe(100);    // mockGoalieB
+          expect(ordered!.playerB.score).toBe(95.5);   // mockGoalieA
+          done();
+        });
+      });
+
+      it('should order goalies by score after per-game transformation', (done) => {
+        // GoalieB has higher total score but lower per-game score
+        const mockGoalieAPerGame: Goalie = {
+          ...mockGoalieA,
+          score: 2.2,  // Higher per-game score
+        };
+
+        const mockGoalieBPerGame: Goalie = {
+          ...mockGoalieB,
+          score: 0.8,  // Lower per-game score
+        };
+
+        spyOn(statsService, 'getGoalieStatsPerGame').and.callFake((goalies) => {
+          if (goalies[0].name === 'Juuse Saros') {
+            return [mockGoalieAPerGame];
+          }
+          return [mockGoalieBPerGame];
+        });
+
+        filterService.updateGoalieFilters({ statsPerGame: true });
+        service.toggle(mockGoalieA); // Lower total score but higher per-game
+        service.toggle(mockGoalieB); // Higher total score (100)
+
+        service.orderedSelection$.pipe(first()).subscribe((ordered) => {
+          expect(ordered).not.toBeNull();
+          // GoalieA should be first because it has higher per-game score
+          expect(ordered!.playerA.name).toBe('Juuse Saros');
+          expect(ordered!.playerA.score).toBe(2.2);
+          expect(ordered!.playerB.name).toBe('Andrei Vasilevskiy');
+          expect(ordered!.playerB.score).toBe(0.8);
+          done();
+        });
       });
     });
   });
