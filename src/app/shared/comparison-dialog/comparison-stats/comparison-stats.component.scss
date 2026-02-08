@@ -6,6 +6,11 @@
   overscroll-behavior: contain;
 }
 
+.comparison-stats.mobile {
+  padding: 0 4px;
+}
+
+
 .bold {
   font-weight: bold;
   color: var(--mat-sys-primary);
@@ -73,12 +78,7 @@
   .stat-values {
     display: flex;
     justify-content: space-between;
-    padding: 0 16px;
-
-    .value-a,
-    .value-b {
-      font-variant-numeric: tabular-nums;
-    }
+    padding: 0;
   }
 }
 

@@ -9,7 +9,7 @@ import {
  * Page object for player/goalie card dialog
  */
 export class PlayerCardDialog {
-  constructor(private page: Page) {}
+  constructor(private page: Page) { }
 
   private get dialog() {
     return this.page.getByRole('dialog');
@@ -28,7 +28,7 @@ export class PlayerCardDialog {
    * Close the dialog via X button
    */
   async close(): Promise<void> {
-    const closeButton = this.dialog.getByRole('button', { name: 'X' });
+    const closeButton = this.dialog.getByRole('button', { name: 'Sulje pelaajakortti' });
     await closeButton.click();
     await this.dialog.waitFor({ state: 'hidden' });
   }
