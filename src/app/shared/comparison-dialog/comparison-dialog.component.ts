@@ -15,6 +15,7 @@ import { ViewportService } from '@services/viewport.service';
 import { FilterService } from '@services/filter.service';
 import { ComparisonStatsComponent } from './comparison-stats/comparison-stats.component';
 import { ComparisonRadarComponent } from './comparison-radar/comparison-radar.component';
+import { ComparisonService } from '@services/comparison.service';
 
 export type ComparisonDialogData = {
   context: 'player' | 'goalie';
@@ -47,6 +48,7 @@ export class ComparisonDialogComponent {
   private apiService = inject(ApiService);
   private teamService = inject(TeamService);
   private filterService = inject(FilterService);
+  private comparisonService = inject(ComparisonService);
 
   statsPerGame = false;
   teamName = '';
@@ -65,5 +67,16 @@ export class ComparisonDialogComponent {
     filters$.pipe(take(1)).subscribe((filters) => {
       this.statsPerGame = filters.statsPerGame;
     });
+  }
+
+  closeComparison(): void {
+    this.comparisonService.clear();
+    this.dialogRef.close();
+  }
+
+  closeComparisonByKeyboard(event: KeyboardEvent): void {
+    if (event.key === 'Escape' || event.key === 'Esc' || event.key === 'Enter' || event.key === ' ') {
+      this.closeComparison();
+    }
   }
 }

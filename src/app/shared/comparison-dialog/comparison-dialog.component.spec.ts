@@ -8,6 +8,7 @@ import type { Player,/* Goalie*/ } from '@services/api.service';
 import { ApiService } from '@services/api.service';
 import { TeamService } from '@services/team.service';
 import { FilterService } from '@services/filter.service';
+import { ComparisonService } from '@services/comparison.service';
 
 const mockForwardA: Player = {
   name: 'Mikko Rantanen', position: 'F', score: 100, scoreAdjustedByGames: 93.1,
@@ -23,32 +24,18 @@ const mockForwardB: Player = {
   scores: { goals: 60, assists: 70, points: 65, plusMinus: 70, penalties: 55, shots: 80, ppp: 50, shp: 30, hits: 85, blocks: 90 },
 };
 
-/*const mockGoalieA: Goalie = {
-  name: 'Juuse Saros', score: 100, scoreAdjustedByGames: 90,
-  games: 200, wins: 120, saves: 5000, shutouts: 15,
-  goals: 0, assists: 2, points: 2, penalties: 4, ppp: 0, shp: 0,
-  scores: { wins: 85, saves: 90, shutouts: 70 },
-};
-
-const mockGoalieB: Goalie = {
-  name: 'Andrei Vasilevskiy', score: 95, scoreAdjustedByGames: 85,
-  games: 250, wins: 150, saves: 6000, shutouts: 20,
-  goals: 0, assists: 5, points: 5, penalties: 6, ppp: 0, shp: 0,
-  scores: { wins: 90, saves: 80, shutouts: 75 },
-};*/
-
 const playerMock = { playerA: mockForwardA, playerB: mockForwardB, context: 'player' as const }
-// const goalieMock = { playerA: mockGoalieA, playerB: mockGoalieB, context: 'goalie' as const }
-
 
 describe('ComparisonDialogComponent', () => {
   let fixture: ComponentFixture<ComparisonDialogComponent>;
   let component: ComparisonDialogComponent;
   let dialogRefSpy: jasmine.SpyObj<MatDialogRef<ComparisonDialogComponent>>;
+  let comparisonServiceSpy: jasmine.SpyObj<ComparisonService>;
   let translateService: TranslateService;
 
   function setup(data: ComparisonDialogData): void {
     dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+    comparisonServiceSpy = jasmine.createSpyObj('ComparisonService', ['clear']);
 
     TestBed.configureTestingModule({
       imports: [
@@ -64,6 +51,7 @@ describe('ComparisonDialogComponent', () => {
           useValue: { getTeams: () => of([{ id: '1', name: 'colorado', presentName: 'Colorado' }]) },
         },
         { provide: TeamService, useValue: { selectedTeamId: '1' } },
+        { provide: ComparisonService, useValue: comparisonServiceSpy },
       ],
     });
 
@@ -119,6 +107,7 @@ describe('ComparisonDialogComponent', () => {
 
     it('should set empty team name when team is not found', fakeAsync(() => {
       dialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+      const comparisonServiceSpy = jasmine.createSpyObj('ComparisonService', ['clear']);
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -135,6 +124,7 @@ describe('ComparisonDialogComponent', () => {
             useValue: { getTeams: () => of([{ id: '999', name: 'other', presentName: 'Other' }]) },
           },
           { provide: TeamService, useValue: { selectedTeamId: '1' } },
+          { provide: ComparisonService, useValue: comparisonServiceSpy },
         ],
       });
 
@@ -148,13 +138,30 @@ describe('ComparisonDialogComponent', () => {
   });
 
   describe('dialog actions', () => {
-    it('should close dialog when close button is clicked', () => {
+    it('should close dialog and clear comparison when close button is clicked', () => {
       setup(playerMock);
       const el: HTMLElement = fixture.nativeElement;
       const closeButton = el.querySelector('button[aria-label="a11y.closeComparisonDialog"]') as HTMLButtonElement;
       expect(closeButton).toBeTruthy();
       closeButton.click();
+      expect(comparisonServiceSpy.clear).toHaveBeenCalled();
       expect(dialogRefSpy.close).toHaveBeenCalled();
+    });
+
+    it('should close dialog and clear comparison when escape/space/enter key is pressed', () => {
+      setup(playerMock);
+      const el: HTMLElement = fixture.nativeElement;
+      const closeButton = el.querySelector('button[aria-label="a11y.closeComparisonDialog"]') as HTMLButtonElement;
+      expect(closeButton).toBeTruthy();
+      closeButton.dispatchEvent(new KeyboardEvent('keypress', { key: 'Escape' }));
+      expect(comparisonServiceSpy.clear).toHaveBeenCalled();
+      expect(dialogRefSpy.close).toHaveBeenCalled();
+      closeButton.dispatchEvent(new KeyboardEvent('keypress', { key: ' ' }));
+      expect(comparisonServiceSpy.clear).toHaveBeenCalledTimes(2);
+      expect(dialogRefSpy.close).toHaveBeenCalledTimes(2);
+      closeButton.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
+      expect(comparisonServiceSpy.clear).toHaveBeenCalledTimes(3);
+      expect(dialogRefSpy.close).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -202,6 +209,7 @@ describe('ComparisonDialogComponent', () => {
           sortBy: 'score'
         })
       };
+      const comparisonServiceSpy = jasmine.createSpyObj('ComparisonService', ['clear']);
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -219,6 +227,7 @@ describe('ComparisonDialogComponent', () => {
           },
           { provide: TeamService, useValue: { selectedTeamId: '1' } },
           { provide: FilterService, useValue: mockFilterService },
+          { provide: ComparisonService, useValue: comparisonServiceSpy },
         ],
       });
 
@@ -259,6 +268,7 @@ describe('ComparisonDialogComponent', () => {
           sortBy: 'score'
         })
       };
+      const comparisonServiceSpy = jasmine.createSpyObj('ComparisonService', ['clear']);
 
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
@@ -276,6 +286,7 @@ describe('ComparisonDialogComponent', () => {
           },
           { provide: TeamService, useValue: { selectedTeamId: '1' } },
           { provide: FilterService, useValue: mockFilterService },
+          { provide: ComparisonService, useValue: comparisonServiceSpy },
         ],
       });
 
