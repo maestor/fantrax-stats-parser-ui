@@ -16,15 +16,12 @@ export class ComparisonRadarComponent implements OnInit {
   private document = inject(DOCUMENT);
   private translateService = inject(TranslateService);
 
+  @Input() context: 'player' | 'goalie' = 'player';
   @Input({ required: true }) playerA!: Player | Goalie;
   @Input({ required: true }) playerB!: Player | Goalie;
 
   radarChartData: ChartData<'radar'> = { labels: [], datasets: [] };
   radarChartOptions: ChartConfiguration<'radar'>['options'] = {};
-
-  get isGoalie(): boolean {
-    return 'wins' in this.playerA;
-  }
 
   ngOnInit(): void {
     this.buildRadarChartOptions();
@@ -93,11 +90,7 @@ export class ComparisonRadarComponent implements OnInit {
   }
 
   private buildRadarChartData(): void {
-    if (this.isGoalie) {
-      this.buildGoalieRadarData();
-    } else {
-      this.buildPlayerRadarData();
-    }
+    return this.context === 'goalie' ? this.buildGoalieRadarData() : this.buildPlayerRadarData();
   }
 
   private buildPlayerRadarData(): void {

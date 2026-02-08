@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { of } from 'rxjs';
 import { ComparisonStatsComponent } from './comparison-stats.component';
 import type { Player, Goalie } from '@services/api.service';
+import { FilterService } from '@services/filter.service';
 
 const mockPlayerA: Player = {
   name: 'Mikko Rantanen', position: 'F', score: 100, scoreAdjustedByGames: 93.1,
@@ -77,12 +79,13 @@ describe('ComparisonStatsComponent', () => {
     translateService.use('fi');
   });
 
-  function createComponent(playerA: Player | Goalie, playerB: Player | Goalie, isMobile = false): void {
+  function createComponent(playerA: Player | Goalie, playerB: Player | Goalie, context: 'player' | 'goalie' = 'player', isMobile = false): void {
     fixture = TestBed.createComponent(ComparisonStatsComponent);
     component = fixture.componentInstance;
     component.playerA = playerA;
     component.playerB = playerB;
     component.isMobile = isMobile;
+    component.context = context;
     fixture.detectChanges();
   }
 
@@ -137,13 +140,13 @@ describe('ComparisonStatsComponent', () => {
 
   describe('goalie stats (combined)', () => {
     it('should render goalie combined stat rows', () => {
-      createComponent(mockGoalieCombinedA, mockGoalieCombinedB);
-      // GOALIE_STAT_COLUMNS: name,score, scoreAdjustedByGames, games, wins, saves, shutouts, goals, assists, points, penalties, ppp, shp
+      createComponent(mockGoalieCombinedA, mockGoalieCombinedB, 'goalie');
+      // GOALIE_STAT_COLUMNS: name, score, scoreAdjustedByGames, games, wins, saves, shutouts, goals, assists, points, penalties, ppp, shp
       expect(component.statRows.length).toBe(13);
     });
 
     it('should not include gaa or savePercent for combined goalies', () => {
-      createComponent(mockGoalieCombinedA, mockGoalieCombinedB);
+      createComponent(mockGoalieCombinedA, mockGoalieCombinedB, 'goalie');
       const keys = component.statRows.map((r) => r.key);
       expect(keys).not.toContain('gaa');
       expect(keys).not.toContain('savePercent');
@@ -152,20 +155,20 @@ describe('ComparisonStatsComponent', () => {
 
   describe('goalie stats (season)', () => {
     it('should render goalie season stat rows including gaa and savePercent', () => {
-      createComponent(mockGoalieSeasonA, mockGoalieSeasonB);
+      createComponent(mockGoalieSeasonA, mockGoalieSeasonB, 'goalie');
       // GOALIE_SEASON_STAT_COLUMNS: name, score, scoreAdjustedByGames, games, wins, saves, gaa, savePercent, shutouts, goals, assists, points, penalties, ppp, shp
       expect(component.statRows.length).toBe(15);
     });
 
     it('should include gaa and savePercent for season goalies', () => {
-      createComponent(mockGoalieSeasonA, mockGoalieSeasonB);
+      createComponent(mockGoalieSeasonA, mockGoalieSeasonB, 'goalie');
       const keys = component.statRows.map((r) => r.key);
       expect(keys).toContain('gaa');
       expect(keys).toContain('savePercent');
     });
 
     it('should bold the LOWER gaa value (lower is better)', () => {
-      createComponent(mockGoalieSeasonA, mockGoalieSeasonB);
+      createComponent(mockGoalieSeasonA, mockGoalieSeasonB, 'goalie');
       // Goalie A: gaa=2.10, Goalie B: gaa=2.50; lower is better
       const gaaRow = component.statRows.find((r) => r.key === 'gaa')!;
       expect(gaaRow.boldA).toBeTrue();
@@ -173,7 +176,7 @@ describe('ComparisonStatsComponent', () => {
     });
 
     it('should bold higher savePercent (higher is better)', () => {
-      createComponent(mockGoalieSeasonA, mockGoalieSeasonB);
+      createComponent(mockGoalieSeasonA, mockGoalieSeasonB, 'goalie');
       // Goalie A: savePercent=0.925, Goalie B: savePercent=0.910
       const spRow = component.statRows.find((r) => r.key === 'savePercent')!;
       expect(spRow.boldA).toBeTrue();
@@ -192,7 +195,7 @@ describe('ComparisonStatsComponent', () => {
 
   describe('desktop layout', () => {
     it('should render desktop rows when isMobile is false', () => {
-      createComponent(mockPlayerA, mockPlayerB, false);
+      createComponent(mockPlayerA, mockPlayerB, 'player', false);
       const el: HTMLElement = fixture.nativeElement;
       const desktopRows = el.querySelectorAll('.stat-row-desktop');
       expect(desktopRows.length).toBe(14);
@@ -202,7 +205,7 @@ describe('ComparisonStatsComponent', () => {
 
   describe('mobile layout', () => {
     it('should render mobile rows when isMobile is true', () => {
-      createComponent(mockPlayerA, mockPlayerB, true);
+      createComponent(mockPlayerA, mockPlayerB, 'player', true);
       const el: HTMLElement = fixture.nativeElement;
       const mobileRows = el.querySelectorAll('.stat-row-mobile');
       expect(mobileRows.length).toBe(14);
@@ -212,7 +215,7 @@ describe('ComparisonStatsComponent', () => {
 
   describe('bold CSS class', () => {
     it('should apply bold class to the higher value element', () => {
-      createComponent(mockPlayerA, mockPlayerB, false);
+      createComponent(mockPlayerA, mockPlayerB, 'player', false);
       const el: HTMLElement = fixture.nativeElement;
       // score: A=100 > B=94.31, so value-a should be bold
       const firstRow = el.querySelector('.stat-row-desktop')!;
@@ -228,6 +231,113 @@ describe('ComparisonStatsComponent', () => {
       createComponent(mockPlayerA, mockPlayerB);
       const scoreRow = component.statRows.find((r) => r.key === 'score')!;
       expect(scoreRow.label).toBe('FR');
+    });
+  });
+
+  describe('statsPerGame', () => {
+    it('should not include score field when statsPerGame is true', () => {
+      const mockFilterService = {
+        playerFilters$: of({
+          statsPerGame: true,
+          position: 'all',
+          minGames: 0,
+          sortBy: 'score'
+        }),
+        goalieFilters$: of({
+          statsPerGame: true,
+          minGames: 0,
+          sortBy: 'score'
+        })
+      };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [ComparisonStatsComponent, TranslateModule.forRoot()],
+        providers: [
+          { provide: FilterService, useValue: mockFilterService },
+        ],
+      });
+
+      const localTranslateService = TestBed.inject(TranslateService);
+      localTranslateService.setTranslation('fi', {
+        tableColumn: {
+          score: 'FR',
+          scoreAdjustedByGames: 'FR/O',
+          games: 'Ottelut',
+          goals: 'Maalit',
+        },
+      });
+      localTranslateService.use('fi');
+
+      const localFixture = TestBed.createComponent(ComparisonStatsComponent);
+      const localComponent = localFixture.componentInstance;
+      localComponent.playerA = mockPlayerA;
+      localComponent.playerB = mockPlayerB;
+      localComponent.context = 'player';
+      localFixture.detectChanges();
+
+      const scoreRow = localComponent.statRows.find((r) => r.key === 'score');
+      expect(scoreRow).toBeUndefined();
+
+      // Verify score is not in the DOM
+      const el: HTMLElement = localFixture.nativeElement;
+      const labels = Array.from(el.querySelectorAll('.stat-label')).map((label) => label.textContent?.trim());
+      expect(labels).not.toContain('FR');
+
+      localFixture.destroy();
+    });
+
+    it('should include score field when statsPerGame is false', () => {
+      const mockFilterService = {
+        playerFilters$: of({
+          statsPerGame: false,
+          position: 'all',
+          minGames: 0,
+          sortBy: 'score'
+        }),
+        goalieFilters$: of({
+          statsPerGame: false,
+          minGames: 0,
+          sortBy: 'score'
+        })
+      };
+
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        imports: [ComparisonStatsComponent, TranslateModule.forRoot()],
+        providers: [
+          { provide: FilterService, useValue: mockFilterService },
+        ],
+      });
+
+      const localTranslateService = TestBed.inject(TranslateService);
+      localTranslateService.setTranslation('fi', {
+        tableColumn: {
+          score: 'FR',
+          scoreAdjustedByGames: 'FR/O',
+          games: 'Ottelut',
+          goals: 'Maalit',
+        },
+      });
+      localTranslateService.use('fi');
+
+      const localFixture = TestBed.createComponent(ComparisonStatsComponent);
+      const localComponent = localFixture.componentInstance;
+      localComponent.playerA = mockPlayerA;
+      localComponent.playerB = mockPlayerB;
+      localComponent.context = 'player';
+      localFixture.detectChanges();
+
+      const scoreRow = localComponent.statRows.find((r) => r.key === 'score');
+      expect(scoreRow).toBeDefined();
+      expect(scoreRow?.label).toBe('FR');
+
+      // Verify score is in the DOM
+      const el: HTMLElement = localFixture.nativeElement;
+      const labels = Array.from(el.querySelectorAll('.stat-label')).map((label) => label.textContent?.trim());
+      expect(labels).toContain('FR');
+
+      localFixture.destroy();
     });
   });
 });

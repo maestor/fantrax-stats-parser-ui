@@ -95,11 +95,12 @@ describe('ComparisonRadarComponent', () => {
     translateService.use('fi');
   });
 
-  function createComponent(playerA: Player | Goalie, playerB: Player | Goalie): void {
+  function createComponent(playerA: Player | Goalie, playerB: Player | Goalie, context: 'player' | 'goalie' = 'player'): void {
     fixture = TestBed.createComponent(ComparisonRadarComponent);
     component = fixture.componentInstance;
     component.playerA = playerA;
     component.playerB = playerB;
+    component.context = context;
     fixture.detectChanges();
   }
 
@@ -167,17 +168,17 @@ describe('ComparisonRadarComponent', () => {
 
   describe('goalie radar (combined)', () => {
     it('should build chart data with two datasets for goalies', () => {
-      createComponent(mockGoalieCombinedA, mockGoalieCombinedB);
+      createComponent(mockGoalieCombinedA, mockGoalieCombinedB, 'goalie');
       expect(component.radarChartData.datasets.length).toBe(2);
     });
 
     it('should have 3 labels for combined goalie stats', () => {
-      createComponent(mockGoalieCombinedA, mockGoalieCombinedB);
+      createComponent(mockGoalieCombinedA, mockGoalieCombinedB, 'goalie');
       expect(component.radarChartData.labels!.length).toBe(3);
     });
 
     it('should use correct stat keys for combined goalies', () => {
-      createComponent(mockGoalieCombinedA, mockGoalieCombinedB);
+      createComponent(mockGoalieCombinedA, mockGoalieCombinedB, 'goalie');
       const labels = component.radarChartData.labels as string[];
       expect(labels).toEqual(['Voitot', 'Torjunnat', 'Nollat']);
     });
@@ -185,12 +186,12 @@ describe('ComparisonRadarComponent', () => {
 
   describe('goalie radar (season)', () => {
     it('should have 5 labels for season goalie stats', () => {
-      createComponent(mockGoalieSeasonA, mockGoalieSeasonB);
+      createComponent(mockGoalieSeasonA, mockGoalieSeasonB, 'goalie');
       expect(component.radarChartData.labels!.length).toBe(5);
     });
 
     it('should include gaa and savePercent labels for season goalies', () => {
-      createComponent(mockGoalieSeasonA, mockGoalieSeasonB);
+      createComponent(mockGoalieSeasonA, mockGoalieSeasonB, 'goalie');
       const labels = component.radarChartData.labels as string[];
       expect(labels).toContain('GAA');
       expect(labels).toContain('Torjunta%');
@@ -223,7 +224,7 @@ describe('ComparisonRadarComponent', () => {
 
   describe('goalie radar (no scores)', () => {
     it('should not build datasets when goalies have no scores', () => {
-      createComponent(mockGoalieNoScores, mockGoalieNoScores);
+      createComponent(mockGoalieNoScores, mockGoalieNoScores, 'goalie');
       expect(component.radarChartData.datasets.length).toBe(0);
     });
   });
@@ -243,18 +244,6 @@ describe('ComparisonRadarComponent', () => {
       const labelFn = plugins['tooltip'].callbacks.label;
       const result = labelFn({ dataset: {}, parsed: { r: 50 } });
       expect(result).toBe(': 50/100');
-    });
-  });
-
-  describe('isGoalie', () => {
-    it('should return true for goalies', () => {
-      createComponent(mockGoalieCombinedA, mockGoalieCombinedB);
-      expect(component.isGoalie).toBeTrue();
-    });
-
-    it('should return false for players', () => {
-      createComponent(mockPlayerA, mockPlayerB);
-      expect(component.isGoalie).toBeFalse();
     });
   });
 });
