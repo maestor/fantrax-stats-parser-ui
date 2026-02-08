@@ -177,6 +177,10 @@ th.mat-column-position {
 :host ::ng-deep .mat-mdc-checkbox.mat-mdc-checkbox-disabled {
   opacity: 0.5;
 
+  label {
+    color: var(--mat-sys-on-surface-variant) !important;
+  }
+
   .mdc-checkbox__background {
     border-color: var(--mat-sys-outline) !important;
   }
@@ -200,5 +204,9 @@ th.mat-column-position {
 
   .mat-mdc-checkbox.mat-mdc-checkbox-disabled {
     opacity: 0.5;
+
+    label {
+      color: var(--mat-sys-on-surface-variant) !important;
+    }
   }
 }
