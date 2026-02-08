@@ -195,4 +195,79 @@ describe('ComparisonBarComponent', () => {
     expect(barText).toContain('Mikko Rantanen');
     expect(barText).toContain('Aaron Ekblad');
   }));
+
+  describe('context change', () => {
+    it('should clear comparison when context changes from player to goalie', fakeAsync(() => {
+      comparisonService.toggle(mockPlayerA);
+      comparisonService.toggle(mockPlayerB);
+
+      const fixture = TestBed.createComponent(ComparisonBarComponent);
+      fixture.componentInstance.context = 'player';
+      fixture.detectChanges();
+      tick();
+
+      spyOn(comparisonService, 'clear').and.callThrough();
+
+      // Change context from player to goalie
+      fixture.componentInstance.context = 'goalie';
+      fixture.componentInstance.ngOnChanges({
+        context: {
+          currentValue: 'goalie',
+          previousValue: 'player',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      expect(comparisonService.clear).toHaveBeenCalled();
+    }));
+
+    it('should clear comparison when context changes from goalie to player', fakeAsync(() => {
+      comparisonService.toggle(mockPlayerA);
+
+      const fixture = TestBed.createComponent(ComparisonBarComponent);
+      fixture.componentInstance.context = 'goalie';
+      fixture.detectChanges();
+      tick();
+
+      spyOn(comparisonService, 'clear').and.callThrough();
+
+      // Change context from goalie to player
+      fixture.componentInstance.context = 'player';
+      fixture.componentInstance.ngOnChanges({
+        context: {
+          currentValue: 'player',
+          previousValue: 'goalie',
+          firstChange: false,
+          isFirstChange: () => false,
+        },
+      });
+
+      expect(comparisonService.clear).toHaveBeenCalled();
+    }));
+
+    it('should not clear comparison on initial context set (firstChange)', fakeAsync(() => {
+      comparisonService.toggle(mockPlayerA);
+
+      spyOn(comparisonService, 'clear');
+
+      const fixture = TestBed.createComponent(ComparisonBarComponent);
+      fixture.componentInstance.context = 'player';
+
+      // Simulate initial change
+      fixture.componentInstance.ngOnChanges({
+        context: {
+          currentValue: 'player',
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        },
+      });
+
+      fixture.detectChanges();
+      tick();
+
+      expect(comparisonService.clear).not.toHaveBeenCalled();
+    }));
+  });
 });
