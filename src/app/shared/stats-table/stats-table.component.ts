@@ -92,7 +92,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       this.dataSource.data = this.data;
 
       if (this.columns?.length > 0) {
-        this.displayedColumns = ['compare', ...this.columns];
+        this.displayedColumns = this.columns;
         this.dynamicColumns = this.displayedColumns.filter(
           (column) => !STATIC_COLUMNS.includes(column)
         );

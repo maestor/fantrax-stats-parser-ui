@@ -436,7 +436,7 @@ describe('StatsTableComponent', () => {
       expect(component.dataSource.data).toEqual(mockPlayerData as any);
     });
 
-    it('should set displayedColumns with compare column prepended when columns are provided', () => {
+    it('should set displayedColumns properly when columns are provided', () => {
       const changes = {
         data: new SimpleChange(null, mockPlayerData, true),
       };
@@ -445,7 +445,7 @@ describe('StatsTableComponent', () => {
       component.columns = playerColumns;
       component.ngOnChanges(changes);
 
-      expect(component.displayedColumns).toEqual(['compare', ...playerColumns]);
+      expect(component.displayedColumns).toEqual([...playerColumns]);
     });
 
     it('should filter static columns to create dynamicColumns', () => {
@@ -768,7 +768,7 @@ describe('StatsTableComponent', () => {
       component.ngOnChanges(changes);
 
       expect(component.dataSource.data).toEqual(mockPlayerData as any);
-      expect(component.displayedColumns).toEqual(['compare', ...playerColumns]);
+      expect(component.displayedColumns).toEqual([...playerColumns]);
       expect(component.dynamicColumns.length).toBeGreaterThan(0);
     });
 
@@ -811,14 +811,14 @@ describe('StatsTableComponent', () => {
   });
 
   describe('comparison checkboxes', () => {
-    it('should include compare column as first displayed column', () => {
+    it('should include compare and position combined as first displayed column', () => {
       component.data = mockPlayerData;
       component.columns = playerColumns;
       component.ngOnChanges({
         data: new SimpleChange(null, mockPlayerData, true),
       });
 
-      expect(component.displayedColumns[0]).toBe('compare');
+      expect(component.displayedColumns[0]).toBe('position');
     });
 
     it('should toggle player selection when onCompareToggle called', () => {

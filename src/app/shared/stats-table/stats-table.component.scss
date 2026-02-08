@@ -4,28 +4,24 @@
 // Center-aligned sortable headers (all except Name): center the LABEL, not the
 // (label+arrow) group. The arrow exists in DOM even when not active, so flex centering
 // will shift the label left. A 3-column grid keeps the label centered regardless.
-:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name)
-  .mat-sort-header-container {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name) .mat-sort-header-container {
   display: grid !important;
   grid-template-columns: 1fr max-content 1fr !important;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name)
-  .mat-sort-header-content {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name) .mat-sort-header-content {
   grid-column: 2;
   text-align: center;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name)
-  .mat-sort-header-arrow {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name) .mat-sort-header-arrow {
   grid-column: 3;
   position: absolute;
   margin-left: 6px;
 }
 
 /* Name header left-aligned */
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header]
-  .mat-sort-header-container {
+:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header] .mat-sort-header-container {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -33,13 +29,11 @@
   width: 100%;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header]
-  .mat-sort-header-content {
+:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header] .mat-sort-header-content {
   text-align: left;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header]
-  .mat-sort-header-arrow {
+:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header] .mat-sort-header-arrow {
   margin-left: 6px;
 }
 
@@ -84,6 +78,7 @@
 
 .mat-column-position {
   text-align: center;
+  padding: 0;
 }
 
 .mat-column-name {
