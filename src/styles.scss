@@ -18,6 +18,7 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -140,11 +141,9 @@ body {
 // Focus rings: some MDC focus indicators are too subtle in dark mode.
 // Tabs: match the light-mode behavior (subtle focused background), avoid circular rings.
 .mat-mdc-tab-header .mdc-tab:focus-visible {
-  background-color: color-mix(
-    in srgb,
-    var(--mat-sys-primary) 12%,
-    var(--mat-sys-surface-container)
-  );
+  background-color: color-mix(in srgb,
+      var(--mat-sys-primary) 12%,
+      var(--mat-sys-surface-container));
 }
 
 // Hover states: Angular Material state layers can be subtle in dark mode.
@@ -152,19 +151,15 @@ body {
 @media (prefers-color-scheme: dark) {
   @media (hover: hover) and (pointer: fine) {
     .mat-mdc-tab-header .mdc-tab:not(.mdc-tab--active):hover {
-      background-color: color-mix(
-        in srgb,
-        var(--mat-sys-primary) 6%,
-        var(--mat-sys-surface-container)
-      );
+      background-color: color-mix(in srgb,
+          var(--mat-sys-primary) 6%,
+          var(--mat-sys-surface-container));
     }
 
     .mat-mdc-tab-header .mdc-tab.mdc-tab--active:hover {
-      background-color: color-mix(
-        in srgb,
-        var(--mat-sys-primary) 10%,
-        var(--mat-sys-surface-container)
-      );
+      background-color: color-mix(in srgb,
+          var(--mat-sys-primary) 10%,
+          var(--mat-sys-surface-container));
     }
 
     button[mat-icon-button]:not([disabled]):hover,
@@ -278,6 +273,7 @@ button[mat-icon-button]:focus-visible,
 }
 
 @media (prefers-color-scheme: dark) {
+
   // Slides toggles (points per game): ensure readable + modern dark styling.
   .mat-mdc-slide-toggle .mdc-switch__track {
     background-color: var(--mat-sys-surface-container-high) !important;
@@ -295,13 +291,14 @@ button[mat-icon-button]:focus-visible,
     background-color: var(--mat-sys-on-primary) !important;
   }
 
-  .mat-mdc-slide-toggle .mdc-form-field > label {
+  .mat-mdc-slide-toggle .mdc-form-field>label {
     color: var(--mat-sys-on-surface) !important;
   }
 }
 
 // Help dialog: ensure title/body text uses on-surface (defaults can be too dark).
 .help-dialog {
+
   button[mat-icon-button],
   .mat-mdc-icon-button {
     color: var(--mat-sys-on-surface) !important;
@@ -323,14 +320,19 @@ button[mat-icon-button]:focus-visible,
   }
 }
 
+mat-checkbox .mdc-label {
+  color: var(--mat-sys-on-surface);
+}
+
 // Player card graphs: checkbox labels and boxes need contrast in dark mode.
 .player-card-dialog {
+
   button[mat-icon-button],
   .mat-mdc-icon-button {
     color: var(--mat-sys-on-surface) !important;
   }
 
-  .mat-mdc-checkbox .mdc-form-field > label {
+  .mat-mdc-checkbox .mdc-form-field>label {
     color: var(--mat-sys-on-surface) !important;
   }
 
@@ -379,6 +381,7 @@ button[mat-icon-button]:focus-visible,
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
+
 .content {
   margin: 12px auto;
   max-width: 1170px;
@@ -488,15 +491,19 @@ button[mat-icon-button]:focus-visible,
 .mat-elevation-z1 {
   box-shadow: var(--mat-sys-level1);
 }
+
 .mat-elevation-z2 {
   box-shadow: var(--mat-sys-level2);
 }
+
 .mat-elevation-z3 {
   box-shadow: var(--mat-sys-level3);
 }
+
 .mat-elevation-z4 {
   box-shadow: var(--mat-sys-level4);
 }
+
 .mat-elevation-z5 {
   box-shadow: var(--mat-sys-level5);
 }
