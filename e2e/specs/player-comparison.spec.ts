@@ -66,13 +66,17 @@ test.describe('Player Comparison', () => {
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
 
-      // Open and close via X
+      // Open and close via X (closing clears selection)
       await comparisonBar.clickCompare();
       expect(await comparisonDialog.isOpen()).toBeTruthy();
       await comparisonDialog.close();
       expect(await comparisonDialog.isOpen()).toBeFalsy();
 
-      // Open and close via Escape
+      // Re-select players since close cleared the selection
+      await comparisonBar.selectPlayer('Jamie Benn');
+      await comparisonBar.selectPlayer('Vincent Trocheck');
+
+      // Open and close via Escape (closing clears selection)
       await comparisonBar.clickCompare();
       expect(await comparisonDialog.isOpen()).toBeTruthy();
       await comparisonDialog.closeViaEscape();
