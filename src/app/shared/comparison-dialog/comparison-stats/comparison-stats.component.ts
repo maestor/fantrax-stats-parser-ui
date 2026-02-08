@@ -39,17 +39,33 @@ export class ComparisonStatsComponent implements OnInit {
     this.buildStatRows();
   }
 
+  private getShortName(fullName: string): string {
+    const parts = fullName.split(' ');
+    return parts[0].charAt(0) + '. ' + parts[parts.length - 1];
+  }
+
   private buildStatRows(): void {
     const columns = this.getStatColumns();
 
-    this.statRows = columns.map((key) => {
-      const valueA = this.getStatValue(this.playerA, key);
-      const valueB = this.getStatValue(this.playerB, key);
-      const label = this.translateService.instant(`tableColumn.${key}`);
-      const { boldA, boldB } = this.computeBold(key, valueA, valueB);
+    const nameRow: StatRow = {
+      key: 'name',
+      label: this.translateService.instant('tableColumn.name'),
+      valueA: this.isMobile ? this.getShortName(this.playerA.name) : this.playerA.name,
+      valueB: this.isMobile ? this.getShortName(this.playerB.name) : this.playerB.name,
+      boldA: true,
+      boldB: false
+    };
 
-      return { key, label, valueA, valueB, boldA, boldB };
-    });
+    this.statRows = [
+      nameRow,
+      ...columns.map((key) => {
+        const valueA = this.getStatValue(this.playerA, key);
+        const valueB = this.getStatValue(this.playerB, key);
+        const label = this.translateService.instant(`tableColumn.${key}`);
+        const { boldA, boldB } = this.computeBold(key, valueA, valueB);
+
+        return { key, label, valueA, valueB, boldA, boldB };
+      })];
   }
 
   private getStatColumns(): string[] {

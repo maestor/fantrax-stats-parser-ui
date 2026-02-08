@@ -1,151 +1,122 @@
-<mat-card
-  [class.player-card]="true"
-  [class.season-mode]="hasSeasons && selectedTabIndex !== 0"
->
-  <button mat-icon-button (click)="onNoClick()" #closeButton>X</button>
+<mat-card [class.player-card]="true" [class.season-mode]="hasSeasons && selectedTabIndex !== 0">
+  <button mat-icon-button (click)="onNoClick()" #closeButton>
+    <mat-icon fontIcon="close" />
+  </button>
   <mat-card-header>
     <mat-card-title>
-      <mat-icon
-        mat-card-avatar
-        class="card-title-icon letter-avatar"
-        [matTooltip]="positionTooltip"
-        >{{ positionAbbreviation }}</mat-icon
-      >
+      <mat-icon mat-card-avatar class="card-title-icon letter-avatar" [matTooltip]="positionTooltip">{{
+        positionAbbreviation }}</mat-icon>
       <div class="player-card-title-text">
         <div class="player-card-name-wrapper">
           <span class="player-card-player-name">{{ data.name }}</span>
-          <button
-            mat-icon-button
-            class="copy-link-button"
-            (click)="copyLinkToClipboard(copyTooltip)"
-            [matTooltip]="
+          <button mat-icon-button class="copy-link-button" (click)="copyLinkToClipboard(copyTooltip)" [matTooltip]="
               linkCopied
                 ? ('playerCard.linkCopied' | translate)
                 : ('playerCard.copyLink' | translate)
-            "
-            [attr.aria-label]="'playerCard.copyLink' | translate"
-            #copyTooltip="matTooltip"
-          >
+            " [attr.aria-label]="'playerCard.copyLink' | translate" #copyTooltip="matTooltip">
             <mat-icon fontIcon="link" />
           </button>
         </div>
         @if (selectedTeam) {
-          <span class="team-name">{{ selectedTeam.presentName }}</span>
+        <span class="team-name">{{ selectedTeam.presentName }}</span>
         }
       </div>
     </mat-card-title>
     @if (!isGoalie) {
-      <div class="position-filter-switch">
-        <mat-slide-toggle
-          labelPosition="before"
-          [checked]="isPositionFilterEnabled"
-          (change)="onPositionFilterToggle($event.checked)"
-        >
-          {{ positionSwitchLabel | translate }}
-        </mat-slide-toggle>
-      </div>
+    <div class="position-filter-switch">
+      <mat-slide-toggle labelPosition="before" [checked]="isPositionFilterEnabled"
+        (change)="onPositionFilterToggle($event.checked)">
+        {{ positionSwitchLabel | translate }}
+      </mat-slide-toggle>
+    </div>
     }
   </mat-card-header>
   <mat-card-content>
     @if (hasSeasons || showGraphsTab) {
-      <mat-tab-group
-        [selectedIndex]="selectedTabIndex"
-        (selectedIndexChange)="onTabChange($event)"
-        [disablePagination]="true"
-      >
-        <mat-tab label="{{ 'playerCard.all' | translate }}">
-          <div class="tab-content all-stats-tab">
-            <div class="all-stats-container">
-              <table mat-table [dataSource]="stats" class="mat-elevation-z2">
-                <ng-container matColumnDef="label">
-                  <td mat-cell *matCellDef="let stat" class="mat-cell-label">
-                    {{ stat.label | translate }}
-                  </td>
-                </ng-container>
-                <ng-container matColumnDef="value">
-                  <td mat-cell *matCellDef="let stat" class="mat-cell-value">
-                    {{
-                      stat.value !== null && stat.value !== undefined
-                        ? stat.value
-                        : "-"
-                    }}
-                  </td>
-                </ng-container>
+    <mat-tab-group [selectedIndex]="selectedTabIndex" (selectedIndexChange)="onTabChange($event)"
+      [disablePagination]="true">
+      <mat-tab label="{{ 'playerCard.all' | translate }}">
+        <div class="tab-content all-stats-tab">
+          <div class="all-stats-container">
+            <table mat-table [dataSource]="stats" class="mat-elevation-z2">
+              <ng-container matColumnDef="label">
+                <td mat-cell *matCellDef="let stat" class="mat-cell-label">
+                  {{ stat.label | translate }}
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="value">
+                <td mat-cell *matCellDef="let stat" class="mat-cell-value">
+                  {{
+                  stat.value !== null && stat.value !== undefined
+                  ? stat.value
+                  : "-"
+                  }}
+                </td>
+              </ng-container>
 
-                <tr
-                  mat-row
-                  *matRowDef="let row; columns: displayedColumns"
-                ></tr>
-              </table>
-            </div>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
           </div>
-        </mat-tab>
-        @if (hasSeasons) {
-          <mat-tab label="{{ 'playerCard.bySeason' | translate }}">
-            <div class="tab-content">
-              <div class="season-table-container">
-                <table
-                  mat-table
-                  [dataSource]="seasonDataSource"
-                  class="mat-elevation-z2 season-table"
-                >
-                  @for (column of seasonColumns; track column) {
-                    <ng-container [matColumnDef]="column">
-                      <th mat-header-cell *matHeaderCellDef>
-                        <span
-                          matTooltip="{{ 'tableColumn.' + column | translate }}"
-                        >
-                          {{ "tableColumnShort." + column | translate }}
-                        </span>
-                      </th>
-                      <td mat-cell *matCellDef="let season">
-                        {{ season[column] !== "" ? season[column] : "-" }}
-                      </td>
-                    </ng-container>
-                  }
+        </div>
+      </mat-tab>
+      @if (hasSeasons) {
+      <mat-tab label="{{ 'playerCard.bySeason' | translate }}">
+        <div class="tab-content">
+          <div class="season-table-container">
+            <table mat-table [dataSource]="seasonDataSource" class="mat-elevation-z2 season-table">
+              @for (column of seasonColumns; track column) {
+              <ng-container [matColumnDef]="column">
+                <th mat-header-cell *matHeaderCellDef>
+                  <span matTooltip="{{ 'tableColumn.' + column | translate }}">
+                    {{ "tableColumnShort." + column | translate }}
+                  </span>
+                </th>
+                <td mat-cell *matCellDef="let season">
+                  {{ season[column] !== "" ? season[column] : "-" }}
+                </td>
+              </ng-container>
+              }
 
-                  <tr mat-header-row *matHeaderRowDef="seasonColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: seasonColumns"></tr>
-                </table>
-              </div>
-            </div>
-          </mat-tab>
+              <tr mat-header-row *matHeaderRowDef="seasonColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: seasonColumns"></tr>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      }
+      @if (showGraphsTab) {
+      <mat-tab label="{{ 'playerCard.graphs' | translate }}">
+        @if (graphsComponent) {
+        <ng-container *ngComponentOutlet="graphsComponent; inputs: graphsInputs"></ng-container>
+        } @else {
+        <div class="tab-content">
+          @if (graphsLoading) {
+          <div class="graphs-loading">Loading…</div>
+          } @else {
+          <div class="graphs-loading">
+            Open this tab to load charts.
+          </div>
+          }
+        </div>
         }
-        @if (showGraphsTab) {
-          <mat-tab label="{{ 'playerCard.graphs' | translate }}">
-            @if (graphsComponent) {
-              <ng-container
-                *ngComponentOutlet="graphsComponent; inputs: graphsInputs"
-              ></ng-container>
-            } @else {
-              <div class="tab-content">
-                @if (graphsLoading) {
-                  <div class="graphs-loading">Loading…</div>
-                } @else {
-                  <div class="graphs-loading">
-                    Open this tab to load charts.
-                  </div>
-                }
-              </div>
-            }
-          </mat-tab>
-        }
-      </mat-tab-group>
+      </mat-tab>
+      }
+    </mat-tab-group>
     } @else {
-      <table mat-table [dataSource]="stats" class="mat-elevation-z2">
-        <ng-container matColumnDef="label">
-          <td mat-cell *matCellDef="let stat" class="mat-cell-label">
-            {{ stat.label | translate }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="value">
-          <td mat-cell *matCellDef="let stat" class="mat-cell-value">
-            {{ stat.value !== "" ? stat.value : "-" }}
-          </td>
-        </ng-container>
+    <table mat-table [dataSource]="stats" class="mat-elevation-z2">
+      <ng-container matColumnDef="label">
+        <td mat-cell *matCellDef="let stat" class="mat-cell-label">
+          {{ stat.label | translate }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="value">
+        <td mat-cell *matCellDef="let stat" class="mat-cell-value">
+          {{ stat.value !== "" ? stat.value : "-" }}
+        </td>
+      </ng-container>
 
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
     }
   </mat-card-content>
 </mat-card>

@@ -22,20 +22,6 @@ const mockForwardB: Player = {
   scores: { goals: 60, assists: 70, points: 65, plusMinus: 70, penalties: 55, shots: 80, ppp: 50, shp: 30, hits: 85, blocks: 90 },
 };
 
-const mockDefenseA: Player = {
-  name: 'Aaron Ekblad', position: 'D', score: 100, scoreAdjustedByGames: 67.22,
-  games: 540, goals: 100, assists: 188, points: 288, plusMinus: 40,
-  penalties: 355, shots: 1413, ppp: 94, shp: 6, hits: 582, blocks: 574,
-  scores: { goals: 60, assists: 70, points: 65, plusMinus: 70, penalties: 55, shots: 80, ppp: 50, shp: 30, hits: 85, blocks: 90 },
-};
-
-const mockDefenseB: Player = {
-  name: 'Miro Heiskanen', position: 'D', score: 88, scoreAdjustedByGames: 77,
-  games: 400, goals: 80, assists: 200, points: 280, plusMinus: 30,
-  penalties: 100, shots: 900, ppp: 120, shp: 2, hits: 300, blocks: 400,
-  scores: { goals: 50, assists: 80, points: 70, plusMinus: 55, penalties: 30, shots: 60, ppp: 70, shp: 15, hits: 55, blocks: 75 },
-};
-
 const mockGoalieA: Goalie = {
   name: 'Juuse Saros', score: 100, scoreAdjustedByGames: 90,
   games: 200, wins: 120, saves: 5000, shutouts: 15,
@@ -116,67 +102,6 @@ describe('ComparisonDialogComponent', () => {
 
   afterEach(() => {
     fixture?.destroy();
-  });
-
-  describe('title', () => {
-    it('should show forward title when both players are forwards', () => {
-      setup({ playerA: mockForwardA, playerB: mockForwardB });
-      expect(component.title).toBe('Hyokkaajavertailu');
-    });
-
-    it('should show defense title when both players are defensemen', () => {
-      setup({ playerA: mockDefenseA, playerB: mockDefenseB });
-      expect(component.title).toBe('Puolustajavertailu');
-    });
-
-    it('should show player title for mixed positions', () => {
-      setup({ playerA: mockForwardA, playerB: mockDefenseA });
-      expect(component.title).toBe('Pelaajavertailu');
-    });
-
-    it('should show goalie title for goalies', () => {
-      setup({ playerA: mockGoalieA, playerB: mockGoalieB });
-      expect(component.title).toBe('Maalivahtivertailu');
-    });
-  });
-
-  describe('ingress', () => {
-    it('should show full names on desktop', () => {
-      setup({ playerA: mockForwardA, playerB: mockForwardB });
-      const text = component.getIngressText(false);
-      expect(text).toBe('Mikko Rantanen <-> Aleksander Barkov');
-    });
-
-    it('should show surnames only on mobile', () => {
-      setup({ playerA: mockForwardA, playerB: mockForwardB });
-      const text = component.getIngressText(true);
-      expect(text).toBe('Rantanen <-> Barkov');
-    });
-
-    it('should show positions for mixed comparison on desktop', () => {
-      setup({ playerA: mockForwardA, playerB: mockDefenseA });
-      const text = component.getIngressText(false);
-      expect(text).toBe('H Mikko Rantanen <-> Aaron Ekblad P');
-    });
-
-    it('should show positions for mixed comparison on mobile', () => {
-      setup({ playerA: mockForwardA, playerB: mockDefenseA });
-      const text = component.getIngressText(true);
-      expect(text).toBe('H Rantanen <-> Ekblad P');
-    });
-
-    it('should not show positions when both are forwards', () => {
-      setup({ playerA: mockForwardA, playerB: mockForwardB });
-      const text = component.getIngressText(false);
-      expect(text).not.toContain(' H ');
-      expect(text).not.toContain(' P ');
-    });
-
-    it('should not show positions for goalies', () => {
-      setup({ playerA: mockGoalieA, playerB: mockGoalieB });
-      const text = component.getIngressText(false);
-      expect(text).toBe('Juuse Saros <-> Andrei Vasilevskiy');
-    });
   });
 
   describe('team name', () => {
@@ -265,23 +190,6 @@ describe('ComparisonDialogComponent', () => {
         expect(typeof isNarrow).toBe('boolean');
         done();
       });
-    });
-  });
-
-  describe('isMixedPosition', () => {
-    it('should return true for forward vs defense', () => {
-      setup({ playerA: mockForwardA, playerB: mockDefenseA });
-      expect(component.isMixedPosition).toBeTrue();
-    });
-
-    it('should return false for same positions', () => {
-      setup({ playerA: mockForwardA, playerB: mockForwardB });
-      expect(component.isMixedPosition).toBeFalse();
-    });
-
-    it('should return false for goalies', () => {
-      setup({ playerA: mockGoalieA, playerB: mockGoalieB });
-      expect(component.isMixedPosition).toBeFalse();
     });
   });
 });

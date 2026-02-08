@@ -215,13 +215,10 @@
     "radarInfo": "Joukkueen sisäinen vertailuarvo 0-100 välillä"
   },
   "comparison": {
-    "selectedOne": "{{name}} valittu — valitse toinen vertailuun",
+    "selectedOne": "{{name}} valittu: valitse toinen vertailuun",
     "compare": "Vertaile",
     "clear": "Tyhjennä",
     "playerTitle": "Pelaajavertailu",
-    "forwardTitle": "Hyökkääjävertailu",
-    "defenseTitle": "Puolustajavertailu",
-    "goalieTitle": "Maalivahtivertailu",
     "statsTab": "Tilastot",
     "graphsTab": "Graafit"
   },
