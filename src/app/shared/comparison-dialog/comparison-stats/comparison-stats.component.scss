@@ -1,18 +1,20 @@
 .comparison-stats {
-  padding: 16px;
-  max-height: calc(var(--app-height, 100vh) - 250px);
+  padding: 8px 0;
+  max-height: calc(var(--app-height, 100vh));
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  font-family: var(--mat-table-row-item-label-text-font, var(--mat-sys-body-medium-font));
+  font-size: var(--mat-table-row-item-label-text-size, var(--mat-sys-body-medium-size, 14px));
 }
 
 .comparison-stats.mobile {
-  padding: 0 4px;
+  padding: 0 8px;
 }
 
 
 .bold {
-  font-weight: bold;
+  font-weight: 700;
   color: var(--mat-sys-primary);
 }
 
@@ -21,7 +23,11 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: stretch;
-  border-bottom: 1px solid var(--mat-sys-outline-variant, rgba(0, 0, 0, 0.12));
+  border-bottom-color: var(--mat-table-row-item-outline-color, var(--mat-sys-outline, rgba(0, 0, 0, 0.12)));
+  border-bottom-width: var(--mat-table-row-item-outline-width, 1px);
+  border-bottom-style: solid;
+  letter-spacing: var(--mat-table-row-item-label-text-tracking, var(--mat-sys-body-medium-tracking));
+  line-height: inherit;
 
   &:last-child {
     border-bottom: none;
@@ -33,7 +39,6 @@
     align-items: center;
     height: 48px;
     background: var(--mat-sys-surface);
-    font-variant-numeric: tabular-nums;
   }
 
   .value-a {
@@ -46,7 +51,6 @@
     align-items: center;
     justify-content: center;
     height: 48px;
-    font-size: 0.875rem;
     color: var(--mat-sys-on-surface-variant);
     white-space: nowrap;
     min-width: 160px;
@@ -70,9 +74,8 @@
 
   .stat-label {
     text-align: center;
-    font-size: 0.8125rem;
     color: var(--mat-sys-on-surface-variant);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 
   .stat-values {
