@@ -207,6 +207,12 @@ mat-card-title {
     min-width: 52px;
   }
 
+  // Career best highlighting (needs component-level specificity to override .mat-mdc-cell color)
+  td.stat-highlight {
+    font-weight: 700;
+    color: var(--mat-sys-primary);
+  }
+
   .mat-mdc-header-cell:first-child,
   .mat-mdc-cell:first-child {
     min-width: 58px;

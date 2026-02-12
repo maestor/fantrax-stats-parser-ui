@@ -43,6 +43,21 @@ test.describe('Player Card', () => {
 
     await playerCard.switchToTab('by-season');
     await playerCard.verifyTabContent('by-season');
+
+    // Verify career best highlighting in by-season tab
+    const seasonTable = page.locator('.season-table');
+    const highlightedCells = seasonTable.locator('td.stat-highlight');
+    const highlightCount = await highlightedCells.count();
+    expect(highlightCount).toBeGreaterThan(0);
+
+    // Verify tooltip on career best cell
+    const firstHighlight = highlightedCells.first();
+    await firstHighlight.hover();
+    const tooltip = page.locator('.mat-mdc-tooltip');
+    await expect(tooltip).toBeVisible({ timeout: 3000 });
+    const tooltipText = await tooltip.textContent();
+    expect(tooltipText).toContain('uran paras');
+
     await playerCard.switchToTab('graphs');
     await playerCard.verifyTabContent('graphs');
     await playerCard.switchToTab('stats');

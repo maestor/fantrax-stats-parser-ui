@@ -213,16 +213,16 @@ describe('ComparisonStatsComponent', () => {
     });
   });
 
-  describe('bold CSS class', () => {
-    it('should apply bold class to the higher value element', () => {
+  describe('stat-highlight CSS class', () => {
+    it('should apply stat-highlight class to the higher value element', () => {
       createComponent(mockPlayerA, mockPlayerB, 'player', false);
       const el: HTMLElement = fixture.nativeElement;
-      // score: A=100 > B=94.31, so value-a should be bold
+      // score: A=100 > B=94.31, so value-a should be highlighted
       const firstRow = el.querySelector('.stat-row-desktop')!;
       const valueA = firstRow.querySelector('.value-a')!;
       const valueB = firstRow.querySelector('.value-b')!;
-      expect(valueA.classList.contains('bold')).toBeTrue();
-      expect(valueB.classList.contains('bold')).toBeFalse();
+      expect(valueA.classList.contains('stat-highlight')).toBeTrue();
+      expect(valueB.classList.contains('stat-highlight')).toBeFalse();
     });
   });
 

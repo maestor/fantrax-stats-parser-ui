@@ -895,6 +895,219 @@ describe("PlayerCardComponent", () => {
 
       expect(focusSpy).toHaveBeenCalled();
     });
+
+    describe("career best highlighting", () => {
+      it("should highlight max values as career best for standard stats", () => {
+        // 2024 has 8 wins, 2023 has 10 wins -> 2023 should be best
+        expect(component.isCareerBest("wins", 2023)).toBeTrue();
+        expect(component.isCareerBest("wins", 2024)).toBeFalse();
+
+        // 2024 has 300 saves, 2023 has 450 saves -> 2023 should be best
+        expect(component.isCareerBest("saves", 2023)).toBeTrue();
+        expect(component.isCareerBest("saves", 2024)).toBeFalse();
+      });
+
+      it("should highlight min values as career best for GAA (lower is better)", () => {
+        // 2024 has GAA 2.00, 2023 has GAA 2.10 -> 2024 should be best (lower)
+        expect(component.isCareerBest("gaa", 2024)).toBeTrue();
+        expect(component.isCareerBest("gaa", 2023)).toBeFalse();
+      });
+
+      it("should highlight all tied seasons when values are equal", fakeAsync(() => {
+        // Create data with tied values
+        const tiedData: Goalie & { seasons: GoalieSeasonStats[] } = {
+          name: "Tied Goalie",
+          score: 0,
+          scoreAdjustedByGames: 0,
+          games: 20,
+          wins: 15,
+          saves: 600,
+          shutouts: 4,
+          goals: 0,
+          assists: 2,
+          points: 2,
+          penalties: 0,
+          ppp: 0,
+          shp: 0,
+          seasons: [
+            {
+              season: 2024,
+              games: 10,
+              score: 50,
+              scoreAdjustedByGames: 5,
+              wins: 8,
+              saves: 300,
+              shutouts: 2,
+              goals: 0,
+              assists: 1,
+              points: 1,
+              penalties: 0,
+              ppp: 0,
+              shp: 0,
+              gaa: "2.00",
+              savePercent: "0.920",
+            },
+            {
+              season: 2023,
+              games: 10,
+              score: 50,
+              scoreAdjustedByGames: 5,
+              wins: 8, // Same as 2024
+              saves: 300, // Same as 2024
+              shutouts: 2,
+              goals: 0,
+              assists: 1,
+              points: 1,
+              penalties: 0,
+              ppp: 0,
+              shp: 0,
+              gaa: "2.00", // Same as 2024
+              savePercent: "0.920",
+            },
+          ],
+        };
+
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [
+            PlayerCardComponent,
+            TranslateModule.forRoot(),
+            NoopAnimationsModule,
+          ],
+          providers: [
+            { provide: MAT_DIALOG_DATA, useValue: tiedData },
+            { provide: MatDialogRef, useValue: dialogRefSpy },
+            { provide: ApiService, useValue: apiServiceSpy },
+          ],
+        });
+
+        const tiedFixture = TestBed.createComponent(PlayerCardComponent);
+        const tiedComponent = tiedFixture.componentInstance;
+        tiedFixture.detectChanges();
+        tick();
+
+        // Both seasons should be highlighted for tied values
+        expect(tiedComponent.isCareerBest("wins", 2024)).toBeTrue();
+        expect(tiedComponent.isCareerBest("wins", 2023)).toBeTrue();
+        expect(tiedComponent.isCareerBest("saves", 2024)).toBeTrue();
+        expect(tiedComponent.isCareerBest("saves", 2023)).toBeTrue();
+        expect(tiedComponent.isCareerBest("gaa", 2024)).toBeTrue();
+        expect(tiedComponent.isCareerBest("gaa", 2023)).toBeTrue();
+      }));
+
+      it("should not highlight when all values are zero", () => {
+        // ppp and shp are 0 for all seasons in mock data
+        expect(component.isCareerBest("ppp", 2024)).toBeFalse();
+        expect(component.isCareerBest("ppp", 2023)).toBeFalse();
+        expect(component.isCareerBest("shp", 2024)).toBeFalse();
+        expect(component.isCareerBest("shp", 2023)).toBeFalse();
+      });
+
+      it("should return false for non-existent column", () => {
+        expect(component.isCareerBest("nonexistent", 2024)).toBeFalse();
+      });
+
+      it("should return false for non-existent season", () => {
+        expect(component.isCareerBest("wins", 1999)).toBeFalse();
+      });
+
+      it("should apply stat-highlight class to career best cells in template", fakeAsync(() => {
+        // Switch to by-season tab
+        const tabGroupDebug = fixture.debugElement.query(
+          By.css("mat-tab-group"),
+        );
+        const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
+        tabGroup.selectedIndex = 1;
+        fixture.detectChanges();
+        tick();
+
+        // Find cells in season table
+        const seasonTable = fixture.debugElement.query(By.css(".season-table"));
+        expect(seasonTable).toBeTruthy();
+
+        const cells = seasonTable.queryAll(By.css("td.mat-mdc-cell"));
+        const highlightedCells = cells.filter((cell) =>
+          cell.nativeElement.classList.contains("stat-highlight"),
+        );
+
+        // Should have some highlighted cells (career bests)
+        expect(highlightedCells.length).toBeGreaterThan(0);
+      }));
+    });
+  });
+
+  describe("career best with single season", () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+
+    beforeEach(async () => {
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
+
+      const singleSeasonData: Goalie & { seasons: GoalieSeasonStats[] } = {
+        name: "Single Season Goalie",
+        score: 50,
+        scoreAdjustedByGames: 5,
+        games: 10,
+        wins: 8,
+        saves: 300,
+        shutouts: 2,
+        goals: 0,
+        assists: 1,
+        points: 1,
+        penalties: 0,
+        ppp: 0,
+        shp: 0,
+        seasons: [
+          {
+            season: 2024,
+            games: 10,
+            score: 50,
+            scoreAdjustedByGames: 5,
+            wins: 8,
+            saves: 300,
+            shutouts: 2,
+            goals: 0,
+            assists: 1,
+            points: 1,
+            penalties: 0,
+            ppp: 0,
+            shp: 0,
+            gaa: "2.00",
+            savePercent: "0.920",
+          },
+        ],
+      };
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: singleSeasonData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+        ],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(PlayerCardComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it("should not highlight any values with only one season", () => {
+      expect(component.careerBests.size).toBe(0);
+      expect(component.isCareerBest("wins", 2024)).toBeFalse();
+      expect(component.isCareerBest("saves", 2024)).toBeFalse();
+      expect(component.isCareerBest("gaa", 2024)).toBeFalse();
+    });
   });
 
   describe("without seasons data", () => {
