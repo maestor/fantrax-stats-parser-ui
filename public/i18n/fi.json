@@ -211,7 +211,8 @@
     "graphs": "Graafit",
     "graphsSelectStats": "Valitse tilastot käyrille",
     "copyLink": "Kopioi linkki leikepöydälle",
-    "linkCopied": "Linkki kopioitu!"
+    "linkCopied": "Linkki kopioitu!",
+    "careerBest": "uran paras"
   },
   "graphs": {
     "seasonalTrends": "Kausittaiset käyrät",

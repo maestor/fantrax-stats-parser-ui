@@ -25,6 +25,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats, season-by-season breakdown, and a graphs tab in separate tabs, using the same stat keys (including `score`) as the main tables
 	- 📉 Graphs tab shows per-season line charts for key stats (games, goals, assists, points, shots, penalties, hits, blocks for skaters; games, wins, saves, shutouts for goalies) with selectable series and sensible axis scaling
 	- 🎯 Radar chart view showing 0-100 normalized score breakdown for individual stats, toggleable with line charts
+	- 🏆 Career bests highlighted in By Season tab with tooltip showing stat name (only for players with 2+ seasons)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
 	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
 	- Goalies: `/goalie/:teamSlug/:goalieSlug` (e.g., `/goalie/colorado/philipp-grubauer`)

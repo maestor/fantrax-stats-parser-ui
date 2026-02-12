@@ -517,3 +517,9 @@ mat-checkbox .mdc-label {
     margin: 1em 0 0 0 !important;
   }
 }
+
+// Shared highlight style for career bests, comparison winners, etc.
+.stat-highlight {
+  font-weight: 700;
+  color: var(--mat-sys-primary);
+}

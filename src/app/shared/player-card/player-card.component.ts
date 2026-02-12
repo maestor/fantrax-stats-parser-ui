@@ -129,6 +129,7 @@ export class PlayerCardComponent {
   // Columns for season breakdown table
   seasonColumns: string[] = [];
   seasonDataSource: (PlayerSeasonStats | GoalieSeasonStats)[] = [];
+  careerBests: Map<string, Set<number>> = new Map();
   graphsComponent: Type<unknown> | null = null;
   graphsLoading = false;
   graphsLoadPromise: Promise<void> | null = null;
@@ -384,6 +385,8 @@ export class PlayerCardComponent {
 
       this.seasonColumns = prioritizedColumns;
     }
+
+    this.computeCareerBests();
   }
 
 
@@ -398,6 +401,48 @@ export class PlayerCardComponent {
     const nextYear = year + 1;
     const endShort = String(nextYear).slice(-2);
     return `${startShort}-${endShort}`;
+  }
+
+  private parseStatValue(value: unknown): number | null {
+    if (value === '' || value === '-' || value === null || value === undefined) {
+      return null;
+    }
+    const num = typeof value === 'number' ? value : parseFloat(String(value));
+    return isNaN(num) ? null : num;
+  }
+
+  private computeCareerBests(): void {
+    this.careerBests.clear();
+
+    if (this.seasonDataSource.length < 2) return;
+
+    const statColumns = this.seasonColumns.filter(col => col !== 'seasonDisplay');
+
+    for (const column of statColumns) {
+      const values = this.seasonDataSource.map(s => ({
+        season: s.season,
+        value: this.parseStatValue((s as Record<string, unknown>)[column])
+      })).filter(v => v.value !== null) as { season: number; value: number }[];
+
+      // Skip if no valid values or all zeros
+      if (values.length === 0 || values.every(v => v.value === 0)) continue;
+
+      // Find best value (min for GAA, max for others)
+      const bestValue = column === 'gaa'
+        ? Math.min(...values.map(v => v.value))
+        : Math.max(...values.map(v => v.value));
+
+      // Store all seasons with the best value
+      const bestSeasons = values
+        .filter(v => v.value === bestValue)
+        .map(v => v.season);
+
+      this.careerBests.set(column, new Set(bestSeasons));
+    }
+  }
+
+  isCareerBest(column: string, season: number): boolean {
+    return this.careerBests.get(column)?.has(season) ?? false;
   }
 
   private reorderStatsForDisplay(keys: string[]): string[] {

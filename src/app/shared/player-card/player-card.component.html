@@ -71,7 +71,11 @@
                     {{ "tableColumnShort." + column | translate }}
                   </span>
                 </th>
-                <td mat-cell *matCellDef="let season">
+                <td mat-cell *matCellDef="let season"
+                    [class.stat-highlight]="isCareerBest(column, season.season)"
+                    [matTooltip]="isCareerBest(column, season.season)
+                      ? ('tableColumn.' + column | translate) + ' - ' + ('playerCard.careerBest' | translate)
+                      : ''">
                   {{ season[column] !== "" ? season[column] : "-" }}
                 </td>
               </ng-container>
