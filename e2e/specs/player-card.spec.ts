@@ -159,6 +159,27 @@ test.describe('Player Card', () => {
     await expect(compareToggle).toHaveAttribute('aria-checked', 'true');
   });
 
+  test('navigates between players with keyboard arrows', async ({ page }) => {
+    const dialog = page.getByRole('dialog');
+    const nameEl = dialog.locator('.player-card-player-name');
+
+    // Open first player card
+    await playerCard.open('Jamie Benn');
+    await expect(nameEl).toHaveText('Jamie Benn');
+
+    // Navigate right — should show a different player
+    await playerCard.navigateNext();
+    await expect(nameEl).not.toHaveText('Jamie Benn');
+
+    // Navigate left — should return to original player
+    await playerCard.navigatePrevious();
+    await expect(nameEl).toHaveText('Jamie Benn');
+
+    // Close via X button
+    await playerCard.close();
+    await expect(dialog).not.toBeVisible();
+  });
+
   test('opens player card via direct URL and with tab query param', async ({ page }) => {
     // Direct URL opens dialog with correct player
     await page.goto('/player/colorado/jamie-benn');

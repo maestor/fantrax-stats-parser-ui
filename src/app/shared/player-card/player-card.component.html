@@ -1,3 +1,7 @@
+<!-- Screen reader live region for navigation announcements -->
+<div class="sr-only" aria-live="polite" aria-atomic="true">
+  {{ liveRegionMessage }}
+</div>
 <mat-card [class.player-card]="true" [class.season-mode]="hasSeasons && selectedTabIndex !== 0">
   <button mat-icon-button (click)="onNoClick()" #closeButton [attr.aria-label]="'a11y.closePlayerCard' | translate">
     <mat-icon fontIcon="close" />

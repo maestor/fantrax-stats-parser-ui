@@ -426,8 +426,7 @@ describe("getPlayerStatsPerGame", () => {
 
 Before marking work complete, verify:
 
-- [ ] All tests pass (`npm test`)
-- [ ] Build succeeds (`npm run build`)
+- [ ] Build and test coverage succeeds (`npm run verify`)
 - [ ] App serves without errors (`npm start`)
 - [ ] New features have tests
 - [ ] Test coverage meets gate (>=98% statements/lines/functions, >=96% branches)

@@ -191,12 +191,36 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   selectItem(data: Player | Goalie) {
-    const dialogData: PlayerCardDialogData = { player: data };
-    this.dialog.open(PlayerCardComponent, {
+    // Track navigated index in a closure so CDK focus restoration
+    // (which triggers onRowFocus) cannot overwrite it before afterClosed fires.
+    let navigatedIndex = this.dataSource.filteredData.indexOf(data);
+
+    const dialogData: PlayerCardDialogData = {
+      player: data,
+      navigationContext: {
+        allPlayers: this.dataSource.filteredData,
+        currentIndex: navigatedIndex,
+        onNavigate: (newIndex: number) => {
+          navigatedIndex = newIndex;
+          this.activeRowIndex = newIndex;
+          this.scrollRowIntoView(newIndex);
+          this.cdr.detectChanges();
+        },
+      },
+    };
+    const dialogRef = this.dialog.open(PlayerCardComponent, {
       data: dialogData,
       maxWidth: '95vw',
       width: 'auto',
       panelClass: 'player-card-dialog',
+    });
+
+    // Focus the navigated-to row when dialog closes.
+    // Use navigatedIndex (closure) instead of this.activeRowIndex because
+    // CDK restores focus to the original row before afterClosed fires,
+    // triggering onRowFocus() which overwrites this.activeRowIndex.
+    dialogRef.afterClosed().subscribe(() => {
+      this.focusRow(navigatedIndex);
     });
   }
 
@@ -338,5 +362,15 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
     el.focus();
     el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  /** Scroll a row into view without stealing focus (used by dialog navigation callback). */
+  private scrollRowIntoView(index: number): void {
+    const rows = this.dataRows?.toArray() ?? [];
+    if (rows.length === 0) return;
+
+    const clampedIndex = Math.max(0, Math.min(index, rows.length - 1));
+    const el = rows[clampedIndex]?.nativeElement;
+    el?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }

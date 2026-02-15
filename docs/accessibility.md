@@ -91,6 +91,22 @@ Notes:
 
 On mobile, top controls + settings are shown inside a left-side settings drawer (opened via the settings icon in the app header). The drawer content is rendered in a non-collapsible "content-only" mode.
 
+### Player Card navigation
+
+The player card supports navigating between players without closing the dialog:
+
+- **Keyboard**: `ArrowLeft` (previous player) / `ArrowRight` (next player)
+- **Touch**: Single-finger horizontal swipe on mobile devices
+- **Trackpad**: Two-finger horizontal swipe on laptop trackpads (via `wheel` events)
+- Navigation wraps circularly (last → first, first → last)
+
+Accessibility details:
+
+- A `aria-live="polite"` region announces the current player name and position after each navigation (e.g., "Pelaaja 3 / 25: Jamie Benn")
+- The stats table's active row stays in sync with the navigated player
+- On dialog close, focus returns to the row of the last-navigated player (not the originally opened row)
+- Browser back/forward gestures are suppressed while the dialog is open (`preventDefault()` on horizontal `wheel` events + `overscroll-behavior-x: none` CSS)
+
 ### Player Card (Graphs tab) focus shortcuts
 
 On desktop, the Graphs tab shows a long list of stat checkboxes. To keep tab navigation convenient:

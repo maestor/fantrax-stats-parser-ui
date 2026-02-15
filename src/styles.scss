@@ -45,6 +45,13 @@ body {
   background: rgb(0 0 0 / 0.4) !important;
 }
 
+// Prevent macOS trackpad back/forward gesture when player card dialog is open.
+// The overlay wrapper covers the full viewport, so this blocks the gesture
+// even when swiping outside the dialog card itself.
+.cdk-global-overlay-wrapper:has(.player-card-dialog) {
+  overscroll-behavior-x: none;
+}
+
 @media (prefers-color-scheme: dark) {
   .cdk-overlay-backdrop {
     background: rgb(0 0 0 / 0.55) !important;
@@ -394,6 +401,9 @@ mat-checkbox .mdc-label {
 
 /* Player card dialog styles */
 .player-card-dialog {
+  // Prevent macOS trackpad back/forward gesture while dialog is open
+  overscroll-behavior-x: none;
+
   .mat-mdc-dialog-container {
     max-width: 95vw !important;
     width: auto !important;
@@ -404,6 +414,7 @@ mat-checkbox .mdc-label {
       width: auto !important;
       max-height: calc(var(--app-height) - 16px) !important;
       overflow: auto;
+      overscroll-behavior-x: none;
       -webkit-overflow-scrolling: touch;
     }
   }

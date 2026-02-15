@@ -125,7 +125,7 @@ export class PlayerRouteComponent implements OnInit, OnDestroy {
                     return;
                   }
 
-                  this.openPlayerCard(player, tab ?? undefined);
+                  this.openPlayerCard(player, players, tab ?? undefined);
                 })
               );
             })
@@ -154,13 +154,17 @@ export class PlayerRouteComponent implements OnInit, OnDestroy {
     return players.find((p) => matchesSlug(p.name, slug));
   }
 
-  private openPlayerCard(player: Player, tab?: PlayerCardTab) {
+  private openPlayerCard(player: Player, allPlayers: Player[], tab?: PlayerCardTab) {
     if (this.dialogOpened) return;
     this.dialogOpened = true;
 
     const dialogData: PlayerCardDialogData = {
       player,
       initialTab: tab,
+      navigationContext: {
+        allPlayers,
+        currentIndex: allPlayers.indexOf(player),
+      },
     };
 
     const dialogRef = this.dialog.open(PlayerCardComponent, {
