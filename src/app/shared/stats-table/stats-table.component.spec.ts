@@ -636,15 +636,14 @@ describe('StatsTableComponent', () => {
 
       component.selectItem(mockPlayerData[0]);
 
-      expect(dialog.open).toHaveBeenCalledWith(PlayerCardComponent, {
-        data: { player: mockPlayerData[0] },
+      expect(dialog.open).toHaveBeenCalledWith(PlayerCardComponent, jasmine.objectContaining({
         maxWidth: '95vw',
         width: 'auto',
         panelClass: 'player-card-dialog',
-      });
+      }));
     });
 
-    it('should pass player data to dialog', () => {
+    it('should pass player data with navigation context to dialog', () => {
       spyOn(dialog, 'open').and.returnValue({
         afterClosed: () => of(undefined),
       } as any);
@@ -655,12 +654,19 @@ describe('StatsTableComponent', () => {
       expect(dialog.open).toHaveBeenCalledWith(
         PlayerCardComponent,
         jasmine.objectContaining({
-          data: { player },
+          data: jasmine.objectContaining({
+            player,
+            navigationContext: jasmine.objectContaining({
+              allPlayers: jasmine.any(Array),
+              currentIndex: jasmine.any(Number),
+              onNavigate: jasmine.any(Function),
+            }),
+          }),
         })
       );
     });
 
-    it('should pass goalie data to dialog', () => {
+    it('should pass goalie data with navigation context to dialog', () => {
       spyOn(dialog, 'open').and.returnValue({
         afterClosed: () => of(undefined),
       } as any);
@@ -671,7 +677,14 @@ describe('StatsTableComponent', () => {
       expect(dialog.open).toHaveBeenCalledWith(
         PlayerCardComponent,
         jasmine.objectContaining({
-          data: { player: goalie },
+          data: jasmine.objectContaining({
+            player: goalie,
+            navigationContext: jasmine.objectContaining({
+              allPlayers: jasmine.any(Array),
+              currentIndex: jasmine.any(Number),
+              onNavigate: jasmine.any(Function),
+            }),
+          }),
         })
       );
     });
@@ -691,6 +704,39 @@ describe('StatsTableComponent', () => {
           panelClass: 'player-card-dialog',
         })
       );
+    });
+
+    it('should provide correct currentIndex in navigation context', () => {
+      // Set up filtered data in dataSource
+      component.dataSource.data = mockPlayerData;
+
+      let capturedData: any;
+      spyOn(dialog, 'open').and.callFake((_comp: any, config: any) => {
+        capturedData = config.data;
+        return { afterClosed: () => of(undefined) } as any;
+      });
+
+      component.selectItem(mockPlayerData[1]); // Second player
+
+      expect(capturedData.navigationContext.currentIndex).toBe(1);
+    });
+
+    it('should update active row when navigation callback is invoked', () => {
+      component.dataSource.data = mockPlayerData;
+
+      let capturedCallback: ((index: number) => void) | undefined;
+      spyOn(dialog, 'open').and.callFake((_comp: any, config: any) => {
+        capturedCallback = config.data.navigationContext.onNavigate;
+        return { afterClosed: () => of(undefined) } as any;
+      });
+
+      component.selectItem(mockPlayerData[0]);
+      expect(capturedCallback).toBeDefined();
+
+      // Simulate navigation to second player
+      capturedCallback!(1);
+
+      expect(component.activeRowIndex).toBe(1);
     });
   });
 

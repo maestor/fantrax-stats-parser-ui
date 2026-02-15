@@ -191,7 +191,18 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   selectItem(data: Player | Goalie) {
-    const dialogData: PlayerCardDialogData = { player: data };
+    const dialogData: PlayerCardDialogData = {
+      player: data,
+      navigationContext: {
+        allPlayers: this.dataSource.filteredData,
+        currentIndex: this.dataSource.filteredData.indexOf(data),
+        onNavigate: (newIndex: number) => {
+          this.activeRowIndex = newIndex;
+          this.focusRow(newIndex);
+          this.cdr.markForCheck();
+        },
+      },
+    };
     this.dialog.open(PlayerCardComponent, {
       data: dialogData,
       maxWidth: '95vw',
