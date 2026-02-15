@@ -125,7 +125,7 @@ export class GoalieRouteComponent implements OnInit, OnDestroy {
                     return;
                   }
 
-                  this.openGoalieCard(goalie, tab ?? undefined);
+                  this.openGoalieCard(goalie, goalies, tab ?? undefined);
                 })
               );
             })
@@ -154,13 +154,17 @@ export class GoalieRouteComponent implements OnInit, OnDestroy {
     return goalies.find((g) => matchesSlug(g.name, slug));
   }
 
-  private openGoalieCard(goalie: Goalie, tab?: PlayerCardTab) {
+  private openGoalieCard(goalie: Goalie, allGoalies: Goalie[], tab?: PlayerCardTab) {
     if (this.dialogOpened) return;
     this.dialogOpened = true;
 
     const dialogData: PlayerCardDialogData = {
       player: goalie,
       initialTab: tab,
+      navigationContext: {
+        allPlayers: allGoalies,
+        currentIndex: allGoalies.indexOf(goalie),
+      },
     };
 
     const dialogRef = this.dialog.open(PlayerCardComponent, {
