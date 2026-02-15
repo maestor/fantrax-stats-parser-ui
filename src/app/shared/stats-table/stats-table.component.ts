@@ -191,23 +191,36 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   selectItem(data: Player | Goalie) {
+    // Track navigated index in a closure so CDK focus restoration
+    // (which triggers onRowFocus) cannot overwrite it before afterClosed fires.
+    let navigatedIndex = this.dataSource.filteredData.indexOf(data);
+
     const dialogData: PlayerCardDialogData = {
       player: data,
       navigationContext: {
         allPlayers: this.dataSource.filteredData,
-        currentIndex: this.dataSource.filteredData.indexOf(data),
+        currentIndex: navigatedIndex,
         onNavigate: (newIndex: number) => {
+          navigatedIndex = newIndex;
           this.activeRowIndex = newIndex;
           this.scrollRowIntoView(newIndex);
-          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         },
       },
     };
-    this.dialog.open(PlayerCardComponent, {
+    const dialogRef = this.dialog.open(PlayerCardComponent, {
       data: dialogData,
       maxWidth: '95vw',
       width: 'auto',
       panelClass: 'player-card-dialog',
+    });
+
+    // Focus the navigated-to row when dialog closes.
+    // Use navigatedIndex (closure) instead of this.activeRowIndex because
+    // CDK restores focus to the original row before afterClosed fires,
+    // triggering onRowFocus() which overwrites this.activeRowIndex.
+    dialogRef.afterClosed().subscribe(() => {
+      this.focusRow(navigatedIndex);
     });
   }
 

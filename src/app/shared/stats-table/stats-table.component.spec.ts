@@ -10,7 +10,7 @@ import { ElementRef, SimpleChange } from '@angular/core';
 import { Player, Goalie } from '@services/api.service';
 import { PlayerCardComponent } from '@shared/player-card/player-card.component';
 import { ComparisonService } from '@services/comparison.service';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 describe('StatsTableComponent', () => {
   let component: StatsTableComponent;
@@ -737,6 +737,29 @@ describe('StatsTableComponent', () => {
       capturedCallback!(1);
 
       expect(component.activeRowIndex).toBe(1);
+    });
+
+    it('should focus the navigated-to row after dialog closes', () => {
+      component.dataSource.data = mockPlayerData;
+      const focusSpy = spyOn<any>(component as any, 'focusRow');
+
+      const afterClosed$ = new Subject<void>();
+      let capturedCallback: ((index: number) => void) | undefined;
+      spyOn(dialog, 'open').and.callFake((_comp: any, config: any) => {
+        capturedCallback = config.data.navigationContext.onNavigate;
+        return { afterClosed: () => afterClosed$.asObservable() } as any;
+      });
+
+      component.selectItem(mockPlayerData[0]);
+      capturedCallback!(2); // Navigate to third player
+
+      expect(focusSpy).not.toHaveBeenCalled();
+
+      // Close the dialog
+      afterClosed$.next();
+      afterClosed$.complete();
+
+      expect(focusSpy).toHaveBeenCalledWith(2);
     });
   });
 

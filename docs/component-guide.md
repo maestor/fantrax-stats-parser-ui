@@ -211,7 +211,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 @Input() tableId = 'stats-table';
 ```
 
-**Outputs**: None — row clicks open `PlayerCardComponent` directly via `MatDialog`.
+**Outputs**: None — row clicks open `PlayerCardComponent` directly via `MatDialog`, passing a `navigationContext` that enables in-dialog player navigation with active row syncing.
 
 **Features**:
 
@@ -419,10 +419,15 @@ toggleExpanded(): void {
 // 1. Direct player/goalie object (legacy)
 data: Player | Goalie;
 
-// 2. Wrapped format with optional initial tab (for URL routing)
+// 2. Wrapped format with optional initial tab and navigation context
 data: {
   player: Player | Goalie;
   initialTab?: 'all' | 'by-season' | 'graphs';
+  navigationContext?: {
+    allPlayers: (Player | Goalie)[];
+    currentIndex: number;
+    onNavigate?: (newIndex: number) => void;
+  };
 };
 ```
 
@@ -433,6 +438,7 @@ data: {
 
 **Key Features**:
 
+- **Player Navigation**: Navigate between players without closing the dialog using keyboard arrows, touch swipe, or trackpad gestures (see below)
 - **Position Filter Toggle**: For player cards (not goalies), shows a slide toggle to switch between position-relative (H/P) and all-player rankings. Syncs with global position filter in `FilterService`.
 - **Tab Navigation**: Switches between "All" (combined stats), "By Season" (season breakdown) and "Graphs" (trend lines)
 - **Dynamic Width**: Auto-adjusts dialog width based on active tab (wider for season table and graphs)
@@ -443,6 +449,17 @@ data: {
 - **Intelligent Column Ordering**: Automatically reorders columns for optimal readability
 - **Copy Link**: Link icon button next to player name copies shareable URL to clipboard
 - **Mobile-Optimized Controls**: Collapsible graph controls on mobile devices
+
+**Player Navigation** (when `navigationContext` is provided):
+
+Navigation wraps circularly (last → first, first → last).
+
+- **Keyboard**: `ArrowLeft` (previous) / `ArrowRight` (next) while dialog is focused
+- **Touch swipe**: Single-finger horizontal swipe on mobile (threshold 50px, max 75px vertical tolerance)
+- **Trackpad swipe**: Two-finger horizontal swipe on laptop trackpads (via `wheel` events with accumulation + cooldown)
+- **Screen reader**: Live region announces player position and name on each navigation (e.g., "Pelaaja 3 / 25: Jamie Benn")
+- **Active row sync**: `onNavigate` callback keeps the stats table's active row in sync; on dialog close, focus returns to the navigated-to row
+- **Browser gesture prevention**: Horizontal wheel events are `preventDefault()`-ed and `overscroll-behavior-x: none` CSS is applied to block macOS trackpad back/forward navigation
 
 **Position Filter Toggle (Players Only)**:
 
@@ -535,15 +552,22 @@ toggleGraphControls(): void {
 **Usage**:
 
 ```typescript
-// In stats-table.component.ts (wrapped format)
+// In stats-table.component.ts (with navigation context)
 this.dialog.open(PlayerCardComponent, {
-  data: { player: playerOrGoalieData },
+  data: {
+    player: playerOrGoalieData,
+    navigationContext: {
+      allPlayers: this.dataSource.filteredData,
+      currentIndex: this.dataSource.filteredData.indexOf(playerOrGoalieData),
+      onNavigate: (newIndex) => { /* sync active row */ },
+    },
+  },
   maxWidth: "95vw",
   width: "auto",
   panelClass: "player-card-dialog",
 });
 
-// In route components (with initial tab)
+// In route components (with initial tab, no navigation context)
 this.dialog.open(PlayerCardComponent, {
   data: { player: playerOrGoalieData, initialTab: 'graphs' },
   maxWidth: "95vw",

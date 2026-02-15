@@ -3089,7 +3089,7 @@ describe("PlayerCardComponent", () => {
       expect(onNavigateSpy).not.toHaveBeenCalled();
     });
 
-    it('should not navigate via swipe when only one player', async () => {
+    it('should not navigate via touch swipe when only one player', async () => {
       const players: Player[] = [
         { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
       ];
@@ -3127,15 +3127,15 @@ describe("PlayerCardComponent", () => {
       const c = f.componentInstance;
       f.detectChanges();
 
-      c.onPointerDown({ clientX: 100, clientY: 100 } as PointerEvent);
-      c.onPointerUp({ clientX: 0, clientY: 100 } as PointerEvent);
+      c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }] } as any);
+      c.onTouchEnd({ changedTouches: [{ clientX: 0, clientY: 100 }] } as any);
 
       expect(c.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
       expect(onNavigateSpy).not.toHaveBeenCalled();
     });
 
-    it('should navigate to next player on swipe left', async () => {
+    it('should navigate to next player on touch swipe left', async () => {
       const players: Player[] = [
         { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
         { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
@@ -3173,18 +3173,14 @@ describe("PlayerCardComponent", () => {
       const c = f.componentInstance;
       f.detectChanges();
 
-      // Simulate swipe left (next player)
-      const pointerDown = new PointerEvent('pointerdown', { clientX: 200, clientY: 100 });
-      const pointerUp = new PointerEvent('pointerup', { clientX: 100, clientY: 105 });
-
-      c.onPointerDown(pointerDown);
-      c.onPointerUp(pointerUp);
+      c.onTouchStart({ touches: [{ clientX: 200, clientY: 100 }] } as any);
+      c.onTouchEnd({ changedTouches: [{ clientX: 100, clientY: 105 }] } as any);
 
       expect(c.currentIndex).toBe(1);
       expect(c.data.name).toBe('Player 2');
     });
 
-    it('should navigate to previous player on swipe right', async () => {
+    it('should navigate to previous player on touch swipe right', async () => {
       const players: Player[] = [
         { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
         { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
@@ -3222,18 +3218,14 @@ describe("PlayerCardComponent", () => {
       const c = f.componentInstance;
       f.detectChanges();
 
-      // Simulate swipe right (previous player)
-      const pointerDown = new PointerEvent('pointerdown', { clientX: 100, clientY: 100 });
-      const pointerUp = new PointerEvent('pointerup', { clientX: 200, clientY: 105 });
-
-      c.onPointerDown(pointerDown);
-      c.onPointerUp(pointerUp);
+      c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }] } as any);
+      c.onTouchEnd({ changedTouches: [{ clientX: 200, clientY: 105 }] } as any);
 
       expect(c.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
     });
 
-    it('should ignore swipe with too much vertical movement', async () => {
+    it('should ignore touch swipe with too much vertical movement', async () => {
       const players: Player[] = [
         { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
         { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
@@ -3271,15 +3263,259 @@ describe("PlayerCardComponent", () => {
       const c = f.componentInstance;
       f.detectChanges();
 
-      // Simulate vertical swipe (scrolling, not navigation)
-      const pointerDown = new PointerEvent('pointerdown', { clientX: 100, clientY: 100 });
-      const pointerUp = new PointerEvent('pointerup', { clientX: 120, clientY: 200 });
-
-      c.onPointerDown(pointerDown);
-      c.onPointerUp(pointerUp);
+      c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }] } as any);
+      c.onTouchEnd({ changedTouches: [{ clientX: 120, clientY: 300 }] } as any);
 
       expect(c.currentIndex).toBe(0); // No navigation
       expect(c.data.name).toBe('Player 1');
+    });
+
+    it('should navigate to next player on trackpad swipe (wheel)', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: jasmine.createSpy('onNavigate'),
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Simulate trackpad swipe right (deltaX > threshold → next)
+      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+
+      expect(c.currentIndex).toBe(1);
+      expect(c.data.name).toBe('Player 2');
+    });
+
+    it('should ignore vertical wheel events', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: jasmine.createSpy('onNavigate'),
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Vertical scroll — should be ignored
+      c.onWheel({ deltaX: 5, deltaY: 60 , preventDefault: () => {} } as any);
+
+      expect(c.currentIndex).toBe(0);
+      expect(c.data.name).toBe('Player 1');
+    });
+
+    it('should ignore multi-touch gestures', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: { allPlayers: players, currentIndex: 0 },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>("MatDialogRef", ["close"]);
+
+      await TestBed.configureTestingModule({
+        imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Multi-touch start should be ignored
+      c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }, { clientX: 200, clientY: 200 }] } as any);
+      c.onTouchEnd({ changedTouches: [{ clientX: 0, clientY: 100 }] } as any);
+
+      expect(c.currentIndex).toBe(0);
+
+      // Multi-touch end should be ignored
+      c.onTouchStart({ touches: [{ clientX: 200, clientY: 100 }] } as any);
+      c.onTouchEnd({ changedTouches: [{ clientX: 0, clientY: 100 }, { clientX: 0, clientY: 200 }] } as any);
+
+      expect(c.currentIndex).toBe(0);
+    });
+
+    it('should navigate to previous player on trackpad swipe (wheel negative deltaX)', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[1],
+        navigationContext: { allPlayers: players, currentIndex: 1 },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>("MatDialogRef", ["close"]);
+
+      await TestBed.configureTestingModule({
+        imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      c.onWheel({ deltaX: -60, deltaY: 0 , preventDefault: () => {} } as any);
+
+      expect(c.currentIndex).toBe(0);
+      expect(c.data.name).toBe('Player 1');
+    });
+
+    it('should debounce rapid wheel events with cooldown', async () => {
+      jasmine.clock().install();
+
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+        { name: 'Player 3', games: 14, goals: 7, assists: 5, points: 12, score: 140 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: { allPlayers: players, currentIndex: 0 },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>("MatDialogRef", ["close"]);
+
+      await TestBed.configureTestingModule({
+        imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // First wheel triggers navigation
+      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.currentIndex).toBe(1);
+
+      // Immediate second wheel is blocked by cooldown
+      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.currentIndex).toBe(1); // Still 1, not 2
+
+      // After cooldown expires, navigation works again
+      jasmine.clock().tick(501);
+      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.currentIndex).toBe(2);
+
+      jasmine.clock().uninstall();
+    });
+
+    it('should accumulate small wheel deltas before navigating', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: { allPlayers: players, currentIndex: 0 },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>("MatDialogRef", ["close"]);
+
+      await TestBed.configureTestingModule({
+        imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Small deltas below threshold — no navigation yet
+      c.onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.currentIndex).toBe(0);
+
+      c.onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.currentIndex).toBe(0);
+
+      // Accumulated > 50 — triggers navigation
+      c.onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.currentIndex).toBe(1);
     });
 
     it('should announce player change to screen readers', async () => {

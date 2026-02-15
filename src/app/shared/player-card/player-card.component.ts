@@ -1,5 +1,5 @@
 import { DOCUMENT, NgComponentOutlet } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Type, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, NgZone, OnDestroy, Type, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -55,7 +55,7 @@ interface StatRow {
   templateUrl: './player-card.component.html',
   styleUrl: './player-card.component.scss',
 })
-export class PlayerCardComponent {
+export class PlayerCardComponent implements OnDestroy {
   readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
   private rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
   private document = inject(DOCUMENT);
@@ -90,11 +90,18 @@ export class PlayerCardComponent {
   currentIndex: number = this.navigationContext?.currentIndex ?? 0;
   allPlayers: (Player | Goalie)[] = this.navigationContext?.allPlayers ?? [];
 
-  // Swipe gesture state
+  // Touch swipe gesture state
   private swipeStartX = 0;
   private swipeStartY = 0;
   private readonly swipeThreshold = 50;
-  private readonly swipeMaxVertical = 30;
+  private readonly swipeMaxVertical = 75;
+
+  // Wheel gesture state (trackpad two-finger swipe)
+  private wheelDeltaX = 0;
+  private wheelCooldown = false;
+  private wheelResetTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly wheelHandler = (e: WheelEvent) => this.onWheel(e);
+  private zone = inject(NgZone);
 
   // Screen reader announcement
   liveRegionMessage = '';
@@ -170,6 +177,14 @@ export class PlayerCardComponent {
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
 
+    // Register wheel listener on document with { passive: false } to allow preventDefault().
+    // Must be on document (not just the host element) because wheel events on the CDK
+    // overlay backdrop don't bubble through our component, letting the browser's
+    // back/forward gesture trigger when the cursor is slightly outside the card.
+    this.zone.runOutsideAngular(() => {
+      document.addEventListener('wheel', this.wheelHandler, { passive: false });
+    });
+
     // Fetch selected team once
     this.apiService.getTeams().pipe(take(1)).subscribe((teams) => {
       this.selectedTeam = teams.find((t) => t.id === this.teamService.selectedTeamId);
@@ -204,6 +219,11 @@ export class PlayerCardComponent {
     }
   }
 
+  ngOnDestroy(): void {
+    document.removeEventListener('wheel', this.wheelHandler);
+    if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
+  }
+
   // --- Navigation ---
 
   @HostListener('keydown', ['$event'])
@@ -222,21 +242,21 @@ export class PlayerCardComponent {
     }
   }
 
-  @HostListener('pointerdown', ['$event'])
-  onPointerDown(event: PointerEvent): void {
-    if (!this.canNavigate()) return;
-    this.swipeStartX = event.clientX;
-    this.swipeStartY = event.clientY;
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent): void {
+    if (!this.canNavigate() || event.touches.length !== 1) return;
+    this.swipeStartX = event.touches[0].clientX;
+    this.swipeStartY = event.touches[0].clientY;
   }
 
-  @HostListener('pointerup', ['$event'])
-  onPointerUp(event: PointerEvent): void {
-    if (!this.canNavigate()) return;
+  @HostListener('touchend', ['$event'])
+  onTouchEnd(event: TouchEvent): void {
+    if (!this.canNavigate() || event.changedTouches.length !== 1) return;
 
-    const deltaX = event.clientX - this.swipeStartX;
-    const deltaY = Math.abs(event.clientY - this.swipeStartY);
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - this.swipeStartX;
+    const deltaY = Math.abs(touch.clientY - this.swipeStartY);
 
-    // Ignore if too much vertical movement (likely a scroll)
     if (deltaY > this.swipeMaxVertical) return;
 
     // Swipe left → next player
@@ -247,6 +267,46 @@ export class PlayerCardComponent {
     else if (deltaX > this.swipeThreshold) {
       this.navigateToPrevious();
     }
+  }
+
+  onWheel(event: WheelEvent): void {
+    if (!this.canNavigate()) return;
+
+    // Prevent browser back/forward gesture for any event with horizontal movement.
+    // Must call preventDefault() before the vertical check so backward swipes
+    // that have mixed deltaX/deltaY don't slip through to the browser gesture handler.
+    if (event.deltaX !== 0) {
+      event.preventDefault();
+    }
+
+    // Only navigate on predominantly horizontal scroll (trackpad two-finger swipe)
+    if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+
+    if (this.wheelCooldown) return;
+
+    // Reset accumulator after gesture pause
+    if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
+    this.wheelResetTimer = setTimeout(() => { this.wheelDeltaX = 0; }, 200);
+
+    this.wheelDeltaX += event.deltaX;
+
+    if (this.wheelDeltaX > this.swipeThreshold) {
+      this.zone.run(() => this.navigateToNext());
+      this.startWheelCooldown();
+    } else if (this.wheelDeltaX < -this.swipeThreshold) {
+      this.zone.run(() => this.navigateToPrevious());
+      this.startWheelCooldown();
+    }
+  }
+
+  private startWheelCooldown(): void {
+    this.wheelDeltaX = 0;
+    this.wheelCooldown = true;
+    if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
+    setTimeout(() => {
+      this.wheelCooldown = false;
+      this.wheelDeltaX = 0;
+    }, 500);
   }
 
   private canNavigate(): boolean {
