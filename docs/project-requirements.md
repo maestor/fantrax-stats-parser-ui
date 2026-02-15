@@ -280,6 +280,10 @@ npm start    # Development server
 npm test     # Run tests in watch mode
 ```
 
+### Before Writing Tests
+
+For UI/visual features, ask the user to review the implementation on `localhost:4200` before writing or updating unit tests. This avoids extra fix-test iteration cycles when the user requests adjustments to the visual result.
+
 ### Before Committing
 
 ```bash

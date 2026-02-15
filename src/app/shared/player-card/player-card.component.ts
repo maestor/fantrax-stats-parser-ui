@@ -109,7 +109,7 @@ export class PlayerCardComponent implements OnDestroy {
   // Navigation transition state
   slideClass = '';
   private animationTimer: ReturnType<typeof setTimeout> | null = null;
-  private readonly animationDuration = 75; // ms per phase (out + in)
+  private readonly animationDuration = 125; // ms per phase (out + in)
 
   readonly isGoalie = 'wins' in this.data;
 

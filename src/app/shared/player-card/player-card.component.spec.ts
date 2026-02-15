@@ -3641,7 +3641,7 @@ describe("PlayerCardComponent", () => {
         (c as any).navigateToNext();
 
         expect(c.slideClass).toContain('slide-out-left');
-        tick(150); // clean up timers
+        tick(250); // clean up timers
       }));
 
       it('should apply slide-out-right class when navigating to previous player', fakeAsync(async () => {
@@ -3650,7 +3650,7 @@ describe("PlayerCardComponent", () => {
         (c as any).navigateToPrevious();
 
         expect(c.slideClass).toContain('slide-out-right');
-        tick(150);
+        tick(250);
       }));
 
       it('should swap player data after slide-out animation completes', fakeAsync(async () => {
@@ -3659,10 +3659,10 @@ describe("PlayerCardComponent", () => {
         (c as any).navigateToNext();
         expect(c.data.name).toBe('Player 1'); // Not yet swapped
 
-        tick(75); // slide-out completes
+        tick(125); // slide-out completes
         expect(c.data.name).toBe('Player 2'); // Now swapped
 
-        tick(75); // slide-in completes
+        tick(125); // slide-in completes
         expect(c.slideClass).toBe('card-content-wrapper'); // Clean state
       }));
 
@@ -3683,15 +3683,15 @@ describe("PlayerCardComponent", () => {
         const c = await createNavComponent(threePlayers);
 
         (c as any).navigateToNext(); // Start animating to Player 2
-        tick(40); // Mid-animation — data not yet swapped, still at index 0
+        tick(60); // Mid-animation — data not yet swapped, still at index 0
 
         (c as any).navigateToNext(); // Cancels first, starts new from index 0 → 1
-        tick(75); // New slide-out completes, data swaps to Player 2
+        tick(125); // New slide-out completes, data swaps to Player 2
 
         // First animation was canceled before it could swap data
         expect(c.data.name).toBe('Player 2');
 
-        tick(75); // Clean up
+        tick(125); // Clean up
       }));
 
       it('should return to clean slideClass after full animation cycle', fakeAsync(async () => {
@@ -3699,10 +3699,10 @@ describe("PlayerCardComponent", () => {
 
         (c as any).navigateToNext();
 
-        tick(75); // slide-out done, slide-in starts
+        tick(125); // slide-out done, slide-in starts
         expect(c.slideClass).toBe('card-content-wrapper');
 
-        tick(75); // slide-in done
+        tick(125); // slide-in done
         expect(c.slideClass).toBe('card-content-wrapper');
       }));
     });
