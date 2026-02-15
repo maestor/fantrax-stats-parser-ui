@@ -6,7 +6,7 @@ import {
 } from "@angular/core/testing";
 import { ElementRef } from "@angular/core";
 import { By } from "@angular/platform-browser";
-import { PlayerCardComponent } from "./player-card.component";
+import { PlayerCardComponent, PlayerCardDialogData } from "./player-card.component";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { TranslateModule } from "@ngx-translate/core";
@@ -2842,5 +2842,251 @@ describe("PlayerCardComponent", () => {
         ),
       );
     }));
+  });
+
+  describe('navigation', () => {
+    let apiServiceSpy: jasmine.SpyObj<ApiService>;
+    let teamServiceSpy: jasmine.SpyObj<TeamService>;
+
+    beforeEach(() => {
+      apiServiceSpy = jasmine.createSpyObj("ApiService", ["getTeams"]);
+      teamServiceSpy = jasmine.createSpyObj("TeamService", [], { selectedTeamId: "1" });
+      apiServiceSpy.getTeams.and.returnValue(
+        of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
+      );
+    });
+
+    it('should navigate to next player on ArrowRight', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const onNavigateSpy = jasmine.createSpy('onNavigate');
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: onNavigateSpy,
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      c.onKeydown(event);
+
+      expect(c.currentIndex).toBe(1);
+      expect(c.data.name).toBe('Player 2');
+      expect(onNavigateSpy).toHaveBeenCalledWith(1);
+    });
+
+    it('should navigate to previous player on ArrowLeft', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const onNavigateSpy = jasmine.createSpy('onNavigate');
+      const dialogData: PlayerCardDialogData = {
+        player: players[1],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 1,
+          onNavigate: onNavigateSpy,
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      c.onKeydown(event);
+
+      expect(c.currentIndex).toBe(0);
+      expect(c.data.name).toBe('Player 1');
+      expect(onNavigateSpy).toHaveBeenCalledWith(0);
+    });
+
+    it('should wrap to last player when navigating left from first', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+        { name: 'Player 3', games: 8, goals: 4, assists: 2, points: 6, score: 80 } as Player,
+      ];
+
+      const onNavigateSpy = jasmine.createSpy('onNavigate');
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: onNavigateSpy,
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
+      c.onKeydown(event);
+
+      expect(c.currentIndex).toBe(2);
+      expect(c.data.name).toBe('Player 3');
+    });
+
+    it('should wrap to first player when navigating right from last', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const onNavigateSpy = jasmine.createSpy('onNavigate');
+      const dialogData: PlayerCardDialogData = {
+        player: players[1],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 1,
+          onNavigate: onNavigateSpy,
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      c.onKeydown(event);
+
+      expect(c.currentIndex).toBe(0);
+      expect(c.data.name).toBe('Player 1');
+    });
+
+    it('should not navigate when only one player', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+      ];
+
+      const onNavigateSpy = jasmine.createSpy('onNavigate');
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: onNavigateSpy,
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      c.onKeydown(event);
+
+      expect(c.currentIndex).toBe(0);
+      expect(c.data.name).toBe('Player 1');
+      expect(onNavigateSpy).not.toHaveBeenCalled();
+    });
   });
 });
