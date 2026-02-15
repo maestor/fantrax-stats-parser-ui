@@ -12,11 +12,15 @@ Star/bookmark players, persisted in localStorage. Add a "Suosikit" filter toggle
 
 ### Medium priority
 
-#### Player Card Navigation (Prev/Next) (~6-8h)
+#### Player Card Navigation Transitions (~2-3h)
 
-Navigate to the next/previous player in the current table sort order from within the player card. No visible UI buttons — use keyboard arrows and swipe gestures (mobile/touchpad/mouse), similar to carousel grid interaction patterns.
+Add smooth transitions when navigating between players in the player card (currently instant swap). Options: fade, slide, or direction-aware animations. Enhances polish and provides clearer visual feedback during navigation.
 
 ### Low priority
+
+#### Extend Player Card Navigation (~3-4h)
+
+Additional navigation methods for player card: mouse drag/swipe gestures and optional visible navigation buttons (← →) for mouse-only users. Configurable via settings. Lower priority since keyboard and touch/trackpad already provide full navigation capability.
 
 #### URL-Persisted Filter State (~4-6h)
 
