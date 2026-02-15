@@ -96,6 +96,9 @@ export class PlayerCardComponent {
   private readonly swipeThreshold = 50;
   private readonly swipeMaxVertical = 30;
 
+  // Screen reader announcement
+  liveRegionMessage = '';
+
   readonly isGoalie = 'wins' in this.data;
 
   private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
@@ -274,7 +277,20 @@ export class PlayerCardComponent {
       this.setupSeasonData();
     }
     this.updateGraphsInputs();
+    this.announcePlayerChange();
     this.cdr.detectChanges();
+  }
+
+  private announcePlayerChange(): void {
+    const playerName = this.data.name;
+    const position = this.currentIndex + 1;
+    const total = this.allPlayers.length;
+
+    // Clear first to ensure announcement fires even if same text
+    this.liveRegionMessage = '';
+    this.cdr.detectChanges();
+
+    this.liveRegionMessage = `Pelaaja ${position} / ${total}: ${playerName}`;
   }
 
   private getTabIndexFromName(tabName: PlayerCardTab): number {

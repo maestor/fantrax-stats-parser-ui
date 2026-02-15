@@ -3235,5 +3235,49 @@ describe("PlayerCardComponent", () => {
       expect(c.currentIndex).toBe(0); // No navigation
       expect(c.data.name).toBe('Player 1');
     });
+
+    it('should announce player change to screen readers', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: jasmine.createSpy('onNavigate'),
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+      c.onKeydown(event);
+
+      expect(c.liveRegionMessage).toBe('Pelaaja 2 / 2: Player 2');
+    });
   });
 });
