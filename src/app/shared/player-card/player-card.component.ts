@@ -82,6 +82,14 @@ export class PlayerCardComponent {
     ? this.rawDialogData.initialTab
     : undefined;
 
+  // Navigation state
+  readonly navigationContext = this.isWrappedData(this.rawDialogData)
+    ? this.rawDialogData.navigationContext
+    : undefined;
+
+  currentIndex: number = this.navigationContext?.currentIndex ?? 0;
+  allPlayers: (Player | Goalie)[] = this.navigationContext?.allPlayers ?? [];
+
   readonly isGoalie = 'wins' in this.data;
 
   private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
