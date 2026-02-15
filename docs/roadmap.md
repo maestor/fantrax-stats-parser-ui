@@ -10,12 +10,6 @@ Planned improvements and future development ideas, roughly ordered by priority.
 
 Star/bookmark players, persisted in localStorage. Add a "Suosikit" filter toggle to quickly view only watched players. No API changes needed.
 
-### Medium priority
-
-#### Player Card Navigation Transitions (~2-3h)
-
-Add smooth transitions when navigating between players in the player card (currently instant swap). Options: fade, slide, or direction-aware animations. Enhances polish and provides clearer visual feedback during navigation.
-
 ### Low priority
 
 #### Extend Player Card Navigation (~3-4h)

@@ -6,6 +6,7 @@
   <button mat-icon-button (click)="onNoClick()" #closeButton [attr.aria-label]="'a11y.closePlayerCard' | translate">
     <mat-icon fontIcon="close" />
   </button>
+  <div [class]="slideClass" class="card-content-wrapper">
   <mat-card-header>
     <mat-card-title>
       <mat-icon mat-card-avatar class="card-title-icon letter-avatar" [matTooltip]="positionTooltip">{{
@@ -127,4 +128,5 @@
     </table>
     }
   </mat-card-content>
+  </div>
 </mat-card>

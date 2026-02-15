@@ -460,6 +460,7 @@ Navigation wraps circularly (last → first, first → last).
 - **Screen reader**: Live region announces player position and name on each navigation (e.g., "Pelaaja 3 / 25: Jamie Benn")
 - **Active row sync**: `onNavigate` callback keeps the stats table's active row in sync; on dialog close, focus returns to the navigated-to row
 - **Browser gesture prevention**: Horizontal wheel events are `preventDefault()`-ed and `overscroll-behavior-x: none` CSS is applied to block macOS trackpad back/forward navigation
+- **Navigation transition**: Direction-aware slide animation (125ms out + 125ms in) with opacity fade provides visual feedback during navigation. Respects `prefers-reduced-motion: reduce` (instant swap). Rapid navigation cancels in-progress animation
 
 **Position Filter Toggle (Players Only)**:
 

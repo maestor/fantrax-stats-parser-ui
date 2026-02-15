@@ -280,12 +280,14 @@ npm start    # Development server
 npm test     # Run tests in watch mode
 ```
 
+### Before Writing Tests
+
+For UI/visual features, ask the user to review the implementation on `localhost:4200` before writing or updating unit tests. This avoids extra fix-test iteration cycles when the user requests adjustments to the visual result.
+
 ### Before Committing
 
 ```bash
-npm test -- --browsers=ChromeHeadless --watch=false  # Full test run
-npm run build                                         # Verify build
-# All must pass before commit
+npm run verify  # Runs tests (headless), coverage check, and production build — single command, don't run these separately
 ```
 
 ### Commit Message Format

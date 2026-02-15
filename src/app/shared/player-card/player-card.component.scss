@@ -192,6 +192,51 @@ mat-card-title {
   color: var(--mat-sys-on-surface-variant);
 }
 
+// --- Navigation transition ---
+
+.card-content-wrapper {
+  transition: transform 125ms ease-out, opacity 125ms ease-out;
+}
+
+.slide-out-left {
+  transform: translateX(-50px);
+  opacity: 0.3;
+}
+
+.slide-out-right {
+  transform: translateX(50px);
+  opacity: 0.3;
+}
+
+// slide-in classes position the element at the entry point with no transition
+// so the browser can then animate back to origin
+.slide-in-left {
+  transform: translateX(50px);
+  opacity: 0.3;
+  transition: none;
+}
+
+.slide-in-right {
+  transform: translateX(-50px);
+  opacity: 0.3;
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-content-wrapper {
+    transition: none;
+  }
+
+  .slide-out-left,
+  .slide-out-right,
+  .slide-in-left,
+  .slide-in-right {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+}
+
 .season-table {
   // Let the table grow wider than the container (so columns keep a readable width)
   // and rely on `.season-table-container { overflow-x: auto; }` for horizontal scrolling.

@@ -106,6 +106,7 @@ Accessibility details:
 - The stats table's active row stays in sync with the navigated player
 - On dialog close, focus returns to the row of the last-navigated player (not the originally opened row)
 - Browser back/forward gestures are suppressed while the dialog is open (`preventDefault()` on horizontal `wheel` events + `overscroll-behavior-x: none` CSS)
+- Navigation uses a direction-aware slide transition (125ms per phase). When `prefers-reduced-motion: reduce` is active, the transition is skipped entirely (instant data swap, no visual animation)
 
 ### Player Card (Graphs tab) focus shortcuts
 

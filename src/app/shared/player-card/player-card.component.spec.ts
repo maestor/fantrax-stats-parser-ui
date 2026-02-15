@@ -2854,6 +2854,17 @@ describe("PlayerCardComponent", () => {
       apiServiceSpy.getTeams.and.returnValue(
         of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]),
       );
+      // Default to reduced motion so existing navigation tests get instant data swap
+      spyOn(window, 'matchMedia').and.returnValue({
+        matches: true,
+        media: '',
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => false,
+      } as MediaQueryList);
     });
 
     it('should navigate to next player on ArrowRight', async () => {
@@ -3560,6 +3571,140 @@ describe("PlayerCardComponent", () => {
       c.onKeydown(event);
 
       expect(c.liveRegionMessage).toBe('Pelaaja 2 / 2: Player 2');
+    });
+
+    describe('navigation transition', () => {
+      function mockMatchMedia(reducedMotion: boolean): MediaQueryList {
+        return {
+          matches: reducedMotion,
+          media: '',
+          onchange: null,
+          addListener: () => {},
+          removeListener: () => {},
+          addEventListener: () => {},
+          removeEventListener: () => {},
+          dispatchEvent: () => false,
+        } as MediaQueryList;
+      }
+
+      async function createNavComponent(players: Player[], startIndex = 0) {
+        (window.matchMedia as jasmine.Spy).and.returnValue(mockMatchMedia(false));
+
+        const dialogData: PlayerCardDialogData = {
+          player: players[startIndex],
+          navigationContext: {
+            allPlayers: players,
+            currentIndex: startIndex,
+            onNavigate: jasmine.createSpy('onNavigate'),
+          },
+        };
+
+        dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+          'MatDialogRef',
+          ['close'],
+        );
+
+        await TestBed.configureTestingModule({
+          imports: [
+            PlayerCardComponent,
+            TranslateModule.forRoot(),
+            NoopAnimationsModule,
+          ],
+          providers: [
+            { provide: MAT_DIALOG_DATA, useValue: dialogData },
+            { provide: MatDialogRef, useValue: dialogRefSpy },
+            { provide: ApiService, useValue: apiServiceSpy },
+            { provide: TeamService, useValue: teamServiceSpy },
+          ],
+        }).compileComponents();
+
+        const f = TestBed.createComponent(PlayerCardComponent);
+        const c = f.componentInstance;
+        f.detectChanges();
+        return c;
+      }
+
+      const twoPlayers: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const threePlayers: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+        { name: 'Player 3', games: 14, goals: 7, assists: 5, points: 12, score: 140 } as Player,
+      ];
+
+      it('should apply slide-out-left class when navigating to next player', fakeAsync(async () => {
+        const c = await createNavComponent(twoPlayers);
+
+        (c as any).navigateToNext();
+
+        expect(c.slideClass).toContain('slide-out-left');
+        tick(250); // clean up timers
+      }));
+
+      it('should apply slide-out-right class when navigating to previous player', fakeAsync(async () => {
+        const c = await createNavComponent(twoPlayers, 1);
+
+        (c as any).navigateToPrevious();
+
+        expect(c.slideClass).toContain('slide-out-right');
+        tick(250);
+      }));
+
+      it('should swap player data after slide-out animation completes', fakeAsync(async () => {
+        const c = await createNavComponent(twoPlayers);
+
+        (c as any).navigateToNext();
+        expect(c.data.name).toBe('Player 1'); // Not yet swapped
+
+        tick(125); // slide-out completes
+        expect(c.data.name).toBe('Player 2'); // Now swapped
+
+        tick(125); // slide-in completes
+        expect(c.slideClass).toBe('card-content-wrapper'); // Clean state
+      }));
+
+      it('should skip animation when prefers-reduced-motion is set', fakeAsync(async () => {
+        (window.matchMedia as jasmine.Spy).and.returnValue(mockMatchMedia(true));
+
+        const c = await createNavComponent(twoPlayers);
+        // Override again since createNavComponent sets it to false
+        (window.matchMedia as jasmine.Spy).and.returnValue(mockMatchMedia(true));
+
+        (c as any).navigateToNext();
+
+        expect(c.slideClass).toBe(''); // No animation classes
+        expect(c.data.name).toBe('Player 2'); // Immediate swap
+      }));
+
+      it('should cancel in-progress animation on rapid navigation', fakeAsync(async () => {
+        const c = await createNavComponent(threePlayers);
+
+        (c as any).navigateToNext(); // Start animating to Player 2
+        tick(60); // Mid-animation — data not yet swapped, still at index 0
+
+        (c as any).navigateToNext(); // Cancels first, starts new from index 0 → 1
+        tick(125); // New slide-out completes, data swaps to Player 2
+
+        // First animation was canceled before it could swap data
+        expect(c.data.name).toBe('Player 2');
+
+        tick(125); // Clean up
+      }));
+
+      it('should return to clean slideClass after full animation cycle', fakeAsync(async () => {
+        const c = await createNavComponent(twoPlayers);
+
+        (c as any).navigateToNext();
+
+        tick(125); // slide-out done, slide-in starts
+        expect(c.slideClass).toBe('card-content-wrapper');
+
+        tick(125); // slide-in done
+        expect(c.slideClass).toBe('card-content-wrapper');
+      }));
     });
   });
 });
