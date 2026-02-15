@@ -198,7 +198,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
         currentIndex: this.dataSource.filteredData.indexOf(data),
         onNavigate: (newIndex: number) => {
           this.activeRowIndex = newIndex;
-          this.focusRow(newIndex);
+          this.scrollRowIntoView(newIndex);
           this.cdr.markForCheck();
         },
       },
@@ -349,5 +349,15 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
     el.focus();
     el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  /** Scroll a row into view without stealing focus (used by dialog navigation callback). */
+  private scrollRowIntoView(index: number): void {
+    const rows = this.dataRows?.toArray() ?? [];
+    if (rows.length === 0) return;
+
+    const clampedIndex = Math.max(0, Math.min(index, rows.length - 1));
+    const el = rows[clampedIndex]?.nativeElement;
+    el?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }

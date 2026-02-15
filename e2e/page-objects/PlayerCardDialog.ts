@@ -136,4 +136,26 @@ export class PlayerCardDialog {
     // Wait for clipboard operation
     await this.page.waitForTimeout(200);
   }
+
+  /**
+   * Get current player name displayed in the card
+   */
+  async getPlayerName(): Promise<string> {
+    const nameEl = this.dialog.locator('.player-card-player-name');
+    return (await nameEl.textContent() ?? '').trim();
+  }
+
+  /**
+   * Navigate to next player via ArrowRight
+   */
+  async navigateNext(): Promise<void> {
+    await this.page.keyboard.press('ArrowRight');
+  }
+
+  /**
+   * Navigate to previous player via ArrowLeft
+   */
+  async navigatePrevious(): Promise<void> {
+    await this.page.keyboard.press('ArrowLeft');
+  }
 }
