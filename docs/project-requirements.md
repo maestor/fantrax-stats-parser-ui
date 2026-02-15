@@ -287,9 +287,7 @@ For UI/visual features, ask the user to review the implementation on `localhost:
 ### Before Committing
 
 ```bash
-npm test -- --browsers=ChromeHeadless --watch=false  # Full test run
-npm run build                                         # Verify build
-# All must pass before commit
+npm run verify  # Runs tests (headless), coverage check, and production build — single command, don't run these separately
 ```
 
 ### Commit Message Format
