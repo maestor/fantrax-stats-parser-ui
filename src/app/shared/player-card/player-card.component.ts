@@ -27,6 +27,11 @@ export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
 export type PlayerCardDialogData = {
   player: Player | Goalie;
   initialTab?: PlayerCardTab;
+  navigationContext?: {
+    allPlayers: (Player | Goalie)[];
+    currentIndex: number;
+    onNavigate?: (newIndex: number) => void;
+  };
 };
 
 interface StatRow {
