@@ -245,7 +245,6 @@ The API endpoint is configured in the service layer. Check:
 - [ ] Unit tests updated/added
 - [ ] `npm run verify` passes (coverage thresholds + production build)
 - [ ] No TypeScript errors
-- [ ] No linting errors
 - [ ] Components properly typed
 - [ ] RxJS subscriptions properly cleaned up
 - [ ] Material components used correctly
