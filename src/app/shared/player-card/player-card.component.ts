@@ -1,5 +1,5 @@
 import { DOCUMENT, NgComponentOutlet } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, Type, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Type, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -75,7 +75,7 @@ export class PlayerCardComponent {
   closeButton?: ElementRef<HTMLButtonElement>;
 
   // Support both wrapped format { player, initialTab } and direct Player/Goalie
-  readonly data: Player | Goalie = this.isWrappedData(this.rawDialogData)
+  data: Player | Goalie = this.isWrappedData(this.rawDialogData)
     ? this.rawDialogData.player
     : this.rawDialogData;
   readonly initialTab: PlayerCardTab | undefined = this.isWrappedData(this.rawDialogData)
@@ -193,6 +193,55 @@ export class PlayerCardComponent {
         void this.graphsLoadPromise;
       }
     }
+  }
+
+  // --- Navigation ---
+
+  @HostListener('keydown', ['$event'])
+  onKeydown(event: KeyboardEvent): void {
+    if (!this.canNavigate()) return;
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        event.preventDefault();
+        this.navigateToPrevious();
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        this.navigateToNext();
+        break;
+    }
+  }
+
+  private canNavigate(): boolean {
+    return this.allPlayers.length > 1;
+  }
+
+  private navigateToPrevious(): void {
+    const newIndex = this.currentIndex - 1;
+    const wrappedIndex = newIndex < 0 ? this.allPlayers.length - 1 : newIndex;
+    this.navigateToIndex(wrappedIndex);
+  }
+
+  private navigateToNext(): void {
+    const newIndex = (this.currentIndex + 1) % this.allPlayers.length;
+    this.navigateToIndex(newIndex);
+  }
+
+  private navigateToIndex(newIndex: number): void {
+    this.currentIndex = newIndex;
+    this.data = this.allPlayers[newIndex];
+
+    // Notify table to sync
+    this.navigationContext?.onNavigate?.(newIndex);
+
+    // Update UI
+    this.buildStats();
+    if (this.hasSeasons) {
+      this.setupSeasonData();
+    }
+    this.updateGraphsInputs();
+    this.cdr.detectChanges();
   }
 
   private getTabIndexFromName(tabName: PlayerCardTab): number {
