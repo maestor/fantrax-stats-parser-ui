@@ -106,6 +106,11 @@ export class PlayerCardComponent implements OnDestroy {
   // Screen reader announcement
   liveRegionMessage = '';
 
+  // Navigation transition state
+  slideClass = '';
+  private animationTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly animationDuration = 75; // ms per phase (out + in)
+
   readonly isGoalie = 'wins' in this.data;
 
   private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
@@ -222,6 +227,7 @@ export class PlayerCardComponent implements OnDestroy {
   ngOnDestroy(): void {
     document.removeEventListener('wheel', this.wheelHandler);
     if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
+    if (this.animationTimer) clearTimeout(this.animationTimer);
   }
 
   // --- Navigation ---
@@ -316,15 +322,58 @@ export class PlayerCardComponent implements OnDestroy {
   private navigateToPrevious(): void {
     const newIndex = this.currentIndex - 1;
     const wrappedIndex = newIndex < 0 ? this.allPlayers.length - 1 : newIndex;
-    this.navigateToIndex(wrappedIndex);
+    this.navigateToIndex(wrappedIndex, 'right');
   }
 
   private navigateToNext(): void {
     const newIndex = (this.currentIndex + 1) % this.allPlayers.length;
-    this.navigateToIndex(newIndex);
+    this.navigateToIndex(newIndex, 'left');
   }
 
-  private navigateToIndex(newIndex: number): void {
+  private navigateToIndex(newIndex: number, direction: 'left' | 'right'): void {
+    // Cancel any in-progress animation
+    if (this.animationTimer) {
+      clearTimeout(this.animationTimer);
+      this.animationTimer = null;
+    }
+
+    // Check reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      this.applyNavigation(newIndex);
+      return;
+    }
+
+    // Phase 1: Slide out
+    this.slideClass = `card-content-wrapper slide-out-${direction}`;
+    this.cdr.detectChanges();
+
+    this.animationTimer = setTimeout(() => {
+      // Swap data while content is faded out
+      this.applyNavigation(newIndex);
+
+      // Phase 2: Position at entry point (no transition)
+      const enterFrom = direction === 'left' ? 'left' : 'right';
+      this.slideClass = `card-content-wrapper slide-in-${enterFrom}`;
+      this.cdr.detectChanges();
+
+      // Force reflow so the browser registers the start position
+      // before we remove the class to trigger the slide-in transition
+      const wrapper = this.host.nativeElement.querySelector('.card-content-wrapper');
+      wrapper?.getBoundingClientRect();
+
+      // Phase 3: Animate to origin
+      this.slideClass = 'card-content-wrapper';
+      this.cdr.detectChanges();
+
+      this.animationTimer = setTimeout(() => {
+        this.animationTimer = null;
+      }, this.animationDuration);
+    }, this.animationDuration);
+  }
+
+  private applyNavigation(newIndex: number): void {
     this.currentIndex = newIndex;
     this.data = this.allPlayers[newIndex];
 
