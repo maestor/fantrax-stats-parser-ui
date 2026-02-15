@@ -90,6 +90,12 @@ export class PlayerCardComponent {
   currentIndex: number = this.navigationContext?.currentIndex ?? 0;
   allPlayers: (Player | Goalie)[] = this.navigationContext?.allPlayers ?? [];
 
+  // Swipe gesture state
+  private swipeStartX = 0;
+  private swipeStartY = 0;
+  private readonly swipeThreshold = 50;
+  private readonly swipeMaxVertical = 30;
+
   readonly isGoalie = 'wins' in this.data;
 
   private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
@@ -210,6 +216,33 @@ export class PlayerCardComponent {
         event.preventDefault();
         this.navigateToNext();
         break;
+    }
+  }
+
+  @HostListener('pointerdown', ['$event'])
+  onPointerDown(event: PointerEvent): void {
+    if (!this.canNavigate()) return;
+    this.swipeStartX = event.clientX;
+    this.swipeStartY = event.clientY;
+  }
+
+  @HostListener('pointerup', ['$event'])
+  onPointerUp(event: PointerEvent): void {
+    if (!this.canNavigate()) return;
+
+    const deltaX = event.clientX - this.swipeStartX;
+    const deltaY = Math.abs(event.clientY - this.swipeStartY);
+
+    // Ignore if too much vertical movement (likely a scroll)
+    if (deltaY > this.swipeMaxVertical) return;
+
+    // Swipe left → next player
+    if (deltaX < -this.swipeThreshold) {
+      this.navigateToNext();
+    }
+    // Swipe right → previous player
+    else if (deltaX > this.swipeThreshold) {
+      this.navigateToPrevious();
     }
   }
 

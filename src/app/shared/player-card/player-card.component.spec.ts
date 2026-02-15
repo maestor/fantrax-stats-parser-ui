@@ -3088,5 +3088,152 @@ describe("PlayerCardComponent", () => {
       expect(c.data.name).toBe('Player 1');
       expect(onNavigateSpy).not.toHaveBeenCalled();
     });
+
+    it('should navigate to next player on swipe left', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: jasmine.createSpy('onNavigate'),
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Simulate swipe left (next player)
+      const pointerDown = new PointerEvent('pointerdown', { clientX: 200, clientY: 100 });
+      const pointerUp = new PointerEvent('pointerup', { clientX: 100, clientY: 105 });
+
+      c.onPointerDown(pointerDown);
+      c.onPointerUp(pointerUp);
+
+      expect(c.currentIndex).toBe(1);
+      expect(c.data.name).toBe('Player 2');
+    });
+
+    it('should navigate to previous player on swipe right', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[1],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 1,
+          onNavigate: jasmine.createSpy('onNavigate'),
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Simulate swipe right (previous player)
+      const pointerDown = new PointerEvent('pointerdown', { clientX: 100, clientY: 100 });
+      const pointerUp = new PointerEvent('pointerup', { clientX: 200, clientY: 105 });
+
+      c.onPointerDown(pointerDown);
+      c.onPointerUp(pointerUp);
+
+      expect(c.currentIndex).toBe(0);
+      expect(c.data.name).toBe('Player 1');
+    });
+
+    it('should ignore swipe with too much vertical movement', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+        { name: 'Player 2', games: 12, goals: 6, assists: 4, points: 10, score: 120 } as Player,
+      ];
+
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: jasmine.createSpy('onNavigate'),
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      // Simulate vertical swipe (scrolling, not navigation)
+      const pointerDown = new PointerEvent('pointerdown', { clientX: 100, clientY: 100 });
+      const pointerUp = new PointerEvent('pointerup', { clientX: 120, clientY: 200 });
+
+      c.onPointerDown(pointerDown);
+      c.onPointerUp(pointerUp);
+
+      expect(c.currentIndex).toBe(0); // No navigation
+      expect(c.data.name).toBe('Player 1');
+    });
   });
 });
