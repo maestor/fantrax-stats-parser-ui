@@ -3089,6 +3089,52 @@ describe("PlayerCardComponent", () => {
       expect(onNavigateSpy).not.toHaveBeenCalled();
     });
 
+    it('should not navigate via swipe when only one player', async () => {
+      const players: Player[] = [
+        { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
+      ];
+
+      const onNavigateSpy = jasmine.createSpy('onNavigate');
+      const dialogData: PlayerCardDialogData = {
+        player: players[0],
+        navigationContext: {
+          allPlayers: players,
+          currentIndex: 0,
+          onNavigate: onNavigateSpy,
+        },
+      };
+
+      dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
+        "MatDialogRef",
+        ["close"],
+      );
+
+      await TestBed.configureTestingModule({
+        imports: [
+          PlayerCardComponent,
+          TranslateModule.forRoot(),
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: MAT_DIALOG_DATA, useValue: dialogData },
+          { provide: MatDialogRef, useValue: dialogRefSpy },
+          { provide: ApiService, useValue: apiServiceSpy },
+          { provide: TeamService, useValue: teamServiceSpy },
+        ],
+      }).compileComponents();
+
+      const f = TestBed.createComponent(PlayerCardComponent);
+      const c = f.componentInstance;
+      f.detectChanges();
+
+      c.onPointerDown({ clientX: 100, clientY: 100 } as PointerEvent);
+      c.onPointerUp({ clientX: 0, clientY: 100 } as PointerEvent);
+
+      expect(c.currentIndex).toBe(0);
+      expect(c.data.name).toBe('Player 1');
+      expect(onNavigateSpy).not.toHaveBeenCalled();
+    });
+
     it('should navigate to next player on swipe left', async () => {
       const players: Player[] = [
         { name: 'Player 1', games: 10, goals: 5, assists: 3, points: 8, score: 100 } as Player,
