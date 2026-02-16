@@ -6,8 +6,8 @@
  * Configure on Vercel (Project Settings → Environment Variables):
  * - API_URL: absolute backend base URL, e.g. https://your-backend.example.com
  * - API_KEY: secret value
- * - ALLOWED_ORIGINS (required): comma-separated list of allowed origins
- *   e.g. https://ffhl-stats.vercel.app
+ * - ALLOWED_ORIGINS (required): comma-separated list of allowed origins/patterns
+ *   e.g. https://ffhl-stats.vercel.app,https://ffhl-stats-*-development.vercel.app
  * - RATE_LIMIT_MAX (optional): max requests per window per IP (default: 120)
  * - RATE_LIMIT_WINDOW_SEC (optional): window size in seconds (default: 60)
  *
@@ -22,10 +22,19 @@ function toOrigin(value) {
   const raw = String(value).trim();
   if (!raw) return null;
   try {
-    return new URL(raw).origin;
+    return new URL(raw).origin.toLowerCase();
   } catch {
-    return raw.replace(/\/+$/, '');
+    return raw.replace(/\/+$/, '').toLowerCase();
   }
+}
+
+function escapeForRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function originPatternToRegExp(pattern) {
+  const escaped = escapeForRegExp(pattern);
+  return new RegExp(`^${escaped.replace(/\\\*/g, '.*')}$`);
 }
 
 function getAllowedOrigins() {
@@ -37,17 +46,31 @@ function getAllowedOrigins() {
     .map((s) => toOrigin(s))
     .filter(Boolean);
 
-  return origins.length ? origins : null;
+  if (!origins.length) return null;
+
+  return origins.map((pattern) => ({
+    pattern,
+    regex: pattern.includes('*') ? originPatternToRegExp(pattern) : null,
+  }));
+}
+
+function isAllowedOrigin(origin, allowedOrigins) {
+  return allowedOrigins.some((entry) => {
+    if (entry.regex) {
+      return entry.regex.test(origin);
+    }
+    return entry.pattern === origin;
+  });
 }
 
 function isAllowedByOriginOrReferer(req, allowedOrigins) {
   const originHeader = req.headers.origin;
   const requestOrigin = toOrigin(originHeader);
-  if (requestOrigin) return allowedOrigins.includes(requestOrigin);
+  if (requestOrigin) return isAllowedOrigin(requestOrigin, allowedOrigins);
 
   const refererHeader = req.headers.referer;
   const refererOrigin = toOrigin(refererHeader);
-  if (refererOrigin) return allowedOrigins.includes(refererOrigin);
+  if (refererOrigin) return isAllowedOrigin(refererOrigin, allowedOrigins);
 
   // No Origin/Referer (e.g. curl). Deny by default.
   return false;
@@ -55,7 +78,7 @@ function isAllowedByOriginOrReferer(req, allowedOrigins) {
 
 function applyCors(req, res, allowedOrigins) {
   const requestOrigin = toOrigin(req.headers.origin);
-  if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
+  if (requestOrigin && isAllowedOrigin(requestOrigin, allowedOrigins)) {
     res.setHeader('access-control-allow-origin', requestOrigin);
     res.setHeader('vary', 'Origin');
   }
@@ -170,7 +193,7 @@ async function handler(req, res) {
       sendJson(res, 403, {
         error: 'Forbidden origin',
         origin: requestOrigin,
-        hint: 'Set ALLOWED_ORIGINS to a comma-separated list of site origins (no path), e.g. https://ffhl-stats.vercel.app',
+        hint: 'Set ALLOWED_ORIGINS to comma-separated site origins/patterns (no path), e.g. https://ffhl-stats.vercel.app,https://ffhl-stats-*-development.vercel.app',
       });
       return;
     }

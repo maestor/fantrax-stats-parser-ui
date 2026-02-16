@@ -75,7 +75,9 @@ This UI talks to a separate backend (see [node-fantrax-stats-parser](https://git
 
 - `API_URL` = absolute backend base URL (e.g. `https://your-backend.example.com`)
 - `API_KEY` = backend API key (kept server-side)
-- `ALLOWED_ORIGINS` = comma-separated allowed origins for browser requests (e.g. `https://ffhl-stats.vercel.app`)
+- `ALLOWED_ORIGINS` = comma-separated allowed origins for browser requests (supports `*` wildcard in origin)
+	- Example: `https://ffhl-stats.vercel.app,https://ffhl-stats-*-development.vercel.app`
+	- Use origin only (scheme + host + optional port), no path
 
 **Vercel environment variables (optional)**
 
