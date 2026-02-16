@@ -35,3 +35,48 @@
   margin: 0 0 10px;
   padding-left: 20px;
 }
+
+.help-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.help-social-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.help-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.mat-mdc-dialog-actions a.help-social-link {
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.help-social-link:hover {
+  text-decoration: underline;
+}
+
+.help-social-link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.help-social-icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+}
+
+.help-social-icon svg {
+  width: 16px;
+  height: 16px;
+}
