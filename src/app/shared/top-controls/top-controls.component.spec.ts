@@ -7,8 +7,14 @@ describe("TopControlsComponent", () => {
   let component: TopControlsComponent;
   let fixture: ComponentFixture<TopControlsComponent>;
 
-  beforeEach(async () => {
+  const clearSettingsStorage = (): void => {
     localStorage.removeItem("fantrax.settings");
+    localStorage.removeItem("fantrax.selectedTeamId");
+    localStorage.removeItem("fantrax.topControls.expanded");
+  };
+
+  beforeEach(async () => {
+    clearSettingsStorage();
 
     await TestBed.configureTestingModule({
       imports: [TopControlsComponent, TranslateModule.forRoot()],
@@ -37,14 +43,14 @@ describe("TopControlsComponent", () => {
 
   afterEach(() => {
     try {
-      localStorage.removeItem("fantrax.settings");
+      clearSettingsStorage();
     } catch {
       // ignore
     }
   });
 
   it("should create", () => {
-    localStorage.removeItem("fantrax.settings");
+    clearSettingsStorage();
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -52,7 +58,7 @@ describe("TopControlsComponent", () => {
   });
 
   it("should default to expanded when localStorage is empty", () => {
-    localStorage.removeItem("fantrax.settings");
+    clearSettingsStorage();
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -78,7 +84,7 @@ describe("TopControlsComponent", () => {
   });
 
   it("should persist toggle state to localStorage", () => {
-    localStorage.removeItem("fantrax.settings");
+    clearSettingsStorage();
     fixture = TestBed.createComponent(TopControlsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
