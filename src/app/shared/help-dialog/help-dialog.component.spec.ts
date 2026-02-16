@@ -24,6 +24,16 @@ describe('HelpDialogComponent', () => {
     component = fixture.componentInstance;
   });
 
+  const mockHelpDialogTranslation = (model: HelpDialogModel): void => {
+    spyOn(translate, 'get').and.callFake((key: string | string[]) => {
+      if (key === 'helpDialog') {
+        return of(model);
+      }
+
+      return of(key);
+    });
+  };
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -39,7 +49,7 @@ describe('HelpDialogComponent', () => {
       ],
     };
 
-    spyOn(translate, 'get').and.returnValue(of(model));
+    mockHelpDialogTranslation(model);
 
     fixture.detectChanges();
 
@@ -59,5 +69,27 @@ describe('HelpDialogComponent', () => {
   it('should close dialog', () => {
     component.close();
     expect(dialogRef.close).toHaveBeenCalled();
+  });
+
+  it('should render social links in dialog actions', () => {
+    const model: HelpDialogModel = {
+      title: 'Ohje',
+      blocks: [{ type: 'p', text: 'Intro' }],
+    };
+
+    mockHelpDialogTranslation(model);
+
+    fixture.detectChanges();
+
+    const actionLinks = Array.from(
+      fixture.nativeElement.querySelectorAll('.help-social-link')
+    ) as HTMLAnchorElement[];
+
+    expect(actionLinks.length).toBe(3);
+    expect(actionLinks.map((link) => link.getAttribute('href'))).toEqual([
+      'footer.links.linkedin.href',
+      'footer.links.ui.href',
+      'footer.links.api.href',
+    ]);
   });
 });
