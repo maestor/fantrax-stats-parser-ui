@@ -75,7 +75,8 @@
           "Joukkue: valitse tarkasteltava joukkue",
           "Kausi: valitse kausi tai Kaikki kaudet",
           "Alkaen kaudesta: rajaa tilastot valitusta kaudesta eteenpäin",
-          "Raportti: runkosarja tai playoffs",
+          "Raportti: runkosarja, playoffs tai molemmat",
+          "Pelipaikka: suodata hyökkääjät ja puolustajat erikseen",
           "Tilastot per ottelu: normalisoi tilastot pelattujen ottelujen mukaan",
           "Otteluja pelattu vähintään: suodata pienillä otantamäärillä näkyvät pois",
           "Haku ja lajittelu: etsi pelaajaa nimellä ja klikkaa sarakeotsikoita lajitteluun"
@@ -109,12 +110,29 @@
         "text": "Klikkaa riviä (aukeaa myös Enterillä tai välilyönnillä) avataksesi pelaajakortin. Kortista löydät pelaajan tai maalivahdin yhteenvedon, kausittaisen erittelyn sekä graafeja valituille tilastoille."
       },
       {
+        "type": "ul",
+        "items": [
+          "→ — siirry seuraavaan pelaajaan (toimii myös pyyhkäisyllä oikealle)",
+          "← — siirry edelliseen pelaajaan (toimii myös pyyhkäisyllä vasemmalle)",
+          "Kopioi linkki-ikonista pelaajakortin URL-osoite leikepöydälle ja jakoa/tallettamista varten"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Pelaajavertailu"
+      },
+      {
+        "type": "p",
+        "text": "Valitse tilastotaulukostavertailtavaksi kaksi pelaajaa ja klikkaa vertaa-painiketta. Vertailu avautuu dialogina, jossa näet pelaajien tilastot rinnakkain sekä graafit valitsemillesi tilastoille."
+      },
+      {
         "type": "h2",
         "text": "Vinkkejä tulkintaan"
       },
       {
         "type": "ul",
         "items": [
+          "Toimii toistaiseksi vain joukkueen sisällä, joukkueen vaihto nollaa kaikki valinnat",
           "Sisältää vain tilastot jotka ovat kirjautuneet FFHL:n otteluissa",
           "FR (Fantasy-ranking) yrittää kuvata voimasuhteita eri pelaajien välillä",
           "FR/O auttaa vertaamaan eri määrän pelanneita pelaajia",
@@ -131,6 +149,8 @@
       {
         "type": "ul",
         "items": [
+          "Sovellus käyttää laitteen/selaimen asetusten mukaista vaaleaa/tummaa teemaa",
+          "Sovelluksen voi asentaa omalle laitteelle (tuki työpöytä ja mobiili)",
           "Tilastot on kerätty Fantraxin joukkuesivuilta eivätkä ne sisällä mitään henkilökohtaisia tietoja, vain oikeiden NHL-pelaajien suorituksia tässä fantasyliigan kontekstissa",
           "Sovellus on avoimen lähdekoodin, löydät lähteet GitHubista (sivun alaosa, UI- ja API-linkit)",
           "Jos satut olemaan FFHL-manageri ja haluat napista tilastojen puutteista tai virheistä, ota yhteyttä. Reilu pelaajakauppaehdotus nopeuttaa toimenpiteitä!",
