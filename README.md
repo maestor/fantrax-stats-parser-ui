@@ -99,6 +99,7 @@ After changing Vercel env vars, redeploy so they take effect.
 ```bash
 # Development
 npm start                              # Dev server on http://localhost:4200
+npm run generate:types                 # Regenerate API types from OpenAPI spec
 
 # Unit tests (Jasmine + Karma)
 npm test                               # Run once (Chrome)
