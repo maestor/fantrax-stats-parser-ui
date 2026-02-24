@@ -4,6 +4,30 @@
     "playerStats": "Kenttäpelaajat",
     "goalieStats": "Maalivahdit"
   },
+  "leaderboards": {
+    "title": "Maratontaulukot",
+    "tabs": {
+      "regular": "Runkosarja",
+      "playoffs": "Playoffs"
+    },
+    "columns": {
+      "position": "#",
+      "team": "Joukkue",
+      "regularTrophies": "Runkosarjavoitot",
+      "championships": "Mestaruudet",
+      "points": "Pisteet",
+      "wins": "Voitot",
+      "ties": "Tasapelit",
+      "losses": "Häviöt",
+      "winPercent": "Voitto-%",
+      "finals": "Finaalit",
+      "conferenceFinals": "Konf. finaalit",
+      "secondRound": "2. kierros",
+      "firstRound": "1. kierros"
+    },
+    "loading": "Ladataan taulukkoa...",
+    "apiUnavailable": "Taulukkodata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen."
+  },
   "reportType": {
     "selector": "Raportti",
     "regular": "Runkosarja",
