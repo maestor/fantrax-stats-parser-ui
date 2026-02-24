@@ -336,6 +336,32 @@ describe("AppComponent", () => {
     });
   });
 
+  describe("isLeaderboardsRoute", () => {
+    it("should be true for /leaderboards/playoffs", () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      (app as any).updateControlsContext("/leaderboards/playoffs");
+      expect(app.isLeaderboardsRoute).toBeTrue();
+    });
+
+    it("should be true for /leaderboards/regular", () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      (app as any).updateControlsContext("/leaderboards/regular");
+      expect(app.isLeaderboardsRoute).toBeTrue();
+    });
+
+    it("should be false for non-leaderboards url", () => {
+      const fixture = TestBed.createComponent(AppComponent);
+      const app = fixture.componentInstance;
+
+      (app as any).updateControlsContext("/player-stats");
+      expect(app.isLeaderboardsRoute).toBeFalse();
+    });
+  });
+
   describe("mobile drawer context wiring", () => {
     it("should map selectedTeamId to presentName when available", async () => {
       apiServiceMock.getTeams.and.returnValue(
