@@ -748,11 +748,11 @@ describe("ApiService", () => {
     });
   });
 
-  describe('getLeaderboardRegular', () => {
-    it('should call GET /leaderboard/regular and return data', () => {
+  describe("getLeaderboardRegular", () => {
+    it("should call GET /leaderboard/regular and return data", () => {
       const mockData: RegularLeaderboardEntry[] = [
         {
-          teamId: '1', teamName: 'Colorado Avalanche', seasons: 13,
+          teamId: "1", teamName: "Colorado Avalanche", seasons: 13,
           wins: 80, losses: 40, ties: 10, points: 170,
           divWins: 20, divLosses: 10, divTies: 3,
           winPercent: 0.615, divWinPercent: 0.605,
@@ -764,21 +764,21 @@ describe("ApiService", () => {
       req$.subscribe(data => expect(data).toEqual(mockData));
 
       const req = httpMock.expectOne(`${environment.apiUrl}/leaderboard/regular`);
-      expect(req.request.method).toBe('GET');
+      expect(req.request.method).toBe("GET");
       req.flush(mockData);
     });
 
-    it('should return cached data on subsequent calls without making a new HTTP request', () => {
+    it("should return cached data on subsequent calls without making a new HTTP request", () => {
       const mockData: RegularLeaderboardEntry[] = [
         {
-          teamId: '1', teamName: 'Colorado Avalanche', seasons: 13,
+          teamId: "1", teamName: "Colorado Avalanche", seasons: 13,
           wins: 80, losses: 40, ties: 10, points: 170,
           divWins: 20, divLosses: 10, divTies: 3,
           winPercent: 0.615, divWinPercent: 0.605,
           regularTrophies: 3, tieRank: false
         }
       ];
-      cacheService.set('leaderboard-regular', mockData);
+      cacheService.set("leaderboard-regular", mockData);
 
       service.getLeaderboardRegular().subscribe(data => expect(data).toEqual(mockData));
 
@@ -786,11 +786,11 @@ describe("ApiService", () => {
     });
   });
 
-  describe('getLeaderboardPlayoffs', () => {
-    it('should call GET /leaderboard/playoffs and return data', () => {
+  describe("getLeaderboardPlayoffs", () => {
+    it("should call GET /leaderboard/playoffs and return data", () => {
       const mockData: PlayoffLeaderboardEntry[] = [
         {
-          teamId: '1', teamName: 'Colorado Avalanche',
+          teamId: "1", teamName: "Colorado Avalanche",
           championships: 2, finals: 3, conferenceFinals: 5,
           secondRound: 7, firstRound: 9, tieRank: false
         }
@@ -800,19 +800,19 @@ describe("ApiService", () => {
       req$.subscribe(data => expect(data).toEqual(mockData));
 
       const req = httpMock.expectOne(`${environment.apiUrl}/leaderboard/playoffs`);
-      expect(req.request.method).toBe('GET');
+      expect(req.request.method).toBe("GET");
       req.flush(mockData);
     });
 
-    it('should return cached data on subsequent calls without making a new HTTP request', () => {
+    it("should return cached data on subsequent calls without making a new HTTP request", () => {
       const mockData: PlayoffLeaderboardEntry[] = [
         {
-          teamId: '1', teamName: 'Colorado Avalanche',
+          teamId: "1", teamName: "Colorado Avalanche",
           championships: 2, finals: 3, conferenceFinals: 5,
           secondRound: 7, firstRound: 9, tieRank: false
         }
       ];
-      cacheService.set('leaderboard-playoffs', mockData);
+      cacheService.set("leaderboard-playoffs", mockData);
 
       service.getLeaderboardPlayoffs().subscribe(data => expect(data).toEqual(mockData));
 

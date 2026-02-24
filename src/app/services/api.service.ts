@@ -202,17 +202,19 @@ export class ApiService {
     );
   }
 
+  // Fetching regular season leaderboard data
   getLeaderboardRegular(): Observable<RegularLeaderboardEntry[]> {
     return this.handleRequest<RegularLeaderboardEntry[]>(
-      'leaderboard/regular',
-      'leaderboard-regular',
+      "leaderboard/regular",
+      "leaderboard-regular",
     );
   }
 
+  // Fetching playoffs leaderboard data
   getLeaderboardPlayoffs(): Observable<PlayoffLeaderboardEntry[]> {
     return this.handleRequest<PlayoffLeaderboardEntry[]>(
-      'leaderboard/playoffs',
-      'leaderboard-playoffs',
+      "leaderboard/playoffs",
+      "leaderboard-playoffs",
     );
   }
 
