@@ -1,0 +1,22 @@
+<div class="leaderboards">
+  <h1 class="mat-display-1 leaderboards__title">
+    {{ 'leaderboards.title' | translate }}
+  </h1>
+
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (tab of tabs; track tab.path) {
+      <a
+        mat-tab-link
+        [routerLink]="tab.path"
+        [active]="activeLink === tab.path"
+        ariaCurrentWhenActive="page"
+      >
+        {{ tab.label | translate }}
+      </a>
+    }
+  </nav>
+
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet />
+  </mat-tab-nav-panel>
+</div>
