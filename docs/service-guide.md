@@ -54,137 +54,31 @@ class TeamService {
 - Configure API endpoints
 - Define data type interfaces
 
-**Type Definitions**:
+### API Types
+
+Types for all API responses are auto-generated from the OpenAPI spec via `openapi-typescript`.
+The generated file lives at `src/app/services/api.types.generated.ts` — never edit it manually.
+
+Types are re-exported from `api.service.ts` under stable names so consumers don't need to
+import from the generated file directly:
+
 ```typescript
-export type ReportType = 'regular' | 'playoffs';
-
-export type Team = {
-  id: string;
-  name: string;
-  presentName: string;
-};
-
-// Backend metadata
-export type LastModifiedResponse = {
-  lastModified: string; // ISO datetime string
-};
-
-// Season selector type
-export type Season = {
-  season: number;
-  text: string;
-};
-
-// Player position type
-export type PlayerPosition = 'F' | 'D';
-
-// Per-stat breakdown scores (0-100 normalized)
-export type PlayerScores = {
-  goals: number;
-  assists: number;
-  points: number;
-  plusMinus: number;
-  penalties: number;
-  shots: number;
-  ppp: number;
-  shp: number;
-  hits: number;
-  blocks: number;
-};
-
-// Player season-specific stats
-export type PlayerSeasonStats = {
-  season: number;
-  score: number;
-  scoreAdjustedByGames: number;
-  scoreByPosition?: number;                    // Position-relative score (0-100)
-  scoreByPositionAdjustedByGames?: number;     // Position-relative per-game score
-  games: number;
-  goals: number;
-  assists: number;
-  points: number;
-  plusMinus: number;
-  penalties: number;
-  shots: number;
-  ppp: number;
-  shp: number;
-  hits: number;
-  blocks: number;
-  scores?: PlayerScores;                       // Per-stat breakdown
-  scoresByPosition?: PlayerScores;             // Per-stat breakdown vs same position
-};
-
-// Combined player stats with optional seasons array
-export type Player = {
-  name: string;
-  position?: PlayerPosition;                   // Forward or Defenseman
-  score: number;
-  scoreAdjustedByGames: number;
-  scoreByPosition?: number;                    // Position-relative score (0-100)
-  scoreByPositionAdjustedByGames?: number;     // Position-relative per-game score
-  games: number;
-  goals: number;
-  assists: number;
-  points: number;
-  plusMinus: number;
-  penalties: number;
-  shots: number;
-  ppp: number;
-  shp: number;
-  hits: number;
-  blocks: number;
-  scores?: PlayerScores;                       // Per-stat breakdown (for radar charts)
-  scoresByPosition?: PlayerScores;             // Per-stat breakdown vs same position
-  seasons?: PlayerSeasonStats[];               // Optional season breakdown
-};
-
-// Goalie season-specific stats
-export type GoalieSeasonStats = {
-  season: number;
-  score: number;
-  scoreAdjustedByGames: number;
-  games: number;
-  wins: number;
-  saves: number;
-  shutouts: number;
-  goals: number;
-  assists: number;
-  points: number;
-  penalties: number;
-  ppp: number;
-  shp: number;
-  gaa?: string;
-  savePercent?: string;
-};
-
-// Combined goalie stats with optional seasons array
-export type Goalie = {
-  name: string;
-  score: number;
-  scoreAdjustedByGames: number;
-  games: number;
-  wins: number;
-  saves: number;
-  shutouts: number;
-  goals: number;
-  assists: number;
-  points: number;
-  penalties: number;
-  ppp: number;
-  shp: number;
-  gaa?: string;
-  savePercent?: string;
-  seasons?: GoalieSeasonStats[]; // Optional season breakdown
-};
-
-// API request parameters
-export type ApiParams = {
-  reportType?: ReportType;
-  season?: number;
-  teamId?: string;
-  startFrom?: number;
-};
+import type { Player, Goalie, Team, Season } from '@services/api.service';
 ```
+
+To regenerate after backend API changes:
+
+```bash
+npm run generate:types
+```
+
+**Manually maintained types** (not in the OpenAPI spec):
+- `ReportType` — `'regular' | 'playoffs' | 'both'`
+- `ApiParams` — frontend query parameter wrapper
+- `PlayerPosition` — `'F' | 'D'`
+- `LastModifiedResponse` — backend last-modified timestamp response
+- `PlayerScores` / `GoalieScoresCombined` / `GoalieScoresSeason` — explicit score field shapes
+  (spec defines these as loose objects; explicit types preserved for autocomplete safety)
 
 **Key Methods**:
 ```typescript
