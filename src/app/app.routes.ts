@@ -51,5 +51,33 @@ export const routes: Routes = [
         (m) => m.GoalieRouteComponent
       ),
   },
+  {
+    path: 'leaderboards',
+    loadComponent: () =>
+      import('./leaderboards/leaderboards.component').then(
+        (m) => m.LeaderboardsComponent
+      ),
+    children: [
+      {
+        path: '',
+        redirectTo: 'playoffs',
+        pathMatch: 'full',
+      },
+      {
+        path: 'regular',
+        loadComponent: () =>
+          import('./leaderboards/regular/leaderboard-regular.component').then(
+            (m) => m.LeaderboardRegularComponent
+          ),
+      },
+      {
+        path: 'playoffs',
+        loadComponent: () =>
+          import('./leaderboards/playoffs/leaderboard-playoffs.component').then(
+            (m) => m.LeaderboardPlayoffsComponent
+          ),
+      },
+    ],
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
