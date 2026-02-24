@@ -30,7 +30,7 @@ export class LeaderboardRegularComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   dataSource = new MatTableDataSource<RegularRow>([]);
-  loading = false;
+  loading = true;
   apiError = false;
 
   readonly displayedColumns = [

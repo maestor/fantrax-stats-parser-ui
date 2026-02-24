@@ -3,7 +3,7 @@ import { LeaderboardRegularComponent } from './leaderboard-regular.component';
 import { ApiService, RegularLeaderboardEntry } from '@services/api.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, throwError } from 'rxjs';
+import { Subject, of, throwError } from 'rxjs';
 
 const MOCK_ENTRIES: RegularLeaderboardEntry[] = [
   {
@@ -88,11 +88,26 @@ describe('LeaderboardRegularComponent', () => {
     expect(errorComponent.loading).toBeFalse();
   });
 
-  it('should set loading to true before data arrives', () => {
-    // loading starts as false, is set to true in ngOnInit before subscribe resolves.
-    // Since of() resolves synchronously in tests, loading will be false after detectChanges.
-    // Verify the final state is correct (not loading, has data).
-    expect(component.loading).toBeFalse();
-    expect(component.dataSource.data.length).toBe(3);
+  it('should set loading to true before data arrives', async () => {
+    const subject$ = new Subject<RegularLeaderboardEntry[]>();
+    apiSpy.getLeaderboardRegular.and.returnValue(subject$.asObservable());
+
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [LeaderboardRegularComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+      providers: [{ provide: ApiService, useValue: apiSpy }],
+    }).compileComponents();
+
+    const pendingFixture = TestBed.createComponent(LeaderboardRegularComponent);
+    pendingFixture.detectChanges();
+
+    expect(pendingFixture.componentInstance.loading).toBeTrue();
+
+    subject$.next(MOCK_ENTRIES);
+    subject$.complete();
+    pendingFixture.detectChanges();
+
+    expect(pendingFixture.componentInstance.loading).toBeFalse();
+    expect(pendingFixture.componentInstance.dataSource.data.length).toBe(3);
   });
 });

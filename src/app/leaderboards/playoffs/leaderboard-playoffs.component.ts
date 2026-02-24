@@ -30,7 +30,7 @@ export class LeaderboardPlayoffsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   dataSource = new MatTableDataSource<PlayoffRow>([]);
-  loading = false;
+  loading = true;
   apiError = false;
 
   readonly displayedColumns = [
