@@ -29,12 +29,30 @@
   color: var(--mat-sys-on-surface);
 }
 
-::ng-deep .mat-sort-header-arrow,
-::ng-deep .mat-sort-header-indicator {
+// Center sortable header labels using a 3-column grid so the label stays
+// centered regardless of whether the sort arrow is visible.
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header] .mat-sort-header-container {
+  display: grid !important;
+  grid-template-columns: 1fr max-content 1fr !important;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header] .mat-sort-header-content {
+  grid-column: 2;
+  text-align: center;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header] .mat-sort-header-arrow {
+  grid-column: 3;
+  position: absolute;
+  margin-left: 6px;
+}
+
+:host ::ng-deep .mat-sort-header-arrow,
+:host ::ng-deep .mat-sort-header-indicator {
   color: var(--mat-sys-on-surface-variant) !important;
 }
 
-::ng-deep .mat-sort-header-arrow svg {
+:host ::ng-deep .mat-sort-header-arrow svg {
   fill: currentColor !important;
 }
 
