@@ -27,6 +27,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- 🎯 Radar chart view showing 0-100 normalized score breakdown for individual stats, toggleable with line charts
 	- 🏆 Career bests highlighted in By Season tab with tooltip showing stat name (only for players with 2+ seasons)
 	- ⬅️➡️ Navigate between players/goalies without closing the card: keyboard arrows (←/→), touch swipe (mobile), or trackpad two-finger swipe (laptop). Wraps circularly with screen reader announcements. Active row in the stats table stays in sync. Direction-aware slide transition provides visual feedback
+- 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with two ranking tables — regular season (Runkosarja) and playoffs — showing all-time team standings with tie-rank position logic and column sorting
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
 	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
 	- Goalies: `/goalie/:teamSlug/:goalieSlug` (e.g., `/goalie/colorado/philipp-grubauer`)
@@ -127,6 +128,7 @@ This project uses **Jasmine + Karma** for unit tests and **Playwright** for end-
 
 E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `smoke.spec.ts` — Core page rendering and navigation
+- `leaderboards.spec.ts` — Leaderboards redirect, table data, tab navigation, position tie logic
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
 - `team-switching.spec.ts` — Team selector and filter reset behavior
 - `filters.spec.ts` — Report type, season, position, stats-per-game, and min games filters
@@ -196,6 +198,7 @@ src/
 │   │   └── table-columns.ts
 │   ├── player-stats/      # Player stats page
 │   ├── goalie-stats/      # Goalie stats page
+│   ├── leaderboards/      # All-time leaderboards (/leaderboards/regular, /leaderboards/playoffs)
 │   ├── player-route/      # Direct player card route handler
 │   ├── goalie-route/      # Direct goalie card route handler
 │   ├── utils/             # Utility functions (slug generation)
