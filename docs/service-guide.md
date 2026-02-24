@@ -204,6 +204,12 @@ class ApiService {
   // Fetch available seasons for a given report type (regular/playoffs)
   // Optional `startFrom` filters out earlier seasons.
   getSeasons(reportType?: ReportType, teamId?: string, startFrom?: number): Observable<Season[]>
+
+  // Fetch all-time regular season leaderboard; cache key: leaderboard-regular
+  getLeaderboardRegular(): Observable<RegularLeaderboardEntry[]>
+
+  // Fetch all-time playoffs leaderboard; cache key: leaderboard-playoffs
+  getLeaderboardPlayoffs(): Observable<PlayoffLeaderboardEntry[]>
 }
 ```
 

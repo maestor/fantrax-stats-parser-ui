@@ -18,6 +18,9 @@ fantrax-stats-parser-ui/
 │   │   │   └── navigation/
 │   │   ├── goalie-stats/     # Goalie stats page
 │   │   ├── goalie-route/     # Direct goalie card route handler
+│   │   ├── leaderboards/     # Leaderboards feature (shell + regular and playoffs child components)
+│   │   │   ├── regular/      # Regular season leaderboard table
+│   │   │   └── playoffs/     # Playoffs leaderboard table
 │   │   ├── player-stats/     # Player stats page
 │   │   ├── player-route/     # Direct player card route handler
 │   │   ├── utils/            # Utility functions (slug generation)

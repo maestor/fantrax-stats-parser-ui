@@ -55,7 +55,7 @@ Running backend, instructions find from [node-fantrax-stats-parser](https://gith
 
 ### Backend API URL configuration
 
-This UI talks to a separate backend (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
+This UI talks to a separate backend (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)). The backend API is documented at [https://ffhl-stats-api.vercel.app/api-docs](https://ffhl-stats-api.vercel.app/api-docs).
 
 **Development**
 
