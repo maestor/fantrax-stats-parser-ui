@@ -5,10 +5,28 @@ import { Observable, of, throwError } from "rxjs";
 import { catchError, finalize, shareReplay, tap } from "rxjs/operators";
 import { CacheService } from "./cache.service";
 import { environment } from "../../environments/environment";
+import type { components } from './api.types.generated';
 
-export type Season = {
-  season: number;
-  text: string;
+// Generated from OpenAPI spec — run `npm run generate:types` to update
+export type Season                  = components['schemas']['Season'];
+export type PlayerSeasonStats       = components['schemas']['PlayerSeasonData'];
+export type GoalieSeasonStats       = components['schemas']['GoalieSeasonData'];
+export type Team                    = components['schemas']['Team'];
+export type RegularLeaderboardEntry = components['schemas']['RegularLeaderboardEntry'];
+export type PlayoffLeaderboardEntry = components['schemas']['PlayoffLeaderboardEntry'];
+
+// Player includes frontend-only augmentation fields not present in the API spec.
+// seasons is made optional to match single-season endpoint usage (spec: CombinedPlayer has required seasons).
+export type Player = Omit<components['schemas']['CombinedPlayer'], 'seasons'> & {
+  seasons?: components['schemas']['PlayerSeasonData'][];
+  // Preserved original scores when position filter transforms the data
+  _originalScore?: number;
+  _originalScoreAdjustedByGames?: number;
+};
+
+// seasons is made optional to match single-season endpoint usage (spec: CombinedGoalie has required seasons).
+export type Goalie = Omit<components['schemas']['CombinedGoalie'], 'seasons'> & {
+  seasons?: components['schemas']['GoalieSeasonData'][];
 };
 
 // Player scores object (0-100 normalized rankings per stat)
@@ -41,94 +59,6 @@ export type GoalieScoresSeason = GoalieScoresCombined & {
   savePercent: number;
 };
 
-export type PlayerSeasonStats = {
-  season: number;
-  score: number;
-  scoreAdjustedByGames: number;
-  scoreByPosition?: number;
-  scoreByPositionAdjustedByGames?: number;
-  games: number;
-  goals: number;
-  assists: number;
-  points: number;
-  plusMinus: number;
-  penalties: number;
-  shots: number;
-  ppp: number;
-  shp: number;
-  hits: number;
-  blocks: number;
-  scores?: PlayerScores;
-  scoresByPosition?: PlayerScores;
-};
-
-export type Player = {
-  name: string;
-  season?: number;
-  position?: PlayerPosition;
-  score: number;
-  scoreAdjustedByGames: number;
-  scoreByPosition?: number;
-  scoreByPositionAdjustedByGames?: number;
-  // Preserved original scores when position filter transforms the data
-  _originalScore?: number;
-  _originalScoreAdjustedByGames?: number;
-  games: number;
-  goals: number;
-  assists: number;
-  points: number;
-  plusMinus: number;
-  penalties: number;
-  shots: number;
-  ppp: number;
-  shp: number;
-  hits: number;
-  blocks: number;
-  scores?: PlayerScores;
-  scoresByPosition?: PlayerScores;
-  seasons?: PlayerSeasonStats[];
-};
-
-export type GoalieSeasonStats = {
-  season: number;
-  score: number;
-  scoreAdjustedByGames: number;
-  games: number;
-  wins: number;
-  saves: number;
-  shutouts: number;
-  goals: number;
-  assists: number;
-  points: number;
-  penalties: number;
-  ppp: number;
-  shp: number;
-  gaa?: string;
-  savePercent?: string;
-  scores?: GoalieScoresSeason;
-};
-
-export type Goalie = {
-  name: string;
-  season?: number;
-  score: number;
-  scoreAdjustedByGames: number;
-  games: number;
-  wins: number;
-  saves: number;
-  shutouts: number;
-  goals: number;
-  assists: number;
-  points: number;
-  penalties: number;
-  ppp: number;
-  shp: number;
-  gaa?: string;
-  savePercent?: string;
-  scores?: GoalieScoresCombined | GoalieScoresSeason;
-  seasons?: GoalieSeasonStats[];
-};
-
 export type ReportType = "regular" | "playoffs" | "both";
 
 export type ApiParams = {
@@ -138,42 +68,8 @@ export type ApiParams = {
   startFrom?: number;
 };
 
-export type Team = {
-  id: string;
-  name: string;
-  presentName: string;
-};
-
 export type LastModifiedResponse = {
   lastModified: string;
-};
-
-export type RegularLeaderboardEntry = {
-  teamId: string;
-  teamName: string;
-  seasons: number;
-  wins: number;
-  losses: number;
-  ties: number;
-  points: number;
-  divWins: number;
-  divLosses: number;
-  divTies: number;
-  winPercent: number;
-  divWinPercent: number;
-  regularTrophies: number;
-  tieRank: boolean;
-};
-
-export type PlayoffLeaderboardEntry = {
-  teamId: string;
-  teamName: string;
-  championships: number;
-  finals: number;
-  conferenceFinals: number;
-  secondRound: number;
-  firstRound: number;
-  tieRank: boolean;
 };
 
 @Injectable({

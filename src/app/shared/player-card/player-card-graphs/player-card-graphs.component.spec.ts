@@ -9,6 +9,7 @@ describe('PlayerCardGraphsComponent', () => {
 
   const seasons: PlayerSeasonStats[] = [
     {
+      name: '',
       season: 2024,
       games: 82,
       score: 123,
@@ -25,6 +26,7 @@ describe('PlayerCardGraphsComponent', () => {
       shp: 1,
     },
     {
+      name: '',
       season: 2023,
       games: 80,
       score: 100,
@@ -1633,6 +1635,7 @@ describe('PlayerCardGraphsComponent', () => {
         blocks: 30,
         seasons: [
           {
+            name: '',
             season: 2024,
             games: 82,
             score: 100,
@@ -1685,6 +1688,7 @@ describe('PlayerCardGraphsComponent', () => {
         blocks: 30,
         seasons: [
           {
+            name: '',
             season: 2024,
             games: 82,
             score: 100,
@@ -1737,6 +1741,7 @@ describe('PlayerCardGraphsComponent', () => {
         blocks: 30,
         seasons: [
           {
+            name: '',
             season: 2024,
             games: 82,
             score: 100,
