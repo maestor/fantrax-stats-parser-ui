@@ -28,6 +28,9 @@ Override the current auto-only system-preference-based theme. Persist choice in 
 
 Persist the user's last sort column and direction per table (players/goalies) in localStorage across sessions.
 
+### Navigation: Leaderboards integration
+Add a way to navigate between the leaderboards view and the existing player/goalie stats views. Needs design work around how the header and controls area adapts when switching between modes.
+
 ## E2E Testing
 
 ### Test data management

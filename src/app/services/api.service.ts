@@ -148,6 +148,34 @@ export type LastModifiedResponse = {
   lastModified: string;
 };
 
+export type RegularLeaderboardEntry = {
+  teamId: string;
+  teamName: string;
+  seasons: number;
+  wins: number;
+  losses: number;
+  ties: number;
+  points: number;
+  divWins: number;
+  divLosses: number;
+  divTies: number;
+  winPercent: number;
+  divWinPercent: number;
+  regularTrophies: number;
+  tieRank: boolean;
+};
+
+export type PlayoffLeaderboardEntry = {
+  teamId: string;
+  teamName: string;
+  championships: number;
+  finals: number;
+  conferenceFinals: number;
+  secondRound: number;
+  firstRound: number;
+  tieRank: boolean;
+};
+
 @Injectable({
   providedIn: "root", // Provides service globally
 })
@@ -171,6 +199,22 @@ export class ApiService {
     return this.handleRequest<LastModifiedResponse>(
       "last-modified",
       "last-modified",
+    );
+  }
+
+  // Fetching regular season leaderboard data
+  getLeaderboardRegular(): Observable<RegularLeaderboardEntry[]> {
+    return this.handleRequest<RegularLeaderboardEntry[]>(
+      "leaderboard/regular",
+      "leaderboard-regular",
+    );
+  }
+
+  // Fetching playoffs leaderboard data
+  getLeaderboardPlayoffs(): Observable<PlayoffLeaderboardEntry[]> {
+    return this.handleRequest<PlayoffLeaderboardEntry[]>(
+      "leaderboard/playoffs",
+      "leaderboard-playoffs",
     );
   }
 

@@ -35,4 +35,11 @@ export const TAB_LABELS = {
   PLAYER_CARD_STATS: 'Tilastot',
   PLAYER_CARD_BY_SEASON: 'Kausittain',
   PLAYER_CARD_GRAPHS: 'Graafit',
+  LEADERBOARD_REGULAR: 'Runkosarja',
+  LEADERBOARD_PLAYOFFS: 'Playoffs',
+};
+
+export const LEADERBOARD_LABELS = {
+  REGULAR: 'Runkosarja',
+  PLAYOFFS: 'Playoffs',
 };

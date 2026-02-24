@@ -128,6 +128,7 @@ export class AppComponent implements OnInit {
   );
 
   isSettingsDrawerOpen = false;
+  isLeaderboardsRoute = false;
 
   private readonly pwaUpdateService = inject(PwaUpdateService);
   readonly isUpdateAvailable$ = this.pwaUpdateService.updateAvailable$;
@@ -226,6 +227,7 @@ export class AppComponent implements OnInit {
   private updateControlsContext(url: string): void {
     this.controlsContext = url.includes("goalie-stats") ? "goalie" : "player";
     this.controlsContextSubject.next(this.controlsContext);
+    this.isLeaderboardsRoute = url.startsWith("/leaderboards");
   }
 
   skipToTarget(targetId: string, event: MouseEvent): void {

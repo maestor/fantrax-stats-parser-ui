@@ -57,7 +57,13 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 
     On **mobile**, these controls are accessed via a left-side **settings drawer** (opened from the settings icon next to the title). Desktop layout remains unchanged.
 
-5. **Data Management**
+5. **Team Leaderboards** (`/leaderboards`)
+   - All-time regular season ranking table: position, wins, points, win percentage, regular season titles
+   - All-time playoffs ranking table: position, championships, finals, conference finals, round results
+   - Tab navigation between Runkosarja and Playoffs views (default: Playoffs)
+   - Column sorting via `mat-sort`; position ties handled correctly (first tied team shows number, subsequent show blank)
+
+6. **Data Management**
    - Caching service to reduce API calls
    - Filter service for reactive UI filter state
    - Stats service for data transformation
@@ -99,6 +105,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - Simple routing with two main routes:
    - `/player-stats` - Player statistics view
    - `/goalie-stats` - Goalie statistics view
+   - `/leaderboards/regular` — Regular season all-time ranking table
+   - `/leaderboards/playoffs` — Playoffs all-time ranking table (default)
 
 ## Data Flow
 

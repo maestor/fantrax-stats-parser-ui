@@ -1,0 +1,42 @@
+[
+  {
+    "teamId": "1",
+    "teamName": "Colorado Avalanche",
+    "championships": 3,
+    "finals": 4,
+    "conferenceFinals": 6,
+    "secondRound": 8,
+    "firstRound": 10,
+    "tieRank": false
+  },
+  {
+    "teamId": "2",
+    "teamName": "Vegas Golden Knights",
+    "championships": 2,
+    "finals": 3,
+    "conferenceFinals": 5,
+    "secondRound": 7,
+    "firstRound": 9,
+    "tieRank": false
+  },
+  {
+    "teamId": "3",
+    "teamName": "Tampa Bay Lightning",
+    "championships": 2,
+    "finals": 3,
+    "conferenceFinals": 4,
+    "secondRound": 6,
+    "firstRound": 8,
+    "tieRank": true
+  },
+  {
+    "teamId": "4",
+    "teamName": "Toronto Maple Leafs",
+    "championships": 1,
+    "finals": 2,
+    "conferenceFinals": 4,
+    "secondRound": 6,
+    "firstRound": 9,
+    "tieRank": false
+  }
+]

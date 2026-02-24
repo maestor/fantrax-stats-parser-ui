@@ -1,0 +1,72 @@
+@if (loading) {
+  <div class="leaderboard-loading">
+    <mat-spinner diameter="40" />
+  </div>
+} @else if (apiError) {
+  <p class="leaderboard-error">{{ 'leaderboards.apiUnavailable' | translate }}</p>
+} @else {
+  <div class="leaderboard-table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="displayPosition">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'leaderboards.columns.position' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.displayPosition }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="teamName">
+        <th mat-header-cell *matHeaderCellDef>
+          {{ 'leaderboards.columns.team' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.teamName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="regularTrophies">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header
+            [matTooltip]="'leaderboards.columns.regularTrophies' | translate">
+          🏆
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.regularTrophies }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="points">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'leaderboards.columns.points' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.points }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="wins">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'leaderboards.columns.wins' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.wins }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ties">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'leaderboards.columns.ties' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.ties }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="losses">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'leaderboards.columns.losses' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ row.losses }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="winPercent">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ 'leaderboards.columns.winPercent' | translate }}
+        </th>
+        <td mat-cell *matCellDef="let row">{{ formatWinPercent(row.winPercent) }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+}
