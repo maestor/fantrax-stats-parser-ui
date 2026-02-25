@@ -29,9 +29,9 @@ export class GlobalNavComponent {
   private readonly elementRef = inject(ElementRef);
 
   readonly navItems: NavItem[] = [
-    { icon: 'sports_hockey', labelKey: 'nav.hockeyPlayerStats', type: 'route', path: '/'             },
-    { icon: 'emoji_events',  labelKey: 'nav.leaderboards',      type: 'route', path: '/leaderboards' },
-    { icon: 'info',          labelKey: 'nav.info',              type: 'action'                      },
+    { icon: 'score', labelKey: 'nav.hockeyPlayerStats', type: 'route', path: '/' },
+    { icon: 'emoji_events', labelKey: 'nav.leaderboards', type: 'route', path: '/leaderboards' },
+    { icon: 'info', labelKey: 'nav.info', type: 'action' },
   ];
 
   constructor() {

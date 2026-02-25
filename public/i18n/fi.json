@@ -12,7 +12,6 @@
     "menuAriaLabel": "Päävalikko"
   },
   "leaderboards": {
-    "title": "Maratontaulukot",
     "tabs": {
       "regular": "Runkosarja",
       "playoffs": "Playoffs"

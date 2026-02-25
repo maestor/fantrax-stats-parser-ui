@@ -16,7 +16,7 @@ describe('GlobalNavComponent', () => {
   let dialog: { open: jasmine.Spy };
 
   @Component({ template: '' })
-  class DummyComponent {}
+  class DummyComponent { }
 
   const setup = async (url = '/') => {
     routerMock = {
@@ -74,7 +74,7 @@ describe('GlobalNavComponent', () => {
       await setup();
       const item = component.navItems.find((i) => i.path === '/');
       expect(item).toBeTruthy();
-      expect(item?.icon).toBe('sports_hockey');
+      expect(item?.icon).toBe('score');
       expect(item?.labelKey).toBe('nav.hockeyPlayerStats');
       expect(item?.type).toBe('route');
     });
