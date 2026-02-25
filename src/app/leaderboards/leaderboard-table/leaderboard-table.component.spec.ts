@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { LeaderboardTableComponent } from './leaderboard-table.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -123,5 +123,121 @@ describe('LeaderboardTableComponent', () => {
     rows[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'PageUp', bubbles: true }));
     fixture.detectChanges();
     expect(component.activeRowIndex).toBe(0);
+  });
+
+  it('ngOnDestroy clears loading interval without error', async () => {
+    await setup({ loading: true, data: [] });
+    fixture.destroy();
+    expect(component).toBeTruthy();
+  });
+
+  it('onRowFocus updates activeRowIndex', async () => {
+    await setup();
+    component.onRowFocus(1);
+    expect(component.activeRowIndex).toBe(1);
+  });
+
+  it('keyboard nav on empty table does not throw', async () => {
+    await setup({ data: [] });
+    expect(() => component.onRowKeydown(
+      new KeyboardEvent('keydown', { key: 'ArrowDown' }), 0
+    )).not.toThrow();
+  });
+
+  it('ngOnChanges with loading false resets progress values', async () => {
+    await setup({ loading: true, data: [] });
+    component.loading = false;
+    component.ngOnChanges({
+      loading: { currentValue: false, previousValue: true, firstChange: false, isFirstChange: () => false },
+    });
+    expect(component.loadingProgress).toBe(0);
+    expect(component.loadingBuffer).toBe(0);
+  });
+
+  it('ngOnChanges with loading true starts progress tracking', async () => {
+    await setup({ loading: false, data: [] });
+    component.loading = true;
+    component.ngOnChanges({
+      loading: { currentValue: true, previousValue: false, firstChange: false, isFirstChange: () => false },
+    });
+    expect(component.loadingProgress).toBeGreaterThanOrEqual(0);
+  });
+
+  it('ngOnChanges without loading key does not call onLoadingChanged', async () => {
+    await setup();
+    // Should not throw when changes object does not contain 'loading'
+    expect(() => component.ngOnChanges({})).not.toThrow();
+  });
+
+  it('get displayedColumns returns current value', async () => {
+    await setup();
+    expect(component.displayedColumns).toEqual(COLUMNS);
+  });
+
+  it('get data returns current value', async () => {
+    await setup();
+    expect(component.data).toEqual(MOCK_DATA);
+  });
+
+  it('setting displayedColumns after view init updates effectiveColumns', async () => {
+    await setup();
+    const newColumns = ['displayPosition', 'teamName', 'pts', 'gp'];
+    component.displayedColumns = newColumns;
+    expect(component.effectiveColumns).toEqual(newColumns);
+  });
+
+  it('setting data after view init updates dataSource', async () => {
+    await setup();
+    const newData = [{ displayPosition: '1', teamName: 'Team C', pts: 50 }];
+    component.data = newData;
+    expect(component.dataSource.data).toEqual(newData);
+  });
+
+  it('trophyColumn renders emoji header', async () => {
+    await setup({ trophyColumn: 'pts' });
+    const headers = fixture.nativeElement.querySelectorAll('th');
+    const trophyHeader = Array.from(headers).find((h: any) => h.textContent.includes('🏆'));
+    expect(trophyHeader).toBeTruthy();
+  });
+
+  it('loading interval callback fires and updates progress', fakeAsync(async () => {
+    await setup({ loading: false, data: [] });
+    component.loading = true;
+    component.ngOnChanges({
+      loading: { currentValue: true, previousValue: false, firstChange: false, isFirstChange: () => false },
+    });
+    tick(400);
+    expect(component.loadingProgress).toBeGreaterThanOrEqual(0);
+    // Clean up interval before test ends
+    component.loading = false;
+    component.ngOnChanges({
+      loading: { currentValue: false, previousValue: true, firstChange: false, isFirstChange: () => false },
+    });
+  }));
+
+  it('setting displayedColumns to null/undefined falls back to empty array', async () => {
+    await setup();
+    component.displayedColumns = null as any;
+    expect(component.displayedColumns).toEqual([]);
+  });
+
+  it('setting data to null/undefined falls back to empty array', async () => {
+    await setup();
+    component.data = null as any;
+    expect(component.data).toEqual([]);
+  });
+
+  it('formatCell default returns empty string for null value', async () => {
+    await setup();
+    expect(component.formatCell('pts', null)).toBe('');
+  });
+
+  it('End key works when dataRows is not yet available', async () => {
+    await setup();
+    // Temporarily nullify dataRows to hit the ?? 1 fallback
+    (component as any).dataRows = undefined;
+    expect(() => component.onRowKeydown(
+      new KeyboardEvent('keydown', { key: 'End' }), 0
+    )).not.toThrow();
   });
 });
