@@ -1,5 +1,5 @@
 <div class="leaderboard-table-container" [attr.id]="tableId" tabindex="-1">
-  <table mat-table [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort matSortStart="desc">
 
     <ng-container matColumnDef="displayPosition">
       <th mat-header-cell *matHeaderCellDef>
