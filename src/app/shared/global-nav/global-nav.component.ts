@@ -36,8 +36,9 @@ export class GlobalNavComponent {
 
   constructor() {
     afterNextRender(() => {
-      const activeItem = this.elementRef.nativeElement.querySelector('.global-nav-item--active') as HTMLElement | null;
-      activeItem?.focus({ focusVisible: true } as FocusOptions);
+      const el = this.elementRef.nativeElement;
+      const target = (el.querySelector('.global-nav-item--active') ?? el.querySelector('.global-nav-item')) as HTMLElement | null;
+      target?.focus({ focusVisible: true } as FocusOptions);
     });
   }
 

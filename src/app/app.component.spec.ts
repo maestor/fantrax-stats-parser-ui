@@ -218,7 +218,7 @@ describe("AppComponent", () => {
 
     app.openNavMenu();
 
-    expect(bottomSheet.open).toHaveBeenCalledWith(GlobalNavComponent);
+    expect(bottomSheet.open).toHaveBeenCalledWith(GlobalNavComponent, { autoFocus: false });
   });
 
   it("should update controls context and close settings drawer on navigation", fakeAsync(() => {

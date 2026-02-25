@@ -300,7 +300,7 @@ export class AppComponent implements OnInit {
   }
 
   openNavMenu(): void {
-    this.bottomSheet.open(GlobalNavComponent);
+    this.bottomSheet.open(GlobalNavComponent, { autoFocus: false });
   }
 
   activateUpdateAndReload(): void {
