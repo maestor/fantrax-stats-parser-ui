@@ -1,4 +1,4 @@
-<div class="leaderboard-table-container">
+<div class="leaderboard-table-container" [attr.id]="tableId" tabindex="-1">
   <table mat-table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="displayPosition">
@@ -29,11 +29,12 @@
       </ng-container>
     }
 
-    <tr mat-header-row *matHeaderRowDef="effectiveColumns; sticky: true"></tr>
+    <tr mat-header-row (keydown)="onHeaderKeydown($event)" *matHeaderRowDef="effectiveColumns; sticky: true"></tr>
     <tr mat-row #dataRow
         (focus)="onRowFocus(i)"
         (keydown)="onRowKeydown($event, i)"
         [attr.tabindex]="getRowTabIndex(i)"
+        [attr.data-row-index]="i"
         [class.a11y-active]="i === activeRowIndex"
         *matRowDef="let row; columns: effectiveColumns; let i = index">
     </tr>

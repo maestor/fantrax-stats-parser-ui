@@ -3,7 +3,7 @@ import { LeaderboardPlayoffsComponent } from './leaderboard-playoffs.component';
 import { ApiService, PlayoffLeaderboardEntry } from '@services/api.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, throwError } from 'rxjs';
+import { Subject, of, throwError } from 'rxjs';
 
 const MOCK_ENTRIES: PlayoffLeaderboardEntry[] = [
   {
@@ -75,5 +75,28 @@ describe('LeaderboardPlayoffsComponent', () => {
 
     expect(errorComponent.apiError).toBeTrue();
     expect(errorComponent.loading).toBeFalse();
+  });
+
+  it('should set loading to true before data arrives', async () => {
+    const subject$ = new Subject<PlayoffLeaderboardEntry[]>();
+    apiSpy.getLeaderboardPlayoffs.and.returnValue(subject$.asObservable());
+
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [LeaderboardPlayoffsComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+      providers: [{ provide: ApiService, useValue: apiSpy }],
+    }).compileComponents();
+
+    const pendingFixture = TestBed.createComponent(LeaderboardPlayoffsComponent);
+    pendingFixture.detectChanges();
+
+    expect(pendingFixture.componentInstance.loading).toBeTrue();
+
+    subject$.next(MOCK_ENTRIES);
+    subject$.complete();
+    pendingFixture.detectChanges();
+
+    expect(pendingFixture.componentInstance.loading).toBeFalse();
+    expect(pendingFixture.componentInstance.data.length).toBe(3);
   });
 });

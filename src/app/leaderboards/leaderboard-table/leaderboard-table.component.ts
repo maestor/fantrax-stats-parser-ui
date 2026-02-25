@@ -68,6 +68,7 @@ export class LeaderboardTableComponent implements OnChanges, AfterViewInit, OnDe
     return this._data;
   }
 
+  @Input() tableId = 'leaderboard-table';
   @Input() loading = false;
   @Input() apiError = false;
   /** Column key that renders an emoji (🏆) header with the full translation as tooltip. */
@@ -115,6 +116,13 @@ export class LeaderboardTableComponent implements OnChanges, AfterViewInit, OnDe
     this.activeRowIndex = index;
   }
 
+  onHeaderKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'ArrowDown') return;
+    if ((this.dataRows?.length ?? 0) === 0) return;
+    event.preventDefault();
+    this.focusRow(0);
+  }
+
   onRowKeydown(event: KeyboardEvent, index: number): void {
     switch (event.key) {
       case 'ArrowDown':
@@ -131,7 +139,7 @@ export class LeaderboardTableComponent implements OnChanges, AfterViewInit, OnDe
         break;
       case 'End':
         event.preventDefault();
-        this.focusRow((this.dataRows?.length ?? 1) - 1);
+        this.focusRow((this.dataRows?.length ?? 0) - 1);
         break;
       case 'PageDown':
         event.preventDefault();

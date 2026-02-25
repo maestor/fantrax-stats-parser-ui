@@ -232,6 +232,35 @@ describe('LeaderboardTableComponent', () => {
     expect(component.formatCell('pts', null)).toBe('');
   });
 
+  it('ArrowDown on header row focuses first data row', async () => {
+    await setup();
+    const header = fixture.nativeElement.querySelector('tr.mat-mdc-header-row');
+    header.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    fixture.detectChanges();
+    expect(component.activeRowIndex).toBe(0);
+  });
+
+  it('ArrowDown on header row with empty table does nothing', async () => {
+    await setup({ data: [] });
+    const header = fixture.nativeElement.querySelector('tr.mat-mdc-header-row');
+    expect(() => header.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }))).not.toThrow();
+  });
+
+  it('non-ArrowDown key on header row does nothing', async () => {
+    await setup();
+    const header = fixture.nativeElement.querySelector('tr.mat-mdc-header-row');
+    const before = component.activeRowIndex;
+    header.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }));
+    fixture.detectChanges();
+    expect(component.activeRowIndex).toBe(before);
+  });
+
+  it('onHeaderKeydown with dataRows undefined does not throw', async () => {
+    await setup();
+    (component as any).dataRows = undefined;
+    expect(() => component.onHeaderKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }))).not.toThrow();
+  });
+
   it('End key works when dataRows is not yet available', async () => {
     await setup();
     // Temporarily nullify dataRows to hit the ?? 1 fallback

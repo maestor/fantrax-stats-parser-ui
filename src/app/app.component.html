@@ -1,4 +1,6 @@
-<a class="skip-link" href="#stats-table" (click)="skipToTarget('stats-table', $event)">
+<a class="skip-link"
+   [href]="isLeaderboardsRoute ? '#leaderboard-table' : '#stats-table'"
+   (click)="skipToTarget(isLeaderboardsRoute ? 'leaderboard-table' : 'stats-table', $event)">
   {{ "a11y.skipToTable" | translate }}
 </a>
 
