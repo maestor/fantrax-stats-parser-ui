@@ -34,7 +34,6 @@
         (focus)="onRowFocus(i)"
         (keydown)="onRowKeydown($event, i)"
         [attr.tabindex]="getRowTabIndex(i)"
-        [attr.data-row-index]="i"
         [class.a11y-active]="i === activeRowIndex"
         *matRowDef="let row; columns: effectiveColumns; let i = index">
     </tr>

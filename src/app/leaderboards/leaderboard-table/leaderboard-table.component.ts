@@ -150,7 +150,7 @@ export class LeaderboardTableComponent implements OnChanges, AfterViewInit, OnDe
     const clamped = Math.max(0, Math.min(index, rows.length - 1));
     this.activeRowIndex = clamped;
     rows[clamped]?.nativeElement.focus();
-    rows[clamped]?.nativeElement.scrollIntoView({ block: 'nearest' });
+    rows[clamped]?.nativeElement.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 
   private onLoadingChanged(isLoading: boolean): void {

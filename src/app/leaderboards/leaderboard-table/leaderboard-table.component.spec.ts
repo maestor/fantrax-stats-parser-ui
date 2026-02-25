@@ -52,7 +52,7 @@ describe('LeaderboardTableComponent', () => {
   it('should show error cell when apiError', async () => {
     await setup({ apiError: true, data: [] });
     const noData = fixture.nativeElement.querySelector('.no-results');
-    expect(noData?.textContent).toContain('');
+    expect(noData?.textContent?.trim()).toBe('leaderboards.apiUnavailable');
   });
 
   it('should apply formatCell to dynamic column values', async () => {
@@ -105,5 +105,23 @@ describe('LeaderboardTableComponent', () => {
     rows[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'End', bubbles: true }));
     fixture.detectChanges();
     expect(component.activeRowIndex).toBe(1);
+  });
+
+  it('PageDown on last row stays at last row', async () => {
+    await setup();
+    component.activeRowIndex = 1;
+    fixture.detectChanges();
+    const rows: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('tr.mat-mdc-row'));
+    rows[1].dispatchEvent(new KeyboardEvent('keydown', { key: 'PageDown', bubbles: true }));
+    fixture.detectChanges();
+    expect(component.activeRowIndex).toBe(1);
+  });
+
+  it('PageUp on first row stays at first row', async () => {
+    await setup();
+    const rows: HTMLElement[] = Array.from(fixture.nativeElement.querySelectorAll('tr.mat-mdc-row'));
+    rows[0].dispatchEvent(new KeyboardEvent('keydown', { key: 'PageUp', bubbles: true }));
+    fixture.detectChanges();
+    expect(component.activeRowIndex).toBe(0);
   });
 });
