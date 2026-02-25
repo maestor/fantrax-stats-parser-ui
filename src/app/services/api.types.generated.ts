@@ -999,6 +999,7 @@ export interface components {
             losses: number;
             ties: number;
             points: number;
+            pointsPercent: number;
             divWins: number;
             divLosses: number;
             divTies: number;
