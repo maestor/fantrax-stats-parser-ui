@@ -1,0 +1,15 @@
+<mat-action-list class="global-nav-list" [attr.aria-label]="'nav.menuAriaLabel' | translate">
+  @for (item of navItems; track item.labelKey) {
+    <button
+      mat-list-item
+      class="global-nav-item"
+      [class.global-nav-item--active]="isActive(item)"
+      (click)="onItemClick(item)"
+      [attr.aria-current]="isActive(item) ? 'page' : null"
+      [attr.aria-haspopup]="item.type === 'action' ? 'dialog' : null"
+    >
+      <mat-icon matListItemIcon [fontIcon]="item.icon" />
+      <span matListItemTitle>{{ item.labelKey | translate }}</span>
+    </button>
+  }
+</mat-action-list>

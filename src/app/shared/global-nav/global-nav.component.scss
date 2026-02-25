@@ -1,0 +1,10 @@
+.global-nav-list {
+  min-width: 240px;
+}
+
+.global-nav-item--active {
+  mat-icon,
+  [matListItemTitle] {
+    color: var(--mat-sys-primary);
+  }
+}
