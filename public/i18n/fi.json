@@ -4,8 +4,14 @@
     "playerStats": "Kenttäpelaajat",
     "goalieStats": "Maalivahdit"
   },
+  "nav": {
+    "hockeyPlayerStats": "Pelaajatilastot",
+    "leaderboards": "Maratontaulukot",
+    "info": "Tietoa / Ohjeet",
+    "openMenu": "Avaa valikko",
+    "menuAriaLabel": "Päävalikko"
+  },
   "leaderboards": {
-    "title": "Maratontaulukot",
     "tabs": {
       "regular": "Runkosarja",
       "playoffs": "Playoffs"
@@ -52,7 +58,8 @@
     "reloadToUpdate": "Päivitä sovellus",
     "closePlayerCard": "Sulje pelaajakortti",
     "closeComparisonDialog": "Sulje vertailu",
-    "selectToCompare": "Valitse vertailuun: {{name}}"
+    "selectToCompare": "Valitse vertailuun: {{name}}",
+    "openNavMenu": "Avaa valikko"
   },
   "pwa": {
     "updateAvailable": "Päivitys tarjolla!",

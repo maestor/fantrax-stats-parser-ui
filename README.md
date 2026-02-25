@@ -28,6 +28,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- 🏆 Career bests highlighted in By Season tab with tooltip showing stat name (only for players with 2+ seasons)
 	- ⬅️➡️ Navigate between players/goalies without closing the card: keyboard arrows (←/→), touch swipe (mobile), or trackpad two-finger swipe (laptop). Wraps circularly with screen reader announcements. Active row in the stats table stays in sync. Direction-aware slide transition provides visual feedback
 - 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with two ranking tables — regular season (Runkosarja) and playoffs — showing all-time team standings with tie-rank position logic and column sorting
+- 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
 	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
 	- Goalies: `/goalie/:teamSlug/:goalieSlug` (e.g., `/goalie/colorado/philipp-grubauer`)

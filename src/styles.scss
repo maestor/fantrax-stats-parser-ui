@@ -64,6 +64,26 @@ body {
   color: var(--mat-sys-on-surface) !important;
 }
 
+// Bottom sheet surface should follow the theme (MDC defaults to white).
+.mat-bottom-sheet-container {
+  background-color: var(--mat-sys-surface-container-high) !important;
+  color: var(--mat-sys-on-surface) !important;
+
+  // List items inside the sheet inherit light-mode MDC token values by default;
+  // explicitly map them to surface tokens so they render correctly in dark mode.
+  .mat-mdc-list-item .mdc-list-item__primary-text,
+  .mat-mdc-list-item mat-icon {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  // Focus ring for list item buttons — MDC state layer is too subtle in dark mode.
+  button[mat-list-item]:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: -2px;
+    border-radius: 4px;
+  }
+}
+
 // Player card header overrides
 .mat-mdc-card-header {
   justify-content: space-between;

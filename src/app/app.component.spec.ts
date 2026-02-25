@@ -13,6 +13,8 @@ import {
   throwError,
 } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
+import { MatBottomSheet } from "@angular/material/bottom-sheet";
+import { GlobalNavComponent } from "@shared/global-nav/global-nav.component";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ViewportService } from "@services/viewport.service";
 import { ApiService } from "@services/api.service";
@@ -57,6 +59,7 @@ describe("AppComponent", () => {
   let translateService: TranslateService;
   let titleService: Title;
   let dialog: { open: jasmine.Spy };
+  let bottomSheet: { open: jasmine.Spy };
   let apiServiceMock: jasmine.SpyObj<
     Pick<ApiService, "getTeams" | "getSeasons" | "getLastModified">
   >;
@@ -70,6 +73,7 @@ describe("AppComponent", () => {
 
   beforeEach(async () => {
     dialog = { open: jasmine.createSpy("open") };
+    bottomSheet = { open: jasmine.createSpy("open") };
 
     pwaUpdateService = new PwaUpdateServiceMock();
 
@@ -106,6 +110,7 @@ describe("AppComponent", () => {
       ],
     })
       .overrideProvider(MatDialog, { useValue: dialog })
+      .overrideProvider(MatBottomSheet, { useValue: bottomSheet })
       .overrideProvider(PwaUpdateService, { useValue: pwaUpdateService })
       .overrideProvider(MatSnackBar, { useValue: snackBar })
       .compileComponents();
@@ -205,6 +210,15 @@ describe("AppComponent", () => {
 
     app.openHelpDialog();
     expect(dialog.open).toHaveBeenCalled();
+  });
+
+  it('should open GlobalNavComponent bottom sheet when openNavMenu is called', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+
+    app.openNavMenu();
+
+    expect(bottomSheet.open).toHaveBeenCalledWith(GlobalNavComponent, { autoFocus: false });
   });
 
   it("should update controls context and close settings drawer on navigation", fakeAsync(() => {

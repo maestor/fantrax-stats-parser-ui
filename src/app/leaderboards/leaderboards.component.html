@@ -1,8 +1,4 @@
 <div class="leaderboards">
-  <h2 class="mat-display-1 leaderboards__title">
-    {{ 'leaderboards.title' | translate }}
-  </h2>
-
   <nav mat-tab-nav-bar [tabPanel]="tabPanel">
     @for (tab of tabs; track tab.path) {
     <a mat-tab-link [routerLink]="tab.path" [active]="activeLink === tab.path" ariaCurrentWhenActive="page">

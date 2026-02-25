@@ -14,6 +14,7 @@ import { MatTabNavPanel, MatTabsModule } from "@angular/material/tabs";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
+import { MatBottomSheet, MatBottomSheetModule } from "@angular/material/bottom-sheet";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatSidenav, MatSidenavModule } from "@angular/material/sidenav";
 import { MatTooltipModule } from "@angular/material/tooltip";
@@ -36,6 +37,7 @@ import {
   take,
 } from "rxjs";
 import { HelpDialogComponent } from "@shared/help-dialog/help-dialog.component";
+import { GlobalNavComponent } from "@shared/global-nav/global-nav.component";
 import { ViewportService } from "@services/viewport.service";
 import {
   ControlsContext,
@@ -58,6 +60,7 @@ import { PwaUpdateService } from "@services/pwa-update.service";
     MatSnackBarModule,
     MatSidenavModule,
     MatTooltipModule,
+    MatBottomSheetModule,
     FooterComponent,
     NavigationComponent,
     TopControlsComponent,
@@ -137,6 +140,7 @@ export class AppComponent implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly bottomSheet = inject(MatBottomSheet);
 
   private titleService = inject(Title);
   private translateService = inject(TranslateService);
@@ -293,6 +297,10 @@ export class AppComponent implements OnInit {
       autoFocus: "first-tabbable",
       restoreFocus: true,
     });
+  }
+
+  openNavMenu(): void {
+    this.bottomSheet.open(GlobalNavComponent, { autoFocus: false });
   }
 
   activateUpdateAndReload(): void {
