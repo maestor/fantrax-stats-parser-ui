@@ -36,7 +36,7 @@ export class GlobalNavComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const activeItem = this.elementRef.nativeElement.querySelector('.global-nav-item--active') as HTMLElement | null;
-    activeItem?.focus();
+    activeItem?.focus({ focusVisible: true } as FocusOptions);
   }
 
   isActive(item: NavItem): boolean {
