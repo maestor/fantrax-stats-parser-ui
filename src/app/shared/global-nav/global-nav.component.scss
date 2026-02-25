@@ -4,7 +4,7 @@
 
 .global-nav-item--active {
   mat-icon,
-  [matListItemTitle] {
-    color: var(--mat-sys-primary);
+  .mat-mdc-list-item-title {
+    color: var(--mat-sys-primary) !important;
   }
 }
