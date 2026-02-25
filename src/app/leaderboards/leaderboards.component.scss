@@ -3,3 +3,11 @@
     text-align: center;
   }
 }
+
+@media (max-width: 768px) {
+  .leaderboards {
+    &__title {
+      margin: 0 0 0.5em 0;
+    }
+  }
+}
