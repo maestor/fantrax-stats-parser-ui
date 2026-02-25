@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,16 +22,22 @@ interface NavItem {
   templateUrl: './global-nav.component.html',
   styleUrl: './global-nav.component.scss',
 })
-export class GlobalNavComponent {
+export class GlobalNavComponent implements AfterViewInit {
   private readonly router = inject(Router);
   private readonly bottomSheetRef = inject(MatBottomSheetRef<GlobalNavComponent>);
   private readonly dialog = inject(MatDialog);
+  private readonly elementRef = inject(ElementRef);
 
   readonly navItems: NavItem[] = [
-    { icon: 'info',          labelKey: 'nav.info',              type: 'action'                      },
-    { icon: 'emoji_events',  labelKey: 'nav.leaderboards',      type: 'route', path: '/leaderboards' },
     { icon: 'sports_hockey', labelKey: 'nav.hockeyPlayerStats', type: 'route', path: '/'             },
+    { icon: 'emoji_events',  labelKey: 'nav.leaderboards',      type: 'route', path: '/leaderboards' },
+    { icon: 'info',          labelKey: 'nav.info',              type: 'action'                      },
   ];
+
+  ngAfterViewInit(): void {
+    const activeItem = this.elementRef.nativeElement.querySelector('.global-nav-item--active') as HTMLElement | null;
+    activeItem?.focus();
+  }
 
   isActive(item: NavItem): boolean {
     if (item.type === 'action') return false;
