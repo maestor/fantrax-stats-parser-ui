@@ -1,11 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, RegularLeaderboardEntry } from '@services/api.service';
+import { LeaderboardTableComponent } from '../leaderboard-table/leaderboard-table.component';
 import { derivePositions } from '../position-utils';
 
 type RegularRow = RegularLeaderboardEntry & { displayPosition: string };
@@ -13,23 +9,15 @@ type RegularRow = RegularLeaderboardEntry & { displayPosition: string };
 @Component({
   selector: 'app-leaderboard-regular',
   standalone: true,
-  imports: [
-    MatTableModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    TranslateModule,
-  ],
+  imports: [LeaderboardTableComponent],
   templateUrl: './leaderboard-regular.component.html',
   styleUrl: './leaderboard-regular.component.scss',
 })
 export class LeaderboardRegularComponent implements OnInit, OnDestroy {
-  @ViewChild(MatSort) sort!: MatSort;
-
   private apiService = inject(ApiService);
   private destroy$ = new Subject<void>();
 
-  dataSource = new MatTableDataSource<RegularRow>([]);
+  data: RegularRow[] = [];
   loading = true;
   apiError = false;
 
@@ -44,12 +32,18 @@ export class LeaderboardRegularComponent implements OnInit, OnDestroy {
     'winPercent',
   ];
 
+  readonly trophyColumn = 'regularTrophies';
+
+  readonly formatCell = (column: string, value: any): string => {
+    if (column === 'winPercent') return this.formatWinPercent(value);
+    return value ?? '';
+  };
+
   ngOnInit(): void {
     this.loading = true;
     this.apiService.getLeaderboardRegular().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
-        this.dataSource.data = derivePositions(data);
-        this.dataSource.sort = this.sort;
+        this.data = derivePositions(data);
         this.loading = false;
       },
       error: () => {

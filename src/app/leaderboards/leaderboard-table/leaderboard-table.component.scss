@@ -1,0 +1,85 @@
+.leaderboard-table-container {
+  overflow-x: auto;
+}
+
+.mat-mdc-table {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+
+  .mat-mdc-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--mat-sys-surface-container);
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.mat-mdc-header-cell {
+  color: var(--mat-sys-on-surface);
+}
+
+.mat-mdc-cell {
+  color: var(--mat-sys-on-surface);
+}
+
+// Center sortable header labels using a 3-column grid so the label stays
+// centered regardless of whether the sort arrow is visible.
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header] .mat-sort-header-container {
+  display: grid !important;
+  grid-template-columns: 1fr max-content 1fr !important;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header] .mat-sort-header-content {
+  grid-column: 2;
+  text-align: center;
+}
+
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header] .mat-sort-header-arrow {
+  grid-column: 3;
+  position: absolute;
+  margin-left: 6px;
+}
+
+:host ::ng-deep .mat-sort-header-arrow,
+:host ::ng-deep .mat-sort-header-indicator {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+:host ::ng-deep .mat-sort-header-arrow svg {
+  fill: currentColor !important;
+}
+
+// Numeric columns centred
+.mat-column-displayPosition,
+.mat-column-regularTrophies,
+.mat-column-championships,
+.mat-column-points,
+.mat-column-wins,
+.mat-column-ties,
+.mat-column-losses,
+.mat-column-winPercent,
+.mat-column-finals,
+.mat-column-conferenceFinals,
+.mat-column-secondRound,
+.mat-column-firstRound {
+  text-align: center;
+}
+
+.no-results {
+  text-align: center;
+  height: 56px;
+  padding: 16px;
+}
+
+.loading-bar {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.mat-mdc-row:focus {
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: -2px;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
