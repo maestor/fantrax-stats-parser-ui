@@ -52,11 +52,11 @@ describe('LeaderboardPlayoffsComponent', () => {
 
   it('should load data and derive positions on init', () => {
     expect(apiSpy.getLeaderboardPlayoffs).toHaveBeenCalledTimes(1);
-    expect(component.dataSource.data.length).toBe(3);
+    expect(component.data.length).toBe(3);
   });
 
   it('should derive positions correctly with ties', () => {
-    const positions = component.dataSource.data.map(d => d.displayPosition);
+    const positions = component.data.map(d => d.displayPosition);
     expect(positions).toEqual(['1', '2', '']);
   });
 

@@ -1,11 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
 import { ApiService, PlayoffLeaderboardEntry } from '@services/api.service';
+import { LeaderboardTableComponent } from '../leaderboard-table/leaderboard-table.component';
 import { derivePositions } from '../position-utils';
 
 type PlayoffRow = PlayoffLeaderboardEntry & { displayPosition: string };
@@ -13,23 +9,15 @@ type PlayoffRow = PlayoffLeaderboardEntry & { displayPosition: string };
 @Component({
   selector: 'app-leaderboard-playoffs',
   standalone: true,
-  imports: [
-    MatTableModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    TranslateModule,
-  ],
+  imports: [LeaderboardTableComponent],
   templateUrl: './leaderboard-playoffs.component.html',
   styleUrl: './leaderboard-playoffs.component.scss',
 })
 export class LeaderboardPlayoffsComponent implements OnInit, OnDestroy {
-  @ViewChild(MatSort) sort!: MatSort;
-
   private apiService = inject(ApiService);
   private destroy$ = new Subject<void>();
 
-  dataSource = new MatTableDataSource<PlayoffRow>([]);
+  data: PlayoffRow[] = [];
   loading = true;
   apiError = false;
 
@@ -43,12 +31,13 @@ export class LeaderboardPlayoffsComponent implements OnInit, OnDestroy {
     'firstRound',
   ];
 
+  readonly trophyColumn = 'championships';
+
   ngOnInit(): void {
     this.loading = true;
     this.apiService.getLeaderboardPlayoffs().pipe(takeUntil(this.destroy$)).subscribe({
       next: (data) => {
-        this.dataSource.data = derivePositions(data);
-        this.dataSource.sort = this.sort;
+        this.data = derivePositions(data);
         this.loading = false;
       },
       error: () => {
