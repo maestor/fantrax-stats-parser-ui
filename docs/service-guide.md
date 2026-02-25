@@ -52,7 +52,7 @@ class TeamService {
 - Handle request/response transformation
 - Basic error handling
 - Configure API endpoints
-- Define data type interfaces
+- Re-export API response types from generated OpenAPI types
 
 ### API Types
 
