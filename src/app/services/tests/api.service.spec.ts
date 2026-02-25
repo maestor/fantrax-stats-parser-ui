@@ -753,7 +753,7 @@ describe("ApiService", () => {
       const mockData: RegularLeaderboardEntry[] = [
         {
           teamId: "1", teamName: "Colorado Avalanche", seasons: 13,
-          wins: 80, losses: 40, ties: 10, points: 170,
+          wins: 80, losses: 40, ties: 10, points: 170, pointsPercent: 0.654,
           divWins: 20, divLosses: 10, divTies: 3,
           winPercent: 0.615, divWinPercent: 0.605,
           regularTrophies: 3, tieRank: false
@@ -772,7 +772,7 @@ describe("ApiService", () => {
       const mockData: RegularLeaderboardEntry[] = [
         {
           teamId: "1", teamName: "Colorado Avalanche", seasons: 13,
-          wins: 80, losses: 40, ties: 10, points: 170,
+          wins: 80, losses: 40, ties: 10, points: 170, pointsPercent: 0.654,
           divWins: 20, divLosses: 10, divTies: 3,
           winPercent: 0.615, divWinPercent: 0.605,
           regularTrophies: 3, tieRank: false

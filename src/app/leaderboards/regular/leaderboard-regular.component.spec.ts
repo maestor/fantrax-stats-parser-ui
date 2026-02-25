@@ -8,21 +8,21 @@ import { Subject, of, throwError } from 'rxjs';
 const MOCK_ENTRIES: RegularLeaderboardEntry[] = [
   {
     teamId: '1', teamName: 'Team A', seasons: 13,
-    wins: 80, losses: 40, ties: 10, points: 170,
+    wins: 80, losses: 40, ties: 10, points: 170, pointsPercent: 0.654,
     divWins: 20, divLosses: 10, divTies: 3,
     winPercent: 0.615, divWinPercent: 0.605,
     regularTrophies: 3, tieRank: false,
   },
   {
     teamId: '2', teamName: 'Team B', seasons: 13,
-    wins: 75, losses: 50, ties: 5, points: 155,
+    wins: 75, losses: 50, ties: 5, points: 155, pointsPercent: 0.596,
     divWins: 18, divLosses: 12, divTies: 2,
     winPercent: 0.577, divWinPercent: 0.563,
     regularTrophies: 2, tieRank: false,
   },
   {
     teamId: '3', teamName: 'Team C', seasons: 13,
-    wins: 75, losses: 50, ties: 5, points: 155,
+    wins: 75, losses: 50, ties: 5, points: 155, pointsPercent: 0.596,
     divWins: 17, divLosses: 13, divTies: 2,
     winPercent: 0.577, divWinPercent: 0.545,
     regularTrophies: 1, tieRank: true,
@@ -64,6 +64,20 @@ describe('LeaderboardRegularComponent', () => {
   it('should derive positions correctly with ties', () => {
     const positions = component.data.map(d => d.displayPosition);
     expect(positions).toEqual(['1', '2', '']);
+  });
+
+  it('should include pointsPercent column between losses and winPercent', () => {
+    const cols = component.displayedColumns;
+    const lossesIdx = cols.indexOf('losses');
+    const pointsPercentIdx = cols.indexOf('pointsPercent');
+    const winPercentIdx = cols.indexOf('winPercent');
+    expect(pointsPercentIdx).toBeGreaterThan(lossesIdx);
+    expect(pointsPercentIdx).toBeLessThan(winPercentIdx);
+  });
+
+  it('should format pointsPercent as Finnish style percentage', () => {
+    expect(component.formatCell('pointsPercent', 0.654)).toBe('65,4');
+    expect(component.formatCell('pointsPercent', 0.596)).toBe('59,6');
   });
 
   it('should format winPercent as Finnish style', () => {

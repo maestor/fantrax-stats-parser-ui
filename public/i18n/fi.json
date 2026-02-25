@@ -19,6 +19,7 @@
       "wins": "Voitot",
       "ties": "Tasapelit",
       "losses": "Häviöt",
+      "pointsPercent": "Piste-%",
       "winPercent": "Voitto-%",
       "finals": "Finaalit",
       "conferenceFinals": "Konf. finaalit",

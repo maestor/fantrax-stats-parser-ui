@@ -29,13 +29,14 @@ export class LeaderboardRegularComponent implements OnInit, OnDestroy {
     'wins',
     'ties',
     'losses',
+    'pointsPercent',
     'winPercent',
   ];
 
   readonly trophyColumn = 'regularTrophies';
 
   readonly formatCell = (column: string, value: any): string => {
-    if (column === 'winPercent') return this.formatWinPercent(value);
+    if (column === 'winPercent' || column === 'pointsPercent') return this.formatWinPercent(value);
     return value ?? '';
   };
 
