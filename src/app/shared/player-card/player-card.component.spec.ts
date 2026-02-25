@@ -47,6 +47,7 @@ describe("PlayerCardComponent", () => {
     season: 2024,
     seasons: [
       {
+        name: "",
         season: 2024,
         games: 10,
         score: 50,
@@ -64,6 +65,7 @@ describe("PlayerCardComponent", () => {
         savePercent: "0.920",
       },
       {
+        name: "",
         season: 2023,
         games: 15,
         score: 55,
@@ -150,6 +152,7 @@ describe("PlayerCardComponent", () => {
     shp: 0,
     seasons: [
       {
+        name: "",
         season: 2024,
         games: 10,
         score: 50,
@@ -167,6 +170,7 @@ describe("PlayerCardComponent", () => {
         savePercent: "0.920",
       },
       {
+        name: "",
         season: 2023,
         games: 15,
         score: 55,
@@ -931,6 +935,7 @@ describe("PlayerCardComponent", () => {
           shp: 0,
           seasons: [
             {
+              name: "",
               season: 2024,
               games: 10,
               score: 50,
@@ -948,6 +953,7 @@ describe("PlayerCardComponent", () => {
               savePercent: "0.920",
             },
             {
+              name: "",
               season: 2023,
               games: 10,
               score: 50,
@@ -1065,6 +1071,7 @@ describe("PlayerCardComponent", () => {
         shp: 0,
         seasons: [
           {
+            name: "",
             season: 2024,
             games: 10,
             score: 50,

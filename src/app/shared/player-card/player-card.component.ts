@@ -493,7 +493,7 @@ export class PlayerCardComponent implements OnDestroy {
   onPositionFilterToggle(checked: boolean): void {
     if (this.isGoalie) return;
     const player = this.data as Player;
-    const newFilter: PositionFilter = checked ? (player.position ?? 'F') : 'all';
+    const newFilter: PositionFilter = checked ? ((player.position as PositionFilter) ?? 'F') : 'all';
     this.filterService.updatePlayerFilters({ positionFilter: newFilter });
     this.positionFilter = newFilter;
     this.buildStats();

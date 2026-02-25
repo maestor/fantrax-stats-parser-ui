@@ -24,7 +24,7 @@ export class StatsService {
 
   private getStatsPerGame<
     T extends { games: number; scoreAdjustedByGames: number, season?: number }
-  >(data: T[], fixedFields: (keyof T)[]): T[] {
+  >(data: T[], fixedFields: string[]): T[] {
     return data.map((item) => {
       const { games, scoreAdjustedByGames, season, ...rest } = item;
       // Create the per-game stats for the dynamic fields
@@ -41,7 +41,7 @@ export class StatsService {
         score: scoreAdjustedByGames,
         scoreAdjustedByGames: scoreAdjustedByGames,
         seasons: (item as any).seasons, // Preserve seasons if they exist
-        ...Object.fromEntries(fixedFields.map((field) => [field, item[field]])),
+        ...Object.fromEntries(fixedFields.map((field) => [field, (item as Record<string, unknown>)[field]])),
       } as unknown as T;
     });
   }
