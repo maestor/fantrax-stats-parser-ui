@@ -118,7 +118,7 @@ describe('GoalieStatsComponent', () => {
     expect(component.statsPerGame).toBe(false);
     expect(component.minGames).toBe(0);
     expect(component.tableColumns).toEqual(GOALIE_COLUMNS);
-    expect(component.tableColumns.includes('score')).toBeTrue();
+    expect(component.tableColumns.some(c => c.field === 'score')).toBeTrue();
     expect(component.defaultSortColumn).toBe('score');
     expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
       reportType: 'regular',
@@ -141,8 +141,8 @@ describe('GoalieStatsComponent', () => {
 
     expect(component.season).toBe(2024);
     expect(component.reportType).toBe('playoffs');
-    expect(component.tableColumns).toEqual(GOALIE_SEASON_COLUMNS.filter((c) => c !== 'score'));
-    expect(component.tableColumns.includes('score')).toBeFalse();
+    expect(component.tableColumns).toEqual(GOALIE_SEASON_COLUMNS.filter((c) => c.field !== 'score'));
+    expect(component.tableColumns.some(c => c.field === 'score')).toBeFalse();
     expect(component.defaultSortColumn).toBe('scoreAdjustedByGames');
     expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
       reportType: 'playoffs',

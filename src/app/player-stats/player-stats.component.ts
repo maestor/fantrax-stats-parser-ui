@@ -26,6 +26,7 @@ import { DrawerContextService } from '@services/drawer-context.service';
 import { ViewportService } from '@services/viewport.service';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
+import { Column } from '@shared/column.types';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
 
 @Component({
@@ -163,9 +164,9 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getTableColumns(statsPerGame: boolean): string[] {
+  private getTableColumns(statsPerGame: boolean): Column[] {
     if (!statsPerGame) return PLAYER_COLUMNS;
-    return PLAYER_COLUMNS.filter((c) => c !== 'score');
+    return PLAYER_COLUMNS.filter((c) => c.field !== 'score');
   }
 
   private transformToPositionScores(data: Player[], statsPerGame: boolean): Player[] {

@@ -26,6 +26,7 @@ import { DrawerContextService } from '@services/drawer-context.service';
 import { ViewportService } from '@services/viewport.service';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
+import { Column } from '@shared/column.types';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
 
 @Component({
@@ -51,7 +52,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   minGames: number = 0;
   maxGames: number = 0;
   tableData: Goalie[] = [];
-  tableColumns = GOALIE_COLUMNS;
+  tableColumns: Column[] = GOALIE_COLUMNS;
   defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
   loading = false;
   apiError = false;
@@ -107,7 +108,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
 
           const baseColumns = this.season ? GOALIE_SEASON_COLUMNS : GOALIE_COLUMNS;
           this.tableColumns = statsPerGame
-            ? baseColumns.filter((c) => c !== 'score')
+            ? baseColumns.filter((c) => c.field !== 'score')
             : baseColumns;
           this.defaultSortColumn = statsPerGame ? 'scoreAdjustedByGames' : 'score';
           this.loading = true;
