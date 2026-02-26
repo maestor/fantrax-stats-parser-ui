@@ -10,7 +10,7 @@ import {
   AfterViewInit,
   OnDestroy,
 } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Observable, of } from 'rxjs';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -23,7 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { Column } from '@shared/column.types';
+import { Column, ColumnIcon } from '@shared/column.types';
 import { Player, Goalie } from '@services/api.service';
 import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
 
@@ -31,6 +31,7 @@ import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/p
   selector: 'app-stats-table',
   imports: [
     AsyncPipe,
+    NgClass,
     TranslateModule,
     MatTableModule,
     MatFormFieldModule,
@@ -202,6 +203,21 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
     this.sort.active = canUseDesired ? desired : (fallback ?? desired);
     this.sort.direction = 'desc';
+  }
+
+  getHeaderIconType(column: Column): ColumnIcon['type'] | null {
+    return column.icon?.type ?? null;
+  }
+
+  getCellClass(column: Column): { 'col-left': boolean; 'col-center': boolean } {
+    return {
+      'col-left': column.align === 'left',
+      'col-center': column.align !== 'left',
+    };
+  }
+
+  getPositionDisplay(row: any, i: number): string | number {
+    return this.positionValue ? this.positionValue(row, i) : i + 1;
   }
 
   filterItems(event: Event) {

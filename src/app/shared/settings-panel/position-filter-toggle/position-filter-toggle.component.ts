@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { Subject, takeUntil } from 'rxjs';
 import { FilterService, FilterState, PositionFilter } from '@services/filter.service';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-position-filter-toggle',
@@ -15,7 +16,7 @@ import { FilterService, FilterState, PositionFilter } from '@services/filter.ser
   styleUrl: './position-filter-toggle.component.scss',
 })
 export class PositionFilterToggleComponent implements OnInit, OnDestroy {
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   positionFilter: PositionFilter = 'all';
 
   filterService = inject(FilterService);

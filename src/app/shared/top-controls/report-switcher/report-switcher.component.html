@@ -4,10 +4,11 @@
   <mat-select
     name="reportType"
     aria-label="Stats report type"
-    [formControl]="reportTypeControl"
+    [value]="reportType$ | async"
+    (selectionChange)="changeReportType($event.value)"
   >
     <mat-select-trigger>
-      {{ ('reportType.' + reportTypeControl.value) | translate }}
+      {{ ('reportType.' + (reportType$ | async)) | translate }}
     </mat-select-trigger>
 
     <mat-option value="regular">
