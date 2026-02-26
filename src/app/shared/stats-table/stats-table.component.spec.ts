@@ -326,10 +326,8 @@ describe('StatsTableComponent', () => {
     });
 
     it('focusRow should no-op when there are no rendered rows', () => {
-      component.dataRows = {
-        toArray: () => [],
-        length: 0,
-      } as any;
+      const container = document.createElement('div');
+      (component as any).tableRootRef = new ElementRef(container);
 
       component.activeRowIndex = 2;
       (component as any).focusRow(1);
@@ -338,22 +336,26 @@ describe('StatsTableComponent', () => {
     });
 
     it('focusRow should clamp index and focus/scroll the row element', () => {
-      const row0 = document.createElement('div');
+      const container = document.createElement('div');
+
+      const row0 = document.createElement('tr');
+      row0.dataset['rowIndex'] = '0';
       row0.tabIndex = 0;
-      const row1 = document.createElement('div');
+
+      const row1 = document.createElement('tr');
+      row1.dataset['rowIndex'] = '1';
       row1.tabIndex = 0;
+
+      container.appendChild(row0);
+      container.appendChild(row1);
 
       const focus0 = spyOn(row0, 'focus');
       const focus1 = spyOn(row1, 'focus');
 
-      // scrollIntoView isn't implemented in JSDOM; stub as needed.
       (row0 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
       (row1 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
 
-      component.dataRows = {
-        toArray: () => [new ElementRef(row0), new ElementRef(row1)],
-        length: 2,
-      } as any;
+      (component as any).tableRootRef = new ElementRef(container);
 
       (component as any).focusRow(999);
       expect(component.activeRowIndex).toBe(1);
@@ -364,16 +366,34 @@ describe('StatsTableComponent', () => {
       expect(focus0).toHaveBeenCalled();
     });
 
-    it('focusRow should no-op when the row element is missing', () => {
-      component.dataRows = {
-        toArray: () => [{ nativeElement: null }],
-        length: 1,
-      } as any;
+    it('focusRow should no-op when tableRootRef is absent', () => {
+      (component as any).tableRootRef = undefined;
 
       component.activeRowIndex = 0;
       (component as any).focusRow(0);
 
       expect(component.activeRowIndex).toBe(0);
+    });
+
+    it('scrollRowIntoView should scroll the matching row into view', () => {
+      const container = document.createElement('div');
+
+      const row0 = document.createElement('tr');
+      row0.dataset['rowIndex'] = '0';
+      const row1 = document.createElement('tr');
+      row1.dataset['rowIndex'] = '1';
+
+      (row0 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
+      (row1 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
+
+      container.appendChild(row0);
+      container.appendChild(row1);
+      (component as any).tableRootRef = new ElementRef(container);
+
+      (component as any).scrollRowIntoView(1);
+
+      expect((row1 as any).scrollIntoView).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
+      expect((row0 as any).scrollIntoView).not.toHaveBeenCalled();
     });
   });
 
