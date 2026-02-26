@@ -16,9 +16,10 @@ import { FilterService } from '@services/filter.service';
 import { ComparisonStatsComponent } from './comparison-stats/comparison-stats.component';
 import { ComparisonRadarComponent } from './comparison-radar/comparison-radar.component';
 import { ComparisonService } from '@services/comparison.service';
+import { StatsContext } from '@shared/types/context.types';
 
 export type ComparisonDialogData = {
-  context: 'player' | 'goalie';
+  context: StatsContext;
   playerA: Player | Goalie;
   playerB: Player | Goalie;
 };

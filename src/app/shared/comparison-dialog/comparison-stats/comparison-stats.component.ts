@@ -3,6 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { Player, Goalie } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { take } from 'rxjs';
+import { StatsContext } from '@shared/types/context.types';
 import {
   PLAYER_STAT_COLUMNS,
   GOALIE_STAT_COLUMNS,
@@ -27,7 +28,7 @@ export type StatRow = {
 export class ComparisonStatsComponent implements OnInit {
   private translateService = inject(TranslateService);
 
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   @Input({ required: true }) playerA!: Player | Goalie;
   @Input({ required: true }) playerB!: Player | Goalie;
   @Input() isMobile = false;

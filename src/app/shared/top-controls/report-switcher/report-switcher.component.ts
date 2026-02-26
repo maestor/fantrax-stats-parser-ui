@@ -1,32 +1,28 @@
 import { Component, Input, inject, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, takeUntil, map, Observable, of, BehaviorSubject, distinctUntilChanged, switchMap, withLatestFrom, filter } from 'rxjs';
+import { Subject, takeUntil, map, Observable, of, BehaviorSubject, distinctUntilChanged, switchMap } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ReportType } from '@services/api.service';
 import { FilterService, FilterState } from '@services/filter.service';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-report-switcher',
-  imports: [MatFormFieldModule, MatSelectModule, TranslateModule, CommonModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatSelectModule, TranslateModule, AsyncPipe],
   templateUrl: './report-switcher.component.html',
   styleUrl: './report-switcher.component.scss',
 })
 export class ReportSwitcherComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   readonly reportTypeOptions: ReportType[] = ['regular', 'playoffs', 'both'];
   destroy$ = new Subject<void>();
 
   filterService = inject(FilterService);
   reportType$: Observable<ReportType> = of('regular');
 
-  readonly reportTypeControl = new FormControl<ReportType>('regular', {
-    nonNullable: true,
-  });
-
-  private readonly context$ = new BehaviorSubject<'player' | 'goalie'>(this.context);
+  private readonly context$ = new BehaviorSubject<StatsContext>(this.context);
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['context']) {
@@ -49,26 +45,13 @@ export class ReportSwitcherComponent implements OnInit, OnDestroy, OnChanges {
       distinctUntilChanged(),
       takeUntil(this.destroy$)
     );
+  }
 
-    // Drive the control from the filter state (source of truth).
-    this.reportType$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((value) => this.reportTypeControl.setValue(value, { emitEvent: false }));
-
-    // Push user changes back into the filter state.
-    this.reportTypeControl.valueChanges
-      .pipe(
-        distinctUntilChanged(),
-        withLatestFrom(this.context$),
-        filter(([value]) => !!value),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(([value, context]) => {
-        const reportType = value as ReportType;
-        context === 'goalie'
-          ? this.filterService.updateGoalieFilters({ reportType })
-          : this.filterService.updatePlayerFilters({ reportType });
-      });
+  changeReportType(value: ReportType): void {
+    const context = this.context$.value;
+    context === 'goalie'
+      ? this.filterService.updateGoalieFilters({ reportType: value })
+      : this.filterService.updatePlayerFilters({ reportType: value });
   }
 
   ngOnDestroy(): void {

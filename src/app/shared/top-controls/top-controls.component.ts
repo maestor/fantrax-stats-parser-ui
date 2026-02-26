@@ -5,6 +5,7 @@ import { ReportSwitcherComponent } from './report-switcher/report-switcher.compo
 import { SeasonSwitcherComponent } from './season-switcher/season-switcher.component';
 import { StartFromSeasonSwitcherComponent } from './start-from-season-switcher/start-from-season-switcher.component';
 import { SettingsService } from '@services/settings.service';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-top-controls',
@@ -19,7 +20,7 @@ import { SettingsService } from '@services/settings.service';
   styleUrl: './top-controls.component.scss',
 })
 export class TopControlsComponent implements OnInit {
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   @Input() contentOnly = false;
 
   isExpanded = true;

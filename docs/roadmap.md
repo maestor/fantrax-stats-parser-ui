@@ -35,13 +35,9 @@ See [roadmap-refactoring-needs.md](roadmap-refactoring-needs.md) for a detailed 
 Quick summary of areas identified:
 
 1. **Player/Goalie stats components** — ~95% duplicate, extract shared base (~4-6h)
-2. **Scattered utility functions** — `toApiTeamId`, `toSeasonNumber` etc. copied in 5+ places (~2-3h)
-3. **Type safety** — widespread `any` usage, especially in stats-table callbacks (~3-4h)
-4. **Leaderboard components** — regular/playoffs are near-identical, could be one component (~2-3h)
-5. **PlayerCardComponent** — 827 lines, multiple unrelated concerns, should be split (~4-6h)
-6. **ReportSwitcher bidirectional sync** — fragile FormControl loop, can be simplified (~1-2h)
-7. **Shared types** — `'player' | 'goalie'` union and other inline types duplicated across 10+ files (~1-2h)
-8. **StatsTable template complexity** — nested conditionals belong in component methods (~1-2h)
+2. **Type safety** — widespread `any` usage, especially in stats-table callbacks (~3-4h)
+3. **Leaderboard components** — regular/playoffs are near-identical, could be one component (~2-3h)
+4. **PlayerCardComponent** — 827 lines, multiple unrelated concerns, should be split (~4-6h)
 
 ## E2E Testing
 
