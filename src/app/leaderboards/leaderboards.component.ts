@@ -1,33 +1,47 @@
-import { Component, inject, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { RouterLink, RouterOutlet, Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ApiService } from '@services/api.service';
+import { Column } from '@shared/column.types';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 @Component({
   selector: 'app-leaderboards',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, TranslateModule, MatTabsModule],
+  imports: [TranslateModule, MatTabsModule, LeaderboardComponent],
   templateUrl: './leaderboards.component.html',
   styleUrl: './leaderboards.component.scss',
 })
-export class LeaderboardsComponent implements OnInit {
-  @ViewChild('tabPanel') tabPanel!: MatTabNavPanel;
+export class LeaderboardsComponent {
+  private apiService = inject(ApiService);
 
-  private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
-
-  activeLink = '';
-
-  readonly tabs = [
-    { label: 'leaderboards.tabs.regular', path: '/leaderboards/regular' },
-    { label: 'leaderboards.tabs.playoffs', path: '/leaderboards/playoffs' },
+  readonly playoffsFetchFn = () => this.apiService.getLeaderboardPlayoffs();
+  readonly playoffsColumns: Column[] = [
+    { field: 'displayPosition', align: 'left', sortable: false },
+    { field: 'teamName', align: 'left' },
+    { field: 'championships', icon: { name: '🏆', type: 'emoji' } },
+    { field: 'finals' },
+    { field: 'conferenceFinals' },
+    { field: 'secondRound' },
+    { field: 'firstRound' },
   ];
 
-  ngOnInit(): void {
-    this.router.events.subscribe(() => {
-      this.activeLink = this.router.url.split('?')[0];
-      this.cdr.detectChanges();
-    });
-    this.activeLink = this.router.url.split('?')[0];
-  }
+  readonly regularFetchFn = () => this.apiService.getLeaderboardRegular();
+  readonly regularColumns: Column[] = [
+    { field: 'displayPosition', align: 'left', sortable: false },
+    { field: 'teamName', align: 'left' },
+    { field: 'regularTrophies', icon: { name: '🏆', type: 'emoji' } },
+    { field: 'points' },
+    { field: 'wins' },
+    { field: 'ties' },
+    { field: 'losses' },
+    { field: 'pointsPercent' },
+    { field: 'winPercent' },
+  ];
+
+  readonly regularFormatCell = (column: string, value: number | string | undefined): string => {
+    if ((column === 'winPercent' || column === 'pointsPercent') && typeof value === 'number')
+      return (value * 100).toFixed(1).replace('.', ',');
+    return String(value ?? '');
+  };
 }
