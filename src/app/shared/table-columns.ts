@@ -1,7 +1,7 @@
 import { Column } from './column.types';
 
 const BASE_COLUMNS: Column[] = [
-  { field: 'name' },
+  { field: 'name', align: 'left' },
   { field: 'score' },
   { field: 'scoreAdjustedByGames' },
   { field: 'games' },

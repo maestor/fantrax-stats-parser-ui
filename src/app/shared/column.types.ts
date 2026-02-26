@@ -6,4 +6,6 @@ export interface ColumnIcon {
 export interface Column {
   field: string;
   icon?: ColumnIcon;
+  align?: 'left' | 'center'; // default: center
+  sortable?: boolean;         // default: true
 }

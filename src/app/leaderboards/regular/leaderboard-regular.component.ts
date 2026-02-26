@@ -23,8 +23,8 @@ export class LeaderboardRegularComponent implements OnInit, OnDestroy {
   apiError = false;
 
   readonly columns: Column[] = [
-    { field: 'displayPosition' },
-    { field: 'teamName' },
+    { field: 'displayPosition', align: 'left', sortable: false },
+    { field: 'teamName', align: 'left' },
     { field: 'regularTrophies', icon: { name: '🏆', type: 'emoji' } },
     { field: 'points' },
     { field: 'wins' },

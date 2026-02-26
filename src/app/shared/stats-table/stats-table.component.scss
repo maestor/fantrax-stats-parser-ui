@@ -4,25 +4,24 @@
 // Center-aligned sortable headers (all except Name): center the LABEL, not the
 // (label+arrow) group. The arrow exists in DOM even when not active, so flex centering
 // will shift the label left. A 3-column grid keeps the label centered regardless.
-:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name):not(.mat-column-teamName) .mat-sort-header-container {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header].col-center .mat-sort-header-container {
   display: grid !important;
   grid-template-columns: 1fr max-content 1fr !important;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name):not(.mat-column-teamName) .mat-sort-header-content {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header].col-center .mat-sort-header-content {
   grid-column: 2;
   text-align: center;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header]:not(.mat-column-name):not(.mat-column-teamName) .mat-sort-header-arrow {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header].col-center .mat-sort-header-arrow {
   grid-column: 3;
   position: absolute;
   margin-left: 6px;
 }
 
-/* Name / teamName header left-aligned */
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header] .mat-sort-header-container,
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-teamName[mat-sort-header] .mat-sort-header-container {
+/* Left-aligned column headers */
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header].col-left .mat-sort-header-container {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -30,13 +29,11 @@
   width: 100%;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header] .mat-sort-header-content,
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-teamName[mat-sort-header] .mat-sort-header-content {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header].col-left .mat-sort-header-content {
   text-align: left;
 }
 
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-name[mat-sort-header] .mat-sort-header-arrow,
-:host ::ng-deep th.mat-mdc-header-cell.mat-column-teamName[mat-sort-header] .mat-sort-header-arrow {
+:host ::ng-deep th.mat-mdc-header-cell[mat-sort-header].col-left .mat-sort-header-arrow {
   margin-left: 6px;
 }
 
@@ -50,35 +47,12 @@
   fill: currentColor !important;
 }
 
-.mat-column-score,
-.mat-column-scoreAdjustedByGames,
-.mat-column-games,
-.mat-column-goals,
-.mat-column-assists,
-.mat-column-shots,
-.mat-column-plusMinus,
-.mat-column-ppp,
-.mat-column-shp,
-.mat-column-hits,
-.mat-column-penalties,
-.mat-column-blocks,
-.mat-column-points,
-.mat-column-wins,
-.mat-column-shutouts,
-.mat-column-gaa,
-.mat-column-savePercent,
-.mat-column-saves,
-.mat-column-regularTrophies,
-.mat-column-championships,
-.mat-column-ties,
-.mat-column-losses,
-.mat-column-pointsPercent,
-.mat-column-winPercent,
-.mat-column-finals,
-.mat-column-conferenceFinals,
-.mat-column-secondRound,
-.mat-column-firstRound {
+.col-center {
   text-align: center;
+}
+
+.col-left {
+  text-align: left;
 }
 
 .mat-column-compare {
@@ -89,18 +63,18 @@
   overflow: visible;
 }
 
-.mat-column-position,
-.mat-column-displayPosition {
+// Static position column (player/goalie stats): contains rank number + optional checkbox
+.mat-column-position {
   text-align: left;
   padding: 0;
 }
 
-th.mat-column-position,
-th.mat-column-displayPosition {
+th.mat-column-position {
   text-align: center;
   padding-left: 16px;
 }
 
+// Name-type columns need a minimum width so team/player names don't truncate
 .mat-column-name,
 .mat-column-teamName {
   min-width: 150px;
