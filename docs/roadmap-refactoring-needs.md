@@ -4,19 +4,7 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 
 ---
 
-## Batch 1: Consolidate Player/Goalie Stats Components (~4-6h)
-
-**Problem:** `PlayerStatsComponent` and `GoalieStatsComponent` are ~95% identical — same RxJS pipeline, same filter handling, same loading/error state, same `toApiTeamId()` helper. About 400 lines of near-duplicate code.
-
-**Affected files:**
-- `src/app/player-stats/player-stats.component.ts`
-- `src/app/goalie-stats/goalie-stats.component.ts`
-
-**Proposed fix:** Extract an abstract base component or shared mixin with the common data-fetching pipeline and let each component only define its type-specific parts (columns, API call, data transform).
-
----
-
-## Batch 2: Break Up PlayerCardComponent (~4-6h)
+## Batch 1: Break Up PlayerCardComponent (~4-6h)
 
 **Problem:** `player-card.component.ts` is 827 lines doing too many unrelated things:
 
