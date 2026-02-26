@@ -34,9 +34,9 @@ export class LeaderboardRegularComponent implements OnInit, OnDestroy {
     { field: 'winPercent' },
   ];
 
-  readonly formatCell = (column: string, value: any): string => {
-    if (column === 'winPercent' || column === 'pointsPercent') return this.formatWinPercent(value);
-    return value ?? '';
+  readonly formatCell = (column: string, value: number | string | undefined): string => {
+    if ((column === 'winPercent' || column === 'pointsPercent') && typeof value === 'number') return this.formatWinPercent(value);
+    return String(value ?? '');
   };
 
   ngOnInit(): void {

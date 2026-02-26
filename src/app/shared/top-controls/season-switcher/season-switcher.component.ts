@@ -17,7 +17,7 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { ApiService, Season } from '@services/api.service';
+import { ApiService, ReportType, Season } from '@services/api.service';
 import { FilterService, FilterState } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
 import { SettingsService } from '@services/settings.service';
@@ -95,7 +95,7 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
           }),
           {
             prevTeamId: undefined as string | undefined,
-            reportType: 'regular' as any,
+            reportType: 'regular' as ReportType,
             teamId: undefined as string | undefined,
             startFrom: undefined as number | undefined,
             initialized: false,
@@ -132,7 +132,7 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
           this.seasons = [...data]
             .reverse()
             .map((s) => {
-              const normalizedSeason = toSeasonNumber((s as any).season);
+              const normalizedSeason = toSeasonNumber(s.season);
               return normalizedSeason === undefined ? s : { ...s, season: normalizedSeason };
             });
 

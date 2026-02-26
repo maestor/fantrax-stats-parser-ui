@@ -525,25 +525,19 @@ export class PlayerCardComponent implements OnDestroy {
     const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
 
     this.seasonDataSource = sortedSeasons.map((season) => {
-      const seasonData = {
+      const playerSeason = season as PlayerSeasonStats;
+      const scoreOverrides = usePositionScores ? {
+        ...(playerSeason.scoreByPosition != null ? { score: playerSeason.scoreByPosition } : {}),
+        ...(playerSeason.scoreByPositionAdjustedByGames != null ? { scoreAdjustedByGames: playerSeason.scoreByPositionAdjustedByGames } : {}),
+      } : {};
+
+      return {
         ...season,
         seasonDisplay: this.isMobile
           ? this.formatSeasonShort(season.season)
           : this.formatSeasonDisplay(season.season),
+        ...scoreOverrides,
       };
-
-      // Transform score values when position filter is active
-      if (usePositionScores) {
-        const playerSeason = season as PlayerSeasonStats;
-        if (playerSeason.scoreByPosition != null) {
-          (seasonData as any).score = playerSeason.scoreByPosition;
-        }
-        if (playerSeason.scoreByPositionAdjustedByGames != null) {
-          (seasonData as any).scoreAdjustedByGames = playerSeason.scoreByPositionAdjustedByGames;
-        }
-      }
-
-      return seasonData;
     }) as (PlayerSeasonStats | GoalieSeasonStats)[];
 
     // Get column names from the first season object
