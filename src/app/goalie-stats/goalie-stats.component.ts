@@ -28,6 +28,7 @@ import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.co
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
+import { ComparisonService } from '@services/comparison.service';
 
 @Component({
   selector: 'app-goalie-stats',
@@ -45,6 +46,11 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   readonly isMobile$ = inject(ViewportService).isMobile$;
+  readonly comparisonService = inject(ComparisonService);
+  readonly canSelectRow$ = this.comparisonService.canSelectMore$;
+
+  isRowSelected = (row: any) => this.comparisonService.isSelected(row);
+  onRowSelect = (row: any) => this.comparisonService.toggle(row);
 
   reportType: ReportType = 'regular';
   season?: number;
