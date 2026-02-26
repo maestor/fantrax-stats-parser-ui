@@ -87,6 +87,40 @@ describe('PlayerCardSeasonsService', () => {
     expect(result.careerBests.size).toBe(0);
   });
 
+  it('applies scoreByPosition overrides when positionFilter is active for a skater', () => {
+    const playerSeason = {
+      name: '', season: 2024, games: 10, score: 20, scoreAdjustedByGames: 2,
+      goals: 5, assists: 10, points: 15, penalties: 2, ppp: 1, shp: 0, position: 'F',
+      scoreByPosition: 99, scoreByPositionAdjustedByGames: 9,
+    };
+    const player = {
+      name: 'P', score: 0, scoreAdjustedByGames: 0, games: 10, goals: 5,
+      assists: 10, points: 15, penalties: 2, ppp: 1, shp: 0, position: 'F',
+      seasons: [playerSeason],
+    };
+    // Need a second season to compute careerBests (and to not hit the < 2 seasons guard)
+    const playerSeason2 = { ...playerSeason, season: 2023, scoreByPosition: 50, scoreByPositionAdjustedByGames: 5 };
+    player.seasons = [playerSeason, playerSeason2];
+
+    const result = service.setupSeasonData(player as any, {
+      isGoalie: false, statsPerGame: false, positionFilter: 'F', isMobile: false,
+    });
+
+    const row2024 = result.seasonDataSource.find(s => s.season === 2024) as Record<string, unknown>;
+    expect(row2024?.['score']).toBe(99);
+    expect(row2024?.['scoreAdjustedByGames']).toBe(9);
+  });
+
+  it('returns empty result when seasons is an empty array', () => {
+    const noSeasons = { ...goalie, seasons: [] } as any;
+    const result = service.setupSeasonData(noSeasons, {
+      isGoalie: true, statsPerGame: false, positionFilter: 'all', isMobile: false,
+    });
+    expect(result.seasonColumns).toEqual([]);
+    expect(result.seasonDataSource).toEqual([]);
+    expect(result.careerBests.size).toBe(0);
+  });
+
   describe('isCareerBest', () => {
     it('returns true when season has the best value for that column', () => {
       const bests = new Map<string, Set<number>>([['saves', new Set([2024])]]);
