@@ -59,6 +59,15 @@ describe('PlayerCardStatsService', () => {
       expect(scoreRow?.value).toBe(99);
     });
 
+    it('uses scoreByPositionAdjustedByGames when positionFilter is active for a player', () => {
+      const player = { ...basePlayer, scoreByPosition: 99, scoreByPositionAdjustedByGames: 9 };
+      const rows = service.buildStats(player as unknown as Player, {
+        isGoalie: false, statsPerGame: false, positionFilter: 'F', viewContext: 'season',
+      });
+      const adjRow = rows.find(r => r.label === 'tableColumn.scoreAdjustedByGames');
+      expect(adjRow?.value).toBe(9);
+    });
+
     it('uses _originalScore when positionFilter is "all" and _originalScore present', () => {
       const player = { ...basePlayer, score: 20, _originalScore: 77 };
       const rows = service.buildStats(player as unknown as Player, {
@@ -66,6 +75,15 @@ describe('PlayerCardStatsService', () => {
       });
       const scoreRow = rows.find(r => r.label === 'tableColumn.score');
       expect(scoreRow?.value).toBe(77);
+    });
+
+    it('uses _originalScoreAdjustedByGames when positionFilter is "all" and it is present', () => {
+      const player = { ...basePlayer, scoreAdjustedByGames: 2, _originalScoreAdjustedByGames: 88 };
+      const rows = service.buildStats(player as unknown as Player, {
+        isGoalie: false, statsPerGame: false, positionFilter: 'all', viewContext: 'season',
+      });
+      const adjRow = rows.find(r => r.label === 'tableColumn.scoreAdjustedByGames');
+      expect(adjRow?.value).toBe(88);
     });
   });
 

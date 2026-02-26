@@ -1466,7 +1466,7 @@ describe("PlayerCardComponent", () => {
       expect(statLabels).toContain("tableColumn.scoreAdjustedByGames");
     });
 
-    it("should include score in excludedColumns getter when statsPerGame is true", async () => {
+    it("should not render score row in the table when statsPerGame is true", async () => {
       const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
@@ -1497,8 +1497,11 @@ describe("PlayerCardComponent", () => {
 
       // Wait for filter subscription to complete
       await new Promise((resolve) => setTimeout(resolve, 10));
+      f.detectChanges();
 
-      expect(c.excludedColumns).toContain("score");
+      const statLabels = c.stats.map((s) => s.label);
+      expect(statLabels).not.toContain("tableColumn.score");
+      expect(statLabels).toContain("tableColumn.scoreAdjustedByGames");
     });
 
     it("should place games after score columns in stats order", async () => {

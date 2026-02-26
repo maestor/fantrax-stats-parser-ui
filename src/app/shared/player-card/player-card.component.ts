@@ -129,15 +129,6 @@ export class PlayerCardComponent implements OnDestroy {
   // Track screen size for season format
   isMobile = false;
 
-  // Getter for excluded columns (for compatibility/testing)
-  get excludedColumns(): string[] {
-    const excluded = [...this.statsService.baseExcludedColumns];
-    if (this.statsPerGame) {
-      excluded.push('score');
-    }
-    return excluded;
-  }
-
   // Combined stats - will be populated in constructor after getting filter state
   stats: StatRow[] = [];
 
