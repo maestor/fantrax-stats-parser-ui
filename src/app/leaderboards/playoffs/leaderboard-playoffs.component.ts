@@ -3,7 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { ApiService, PlayoffLeaderboardEntry } from '@services/api.service';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
-import { derivePositions } from '../position-utils';
+import { derivePositions } from '@shared/utils/position.utils';
 
 type PlayoffRow = PlayoffLeaderboardEntry & { displayPosition: string };
 

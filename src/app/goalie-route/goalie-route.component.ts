@@ -11,7 +11,7 @@ import {
   PlayerCardDialogData,
   PlayerCardTab,
 } from '@shared/player-card/player-card.component';
-import { matchesSlug } from '../utils/slug.utils';
+import { matchesSlug } from '@shared/utils/slug.utils';
 
 @Component({
   selector: 'app-goalie-route',
