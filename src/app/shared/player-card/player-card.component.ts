@@ -22,6 +22,7 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { toSlug } from '@shared/utils/slug.utils';
 import { take } from 'rxjs';
 import { PlayerCardStatsService, StatRow } from './player-card-stats.service';
+import { PlayerCardSeasonsService } from './player-card-seasons.service';
 
 export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
 
@@ -61,6 +62,7 @@ export class PlayerCardComponent implements OnDestroy {
   private filterService = inject(FilterService);
   private cdr = inject(ChangeDetectorRef);
   private statsService = inject(PlayerCardStatsService);
+  private seasonsService = inject(PlayerCardSeasonsService);
 
   // Copy link feedback state
   linkCopied = false;
@@ -187,7 +189,7 @@ export class PlayerCardComponent implements OnDestroy {
         viewContext: this.viewContext,
       });
       if (this.hasSeasons) {
-        this.setupSeasonData();
+        this.refreshSeasonData();
       }
       this.updateGraphsInputs();
     });
@@ -368,7 +370,7 @@ export class PlayerCardComponent implements OnDestroy {
       viewContext: this.viewContext,
     });
     if (this.hasSeasons) {
-      this.setupSeasonData();
+      this.refreshSeasonData();
     }
     this.updateGraphsInputs();
     this.announcePlayerChange();
@@ -443,7 +445,7 @@ export class PlayerCardComponent implements OnDestroy {
       viewContext: this.viewContext,
     });
     if (this.hasSeasons) {
-      this.setupSeasonData();
+      this.refreshSeasonData();
     }
     this.updateGraphsInputs();
     this.cdr.detectChanges();
@@ -453,149 +455,25 @@ export class PlayerCardComponent implements OnDestroy {
     this.isMobile = window.innerWidth <= 768;
     // Update season display if already initialized
     if (this.hasSeasons && this.seasonDataSource.length > 0) {
-      this.setupSeasonData();
+      this.refreshSeasonData();
     }
   }
 
-  private setupSeasonData(): void {
-    if (!this.data.seasons) return;
-
-    // Sort seasons by year, newest first
-    const sortedSeasons = [...this.data.seasons].sort(
-      (a, b) => b.season - a.season
-    );
-
-    // Transform season data to include formatted season display (short on mobile, full on desktop)
-    // Determine if we should use position-based scores for seasons
-    const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
-
-    this.seasonDataSource = sortedSeasons.map((season) => {
-      const playerSeason = season as PlayerSeasonStats;
-      const scoreOverrides = usePositionScores ? {
-        ...(playerSeason.scoreByPosition != null ? { score: playerSeason.scoreByPosition } : {}),
-        ...(playerSeason.scoreByPositionAdjustedByGames != null ? { scoreAdjustedByGames: playerSeason.scoreByPositionAdjustedByGames } : {}),
-      } : {};
-
-      return {
-        ...season,
-        seasonDisplay: this.isMobile
-          ? this.formatSeasonShort(season.season)
-          : this.statsService.formatSeasonDisplay(season.season),
-        ...scoreOverrides,
-      };
-    }) as (PlayerSeasonStats | GoalieSeasonStats)[];
-
-    // Get column names from the first season object
-    if (this.data.seasons.length > 0) {
-      const columns = Object.keys(this.data.seasons[0]);
-      const excludedSeasonColumns = [
-        'position',
-        'scores',
-        'scoresByPosition',
-        'scoreByPosition',
-        'scoreByPositionAdjustedByGames',
-      ];
-
-      // Also exclude 'score' in statsPerGame mode
-      if (this.statsPerGame) {
-        excludedSeasonColumns.push('score');
-      }
-
-      // Replace 'season' with 'seasonDisplay' for display and drop internal columns
-      let orderedColumns = columns
-        .filter((col) => !excludedSeasonColumns.includes(col))
-        .map((col) => (col === 'season' ? 'seasonDisplay' : col));
-
-      // Reorder goalie columns: place savePercent and gaa after saves
-      if (
-        orderedColumns.includes('gaa') ||
-        orderedColumns.includes('savePercent')
-      ) {
-        const savesIndex = orderedColumns.indexOf('saves');
-        if (savesIndex !== -1) {
-          // Remove savePercent and gaa from their current positions
-          const reorderedColumns = orderedColumns.filter(
-            (col) => col !== 'gaa' && col !== 'savePercent'
-          );
-
-          // Insert them after saves (savePercent first, then gaa)
-          const insertIndex = reorderedColumns.indexOf('saves') + 1;
-          if (orderedColumns.includes('savePercent')) {
-            reorderedColumns.splice(insertIndex, 0, 'savePercent');
-          }
-          if (orderedColumns.includes('gaa')) {
-            reorderedColumns.splice(
-              insertIndex + (orderedColumns.includes('savePercent') ? 1 : 0),
-              0,
-              'gaa'
-            );
-          }
-
-          orderedColumns = reorderedColumns;
-        }
-      }
-
-      // Ensure seasonDisplay first, then score columns (FR, FR/O) in the season table
-      const priorityColumns = ['seasonDisplay', 'score', 'scoreAdjustedByGames'];
-      const prioritizedColumns = [
-        ...priorityColumns.filter((col) => orderedColumns.includes(col)),
-        ...orderedColumns.filter((col) => !priorityColumns.includes(col)),
-      ];
-
-      this.seasonColumns = prioritizedColumns;
-    }
-
-    this.computeCareerBests();
-  }
-
-
-  private formatSeasonShort(year: number): string {
-    const startShort = String(year).slice(-2);
-    const nextYear = year + 1;
-    const endShort = String(nextYear).slice(-2);
-    return `${startShort}-${endShort}`;
-  }
-
-  private parseStatValue(value: unknown): number | null {
-    if (value === '' || value === '-' || value === null || value === undefined) {
-      return null;
-    }
-    const num = typeof value === 'number' ? value : parseFloat(String(value));
-    return isNaN(num) ? null : num;
-  }
-
-  private computeCareerBests(): void {
-    this.careerBests.clear();
-
-    if (this.seasonDataSource.length < 2) return;
-
-    const statColumns = this.seasonColumns.filter(col => col !== 'seasonDisplay');
-
-    for (const column of statColumns) {
-      const values = this.seasonDataSource.map(s => ({
-        season: s.season,
-        value: this.parseStatValue((s as Record<string, unknown>)[column])
-      })).filter(v => v.value !== null) as { season: number; value: number }[];
-
-      // Skip if no valid values or all zeros
-      if (values.length === 0 || values.every(v => v.value === 0)) continue;
-
-      // Find best value (min for GAA, max for others)
-      const bestValue = column === 'gaa'
-        ? Math.min(...values.map(v => v.value))
-        : Math.max(...values.map(v => v.value));
-
-      // Store all seasons with the best value
-      const bestSeasons = values
-        .filter(v => v.value === bestValue)
-        .map(v => v.season);
-
-      this.careerBests.set(column, new Set(bestSeasons));
-    }
+  private refreshSeasonData(): void {
+    const { seasonColumns, seasonDataSource, careerBests } =
+      this.seasonsService.setupSeasonData(this.data, {
+        isGoalie: this.isGoalie,
+        statsPerGame: this.statsPerGame,
+        positionFilter: this.positionFilter,
+        isMobile: this.isMobile,
+      });
+    this.seasonColumns = seasonColumns;
+    this.seasonDataSource = seasonDataSource;
+    this.careerBests = careerBests;
   }
 
   isCareerBest(column: string, season: number): boolean {
-    return this.careerBests.get(column)?.has(season) ?? false;
+    return this.seasonsService.isCareerBest(this.careerBests, column, season);
   }
 
   onTabChange(index: number): void {

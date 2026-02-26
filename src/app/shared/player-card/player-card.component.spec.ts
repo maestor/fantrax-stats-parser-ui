@@ -335,7 +335,7 @@ describe("PlayerCardComponent", () => {
       component.seasonColumns = [];
       component.seasonDataSource = [];
 
-      componentAsAny.setupSeasonData();
+      componentAsAny.refreshSeasonData();
 
       expect(component.seasonColumns).toContain("gaa");
       expect(component.seasonColumns).not.toContain("savePercent");
@@ -361,7 +361,7 @@ describe("PlayerCardComponent", () => {
       component.seasonColumns = [];
       component.seasonDataSource = [];
 
-      componentAsAny.setupSeasonData();
+      componentAsAny.refreshSeasonData();
 
       expect(component.seasonColumns).toContain("savePercent");
       expect(component.seasonColumns).not.toContain("gaa");
@@ -861,7 +861,8 @@ describe("PlayerCardComponent", () => {
     });
 
     it("should format season as short form on mobile", () => {
-      const short = (component as any).formatSeasonShort(2024);
+      const seasonsService = (component as any).seasonsService;
+      const short = seasonsService['formatSeasonShort'](2024);
       expect(short).toBe("24-25");
     });
 
@@ -1161,13 +1162,13 @@ describe("PlayerCardComponent", () => {
       expect(firstRowText).toContain("tableColumn.score");
     });
 
-    it("should safely ignore setupSeasonData when there is no seasons array", () => {
+    it("should safely ignore refreshSeasonData when there is no seasons array", () => {
       const componentAsAny = component as any;
 
       expect(component.seasonColumns.length).toBe(0);
       expect(component.seasonDataSource.length).toBe(0);
 
-      componentAsAny.setupSeasonData();
+      componentAsAny.refreshSeasonData();
 
       expect(component.seasonColumns.length).toBe(0);
       expect(component.seasonDataSource.length).toBe(0);
