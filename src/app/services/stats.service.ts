@@ -40,7 +40,7 @@ export class StatsService {
         ...perGameStats,
         score: scoreAdjustedByGames,
         scoreAdjustedByGames: scoreAdjustedByGames,
-        seasons: (item as any).seasons, // Preserve seasons if they exist
+        seasons: (item as Record<string, unknown>)['seasons'], // Preserve seasons if they exist
         ...Object.fromEntries(fixedFields.map((field) => [field, (item as Record<string, unknown>)[field]])),
       } as unknown as T;
     });

@@ -24,7 +24,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { Column, ColumnIcon } from '@shared/column.types';
-import { Player, Goalie } from '@services/api.service';
+import { Player, Goalie, RegularLeaderboardEntry, PlayoffLeaderboardEntry } from '@services/api.service';
+
+export type TableRow = Player | Goalie | RegularLeaderboardEntry | PlayoffLeaderboardEntry;
 import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
 
 @Component({
@@ -56,7 +58,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   loadingProgress = 0;
   loadingBuffer = 0;
 
-  @Input() data: any = [];
+  @Input() data: TableRow[] = [];
   @Input() columns: Column[] = [];
   @Input() defaultSortColumn = 'score';
   @Input() loading = false;
@@ -64,18 +66,18 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   @Input() tableId = 'stats-table';
   @Input() showSearch = true;
   @Input() showPositionColumn = true;
-  @Input() positionValue?: (row: any, index: number) => string | number;
+  @Input() positionValue?: (row: TableRow, index: number) => string | number;
   @Input() selectRow = false;
-  @Input() isRowSelected: (row: any) => boolean = () => false;
+  @Input() isRowSelected: (row: TableRow) => boolean = () => false;
   @Input() canSelectRow$: Observable<boolean> = of(true);
-  @Input() onRowSelect?: (row: any) => void;
+  @Input() onRowSelect?: (row: TableRow) => void;
   @Input() clickable = true;
-  @Input() formatCell?: (column: string, value: any) => string;
+  @Input() formatCell?: (column: string, value: number | string | undefined) => string;
 
   instructionsId = 'stats-table-instructions';
   activeRowIndex = 0;
 
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<TableRow>([]);
   dynamicColumns: Column[] = [];
   displayedFields: string[] = [];
 
@@ -216,8 +218,12 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     };
   }
 
-  getPositionDisplay(row: any, i: number): string | number {
+  getPositionDisplay(row: TableRow, i: number): string | number {
     return this.positionValue ? this.positionValue(row, i) : i + 1;
+  }
+
+  getCellValue(row: TableRow, field: string): number | string | undefined {
+    return (row as Record<string, unknown>)[field] as number | string | undefined;
   }
 
   filterItems(event: Event) {
@@ -226,15 +232,15 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     setTimeout(() => this.ensureActiveRowInRange(), 0);
   }
 
-  selectItem(data: Player | Goalie) {
+  selectItem(data: TableRow) {
     // Track navigated index in a closure so CDK focus restoration
     // (which triggers onRowFocus) cannot overwrite it before afterClosed fires.
     let navigatedIndex = this.dataSource.filteredData.indexOf(data);
 
     const dialogData: PlayerCardDialogData = {
-      player: data,
+      player: data as Player | Goalie,
       navigationContext: {
-        allPlayers: this.dataSource.filteredData,
+        allPlayers: this.dataSource.filteredData as (Player | Goalie)[],
         currentIndex: navigatedIndex,
         onNavigate: (newIndex: number) => {
           navigatedIndex = newIndex;
@@ -257,7 +263,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     });
   }
 
-  onRowSelectToggle(row: any): void {
+  onRowSelectToggle(row: TableRow): void {
     this.onRowSelect?.(row);
   }
 
@@ -309,7 +315,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     return index === this.activeRowIndex ? 0 : -1;
   }
 
-  onRowKeydown(event: KeyboardEvent, row: Player | Goalie, index: number): void {
+  onRowKeydown(event: KeyboardEvent, row: TableRow, index: number): void {
     switch (event.key) {
       case 'Enter': {
         if (!this.clickable) return;
@@ -352,8 +358,8 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     }
   }
 
-  getRowAriaLabel(row: Player | Goalie, translateKey: string): string {
-    const name = (row as any)?.name ?? '';
+  getRowAriaLabel(row: TableRow, translateKey: string): string {
+    const name = (row as { name?: string })?.name ?? '';
     return this.translate.instant(translateKey, { name });
   }
 

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { StatsTableComponent } from './stats-table.component';
+import { StatsTableComponent, TableRow } from './stats-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSortModule } from '@angular/material/sort';
@@ -1021,7 +1021,7 @@ describe('StatsTableComponent', () => {
   describe('formatCell', () => {
     it('should use default rendering when formatCell is not provided', () => {
       component.columns = [{ field: 'goals' }];
-      component.data = [{ goals: 10 }];
+      component.data = [{ goals: 10 }] as Player[];
       component.ngOnChanges({ data: new SimpleChange(null, [{ goals: 10 }], true) });
       fixture.detectChanges();
 
@@ -1031,8 +1031,8 @@ describe('StatsTableComponent', () => {
 
     it('should apply formatCell when provided', () => {
       component.columns = [{ field: 'goals' }];
-      component.formatCell = (col, val) => col === 'goals' ? `${val}G` : val;
-      component.data = [{ goals: 10 }];
+      component.formatCell = (col, val) => col === 'goals' ? `${val}G` : String(val ?? '');
+      component.data = [{ goals: 10 }] as Player[];
       component.ngOnChanges({ data: new SimpleChange(null, [{ goals: 10 }], true) });
       fixture.detectChanges();
 
@@ -1101,14 +1101,32 @@ describe('StatsTableComponent', () => {
     describe('getPositionDisplay', () => {
       it('returns i+1 when positionValue is not provided', () => {
         component.positionValue = undefined;
-        expect(component.getPositionDisplay({}, 0)).toBe(1);
-        expect(component.getPositionDisplay({}, 4)).toBe(5);
+        expect(component.getPositionDisplay({} as Player, 0)).toBe(1);
+        expect(component.getPositionDisplay({} as Player, 4)).toBe(5);
       });
 
       it('returns positionValue(row, i) when positionValue is provided', () => {
-        component.positionValue = (_row: any, i: number) => `#${i + 1}`;
-        expect(component.getPositionDisplay({}, 0)).toBe('#1');
-        expect(component.getPositionDisplay({}, 2)).toBe('#3');
+        component.positionValue = (_row: TableRow, i: number) => `#${i + 1}`;
+        expect(component.getPositionDisplay({} as Player, 0)).toBe('#1');
+        expect(component.getPositionDisplay({} as Player, 2)).toBe('#3');
+      });
+    });
+
+    describe('getCellValue', () => {
+      it('returns the numeric value for a known field on a Player row', () => {
+        expect(component.getCellValue(mockPlayerData[0], 'goals')).toBe(50);
+      });
+
+      it('returns the string value for a name field', () => {
+        expect(component.getCellValue(mockPlayerData[0], 'name')).toBe('Player 1');
+      });
+
+      it('returns undefined for a field not present on the row', () => {
+        expect(component.getCellValue(mockPlayerData[0], 'nonexistent')).toBeUndefined();
+      });
+
+      it('works for Goalie rows', () => {
+        expect(component.getCellValue(mockGoalieData[0], 'wins')).toBe(40);
       });
     });
   });

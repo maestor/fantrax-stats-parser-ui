@@ -14,7 +14,7 @@ import {
 import type { Subscription } from 'rxjs';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import type { ChartConfiguration, ChartData, ChartDataset } from 'chart.js';
+import type { ChartConfiguration, ChartData, ChartDataset, TooltipItem } from 'chart.js';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type {
   Goalie,
@@ -104,13 +104,13 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
       },
       tooltip: {
         callbacks: {
-          label: (context: any) => {
+          label: (context: TooltipItem<'radar'>) => {
             const label = context.dataset.label || '';
             const value = context.parsed.r;
             return `${label}: ${value}/100`;
           },
         },
-      } as any,
+      },
     },
   };
 
@@ -254,41 +254,41 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
         legend: {
           ...(plugins.legend ?? {}),
           labels: {
-            ...((plugins.legend as any)?.labels ?? {}),
+            ...(plugins.legend?.labels ?? {}),
             color: textColor,
           },
         },
         tooltip: {
-          ...((plugins as any).tooltip ?? {}),
+          ...(plugins.tooltip ?? {}),
           titleColor: textColor,
           bodyColor: textColor,
           footerColor: textColor,
           backgroundColor: tooltipBg,
           borderColor: gridColor,
           borderWidth: 1,
-        } as any,
+        },
       },
       scales: {
         ...scales,
         x: {
           ...(scales['x'] ?? {}),
           ticks: {
-            ...(((scales['x'] as any) ?? {})?.ticks ?? {}),
+            ...((scales['x'] as { ticks?: Record<string, unknown> })?.ticks ?? {}),
             color: textColor,
           },
           grid: {
-            ...(((scales['x'] as any) ?? {})?.grid ?? {}),
+            ...((scales['x'] as { grid?: Record<string, unknown> })?.grid ?? {}),
             color: gridColor,
           },
         },
         y: {
           ...(scales['y'] ?? {}),
           ticks: {
-            ...(((scales['y'] as any) ?? {})?.ticks ?? {}),
+            ...((scales['y'] as { ticks?: Record<string, unknown> })?.ticks ?? {}),
             color: textColor,
           },
           grid: {
-            ...(((scales['y'] as any) ?? {})?.grid ?? {}),
+            ...((scales['y'] as { grid?: Record<string, unknown> })?.grid ?? {}),
             color: gridColor,
           },
         },
@@ -312,7 +312,7 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
       const root = this.document.documentElement;
       const rootStyle = root ? getComputedStyle(root) : undefined;
       const computedSchemeRaw =
-        (rootStyle as any)?.colorScheme || rootStyle?.getPropertyValue('color-scheme') || '';
+        (rootStyle as CSSStyleDeclaration & { colorScheme?: string })?.colorScheme || rootStyle?.getPropertyValue('color-scheme') || '';
       const schemeTokens = computedSchemeRaw.trim().split(/\s+/).filter(Boolean);
       const schemeToken = schemeTokens.length === 1 ? schemeTokens[0] : undefined;
 
@@ -432,7 +432,7 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
         },
         tooltip: {
           callbacks: {
-            label: (context: any) => {
+            label: (context: TooltipItem<'radar'>) => {
               const label = context.dataset.label || '';
               const value = context.parsed.r;
               return `${label}: ${value}/100`;
@@ -444,7 +444,7 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
           backgroundColor: tooltipBg,
           borderColor: outlineColor,
           borderWidth: 1,
-        } as any,
+        },
       },
     };
   }
@@ -524,14 +524,16 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
   }
 
   private buildGoalieRadarData(): void {
-    const goalie = this.data as any;
+    const goalie = this.data as Goalie;
 
     if (!goalie.scores) {
       return;
     }
 
+    const scores = goalie.scores;
+
     // Check if gaa/savePercent are available (season endpoint)
-    const hasExtendedStats = 'gaa' in goalie.scores;
+    const hasExtendedStats = 'gaa' in scores;
 
     const statKeys = hasExtendedStats
       ? ['wins', 'saves', 'shutouts', 'gaa', 'savePercent']
@@ -541,7 +543,7 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
       this.translateService.instant(`tableColumn.${key}`)
     );
 
-    const data = statKeys.map((key) => goalie.scores[key]);
+    const data = statKeys.map((key) => (scores as Record<string, number>)[key]);
 
     this.radarChartData = {
       labels,
@@ -642,15 +644,16 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
         }
 
         // Use position-based score values when filter is active
-        let value: any;
+        const seasonRecord = season as Record<string, unknown>;
+        let value: number | string | undefined;
         if (usePositionScores && key === 'score') {
           const playerSeason = season as PlayerSeasonStats;
-          value = playerSeason.scoreByPosition ?? (season as any)[key];
+          value = playerSeason.scoreByPosition ?? (seasonRecord[key] as number | undefined);
         } else if (usePositionScores && key === 'scoreAdjustedByGames') {
           const playerSeason = season as PlayerSeasonStats;
-          value = playerSeason.scoreByPositionAdjustedByGames ?? (season as any)[key];
+          value = playerSeason.scoreByPositionAdjustedByGames ?? (seasonRecord[key] as number | undefined);
         } else {
-          value = (season as any)[key];
+          value = seasonRecord[key] as number | string | undefined;
         }
 
         const numeric = typeof value === 'string' ? parseFloat(value) : value;
