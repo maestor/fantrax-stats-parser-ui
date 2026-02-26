@@ -11,6 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatSliderModule } from '@angular/material/slider';
 import { Subject, takeUntil } from 'rxjs';
 import { FilterService, FilterState } from '@services/filter.service';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-min-games-slider',
@@ -19,7 +20,7 @@ import { FilterService, FilterState } from '@services/filter.service';
   styleUrl: './min-games-slider.component.scss',
 })
 export class MinGamesSliderComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   @Input() maxGames = 0;
 
   minGames: number = 0;

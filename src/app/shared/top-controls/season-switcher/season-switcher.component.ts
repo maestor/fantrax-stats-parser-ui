@@ -23,6 +23,7 @@ import { TeamService } from '@services/team.service';
 import { SettingsService } from '@services/settings.service';
 import { toApiTeamId } from '@shared/utils/api.utils';
 import { toSeasonNumber } from '@shared/utils/season.utils';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-season-switcher',
@@ -37,7 +38,7 @@ import { toSeasonNumber } from '@shared/utils/season.utils';
   styleUrl: './season-switcher.component.scss',
 })
 export class SeasonSwitcherComponent implements OnInit, OnDestroy {
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   seasons: Season[] = [];
   selectedSeason: number | 'all' = 'all';
   selectedSeasonText?: string;

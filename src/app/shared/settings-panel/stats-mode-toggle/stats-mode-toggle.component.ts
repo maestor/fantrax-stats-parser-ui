@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { Subject, takeUntil } from 'rxjs';
 import { FilterService, FilterState } from '@services/filter.service';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-stats-mode-toggle',
@@ -15,7 +16,7 @@ import { FilterService, FilterState } from '@services/filter.service';
   styleUrl: './stats-mode-toggle.component.scss',
 })
 export class StatsModeToggleComponent implements OnInit, OnDestroy {
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   statsPerGame = false;
 
   filterService = inject(FilterService);

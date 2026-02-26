@@ -16,27 +16,6 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 
 ---
 
-## Batch 2: Centralize Scattered Utilities (~2-3h)
-
-**Problem:** Small helper functions are copy-pasted across components instead of living in one place.
-
-- `toApiTeamId()` — duplicated in at least 5 files (player-stats, goalie-stats, season-switcher, start-from-season-switcher, player-card)
-- `toSeasonNumber()` — duplicated in season-switcher and start-from-season-switcher
-- `derivePositions()` — lives in `leaderboards/position-utils.ts` but could belong in a shared utils location
-- `toSlug()` — already isolated in `src/app/utils/slug.utils.ts` but the pattern is not followed for other utils
-
-**Affected files:**
-- `src/app/shared/top-controls/season-switcher/season-switcher.component.ts`
-- `src/app/shared/top-controls/start-from-season-switcher/start-from-season-switcher.component.ts`
-- `src/app/player-stats/player-stats.component.ts`
-- `src/app/goalie-stats/goalie-stats.component.ts`
-- `src/app/shared/player-card/player-card.component.ts`
-- `src/app/leaderboards/position-utils.ts`
-
-**Proposed fix:** Create `src/app/shared/utils/` with `season.utils.ts`, `api.utils.ts`, and move/consolidate existing utils there.
-
----
-
 ## Batch 3: Reduce `any` Usage — Improve Type Safety (~3-4h)
 
 **Problem:** Many places use `any` for callback parameters and data, which undermines the value of TypeScript. The most impactful instances:
@@ -88,54 +67,7 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 
 ---
 
-## Batch 6: Simplify ReportSwitcher Bidirectional Sync (~1-2h)
-
-**Problem:** `ReportSwitcherComponent` uses a `FormControl` kept manually in sync with the filter service — a fragile bidirectional loop:
-
-```typescript
-this.reportType$.subscribe(v => this.reportTypeControl.setValue(...))
-this.reportTypeControl.valueChanges.subscribe(v => filterService.update(...))
-```
-
-**Affected files:**
-- `src/app/shared/top-controls/report-switcher/report-switcher.component.ts`
-
-**Proposed fix:** Remove the `FormControl` and bind directly: reactive observable for display, `(change)` event for updates. Eliminates the sync loop entirely.
-
----
-
-## Batch 7: Centralize Shared Types (~1-2h)
-
-**Problem:** The string union `'player' | 'goalie'` (used as `@Input() context`) appears in 10+ files with no single source of truth. Other repeated inline types (filter shapes, column definitions) are also scattered.
-
-**Affected files:** Multiple components and services throughout.
-
-**Proposed fix:** Create `src/app/shared/types/` directory with:
-- `context.types.ts` — `export type StatsContext = 'player' | 'goalie'`
-- `filter.types.ts` — shared filter state interfaces
-- `stats.types.ts` — shared stats interfaces not already in API types
-
----
-
-## Batch 8: Reduce Template Complexity in StatsTable (~1-2h)
-
-**Problem:** `stats-table.component.html` has conditional rendering logic directly in the template that would be clearer as component methods:
-
-- Header icon selection (material vs emoji vs none) — repeated across header cells
-- Position cell rendering — 3 levels of nested `@if/@else`
-- Complex `[class.*]` bindings with inline boolean expressions
-
-**Affected files:**
-- `src/app/shared/stats-table/stats-table.component.html`
-- `src/app/shared/stats-table/stats-table.component.ts`
-
-**Proposed fix:** Add helper methods (`getHeaderIconType()`, `getPositionDisplay()`, `getCellClass()`) to the component and call them from the template.
-
----
-
 ## Notes
 
 - Batch 1 and Batch 4 are closely related and could be combined into a single "consolidate data-loading patterns" effort.
-- Batch 2 is a good low-risk warm-up — pure moves with no behavioral change.
 - Batch 3 (type safety) can be done incrementally, file by file, without touching logic.
-- Batches 6, 7, 8 are small and self-contained — good candidates for quick wins.

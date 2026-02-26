@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { map, first } from 'rxjs/operators';
 import { ComparisonService } from '@services/comparison.service';
 import { ComparisonDialogComponent, ComparisonDialogData } from '@shared/comparison-dialog/comparison-dialog.component';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-comparison-bar',
@@ -15,7 +16,7 @@ import { ComparisonDialogComponent, ComparisonDialogData } from '@shared/compari
   styleUrl: './comparison-bar.component.scss',
 })
 export class ComparisonBarComponent implements OnChanges {
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   private comparisonService = inject(ComparisonService);
   private translateService = inject(TranslateService);
   private dialog = inject(MatDialog);

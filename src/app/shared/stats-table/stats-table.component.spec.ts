@@ -1063,6 +1063,56 @@ describe('StatsTableComponent', () => {
     });
   });
 
+  describe('template helpers', () => {
+    describe('getHeaderIconType', () => {
+      it('returns emoji for emoji icon column', () => {
+        const col: Column = { field: 'goals', icon: { type: 'emoji', name: '🏆' } };
+        expect(component.getHeaderIconType(col)).toBe('emoji');
+      });
+
+      it('returns material for material icon column', () => {
+        const col: Column = { field: 'goals', icon: { type: 'material', name: 'star' } };
+        expect(component.getHeaderIconType(col)).toBe('material');
+      });
+
+      it('returns null when column has no icon', () => {
+        const col: Column = { field: 'goals' };
+        expect(component.getHeaderIconType(col)).toBeNull();
+      });
+    });
+
+    describe('getCellClass', () => {
+      it('returns col-left true for left-aligned column', () => {
+        const col: Column = { field: 'name', align: 'left' };
+        expect(component.getCellClass(col)).toEqual({ 'col-left': true, 'col-center': false });
+      });
+
+      it('returns col-center true when align is not set', () => {
+        const col: Column = { field: 'score' };
+        expect(component.getCellClass(col)).toEqual({ 'col-left': false, 'col-center': true });
+      });
+
+      it('returns col-center true when align is center', () => {
+        const col: Column = { field: 'score', align: 'center' };
+        expect(component.getCellClass(col)).toEqual({ 'col-left': false, 'col-center': true });
+      });
+    });
+
+    describe('getPositionDisplay', () => {
+      it('returns i+1 when positionValue is not provided', () => {
+        component.positionValue = undefined;
+        expect(component.getPositionDisplay({}, 0)).toBe(1);
+        expect(component.getPositionDisplay({}, 4)).toBe(5);
+      });
+
+      it('returns positionValue(row, i) when positionValue is provided', () => {
+        component.positionValue = (_row: any, i: number) => `#${i + 1}`;
+        expect(component.getPositionDisplay({}, 0)).toBe('#1');
+        expect(component.getPositionDisplay({}, 2)).toBe('#3');
+      });
+    });
+  });
+
   describe('clickable', () => {
     it('should not open dialog on Enter when clickable is false', () => {
       const selectSpy = spyOn(component, 'selectItem');

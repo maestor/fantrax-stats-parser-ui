@@ -4,6 +4,7 @@ import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2
 import type { ChartConfiguration, ChartData } from 'chart.js';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { Player, Goalie, PlayerScores } from '@services/api.service';
+import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-comparison-radar',
@@ -16,7 +17,7 @@ export class ComparisonRadarComponent implements OnInit {
   private document = inject(DOCUMENT);
   private translateService = inject(TranslateService);
 
-  @Input() context: 'player' | 'goalie' = 'player';
+  @Input() context: StatsContext = 'player';
   @Input({ required: true }) playerA!: Player | Goalie;
   @Input({ required: true }) playerB!: Player | Goalie;
 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
+import { StatsContext } from '@shared/types/context.types';
 
-export type ControlsContext = 'player' | 'goalie';
+export type ControlsContext = StatsContext;
 
 type DrawerContextState = {
   playerMaxGames: number;
