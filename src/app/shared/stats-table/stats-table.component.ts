@@ -187,6 +187,12 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   private applyDefaultSort(): void {
+    if (!this.defaultSortColumn) {
+      this.sort.active = '';
+      this.sort.direction = '';
+      return;
+    }
+
     const desired = this.defaultSortColumn;
     const hasColumns = this.dynamicColumns.length > 0;
     const canUseDesired = Boolean(desired) &&
