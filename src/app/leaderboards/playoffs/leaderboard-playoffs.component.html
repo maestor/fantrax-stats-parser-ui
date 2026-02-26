@@ -1,7 +1,11 @@
-<app-leaderboard-table
+<app-stats-table
   [data]="data"
-  [displayedColumns]="displayedColumns"
+  [columns]="columns"
   [loading]="loading"
   [apiError]="apiError"
-  [trophyColumn]="trophyColumn"
+  [showSearch]="false"
+  [showPositionColumn]="false"
+  [clickable]="false"
+  [selectRow]="false"
+  tableId="leaderboard-playoffs-table"
 />
