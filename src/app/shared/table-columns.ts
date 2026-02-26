@@ -46,6 +46,3 @@ export const GOALIE_STAT_COLUMNS: string[] = GOALIE_COLUMNS
 export const GOALIE_SEASON_STAT_COLUMNS: string[] = GOALIE_SEASON_COLUMNS
   .filter(c => c.field !== 'name')
   .map(c => c.field);
-
-// Kept temporarily for stats-table compatibility — removed in Task 3 refactor
-export const STATIC_COLUMNS = ['compare', 'position'];

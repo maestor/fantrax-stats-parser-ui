@@ -13,8 +13,9 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { Observable, of } from 'rxjs';
 
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,12 +23,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { STATIC_COLUMNS } from '@shared/table-columns';
+import { Column } from '@shared/column.types';
 import { Player, Goalie } from '@services/api.service';
-import { ComparisonService } from '@services/comparison.service';
 import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-stats-table',
@@ -41,6 +41,7 @@ import { TranslateService } from '@ngx-translate/core';
     MatSortModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatIconModule,
   ],
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
@@ -49,8 +50,6 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   private cdr = inject(ChangeDetectorRef);
   readonly dialog = inject(MatDialog);
   private translate = inject(TranslateService);
-  readonly comparisonService = inject(ComparisonService);
-  readonly canSelectMore$ = this.comparisonService.canSelectMore$;
 
   private loadingIntervalId?: ReturnType<typeof setInterval>;
   private loadingStartMs?: number;
@@ -59,18 +58,27 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   loadingBuffer = 0;
 
   @Input() data: any = [];
-  @Input() columns: string[] = [];
+  @Input() columns: Column[] = [];
   @Input() defaultSortColumn = 'score';
   @Input() loading = false;
   @Input() apiError = false;
   @Input() tableId = 'stats-table';
+  @Input() showSearch = true;
+  @Input() showPositionColumn = true;
+  @Input() positionValue?: (row: any, index: number) => string | number;
+  @Input() selectRow = false;
+  @Input() isRowSelected: (row: any) => boolean = () => false;
+  @Input() canSelectRow$: Observable<boolean> = of(true);
+  @Input() onRowSelect?: (row: any) => void;
+  @Input() clickable = true;
+  @Input() formatCell?: (column: string, value: any) => string;
 
   instructionsId = 'stats-table-instructions';
   activeRowIndex = 0;
 
   dataSource = new MatTableDataSource<any>([]);
-  displayedColumns: string[] = [];
-  dynamicColumns: string[] = [];
+  dynamicColumns: Column[] = [];
+  displayedFields: string[] = [];
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('searchInput', { read: ElementRef }) searchInput?: ElementRef<HTMLInputElement>;
@@ -92,10 +100,8 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       this.dataSource.data = this.data;
 
       if (this.columns?.length > 0) {
-        this.displayedColumns = this.columns;
-        this.dynamicColumns = this.displayedColumns.filter(
-          (column) => !STATIC_COLUMNS.includes(column)
-        );
+        this.dynamicColumns = this.columns;
+        this.displayedFields = this.buildDisplayedFields();
       }
       if (this.sort) {
         this.dataSource.sort = this.sort;
@@ -108,6 +114,15 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       // Reset focus to first row when the dataset changes.
       this.activeRowIndex = 0;
       setTimeout(() => this.ensureActiveRowInRange(), 0);
+    }
+
+    if (changes['columns'] && !changes['data']) {
+      this.dynamicColumns = this.columns;
+      this.displayedFields = this.buildDisplayedFields();
+    }
+
+    if (changes['showPositionColumn']) {
+      this.displayedFields = this.buildDisplayedFields();
     }
 
     if (this.sort && sortRelevantChange && !(changes['data'] && this.data)) {
@@ -135,7 +150,6 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       this.updateLoadingProgress();
       this.cdr.markForCheck();
     }, 200);
-
   }
 
   private updateLoadingProgress() {
@@ -167,17 +181,19 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     this.ensureActiveRowInRange();
   }
 
+  private buildDisplayedFields(): string[] {
+    const dynamic = this.dynamicColumns.map(c => c.field);
+    return this.showPositionColumn ? ['position', ...dynamic] : dynamic;
+  }
+
   private applyDefaultSort(): void {
     const desired = this.defaultSortColumn;
-
-    // Prefer the desired sort column. If columns are not known yet (common during init), still apply.
-    // If the desired column is not currently displayed, fall back to the first non-static column.
-    const hasColumns = Array.isArray(this.displayedColumns) && this.displayedColumns.length > 0;
-    const canUseDesired =
-      Boolean(desired) && (!hasColumns || this.displayedColumns.includes(desired));
+    const hasColumns = this.dynamicColumns.length > 0;
+    const canUseDesired = Boolean(desired) &&
+      (!hasColumns || this.dynamicColumns.some(c => c.field === desired));
 
     const fallback = hasColumns
-      ? this.displayedColumns.find((c) => c !== 'position') ?? this.displayedColumns[0]
+      ? (this.dynamicColumns.find(c => c.field !== 'position')?.field ?? this.dynamicColumns[0]?.field)
       : desired;
 
     this.sort.active = canUseDesired ? desired : (fallback ?? desired);
@@ -216,12 +232,13 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     });
 
     // Focus the navigated-to row when dialog closes.
-    // Use navigatedIndex (closure) instead of this.activeRowIndex because
-    // CDK restores focus to the original row before afterClosed fires,
-    // triggering onRowFocus() which overwrites this.activeRowIndex.
     dialogRef.afterClosed().subscribe(() => {
       this.focusRow(navigatedIndex);
     });
+  }
+
+  onRowSelectToggle(row: any): void {
+    this.onRowSelect?.(row);
   }
 
   onSearchKeydown(event: KeyboardEvent): void {
@@ -249,6 +266,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
         return;
       }
       case 'ArrowUp': {
+        if (!this.showSearch) return;
         const input = this.searchInput?.nativeElement;
         if (!input) {
           return;
@@ -274,6 +292,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   onRowKeydown(event: KeyboardEvent, row: Player | Goalie, index: number): void {
     switch (event.key) {
       case 'Enter': {
+        if (!this.clickable) return;
         event.preventDefault();
         this.selectItem(row);
         return;
@@ -311,14 +330,6 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       default:
         return;
     }
-  }
-
-  onCompareToggle(player: Player | Goalie): void {
-    this.comparisonService.toggle(player);
-  }
-
-  isCompareSelected(player: Player | Goalie): boolean {
-    return this.comparisonService.isSelected(player);
   }
 
   getRowAriaLabel(row: Player | Goalie, translateKey: string): string {

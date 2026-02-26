@@ -155,10 +155,13 @@ th.mat-column-position {
   }
 }
 
+tr.mat-mdc-row.clickable-row {
+  cursor: pointer;
+}
+
 .mat-mdc-row:hover {
   background-color: var(--mat-sys-primary-container);
   color: var(--mat-sys-on-primary-container);
-  cursor: pointer;
 }
 
 .mat-mdc-row:focus {
