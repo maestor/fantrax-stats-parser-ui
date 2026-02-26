@@ -60,7 +60,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'playoffs',
+        redirectTo: 'regular',
         pathMatch: 'full',
       },
       {
