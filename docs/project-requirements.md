@@ -199,6 +199,27 @@ Sometimes Chrome headless launch can fail due to local environment issues (not t
   - This is a performance suggestion, not a blocker
   - Can be ignored or addressed by code splitting later
 
+### ❌ Never Add `"type": "module"` to package.json
+
+**Do not add `"type": "module"` to `package.json`.** This will break the Vercel API proxy and cannot be typed around.
+
+**Background:** This was added once because `eslint.config.js` uses CommonJS syntax and the ESLint CLI warned about it. The warning is harmless — the real fix is to use the `.mjs` extension for config files that trigger it.
+
+**Correct solution when a config file causes a "module type" warning:**
+
+- Rename the config to use `.mjs` (e.g., `eslint.config.js` → `eslint.config.mjs`)
+- The `.mjs` extension explicitly marks it as ESM, silencing the warning without touching `package.json`
+
+**Never do:**
+```diff
+- "type": "module"  // breaks Vercel API proxy
+```
+
+**Do instead:**
+```bash
+mv eslint.config.js eslint.config.mjs   # or whichever config is affected
+```
+
 ---
 
 ## 🔧 TypeScript Standards
