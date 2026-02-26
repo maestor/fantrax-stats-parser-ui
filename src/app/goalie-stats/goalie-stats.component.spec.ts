@@ -11,6 +11,7 @@ import { SettingsService } from '@services/settings.service';
 import { ViewportService } from '@services/viewport.service';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
 import { BehaviorSubject, of, throwError } from 'rxjs';
+import { ComparisonService } from '@services/comparison.service';
 
 class TeamServiceMock {
   private selectedTeamIdSubject = new BehaviorSubject<string>('1');
@@ -118,7 +119,7 @@ describe('GoalieStatsComponent', () => {
     expect(component.statsPerGame).toBe(false);
     expect(component.minGames).toBe(0);
     expect(component.tableColumns).toEqual(GOALIE_COLUMNS);
-    expect(component.tableColumns.includes('score')).toBeTrue();
+    expect(component.tableColumns.some(c => c.field === 'score')).toBeTrue();
     expect(component.defaultSortColumn).toBe('score');
     expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
       reportType: 'regular',
@@ -141,8 +142,8 @@ describe('GoalieStatsComponent', () => {
 
     expect(component.season).toBe(2024);
     expect(component.reportType).toBe('playoffs');
-    expect(component.tableColumns).toEqual(GOALIE_SEASON_COLUMNS.filter((c) => c !== 'score'));
-    expect(component.tableColumns.includes('score')).toBeFalse();
+    expect(component.tableColumns).toEqual(GOALIE_SEASON_COLUMNS.filter((c) => c.field !== 'score'));
+    expect(component.tableColumns.some(c => c.field === 'score')).toBeFalse();
     expect(component.defaultSortColumn).toBe('scoreAdjustedByGames');
     expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
       reportType: 'playoffs',
@@ -430,5 +431,23 @@ describe('GoalieStatsComponent', () => {
 
     expect(nextSpy).toHaveBeenCalled();
     expect(completeSpy).toHaveBeenCalled();
+  });
+
+  describe('comparison wiring', () => {
+    const mockRow = { name: 'Goalie X' } as any;
+
+    it('isRowSelected should delegate to ComparisonService.isSelected', () => {
+      const comparisonService = TestBed.inject(ComparisonService);
+      spyOn(comparisonService, 'isSelected').and.returnValue(true);
+      expect(component.isRowSelected(mockRow)).toBeTrue();
+      expect(comparisonService.isSelected).toHaveBeenCalledWith(mockRow);
+    });
+
+    it('onRowSelect should delegate to ComparisonService.toggle', () => {
+      const comparisonService = TestBed.inject(ComparisonService);
+      spyOn(comparisonService, 'toggle');
+      component.onRowSelect(mockRow);
+      expect(comparisonService.toggle).toHaveBeenCalledWith(mockRow);
+    });
   });
 });

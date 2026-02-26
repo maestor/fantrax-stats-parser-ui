@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ApiService, RegularLeaderboardEntry } from '@services/api.service';
-import { LeaderboardTableComponent } from '../leaderboard-table/leaderboard-table.component';
+import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
+import { Column } from '@shared/column.types';
 import { derivePositions } from '../position-utils';
 
 type RegularRow = RegularLeaderboardEntry & { displayPosition: string };
@@ -9,7 +10,7 @@ type RegularRow = RegularLeaderboardEntry & { displayPosition: string };
 @Component({
   selector: 'app-leaderboard-regular',
   standalone: true,
-  imports: [LeaderboardTableComponent],
+  imports: [StatsTableComponent],
   templateUrl: './leaderboard-regular.component.html',
   styleUrl: './leaderboard-regular.component.scss',
 })
@@ -21,19 +22,17 @@ export class LeaderboardRegularComponent implements OnInit, OnDestroy {
   loading = true;
   apiError = false;
 
-  readonly displayedColumns = [
-    'displayPosition',
-    'teamName',
-    'regularTrophies',
-    'points',
-    'wins',
-    'ties',
-    'losses',
-    'pointsPercent',
-    'winPercent',
+  readonly columns: Column[] = [
+    { field: 'displayPosition', align: 'left', sortable: false },
+    { field: 'teamName', align: 'left' },
+    { field: 'regularTrophies', icon: { name: '🏆', type: 'emoji' } },
+    { field: 'points' },
+    { field: 'wins' },
+    { field: 'ties' },
+    { field: 'losses' },
+    { field: 'pointsPercent' },
+    { field: 'winPercent' },
   ];
-
-  readonly trophyColumn = 'regularTrophies';
 
   readonly formatCell = (column: string, value: any): string => {
     if (column === 'winPercent' || column === 'pointsPercent') return this.formatWinPercent(value);

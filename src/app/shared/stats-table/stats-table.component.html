@@ -3,67 +3,122 @@
     {{ 'a11y.tableNavigationHint' | translate }}
   </p>
 
-  <div class="search-container">
-    <mat-form-field subscriptSizing="dynamic">
-      <mat-label>{{ "table.playerSearch" | translate }}</mat-label>
-      <input matInput type="search" autocomplete="off" (input)="filterItems($event)" (keydown)="onSearchKeydown($event)"
-        #searchInput />
-    </mat-form-field>
-  </div>
+  @if (showSearch) {
+    <div class="search-container">
+      <mat-form-field subscriptSizing="dynamic">
+        <mat-label>{{ "table.playerSearch" | translate }}</mat-label>
+        <input matInput type="search" autocomplete="off"
+          (input)="filterItems($event)"
+          (keydown)="onSearchKeydown($event)"
+          #searchInput />
+      </mat-form-field>
+    </div>
+  }
 
   <div class="table-container">
-    <table mat-table [dataSource]="dataSource" matSort matSortStart="desc" [attr.aria-describedby]="instructionsId">
-      <!-- Compare checkbox and auto increment position column -->
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef>
-          <span matTooltip="{{ 'tooltip.comparePositionColumn' | translate }}">
-            {{ "tableColumnShort.position" | translate }}
-          </span>
-        </th>
-        <td mat-cell *matCellDef="let row; let i = index" (click)="$event.stopPropagation()">
-          <mat-checkbox [checked]="isCompareSelected(row)"
-            [disabled]="!isCompareSelected(row) && !(canSelectMore$ | async)" (change)="onCompareToggle(row)"
-            [attr.aria-label]="getRowAriaLabel(row, 'a11y.selectToCompare')">
-            {{ i + 1 }}
-          </mat-checkbox>
+    <table mat-table [dataSource]="dataSource" matSort matSortStart="desc"
+      [attr.aria-describedby]="instructionsId">
 
-        </td>
-      </ng-container>
-
-      <!-- Dynamic column renderer based on data -->
-      @for (column of dynamicColumns; track column) {
-      <ng-container [matColumnDef]="column">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          <span matTooltip="{{ 'tableColumn.' + column | translate }}">
-            {{ "tableColumnShort." + column | translate }}
-          </span>
-        </th>
-        <td mat-cell *matCellDef="let element">
-          {{ element[column] !== "" ? element[column] : "-" }}
-        </td>
-      </ng-container>
+      <!-- Position column (rank + optional checkbox) -->
+      @if (showPositionColumn) {
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>
+            @if (selectRow) {
+              <span matTooltip="{{ 'tooltip.comparePositionColumn' | translate }}">
+                {{ "tableColumnShort.position" | translate }}
+              </span>
+            } @else {
+              {{ "tableColumnShort.position" | translate }}
+            }
+          </th>
+          <td mat-cell *matCellDef="let row; let i = index"
+            (click)="$event.stopPropagation()">
+            @if (selectRow) {
+              <mat-checkbox
+                [checked]="isRowSelected(row)"
+                [disabled]="!isRowSelected(row) && !(canSelectRow$ | async)"
+                (change)="onRowSelectToggle(row)"
+                [attr.aria-label]="getRowAriaLabel(row, 'a11y.selectToCompare')">
+                {{ positionValue ? positionValue(row, i) : (i + 1) }}
+              </mat-checkbox>
+            } @else {
+              {{ positionValue ? positionValue(row, i) : (i + 1) }}
+            }
+          </td>
+        </ng-container>
       }
 
-      <tr mat-header-row (keydown)="onHeaderKeydown($event)" *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row #dataRow (click)="selectItem(row)" (focus)="onRowFocus(i)" (keydown)="onRowKeydown($event, row, i)"
-        [attr.tabindex]="getRowTabIndex(i)" [attr.data-row-index]="i" [class.a11y-active]="i === activeRowIndex"
-        [attr.aria-label]="getRowAriaLabel(row, 'a11y.openPlayerCard')" aria-haspopup="dialog"
-        *matRowDef="let row; columns: displayedColumns; let i = index"></tr>
+      <!-- Dynamic column renderer -->
+      @for (column of dynamicColumns; track column.field) {
+        <ng-container [matColumnDef]="column.field">
+          @if (column.sortable !== false) {
+            <th mat-header-cell *matHeaderCellDef mat-sort-header
+              [class.col-left]="column.align === 'left'"
+              [class.col-center]="column.align !== 'left'"
+              matTooltip="{{ 'tableColumn.' + column.field | translate }}">
+              @if (column.icon?.type === 'emoji') {
+                {{ column.icon!.name }}
+              } @else if (column.icon?.type === 'material') {
+                <mat-icon>{{ column.icon!.name }}</mat-icon>
+              }
+              <span [class.sr-only]="column.icon">
+                {{ "tableColumnShort." + column.field | translate }}
+              </span>
+            </th>
+          } @else {
+            <th mat-header-cell *matHeaderCellDef
+              [class.col-left]="column.align === 'left'"
+              [class.col-center]="column.align !== 'left'"
+              matTooltip="{{ 'tableColumn.' + column.field | translate }}">
+              @if (column.icon?.type === 'emoji') {
+                {{ column.icon!.name }}
+              } @else if (column.icon?.type === 'material') {
+                <mat-icon>{{ column.icon!.name }}</mat-icon>
+              }
+              <span [class.sr-only]="column.icon">
+                {{ "tableColumnShort." + column.field | translate }}
+              </span>
+            </th>
+          }
+          <td mat-cell *matCellDef="let element"
+            [class.col-left]="column.align === 'left'"
+            [class.col-center]="column.align !== 'left'">
+            {{ formatCell
+                ? formatCell(column.field, element[column.field])
+                : (element[column.field] ?? "-") }}
+          </td>
+        </ng-container>
+      }
+
+      <tr mat-header-row (keydown)="onHeaderKeydown($event)"
+        *matHeaderRowDef="displayedFields; sticky: true"></tr>
+      <tr mat-row #dataRow
+        [class.clickable-row]="clickable"
+        (click)="clickable && selectItem(row)"
+        (focus)="onRowFocus(i)"
+        (keydown)="onRowKeydown($event, row, i)"
+        [attr.tabindex]="getRowTabIndex(i)"
+        [attr.data-row-index]="i"
+        [class.a11y-active]="i === activeRowIndex"
+        [attr.aria-label]="clickable ? getRowAriaLabel(row, 'a11y.openPlayerCard') : null"
+        [attr.aria-haspopup]="clickable ? 'dialog' : null"
+        *matRowDef="let row; columns: displayedFields; let i = index">
+      </tr>
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell no-results" [colSpan]="displayedColumns.length">
+        <td class="mat-cell no-results" [colSpan]="displayedFields.length">
           <span>
             @if (apiError) {
-            {{ "table.apiUnavailable" | translate }}
+              {{ "table.apiUnavailable" | translate }}
             } @else if (loading) {
-            {{ "table.loading" | translate }}
+              {{ "table.loading" | translate }}
             } @else {
-            {{ "table.noSearchResults" | translate }}
+              {{ "table.noSearchResults" | translate }}
             }
           </span>
-
           @if (loading && !apiError) {
-          <mat-progress-bar class="loading-bar" mode="buffer" [value]="loadingProgress"
-            [bufferValue]="loadingBuffer"></mat-progress-bar>
+            <mat-progress-bar class="loading-bar" mode="buffer"
+              [value]="loadingProgress" [bufferValue]="loadingBuffer">
+            </mat-progress-bar>
           }
         </td>
       </tr>

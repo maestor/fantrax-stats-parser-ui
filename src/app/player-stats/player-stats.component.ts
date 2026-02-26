@@ -26,7 +26,9 @@ import { DrawerContextService } from '@services/drawer-context.service';
 import { ViewportService } from '@services/viewport.service';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
+import { Column } from '@shared/column.types';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
+import { ComparisonService } from '@services/comparison.service';
 
 @Component({
   selector: 'app-player-stats',
@@ -44,6 +46,11 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   readonly isMobile$ = inject(ViewportService).isMobile$;
+  readonly comparisonService = inject(ComparisonService);
+  readonly canSelectRow$ = this.comparisonService.canSelectMore$;
+
+  isRowSelected = (row: any) => this.comparisonService.isSelected(row);
+  onRowSelect = (row: any) => this.comparisonService.toggle(row);
 
   reportType: ReportType = 'regular';
   season?: number;
@@ -163,9 +170,9 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getTableColumns(statsPerGame: boolean): string[] {
+  private getTableColumns(statsPerGame: boolean): Column[] {
     if (!statsPerGame) return PLAYER_COLUMNS;
-    return PLAYER_COLUMNS.filter((c) => c !== 'score');
+    return PLAYER_COLUMNS.filter((c) => c.field !== 'score');
   }
 
   private transformToPositionScores(data: Player[], statsPerGame: boolean): Player[] {

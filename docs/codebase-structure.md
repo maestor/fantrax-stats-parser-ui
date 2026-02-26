@@ -146,6 +146,9 @@ Individual player information card display
 #### `table-columns.ts`
 Column definitions for stats tables
 
+#### `column.types.ts`
+`Column` and `ColumnIcon` type definitions shared by all table consumers
+
 ## File Naming Conventions
 
 - **Components**: `component-name.component.ts`

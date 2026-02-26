@@ -67,7 +67,7 @@ describe('LeaderboardRegularComponent', () => {
   });
 
   it('should include pointsPercent column between losses and winPercent', () => {
-    const cols = component.displayedColumns;
+    const cols = component.columns.map(c => c.field);
     const lossesIdx = cols.indexOf('losses');
     const pointsPercentIdx = cols.indexOf('pointsPercent');
     const winPercentIdx = cols.indexOf('winPercent');

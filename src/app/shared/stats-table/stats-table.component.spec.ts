@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ElementRef, SimpleChange } from '@angular/core';
 import { Player, Goalie } from '@services/api.service';
 import { PlayerCardComponent } from '@shared/player-card/player-card.component';
-import { ComparisonService } from '@services/comparison.service';
+import { Column } from '@shared/column.types';
 import { of, Subject } from 'rxjs';
 
 describe('StatsTableComponent', () => {
@@ -73,21 +73,12 @@ describe('StatsTableComponent', () => {
     },
   ];
 
-  const playerColumns = [
-    'position',
-    'name',
-    'score',
-    'games',
-    'goals',
-    'assists',
-    'points',
-    'plusMinus',
-    'penalties',
-    'shots',
-    'ppp',
-    'shp',
-    'hits',
-    'blocks',
+  // position is NOT in this array — it is shown via showPositionColumn (default true)
+  const playerColumns: Column[] = [
+    { field: 'name' }, { field: 'score' }, { field: 'games' },
+    { field: 'goals' }, { field: 'assists' }, { field: 'points' },
+    { field: 'plusMinus' }, { field: 'penalties' }, { field: 'shots' },
+    { field: 'ppp' }, { field: 'shp' }, { field: 'hits' }, { field: 'blocks' },
   ];
 
   beforeEach(async () => {
@@ -414,8 +405,8 @@ describe('StatsTableComponent', () => {
       expect(component.dataSource.data).toEqual([]);
     });
 
-    it('should initialize displayedColumns as empty array', () => {
-      expect(component.displayedColumns).toEqual([]);
+    it('should initialize displayedFields as empty array', () => {
+      expect(component.displayedFields).toEqual([]);
     });
 
     it('should initialize dynamicColumns as empty array', () => {
@@ -436,7 +427,7 @@ describe('StatsTableComponent', () => {
       expect(component.dataSource.data).toEqual(mockPlayerData as any);
     });
 
-    it('should set displayedColumns properly when columns are provided', () => {
+    it('should set displayedFields with position first when columns are provided', () => {
       const changes = {
         data: new SimpleChange(null, mockPlayerData, true),
       };
@@ -445,10 +436,10 @@ describe('StatsTableComponent', () => {
       component.columns = playerColumns;
       component.ngOnChanges(changes);
 
-      expect(component.displayedColumns).toEqual([...playerColumns]);
+      expect(component.displayedFields).toEqual(['position', ...playerColumns.map(c => c.field)]);
     });
 
-    it('should filter static columns to create dynamicColumns', () => {
+    it('should set dynamicColumns equal to columns input', () => {
       const changes = {
         data: new SimpleChange(null, mockPlayerData, true),
       };
@@ -457,26 +448,26 @@ describe('StatsTableComponent', () => {
       component.columns = playerColumns;
       component.ngOnChanges(changes);
 
-      expect(component.dynamicColumns).not.toContain('compare');
-      expect(component.dynamicColumns).not.toContain('position');
-      expect(component.dynamicColumns).toContain('name');
-      expect(component.dynamicColumns).toContain('games');
-      // playerColumns has 'position' (static), plus 'compare' is prepended (also static)
-      // dynamicColumns = displayedColumns minus both static columns
-      expect(component.dynamicColumns.length).toBe(playerColumns.length - 1);
+      expect(component.dynamicColumns.map(c => c.field)).not.toContain('position');
+      expect(component.dynamicColumns.map(c => c.field)).toContain('name');
+      expect(component.dynamicColumns.map(c => c.field)).toContain('games');
+      expect(component.dynamicColumns).toEqual(playerColumns);
     });
 
-    it('should not update displayedColumns if columns are empty', () => {
+    it('should not update displayedFields if columns are empty', () => {
+      component.dynamicColumns = [{ field: 'name' }];
+      component.displayedFields = ['position', 'name'];
+
       const changes = {
         data: new SimpleChange(null, mockPlayerData, true),
       };
 
       component.data = mockPlayerData;
       component.columns = [];
-      component.displayedColumns = ['existing'];
       component.ngOnChanges(changes);
 
-      expect(component.displayedColumns).toEqual(['existing']);
+      expect(component.dynamicColumns).toEqual([{ field: 'name' }]);
+      expect(component.displayedFields).toEqual(['position', 'name']);
     });
 
     it('should handle empty data array', () => {
@@ -523,6 +514,20 @@ describe('StatsTableComponent', () => {
       expect(component.sort.active).toBe('points');
       expect(component.sort.direction).toBe('desc');
     });
+
+    it('should update dynamicColumns and displayedFields when columns change without data', () => {
+      component.data = mockPlayerData;
+      component.columns = playerColumns;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+
+      const newColumns: Column[] = [{ field: 'goals' }, { field: 'assists' }];
+      component.columns = newColumns;
+      component.ngOnChanges({ columns: new SimpleChange(playerColumns, newColumns, false) });
+
+      expect(component.dynamicColumns).toEqual(newColumns);
+      expect(component.displayedFields).toContain('goals');
+      expect(component.displayedFields).toContain('assists');
+    });
   });
 
   describe('ngAfterViewInit', () => {
@@ -554,7 +559,7 @@ describe('StatsTableComponent', () => {
       component.columns = playerColumns;
       fixture.detectChanges();
 
-      component.displayedColumns = ['position', 'name', 'games'];
+      component.dynamicColumns = [{ field: 'name' }, { field: 'games' }];
       component.defaultSortColumn = 'nonexistent';
 
       (component as any).applyDefaultSort();
@@ -563,12 +568,12 @@ describe('StatsTableComponent', () => {
       expect(component.sort.direction).toBe('desc');
     });
 
-    it('should fall back to first column when only position column exists', () => {
+    it('should fall back to first column when dynamicColumns has only position-named column', () => {
       component.data = mockPlayerData;
       component.columns = playerColumns;
       fixture.detectChanges();
 
-      component.displayedColumns = ['position'];
+      component.dynamicColumns = [{ field: 'position' }];
       component.defaultSortColumn = 'nonexistent';
 
       (component as any).applyDefaultSort();
@@ -837,7 +842,7 @@ describe('StatsTableComponent', () => {
       component.ngOnChanges(changes);
 
       expect(component.dataSource.data).toEqual(mockPlayerData as any);
-      expect(component.displayedColumns).toEqual([...playerColumns]);
+      expect(component.displayedFields).toEqual(['position', ...playerColumns.map(c => c.field)]);
       expect(component.dynamicColumns.length).toBeGreaterThan(0);
     });
 
@@ -879,38 +884,183 @@ describe('StatsTableComponent', () => {
     });
   });
 
-  describe('comparison checkboxes', () => {
-    it('should include compare and position combined as first displayed column', () => {
-      component.data = mockPlayerData;
+  describe('positionValue', () => {
+    it('should use auto-increment by default', () => {
       component.columns = playerColumns;
-      component.ngOnChanges({
-        data: new SimpleChange(null, mockPlayerData, true),
-      });
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      fixture.detectChanges();
 
-      expect(component.displayedColumns[0]).toBe('position');
+      const positionCells = fixture.nativeElement.querySelectorAll('td.mat-column-position');
+      expect(positionCells[0]?.textContent?.trim()).toBe('1');
+      expect(positionCells[1]?.textContent?.trim()).toBe('2');
     });
 
-    it('should toggle player selection when onCompareToggle called', () => {
-      const comparisonService = TestBed.inject(ComparisonService);
-      spyOn(comparisonService, 'toggle');
-      component.onCompareToggle(mockPlayerData[0]);
-      expect(comparisonService.toggle).toHaveBeenCalledWith(mockPlayerData[0]);
+    it('should use positionValue function when provided', () => {
+      component.columns = [{ field: 'name' }];
+      component.positionValue = (_row: any, i: number) => `#${i + 1}`;
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      fixture.detectChanges();
+
+      const positionCells = fixture.nativeElement.querySelectorAll('td.mat-column-position');
+      expect(positionCells[0]?.textContent?.trim()).toBe('#1');
+    });
+  });
+
+  describe('selectRow feature', () => {
+    it('should not show checkboxes when selectRow is false (default)', () => {
+      component.columns = playerColumns;
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      fixture.detectChanges();
+
+      const checkbox = fixture.nativeElement.querySelector('mat-checkbox');
+      expect(checkbox).toBeFalsy();
     });
 
-    it('should check if player is selected', () => {
-      const comparisonService = TestBed.inject(ComparisonService);
-      spyOn(comparisonService, 'isSelected').and.returnValue(true);
-      expect(component.isCompareSelected(mockPlayerData[0])).toBeTrue();
+    it('should show checkboxes when selectRow is true', () => {
+      component.columns = playerColumns;
+      component.data = mockPlayerData;
+      component.selectRow = true;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      fixture.detectChanges();
+
+      const checkbox = fixture.nativeElement.querySelector('mat-checkbox');
+      expect(checkbox).toBeTruthy();
     });
 
-    it('should report player as not selected when not in comparison', () => {
-      const comparisonService = TestBed.inject(ComparisonService);
-      spyOn(comparisonService, 'isSelected').and.returnValue(false);
-      expect(component.isCompareSelected(mockPlayerData[0])).toBeFalse();
+    it('should call onRowSelect handler when checkbox changes', () => {
+      const handler = jasmine.createSpy('onRowSelect');
+      component.onRowSelect = handler;
+      component.onRowSelectToggle(mockPlayerData[0]);
+      expect(handler).toHaveBeenCalledWith(mockPlayerData[0]);
     });
 
-    it('should expose canSelectMore$ observable from ComparisonService', () => {
-      expect(component.canSelectMore$).toBeDefined();
+    it('should use isRowSelected to determine checkbox state', () => {
+      component.isRowSelected = (row) => row === mockPlayerData[0];
+      expect(component.isRowSelected(mockPlayerData[0])).toBeTrue();
+      expect(component.isRowSelected(mockPlayerData[1])).toBeFalse();
+    });
+  });
+
+  describe('showSearch', () => {
+    it('should show search input by default', () => {
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('input[type="search"]')).toBeTruthy();
+    });
+
+    it('should hide search input when showSearch is false', () => {
+      component.showSearch = false;
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('input[type="search"]')).toBeFalsy();
+    });
+
+    it('onHeaderKeydown ArrowUp should do nothing when showSearch is false', () => {
+      component.showSearch = false;
+      const input = document.createElement('input');
+      component.searchInput = new ElementRef(input);
+      const focusSpy = spyOn(input, 'focus');
+
+      const event = { key: 'ArrowUp', preventDefault: jasmine.createSpy() } as any;
+      component.onHeaderKeydown(event);
+
+      expect(focusSpy).not.toHaveBeenCalled();
+      expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('showPositionColumn', () => {
+    it('should include position in displayedFields by default', () => {
+      component.columns = playerColumns;
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      expect(component.displayedFields[0]).toBe('position');
+    });
+
+    it('should exclude position from displayedFields when showPositionColumn is false', () => {
+      component.columns = playerColumns;
+      component.showPositionColumn = false;
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      expect(component.displayedFields).not.toContain('position');
+    });
+
+    it('should update displayedFields when showPositionColumn input changes', () => {
+      component.columns = playerColumns;
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      expect(component.displayedFields[0]).toBe('position');
+
+      component.showPositionColumn = false;
+      component.ngOnChanges({ showPositionColumn: new SimpleChange(true, false, false) });
+      expect(component.displayedFields).not.toContain('position');
+    });
+  });
+
+  describe('formatCell', () => {
+    it('should use default rendering when formatCell is not provided', () => {
+      component.columns = [{ field: 'goals' }];
+      component.data = [{ goals: 10 }];
+      component.ngOnChanges({ data: new SimpleChange(null, [{ goals: 10 }], true) });
+      fixture.detectChanges();
+
+      const cell = fixture.nativeElement.querySelector('td.mat-column-goals');
+      expect(cell?.textContent?.trim()).toBe('10');
+    });
+
+    it('should apply formatCell when provided', () => {
+      component.columns = [{ field: 'goals' }];
+      component.formatCell = (col, val) => col === 'goals' ? `${val}G` : val;
+      component.data = [{ goals: 10 }];
+      component.ngOnChanges({ data: new SimpleChange(null, [{ goals: 10 }], true) });
+      fixture.detectChanges();
+
+      const cell = fixture.nativeElement.querySelector('td.mat-column-goals');
+      expect(cell?.textContent?.trim()).toBe('10G');
+    });
+  });
+
+  describe('icon columns', () => {
+    it('should render emoji icon in column header', () => {
+      component.columns = [{ field: 'goals', icon: { name: '🏆', type: 'emoji' } }];
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      fixture.detectChanges();
+
+      const header = fixture.nativeElement.querySelector('th.mat-column-goals');
+      expect(header?.textContent).toContain('🏆');
+    });
+
+    it('should hide column label text visually when icon is present', () => {
+      component.columns = [{ field: 'goals', icon: { name: '🏆', type: 'emoji' } }];
+      component.data = mockPlayerData;
+      component.ngOnChanges({ data: new SimpleChange(null, mockPlayerData, true) });
+      fixture.detectChanges();
+
+      const srSpan = fixture.nativeElement.querySelector('th.mat-column-goals .sr-only');
+      expect(srSpan).toBeTruthy();
+    });
+  });
+
+  describe('clickable', () => {
+    it('should not open dialog on Enter when clickable is false', () => {
+      const selectSpy = spyOn(component, 'selectItem');
+      component.clickable = false;
+      const event = { key: 'Enter', preventDefault: jasmine.createSpy() } as any;
+
+      component.onRowKeydown(event, mockPlayerData[0], 0);
+
+      expect(selectSpy).not.toHaveBeenCalled();
+    });
+
+    it('should open dialog on Enter when clickable is true (default)', () => {
+      const selectSpy = spyOn(component, 'selectItem');
+      const event = { key: 'Enter', preventDefault: jasmine.createSpy() } as any;
+
+      component.onRowKeydown(event, mockPlayerData[0], 0);
+
+      expect(selectSpy).toHaveBeenCalledWith(mockPlayerData[0]);
     });
   });
 

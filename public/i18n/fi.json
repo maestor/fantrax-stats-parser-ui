@@ -216,7 +216,19 @@
     "saves": "Torjunnat",
     "shutouts": "Nollat",
     "gaa": "GAA",
-    "savePercent": "Torjunta%"
+    "savePercent": "Torjunta%",
+    "displayPosition": "#",
+    "teamName": "Joukkue",
+    "regularTrophies": "Runkosarjavoitot",
+    "championships": "Mestaruudet",
+    "ties": "Tasapelit",
+    "losses": "Häviöt",
+    "pointsPercent": "Piste-%",
+    "winPercent": "Voitto-%",
+    "finals": "Finaalit",
+    "conferenceFinals": "Konf. finaalit",
+    "secondRound": "2. kierros",
+    "firstRound": "1. kierros"
   },
   "tableColumnShort": {
     "position": "#",
@@ -240,7 +252,19 @@
     "saves": "Torj.",
     "shutouts": "Nol.",
     "gaa": "GAA",
-    "savePercent": "T%"
+    "savePercent": "T%",
+    "displayPosition": "#",
+    "teamName": "Joukkue",
+    "regularTrophies": "RSV",
+    "championships": "Mest.",
+    "ties": "T",
+    "losses": "H",
+    "pointsPercent": "P-%",
+    "winPercent": "V-%",
+    "finals": "F",
+    "conferenceFinals": "KF",
+    "secondRound": "2K",
+    "firstRound": "1K"
   },
   "season": {
     "selector": "Kausivalitsin",
