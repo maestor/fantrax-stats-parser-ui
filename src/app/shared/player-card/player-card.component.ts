@@ -21,6 +21,7 @@ import { TeamService } from '@services/team.service';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { toSlug } from '@shared/utils/slug.utils';
 import { take } from 'rxjs';
+import { PlayerCardStatsService, StatRow } from './player-card-stats.service';
 
 export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
 
@@ -33,11 +34,6 @@ export type PlayerCardDialogData = {
     onNavigate?: (newIndex: number) => void;
   };
 };
-
-interface StatRow {
-  label: string;
-  value: string | number;
-}
 
 @Component({
   selector: 'app-player-card',
@@ -64,6 +60,7 @@ export class PlayerCardComponent implements OnDestroy {
   private teamService = inject(TeamService);
   private filterService = inject(FilterService);
   private cdr = inject(ChangeDetectorRef);
+  private statsService = inject(PlayerCardStatsService);
 
   // Copy link feedback state
   linkCopied = false;
@@ -132,22 +129,9 @@ export class PlayerCardComponent implements OnDestroy {
   // Track screen size for season format
   isMobile = false;
 
-  // Base excluded columns (always excluded)
-  private baseExcludedColumns = [
-    'name',
-    'seasons',
-    'scores',
-    'position',
-    'scoresByPosition',
-    'scoreByPosition',
-    'scoreByPositionAdjustedByGames',
-    '_originalScore',
-    '_originalScoreAdjustedByGames',
-  ];
-
   // Getter for excluded columns (for compatibility/testing)
   get excludedColumns(): string[] {
-    const excluded = [...this.baseExcludedColumns];
+    const excluded = [...this.statsService.baseExcludedColumns];
     if (this.statsPerGame) {
       excluded.push('score');
     }
@@ -205,7 +189,12 @@ export class PlayerCardComponent implements OnDestroy {
       if (!this.isGoalie) {
         this.positionFilter = f.positionFilter;
       }
-      this.buildStats();
+      this.stats = this.statsService.buildStats(this.data, {
+        isGoalie: this.isGoalie,
+        statsPerGame: this.statsPerGame,
+        positionFilter: this.positionFilter,
+        viewContext: this.viewContext,
+      });
       if (this.hasSeasons) {
         this.setupSeasonData();
       }
@@ -381,7 +370,12 @@ export class PlayerCardComponent implements OnDestroy {
     this.navigationContext?.onNavigate?.(newIndex);
 
     // Update UI
-    this.buildStats();
+    this.stats = this.statsService.buildStats(this.data, {
+      isGoalie: this.isGoalie,
+      statsPerGame: this.statsPerGame,
+      positionFilter: this.positionFilter,
+      viewContext: this.viewContext,
+    });
     if (this.hasSeasons) {
       this.setupSeasonData();
     }
@@ -418,51 +412,6 @@ export class PlayerCardComponent implements OnDestroy {
     }
   }
 
-  private buildStats(): void {
-    // Build excluded columns based on current filter state
-    const excludedColumns = [...this.baseExcludedColumns];
-    if (this.statsPerGame) {
-      excludedColumns.push('score');
-    }
-
-    if (this.viewContext === 'combined') {
-      excludedColumns.push('season');
-    }
-
-    // Determine if we should use position-based scores
-    const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
-    const player = this.data as Player;
-
-    this.stats = this.reorderStatsForDisplay(
-      Object.keys(this.data).filter((key) => !excludedColumns.includes(key))
-    ).map((key) => {
-      let value: string | number;
-
-      if (key === 'season') {
-        value = this.formatSeasonDisplay(
-          this.data[key as keyof typeof this.data] as number
-        );
-      } else if (usePositionScores && key === 'score' && player.scoreByPosition != null) {
-        value = player.scoreByPosition;
-      } else if (usePositionScores && key === 'scoreAdjustedByGames' && player.scoreByPositionAdjustedByGames != null) {
-        value = player.scoreByPositionAdjustedByGames;
-      } else if (!usePositionScores && key === 'score' && player._originalScore != null) {
-        // Use preserved original score when filter is 'all' (data may have been transformed)
-        value = player._originalScore;
-      } else if (!usePositionScores && key === 'scoreAdjustedByGames' && player._originalScoreAdjustedByGames != null) {
-        // Use preserved original per-game score when filter is 'all'
-        value = player._originalScoreAdjustedByGames;
-      } else {
-        value = this.data[key as keyof typeof this.data] as string | number;
-      }
-
-      return {
-        label: `tableColumn.${key}`,
-        value,
-      };
-    });
-  }
-
   get positionAbbreviation(): string {
     if (this.isGoalie) return 'M';
     const player = this.data as Player;
@@ -496,7 +445,12 @@ export class PlayerCardComponent implements OnDestroy {
     const newFilter: PositionFilter = checked ? ((player.position as PositionFilter) ?? 'F') : 'all';
     this.filterService.updatePlayerFilters({ positionFilter: newFilter });
     this.positionFilter = newFilter;
-    this.buildStats();
+    this.stats = this.statsService.buildStats(this.data, {
+      isGoalie: this.isGoalie,
+      statsPerGame: this.statsPerGame,
+      positionFilter: this.positionFilter,
+      viewContext: this.viewContext,
+    });
     if (this.hasSeasons) {
       this.setupSeasonData();
     }
@@ -535,7 +489,7 @@ export class PlayerCardComponent implements OnDestroy {
         ...season,
         seasonDisplay: this.isMobile
           ? this.formatSeasonShort(season.season)
-          : this.formatSeasonDisplay(season.season),
+          : this.statsService.formatSeasonDisplay(season.season),
         ...scoreOverrides,
       };
     }) as (PlayerSeasonStats | GoalieSeasonStats)[];
@@ -604,12 +558,6 @@ export class PlayerCardComponent implements OnDestroy {
   }
 
 
-  private formatSeasonDisplay(year: number): string {
-    const nextYear = year + 1;
-    const nextYearShort = String(nextYear).slice(-2);
-    return `${year}-${nextYearShort}`;
-  }
-
   private formatSeasonShort(year: number): string {
     const startShort = String(year).slice(-2);
     const nextYear = year + 1;
@@ -657,58 +605,6 @@ export class PlayerCardComponent implements OnDestroy {
 
   isCareerBest(column: string, season: number): boolean {
     return this.careerBests.get(column)?.has(season) ?? false;
-  }
-
-  private reorderStatsForDisplay(keys: string[]): string[] {
-    let reorderedKeys = [...keys];
-
-    // Define the priority order for score-related columns
-    // Order should be: season (if exists), score, scoreAdjustedByGames, games, then rest
-    const priorityColumns = ['season', 'score', 'scoreAdjustedByGames', 'games'];
-
-    // Extract priority columns that exist in the keys
-    const existingPriorityColumns = priorityColumns.filter((col) =>
-      reorderedKeys.includes(col)
-    );
-
-    // Get remaining columns (not in priority list)
-    const remainingColumns = reorderedKeys.filter(
-      (key) => !priorityColumns.includes(key)
-    );
-
-    // Combine: priority columns first, then remaining
-    reorderedKeys = [...existingPriorityColumns, ...remainingColumns];
-
-    // Reorder goalie stats: place savePercent and gaa after saves
-    if (
-      reorderedKeys.includes('gaa') ||
-      reorderedKeys.includes('savePercent')
-    ) {
-      const savesIndex = reorderedKeys.indexOf('saves');
-      if (savesIndex !== -1) {
-        // Remove savePercent and gaa from their current positions
-        const tempKeys = reorderedKeys.filter(
-          (key) => key !== 'gaa' && key !== 'savePercent'
-        );
-
-        // Insert them after saves (savePercent first, then gaa)
-        const insertIndex = tempKeys.indexOf('saves') + 1;
-        if (reorderedKeys.includes('savePercent')) {
-          tempKeys.splice(insertIndex, 0, 'savePercent');
-        }
-        if (reorderedKeys.includes('gaa')) {
-          tempKeys.splice(
-            insertIndex + (reorderedKeys.includes('savePercent') ? 1 : 0),
-            0,
-            'gaa'
-          );
-        }
-
-        reorderedKeys = tempKeys;
-      }
-    }
-
-    return reorderedKeys;
   }
 
   onTabChange(index: number): void {

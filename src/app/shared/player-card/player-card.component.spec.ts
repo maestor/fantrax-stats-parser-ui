@@ -373,10 +373,10 @@ describe("PlayerCardComponent", () => {
     });
 
     it("should reorder stats keys correctly when only gaa is present", () => {
-      const componentAsAny = component as any;
+      const statsService = (component as any).statsService;
       const keys = ["games", "saves", "gaa"];
 
-      const reordered = componentAsAny.reorderStatsForDisplay(keys);
+      const reordered = statsService.reorderStatsForDisplay(keys);
 
       const savesIndex = reordered.indexOf("saves");
       const gaaIndex = reordered.indexOf("gaa");
