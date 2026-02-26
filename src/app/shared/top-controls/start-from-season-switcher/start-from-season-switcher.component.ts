@@ -77,14 +77,14 @@ export class StartFromSeasonSwitcherComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ data, teamChanged }) => {
         const normalized = [...data].map((s) => {
-          const normalizedSeason = toSeasonNumber((s as any).season);
+          const normalizedSeason = toSeasonNumber(s.season);
           return normalizedSeason === undefined ? s : { ...s, season: normalizedSeason };
         });
 
         // User intent is selecting a "starting" season, so present oldest → newest.
         this.seasons = normalized.sort((a, b) => {
-          const aSeason = toSeasonNumber((a as any).season);
-          const bSeason = toSeasonNumber((b as any).season);
+          const aSeason = toSeasonNumber(a.season);
+          const bSeason = toSeasonNumber(b.season);
           if (aSeason === undefined || bSeason === undefined) return 0;
           return aSeason - bSeason;
         });

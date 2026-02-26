@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import type { ChartConfiguration, ChartData } from 'chart.js';
+import type { ChartConfiguration, ChartData, TooltipItem } from 'chart.js';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { Player, Goalie, PlayerScores } from '@services/api.service';
 import { StatsContext } from '@shared/types/context.types';
@@ -73,7 +73,7 @@ export class ComparisonRadarComponent implements OnInit {
         },
         tooltip: {
           callbacks: {
-            label: (context: any) => {
+            label: (context: TooltipItem<'radar'>) => {
               const label = context.dataset.label || '';
               const value = context.parsed.r;
               return `${label}: ${value}/100`;
@@ -85,7 +85,7 @@ export class ComparisonRadarComponent implements OnInit {
           backgroundColor: tooltipBg,
           borderColor: gridColor,
           borderWidth: 1,
-        } as any,
+        },
       },
     };
   }

@@ -25,7 +25,7 @@ import { SettingsService } from '@services/settings.service';
 import { DrawerContextService } from '@services/drawer-context.service';
 import { ViewportService } from '@services/viewport.service';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
-import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
+import { StatsTableComponent, TableRow } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
 import { ComparisonService } from '@services/comparison.service';
@@ -50,8 +50,8 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
   readonly comparisonService = inject(ComparisonService);
   readonly canSelectRow$ = this.comparisonService.canSelectMore$;
 
-  isRowSelected = (row: any) => this.comparisonService.isSelected(row);
-  onRowSelect = (row: any) => this.comparisonService.toggle(row);
+  isRowSelected = (row: TableRow) => this.comparisonService.isSelected(row as Player);
+  onRowSelect = (row: TableRow) => this.comparisonService.toggle(row as Player);
 
   reportType: ReportType = 'regular';
   season?: number;
@@ -125,7 +125,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
           // During team changes, startFromSeason is briefly cleared so we don't fetch with the
           // previous team's value. Wait until StartFromSeasonSwitcher resolves the new team's
           // oldest season.
-          if (filters.season === undefined && (params as any).startFrom === undefined) {
+          if (filters.season === undefined && params.startFrom === undefined) {
             this.tableData = [];
             this.maxGames = 0;
             this.drawerContextService.setMaxGames('player', 0);
