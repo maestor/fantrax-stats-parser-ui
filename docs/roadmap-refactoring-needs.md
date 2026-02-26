@@ -16,27 +16,7 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 
 ---
 
-## Batch 3: Reduce `any` Usage — Improve Type Safety (~3-4h)
-
-**Problem:** Many places use `any` for callback parameters and data, which undermines the value of TypeScript. The most impactful instances:
-
-- `stats-table.component.ts`: `@Input() data: any = []`, callback types `(row: any) => ...`
-- `player-stats.component.ts` / `goalie-stats.component.ts`: row callbacks typed as `(row: any)`
-- `player-card.component.ts`: `(row as any)?.name` cast
-- `comparison-stats.component.ts` / `comparison-dialog.component.ts`: property access via `Record<string, unknown>` cast
-
-**Affected files:**
-- `src/app/shared/stats-table/stats-table.component.ts`
-- `src/app/player-stats/player-stats.component.ts`
-- `src/app/goalie-stats/goalie-stats.component.ts`
-- `src/app/shared/player-card/player-card.component.ts`
-- `src/app/shared/comparison-dialog/comparison-stats/comparison-stats.component.ts`
-
-**Proposed fix:** Introduce generics on `StatsTableComponent<T extends Player | Goalie>` and properly type all row callbacks. Centralize shared types under `src/app/shared/types/`.
-
----
-
-## Batch 4: Leaderboard Components Deduplication (~2-3h)
+## Batch 2: Leaderboard Components Deduplication (~2-3h)
 
 **Problem:** `LeaderboardRegularComponent` and `LeaderboardPlayoffsComponent` are near-identical — same data-fetching pattern (`OnInit` + `takeUntil` + subscribe), same loading/error state, same position derivation logic. They differ only in API call and column definitions.
 
@@ -48,7 +28,7 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 
 ---
 
-## Batch 5: Break Up PlayerCardComponent (~4-6h)
+## Batch 3: Break Up PlayerCardComponent (~4-6h)
 
 **Problem:** `player-card.component.ts` is 827 lines doing too many unrelated things:
 
@@ -69,5 +49,4 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 
 ## Notes
 
-- Batch 1 and Batch 4 are closely related and could be combined into a single "consolidate data-loading patterns" effort.
-- Batch 3 (type safety) can be done incrementally, file by file, without touching logic.
+- Batch 1 and Batch 2 are closely related and could be combined into a single "consolidate data-loading patterns" effort.
