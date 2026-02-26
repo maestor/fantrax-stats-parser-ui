@@ -198,35 +198,56 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Type**: Presentational Component (Dumb)
 
-**Purpose**: Reusable data table for displaying player/goalie statistics with search, sorting and Player Card integration.
+**Purpose**: Reusable data table for displaying any tabular data — player/goalie statistics (with search, sorting, comparison checkboxes, and Player Card integration) and leaderboards (read-only, icon column headers, custom cell formatting).
 
 **Inputs**:
 
 ```typescript
 @Input() data: any[] = [];
-@Input() columns: string[] = [];
+@Input() columns: Column[] = [];          // Column[] from column.types.ts; optional icon for emoji/material headers
 @Input() defaultSortColumn = 'score';
 @Input() loading = false;
 @Input() apiError = false;
 @Input() tableId = 'stats-table';
+@Input() showSearch = true;              // Show/hide search box
+@Input() showPositionColumn = true;      // Show/hide auto-numbered position column
+@Input() positionValue?: (row: any, index: number) => string; // Custom position display (e.g. "1", "")
+@Input() clickable = true;              // Whether rows open Player Card on click
+@Input() selectRow = false;             // Show comparison checkboxes in position column
+@Input() isRowSelected: (row: any) => boolean = () => false;
+@Input() canSelectRow$: Observable<boolean> = of(true);
+@Input() onRowSelect?: (row: any) => void;
+@Input() formatCell?: (column: string, value: any) => string; // Custom cell formatter
 ```
 
-**Outputs**: None — row clicks open `PlayerCardComponent` directly via `MatDialog`, passing a `navigationContext` that enables in-dialog player navigation with active row syncing.
+**Outputs**: None — when `clickable` is true, row clicks open `PlayerCardComponent` directly via `MatDialog`, passing a `navigationContext` that enables in-dialog player navigation with active row syncing.
 
 **Features**:
 
 - Angular Material table (`MatTableDataSource`) with `MatSort`-backed sorting (defaulting to the `score` column)
-- Search box that filters rows via `filterItems()`
-- Column configuration driven by `columns` and shared definitions in `table-columns.ts`
-- Static `position` column that auto-numbers rows
+- Optional search box (`showSearch`) that filters rows via `filterItems()`
+- Column configuration driven by `Column[]` objects from `column.types.ts`; column headers support emoji and Material icons via the `icon` property
+- Optional auto-numbered `position` column (`showPositionColumn`) with optional comparison checkboxes (`selectRow`)
 - Compact stat headers from `tableColumnShort.*` with tooltips using full labels from `tableColumn.*`
 - Center-aligned numeric/stat headers and cells, with the name column left-aligned for readability
 - Responsive layout with horizontal scrolling on narrow viewports
 
-**Usage**:
+**Usage** (stats page with search, comparison):
 
 ```html
-<app-stats-table [data]="tableData" [columns]="tableColumns"></app-stats-table>
+<app-stats-table [data]="tableData" [columns]="tableColumns"
+  [selectRow]="true" [isRowSelected]="isRowSelected" [onRowSelect]="onRowSelect">
+</app-stats-table>
+```
+
+**Usage** (leaderboard — read-only, no search, icon headers, custom cell format):
+
+```html
+<app-stats-table [data]="data" [columns]="columns"
+  [showSearch]="false" [showPositionColumn]="false"
+  [clickable]="false" [selectRow]="false"
+  [formatCell]="formatCell" tableId="leaderboard-table">
+</app-stats-table>
 ```
 
 ---
