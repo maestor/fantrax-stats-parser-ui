@@ -374,6 +374,27 @@ describe('StatsTableComponent', () => {
 
       expect(component.activeRowIndex).toBe(0);
     });
+
+    it('scrollRowIntoView should scroll the matching row into view', () => {
+      const container = document.createElement('div');
+
+      const row0 = document.createElement('tr');
+      row0.dataset['rowIndex'] = '0';
+      const row1 = document.createElement('tr');
+      row1.dataset['rowIndex'] = '1';
+
+      (row0 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
+      (row1 as any).scrollIntoView = jasmine.createSpy('scrollIntoView');
+
+      container.appendChild(row0);
+      container.appendChild(row1);
+      (component as any).tableRootRef = new ElementRef(container);
+
+      (component as any).scrollRowIntoView(1);
+
+      expect((row1 as any).scrollIntoView).toHaveBeenCalledWith({ block: 'nearest', inline: 'nearest' });
+      expect((row0 as any).scrollIntoView).not.toHaveBeenCalled();
+    });
   });
 
   describe('accessibility labeling', () => {
