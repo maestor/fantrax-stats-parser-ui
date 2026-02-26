@@ -1,27 +1,18 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { ApiService, PlayoffLeaderboardEntry } from '@services/api.service';
-import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
+import { Component, inject } from '@angular/core';
+import { ApiService } from '@services/api.service';
 import { Column } from '@shared/column.types';
-import { derivePositions } from '@shared/utils/position.utils';
-
-type PlayoffRow = PlayoffLeaderboardEntry & { displayPosition: string };
+import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 
 @Component({
   selector: 'app-leaderboard-playoffs',
   standalone: true,
-  imports: [StatsTableComponent],
-  templateUrl: './leaderboard-playoffs.component.html',
-  styleUrl: './leaderboard-playoffs.component.scss',
+  imports: [LeaderboardComponent],
+  template: `<app-leaderboard [fetchFn]="fetchFn" [columns]="columns" />`,
 })
-export class LeaderboardPlayoffsComponent implements OnInit, OnDestroy {
+export class LeaderboardPlayoffsComponent {
   private apiService = inject(ApiService);
-  private destroy$ = new Subject<void>();
 
-  data: PlayoffRow[] = [];
-  loading = true;
-  apiError = false;
-
+  readonly fetchFn = () => this.apiService.getLeaderboardPlayoffs();
   readonly columns: Column[] = [
     { field: 'displayPosition', align: 'left', sortable: false },
     { field: 'teamName', align: 'left' },
@@ -31,23 +22,4 @@ export class LeaderboardPlayoffsComponent implements OnInit, OnDestroy {
     { field: 'secondRound' },
     { field: 'firstRound' },
   ];
-
-  ngOnInit(): void {
-    this.loading = true;
-    this.apiService.getLeaderboardPlayoffs().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (data) => {
-        this.data = derivePositions(data);
-        this.loading = false;
-      },
-      error: () => {
-        this.apiError = true;
-        this.loading = false;
-      },
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }

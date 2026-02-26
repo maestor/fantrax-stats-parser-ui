@@ -1,27 +1,18 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
-import { ApiService, RegularLeaderboardEntry } from '@services/api.service';
-import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
+import { Component, inject } from '@angular/core';
+import { ApiService } from '@services/api.service';
 import { Column } from '@shared/column.types';
-import { derivePositions } from '@shared/utils/position.utils';
-
-type RegularRow = RegularLeaderboardEntry & { displayPosition: string };
+import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 
 @Component({
   selector: 'app-leaderboard-regular',
   standalone: true,
-  imports: [StatsTableComponent],
-  templateUrl: './leaderboard-regular.component.html',
-  styleUrl: './leaderboard-regular.component.scss',
+  imports: [LeaderboardComponent],
+  template: `<app-leaderboard [fetchFn]="fetchFn" [columns]="columns" [formatCell]="formatCell" />`,
 })
-export class LeaderboardRegularComponent implements OnInit, OnDestroy {
+export class LeaderboardRegularComponent {
   private apiService = inject(ApiService);
-  private destroy$ = new Subject<void>();
 
-  data: RegularRow[] = [];
-  loading = true;
-  apiError = false;
-
+  readonly fetchFn = () => this.apiService.getLeaderboardRegular();
   readonly columns: Column[] = [
     { field: 'displayPosition', align: 'left', sortable: false },
     { field: 'teamName', align: 'left' },
@@ -35,30 +26,8 @@ export class LeaderboardRegularComponent implements OnInit, OnDestroy {
   ];
 
   readonly formatCell = (column: string, value: number | string | undefined): string => {
-    if ((column === 'winPercent' || column === 'pointsPercent') && typeof value === 'number') return this.formatWinPercent(value);
+    if ((column === 'winPercent' || column === 'pointsPercent') && typeof value === 'number')
+      return (value * 100).toFixed(1).replace('.', ',');
     return String(value ?? '');
   };
-
-  ngOnInit(): void {
-    this.loading = true;
-    this.apiService.getLeaderboardRegular().pipe(takeUntil(this.destroy$)).subscribe({
-      next: (data) => {
-        this.data = derivePositions(data);
-        this.loading = false;
-      },
-      error: () => {
-        this.apiError = true;
-        this.loading = false;
-      },
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  formatWinPercent(value: number): string {
-    return (value * 100).toFixed(1).replace('.', ',');
-  }
 }
