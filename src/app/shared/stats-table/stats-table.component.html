@@ -92,7 +92,7 @@
 
       <tr mat-header-row (keydown)="onHeaderKeydown($event)"
         *matHeaderRowDef="displayedFields; sticky: true"></tr>
-      <tr mat-row #dataRow
+      <tr mat-row
         [class.clickable-row]="clickable"
         (click)="clickable && selectItem(row)"
         (focus)="onRowFocus(i)"

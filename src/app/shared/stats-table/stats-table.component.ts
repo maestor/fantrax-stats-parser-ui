@@ -4,8 +4,6 @@ import {
   Component,
   Input,
   ElementRef,
-  QueryList,
-  ViewChildren,
   ViewChild,
   SimpleChanges,
   OnChanges,
@@ -82,7 +80,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('searchInput', { read: ElementRef }) searchInput?: ElementRef<HTMLInputElement>;
-  @ViewChildren('dataRow', { read: ElementRef }) dataRows?: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild('tableRoot', { read: ElementRef }) tableRootRef?: ElementRef<HTMLElement>;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['tableId']) {
@@ -344,7 +342,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   private getRowCount(): number {
-    return this.dataRows?.length ?? 0;
+    return this.tableRootRef?.nativeElement.querySelectorAll('[data-row-index]').length ?? 0;
   }
 
   private ensureActiveRowInRange(): void {
@@ -364,18 +362,17 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   private focusRow(index: number): void {
-    const rows = this.dataRows?.toArray() ?? [];
-    if (rows.length === 0) {
-      return;
-    }
+    const tableEl = this.tableRootRef?.nativeElement;
+    if (!tableEl) return;
+
+    const rows = Array.from(tableEl.querySelectorAll<HTMLElement>('[data-row-index]'));
+    if (rows.length === 0) return;
 
     const clampedIndex = Math.max(0, Math.min(index, rows.length - 1));
     this.activeRowIndex = clampedIndex;
 
-    const el = rows[clampedIndex]?.nativeElement;
-    if (!el) {
-      return;
-    }
+    const el = rows.find(r => Number(r.dataset['rowIndex']) === clampedIndex);
+    if (!el) return;
 
     el.focus();
     el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
@@ -383,11 +380,14 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   /** Scroll a row into view without stealing focus (used by dialog navigation callback). */
   private scrollRowIntoView(index: number): void {
-    const rows = this.dataRows?.toArray() ?? [];
+    const tableEl = this.tableRootRef?.nativeElement;
+    if (!tableEl) return;
+
+    const rows = Array.from(tableEl.querySelectorAll<HTMLElement>('[data-row-index]'));
     if (rows.length === 0) return;
 
     const clampedIndex = Math.max(0, Math.min(index, rows.length - 1));
-    const el = rows[clampedIndex]?.nativeElement;
+    const el = rows.find(r => Number(r.dataset['rowIndex']) === clampedIndex);
     el?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }
