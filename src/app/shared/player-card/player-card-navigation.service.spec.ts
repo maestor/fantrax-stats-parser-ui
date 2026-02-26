@@ -139,12 +139,15 @@ describe('PlayerCardNavigationService', () => {
     tick(125);
   }));
 
-  it('ngOnDestroy removes wheel listener and clears timers', () => {
+  it('ngOnDestroy removes wheel listener and clears timers', fakeAsync(() => {
     const { service } = makeService();
     spyOn(document, 'removeEventListener');
+    (service as any).startWheelCooldown();
     service.ngOnDestroy();
     expect(document.removeEventListener).toHaveBeenCalled();
-  });
+    // Ticking past the cooldown duration after destroy should not throw
+    tick(500);
+  }));
 
   it('onWheel navigates next when horizontal delta exceeds threshold', fakeAsync(() => {
     const { service } = makeService();

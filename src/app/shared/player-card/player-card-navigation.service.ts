@@ -25,6 +25,7 @@ export class PlayerCardNavigationService implements OnDestroy {
   private wheelDeltaX = 0;
   private wheelCooldown = false;
   private wheelResetTimer: ReturnType<typeof setTimeout> | null = null;
+  private wheelCooldownTimer: ReturnType<typeof setTimeout> | null = null;
   private animationTimer: ReturnType<typeof setTimeout> | null = null;
   private readonly animationDuration = 125;
   private readonly wheelHandler = (e: WheelEvent) => this.onWheel(e);
@@ -50,6 +51,7 @@ export class PlayerCardNavigationService implements OnDestroy {
   ngOnDestroy(): void {
     document.removeEventListener('wheel', this.wheelHandler);
     if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
+    if (this.wheelCooldownTimer) clearTimeout(this.wheelCooldownTimer);
     if (this.animationTimer) clearTimeout(this.animationTimer);
   }
 
@@ -146,6 +148,6 @@ export class PlayerCardNavigationService implements OnDestroy {
     this.wheelDeltaX = 0;
     this.wheelCooldown = true;
     if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
-    setTimeout(() => { this.wheelCooldown = false; this.wheelDeltaX = 0; }, 500);
+    this.wheelCooldownTimer = setTimeout(() => { this.wheelCooldown = false; this.wheelDeltaX = 0; }, 500);
   }
 }
