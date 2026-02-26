@@ -16,19 +16,7 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 
 ---
 
-## Batch 2: Leaderboard Components Deduplication (~2-3h)
-
-**Problem:** `LeaderboardRegularComponent` and `LeaderboardPlayoffsComponent` are near-identical — same data-fetching pattern (`OnInit` + `takeUntil` + subscribe), same loading/error state, same position derivation logic. They differ only in API call and column definitions.
-
-**Affected files:**
-- `src/app/leaderboards/regular/leaderboard-regular.component.ts`
-- `src/app/leaderboards/playoffs/leaderboard-playoffs.component.ts`
-
-**Proposed fix:** Merge into a single configurable `LeaderboardComponent` with `@Input()` for data source and columns, instantiated twice with different configs from the parent.
-
----
-
-## Batch 3: Break Up PlayerCardComponent (~4-6h)
+## Batch 2: Break Up PlayerCardComponent (~4-6h)
 
 **Problem:** `player-card.component.ts` is 827 lines doing too many unrelated things:
 
@@ -46,7 +34,3 @@ Identified refactoring opportunities grouped into logical batches. Each batch is
 **Proposed fix:** Extract navigation and gesture handling into a dedicated service (`PlayerCardNavigationService`), stats building into `PlayerCardStatsService`, and season data setup into `PlayerCardSeasonsService`. Main component becomes a thin orchestrator.
 
 ---
-
-## Notes
-
-- Batch 1 and Batch 2 are closely related and could be combined into a single "consolidate data-loading patterns" effort.

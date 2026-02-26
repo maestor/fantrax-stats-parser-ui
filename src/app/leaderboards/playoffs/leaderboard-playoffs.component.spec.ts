@@ -1,27 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LeaderboardPlayoffsComponent } from './leaderboard-playoffs.component';
-import { ApiService, PlayoffLeaderboardEntry } from '@services/api.service';
+import { ApiService } from '@services/api.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject, of, throwError } from 'rxjs';
-
-const MOCK_ENTRIES: PlayoffLeaderboardEntry[] = [
-  {
-    teamId: '1', teamName: 'Team A',
-    championships: 3, finals: 4, conferenceFinals: 6,
-    secondRound: 8, firstRound: 10, tieRank: false,
-  },
-  {
-    teamId: '2', teamName: 'Team B',
-    championships: 2, finals: 3, conferenceFinals: 5,
-    secondRound: 7, firstRound: 9, tieRank: false,
-  },
-  {
-    teamId: '3', teamName: 'Team C',
-    championships: 2, finals: 3, conferenceFinals: 4,
-    secondRound: 6, firstRound: 8, tieRank: true,
-  },
-];
+import { of } from 'rxjs';
 
 describe('LeaderboardPlayoffsComponent', () => {
   let component: LeaderboardPlayoffsComponent;
@@ -30,14 +12,10 @@ describe('LeaderboardPlayoffsComponent', () => {
 
   beforeEach(async () => {
     apiSpy = jasmine.createSpyObj('ApiService', ['getLeaderboardPlayoffs']);
-    apiSpy.getLeaderboardPlayoffs.and.returnValue(of(MOCK_ENTRIES));
+    apiSpy.getLeaderboardPlayoffs.and.returnValue(of([]));
 
     await TestBed.configureTestingModule({
-      imports: [
-        LeaderboardPlayoffsComponent,
-        TranslateModule.forRoot(),
-        NoopAnimationsModule,
-      ],
+      imports: [LeaderboardPlayoffsComponent, TranslateModule.forRoot(), NoopAnimationsModule],
       providers: [{ provide: ApiService, useValue: apiSpy }],
     }).compileComponents();
 
@@ -50,53 +28,8 @@ describe('LeaderboardPlayoffsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should load data and derive positions on init', () => {
-    expect(apiSpy.getLeaderboardPlayoffs).toHaveBeenCalledTimes(1);
-    expect(component.data.length).toBe(3);
-  });
-
-  it('should derive positions correctly with ties', () => {
-    const positions = component.data.map(d => d.displayPosition);
-    expect(positions).toEqual(['1', '2', '']);
-  });
-
-  it('should set apiError and clear loading on API failure', async () => {
-    apiSpy.getLeaderboardPlayoffs.and.returnValue(throwError(() => new Error('API error')));
-
-    await TestBed.resetTestingModule();
-    await TestBed.configureTestingModule({
-      imports: [LeaderboardPlayoffsComponent, TranslateModule.forRoot(), NoopAnimationsModule],
-      providers: [{ provide: ApiService, useValue: apiSpy }],
-    }).compileComponents();
-
-    const errorFixture = TestBed.createComponent(LeaderboardPlayoffsComponent);
-    errorFixture.detectChanges();
-    const errorComponent = errorFixture.componentInstance;
-
-    expect(errorComponent.apiError).toBeTrue();
-    expect(errorComponent.loading).toBeFalse();
-  });
-
-  it('should set loading to true before data arrives', async () => {
-    const subject$ = new Subject<PlayoffLeaderboardEntry[]>();
-    apiSpy.getLeaderboardPlayoffs.and.returnValue(subject$.asObservable());
-
-    await TestBed.resetTestingModule();
-    await TestBed.configureTestingModule({
-      imports: [LeaderboardPlayoffsComponent, TranslateModule.forRoot(), NoopAnimationsModule],
-      providers: [{ provide: ApiService, useValue: apiSpy }],
-    }).compileComponents();
-
-    const pendingFixture = TestBed.createComponent(LeaderboardPlayoffsComponent);
-    pendingFixture.detectChanges();
-
-    expect(pendingFixture.componentInstance.loading).toBeTrue();
-
-    subject$.next(MOCK_ENTRIES);
-    subject$.complete();
-    pendingFixture.detectChanges();
-
-    expect(pendingFixture.componentInstance.loading).toBeFalse();
-    expect(pendingFixture.componentInstance.data.length).toBe(3);
+  it('fetchFn should delegate to getLeaderboardPlayoffs', () => {
+    component.fetchFn();
+    expect(apiSpy.getLeaderboardPlayoffs).toHaveBeenCalled();
   });
 });

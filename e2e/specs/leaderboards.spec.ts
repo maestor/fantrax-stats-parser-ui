@@ -2,19 +2,19 @@ import { test, expect } from '../fixtures/test-fixture';
 import { LEADERBOARD_LABELS } from '../config/test-data';
 
 test.describe('Leaderboards', () => {
-  test('full flow: redirect, playoffs table with position tie logic, tab switch, regular table', async ({ page }) => {
-    // /leaderboards redirects to playoffs
+  test('full flow: redirect, regular table with position tie logic, tab switch, playoffs table', async ({ page }) => {
+    // /leaderboards redirects to regular
     await page.goto('/leaderboards');
-    await expect(page).toHaveURL(/\/leaderboards\/playoffs/);
+    await expect(page).toHaveURL(/\/leaderboards\/regular/);
 
-    // playoffs tab is active and table has data
-    const playoffsTab = page.getByRole('tab', { name: LEADERBOARD_LABELS.PLAYOFFS });
-    await expect(playoffsTab).toHaveAttribute('aria-selected', 'true');
+    // regular tab is active and table has data
+    const regularTab = page.getByRole('tab', { name: LEADERBOARD_LABELS.REGULAR });
+    await expect(regularTab).toHaveAttribute('aria-selected', 'true');
     const rows = page.locator('tr[mat-row]');
     await rows.first().waitFor({ state: 'visible', timeout: 10000 });
     expect(await rows.count()).toBeGreaterThan(0);
 
-    // position tie logic is correct on playoffs table
+    // position tie logic is correct on regular table
     const positionCells = page.locator('tr[mat-row] td:first-child');
     const positions: string[] = [];
     const count = await positionCells.count();
@@ -24,13 +24,13 @@ test.describe('Leaderboards', () => {
     expect(positions.some(p => /^\d+$/.test(p))).toBe(true);
     expect(positions.some(p => p === '')).toBe(true);
 
-    // switch to Runkosarja tab
-    const regularTab = page.getByRole('tab', { name: LEADERBOARD_LABELS.REGULAR });
-    await regularTab.click();
-    await expect(page).toHaveURL(/\/leaderboards\/regular/);
-    await expect(regularTab).toHaveAttribute('aria-selected', 'true');
+    // switch to Playoffs tab
+    const playoffsTab = page.getByRole('tab', { name: LEADERBOARD_LABELS.PLAYOFFS });
+    await playoffsTab.click();
+    await expect(page).toHaveURL(/\/leaderboards\/playoffs/);
+    await expect(playoffsTab).toHaveAttribute('aria-selected', 'true');
 
-    // regular table has data
+    // playoffs table has data
     await rows.first().waitFor({ state: 'visible', timeout: 10000 });
     expect(await rows.count()).toBeGreaterThan(0);
   });
