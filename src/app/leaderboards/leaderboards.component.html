@@ -1,21 +1,13 @@
 <div class="leaderboards">
-  <mat-tab-group>
-    <mat-tab [label]="'leaderboards.tabs.playoffs' | translate">
-      <ng-template matTabContent>
-        <app-leaderboard
-          [fetchFn]="playoffsFetchFn"
-          [columns]="playoffsColumns"
-        />
-      </ng-template>
-    </mat-tab>
-    <mat-tab [label]="'leaderboards.tabs.regular' | translate">
-      <ng-template matTabContent>
-        <app-leaderboard
-          [fetchFn]="regularFetchFn"
-          [columns]="regularColumns"
-          [formatCell]="regularFormatCell"
-        />
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (tab of tabs; track tab.path) {
+    <a mat-tab-link [routerLink]="tab.path" [active]="activeLink === tab.path" ariaCurrentWhenActive="page">
+      {{ tab.label | translate }}
+    </a>
+    }
+  </nav>
+
+  <mat-tab-nav-panel #tabPanel>
+    <router-outlet />
+  </mat-tab-nav-panel>
 </div>
