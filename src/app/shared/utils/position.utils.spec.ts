@@ -1,4 +1,4 @@
-import { derivePositions } from './position-utils';
+import { derivePositions } from './position.utils';
 
 describe('derivePositions', () => {
   it('assigns sequential positions when no ties', () => {

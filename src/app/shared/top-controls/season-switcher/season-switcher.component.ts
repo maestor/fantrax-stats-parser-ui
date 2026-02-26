@@ -21,6 +21,8 @@ import { ApiService, Season } from '@services/api.service';
 import { FilterService, FilterState } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
 import { SettingsService } from '@services/settings.service';
+import { toApiTeamId } from '@shared/utils/api.utils';
+import { toSeasonNumber } from '@shared/utils/season.utils';
 
 @Component({
   selector: 'app-season-switcher',
@@ -80,7 +82,7 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
         auditTime(0),
         map(([reportType, teamId, startFrom]) => ({
           reportType,
-          teamId: this.toApiTeamId(teamId),
+          teamId: toApiTeamId(teamId),
           startFrom,
         })),
         scan(
@@ -129,7 +131,7 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
           this.seasons = [...data]
             .reverse()
             .map((s) => {
-              const normalizedSeason = this.toSeasonNumber((s as any).season);
+              const normalizedSeason = toSeasonNumber((s as any).season);
               return normalizedSeason === undefined ? s : { ...s, season: normalizedSeason };
             });
 
@@ -159,21 +161,8 @@ export class SeasonSwitcherComponent implements OnInit, OnDestroy {
     )?.text;
   }
 
-  private toSeasonNumber(raw: unknown): number | undefined {
-    if (typeof raw === 'number' && Number.isFinite(raw)) return raw;
-    if (typeof raw === 'string') {
-      const parsed = Number(raw);
-      return Number.isFinite(parsed) ? parsed : undefined;
-    }
-    return undefined;
-  }
-
   private normalizeSelectedSeason(raw: unknown): number | 'all' {
-    return this.toSeasonNumber(raw) ?? 'all';
-  }
-
-  private toApiTeamId(teamId: string): string | undefined {
-    return teamId === '1' ? undefined : teamId;
+    return toSeasonNumber(raw) ?? 'all';
   }
 
   changeSeason(event: MatSelectChange): void {

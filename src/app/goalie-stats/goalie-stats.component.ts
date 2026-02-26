@@ -29,6 +29,7 @@ import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
 import { ComparisonService } from '@services/comparison.service';
+import { toApiTeamId } from '@shared/utils/api.utils';
 
 @Component({
   selector: 'app-goalie-stats',
@@ -72,7 +73,7 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
       .pipe(
         auditTime(0),
         map(([filters, teamId, startFromSeason]) => {
-          const apiTeamId = this.toApiTeamId(teamId);
+          const apiTeamId = toApiTeamId(teamId);
           const startFrom = filters.season === undefined ? startFromSeason : undefined;
 
           const params: ApiParams = apiTeamId
@@ -189,7 +190,4 @@ export class GoalieStatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private toApiTeamId(teamId: string): string | undefined {
-    return teamId === '1' ? undefined : teamId;
-  }
 }

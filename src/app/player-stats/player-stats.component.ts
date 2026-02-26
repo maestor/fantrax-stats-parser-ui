@@ -29,6 +29,7 @@ import { StatsTableComponent } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
 import { ComparisonService } from '@services/comparison.service';
+import { toApiTeamId } from '@shared/utils/api.utils';
 
 @Component({
   selector: 'app-player-stats',
@@ -75,7 +76,7 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
         // Coalesce to the final "settled" state so we only fetch once.
         auditTime(0),
         map(([filters, teamId, startFromSeason]) => {
-          const apiTeamId = this.toApiTeamId(teamId);
+          const apiTeamId = toApiTeamId(teamId);
           const startFrom = filters.season === undefined ? startFromSeason : undefined;
 
           const params: ApiParams = apiTeamId
@@ -220,7 +221,4 @@ export class PlayerStatsComponent implements OnInit, OnDestroy {
       });
   }
 
-  private toApiTeamId(teamId: string): string | undefined {
-    return teamId === '1' ? undefined : teamId;
-  }
 }

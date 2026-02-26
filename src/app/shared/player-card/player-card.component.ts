@@ -19,7 +19,7 @@ import {
 import { FilterService, PositionFilter } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
-import { toSlug } from '../../utils/slug.utils';
+import { toSlug } from '@shared/utils/slug.utils';
 import { take } from 'rxjs';
 
 export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
