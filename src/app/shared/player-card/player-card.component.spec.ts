@@ -335,7 +335,7 @@ describe("PlayerCardComponent", () => {
       component.seasonColumns = [];
       component.seasonDataSource = [];
 
-      componentAsAny.setupSeasonData();
+      componentAsAny.refreshSeasonData();
 
       expect(component.seasonColumns).toContain("gaa");
       expect(component.seasonColumns).not.toContain("savePercent");
@@ -361,7 +361,7 @@ describe("PlayerCardComponent", () => {
       component.seasonColumns = [];
       component.seasonDataSource = [];
 
-      componentAsAny.setupSeasonData();
+      componentAsAny.refreshSeasonData();
 
       expect(component.seasonColumns).toContain("savePercent");
       expect(component.seasonColumns).not.toContain("gaa");
@@ -373,10 +373,10 @@ describe("PlayerCardComponent", () => {
     });
 
     it("should reorder stats keys correctly when only gaa is present", () => {
-      const componentAsAny = component as any;
+      const statsService = (component as any).statsService;
       const keys = ["games", "saves", "gaa"];
 
-      const reordered = componentAsAny.reorderStatsForDisplay(keys);
+      const reordered = statsService.reorderStatsForDisplay(keys);
 
       const savesIndex = reordered.indexOf("saves");
       const gaaIndex = reordered.indexOf("gaa");
@@ -861,7 +861,8 @@ describe("PlayerCardComponent", () => {
     });
 
     it("should format season as short form on mobile", () => {
-      const short = (component as any).formatSeasonShort(2024);
+      const seasonsService = (component as any).seasonsService;
+      const short = seasonsService['formatSeasonShort'](2024);
       expect(short).toBe("24-25");
     });
 
@@ -1161,13 +1162,13 @@ describe("PlayerCardComponent", () => {
       expect(firstRowText).toContain("tableColumn.score");
     });
 
-    it("should safely ignore setupSeasonData when there is no seasons array", () => {
+    it("should safely ignore refreshSeasonData when there is no seasons array", () => {
       const componentAsAny = component as any;
 
       expect(component.seasonColumns.length).toBe(0);
       expect(component.seasonDataSource.length).toBe(0);
 
-      componentAsAny.setupSeasonData();
+      componentAsAny.refreshSeasonData();
 
       expect(component.seasonColumns.length).toBe(0);
       expect(component.seasonDataSource.length).toBe(0);
@@ -1466,7 +1467,7 @@ describe("PlayerCardComponent", () => {
       expect(statLabels).toContain("tableColumn.scoreAdjustedByGames");
     });
 
-    it("should include score in excludedColumns getter when statsPerGame is true", async () => {
+    it("should not render score row in the table when statsPerGame is true", async () => {
       const { FilterService } = await import("@services/filter.service");
 
       dialogRefSpy = jasmine.createSpyObj<MatDialogRef<PlayerCardComponent>>(
@@ -1497,8 +1498,11 @@ describe("PlayerCardComponent", () => {
 
       // Wait for filter subscription to complete
       await new Promise((resolve) => setTimeout(resolve, 10));
+      f.detectChanges();
 
-      expect(c.excludedColumns).toContain("score");
+      const statLabels = c.stats.map((s) => s.label);
+      expect(statLabels).not.toContain("tableColumn.score");
+      expect(statLabels).toContain("tableColumn.scoreAdjustedByGames");
     });
 
     it("should place games after score columns in stats order", async () => {
@@ -2916,7 +2920,7 @@ describe("PlayerCardComponent", () => {
       const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       c.onKeydown(event);
 
-      expect(c.currentIndex).toBe(1);
+      expect(c.navigationService.currentIndex).toBe(1);
       expect(c.data.name).toBe('Player 2');
       expect(onNavigateSpy).toHaveBeenCalledWith(1);
     });
@@ -2963,7 +2967,7 @@ describe("PlayerCardComponent", () => {
       const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
       c.onKeydown(event);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
       expect(onNavigateSpy).toHaveBeenCalledWith(0);
     });
@@ -3011,7 +3015,7 @@ describe("PlayerCardComponent", () => {
       const event = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
       c.onKeydown(event);
 
-      expect(c.currentIndex).toBe(2);
+      expect(c.navigationService.currentIndex).toBe(2);
       expect(c.data.name).toBe('Player 3');
     });
 
@@ -3057,7 +3061,7 @@ describe("PlayerCardComponent", () => {
       const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       c.onKeydown(event);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
     });
 
@@ -3102,7 +3106,7 @@ describe("PlayerCardComponent", () => {
       const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       c.onKeydown(event);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
       expect(onNavigateSpy).not.toHaveBeenCalled();
     });
@@ -3148,7 +3152,7 @@ describe("PlayerCardComponent", () => {
       c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }] } as any);
       c.onTouchEnd({ changedTouches: [{ clientX: 0, clientY: 100 }] } as any);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
       expect(onNavigateSpy).not.toHaveBeenCalled();
     });
@@ -3194,7 +3198,7 @@ describe("PlayerCardComponent", () => {
       c.onTouchStart({ touches: [{ clientX: 200, clientY: 100 }] } as any);
       c.onTouchEnd({ changedTouches: [{ clientX: 100, clientY: 105 }] } as any);
 
-      expect(c.currentIndex).toBe(1);
+      expect(c.navigationService.currentIndex).toBe(1);
       expect(c.data.name).toBe('Player 2');
     });
 
@@ -3239,7 +3243,7 @@ describe("PlayerCardComponent", () => {
       c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }] } as any);
       c.onTouchEnd({ changedTouches: [{ clientX: 200, clientY: 105 }] } as any);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
     });
 
@@ -3284,7 +3288,7 @@ describe("PlayerCardComponent", () => {
       c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }] } as any);
       c.onTouchEnd({ changedTouches: [{ clientX: 120, clientY: 300 }] } as any);
 
-      expect(c.currentIndex).toBe(0); // No navigation
+      expect(c.navigationService.currentIndex).toBe(0); // No navigation
       expect(c.data.name).toBe('Player 1');
     });
 
@@ -3327,9 +3331,9 @@ describe("PlayerCardComponent", () => {
       f.detectChanges();
 
       // Simulate trackpad swipe right (deltaX > threshold → next)
-      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+      (c.navigationService as any).onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
 
-      expect(c.currentIndex).toBe(1);
+      expect(c.navigationService.currentIndex).toBe(1);
       expect(c.data.name).toBe('Player 2');
     });
 
@@ -3372,9 +3376,9 @@ describe("PlayerCardComponent", () => {
       f.detectChanges();
 
       // Vertical scroll — should be ignored
-      c.onWheel({ deltaX: 5, deltaY: 60 , preventDefault: () => {} } as any);
+      (c.navigationService as any).onWheel({ deltaX: 5, deltaY: 60 , preventDefault: () => {} } as any);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
     });
 
@@ -3409,13 +3413,13 @@ describe("PlayerCardComponent", () => {
       c.onTouchStart({ touches: [{ clientX: 100, clientY: 100 }, { clientX: 200, clientY: 200 }] } as any);
       c.onTouchEnd({ changedTouches: [{ clientX: 0, clientY: 100 }] } as any);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
 
       // Multi-touch end should be ignored
       c.onTouchStart({ touches: [{ clientX: 200, clientY: 100 }] } as any);
       c.onTouchEnd({ changedTouches: [{ clientX: 0, clientY: 100 }, { clientX: 0, clientY: 200 }] } as any);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
     });
 
     it('should navigate to previous player on trackpad swipe (wheel negative deltaX)', async () => {
@@ -3445,9 +3449,9 @@ describe("PlayerCardComponent", () => {
       const c = f.componentInstance;
       f.detectChanges();
 
-      c.onWheel({ deltaX: -60, deltaY: 0 , preventDefault: () => {} } as any);
+      (c.navigationService as any).onWheel({ deltaX: -60, deltaY: 0 , preventDefault: () => {} } as any);
 
-      expect(c.currentIndex).toBe(0);
+      expect(c.navigationService.currentIndex).toBe(0);
       expect(c.data.name).toBe('Player 1');
     });
 
@@ -3482,17 +3486,17 @@ describe("PlayerCardComponent", () => {
       f.detectChanges();
 
       // First wheel triggers navigation
-      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
-      expect(c.currentIndex).toBe(1);
+      (c.navigationService as any).onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.navigationService.currentIndex).toBe(1);
 
       // Immediate second wheel is blocked by cooldown
-      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
-      expect(c.currentIndex).toBe(1); // Still 1, not 2
+      (c.navigationService as any).onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.navigationService.currentIndex).toBe(1); // Still 1, not 2
 
       // After cooldown expires, navigation works again
       jasmine.clock().tick(501);
-      c.onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
-      expect(c.currentIndex).toBe(2);
+      (c.navigationService as any).onWheel({ deltaX: 60, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.navigationService.currentIndex).toBe(2);
 
       jasmine.clock().uninstall();
     });
@@ -3525,15 +3529,15 @@ describe("PlayerCardComponent", () => {
       f.detectChanges();
 
       // Small deltas below threshold — no navigation yet
-      c.onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
-      expect(c.currentIndex).toBe(0);
+      (c.navigationService as any).onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.navigationService.currentIndex).toBe(0);
 
-      c.onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
-      expect(c.currentIndex).toBe(0);
+      (c.navigationService as any).onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.navigationService.currentIndex).toBe(0);
 
       // Accumulated > 50 — triggers navigation
-      c.onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
-      expect(c.currentIndex).toBe(1);
+      (c.navigationService as any).onWheel({ deltaX: 20, deltaY: 0 , preventDefault: () => {} } as any);
+      expect(c.navigationService.currentIndex).toBe(1);
     });
 
     it('should announce player change to screen readers', async () => {
@@ -3577,7 +3581,7 @@ describe("PlayerCardComponent", () => {
       const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
       c.onKeydown(event);
 
-      expect(c.liveRegionMessage).toBe('Pelaaja 2 / 2: Player 2');
+      expect(c.navigationService.liveRegionMessage).toBe('Pelaaja 2 / 2: Player 2');
     });
 
     describe('navigation transition', () => {
@@ -3645,32 +3649,32 @@ describe("PlayerCardComponent", () => {
       it('should apply slide-out-left class when navigating to next player', fakeAsync(async () => {
         const c = await createNavComponent(twoPlayers);
 
-        (c as any).navigateToNext();
+        (c.navigationService as any).navigateToNext();
 
-        expect(c.slideClass).toContain('slide-out-left');
+        expect(c.navigationService.slideClass).toContain('slide-out-left');
         tick(250); // clean up timers
       }));
 
       it('should apply slide-out-right class when navigating to previous player', fakeAsync(async () => {
         const c = await createNavComponent(twoPlayers, 1);
 
-        (c as any).navigateToPrevious();
+        (c.navigationService as any).navigateToPrevious();
 
-        expect(c.slideClass).toContain('slide-out-right');
+        expect(c.navigationService.slideClass).toContain('slide-out-right');
         tick(250);
       }));
 
       it('should swap player data after slide-out animation completes', fakeAsync(async () => {
         const c = await createNavComponent(twoPlayers);
 
-        (c as any).navigateToNext();
+        (c.navigationService as any).navigateToNext();
         expect(c.data.name).toBe('Player 1'); // Not yet swapped
 
         tick(125); // slide-out completes
         expect(c.data.name).toBe('Player 2'); // Now swapped
 
         tick(125); // slide-in completes
-        expect(c.slideClass).toBe('card-content-wrapper'); // Clean state
+        expect(c.navigationService.slideClass).toBe('card-content-wrapper'); // Clean state
       }));
 
       it('should skip animation when prefers-reduced-motion is set', fakeAsync(async () => {
@@ -3680,19 +3684,19 @@ describe("PlayerCardComponent", () => {
         // Override again since createNavComponent sets it to false
         (window.matchMedia as jasmine.Spy).and.returnValue(mockMatchMedia(true));
 
-        (c as any).navigateToNext();
+        (c.navigationService as any).navigateToNext();
 
-        expect(c.slideClass).toBe(''); // No animation classes
+        expect(c.navigationService.slideClass).toBe(''); // No animation classes
         expect(c.data.name).toBe('Player 2'); // Immediate swap
       }));
 
       it('should cancel in-progress animation on rapid navigation', fakeAsync(async () => {
         const c = await createNavComponent(threePlayers);
 
-        (c as any).navigateToNext(); // Start animating to Player 2
+        (c.navigationService as any).navigateToNext(); // Start animating to Player 2
         tick(60); // Mid-animation — data not yet swapped, still at index 0
 
-        (c as any).navigateToNext(); // Cancels first, starts new from index 0 → 1
+        (c.navigationService as any).navigateToNext(); // Cancels first, starts new from index 0 → 1
         tick(125); // New slide-out completes, data swaps to Player 2
 
         // First animation was canceled before it could swap data
@@ -3704,13 +3708,13 @@ describe("PlayerCardComponent", () => {
       it('should return to clean slideClass after full animation cycle', fakeAsync(async () => {
         const c = await createNavComponent(twoPlayers);
 
-        (c as any).navigateToNext();
+        (c.navigationService as any).navigateToNext();
 
         tick(125); // slide-out done, slide-in starts
-        expect(c.slideClass).toBe('card-content-wrapper');
+        expect(c.navigationService.slideClass).toBe('card-content-wrapper');
 
         tick(125); // slide-in done
-        expect(c.slideClass).toBe('card-content-wrapper');
+        expect(c.navigationService.slideClass).toBe('card-content-wrapper');
       }));
     });
   });

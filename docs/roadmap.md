@@ -28,14 +28,6 @@ Override the current auto-only system-preference-based theme. Persist choice in 
 
 Persist the user's last sort column and direction per table (players/goalies) in localStorage across sessions.
 
-## Refactoring
-
-See [roadmap-refactoring-needs.md](roadmap-refactoring-needs.md) for a detailed breakdown of identified refactoring batches.
-
-Quick summary of areas identified:
-
-1. **PlayerCardComponent** — 827 lines, multiple unrelated concerns, should be split (~4-6h)
-
 ## E2E Testing
 
 ### Test data management

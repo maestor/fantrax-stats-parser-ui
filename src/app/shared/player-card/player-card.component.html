@@ -1,12 +1,12 @@
 <!-- Screen reader live region for navigation announcements -->
 <div class="sr-only" aria-live="polite" aria-atomic="true">
-  {{ liveRegionMessage }}
+  {{ navigationService.liveRegionMessage }}
 </div>
 <mat-card [class.player-card]="true" [class.season-mode]="hasSeasons && selectedTabIndex !== 0">
   <button mat-icon-button (click)="onNoClick()" #closeButton [attr.aria-label]="'a11y.closePlayerCard' | translate">
     <mat-icon fontIcon="close" />
   </button>
-  <div [class]="slideClass" class="card-content-wrapper">
+  <div [class]="navigationService.slideClass" class="card-content-wrapper">
   <mat-card-header>
     <mat-card-title>
       <mat-icon mat-card-avatar class="card-title-icon letter-avatar" [matTooltip]="positionTooltip">{{
