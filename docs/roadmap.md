@@ -34,8 +34,7 @@ See [roadmap-refactoring-needs.md](roadmap-refactoring-needs.md) for a detailed 
 
 Quick summary of areas identified:
 
-1. **Player/Goalie stats components** — ~95% duplicate, extract shared base (~4-6h)
-2. **PlayerCardComponent** — 827 lines, multiple unrelated concerns, should be split (~4-6h)
+1. **PlayerCardComponent** — 827 lines, multiple unrelated concerns, should be split (~4-6h)
 
 ## E2E Testing
 

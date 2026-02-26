@@ -423,6 +423,20 @@ describe('GoalieStatsComponent', () => {
     });
   }));
 
+  it('should deduplicate identical emissions (exercises default extraSameCheck)', fakeAsync(() => {
+    apiServiceMock.getGoalieData.and.returnValue(of([]));
+    component.ngOnInit();
+    tick(1);
+    const callCount = apiServiceMock.getGoalieData.calls.count();
+
+    // Re-emitting the same startFromSeason triggers combineLatest again; distinctUntilChanged
+    // calls extraSameCheck (all other conditions equal) and blocks the duplicate fetch.
+    startFromSeasonSubject.next(2012);
+    tick(1);
+
+    expect(apiServiceMock.getGoalieData.calls.count()).toBe(callCount);
+  }));
+
   it('should complete destroy$ on ngOnDestroy', () => {
     const nextSpy = spyOn<any>(component['destroy$'], 'next');
     const completeSpy = spyOn<any>(component['destroy$'], 'complete');
