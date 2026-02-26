@@ -1,5 +1,5 @@
 import { DOCUMENT, NgComponentOutlet } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, NgZone, OnDestroy, Type, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Type, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -23,6 +23,7 @@ import { toSlug } from '@shared/utils/slug.utils';
 import { take } from 'rxjs';
 import { PlayerCardStatsService, StatRow } from './player-card-stats.service';
 import { PlayerCardSeasonsService } from './player-card-seasons.service';
+import { PlayerCardNavigationService } from './player-card-navigation.service';
 
 export type PlayerCardTab = 'all' | 'by-season' | 'graphs';
 
@@ -51,8 +52,9 @@ export type PlayerCardDialogData = {
   ],
   templateUrl: './player-card.component.html',
   styleUrl: './player-card.component.scss',
+  providers: [PlayerCardNavigationService],
 })
-export class PlayerCardComponent implements OnDestroy {
+export class PlayerCardComponent {
   readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
   private rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
   private document = inject(DOCUMENT);
@@ -63,6 +65,7 @@ export class PlayerCardComponent implements OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private statsService = inject(PlayerCardStatsService);
   private seasonsService = inject(PlayerCardSeasonsService);
+  readonly navigationService = inject(PlayerCardNavigationService);
 
   // Copy link feedback state
   linkCopied = false;
@@ -85,30 +88,6 @@ export class PlayerCardComponent implements OnDestroy {
   readonly navigationContext = this.isWrappedData(this.rawDialogData)
     ? this.rawDialogData.navigationContext
     : undefined;
-
-  currentIndex: number = this.navigationContext?.currentIndex ?? 0;
-  allPlayers: (Player | Goalie)[] = this.navigationContext?.allPlayers ?? [];
-
-  // Touch swipe gesture state
-  private swipeStartX = 0;
-  private swipeStartY = 0;
-  private readonly swipeThreshold = 50;
-  private readonly swipeMaxVertical = 75;
-
-  // Wheel gesture state (trackpad two-finger swipe)
-  private wheelDeltaX = 0;
-  private wheelCooldown = false;
-  private wheelResetTimer: ReturnType<typeof setTimeout> | null = null;
-  private readonly wheelHandler = (e: WheelEvent) => this.onWheel(e);
-  private zone = inject(NgZone);
-
-  // Screen reader announcement
-  liveRegionMessage = '';
-
-  // Navigation transition state
-  slideClass = '';
-  private animationTimer: ReturnType<typeof setTimeout> | null = null;
-  private readonly animationDuration = 125; // ms per phase (out + in)
 
   readonly isGoalie = 'wins' in this.data;
 
@@ -159,14 +138,6 @@ export class PlayerCardComponent implements OnDestroy {
     this.checkScreenSize();
     window.addEventListener('resize', () => this.checkScreenSize());
 
-    // Register wheel listener on document with { passive: false } to allow preventDefault().
-    // Must be on document (not just the host element) because wheel events on the CDK
-    // overlay backdrop don't bubble through our component, letting the browser's
-    // back/forward gesture trigger when the cursor is slightly outside the card.
-    this.zone.runOutsideAngular(() => {
-      document.addEventListener('wheel', this.wheelHandler, { passive: false });
-    });
-
     // Fetch selected team once
     this.apiService.getTeams().pipe(take(1)).subscribe((teams) => {
       this.selectedTeam = teams.find((t) => t.id === this.teamService.selectedTeamId);
@@ -194,6 +165,26 @@ export class PlayerCardComponent implements OnDestroy {
       this.updateGraphsInputs();
     });
 
+    // Initialize navigation service
+    this.navigationService.init(
+      this.navigationContext,
+      this.host,
+      this.cdr,
+      (player, _index) => {
+        this.data = player;
+        this.stats = this.statsService.buildStats(this.data, {
+          isGoalie: this.isGoalie,
+          statsPerGame: this.statsPerGame,
+          positionFilter: this.positionFilter,
+          viewContext: this.viewContext,
+        });
+        if (this.hasSeasons) {
+          this.refreshSeasonData();
+        }
+        this.updateGraphsInputs();
+      },
+    );
+
     // Set initial tab from dialog data if provided
     if (this.initialTab) {
       this.selectedTabIndex = this.getTabIndexFromName(this.initialTab);
@@ -206,188 +197,16 @@ export class PlayerCardComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    document.removeEventListener('wheel', this.wheelHandler);
-    if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
-    if (this.animationTimer) clearTimeout(this.animationTimer);
-  }
-
   // --- Navigation ---
 
   @HostListener('keydown', ['$event'])
-  onKeydown(event: KeyboardEvent): void {
-    if (!this.canNavigate()) return;
-
-    switch (event.key) {
-      case 'ArrowLeft':
-        event.preventDefault();
-        this.navigateToPrevious();
-        break;
-      case 'ArrowRight':
-        event.preventDefault();
-        this.navigateToNext();
-        break;
-    }
-  }
+  onKeydown(event: KeyboardEvent): void { this.navigationService.handleKeydown(event); }
 
   @HostListener('touchstart', ['$event'])
-  onTouchStart(event: TouchEvent): void {
-    if (!this.canNavigate() || event.touches.length !== 1) return;
-    this.swipeStartX = event.touches[0].clientX;
-    this.swipeStartY = event.touches[0].clientY;
-  }
+  onTouchStart(event: TouchEvent): void { this.navigationService.handleTouchStart(event); }
 
   @HostListener('touchend', ['$event'])
-  onTouchEnd(event: TouchEvent): void {
-    if (!this.canNavigate() || event.changedTouches.length !== 1) return;
-
-    const touch = event.changedTouches[0];
-    const deltaX = touch.clientX - this.swipeStartX;
-    const deltaY = Math.abs(touch.clientY - this.swipeStartY);
-
-    if (deltaY > this.swipeMaxVertical) return;
-
-    // Swipe left → next player
-    if (deltaX < -this.swipeThreshold) {
-      this.navigateToNext();
-    }
-    // Swipe right → previous player
-    else if (deltaX > this.swipeThreshold) {
-      this.navigateToPrevious();
-    }
-  }
-
-  onWheel(event: WheelEvent): void {
-    if (!this.canNavigate()) return;
-
-    // Prevent browser back/forward gesture for any event with horizontal movement.
-    // Must call preventDefault() before the vertical check so backward swipes
-    // that have mixed deltaX/deltaY don't slip through to the browser gesture handler.
-    if (event.deltaX !== 0) {
-      event.preventDefault();
-    }
-
-    // Only navigate on predominantly horizontal scroll (trackpad two-finger swipe)
-    if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
-
-    if (this.wheelCooldown) return;
-
-    // Reset accumulator after gesture pause
-    if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
-    this.wheelResetTimer = setTimeout(() => { this.wheelDeltaX = 0; }, 200);
-
-    this.wheelDeltaX += event.deltaX;
-
-    if (this.wheelDeltaX > this.swipeThreshold) {
-      this.zone.run(() => this.navigateToNext());
-      this.startWheelCooldown();
-    } else if (this.wheelDeltaX < -this.swipeThreshold) {
-      this.zone.run(() => this.navigateToPrevious());
-      this.startWheelCooldown();
-    }
-  }
-
-  private startWheelCooldown(): void {
-    this.wheelDeltaX = 0;
-    this.wheelCooldown = true;
-    if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
-    setTimeout(() => {
-      this.wheelCooldown = false;
-      this.wheelDeltaX = 0;
-    }, 500);
-  }
-
-  private canNavigate(): boolean {
-    return this.allPlayers.length > 1;
-  }
-
-  private navigateToPrevious(): void {
-    const newIndex = this.currentIndex - 1;
-    const wrappedIndex = newIndex < 0 ? this.allPlayers.length - 1 : newIndex;
-    this.navigateToIndex(wrappedIndex, 'right');
-  }
-
-  private navigateToNext(): void {
-    const newIndex = (this.currentIndex + 1) % this.allPlayers.length;
-    this.navigateToIndex(newIndex, 'left');
-  }
-
-  private navigateToIndex(newIndex: number, direction: 'left' | 'right'): void {
-    // Cancel any in-progress animation
-    if (this.animationTimer) {
-      clearTimeout(this.animationTimer);
-      this.animationTimer = null;
-    }
-
-    // Check reduced motion preference
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (prefersReducedMotion) {
-      this.applyNavigation(newIndex);
-      return;
-    }
-
-    // Phase 1: Slide out
-    this.slideClass = `card-content-wrapper slide-out-${direction}`;
-    this.cdr.detectChanges();
-
-    this.animationTimer = setTimeout(() => {
-      // Swap data while content is faded out
-      this.applyNavigation(newIndex);
-
-      // Phase 2: Position at entry point (no transition)
-      const enterFrom = direction === 'left' ? 'left' : 'right';
-      this.slideClass = `card-content-wrapper slide-in-${enterFrom}`;
-      this.cdr.detectChanges();
-
-      // Force reflow so the browser registers the start position
-      // before we remove the class to trigger the slide-in transition
-      const wrapper = this.host.nativeElement.querySelector('.card-content-wrapper');
-      wrapper?.getBoundingClientRect();
-
-      // Phase 3: Animate to origin
-      this.slideClass = 'card-content-wrapper';
-      this.cdr.detectChanges();
-
-      this.animationTimer = setTimeout(() => {
-        this.animationTimer = null;
-      }, this.animationDuration);
-    }, this.animationDuration);
-  }
-
-  private applyNavigation(newIndex: number): void {
-    this.currentIndex = newIndex;
-    this.data = this.allPlayers[newIndex];
-
-    // Notify table to sync
-    this.navigationContext?.onNavigate?.(newIndex);
-
-    // Update UI
-    this.stats = this.statsService.buildStats(this.data, {
-      isGoalie: this.isGoalie,
-      statsPerGame: this.statsPerGame,
-      positionFilter: this.positionFilter,
-      viewContext: this.viewContext,
-    });
-    if (this.hasSeasons) {
-      this.refreshSeasonData();
-    }
-    this.updateGraphsInputs();
-    this.announcePlayerChange();
-    this.cdr.detectChanges();
-  }
-
-  private announcePlayerChange(): void {
-    const playerName = this.data.name;
-    const position = this.currentIndex + 1;
-    const total = this.allPlayers.length;
-
-    // Clear first to ensure announcement fires even if same text
-    this.liveRegionMessage = '';
-    this.cdr.detectChanges();
-
-    this.liveRegionMessage = `Pelaaja ${position} / ${total}: ${playerName}`;
-  }
+  onTouchEnd(event: TouchEvent): void { this.navigationService.handleTouchEnd(event); }
 
   private getTabIndexFromName(tabName: PlayerCardTab): number {
     switch (tabName) {
