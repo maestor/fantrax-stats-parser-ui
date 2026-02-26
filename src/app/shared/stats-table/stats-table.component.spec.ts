@@ -1111,6 +1111,24 @@ describe('StatsTableComponent', () => {
         expect(component.getPositionDisplay({}, 2)).toBe('#3');
       });
     });
+
+    describe('getCellValue', () => {
+      it('returns the numeric value for a known field on a Player row', () => {
+        expect(component.getCellValue(mockPlayerData[0], 'goals')).toBe(50);
+      });
+
+      it('returns the string value for a name field', () => {
+        expect(component.getCellValue(mockPlayerData[0], 'name')).toBe('Player 1');
+      });
+
+      it('returns undefined for a field not present on the row', () => {
+        expect(component.getCellValue(mockPlayerData[0], 'nonexistent')).toBeUndefined();
+      });
+
+      it('works for Goalie rows', () => {
+        expect(component.getCellValue(mockGoalieData[0], 'wins')).toBe(40);
+      });
+    });
   });
 
   describe('clickable', () => {

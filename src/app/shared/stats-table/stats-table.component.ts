@@ -56,7 +56,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   loadingProgress = 0;
   loadingBuffer = 0;
 
-  @Input() data: any = [];
+  @Input() data: (Player | Goalie)[] = [];
   @Input() columns: Column[] = [];
   @Input() defaultSortColumn = 'score';
   @Input() loading = false;
@@ -64,18 +64,18 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   @Input() tableId = 'stats-table';
   @Input() showSearch = true;
   @Input() showPositionColumn = true;
-  @Input() positionValue?: (row: any, index: number) => string | number;
+  @Input() positionValue?: (row: Player | Goalie, index: number) => string | number;
   @Input() selectRow = false;
-  @Input() isRowSelected: (row: any) => boolean = () => false;
+  @Input() isRowSelected: (row: Player | Goalie) => boolean = () => false;
   @Input() canSelectRow$: Observable<boolean> = of(true);
-  @Input() onRowSelect?: (row: any) => void;
+  @Input() onRowSelect?: (row: Player | Goalie) => void;
   @Input() clickable = true;
-  @Input() formatCell?: (column: string, value: any) => string;
+  @Input() formatCell?: (column: string, value: number | string | undefined) => string;
 
   instructionsId = 'stats-table-instructions';
   activeRowIndex = 0;
 
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource = new MatTableDataSource<Player | Goalie>([]);
   dynamicColumns: Column[] = [];
   displayedFields: string[] = [];
 
@@ -216,8 +216,12 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     };
   }
 
-  getPositionDisplay(row: any, i: number): string | number {
+  getPositionDisplay(row: Player | Goalie, i: number): string | number {
     return this.positionValue ? this.positionValue(row, i) : i + 1;
+  }
+
+  getCellValue(row: Player | Goalie, field: string): number | string | undefined {
+    return (row as Record<string, unknown>)[field] as number | string | undefined;
   }
 
   filterItems(event: Event) {
@@ -257,7 +261,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     });
   }
 
-  onRowSelectToggle(row: any): void {
+  onRowSelectToggle(row: Player | Goalie): void {
     this.onRowSelect?.(row);
   }
 
@@ -353,7 +357,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   getRowAriaLabel(row: Player | Goalie, translateKey: string): string {
-    const name = (row as any)?.name ?? '';
+    const name = row?.name ?? '';
     return this.translate.instant(translateKey, { name });
   }
 

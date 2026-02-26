@@ -81,8 +81,8 @@
           <td mat-cell *matCellDef="let element"
             [ngClass]="getCellClass(column)">
             {{ formatCell
-                ? formatCell(column.field, element[column.field])
-                : (element[column.field] ?? "-") }}
+                ? formatCell(column.field, getCellValue(element, column.field))
+                : (getCellValue(element, column.field) ?? "-") }}
           </td>
         </ng-container>
       }
