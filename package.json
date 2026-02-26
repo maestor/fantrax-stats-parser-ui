@@ -30,7 +30,6 @@
   "engines": {
     "node": ">=24 <25"
   },
-  "type": "module",
   "private": true,
   "dependencies": {
     "@angular/animations": "^21.1.5",
