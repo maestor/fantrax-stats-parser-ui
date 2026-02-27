@@ -55,3 +55,6 @@ node_modules/
 
 # Design plans (local only)
 docs/plans/
+
+# Git worktrees
+.worktrees/
