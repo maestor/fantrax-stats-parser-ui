@@ -224,4 +224,23 @@ describe('SettingsService', () => {
     seasonSub.unsubscribe();
     reportTypeSub.unsubscribe();
   });
+
+  it('should emit topControlsExpanded$ and suppress duplicate values', () => {
+    const service = TestBed.inject(SettingsService);
+
+    const values: boolean[] = [];
+    const sub = service.topControlsExpanded$.subscribe((v) => values.push(v));
+
+    expect(values[values.length - 1]).toBe(true);
+
+    service.setTopControlsExpanded(false);
+    expect(values[values.length - 1]).toBe(false);
+
+    // DistinctUntilChanged should prevent no-op emissions.
+    const count = values.length;
+    service.setTopControlsExpanded(false);
+    expect(values.length).toBe(count);
+
+    sub.unsubscribe();
+  });
 });
