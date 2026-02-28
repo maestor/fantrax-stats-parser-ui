@@ -107,9 +107,6 @@ export class SettingsService {
   }
 
   private loadInitialSettings(): AppSettings {
-    // Clean up legacy keys regardless of whether they exist.
-    this.removeLegacyKeys();
-
     try {
       const stored = localStorage.getItem(this.storageKey);
       if (stored) {
@@ -157,15 +154,6 @@ export class SettingsService {
   private parseReportType(value: unknown): ReportType {
     if (value === 'regular' || value === 'playoffs' || value === 'both') return value;
     return 'regular';
-  }
-
-  private removeLegacyKeys(): void {
-    try {
-      localStorage.removeItem('fantrax.selectedTeamId');
-      localStorage.removeItem('fantrax.topControls.expanded');
-    } catch {
-      // ignore
-    }
   }
 
   private persist(settings: AppSettings): void {

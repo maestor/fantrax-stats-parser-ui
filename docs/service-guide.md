@@ -14,7 +14,7 @@ Services in this application handle data fetching, business logic, state managem
 **Responsibilities**:
 - Store user settings in a single `localStorage` key: `fantrax.settings`
 - Provide reactive settings slices as observables (team id, start-from season, top-controls expanded, season, report type)
-- Remove legacy keys (`fantrax.selectedTeamId`, `fantrax.topControls.expanded`) from localStorage on first load after migration
+- Validate all fields on load; invalid or missing fields fall back to defaults
 
 **Notes**:
 - `startFromSeason` defaults to the oldest available season for the selected team

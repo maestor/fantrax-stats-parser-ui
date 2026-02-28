@@ -95,16 +95,6 @@ describe('SettingsService', () => {
     expect(service.reportType).toBe('regular');
   });
 
-  it('should remove legacy keys on load', () => {
-    localStorage.setItem('fantrax.selectedTeamId', '5');
-    localStorage.setItem('fantrax.topControls.expanded', 'false');
-
-    TestBed.inject(SettingsService);
-
-    expect(localStorage.getItem('fantrax.selectedTeamId')).toBeNull();
-    expect(localStorage.getItem('fantrax.topControls.expanded')).toBeNull();
-  });
-
   it('should normalize startFromSeason and avoid persisting unchanged values', () => {
     const service = TestBed.inject(SettingsService);
     const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
