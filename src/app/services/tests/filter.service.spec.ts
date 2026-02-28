@@ -6,6 +6,7 @@ describe('FilterService', () => {
   let service: FilterService;
 
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({
       providers: [FilterService],
     });
@@ -38,6 +39,129 @@ describe('FilterService', () => {
         expect(filters.positionFilter).toBe('all');
         done();
       });
+    });
+  });
+
+  describe('initialization from persisted settings', () => {
+    it('should init season from settings when stored', (done) => {
+      localStorage.setItem(
+        'fantrax.settings',
+        JSON.stringify({
+          selectedTeamId: '1',
+          startFromSeason: null,
+          topControlsExpanded: true,
+          season: 2024,
+          reportType: 'regular',
+        })
+      );
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({ providers: [FilterService] });
+      const freshService = TestBed.inject(FilterService);
+
+      freshService.playerFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.season).toBe(2024);
+        done();
+      });
+    });
+
+    it('should init reportType from settings when stored', (done) => {
+      localStorage.setItem(
+        'fantrax.settings',
+        JSON.stringify({
+          selectedTeamId: '1',
+          startFromSeason: null,
+          topControlsExpanded: true,
+          season: null,
+          reportType: 'playoffs',
+        })
+      );
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({ providers: [FilterService] });
+      const freshService = TestBed.inject(FilterService);
+
+      freshService.playerFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.reportType).toBe('playoffs');
+        done();
+      });
+    });
+
+    it('should init both player and goalie filters from settings', (done) => {
+      localStorage.setItem(
+        'fantrax.settings',
+        JSON.stringify({
+          selectedTeamId: '1',
+          startFromSeason: null,
+          topControlsExpanded: true,
+          season: 2023,
+          reportType: 'playoffs',
+        })
+      );
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({ providers: [FilterService] });
+      const freshService = TestBed.inject(FilterService);
+
+      freshService.goalieFilters$.pipe(take(1)).subscribe((filters) => {
+        expect(filters.season).toBe(2023);
+        expect(filters.reportType).toBe('playoffs');
+        done();
+      });
+    });
+  });
+
+  describe('persistence on filter change', () => {
+    it('should persist season to settings when updatePlayerFilters changes season', () => {
+      service.updatePlayerFilters({ season: 2023 });
+
+      const stored = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+      expect(stored.season).toBe(2023);
+    });
+
+    it('should persist null season to settings when season is cleared', () => {
+      service.updatePlayerFilters({ season: 2023 });
+      service.updatePlayerFilters({ season: undefined });
+
+      const stored = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+      expect(stored.season).toBeNull();
+    });
+
+    it('should persist reportType to settings when updatePlayerFilters changes reportType', () => {
+      service.updatePlayerFilters({ reportType: 'playoffs' });
+
+      const stored = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+      expect(stored.reportType).toBe('playoffs');
+    });
+
+    it('should persist season to settings when updateGoalieFilters changes season', () => {
+      service.updateGoalieFilters({ season: 2022 });
+
+      const stored = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+      expect(stored.season).toBe(2022);
+    });
+
+    it('should persist reportType to settings when updateGoalieFilters changes reportType', () => {
+      service.updateGoalieFilters({ reportType: 'both' });
+
+      const stored = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+      expect(stored.reportType).toBe('both');
+    });
+
+    it('should not persist statsPerGame or minGames changes to settings', () => {
+      service.updatePlayerFilters({ statsPerGame: true, minGames: 10 });
+
+      const stored = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+      expect(stored.season).toBeNull();
+      expect(stored.reportType).toBe('regular');
+      expect(stored['statsPerGame']).toBeUndefined();
+      expect(stored['minGames']).toBeUndefined();
+    });
+
+    it('should persist season=null and reportType=regular after resetAll', () => {
+      service.updatePlayerFilters({ season: 2024, reportType: 'playoffs' });
+      service.resetAll();
+
+      const stored = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+      expect(stored.season).toBeNull();
+      expect(stored.reportType).toBe('regular');
     });
   });
 

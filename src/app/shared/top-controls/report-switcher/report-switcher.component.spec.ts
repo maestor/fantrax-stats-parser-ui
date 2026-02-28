@@ -10,6 +10,7 @@ describe('ReportSwitcherComponent', () => {
   let filterService: FilterService;
 
   beforeEach(async () => {
+    localStorage.clear();
     await TestBed.configureTestingModule({
       imports: [
         ReportSwitcherComponent,
