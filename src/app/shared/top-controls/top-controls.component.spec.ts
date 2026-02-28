@@ -9,8 +9,6 @@ describe("TopControlsComponent", () => {
 
   const clearSettingsStorage = (): void => {
     localStorage.removeItem("fantrax.settings");
-    localStorage.removeItem("fantrax.selectedTeamId");
-    localStorage.removeItem("fantrax.topControls.expanded");
   };
 
   beforeEach(async () => {
@@ -69,10 +67,11 @@ describe("TopControlsComponent", () => {
     localStorage.setItem(
       "fantrax.settings",
       JSON.stringify({
-        version: 1,
         selectedTeamId: "1",
         startFromSeason: null,
         topControlsExpanded: false,
+        season: null,
+        reportType: "regular",
       }),
     );
 
@@ -106,10 +105,11 @@ describe("TopControlsComponent", () => {
     localStorage.setItem(
       "fantrax.settings",
       JSON.stringify({
-        version: 1,
         selectedTeamId: "1",
         startFromSeason: null,
         topControlsExpanded: false,
+        season: null,
+        reportType: "regular",
       }),
     );
 
