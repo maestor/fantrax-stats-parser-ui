@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ReportType } from './api.service';
+import { SettingsService } from './settings.service';
 
 export type PositionFilter = 'all' | 'F' | 'D';
 
@@ -16,17 +17,19 @@ export interface FilterState {
   providedIn: 'root',
 })
 export class FilterService {
+  private readonly settingsService = inject(SettingsService);
+
   private filters = {
     players: new BehaviorSubject<FilterState>({
-      reportType: 'regular',
-      season: undefined,
+      reportType: this.settingsService.reportType,
+      season: this.settingsService.season,
       statsPerGame: false,
       minGames: 0,
       positionFilter: 'all',
     }),
     goalies: new BehaviorSubject<FilterState>({
-      reportType: 'regular',
-      season: undefined,
+      reportType: this.settingsService.reportType,
+      season: this.settingsService.season,
       statsPerGame: false,
       minGames: 0,
       positionFilter: 'all',
@@ -39,14 +42,12 @@ export class FilterService {
   updatePlayerFilters(change: Partial<FilterState>) {
     const current = this.filters.players.value;
     this.filters.players.next({ ...current, ...change });
-
     this.syncGlobalFilters('players', change);
   }
 
   updateGoalieFilters(change: Partial<FilterState>) {
     const current = this.filters.goalies.value;
     this.filters.goalies.next({ ...current, ...change });
-
     this.syncGlobalFilters('goalies', change);
   }
 
@@ -57,6 +58,9 @@ export class FilterService {
     const hasSeason = Object.prototype.hasOwnProperty.call(change, 'season');
     const hasReportType = Object.prototype.hasOwnProperty.call(change, 'reportType');
     if (!hasSeason && !hasReportType) return;
+
+    if (hasSeason) this.settingsService.setSeason(change.season ?? null);
+    if (hasReportType) this.settingsService.setReportType(change.reportType!);
 
     const globalChange: Partial<FilterState> = {};
     if (hasSeason) globalChange.season = change.season;
@@ -87,7 +91,6 @@ export class FilterService {
   }
 
   resetAll() {
-    // Reset global filters first so both contexts are aligned.
     this.updatePlayerFilters({ reportType: 'regular', season: undefined });
     this.resetPlayerFilters();
     this.resetGoalieFilters();

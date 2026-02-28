@@ -55,7 +55,13 @@ describe('PlayerStatsComponent', () => {
         { provide: TeamService, useClass: TeamServiceMock },
         {
           provide: SettingsService,
-          useValue: { startFromSeason$: startFromSeasonSubject.asObservable() },
+          useValue: {
+            startFromSeason$: startFromSeasonSubject.asObservable(),
+            reportType: 'regular',
+            season: undefined,
+            setSeason: jasmine.createSpy('setSeason'),
+            setReportType: jasmine.createSpy('setReportType'),
+          },
         },
         { provide: ViewportService, useValue: { isMobile$: of(false) } },
       ],

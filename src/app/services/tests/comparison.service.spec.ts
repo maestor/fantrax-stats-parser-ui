@@ -97,6 +97,7 @@ describe('ComparisonService', () => {
   let service: ComparisonService;
 
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({});
     service = TestBed.inject(ComparisonService);
   });

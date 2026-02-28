@@ -56,7 +56,16 @@ describe('SeasonSwitcherComponent', () => {
         { provide: ApiService, useValue: apiServiceMock },
         FilterService,
         { provide: TeamService, useClass: TeamServiceMock },
-        { provide: SettingsService, useValue: { startFromSeason$: startFromSeasonSubject.asObservable() } },
+        {
+          provide: SettingsService,
+          useValue: {
+            startFromSeason$: startFromSeasonSubject.asObservable(),
+            reportType: 'regular',
+            season: undefined,
+            setSeason: jasmine.createSpy('setSeason'),
+            setReportType: jasmine.createSpy('setReportType'),
+          },
+        },
       ],
     }).compileComponents();
 

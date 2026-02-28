@@ -13,15 +13,50 @@ Services in this application handle data fetching, business logic, state managem
 
 **Responsibilities**:
 - Store user settings in a single `localStorage` key: `fantrax.settings`
-- Provide reactive settings slices as observables (team id, start-from season, top-controls expanded)
-- Migrate legacy keys on first run (best-effort):
-  - `fantrax.selectedTeamId`
-  - `fantrax.topControls.expanded`
+- Provide reactive settings slices as observables (team id, start-from season, top-controls expanded, season, report type)
+- Validate all fields on load; invalid or missing fields fall back to defaults
 
 **Notes**:
 - `startFromSeason` defaults to the oldest available season for the selected team
 - When the selected team changes, `startFromSeason` resets to that team's oldest season
 - Storage failures are ignored (privacy mode, quota, etc.)
+- `season` defaults to `null` (all seasons); `reportType` defaults to `'regular'`
+- Settings are validated field-by-field on load; invalid or missing fields fall back to defaults
+
+**Key API**:
+```typescript
+class SettingsService {
+  readonly settings$: Observable<AppSettings>;
+  readonly selectedTeamId$: Observable<string>;
+  readonly startFromSeason$: Observable<number | undefined>;
+  readonly topControlsExpanded$: Observable<boolean>;
+  readonly season$: Observable<number | undefined>;
+  readonly reportType$: Observable<ReportType>;
+
+  get selectedTeamId(): string;
+  get startFromSeason(): number | undefined;
+  get topControlsExpanded(): boolean;
+  get season(): number | undefined;
+  get reportType(): ReportType;
+
+  setSelectedTeamId(teamId: string): void;
+  setStartFromSeason(season: number | undefined): void;
+  setTopControlsExpanded(expanded: boolean): void;
+  setSeason(season: number | null): void;
+  setReportType(reportType: ReportType): void;
+}
+```
+
+**AppSettings type**:
+```typescript
+export type AppSettings = {
+  selectedTeamId: string;
+  startFromSeason: number | null;
+  topControlsExpanded: boolean;
+  season: number | null;
+  reportType: ReportType;
+};
+```
 
 ### TeamService
 **Location**: `src/app/services/team.service.ts`
@@ -166,6 +201,11 @@ class StatsService {
 - Expose filter state as observables for components
 - Keep `season` and `reportType` in sync globally between players and goalies
 - Provide reset helpers (including a global reset)
+
+**Persistence**:
+- Injects `SettingsService` to seed initial `season` and `reportType` from persisted settings on startup
+- Persists `season` and `reportType` back to `SettingsService` on every global filter change (these two fields are global — shared between player and goalie contexts)
+- Non-global fields (`statsPerGame`, `minGames`, `positionFilter`) are never persisted
 
 **Type Definitions**:
 ```typescript

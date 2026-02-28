@@ -11,10 +11,11 @@ describe('TeamService', () => {
     localStorage.setItem(
       'fantrax.settings',
       JSON.stringify({
-        version: 1,
         selectedTeamId: '7',
         startFromSeason: null,
         topControlsExpanded: true,
+        season: null,
+        reportType: 'regular',
       })
     );
     const service = TestBed.inject(TeamService);
@@ -22,24 +23,15 @@ describe('TeamService', () => {
     expect(service.selectedTeamId).toBe('7');
   });
 
-  it('should migrate legacy selectedTeamId when fantrax.settings is missing', () => {
-    localStorage.setItem('fantrax.selectedTeamId', '7');
-    const service = TestBed.inject(TeamService);
-
-    expect(service.selectedTeamId).toBe('7');
-
-    const persisted = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
-    expect(persisted.selectedTeamId).toBe('7');
-  });
-
   it('should fall back to default team id when stored value is blank', () => {
     localStorage.setItem(
       'fantrax.settings',
       JSON.stringify({
-        version: 1,
         selectedTeamId: '   ',
         startFromSeason: null,
         topControlsExpanded: true,
+        season: null,
+        reportType: 'regular',
       })
     );
     const service = TestBed.inject(TeamService);
@@ -70,10 +62,11 @@ describe('TeamService', () => {
     localStorage.setItem(
       'fantrax.settings',
       JSON.stringify({
-        version: 1,
         selectedTeamId: '3',
         startFromSeason: null,
         topControlsExpanded: true,
+        season: null,
+        reportType: 'regular',
       })
     );
     const service = TestBed.inject(TeamService);
@@ -120,10 +113,11 @@ describe('TeamService', () => {
     localStorage.setItem(
       'fantrax.settings',
       JSON.stringify({
-        version: 1,
         selectedTeamId: '1',
         startFromSeason: 2012,
         topControlsExpanded: true,
+        season: null,
+        reportType: 'regular',
       })
     );
 
