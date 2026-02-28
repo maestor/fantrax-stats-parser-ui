@@ -84,22 +84,9 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "karmaConfig": "karma.conf.cjs",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "codeCoverageExclude": [
-              "src/main.ts",
-              "src/environments/**",
-              "src/app/app.config.ts",
-              "src/app/app.routes.ts",
-              "src/**/*.d.ts"
-            ],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -109,8 +96,7 @@
             "styles": [
               "src/theme.scss",
               "src/styles.scss"
-            ],
-            "scripts": []
+            ]
           }
         }
       }
