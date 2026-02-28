@@ -89,7 +89,7 @@ describe('CacheService', () => {
             setTimeout(() => {
                 const cachedData = service.get<string>('test-key');
                 expect(cachedData).toBeNull();
-                ;
+
             }, 100);
         });
 
@@ -101,7 +101,7 @@ describe('CacheService', () => {
                 service.get<string>('test-key');
                 const cachedDataAfterExpiry = service.get<string>('test-key');
                 expect(cachedDataAfterExpiry).toBeNull();
-                ;
+
             }, 100);
         });
 
@@ -120,7 +120,7 @@ describe('CacheService', () => {
             setTimeout(() => {
                 expect(service.get<string>('short-lived')).toBeNull();
                 expect(service.get<string>('long-lived')).toBe('stays longer');
-                ;
+
             }, 100);
         });
     });

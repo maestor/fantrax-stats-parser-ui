@@ -1,4 +1,3 @@
-import type { MockedObject } from "vitest";
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LeaderboardRegularComponent } from './leaderboard-regular.component';
 import { ApiService } from '@services/api.service';
@@ -9,12 +8,12 @@ import { of } from 'rxjs';
 describe('LeaderboardRegularComponent', () => {
     let component: LeaderboardRegularComponent;
     let fixture: ComponentFixture<LeaderboardRegularComponent>;
-    let apiSpy: MockedObject<ApiService>;
+    let apiSpy: any;
 
     beforeEach(async () => {
         apiSpy = {
             getLeaderboardRegular: vi.fn().mockName("ApiService.getLeaderboardRegular")
-        };
+        } as any;
         apiSpy.getLeaderboardRegular.mockReturnValue(of([]));
 
         await TestBed.configureTestingModule({

@@ -1,5 +1,4 @@
-import type { MockedObject } from "vitest";
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -30,17 +29,17 @@ const playerMock = { playerA: mockForwardA, playerB: mockForwardB, context: 'pla
 describe('ComparisonDialogComponent', () => {
     let fixture: ComponentFixture<ComparisonDialogComponent>;
     let component: ComparisonDialogComponent;
-    let dialogRefSpy: MockedObject<MatDialogRef<ComparisonDialogComponent>>;
-    let comparisonServiceSpy: MockedObject<ComparisonService>;
+    let dialogRefSpy: any;
+    let comparisonServiceSpy: any;
     let translateService: TranslateService;
 
     function setup(data: ComparisonDialogData): void {
         dialogRefSpy = {
             close: vi.fn().mockName("MatDialogRef.close")
-        };
+        } as any;
         comparisonServiceSpy = {
             clear: vi.fn().mockName("ComparisonService.clear")
-        };
+        } as any;
 
         TestBed.configureTestingModule({
             imports: [
@@ -103,14 +102,14 @@ describe('ComparisonDialogComponent', () => {
     });
 
     describe('team name', () => {
-        it('should display team name from TeamService', fakeAsync(() => {
+        it('should display team name from TeamService', () => {
             setup(playerMock);
-            tick();
+
             fixture.detectChanges();
             expect(component.teamName).toBe('Colorado');
-        }));
+        });
 
-        it('should set empty team name when team is not found', fakeAsync(() => {
+        it('should set empty team name when team is not found', () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
             };
@@ -139,11 +138,11 @@ describe('ComparisonDialogComponent', () => {
 
             const localFixture = TestBed.createComponent(ComparisonDialogComponent);
             localFixture.detectChanges();
-            tick();
+
 
             expect(localFixture.componentInstance.teamName).toBe('');
             localFixture.destroy();
-        }));
+        });
     });
 
     describe('dialog actions', () => {
@@ -197,13 +196,13 @@ describe('ComparisonDialogComponent', () => {
             setup(playerMock);
             component.isNarrow$.subscribe((isNarrow) => {
                 expect(typeof isNarrow).toBe('boolean');
-                ;
+
             });
         });
     });
 
     describe('statsPerGame view', () => {
-        it('should hide tabs and radar when statsPerGame is true', fakeAsync(() => {
+        it('should hide tabs and radar when statsPerGame is true', () => {
             // Mock FilterService with statsPerGame: true
             const mockFilterService = {
                 playerFilters$: of({
@@ -246,7 +245,7 @@ describe('ComparisonDialogComponent', () => {
 
             const localFixture = TestBed.createComponent(ComparisonDialogComponent);
             localFixture.detectChanges();
-            tick();
+
             localFixture.detectChanges();
 
             const el: HTMLElement = localFixture.nativeElement;
@@ -264,9 +263,9 @@ describe('ComparisonDialogComponent', () => {
             expect(stats).toBeTruthy();
 
             localFixture.destroy();
-        }));
+        });
 
-        it('should show tabs and radar when statsPerGame is false', fakeAsync(() => {
+        it('should show tabs and radar when statsPerGame is false', () => {
             // Mock FilterService with statsPerGame: false
             const mockFilterService = {
                 playerFilters$: of({
@@ -309,7 +308,7 @@ describe('ComparisonDialogComponent', () => {
 
             const localFixture = TestBed.createComponent(ComparisonDialogComponent);
             localFixture.detectChanges();
-            tick();
+
             localFixture.detectChanges();
 
             const el: HTMLElement = localFixture.nativeElement;
@@ -323,6 +322,6 @@ describe('ComparisonDialogComponent', () => {
             expect(tabs.length).toBe(2);
 
             localFixture.destroy();
-        }));
+        });
     });
 });

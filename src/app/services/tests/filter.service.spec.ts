@@ -26,7 +26,7 @@ describe('FilterService', () => {
                 expect(filters.statsPerGame).toBe(false);
                 expect(filters.minGames).toBe(0);
                 expect(filters.positionFilter).toBe('all');
-                ;
+
             });
         });
 
@@ -37,7 +37,7 @@ describe('FilterService', () => {
                 expect(filters.statsPerGame).toBe(false);
                 expect(filters.minGames).toBe(0);
                 expect(filters.positionFilter).toBe('all');
-                ;
+
             });
         });
     });
@@ -57,7 +57,7 @@ describe('FilterService', () => {
 
             freshService.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.season).toBe(2024);
-                ;
+
             });
         });
 
@@ -75,7 +75,7 @@ describe('FilterService', () => {
 
             freshService.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.reportType).toBe('playoffs');
-                ;
+
             });
         });
 
@@ -94,7 +94,7 @@ describe('FilterService', () => {
             freshService.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.season).toBe(2023);
                 expect(filters.reportType).toBe('playoffs');
-                ;
+
             });
         });
     });
@@ -162,7 +162,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.reportType).toBe('playoffs');
-                ;
+
             });
         });
 
@@ -171,7 +171,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.season).toBe(2024);
-                ;
+
             });
         });
 
@@ -180,7 +180,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.statsPerGame).toBe(true);
-                ;
+
             });
         });
 
@@ -189,7 +189,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.minGames).toBe(10);
-                ;
+
             });
         });
 
@@ -206,7 +206,7 @@ describe('FilterService', () => {
                 expect(filters.season).toBe(2023);
                 expect(filters.statsPerGame).toBe(true);
                 expect(filters.minGames).toBe(20);
-                ;
+
             });
         });
 
@@ -219,7 +219,7 @@ describe('FilterService', () => {
                 expect(filters.season).toBe(2024);
                 expect(filters.statsPerGame).toBe(true);
                 expect(filters.minGames).toBe(0);
-                ;
+
             });
         });
 
@@ -233,7 +233,7 @@ describe('FilterService', () => {
                 service.goalieFilters$.pipe(take(1)).subscribe((goalieFilters) => {
                     expect(goalieFilters.reportType).toBe('playoffs');
                     expect(goalieFilters.season).toBe(2020);
-                    ;
+
                 });
             });
         });
@@ -254,7 +254,7 @@ describe('FilterService', () => {
                 expect(emissions[1].reportType).toBe('playoffs');
                 expect(emissions[2].season).toBe(2024);
                 subscription.unsubscribe();
-                ;
+
             }, 10);
         });
     });
@@ -265,7 +265,7 @@ describe('FilterService', () => {
 
             service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.reportType).toBe('playoffs');
-                ;
+
             });
         });
 
@@ -274,7 +274,7 @@ describe('FilterService', () => {
 
             service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.season).toBe(2024);
-                ;
+
             });
         });
 
@@ -283,7 +283,7 @@ describe('FilterService', () => {
 
             service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.statsPerGame).toBe(true);
-                ;
+
             });
         });
 
@@ -292,7 +292,7 @@ describe('FilterService', () => {
 
             service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.minGames).toBe(5);
-                ;
+
             });
         });
 
@@ -309,7 +309,7 @@ describe('FilterService', () => {
                 expect(filters.season).toBe(2022);
                 expect(filters.statsPerGame).toBe(true);
                 expect(filters.minGames).toBe(15);
-                ;
+
             });
         });
 
@@ -322,7 +322,7 @@ describe('FilterService', () => {
                 expect(filters.season).toBe(2024);
                 expect(filters.statsPerGame).toBe(true);
                 expect(filters.minGames).toBe(0);
-                ;
+
             });
         });
 
@@ -336,7 +336,7 @@ describe('FilterService', () => {
                 service.playerFilters$.pipe(take(1)).subscribe((playerFilters) => {
                     expect(playerFilters.statsPerGame).toBe(false);
                     expect(playerFilters.minGames).toBe(0);
-                    ;
+
                 });
             });
         });
@@ -351,7 +351,7 @@ describe('FilterService', () => {
                 service.playerFilters$.pipe(take(1)).subscribe((playerFilters) => {
                     expect(playerFilters.reportType).toBe('playoffs');
                     expect(playerFilters.season).toBe(2021);
-                    ;
+
                 });
             });
         });
@@ -374,7 +374,7 @@ describe('FilterService', () => {
                 expect(filters.season).toBe(2024);
                 expect(filters.statsPerGame).toBe(false);
                 expect(filters.minGames).toBe(0);
-                ;
+
             });
         });
 
@@ -387,7 +387,7 @@ describe('FilterService', () => {
             service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.statsPerGame).toBe(true);
                 expect(filters.minGames).toBe(5);
-                ;
+
             });
         });
     });
@@ -409,7 +409,7 @@ describe('FilterService', () => {
                 expect(filters.season).toBe(2024);
                 expect(filters.statsPerGame).toBe(false);
                 expect(filters.minGames).toBe(0);
-                ;
+
             });
         });
 
@@ -422,7 +422,7 @@ describe('FilterService', () => {
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.statsPerGame).toBe(true);
                 expect(filters.minGames).toBe(10);
-                ;
+
             });
         });
     });
@@ -459,7 +459,7 @@ describe('FilterService', () => {
                     expect(goalieFilters.statsPerGame).toBe(false);
                     expect(goalieFilters.minGames).toBe(0);
                     expect(goalieFilters.positionFilter).toBe('all');
-                    ;
+
                 });
             });
         });
@@ -482,7 +482,7 @@ describe('FilterService', () => {
                 expect(emissions2[1].reportType).toBe('playoffs');
                 sub1.unsubscribe();
                 sub2.unsubscribe();
-                ;
+
             }, 10);
         });
 
@@ -502,7 +502,7 @@ describe('FilterService', () => {
                 expect(emissions2[1].season).toBe(2024);
                 sub1.unsubscribe();
                 sub2.unsubscribe();
-                ;
+
             }, 10);
         });
     });
@@ -513,7 +513,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.positionFilter).toBe('F');
-                ;
+
             });
         });
 
@@ -522,7 +522,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.positionFilter).toBe('D');
-                ;
+
             });
         });
 
@@ -532,7 +532,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.positionFilter).toBe('all');
-                ;
+
             });
         });
 
@@ -542,7 +542,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.positionFilter).toBe('all');
-                ;
+
             });
         });
 
@@ -551,7 +551,7 @@ describe('FilterService', () => {
 
             service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.positionFilter).toBe('all');
-                ;
+
             });
         });
     });
@@ -563,7 +563,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.season).toBeUndefined();
-                ;
+
             });
         });
 
@@ -573,7 +573,7 @@ describe('FilterService', () => {
 
             service.playerFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.minGames).toBe(0);
-                ;
+
             });
         });
 
@@ -583,7 +583,7 @@ describe('FilterService', () => {
 
             service.goalieFilters$.pipe(take(1)).subscribe((filters) => {
                 expect(filters.statsPerGame).toBe(false);
-                ;
+
             });
         });
     });

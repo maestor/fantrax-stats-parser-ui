@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PositionFilterToggleComponent } from './position-filter-toggle.component';
 import { FilterService, PositionFilter } from '@services/filter.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -38,50 +38,50 @@ describe('PositionFilterToggleComponent', () => {
     });
 
     describe('ngOnInit - player context', () => {
-        it('should subscribe to player filters', fakeAsync(() => {
+        it('should subscribe to player filters', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             expect(component.positionFilter).toBe('all');
-        }));
+        });
 
-        it('should update positionFilter when player filters change', fakeAsync(() => {
+        it('should update positionFilter when player filters change', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
-            tick();
+
 
             expect(component.positionFilter).toBe('F');
-        }));
+        });
 
-        it('should update positionFilter to D when filters change to D', fakeAsync(() => {
+        it('should update positionFilter to D when filters change to D', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             filterService.updatePlayerFilters({ positionFilter: 'D' });
-            tick();
+
 
             expect(component.positionFilter).toBe('D');
-        }));
+        });
     });
 
     describe('ngOnInit - goalie context', () => {
-        it('should not subscribe to filters for goalie context', fakeAsync(() => {
+        it('should not subscribe to filters for goalie context', () => {
             component.context = 'goalie';
             component.ngOnInit();
-            tick();
+
 
             // Should remain at default value since goalies don't use position filter
             expect(component.positionFilter).toBe('all');
-        }));
+        });
     });
 
     describe('onPositionChange', () => {
-        it('should update player filters when position changes to F', fakeAsync(() => {
+        it('should update player filters when position changes to F', () => {
             component.context = 'player';
             const event = { value: 'F' } as MatButtonToggleChange;
 
@@ -91,12 +91,12 @@ describe('PositionFilterToggleComponent', () => {
             });
 
             component.onPositionChange(event);
-            tick();
+
 
             expect(result).toBe('F');
-        }));
+        });
 
-        it('should update player filters when position changes to D', fakeAsync(() => {
+        it('should update player filters when position changes to D', () => {
             component.context = 'player';
             const event = { value: 'D' } as MatButtonToggleChange;
 
@@ -106,15 +106,15 @@ describe('PositionFilterToggleComponent', () => {
             });
 
             component.onPositionChange(event);
-            tick();
+
 
             expect(result).toBe('D');
-        }));
+        });
 
-        it('should update player filters when position changes to all', fakeAsync(() => {
+        it('should update player filters when position changes to all', () => {
             component.context = 'player';
             filterService.updatePlayerFilters({ positionFilter: 'F' });
-            tick();
+
 
             let result: PositionFilter | undefined;
             filterService.playerFilters$.subscribe((filters) => {
@@ -123,10 +123,10 @@ describe('PositionFilterToggleComponent', () => {
 
             const event = { value: 'all' } as MatButtonToggleChange;
             component.onPositionChange(event);
-            tick();
+
 
             expect(result).toBe('all');
-        }));
+        });
     });
 
     describe('ngOnDestroy', () => {

@@ -86,17 +86,7 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "tsconfig.spec.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "src/theme.scss",
-              "src/styles.scss"
-            ]
+            "tsConfig": "tsconfig.spec.json"
           }
         }
       }

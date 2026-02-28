@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatsTableComponent, TableRow } from './stats-table.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -154,7 +154,7 @@ describe('StatsTableComponent', () => {
         });
 
         it('should move focus with Arrow keys, Home/End and PageUp/PageDown', () => {
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
             const event = {
                 preventDefault: vi.fn(),
             } as any as KeyboardEvent;
@@ -169,7 +169,7 @@ describe('StatsTableComponent', () => {
             component.onRowKeydown({ ...event, key: 'Home' } as any, mockPlayerData[0], 5);
             expect(focusSpy).toHaveBeenCalledWith(0);
 
-            vi.spyOn<any>(component as any, 'getRowCount').mockReturnValue(20);
+            vi.spyOn(component as any as any, 'getRowCount').mockReturnValue(20);
             component.onRowKeydown({ ...event, key: 'End' } as any, mockPlayerData[0], 5);
             expect(focusSpy).toHaveBeenCalledWith(19);
 
@@ -181,7 +181,7 @@ describe('StatsTableComponent', () => {
         });
 
         it('should ignore unhandled keys on row', () => {
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
             const event = {
                 key: 'Escape',
                 preventDefault: vi.fn(),
@@ -196,7 +196,7 @@ describe('StatsTableComponent', () => {
 
     describe('search and header key handling', () => {
         it('onSearchKeydown should ignore other keys', () => {
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
             const event = {
                 key: 'ArrowUp',
                 preventDefault: vi.fn(),
@@ -209,8 +209,8 @@ describe('StatsTableComponent', () => {
         });
 
         it('onSearchKeydown should not move focus when there are no rows', () => {
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
-            vi.spyOn<any>(component as any, 'getRowCount').mockReturnValue(0);
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
+            vi.spyOn(component as any as any, 'getRowCount').mockReturnValue(0);
 
             const event = {
                 key: 'ArrowDown',
@@ -224,8 +224,8 @@ describe('StatsTableComponent', () => {
         });
 
         it('onSearchKeydown should focus the active row when ArrowDown is pressed', () => {
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
-            vi.spyOn<any>(component as any, 'getRowCount').mockReturnValue(2);
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
+            vi.spyOn(component as any as any, 'getRowCount').mockReturnValue(2);
             component.activeRowIndex = 1;
 
             const event = {
@@ -240,8 +240,8 @@ describe('StatsTableComponent', () => {
         });
 
         it('onHeaderKeydown ArrowDown should focus first row when rows exist', () => {
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
-            vi.spyOn<any>(component as any, 'getRowCount').mockReturnValue(3);
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
+            vi.spyOn(component as any as any, 'getRowCount').mockReturnValue(3);
 
             const event = {
                 key: 'ArrowDown',
@@ -255,8 +255,8 @@ describe('StatsTableComponent', () => {
         });
 
         it('onHeaderKeydown ArrowDown should do nothing when there are no rows', () => {
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
-            vi.spyOn<any>(component as any, 'getRowCount').mockReturnValue(0);
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
+            vi.spyOn(component as any as any, 'getRowCount').mockReturnValue(0);
 
             const event = {
                 key: 'ArrowDown',
@@ -300,7 +300,7 @@ describe('StatsTableComponent', () => {
 
     describe('focus management helpers', () => {
         it('ensureActiveRowInRange should reset to 0 when there are no rows', () => {
-            vi.spyOn<any>(component as any, 'getRowCount').mockReturnValue(0);
+            vi.spyOn(component as any as any, 'getRowCount').mockReturnValue(0);
             component.activeRowIndex = 5;
 
             (component as any).ensureActiveRowInRange();
@@ -309,7 +309,7 @@ describe('StatsTableComponent', () => {
         });
 
         it('ensureActiveRowInRange should clamp negative and too-large indices', () => {
-            vi.spyOn<any>(component as any, 'getRowCount').mockReturnValue(3);
+            vi.spyOn(component as any as any, 'getRowCount').mockReturnValue(3);
 
             component.activeRowIndex = -10;
             (component as any).ensureActiveRowInRange();
@@ -752,7 +752,7 @@ describe('StatsTableComponent', () => {
 
         it('should focus the navigated-to row after dialog closes', () => {
             component.dataSource.data = mockPlayerData;
-            const focusSpy = vi.spyOn<any>(component as any, 'focusRow');
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
 
             const afterClosed$ = new Subject<void>();
             let capturedCallback: ((index: number) => void) | undefined;
@@ -797,7 +797,7 @@ describe('StatsTableComponent', () => {
     });
 
     describe('loading messages', () => {
-        it('should show short loading message during the first 2 seconds', fakeAsync(() => {
+        it('should show short loading message during the first 2 seconds', () => {
             component.data = [];
             component.columns = playerColumns;
             component.loading = true;
@@ -811,12 +811,12 @@ describe('StatsTableComponent', () => {
             expect(fixture.nativeElement.textContent).toContain('Ladataan dataa...');
             expect(fixture.nativeElement.textContent).not.toContain('Kärsivällisyyttä.. rajapinta saattaa käynnistyä jopa minuutin');
 
-            tick(1999);
+
             fixture.detectChanges();
             expect(fixture.nativeElement.textContent).toContain('Ladataan dataa...');
-        }));
+        });
 
-        it('should show API unavailable message when apiError is true', fakeAsync(() => {
+        it('should show API unavailable message when apiError is true', () => {
             component.data = [];
             component.columns = playerColumns;
             component.loading = false;
@@ -830,7 +830,7 @@ describe('StatsTableComponent', () => {
 
             expect(fixture.nativeElement.textContent).toContain('Rajapinta ei ole saatavilla juuri nyt.');
             expect(fixture.nativeElement.textContent).not.toContain('Ladataan dataa...');
-        }));
+        });
     });
 
     describe('integration scenarios', () => {

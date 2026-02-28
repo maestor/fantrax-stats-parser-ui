@@ -1,5 +1,5 @@
-import type { Mock, MockedObject } from "vitest";
-import { TestBed, fakeAsync, tick } from "@angular/core/testing";
+import type { Mock } from "vitest";
+import { TestBed } from "@angular/core/testing";
 import { AppComponent } from "./app.component";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { Title } from "@angular/platform-browser";
@@ -58,10 +58,10 @@ describe("AppComponent", () => {
     let bottomSheet: {
         open: Mock;
     };
-    let apiServiceMock: MockedObject<Pick<ApiService, "getTeams" | "getSeasons" | "getLastModified">>;
+    let apiServiceMock: any;
     let viewportServiceMock: ViewportServiceMock;
     let pwaUpdateService: PwaUpdateServiceMock;
-    let snackBar: MockedObject<Pick<MatSnackBar, "open">>;
+    let snackBar: any;
     let snackBarAction$: Subject<void>;
     let snackBarAfterDismissed$: Subject<{
         dismissedByAction: boolean;
@@ -84,7 +84,7 @@ describe("AppComponent", () => {
         }>();
         snackBar = {
             open: vi.fn().mockName("MatSnackBar.open")
-        };
+        } as any;
         snackBar.open.mockReturnValue({
             onAction: () => snackBarAction$.asObservable(),
             afterDismissed: () => snackBarAfterDismissed$.asObservable(),
@@ -94,7 +94,7 @@ describe("AppComponent", () => {
             getTeams: vi.fn().mockName("ApiService.getTeams"),
             getSeasons: vi.fn().mockName("ApiService.getSeasons"),
             getLastModified: vi.fn().mockName("ApiService.getLastModified")
-        };
+        } as any;
         apiServiceMock.getTeams.mockReturnValue(of([]));
         apiServiceMock.getSeasons.mockReturnValue(of([]));
         apiServiceMock.getLastModified.mockReturnValue(of({ lastModified: "2026-01-30T11:03:07.210Z" }));
@@ -126,13 +126,13 @@ describe("AppComponent", () => {
         expect(app).toBeTruthy();
     });
 
-    it("should render last modified under the title on desktop", fakeAsync(() => {
+    it("should render last modified under the title on desktop", () => {
         viewportServiceMock.setMobile(false);
         apiServiceMock.getLastModified.mockReturnValue(of({ lastModified: "2026-01-30T11:03:07.210Z" }));
 
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
@@ -143,15 +143,15 @@ describe("AppComponent", () => {
         // Europe/Helsinki: 11:03Z -> 13:03 local in January
         expect(text).toContain("30.01.2026");
         expect(text).toContain("13.03");
-    }));
+    });
 
-    it("should render last modified in the settings drawer on mobile (not under title)", fakeAsync(() => {
+    it("should render last modified in the settings drawer on mobile (not under title)", () => {
         viewportServiceMock.setMobile(true);
         apiServiceMock.getLastModified.mockReturnValue(of({ lastModified: "2026-01-30T11:03:07.210Z" }));
 
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
@@ -160,7 +160,7 @@ describe("AppComponent", () => {
 
         const desktopLastModified = el.querySelector(".last-modified");
         expect(desktopLastModified).toBeFalsy();
-    }));
+    });
 
     it("should set page title on init", async () => {
         vi.spyOn(translateService, "get").mockReturnValue(of("Test Title"));
@@ -172,7 +172,7 @@ describe("AppComponent", () => {
         setTimeout(() => {
             expect(translateService.get).toHaveBeenCalledWith("pageTitle");
             expect(titleService.setTitle).toHaveBeenCalledWith("Test Title");
-            ;
+
         }, 10);
     });
 
@@ -188,7 +188,7 @@ describe("AppComponent", () => {
         translateSubject.next("Second Title");
 
         expect(vi.mocked(setTitleSpy).mock.calls.length).toBe(2);
-        expect(vi.mocked(setTitleSpy).mock.lastCall[0]).toBe("Second Title");
+        expect(vi.mocked(setTitleSpy).mock.lastCall![0]).toBe("Second Title");
     });
 
     it("should have tabPanel ViewChild", () => {
@@ -214,17 +214,17 @@ describe("AppComponent", () => {
         expect(bottomSheet.open).toHaveBeenCalledWith(GlobalNavComponent, { autoFocus: false });
     });
 
-    it("should update controls context and close settings drawer on navigation", fakeAsync(() => {
+    it("should update controls context and close settings drawer on navigation", () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
         const router = TestBed.inject(Router);
         fixture.detectChanges();
 
         void router.navigateByUrl("/goalie-stats");
-        tick();
+
 
         expect(app.controlsContext).toBe("goalie");
-    }));
+    });
 
     it("should open help dialog on ? keydown", () => {
         const fixture = TestBed.createComponent(AppComponent);
@@ -295,7 +295,7 @@ describe("AppComponent", () => {
         expect(dialog.open).not.toHaveBeenCalled();
     });
 
-    it("should handle update snackbar action and dismissal callbacks", fakeAsync(() => {
+    it("should handle update snackbar action and dismissal callbacks", () => {
         vi.spyOn(translateService, "get").mockImplementation((key: any) => {
             if (Array.isArray(key)) {
                 return of({
@@ -318,12 +318,12 @@ describe("AppComponent", () => {
 
         (app as any).isUpdateAvailable = true;
         (app as any).openUpdateAvailableSnackbar();
-        tick();
+
 
         expect(snackBar.open).toHaveBeenCalled();
         expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
         expect((app as any).updateSnackRef).toBeUndefined();
-    }));
+    });
 
     describe("controls context", () => {
         it("should set controlsContext to goalie when url contains goalie-stats", () => {
@@ -540,7 +540,7 @@ describe("AppComponent", () => {
             expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
         });
 
-        it("should re-open snackbar if dismissed without action while update is available", fakeAsync(() => {
+        it("should re-open snackbar if dismissed without action while update is available", () => {
             const fixture = TestBed.createComponent(AppComponent);
             fixture.detectChanges();
 
@@ -548,12 +548,12 @@ describe("AppComponent", () => {
             expect(snackBar.open).toHaveBeenCalledTimes(1);
 
             snackBarAfterDismissed$.next({ dismissedByAction: false });
-            tick(0);
+
 
             expect(snackBar.open).toHaveBeenCalledTimes(2);
-        }));
+        });
 
-        it("should not re-open snackbar if dismissed by action", fakeAsync(() => {
+        it("should not re-open snackbar if dismissed by action", () => {
             const fixture = TestBed.createComponent(AppComponent);
             fixture.detectChanges();
 
@@ -561,10 +561,10 @@ describe("AppComponent", () => {
             expect(snackBar.open).toHaveBeenCalledTimes(1);
 
             snackBarAfterDismissed$.next({ dismissedByAction: true });
-            tick(0);
+
 
             expect(snackBar.open).toHaveBeenCalledTimes(1);
-        }));
+        });
     });
 
     describe("help hotkey (direct handler coverage)", () => {
@@ -657,19 +657,19 @@ describe("AppComponent", () => {
     });
 
     describe("PWA update snackbar", () => {
-        it("should not open snackbar before an update is available (defensive no-op)", fakeAsync(() => {
+        it("should not open snackbar before an update is available (defensive no-op)", () => {
             vi.spyOn(translateService, "get").mockReturnValue(of("Test Title"));
 
             const fixture = TestBed.createComponent(AppComponent);
             fixture.detectChanges();
 
             (fixture.componentInstance as any).openUpdateAvailableSnackbar();
-            tick();
+
 
             expect(snackBar.open).not.toHaveBeenCalled();
-        }));
+        });
 
-        it("should open a persistent snackbar when an update becomes available", fakeAsync(() => {
+        it("should open a persistent snackbar when an update becomes available", () => {
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
                     return of("Test Title");
@@ -686,16 +686,16 @@ describe("AppComponent", () => {
             fixture.detectChanges();
 
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
 
             expect(snackBar.open).toHaveBeenCalledWith("Päivitys tarjolla!", "Päivitä", expect.objectContaining({
                 duration: undefined,
                 horizontalPosition: "center",
                 verticalPosition: "bottom",
             }));
-        }));
+        });
 
-        it("should not open snackbar if update is no longer available when translations resolve", fakeAsync(() => {
+        it("should not open snackbar if update is no longer available when translations resolve", () => {
             const translations$ = new Subject<any>();
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
@@ -710,7 +710,7 @@ describe("AppComponent", () => {
             fixture.detectChanges();
 
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
 
             // Simulate state flip before translations arrive.
             (fixture.componentInstance as any).isUpdateAvailable = false;
@@ -719,12 +719,12 @@ describe("AppComponent", () => {
                 "pwa.updateAvailable": "Päivitys tarjolla!",
                 "pwa.updateAction": "Päivitä",
             });
-            tick();
+
 
             expect(snackBar.open).not.toHaveBeenCalled();
-        }));
+        });
 
-        it("should not open snackbar if one was created before translations resolve", fakeAsync(() => {
+        it("should not open snackbar if one was created before translations resolve", () => {
             const translations$ = new Subject<any>();
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
@@ -739,7 +739,7 @@ describe("AppComponent", () => {
             fixture.detectChanges();
 
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
 
             // Simulate another code path setting the snackbar reference before translations arrive.
             (fixture.componentInstance as any).updateSnackRef = {};
@@ -748,12 +748,12 @@ describe("AppComponent", () => {
                 "pwa.updateAvailable": "Päivitys tarjolla!",
                 "pwa.updateAction": "Päivitä",
             });
-            tick();
+
 
             expect(snackBar.open).not.toHaveBeenCalled();
-        }));
+        });
 
-        it("should not re-open snackbar when dismissed by action", fakeAsync(() => {
+        it("should not re-open snackbar when dismissed by action", () => {
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
                     return of("Test Title");
@@ -770,17 +770,17 @@ describe("AppComponent", () => {
             fixture.detectChanges();
 
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
 
             expect(vi.mocked(snackBar.open).mock.calls.length).toBe(1);
 
             snackBarAfterDismissed$.next({ dismissedByAction: true });
-            tick();
+
 
             expect(vi.mocked(snackBar.open).mock.calls.length).toBe(1);
-        }));
+        });
 
-        it("should open snackbar only once even if updateAvailable emits again", fakeAsync(() => {
+        it("should open snackbar only once even if updateAvailable emits again", () => {
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
                     return of("Test Title");
@@ -797,14 +797,14 @@ describe("AppComponent", () => {
             fixture.detectChanges();
 
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
 
             expect(vi.mocked(snackBar.open).mock.calls.length).toBe(1);
-        }));
+        });
 
-        it("should trigger update activation when snackbar action is clicked", fakeAsync(() => {
+        it("should trigger update activation when snackbar action is clicked", () => {
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
                     return of("Test Title");
@@ -821,15 +821,15 @@ describe("AppComponent", () => {
             fixture.detectChanges();
 
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
 
             snackBarAction$.next();
-            tick();
+
 
             expect(pwaUpdateService.activateAndReload).toHaveBeenCalled();
-        }));
+        });
 
-        it("should re-open snackbar if dismissed without action while update is available", fakeAsync(() => {
+        it("should re-open snackbar if dismissed without action while update is available", () => {
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
                     return of("Test Title");
@@ -846,15 +846,15 @@ describe("AppComponent", () => {
             fixture.detectChanges();
 
             pwaUpdateService.setUpdateAvailable(true);
-            tick();
+
 
             expect(vi.mocked(snackBar.open).mock.calls.length).toBe(1);
 
             snackBarAfterDismissed$.next({ dismissedByAction: false });
-            tick();
+
 
             expect(vi.mocked(snackBar.open).mock.calls.length).toBe(2);
-        }));
+        });
     });
 
     describe("activateUpdateAndReload", () => {

@@ -122,7 +122,7 @@ describe('PlayerCardGraphsComponent', () => {
         const themed = themedFixture.componentInstance;
         themed.data = mockPlayer;
 
-        vi.spyOn<any>(themed, 'resolveCssColorVar').mockImplementation((name: string, fallback: string, cssProperty: 'color' | 'backgroundColor' = 'color') => {
+        vi.spyOn(themed as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [name, fallback, cssProperty = 'color'] = args;
             if (name === '--mat-sys-on-surface')
                 return 'rgb(10, 10, 10)';
             if (name === '--mat-sys-outline-variant')
@@ -333,7 +333,7 @@ describe('PlayerCardGraphsComponent', () => {
             maintainAspectRatio: false,
         } as any;
 
-        vi.spyOn<any>(themed, 'resolveCssColorVar').mockReturnValue('rgb(1, 2, 3)');
+        vi.spyOn(themed as any, 'resolveCssColorVar').mockReturnValue('rgb(1, 2, 3)');
         (themed as any).applyThemeToChartOptions();
 
         expect(themed.lineChartOptions.plugins).toBeTruthy();
@@ -496,7 +496,7 @@ describe('PlayerCardGraphsComponent', () => {
             const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
             const themed = themedFixture.componentInstance;
 
-            vi.spyOn<any>(themed, 'resolveCssColorVar').mockImplementation((name: string, fallback: string) => {
+            vi.spyOn(themed as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [name, fallback] = args;
                 if (name === '--mat-sys-on-surface')
                     return 'rgb(10, 10, 10)';
                 if (name === '--mat-sys-outline-variant')
@@ -534,7 +534,7 @@ describe('PlayerCardGraphsComponent', () => {
             const f = TestBed.createComponent(PlayerCardGraphsComponent);
             const c = f.componentInstance;
 
-            vi.spyOn<any>(c, 'resolveCssColorVar').mockImplementation((_name: string, _fallback: string, cssProperty?: 'color' | 'backgroundColor') => {
+            vi.spyOn(c as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [_name, _fallback, cssProperty] = args;
                 void _fallback;
                 if (cssProperty === 'backgroundColor')
                     return 'rgb(20, 20, 20)';
@@ -573,7 +573,7 @@ describe('PlayerCardGraphsComponent', () => {
                 const f = TestBed.createComponent(PlayerCardGraphsComponent);
                 const c = f.componentInstance;
 
-                vi.spyOn<any>(c, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+                vi.spyOn(c as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
 
                 (c as any).applyThemeToRadarChartOptions();
 
@@ -596,7 +596,7 @@ describe('PlayerCardGraphsComponent', () => {
                 const f = TestBed.createComponent(PlayerCardGraphsComponent);
                 const c = f.componentInstance;
 
-                vi.spyOn<any>(c, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+                vi.spyOn(c as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
 
                 (c as any).applyThemeToRadarChartOptions();
 
@@ -804,7 +804,7 @@ describe('PlayerCardGraphsComponent', () => {
             const fallbackFixture = TestBed.createComponent(PlayerCardGraphsComponent);
             const fallbackComponent = fallbackFixture.componentInstance;
 
-            vi.spyOn<any>(fallbackComponent, 'resolveCssColorVar').mockReturnValue('#ffffff');
+            vi.spyOn(fallbackComponent as any, 'resolveCssColorVar').mockReturnValue('#ffffff');
 
             (fallbackComponent as any).applyThemeToRadarChartOptions();
 
@@ -918,7 +918,7 @@ describe('PlayerCardGraphsComponent', () => {
                 }
             };
 
-            vi.spyOn<any>(component, 'buildRadarChartData');
+            vi.spyOn(component as any, 'buildRadarChartData');
 
             component.toggleChartView();
 
@@ -967,7 +967,7 @@ describe('PlayerCardGraphsComponent', () => {
             };
             seasonComp.viewContext = 'season';
 
-            vi.spyOn<any>(seasonComp, 'buildRadarChartData');
+            vi.spyOn(seasonComp as any, 'buildRadarChartData');
 
             seasonComp.ngOnInit();
 
@@ -1037,7 +1037,7 @@ describe('PlayerCardGraphsComponent', () => {
             radarComp.viewContext = 'combined';
             radarComp.chartViewMode = 'radar';
 
-            vi.spyOn<any>(radarComp, 'buildRadarChartData');
+            vi.spyOn(radarComp as any, 'buildRadarChartData');
 
             radarComp.ngOnInit();
 
@@ -1102,7 +1102,7 @@ describe('PlayerCardGraphsComponent', () => {
             lineComponent.viewContext = 'combined';
             lineComponent.chartViewMode = 'line';
 
-            vi.spyOn<any>(lineComponent, 'buildRadarChartData');
+            vi.spyOn(lineComponent as any, 'buildRadarChartData');
 
             lineComponent.ngOnInit();
 
@@ -1113,7 +1113,7 @@ describe('PlayerCardGraphsComponent', () => {
             const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
             const themed = themedFixture.componentInstance;
 
-            vi.spyOn<any>(themed, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+            vi.spyOn(themed as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
 
             (themed as any).applyThemeToRadarChartOptions();
 
@@ -1125,7 +1125,7 @@ describe('PlayerCardGraphsComponent', () => {
             const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
             const themed = themedFixture.componentInstance;
 
-            vi.spyOn<any>(themed, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+            vi.spyOn(themed as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
             (themed as any).applyThemeToRadarChartOptions();
 
             const tickCb = (themed.radarChartOptions as any)?.scales?.r?.ticks?.callback as any;
@@ -1137,7 +1137,7 @@ describe('PlayerCardGraphsComponent', () => {
             const rgbaFixture = TestBed.createComponent(PlayerCardGraphsComponent);
             const rgbaComponent = rgbaFixture.componentInstance;
 
-            vi.spyOn<any>(rgbaComponent, 'resolveCssColorVar').mockReturnValue('rgba(10, 10, 10, 1)');
+            vi.spyOn(rgbaComponent as any, 'resolveCssColorVar').mockReturnValue('rgba(10, 10, 10, 1)');
 
             (rgbaComponent as any).applyThemeToRadarChartOptions();
 
@@ -1233,7 +1233,7 @@ describe('PlayerCardGraphsComponent', () => {
     });
 
     it('should call resolveCssColorVar with backgroundColor cssProperty for tooltipBg', () => {
-        vi.spyOn<any>(component, 'resolveCssColorVar').mockImplementation((_name: string, _fallback: string, cssProperty?: string) => {
+        vi.spyOn(component as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [_name, _fallback, cssProperty] = args;
             if (cssProperty === 'backgroundColor') {
                 return 'rgb(20, 20, 20)';
             }
@@ -1519,7 +1519,7 @@ describe('PlayerCardGraphsComponent', () => {
             component.data = mockPlayerWithScores;
             component.chartViewMode = 'radar';
 
-            const buildRadarSpy = vi.spyOn<any>(component, 'buildRadarChartData');
+            const buildRadarSpy = vi.spyOn(component as any, 'buildRadarChartData');
 
             // Simulate first change (should be skipped)
             component.ngOnChanges({
@@ -1539,7 +1539,7 @@ describe('PlayerCardGraphsComponent', () => {
             component.chartViewMode = 'line';
             component.viewContext = 'combined';
 
-            const buildRadarSpy = vi.spyOn<any>(component, 'buildRadarChartData');
+            const buildRadarSpy = vi.spyOn(component as any, 'buildRadarChartData');
 
             component.ngOnChanges({
                 positionFilter: {
@@ -1587,7 +1587,7 @@ describe('PlayerCardGraphsComponent', () => {
             component.chartViewMode = 'line'; // Even in line mode
             component.viewContext = 'season'; // But season view context
 
-            const buildRadarSpy = vi.spyOn<any>(component, 'buildRadarChartData');
+            const buildRadarSpy = vi.spyOn(component as any, 'buildRadarChartData');
 
             component.ngOnChanges({
                 positionFilter: {
@@ -1770,7 +1770,7 @@ describe('PlayerCardGraphsComponent', () => {
             component.chartViewMode = 'line';
             component.viewContext = 'combined';
 
-            const updateChartDataSpy = vi.spyOn<any>(component, 'updateChartData');
+            const updateChartDataSpy = vi.spyOn(component as any, 'updateChartData');
 
             component.ngOnChanges({
                 positionFilter: {
@@ -1806,7 +1806,7 @@ describe('PlayerCardGraphsComponent', () => {
             component.chartViewMode = 'line';
             component.viewContext = 'combined';
 
-            const updateChartDataSpy = vi.spyOn<any>(component, 'updateChartData');
+            const updateChartDataSpy = vi.spyOn(component as any, 'updateChartData');
 
             component.ngOnChanges({
                 positionFilter: {

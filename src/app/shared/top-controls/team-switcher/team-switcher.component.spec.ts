@@ -1,5 +1,4 @@
-import type { MockedObject } from "vitest";
-import { ComponentFixture, TestBed, fakeAsync, tick, } from "@angular/core/testing";
+import { ComponentFixture, TestBed, } from "@angular/core/testing";
 import { TeamSwitcherComponent } from "./team-switcher.component";
 import { ApiService, Team } from "@services/api.service";
 import { FilterService } from "@services/filter.service";
@@ -26,9 +25,9 @@ class TeamServiceMock {
 describe("TeamSwitcherComponent", () => {
     let component: TeamSwitcherComponent;
     let fixture: ComponentFixture<TeamSwitcherComponent>;
-    let apiService: MockedObject<ApiService>;
-    let filterService: MockedObject<FilterService>;
-    let router: MockedObject<Router>;
+    let apiService: any;
+    let filterService: any;
+    let router: any;
     let translate: TranslateService;
 
     const mockTeams: Team[] = [
@@ -39,13 +38,13 @@ describe("TeamSwitcherComponent", () => {
     beforeEach(async () => {
         apiService = {
             getTeams: vi.fn().mockName("ApiService.getTeams")
-        };
+        } as any;
         filterService = {
             resetAll: vi.fn().mockName("FilterService.resetAll")
-        };
+        } as any;
         router = {
             navigate: vi.fn().mockName("Router.navigate")
-        };
+        } as any;
 
         await TestBed.configureTestingModule({
             imports: [
@@ -72,69 +71,69 @@ describe("TeamSwitcherComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it("should load teams on init", fakeAsync(() => {
+    it("should load teams on init", () => {
         apiService.getTeams.mockReturnValue(of(mockTeams));
 
         component.ngOnInit();
-        tick();
+
 
         expect(apiService.getTeams).toHaveBeenCalled();
         expect(component.loading).toBe(false);
         expect(component.loadError).toBe(false);
         expect(component.teams.length).toBe(2);
-    }));
+    });
 
-    it("should sort teams alphabetically by presentName", fakeAsync(() => {
+    it("should sort teams alphabetically by presentName", () => {
         apiService.getTeams.mockReturnValue(of(mockTeams));
 
         component.ngOnInit();
-        tick();
+
 
         expect(component.teams.map((t) => t.name)).toEqual([
             "carolina",
             "colorado",
         ]);
-    }));
+    });
 
-    it("should set loadError on API failure", fakeAsync(() => {
+    it("should set loadError on API failure", () => {
         apiService.getTeams.mockReturnValue(throwError(() => new Error("backend unavailable")));
 
         component.ngOnInit();
-        tick();
+
 
         expect(component.loading).toBe(false);
         expect(component.loadError).toBe(true);
         expect(component.teams).toEqual([]);
-    }));
+    });
 
-    it("should reset filters and navigate on team change", fakeAsync(() => {
+    it("should reset filters and navigate on team change", () => {
         apiService.getTeams.mockReturnValue(of(mockTeams));
         component.ngOnInit();
-        tick();
+
 
         const event = { value: "2" } as MatSelectChange;
         component.changeTeam(event);
-        tick();
+
 
         expect(component.selectedTeamId).toBe("2");
         expect(filterService.resetAll).toHaveBeenCalled();
         expect(router.navigate).toHaveBeenCalledWith(["/player-stats"]);
-    }));
+    });
 
-    it("should no-op when teamId is falsy", fakeAsync(() => {
+    it("should no-op when teamId is falsy", () => {
         apiService.getTeams.mockReturnValue(of(mockTeams));
         component.ngOnInit();
-        tick();
+
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         const setTeamSpy = vi.spyOn(teamService, "setTeamId");
 
         const event = { value: "" } as unknown as MatSelectChange;
         component.changeTeam(event);
-        tick();
+
 
         expect(setTeamSpy).not.toHaveBeenCalled();
         expect(filterService.resetAll).not.toHaveBeenCalled();
         expect(router.navigate).not.toHaveBeenCalled();
-    }));
+    });
 });

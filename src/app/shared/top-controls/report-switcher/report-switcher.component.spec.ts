@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReportSwitcherComponent } from './report-switcher.component';
 import { FilterService } from '@services/filter.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -48,142 +48,142 @@ describe('ReportSwitcherComponent', () => {
     });
 
     describe('ngOnInit - player context', () => {
-        it('should reflect initial player filter reportType', fakeAsync(() => {
+        it('should reflect initial player filter reportType', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             component.reportType$.subscribe((value) => {
                 expect(value).toBe('regular');
             });
-        }));
+        });
 
-        it('should update reportType$ when player filters change', fakeAsync(() => {
+        it('should update reportType$ when player filters change', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
 
             component.reportType$.subscribe((value) => {
                 expect(value).toBe('playoffs');
             });
-        }));
+        });
 
-        it('should emit multiple values as filters change', fakeAsync(() => {
+        it('should emit multiple values as filters change', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             const emissions: string[] = [];
             component.reportType$.subscribe((value) => emissions.push(value));
-            tick();
+
 
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
 
             filterService.updatePlayerFilters({ reportType: 'regular' });
-            tick();
+
 
             expect(emissions).toContain('regular');
             expect(emissions).toContain('playoffs');
-        }));
+        });
     });
 
     describe('ngOnInit - goalie context', () => {
-        it('should reflect initial goalie filter reportType', fakeAsync(() => {
+        it('should reflect initial goalie filter reportType', () => {
             component.context = 'goalie';
             component.ngOnInit();
-            tick();
+
 
             component.reportType$.subscribe((value) => {
                 expect(value).toBe('regular');
             });
-        }));
+        });
 
-        it('should update reportType$ when goalie filters change', fakeAsync(() => {
+        it('should update reportType$ when goalie filters change', () => {
             component.context = 'goalie';
             component.ngOnInit();
-            tick();
+
 
             filterService.updateGoalieFilters({ reportType: 'playoffs' });
-            tick();
+
 
             component.reportType$.subscribe((value) => {
                 expect(value).toBe('playoffs');
             });
-        }));
+        });
 
-        it('should be updated when player filter reportType changes (global sync)', fakeAsync(() => {
+        it('should be updated when player filter reportType changes (global sync)', () => {
             component.context = 'goalie';
             component.ngOnInit();
-            tick();
+
 
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
 
             component.reportType$.subscribe((value) => {
                 expect(value).toBe('playoffs');
             });
-        }));
+        });
     });
 
     describe('changeReportType', () => {
-        it('updates player filters when called in player context', fakeAsync(() => {
+        it('updates player filters when called in player context', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             component.changeReportType('playoffs');
-            tick();
+
 
             filterService.playerFilters$.subscribe((f) => expect(f.reportType).toBe('playoffs'));
-        }));
+        });
 
-        it('updates goalie filters when called in goalie context', fakeAsync(() => {
+        it('updates goalie filters when called in goalie context', () => {
             component.context = 'goalie';
             component.ngOnChanges({
                 context: { currentValue: 'goalie', previousValue: 'player', firstChange: true, isFirstChange: () => true },
             });
             component.ngOnInit();
-            tick();
+
 
             component.changeReportType('both');
-            tick();
+
 
             filterService.goalieFilters$.subscribe((f) => expect(f.reportType).toBe('both'));
-        }));
+        });
 
-        it('supports all report type values', fakeAsync(() => {
+        it('supports all report type values', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             component.changeReportType('both');
-            tick();
+
 
             filterService.playerFilters$.subscribe((f) => expect(f.reportType).toBe('both'));
-        }));
+        });
 
-        it('syncs reportType to goalie filters via global sync', fakeAsync(() => {
+        it('syncs reportType to goalie filters via global sync', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             component.changeReportType('playoffs');
-            tick();
+
 
             filterService.goalieFilters$.subscribe((f) => expect(f.reportType).toBe('playoffs'));
-        }));
+        });
 
-        it('works correctly after context change', fakeAsync(() => {
+        it('works correctly after context change', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             component.changeReportType('playoffs');
-            tick();
+
 
             component.context = 'goalie';
             component.ngOnChanges({
@@ -194,10 +194,10 @@ describe('ReportSwitcherComponent', () => {
                     isFirstChange: () => false,
                 },
             });
-            tick();
+
 
             component.reportType$.subscribe((value) => expect(value).toBe('playoffs'));
-        }));
+        });
     });
 
     describe('ngOnDestroy', () => {
@@ -211,64 +211,64 @@ describe('ReportSwitcherComponent', () => {
             expect(component.destroy$.complete).toHaveBeenCalled();
         });
 
-        it('should unsubscribe from filter changes', fakeAsync(() => {
+        it('should unsubscribe from filter changes', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             const emissions: string[] = [];
             component.reportType$.subscribe((value) => emissions.push(value));
-            tick();
+
 
             component.ngOnDestroy();
 
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
 
             expect(emissions.filter((e) => e === 'playoffs').length).toBe(0);
-        }));
+        });
     });
 
     describe('integration scenarios', () => {
-        it('should synchronize observable with filter service', fakeAsync(() => {
+        it('should synchronize observable with filter service', () => {
             component.context = 'player';
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
 
             component.ngOnInit();
-            tick();
+
 
             component.reportType$.subscribe((value) => {
                 expect(value).toBe('playoffs');
             });
-        }));
+        });
 
-        it('should handle rapid filter changes', fakeAsync(() => {
+        it('should handle rapid filter changes', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             const emissions: string[] = [];
             component.reportType$.subscribe((value) => emissions.push(value));
-            tick();
+
 
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
             filterService.updatePlayerFilters({ reportType: 'regular' });
-            tick();
+
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
 
             expect(emissions[emissions.length - 1]).toBe('playoffs');
-        }));
+        });
 
-        it('should work correctly after context change', fakeAsync(() => {
+        it('should work correctly after context change', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-            tick();
+
 
             component.context = 'goalie';
             component.ngOnChanges({
@@ -279,9 +279,9 @@ describe('ReportSwitcherComponent', () => {
                     isFirstChange: () => false,
                 },
             });
-            tick();
+
 
             component.reportType$.subscribe((value) => expect(value).toBe('playoffs'));
-        }));
+        });
     });
 });

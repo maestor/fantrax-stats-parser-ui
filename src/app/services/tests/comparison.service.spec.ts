@@ -106,14 +106,14 @@ describe('ComparisonService', () => {
         it('should start with empty selection', async () => {
             service.selection$.pipe(first()).subscribe((selection) => {
                 expect(selection).toEqual([]);
-                ;
+
             });
         });
 
         it('should report canSelectMore as true', async () => {
             service.canSelectMore$.pipe(first()).subscribe((canSelect) => {
                 expect(canSelect).toBe(true);
-                ;
+
             });
         });
     });
@@ -124,7 +124,7 @@ describe('ComparisonService', () => {
             service.selection$.pipe(first()).subscribe((selection) => {
                 expect(selection.length).toBe(1);
                 expect(selection[0].name).toBe('Mikko Rantanen');
-                ;
+
             });
         });
 
@@ -133,7 +133,7 @@ describe('ComparisonService', () => {
             service.toggle(mockPlayerA);
             service.selection$.pipe(first()).subscribe((selection) => {
                 expect(selection).toEqual([]);
-                ;
+
             });
         });
 
@@ -142,7 +142,7 @@ describe('ComparisonService', () => {
             service.toggle(mockPlayerB);
             service.selection$.pipe(first()).subscribe((selection) => {
                 expect(selection.length).toBe(2);
-                ;
+
             });
         });
 
@@ -152,7 +152,7 @@ describe('ComparisonService', () => {
             service.toggle(mockPlayerC);
             service.selection$.pipe(first()).subscribe((selection) => {
                 expect(selection.length).toBe(2);
-                ;
+
             });
         });
 
@@ -161,7 +161,7 @@ describe('ComparisonService', () => {
             service.toggle(mockPlayerB);
             service.canSelectMore$.pipe(first()).subscribe((canSelect) => {
                 expect(canSelect).toBe(false);
-                ;
+
             });
         });
     });
@@ -184,7 +184,7 @@ describe('ComparisonService', () => {
             service.clear();
             service.selection$.pipe(first()).subscribe((selection) => {
                 expect(selection).toEqual([]);
-                ;
+
             });
         });
     });
@@ -197,7 +197,7 @@ describe('ComparisonService', () => {
                 expect(ordered).not.toBeNull();
                 expect(ordered!.playerA.name).toBe('Aaron Ekblad');
                 expect(ordered!.playerB.name).toBe('Mikko Rantanen');
-                ;
+
             });
         });
 
@@ -205,7 +205,7 @@ describe('ComparisonService', () => {
             service.toggle(mockPlayerA);
             service.orderedSelection$.pipe(first()).subscribe((ordered) => {
                 expect(ordered).toBeNull();
-                ;
+
             });
         });
 
@@ -216,7 +216,7 @@ describe('ComparisonService', () => {
                 expect(ordered).not.toBeNull();
                 expect(ordered!.playerA.name).toBe('Aaron Ekblad');
                 expect(ordered!.playerB.name).toBe('Mikko Rantanen');
-                ;
+
             });
         });
 
@@ -264,7 +264,7 @@ describe('ComparisonService', () => {
                     // PlayerA should be first because it has higher per-game score
                     expect(ordered!.playerA.score).toBe(1.2);
                     expect(ordered!.playerB.score).toBe(0.9);
-                    ;
+
                 });
             });
 
@@ -281,7 +281,7 @@ describe('ComparisonService', () => {
                     // Should use original scores
                     expect(ordered!.playerA.score).toBe(100); // mockPlayerB
                     expect(ordered!.playerB.score).toBe(94.31); // mockPlayerA
-                    ;
+
                 });
             });
 
@@ -315,7 +315,7 @@ describe('ComparisonService', () => {
                     expect(ordered!.playerA.score).toBe(1.8);
                     expect(ordered!.playerB.name).toBe('Mikko Rantanen');
                     expect(ordered!.playerB.score).toBe(0.5);
-                    ;
+
                 });
             });
 
@@ -354,7 +354,7 @@ describe('ComparisonService', () => {
                     expect(ordered!.playerA.score).toBe(1.5);
                     expect(ordered!.playerB.name).toBe('Andrei Vasilevskiy');
                     expect(ordered!.playerB.score).toBe(1.1);
-                    ;
+
                 });
             });
 
@@ -371,7 +371,7 @@ describe('ComparisonService', () => {
                     // Should use original scores
                     expect(ordered!.playerA.score).toBe(100); // mockGoalieB
                     expect(ordered!.playerB.score).toBe(95.5); // mockGoalieA
-                    ;
+
                 });
             });
 
@@ -405,7 +405,7 @@ describe('ComparisonService', () => {
                     expect(ordered!.playerA.score).toBe(2.2);
                     expect(ordered!.playerB.name).toBe('Andrei Vasilevskiy');
                     expect(ordered!.playerB.score).toBe(0.8);
-                    ;
+
                 });
             });
         });
@@ -427,7 +427,7 @@ describe('ComparisonService', () => {
             teamService.setTeamId('99');
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s).toEqual([]);
-                ;
+
             });
         });
 
@@ -436,7 +436,7 @@ describe('ComparisonService', () => {
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s).toEqual([]);
-                ;
+
             });
         });
 
@@ -445,7 +445,7 @@ describe('ComparisonService', () => {
             filterService.updateGoalieFilters({ reportType: 'playoffs' });
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s).toEqual([]);
-                ;
+
             });
         });
 
@@ -454,7 +454,7 @@ describe('ComparisonService', () => {
             filterService.updatePlayerFilters({ season: 2024 });
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s).toEqual([]);
-                ;
+
             });
         });
 
@@ -463,7 +463,7 @@ describe('ComparisonService', () => {
             filterService.updateGoalieFilters({ season: 2024 });
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s).toEqual([]);
-                ;
+
             });
         });
 
@@ -472,7 +472,7 @@ describe('ComparisonService', () => {
             settingsService.setStartFromSeason(2020);
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s).toEqual([]);
-                ;
+
             });
         });
 
@@ -481,7 +481,7 @@ describe('ComparisonService', () => {
             filterService.updatePlayerFilters({ minGames: 10 });
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s.length).toBe(1);
-                ;
+
             });
         });
 
@@ -490,7 +490,7 @@ describe('ComparisonService', () => {
             filterService.updatePlayerFilters({ statsPerGame: true });
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s.length).toBe(1);
-                ;
+
             });
         });
 
@@ -499,7 +499,7 @@ describe('ComparisonService', () => {
             filterService.updatePlayerFilters({ positionFilter: 'F' });
             service.selection$.pipe(first()).subscribe((s) => {
                 expect(s.length).toBe(1);
-                ;
+
             });
         });
     });

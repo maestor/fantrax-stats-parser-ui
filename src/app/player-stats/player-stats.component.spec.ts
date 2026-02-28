@@ -1,5 +1,4 @@
-import type { MockedObject } from "vitest";
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerStatsComponent } from './player-stats.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
@@ -30,7 +29,7 @@ class TeamServiceMock {
 describe('PlayerStatsComponent', () => {
     let component: PlayerStatsComponent;
     let fixture: ComponentFixture<PlayerStatsComponent>;
-    let apiServiceMock: MockedObject<ApiService>;
+    let apiServiceMock: any;
     let filterService: FilterService;
     let statsService: StatsService;
     let startFromSeasonSubject: BehaviorSubject<number | undefined>;
@@ -38,7 +37,7 @@ describe('PlayerStatsComponent', () => {
     beforeEach(async () => {
         apiServiceMock = {
             getPlayerData: vi.fn().mockName("ApiService.getPlayerData")
-        };
+        } as any;
 
         // In the real app, startFromSeason is resolved from seasons and persisted.
         // PlayerStats waits until it is available before fetching combined stats.
@@ -78,7 +77,7 @@ describe('PlayerStatsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should subscribe to player filters on init and fetch data with defaults and updates', fakeAsync(() => {
+    it('should subscribe to player filters on init and fetch data with defaults and updates', () => {
         const mockPlayers: Player[] = [
             {
                 name: 'Player 1',
@@ -117,7 +116,6 @@ describe('PlayerStatsComponent', () => {
         apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayers));
 
         component.ngOnInit();
-        tick(1);
 
         expect(component.reportType).toBe('regular');
         expect(component.season).toBeUndefined();
@@ -142,7 +140,6 @@ describe('PlayerStatsComponent', () => {
             statsPerGame: true,
             minGames: 5,
         });
-        tick(1);
 
         expect(component.reportType).toBe('playoffs');
         expect(component.season).toBe(2024);
@@ -154,19 +151,18 @@ describe('PlayerStatsComponent', () => {
             reportType: 'playoffs',
             season: 2024,
         });
-    }));
+    });
 
-    it('should set apiError and clear data when getPlayerData errors during init stream', fakeAsync(() => {
+    it('should set apiError and clear data when getPlayerData errors during init stream', () => {
         apiServiceMock.getPlayerData.mockReturnValue(throwError(() => new Error('network')));
 
         component.ngOnInit();
-        tick(1);
 
         expect(component.loading).toBe(false);
         expect(component.apiError).toBe(true);
         expect(component.tableData).toEqual([]);
         expect(component.maxGames).toBe(0);
-    }));
+    });
 
     it('should use per-game stats when statsPerGame is true', () => {
         const apiData: Player[] = [
@@ -286,16 +282,14 @@ describe('PlayerStatsComponent', () => {
         expect(component.maxGames).toBe(0);
     });
 
-    it('should include teamId when a non-default team is selected', fakeAsync(() => {
+    it('should include teamId when a non-default team is selected', () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
         component.ngOnInit();
-        tick(1);
 
         apiServiceMock.getPlayerData.mockClear();
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         teamService.setTeamId('2');
-        tick(1);
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -303,13 +297,12 @@ describe('PlayerStatsComponent', () => {
             teamId: '2',
             startFrom: 2012,
         });
-    }));
+    });
 
-    it('should coalesce team change + filter reset into a single fetch', fakeAsync(() => {
+    it('should coalesce team change + filter reset into a single fetch', () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getPlayerData.mockClear();
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
@@ -318,8 +311,6 @@ describe('PlayerStatsComponent', () => {
         teamService.setTeamId('2');
         filterService.resetAll();
 
-        tick(1);
-
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledTimes(1);
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -327,43 +318,37 @@ describe('PlayerStatsComponent', () => {
             teamId: '2',
             startFrom: 2012,
         });
-    }));
+    });
 
-    it('should include startFrom when in combined mode and a startFromSeason is selected', fakeAsync(() => {
+    it('should include startFrom when in combined mode and a startFromSeason is selected', () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getPlayerData.mockClear();
 
         startFromSeasonSubject.next(2023);
-        tick(1);
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
             season: undefined,
             startFrom: 2023,
         });
-    }));
+    });
 
-    it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', fakeAsync(() => {
+    it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getPlayerData.mockClear();
 
         // Simulate clearing startFromSeason before the new team's oldest season is resolved.
         startFromSeasonSubject.next(undefined);
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         teamService.setTeamId('2');
-
-        tick(1);
         expect(apiServiceMock.getPlayerData).not.toHaveBeenCalled();
 
         // Once resolved, fetch should happen with the correct startFrom.
         startFromSeasonSubject.next(2021);
-        tick(1);
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -371,24 +356,22 @@ describe('PlayerStatsComponent', () => {
             teamId: '2',
             startFrom: 2021,
         });
-    }));
+    });
 
-    it('should not include startFrom when a specific season is selected', fakeAsync(() => {
+    it('should not include startFrom when a specific season is selected', () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getPlayerData.mockClear();
 
         startFromSeasonSubject.next(2023);
         filterService.updatePlayerFilters({ season: 2024 });
-        tick(1);
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
             season: 2024,
         });
-    }));
+    });
 
     it('should call getPlayerData with default params when fetchData is called without arguments', () => {
         const mockPlayers: Player[] = [
@@ -424,8 +407,8 @@ describe('PlayerStatsComponent', () => {
     });
 
     it('should complete destroy$ on ngOnDestroy', () => {
-        const nextSpy = vi.spyOn<any>(component['destroy$'], 'next');
-        const completeSpy = vi.spyOn<any>(component['destroy$'], 'complete');
+        const nextSpy = vi.spyOn(component['destroy$'] as any, 'next');
+        const completeSpy = vi.spyOn(component['destroy$'] as any, 'complete');
 
         component.ngOnDestroy();
 
@@ -494,72 +477,62 @@ describe('PlayerStatsComponent', () => {
             },
         ];
 
-        it('should filter by position F when positionFilter is F', fakeAsync(() => {
+        it('should filter by position F when positionFilter is F', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
-            tick(1);
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
-            tick(1);
 
             expect(component.positionFilter).toBe('F');
             expect(component.tableData.length).toBe(2);
             expect(component.tableData.every(p => p.position === 'F')).toBe(true);
-        }));
+        });
 
-        it('should filter by position D when positionFilter is D', fakeAsync(() => {
+        it('should filter by position D when positionFilter is D', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
-            tick(1);
 
             filterService.updatePlayerFilters({ positionFilter: 'D' });
-            tick(1);
 
             expect(component.positionFilter).toBe('D');
             expect(component.tableData.length).toBe(1);
             expect(component.tableData[0].name).toBe('Defenseman 1');
-        }));
+        });
 
-        it('should use scoreByPosition when positionFilter is active', fakeAsync(() => {
+        it('should use scoreByPosition when positionFilter is active', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
-            tick(1);
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
-            tick(1);
 
             // Scores should be transformed to position-based values
             const forward1 = component.tableData.find(p => p.name === 'Forward 1');
             expect(forward1?.score).toBe(90);
             expect(forward1?.scoreAdjustedByGames).toBe(4.5);
-        }));
+        });
 
-        it('should show all players when positionFilter is all', fakeAsync(() => {
+        it('should show all players when positionFilter is all', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
-            tick(1);
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
-            tick(1);
 
             expect(component.tableData.length).toBe(2);
 
             filterService.updatePlayerFilters({ positionFilter: 'all' });
-            tick(1);
 
             expect(component.positionFilter).toBe('all');
             expect(component.tableData.length).toBe(3);
-        }));
+        });
 
-        it('should use original scores when positionFilter is all', fakeAsync(() => {
+        it('should use original scores when positionFilter is all', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
-            tick(1);
 
             // Position filter is 'all' by default
             expect(component.positionFilter).toBe('all');
@@ -567,9 +540,9 @@ describe('PlayerStatsComponent', () => {
             const forward1 = component.tableData.find(p => p.name === 'Forward 1');
             expect(forward1?.score).toBe(80);
             expect(forward1?.scoreAdjustedByGames).toBe(4);
-        }));
+        });
 
-        it('should handle players without scoreByPosition gracefully', fakeAsync(() => {
+        it('should handle players without scoreByPosition gracefully', () => {
             const playersWithoutPositionScores: Player[] = [
                 {
                     name: 'Forward Without Position Scores',
@@ -593,25 +566,21 @@ describe('PlayerStatsComponent', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(playersWithoutPositionScores));
 
             component.ngOnInit();
-            tick(1);
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
-            tick(1);
 
             // Should fall back to original score values
             expect(component.tableData[0].score).toBe(70);
             expect(component.tableData[0].scoreAdjustedByGames).toBe(3.5);
-        }));
+        });
 
-        it('should use scoreByPositionAdjustedByGames for score in per-game mode with position filter', fakeAsync(() => {
+        it('should use scoreByPositionAdjustedByGames for score in per-game mode with position filter', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
-            tick(1);
 
             // Enable both statsPerGame and position filter
             filterService.updatePlayerFilters({ statsPerGame: true, positionFilter: 'F' });
-            tick(1);
 
             expect(component.statsPerGame).toBe(true);
             expect(component.positionFilter).toBe('F');
@@ -620,9 +589,9 @@ describe('PlayerStatsComponent', () => {
             const forward1 = component.tableData.find(p => p.name === 'Forward 1');
             expect(forward1?.score).toBe(4.5); // scoreByPositionAdjustedByGames
             expect(forward1?.scoreAdjustedByGames).toBe(4.5);
-        }));
+        });
 
-        it('should handle per-game mode with position filter for players without position scores', fakeAsync(() => {
+        it('should handle per-game mode with position filter for players without position scores', () => {
             const playersWithoutPositionScores: Player[] = [
                 {
                     name: 'Forward Without Position Scores',
@@ -646,14 +615,12 @@ describe('PlayerStatsComponent', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(playersWithoutPositionScores));
 
             component.ngOnInit();
-            tick(1);
 
             filterService.updatePlayerFilters({ statsPerGame: true, positionFilter: 'F' });
-            tick(1);
 
             // Should fall back to regular per-game score (statsService sets score = scoreAdjustedByGames)
             expect(component.tableData[0].score).toBe(3.5);
-        }));
+        });
     });
 
     describe('comparison wiring', () => {

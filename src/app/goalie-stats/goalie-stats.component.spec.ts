@@ -1,5 +1,4 @@
-import type { MockedObject } from "vitest";
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { GoalieStatsComponent } from './goalie-stats.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
@@ -30,7 +29,7 @@ class TeamServiceMock {
 describe('GoalieStatsComponent', () => {
     let component: GoalieStatsComponent;
     let fixture: ComponentFixture<GoalieStatsComponent>;
-    let apiServiceMock: MockedObject<ApiService>;
+    let apiServiceMock: any;
     let filterService: FilterService;
     let statsService: StatsService;
     let startFromSeasonSubject: BehaviorSubject<number | undefined>;
@@ -38,7 +37,7 @@ describe('GoalieStatsComponent', () => {
     beforeEach(async () => {
         apiServiceMock = {
             getGoalieData: vi.fn().mockName("ApiService.getGoalieData")
-        };
+        } as any;
 
         // In the real app, startFromSeason is resolved from seasons and persisted.
         // GoalieStats waits until it is available before fetching combined stats.
@@ -78,7 +77,7 @@ describe('GoalieStatsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should subscribe to goalie filters on init, set columns and fetch data', fakeAsync(() => {
+    it('should subscribe to goalie filters on init, set columns and fetch data', () => {
         const mockGoalies: Goalie[] = [
             {
                 name: 'Goalie 1',
@@ -119,7 +118,6 @@ describe('GoalieStatsComponent', () => {
         apiServiceMock.getGoalieData.mockReturnValue(of(mockGoalies));
 
         component.ngOnInit();
-        tick(1);
 
         expect(component.reportType).toBe('regular');
         expect(component.season).toBeUndefined();
@@ -145,7 +143,6 @@ describe('GoalieStatsComponent', () => {
             statsPerGame: true,
             minGames: 5,
         });
-        tick(1);
 
         expect(component.season).toBe(2024);
         expect(component.reportType).toBe('playoffs');
@@ -156,33 +153,29 @@ describe('GoalieStatsComponent', () => {
             reportType: 'playoffs',
             season: 2024,
         });
-    }));
+    });
 
-    it('should set apiError and clear data when getGoalieData errors during init stream', fakeAsync(() => {
+    it('should set apiError and clear data when getGoalieData errors during init stream', () => {
         apiServiceMock.getGoalieData.mockReturnValue(throwError(() => new Error('network')));
 
         component.ngOnInit();
-        tick(1);
 
         expect(component.loading).toBe(false);
         expect(component.apiError).toBe(true);
         expect(component.tableData).toEqual([]);
         expect(component.maxGames).toBe(0);
-    }));
+    });
 
-    it('should coalesce team change + filter reset into a single fetch', fakeAsync(() => {
+    it('should coalesce team change + filter reset into a single fetch', () => {
         apiServiceMock.getGoalieData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getGoalieData.mockClear();
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
 
         teamService.setTeamId('2');
         filterService.resetAll();
-
-        tick(1);
 
         expect(apiServiceMock.getGoalieData).toHaveBeenCalledTimes(1);
         expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
@@ -191,41 +184,36 @@ describe('GoalieStatsComponent', () => {
             teamId: '2',
             startFrom: 2012,
         });
-    }));
+    });
 
-    it('should include startFrom when in combined mode and a startFromSeason is selected', fakeAsync(() => {
+    it('should include startFrom when in combined mode and a startFromSeason is selected', () => {
         apiServiceMock.getGoalieData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getGoalieData.mockClear();
 
         startFromSeasonSubject.next(2023);
-        tick(1);
 
         expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
             reportType: 'regular',
             season: undefined,
             startFrom: 2023,
         });
-    }));
+    });
 
-    it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', fakeAsync(() => {
+    it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', () => {
         apiServiceMock.getGoalieData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getGoalieData.mockClear();
 
         startFromSeasonSubject.next(undefined);
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         teamService.setTeamId('2');
-        tick(1);
 
         expect(apiServiceMock.getGoalieData).not.toHaveBeenCalled();
 
         startFromSeasonSubject.next(2021);
-        tick(1);
 
         expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -233,24 +221,22 @@ describe('GoalieStatsComponent', () => {
             teamId: '2',
             startFrom: 2021,
         });
-    }));
+    });
 
-    it('should not include startFrom when a specific season is selected', fakeAsync(() => {
+    it('should not include startFrom when a specific season is selected', () => {
         apiServiceMock.getGoalieData.mockReturnValue(of([]));
 
         component.ngOnInit();
-        tick(1);
         apiServiceMock.getGoalieData.mockClear();
 
         startFromSeasonSubject.next(2023);
         filterService.updateGoalieFilters({ season: 2024 });
-        tick(1);
 
         expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
             reportType: 'regular',
             season: 2024,
         });
-    }));
+    });
 
     it('should use per-game goalie stats when statsPerGame is true', () => {
         const apiData: Goalie[] = [
@@ -407,16 +393,14 @@ describe('GoalieStatsComponent', () => {
         expect(component.loading).toBe(false);
     });
 
-    it('should include teamId when a non-default team is selected', fakeAsync(() => {
+    it('should include teamId when a non-default team is selected', () => {
         apiServiceMock.getGoalieData.mockReturnValue(of([]));
         component.ngOnInit();
-        tick(1);
 
         apiServiceMock.getGoalieData.mockClear();
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         teamService.setTeamId('2');
-        tick(1);
 
         expect(apiServiceMock.getGoalieData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -424,25 +408,23 @@ describe('GoalieStatsComponent', () => {
             teamId: '2',
             startFrom: 2012,
         });
-    }));
+    });
 
-    it('should deduplicate identical emissions (exercises default extraSameCheck)', fakeAsync(() => {
+    it('should deduplicate identical emissions (exercises default extraSameCheck)', () => {
         apiServiceMock.getGoalieData.mockReturnValue(of([]));
         component.ngOnInit();
-        tick(1);
         const callCount = vi.mocked(apiServiceMock.getGoalieData).mock.calls.length;
 
         // Re-emitting the same startFromSeason triggers combineLatest again; distinctUntilChanged
         // calls extraSameCheck (all other conditions equal) and blocks the duplicate fetch.
         startFromSeasonSubject.next(2012);
-        tick(1);
 
         expect(vi.mocked(apiServiceMock.getGoalieData).mock.calls.length).toBe(callCount);
-    }));
+    });
 
     it('should complete destroy$ on ngOnDestroy', () => {
-        const nextSpy = vi.spyOn<any>(component['destroy$'], 'next');
-        const completeSpy = vi.spyOn<any>(component['destroy$'], 'complete');
+        const nextSpy = vi.spyOn(component['destroy$'] as any, 'next');
+        const completeSpy = vi.spyOn(component['destroy$'] as any, 'complete');
 
         component.ngOnDestroy();
 

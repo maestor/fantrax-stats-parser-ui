@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatsModeToggleComponent } from './stats-mode-toggle.component';
 import { FilterService } from '@services/filter.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -39,49 +39,49 @@ describe('StatsModeToggleComponent', () => {
     });
 
     describe('ngOnInit - player context', () => {
-        it('should subscribe to player filters', fakeAsync(() => {
+        it('should subscribe to player filters', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             expect(component.statsPerGame).toBe(false);
-        }));
+        });
 
-        it('should update statsPerGame when player filters change', fakeAsync(() => {
+        it('should update statsPerGame when player filters change', () => {
             component.context = 'player';
             component.ngOnInit();
-            tick();
+
 
             filterService.updatePlayerFilters({ statsPerGame: true });
-            tick();
+
 
             expect(component.statsPerGame).toBe(true);
-        }));
+        });
     });
 
     describe('ngOnInit - goalie context', () => {
-        it('should subscribe to goalie filters', fakeAsync(() => {
+        it('should subscribe to goalie filters', () => {
             component.context = 'goalie';
             component.ngOnInit();
-            tick();
+
 
             expect(component.statsPerGame).toBe(false);
-        }));
+        });
 
-        it('should update statsPerGame when goalie filters change', fakeAsync(() => {
+        it('should update statsPerGame when goalie filters change', () => {
             component.context = 'goalie';
             component.ngOnInit();
-            tick();
+
 
             filterService.updateGoalieFilters({ statsPerGame: true });
-            tick();
+
 
             expect(component.statsPerGame).toBe(true);
-        }));
+        });
     });
 
     describe('toggleMode - player context', () => {
-        it('should update player filters when toggled on', fakeAsync(() => {
+        it('should update player filters when toggled on', () => {
             component.context = 'player';
             const event = { checked: true } as MatSlideToggleChange;
 
@@ -91,15 +91,15 @@ describe('StatsModeToggleComponent', () => {
             });
 
             component.toggleMode(event);
-            tick();
+
 
             expect(result).toBe(true);
-        }));
+        });
 
-        it('should update player filters when toggled off', fakeAsync(() => {
+        it('should update player filters when toggled off', () => {
             component.context = 'player';
             filterService.updatePlayerFilters({ statsPerGame: true });
-            tick();
+
 
             let result: boolean | undefined;
             filterService.playerFilters$.subscribe((filters) => {
@@ -108,14 +108,14 @@ describe('StatsModeToggleComponent', () => {
 
             const event = { checked: false } as MatSlideToggleChange;
             component.toggleMode(event);
-            tick();
+
 
             expect(result).toBe(false);
-        }));
+        });
     });
 
     describe('toggleMode - goalie context', () => {
-        it('should update goalie filters when toggled', fakeAsync(() => {
+        it('should update goalie filters when toggled', () => {
             component.context = 'goalie';
             const event = { checked: true } as MatSlideToggleChange;
 
@@ -125,10 +125,10 @@ describe('StatsModeToggleComponent', () => {
             });
 
             component.toggleMode(event);
-            tick();
+
 
             expect(result).toBe(true);
-        }));
+        });
     });
 
     describe('ngOnDestroy', () => {

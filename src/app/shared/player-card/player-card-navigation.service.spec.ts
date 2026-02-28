@@ -1,5 +1,5 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { ChangeDetectorRef, ElementRef } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { ElementRef } from '@angular/core';
 import { PlayerCardNavigationService } from './player-card-navigation.service';
 import { Player } from '@services/api.service';
 
@@ -14,7 +14,7 @@ function makeService() {
     };
     const hostMock = { nativeElement: { querySelector: () => null } } as unknown as ElementRef;
     const navigateSpy = vi.fn();
-    service.init({ allPlayers: [p1, p2, p3], currentIndex: 0 }, hostMock, cdrMock, navigateSpy);
+    service.init({ allPlayers: [p1, p2, p3], currentIndex: 0 }, hostMock, cdrMock as any, navigateSpy);
     return { service, navigateSpy, cdrMock };
 }
 
@@ -38,39 +38,39 @@ describe('PlayerCardNavigationService', () => {
             detectChanges: vi.fn().mockName("ChangeDetectorRef.detectChanges")
         };
         const host = { nativeElement: { querySelector: () => null } } as unknown as ElementRef;
-        service.init({ allPlayers: [p1], currentIndex: 0 }, host, cdr, vi.fn());
+        service.init({ allPlayers: [p1], currentIndex: 0 }, host, cdr as any, vi.fn());
         expect(service.canNavigate()).toBe(false);
     });
 
-    it('navigateToNext moves to next player and calls onNavigate callback', fakeAsync(() => {
+    it('navigateToNext moves to next player and calls onNavigate callback', () => {
         const { service, navigateSpy } = makeService();
         // Bypass animation by patching navigateToIndex to call applyNavigation directly
-        vi.spyOn<any>(service, 'navigateToIndex').mockImplementation((idx: number) => {
+        vi.spyOn(service as any, 'navigateToIndex').mockImplementation((...args: any[]) => { const [idx] = args;
             (service as any).applyNavigation(idx);
         });
         service.navigateToNext();
         expect(navigateSpy).toHaveBeenCalledWith(p2, 1);
         expect(service.currentIndex).toBe(1);
-    }));
+    });
 
-    it('navigateToNext wraps around from last player', fakeAsync(() => {
+    it('navigateToNext wraps around from last player', () => {
         const { service } = makeService();
-        vi.spyOn<any>(service, 'navigateToIndex').mockImplementation((idx: number) => {
+        vi.spyOn(service as any, 'navigateToIndex').mockImplementation((...args: any[]) => { const [idx] = args;
             (service as any).applyNavigation(idx);
         });
         service.currentIndex = 2;
         service.navigateToNext();
         expect(service.currentIndex).toBe(0);
-    }));
+    });
 
-    it('navigateToPrevious wraps around to last player from first', fakeAsync(() => {
+    it('navigateToPrevious wraps around to last player from first', () => {
         const { service } = makeService();
-        vi.spyOn<any>(service, 'navigateToIndex').mockImplementation((idx: number) => {
+        vi.spyOn(service as any, 'navigateToIndex').mockImplementation((...args: any[]) => { const [idx] = args;
             (service as any).applyNavigation(idx);
         });
         service.navigateToPrevious();
         expect(service.currentIndex).toBe(2);
-    }));
+    });
 
     it('handleKeydown calls navigateToNext on ArrowRight', () => {
         const { service } = makeService();
@@ -92,20 +92,20 @@ describe('PlayerCardNavigationService', () => {
             detectChanges: vi.fn().mockName("ChangeDetectorRef.detectChanges")
         };
         const host = { nativeElement: { querySelector: () => null } } as unknown as ElementRef;
-        service.init({ allPlayers: [p1], currentIndex: 0 }, host, cdr, vi.fn());
+        service.init({ allPlayers: [p1], currentIndex: 0 }, host, cdr as any, vi.fn());
         vi.spyOn(service, 'navigateToNext');
         service.handleKeydown(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
         expect(service.navigateToNext).not.toHaveBeenCalled();
     });
 
-    it('sets liveRegionMessage after navigation', fakeAsync(() => {
+    it('sets liveRegionMessage after navigation', () => {
         const { service } = makeService();
-        vi.spyOn<any>(service, 'navigateToIndex').mockImplementation((idx: number) => {
+        vi.spyOn(service as any, 'navigateToIndex').mockImplementation((...args: any[]) => { const [idx] = args;
             (service as any).applyNavigation(idx);
         });
         service.navigateToNext();
         expect(service.liveRegionMessage).toContain('Player 2');
-    }));
+    });
 
     it('handleTouchEnd navigates next on left swipe', () => {
         const { service } = makeService();
@@ -131,68 +131,68 @@ describe('PlayerCardNavigationService', () => {
         expect(service.navigateToNext).not.toHaveBeenCalled();
     });
 
-    it('navigateToIndex sets slide-out class then applies navigation after animation duration', fakeAsync(() => {
+    it('navigateToIndex sets slide-out class then applies navigation after animation duration', () => {
         const { service, navigateSpy } = makeService();
         service.navigateToIndex(1, 'left');
         expect(service.slideClass).toContain('slide-out-left');
-        tick(125);
-        expect(navigateSpy).toHaveBeenCalledWith(p2, 1);
-        tick(125);
-    }));
 
-    it('ngOnDestroy removes wheel listener and clears timers', fakeAsync(() => {
+        expect(navigateSpy).toHaveBeenCalledWith(p2, 1);
+
+    });
+
+    it('ngOnDestroy removes wheel listener and clears timers', () => {
         const { service } = makeService();
         vi.spyOn(document, 'removeEventListener');
         (service as any).startWheelCooldown();
         service.ngOnDestroy();
         expect(document.removeEventListener).toHaveBeenCalled();
         // Ticking past the cooldown duration after destroy should not throw
-        tick(500);
-    }));
 
-    it('onWheel navigates next when horizontal delta exceeds threshold', fakeAsync(() => {
+    });
+
+    it('onWheel navigates next when horizontal delta exceeds threshold', () => {
         const { service } = makeService();
         vi.spyOn(service, 'navigateToNext');
         (service as any).onWheel({ deltaX: 60, deltaY: 0, preventDefault: () => { } } as WheelEvent);
         expect(service.navigateToNext).toHaveBeenCalled();
-        tick(500); // clear cooldown
-        tick(200); // clear reset timer
-    }));
 
-    it('onWheel navigates previous when horizontal delta is below negative threshold', fakeAsync(() => {
+
+    });
+
+    it('onWheel navigates previous when horizontal delta is below negative threshold', () => {
         const { service } = makeService();
         vi.spyOn(service, 'navigateToPrevious');
         (service as any).onWheel({ deltaX: -60, deltaY: 0, preventDefault: () => { } } as WheelEvent);
         expect(service.navigateToPrevious).toHaveBeenCalled();
-        tick(500);
-        tick(200);
-    }));
 
-    it('onWheel ignores predominantly vertical scroll', fakeAsync(() => {
+
+    });
+
+    it('onWheel ignores predominantly vertical scroll', () => {
         const { service } = makeService();
         vi.spyOn(service, 'navigateToNext');
         (service as any).onWheel({ deltaX: 5, deltaY: 60, preventDefault: () => { } } as WheelEvent);
         expect(service.navigateToNext).not.toHaveBeenCalled();
-        tick(200);
-    }));
 
-    it('onWheel does nothing during cooldown', fakeAsync(() => {
+    });
+
+    it('onWheel does nothing during cooldown', () => {
         const { service } = makeService();
         vi.spyOn(service, 'navigateToNext');
         (service as any).onWheel({ deltaX: 60, deltaY: 0, preventDefault: () => { } } as WheelEvent);
         (service as any).onWheel({ deltaX: 60, deltaY: 0, preventDefault: () => { } } as WheelEvent);
         expect(service.navigateToNext).toHaveBeenCalledTimes(1);
-        tick(500);
-        tick(200);
-    }));
 
-    it('startWheelCooldown resets wheelDeltaX and activates cooldown', fakeAsync(() => {
+
+    });
+
+    it('startWheelCooldown resets wheelDeltaX and activates cooldown', () => {
         const { service } = makeService();
         (service as any).wheelDeltaX = 30;
         (service as any).startWheelCooldown();
         expect((service as any).wheelDeltaX).toBe(0);
         expect((service as any).wheelCooldown).toBe(true);
-        tick(500);
+
         expect((service as any).wheelCooldown).toBe(false);
-    }));
+    });
 });

@@ -9,7 +9,7 @@ class SwUpdateMock {
     isEnabled = true;
     readonly versionUpdates = new Subject<any>();
 
-    activateUpdate = vi.fn().mockResolvedValue();
+    activateUpdate = vi.fn().mockResolvedValue(undefined);
     checkForUpdate = vi.fn().mockResolvedValue(true);
 }
 
@@ -71,7 +71,7 @@ describe('PwaUpdateService', () => {
                 sub.unsubscribe();
                 expect(values[0]).toBe(false);
                 expect(values[values.length - 1]).toBe(true);
-                ;
+
             }
         });
 

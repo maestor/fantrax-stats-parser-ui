@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ComparisonBarComponent } from './comparison-bar.component';
@@ -42,79 +42,79 @@ describe('ComparisonBarComponent', () => {
         comparisonService.clear();
     });
 
-    it('should not be visible when no players are selected', fakeAsync(() => {
+    it('should not be visible when no players are selected', () => {
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
 
         const el: HTMLElement = fixture.nativeElement;
         const bar = el.querySelector('.comparison-bar');
         expect(bar).toBeNull();
-    }));
+    });
 
-    it('should be visible when one player is selected', fakeAsync(() => {
+    it('should be visible when one player is selected', () => {
         comparisonService.toggle(mockPlayerA);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
         const bar = el.querySelector('.comparison-bar');
         expect(bar).toBeTruthy();
-    }));
+    });
 
-    it('should show prompt text when one player is selected', fakeAsync(() => {
+    it('should show prompt text when one player is selected', () => {
         comparisonService.toggle(mockPlayerA);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
         const barText = el.querySelector('.bar-text')?.textContent?.trim() ?? '';
         expect(barText).toContain('Mikko Rantanen');
         expect(barText).toContain('valitse toinen vertailuun');
-    }));
+    });
 
-    it('should show compare button when two players are selected', fakeAsync(() => {
+    it('should show compare button when two players are selected', () => {
         comparisonService.toggle(mockPlayerA);
         comparisonService.toggle(mockPlayerB);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
         const buttons = Array.from(el.querySelectorAll('button'));
         const compareButton = buttons.find((b) => b.textContent?.trim() === 'Vertaile');
         expect(compareButton).toBeTruthy();
-    }));
+    });
 
-    it('should not show compare button when only one player is selected', fakeAsync(() => {
+    it('should not show compare button when only one player is selected', () => {
         comparisonService.toggle(mockPlayerA);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
         const buttons = Array.from(el.querySelectorAll('button'));
         const compareButton = buttons.find((b) => b.textContent?.trim() === 'Vertaile');
         expect(compareButton).toBeFalsy();
-    }));
+    });
 
-    it('should call comparisonService.clear() when clear button is clicked', fakeAsync(() => {
+    it('should call comparisonService.clear() when clear button is clicked', () => {
         comparisonService.toggle(mockPlayerA);
         vi.spyOn(comparisonService, 'clear');
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
@@ -124,15 +124,15 @@ describe('ComparisonBarComponent', () => {
 
         clearButton!.click();
         expect(comparisonService.clear).toHaveBeenCalled();
-    }));
+    });
 
-    it('should call onCompare when compare button is clicked', fakeAsync(() => {
+    it('should call onCompare when compare button is clicked', () => {
         comparisonService.toggle(mockPlayerA);
         comparisonService.toggle(mockPlayerB);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         vi.spyOn(fixture.componentInstance, 'onCompare');
@@ -144,67 +144,67 @@ describe('ComparisonBarComponent', () => {
 
         compareButton!.click();
         expect(fixture.componentInstance.onCompare).toHaveBeenCalled();
-    }));
+    });
 
-    it('should open comparison dialog when onCompare is called with two players', fakeAsync(() => {
+    it('should open comparison dialog when onCompare is called with two players', () => {
         comparisonService.toggle(mockPlayerA);
         comparisonService.toggle(mockPlayerB);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const dialog = TestBed.inject(MatDialog);
         vi.spyOn(dialog, 'open');
 
         fixture.componentInstance.onCompare();
-        tick();
+
 
         expect(dialog.open).toHaveBeenCalled();
-    }));
+    });
 
-    it('should not open dialog when onCompare is called with fewer than two players', fakeAsync(() => {
+    it('should not open dialog when onCompare is called with fewer than two players', () => {
         comparisonService.toggle(mockPlayerA);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const dialog = TestBed.inject(MatDialog);
         vi.spyOn(dialog, 'open');
 
         fixture.componentInstance.onCompare();
-        tick();
+
 
         expect(dialog.open).not.toHaveBeenCalled();
-    }));
+    });
 
-    it('should show both player names when two players are selected', fakeAsync(() => {
+    it('should show both player names when two players are selected', () => {
         comparisonService.toggle(mockPlayerA);
         comparisonService.toggle(mockPlayerB);
 
         const fixture = TestBed.createComponent(ComparisonBarComponent);
         fixture.detectChanges();
-        tick();
+
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
         const barText = el.querySelector('.bar-text')?.textContent?.trim() ?? '';
         expect(barText).toContain('Mikko Rantanen');
         expect(barText).toContain('Aaron Ekblad');
-    }));
+    });
 
     describe('context change', () => {
-        it('should clear comparison when context changes from player to goalie', fakeAsync(() => {
+        it('should clear comparison when context changes from player to goalie', () => {
             comparisonService.toggle(mockPlayerA);
             comparisonService.toggle(mockPlayerB);
 
             const fixture = TestBed.createComponent(ComparisonBarComponent);
             fixture.componentInstance.context = 'player';
             fixture.detectChanges();
-            tick();
+
 
             vi.spyOn(comparisonService, 'clear');
 
@@ -220,15 +220,15 @@ describe('ComparisonBarComponent', () => {
             });
 
             expect(comparisonService.clear).toHaveBeenCalled();
-        }));
+        });
 
-        it('should clear comparison when context changes from goalie to player', fakeAsync(() => {
+        it('should clear comparison when context changes from goalie to player', () => {
             comparisonService.toggle(mockPlayerA);
 
             const fixture = TestBed.createComponent(ComparisonBarComponent);
             fixture.componentInstance.context = 'goalie';
             fixture.detectChanges();
-            tick();
+
 
             vi.spyOn(comparisonService, 'clear');
 
@@ -244,9 +244,9 @@ describe('ComparisonBarComponent', () => {
             });
 
             expect(comparisonService.clear).toHaveBeenCalled();
-        }));
+        });
 
-        it('should not clear comparison on initial context set (firstChange)', fakeAsync(() => {
+        it('should not clear comparison on initial context set (firstChange)', () => {
             comparisonService.toggle(mockPlayerA);
 
             vi.spyOn(comparisonService, 'clear');
@@ -265,9 +265,9 @@ describe('ComparisonBarComponent', () => {
             });
 
             fixture.detectChanges();
-            tick();
+
 
             expect(comparisonService.clear).not.toHaveBeenCalled();
-        }));
+        });
     });
 });

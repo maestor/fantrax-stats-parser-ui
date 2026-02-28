@@ -42,7 +42,7 @@ describe("ApiService", () => {
             service.getSeasons().subscribe((seasons) => {
                 expect(seasons).toEqual(mockSeasons);
                 expect(seasons.length).toBe(2);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/seasons/regular`);
@@ -56,7 +56,7 @@ describe("ApiService", () => {
             service.getSeasons().subscribe(() => {
                 const cachedData = cacheService.get<Season[]>("seasons-regular");
                 expect(cachedData).toEqual(mockSeasons);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/seasons/regular`);
@@ -69,7 +69,7 @@ describe("ApiService", () => {
 
             service.getSeasons().subscribe((seasons) => {
                 expect(seasons).toEqual(mockSeasons);
-                ;
+
             });
 
             httpMock.expectNone(`${API_URL}/seasons/regular`);
@@ -89,7 +89,7 @@ describe("ApiService", () => {
 
                 service.getSeasons("regular", "2").subscribe((again) => {
                     expect(again).toEqual(mockSeasons);
-                    ;
+
                 });
 
                 httpMock.expectNone((r) => {
@@ -110,7 +110,7 @@ describe("ApiService", () => {
 
             service.getSeasons("playoffs").subscribe((seasons) => {
                 expect(seasons).toEqual(mockSeasons);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/seasons/playoffs`);
@@ -123,7 +123,7 @@ describe("ApiService", () => {
 
             service.getSeasons("both").subscribe((seasons) => {
                 expect(seasons).toEqual(mockSeasons);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/seasons/both`);
@@ -138,7 +138,7 @@ describe("ApiService", () => {
                 expect(seasons).toEqual(mockSeasons);
                 const cachedData = cacheService.get<Season[]>("seasons-regular-team-2");
                 expect(cachedData).toEqual(mockSeasons);
-                ;
+
             });
 
             const req = httpMock.expectOne((r) => {
@@ -156,7 +156,7 @@ describe("ApiService", () => {
                 expect(seasons).toEqual(mockSeasons);
                 const cachedData = cacheService.get<Season[]>("seasons-regular-team-2-startFrom-2018");
                 expect(cachedData).toEqual(mockSeasons);
-                ;
+
             });
 
             const req = httpMock.expectOne((r) => {
@@ -175,7 +175,7 @@ describe("ApiService", () => {
                 expect(seasons).toEqual(mockSeasons);
                 const cachedData = cacheService.get<Season[]>("seasons-regular");
                 expect(cachedData).toEqual(mockSeasons);
-                ;
+
             });
 
             const req = httpMock.expectOne((r) => {
@@ -189,11 +189,11 @@ describe("ApiService", () => {
             const consoleErrorSpy = vi.spyOn(console, "error");
 
             service.getSeasons().subscribe({
-                next: () => fail("should have failed"),
+                next: () => { throw new Error("should have failed"); },
                 error: (error) => {
                     expect(error.message).toBe("Something went wrong with the API!");
                     expect(consoleErrorSpy).toHaveBeenCalled();
-                    ;
+
                 },
             });
 
@@ -214,7 +214,7 @@ describe("ApiService", () => {
 
             service.getTeams().subscribe((teams) => {
                 expect(teams).toEqual(mockTeams);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/teams`);
@@ -227,7 +227,7 @@ describe("ApiService", () => {
 
             service.getTeams().subscribe((teams) => {
                 expect(teams).toEqual([]);
-                ;
+
             });
 
             httpMock.expectNone(`${API_URL}/teams`);
@@ -269,7 +269,7 @@ describe("ApiService", () => {
 
             service.getPlayerData(params).subscribe((players) => {
                 expect(players).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
@@ -308,7 +308,7 @@ describe("ApiService", () => {
             ]).subscribe(([a, b]) => {
                 expect(a).toEqual(mockPlayers);
                 expect(b).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne((r) => {
@@ -331,7 +331,7 @@ describe("ApiService", () => {
 
             service.getPlayerData(params).subscribe((players) => {
                 expect(players).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/players/combined/playoffs`);
@@ -361,7 +361,7 @@ describe("ApiService", () => {
 
             service.getPlayerData(params).subscribe((players) => {
                 expect(players).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/players/season/regular/2024`);
@@ -374,7 +374,7 @@ describe("ApiService", () => {
 
             service.getPlayerData(params).subscribe((players) => {
                 expect(players).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/players/season/playoffs/2023`);
@@ -387,7 +387,7 @@ describe("ApiService", () => {
 
             service.getPlayerData(params).subscribe((players) => {
                 expect(players).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
@@ -401,7 +401,7 @@ describe("ApiService", () => {
             service.getPlayerData(params).subscribe(() => {
                 const cachedData = cacheService.get<Player[]>("playerStats-regular-combined");
                 expect(cachedData).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/players/combined/regular`);
@@ -416,7 +416,7 @@ describe("ApiService", () => {
                 expect(players).toEqual(mockPlayers);
                 const cachedData = cacheService.get<Player[]>("playerStats-regular-combined-startFrom-2018");
                 expect(cachedData).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne((r) => {
@@ -437,7 +437,7 @@ describe("ApiService", () => {
 
             service.getPlayerData(params).subscribe((players) => {
                 expect(players).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne((r) => {
@@ -454,7 +454,7 @@ describe("ApiService", () => {
             service.getPlayerData(params).subscribe(() => {
                 const cachedData = cacheService.get<Player[]>("playerStats-playoffs-2024");
                 expect(cachedData).toEqual(mockPlayers);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/players/season/playoffs/2024`);
@@ -484,7 +484,7 @@ describe("ApiService", () => {
 
             service.getPlayerData({ reportType: "regular" }).subscribe((players) => {
                 expect(players).toEqual(mockPlayers);
-                ;
+
             });
 
             httpMock.expectNone(`${API_URL}/players/combined/regular`);
@@ -495,11 +495,11 @@ describe("ApiService", () => {
             const consoleErrorSpy = vi.spyOn(console, "error");
 
             service.getPlayerData(params).subscribe({
-                next: () => fail("should have failed"),
+                next: () => { throw new Error("should have failed"); },
                 error: (error) => {
                     expect(error.message).toBe("Something went wrong with the API!");
                     expect(consoleErrorSpy).toHaveBeenCalled();
-                    ;
+
                 },
             });
 
@@ -536,7 +536,7 @@ describe("ApiService", () => {
 
             service.getGoalieData(params).subscribe((goalies) => {
                 expect(goalies).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
@@ -552,7 +552,7 @@ describe("ApiService", () => {
                 expect(goalies).toEqual(mockGoalies);
                 const cachedData = cacheService.get<Goalie[]>("goalieStats-regular-combined-startFrom-2018");
                 expect(cachedData).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne((r) => {
@@ -569,7 +569,7 @@ describe("ApiService", () => {
 
             service.getGoalieData(params).subscribe((goalies) => {
                 expect(goalies).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/goalies/combined/playoffs`);
@@ -582,7 +582,7 @@ describe("ApiService", () => {
 
             service.getGoalieData(params).subscribe((goalies) => {
                 expect(goalies).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/goalies/season/regular/2024`);
@@ -595,7 +595,7 @@ describe("ApiService", () => {
 
             service.getGoalieData(params).subscribe((goalies) => {
                 expect(goalies).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/goalies/season/playoffs/2023`);
@@ -608,7 +608,7 @@ describe("ApiService", () => {
 
             service.getGoalieData(params).subscribe((goalies) => {
                 expect(goalies).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
@@ -622,7 +622,7 @@ describe("ApiService", () => {
             service.getGoalieData(params).subscribe(() => {
                 const cachedData = cacheService.get<Goalie[]>("goalieStats-regular-combined");
                 expect(cachedData).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/goalies/combined/regular`);
@@ -636,7 +636,7 @@ describe("ApiService", () => {
             service.getGoalieData(params).subscribe(() => {
                 const cachedData = cacheService.get<Goalie[]>("goalieStats-playoffs-2024");
                 expect(cachedData).toEqual(mockGoalies);
-                ;
+
             });
 
             const req = httpMock.expectOne(`${API_URL}/goalies/season/playoffs/2024`);
@@ -667,7 +667,7 @@ describe("ApiService", () => {
 
             service.getGoalieData({ reportType: "regular" }).subscribe((goalies) => {
                 expect(goalies).toEqual(mockGoalies);
-                ;
+
             });
 
             httpMock.expectNone(`${API_URL}/goalies/combined/regular`);
@@ -678,11 +678,11 @@ describe("ApiService", () => {
             const consoleErrorSpy = vi.spyOn(console, "error");
 
             service.getGoalieData(params).subscribe({
-                next: () => fail("should have failed"),
+                next: () => { throw new Error("should have failed"); },
                 error: (error) => {
                     expect(error.message).toBe("Something went wrong with the API!");
                     expect(consoleErrorSpy).toHaveBeenCalled();
-                    ;
+
                 },
             });
 

@@ -1,5 +1,5 @@
-import type { Mock, MockedObject } from "vitest";
-import { ComponentFixture, TestBed, fakeAsync, tick, } from "@angular/core/testing";
+import type { Mock } from "vitest";
+import { ComponentFixture, TestBed, } from "@angular/core/testing";
 import { ElementRef } from "@angular/core";
 import { By } from "@angular/platform-browser";
 import { PlayerCardComponent, PlayerCardDialogData } from "./player-card.component";
@@ -14,7 +14,7 @@ import { of } from "rxjs";
 describe("PlayerCardComponent", () => {
     let fixture: ComponentFixture<PlayerCardComponent>;
     let component: PlayerCardComponent;
-    let dialogRefSpy: MockedObject<MatDialogRef<PlayerCardComponent>>;
+    let dialogRefSpy: any;
 
     const mockGoalieWithSeasons: Goalie & {
         season: number;
@@ -206,15 +206,15 @@ describe("PlayerCardComponent", () => {
     };
 
     describe("with seasons data", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
 
             await TestBed.configureTestingModule({
@@ -670,7 +670,7 @@ describe("PlayerCardComponent", () => {
             it("ArrowUp should preventDefault and request focus to active tab header", async () => {
                 fixture.detectChanges();
 
-                const focusHeaderSpy = vi.spyOn<any>(component as any, "focusActiveTabHeader");
+                const focusHeaderSpy = vi.spyOn(component as any, "focusActiveTabHeader");
 
                 const tabGroupDebug = fixture.debugElement.query(By.css("mat-tab-group"));
                 const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
@@ -698,7 +698,7 @@ describe("PlayerCardComponent", () => {
             it("should ignore other keys", async () => {
                 fixture.detectChanges();
 
-                const focusHeaderSpy = vi.spyOn<any>(component as any, "focusActiveTabHeader");
+                const focusHeaderSpy = vi.spyOn(component as any, "focusActiveTabHeader");
 
                 const tabGroupDebug = fixture.debugElement.query(By.css("mat-tab-group"));
                 const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
@@ -776,7 +776,7 @@ describe("PlayerCardComponent", () => {
         });
 
         it("should call checkScreenSize when window resize event fires", () => {
-            const checkSpy = vi.spyOn<any>(component as any, "checkScreenSize");
+            const checkSpy = vi.spyOn(component as any, "checkScreenSize");
 
             window.dispatchEvent(new Event("resize"));
 
@@ -784,7 +784,7 @@ describe("PlayerCardComponent", () => {
         });
 
         it("graphsInputs.requestFocusTabHeader should invoke focusActiveTabHeader", () => {
-            const focusSpy = vi.spyOn<any>(component as any, "focusActiveTabHeader");
+            const focusSpy = vi.spyOn(component as any, "focusActiveTabHeader");
             (component as any).updateGraphsInputs();
 
             (component as any).graphsInputs.requestFocusTabHeader();
@@ -809,7 +809,7 @@ describe("PlayerCardComponent", () => {
                 expect(component.isCareerBest("gaa", 2023)).toBe(false);
             });
 
-            it("should highlight all tied seasons when values are equal", fakeAsync(() => {
+            it("should highlight all tied seasons when values are equal", () => {
                 // Create data with tied values
                 const tiedData: Goalie & {
                     seasons: GoalieSeasonStats[];
@@ -884,7 +884,7 @@ describe("PlayerCardComponent", () => {
                 const tiedFixture = TestBed.createComponent(PlayerCardComponent);
                 const tiedComponent = tiedFixture.componentInstance;
                 tiedFixture.detectChanges();
-                tick();
+
 
                 // Both seasons should be highlighted for tied values
                 expect(tiedComponent.isCareerBest("wins", 2024)).toBe(true);
@@ -893,7 +893,7 @@ describe("PlayerCardComponent", () => {
                 expect(tiedComponent.isCareerBest("saves", 2023)).toBe(true);
                 expect(tiedComponent.isCareerBest("gaa", 2024)).toBe(true);
                 expect(tiedComponent.isCareerBest("gaa", 2023)).toBe(true);
-            }));
+            });
 
             it("should not highlight when all values are zero", () => {
                 // ppp and shp are 0 for all seasons in mock data
@@ -911,13 +911,13 @@ describe("PlayerCardComponent", () => {
                 expect(component.isCareerBest("wins", 1999)).toBe(false);
             });
 
-            it("should apply stat-highlight class to career best cells in template", fakeAsync(() => {
+            it("should apply stat-highlight class to career best cells in template", () => {
                 // Switch to by-season tab
                 const tabGroupDebug = fixture.debugElement.query(By.css("mat-tab-group"));
                 const tabGroup = tabGroupDebug.componentInstance as MatTabGroup;
                 tabGroup.selectedIndex = 1;
                 fixture.detectChanges();
-                tick();
+
 
                 // Find cells in season table
                 const seasonTable = fixture.debugElement.query(By.css(".season-table"));
@@ -928,20 +928,20 @@ describe("PlayerCardComponent", () => {
 
                 // Should have some highlighted cells (career bests)
                 expect(highlightedCells.length).toBeGreaterThan(0);
-            }));
+            });
         });
     });
 
     describe("career best with single season", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
 
             const singleSeasonData: Goalie & {
@@ -1009,15 +1009,15 @@ describe("PlayerCardComponent", () => {
     });
 
     describe("without seasons data", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
 
             await TestBed.configureTestingModule({
@@ -1114,19 +1114,19 @@ describe("PlayerCardComponent", () => {
     });
 
     describe("position display", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(() => {
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
         });
 
         it("should display H for forward players", async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1151,7 +1151,7 @@ describe("PlayerCardComponent", () => {
         it("should display P for defensemen", async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1176,7 +1176,7 @@ describe("PlayerCardComponent", () => {
         it("should display M for goalies", async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1201,7 +1201,7 @@ describe("PlayerCardComponent", () => {
         it("should exclude position-related fields from stats display", async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1228,19 +1228,19 @@ describe("PlayerCardComponent", () => {
     });
 
     describe("viewContext and showGraphsTab", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(() => {
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
         });
 
         it("should set viewContext to combined if have seasons", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             TestBed.configureTestingModule({
                 imports: [
@@ -1264,12 +1264,12 @@ describe("PlayerCardComponent", () => {
     });
 
     describe("statsPerGame mode", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(() => {
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
         });
 
@@ -1278,7 +1278,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1315,7 +1315,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1352,7 +1352,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1389,7 +1389,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1429,7 +1429,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1461,12 +1461,12 @@ describe("PlayerCardComponent", () => {
     });
 
     describe("position filter toggle in player card", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(() => {
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
         });
 
@@ -1475,7 +1475,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1503,7 +1503,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1531,7 +1531,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1559,7 +1559,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1593,7 +1593,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1627,7 +1627,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1668,7 +1668,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1709,7 +1709,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1743,7 +1743,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1771,7 +1771,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1799,7 +1799,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1835,7 +1835,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1871,7 +1871,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -1954,7 +1954,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2033,7 +2033,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2069,19 +2069,19 @@ describe("PlayerCardComponent", () => {
     });
 
     describe("wrapped dialog data format", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
+        let apiServiceSpy: any;
 
         beforeEach(() => {
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
         });
 
         it("should extract player from wrapped data format", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const wrappedData = { player: mockGoalieWithSeasons };
 
@@ -2109,7 +2109,7 @@ describe("PlayerCardComponent", () => {
         it("should set initialTab to all and select first tab", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const wrappedData = {
                 player: mockGoalieWithSeasons,
@@ -2140,7 +2140,7 @@ describe("PlayerCardComponent", () => {
         it("should set initialTab to by-season and select second tab when hasSeasons", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const wrappedData = {
                 player: mockGoalieWithSeasons,
@@ -2171,7 +2171,7 @@ describe("PlayerCardComponent", () => {
         it("should fall back to tab 0 for by-season when no seasons exist", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const wrappedData = {
                 player: mockSkaterWithoutSeasons,
@@ -2201,7 +2201,7 @@ describe("PlayerCardComponent", () => {
         it("should set initialTab to graphs and select third tab when hasSeasons", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const wrappedData = {
                 player: mockGoalieWithSeasons,
@@ -2232,7 +2232,7 @@ describe("PlayerCardComponent", () => {
         it("should pre-load graphs component when initialTab is graphs", async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const wrappedData = {
                 player: mockGoalieWithSeasons,
@@ -2266,7 +2266,7 @@ describe("PlayerCardComponent", () => {
         it("should fall back to tab 0 for graphs when showGraphsTab is false", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             // mockSkaterWithoutSeasons has no scores and no seasons, so showGraphsTab is false
             const wrappedData = {
@@ -2297,7 +2297,7 @@ describe("PlayerCardComponent", () => {
         it("should handle unknown tab name by falling back to 0", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const wrappedData = {
                 player: mockGoalieWithSeasons,
@@ -2327,7 +2327,7 @@ describe("PlayerCardComponent", () => {
         it("should select graphs at index 1 when no seasons but has scores", () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             const playerWithScores: Player = {
                 ...mockSkaterWithoutSeasons,
@@ -2373,19 +2373,19 @@ describe("PlayerCardComponent", () => {
     });
 
     describe("copyLinkToClipboard", () => {
-        let apiServiceSpy: MockedObject<ApiService>;
-        let teamServiceSpy: MockedObject<TeamService>;
+        let apiServiceSpy: any;
+        let teamServiceSpy: any;
 
         beforeEach(async () => {
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             teamServiceSpy = {
                 selectedTeamId: "1"
-            };
+            } as any;
 
             apiServiceSpy.getTeams.mockReturnValue(of([
                 { id: "1", name: "colorado", presentName: "Colorado Avalanche" },
@@ -2412,51 +2412,51 @@ describe("PlayerCardComponent", () => {
             fixture.detectChanges();
         });
 
-        it("should copy player link to clipboard", fakeAsync(() => {
+        it("should copy player link to clipboard", () => {
             const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             component.copyLinkToClipboard();
-            tick();
+
 
             expect(apiServiceSpy.getTeams).toHaveBeenCalled();
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/goalie\/colorado\/goalie-one$/));
-        }));
+        });
 
-        it("should set linkCopied to true after copying", fakeAsync(() => {
+        it("should set linkCopied to true after copying", () => {
             vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             expect(component.linkCopied).toBe(false);
 
             component.copyLinkToClipboard();
-            tick();
+
 
             expect(component.linkCopied).toBe(true);
-        }));
+        });
 
-        it("should reset linkCopied to false after 2 seconds", fakeAsync(() => {
+        it("should reset linkCopied to false after 2 seconds", () => {
             vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             component.copyLinkToClipboard();
-            tick();
+
 
             expect(component.linkCopied).toBe(true);
 
-            tick(2000);
+
 
             expect(component.linkCopied).toBe(false);
-        }));
+        });
 
-        it("should not copy if team not found", fakeAsync(() => {
+        it("should not copy if team not found", () => {
             component.selectedTeam = undefined;
             const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText");
 
             component.copyLinkToClipboard();
-            tick();
+
 
             expect(writeTextSpy).not.toHaveBeenCalled();
-        }));
+        });
 
-        it("should generate player link for non-goalie", fakeAsync(() => {
+        it("should generate player link for non-goalie", () => {
             // Reset with player data
             TestBed.resetTestingModule();
             TestBed.configureTestingModule({
@@ -2482,47 +2482,47 @@ describe("PlayerCardComponent", () => {
             const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             c.copyLinkToClipboard();
-            tick();
+
 
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/player\/colorado\/player-one$/));
-        }));
+        });
 
-        it("should include tab=by-season query param when on by-season tab", fakeAsync(() => {
+        it("should include tab=by-season query param when on by-season tab", () => {
             const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             // Switch to by-season tab (index 1)
             component.onTabChange(1);
             component.copyLinkToClipboard();
-            tick();
+
 
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/goalie\/colorado\/goalie-one\?tab=by-season$/));
-        }));
+        });
 
-        it("should include tab=graphs query param when on graphs tab", fakeAsync(() => {
+        it("should include tab=graphs query param when on graphs tab", () => {
             const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             // Switch to graphs tab (index 2 when hasSeasons)
             component.onTabChange(2);
             component.copyLinkToClipboard();
-            tick();
+
 
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/goalie\/colorado\/goalie-one\?tab=graphs$/));
-        }));
+        });
 
-        it("should not include tab query param when on all tab", fakeAsync(() => {
+        it("should not include tab query param when on all tab", () => {
             const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             // Ensure we're on all tab (index 0)
             component.onTabChange(0);
             component.copyLinkToClipboard();
-            tick();
+
 
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/goalie\/colorado\/goalie-one$/));
             // Verify no query params
             expect(writeTextSpy).not.toHaveBeenCalledWith(expect.stringMatching(/\?tab=/));
-        }));
+        });
 
-        it("should include tab=graphs for player without seasons on graphs tab", fakeAsync(() => {
+        it("should include tab=graphs for player without seasons on graphs tab", () => {
             // Reset with player that has scores but no seasons
             const playerWithScores = {
                 ...mockSkaterWithoutSeasons,
@@ -2566,12 +2566,12 @@ describe("PlayerCardComponent", () => {
             // Switch to graphs tab (index 1 when no seasons)
             c.onTabChange(1);
             c.copyLinkToClipboard();
-            tick();
+
 
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/player\/colorado\/player-one\?tab=graphs$/));
-        }));
+        });
 
-        it("should include season in path for single-season data", fakeAsync(() => {
+        it("should include season in path for single-season data", () => {
             TestBed.resetTestingModule();
             TestBed.configureTestingModule({
                 imports: [
@@ -2596,13 +2596,13 @@ describe("PlayerCardComponent", () => {
             const writeTextSpy = vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             c.copyLinkToClipboard();
-            tick();
+
 
             // Season is now in the path, not query param
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/goalie\/colorado\/goalie-one\/2024$/));
-        }));
+        });
 
-        it("should include season in path and tab as query param for single-season data on graphs tab", fakeAsync(() => {
+        it("should include season in path and tab as query param for single-season data on graphs tab", () => {
             TestBed.resetTestingModule();
             TestBed.configureTestingModule({
                 imports: [
@@ -2636,24 +2636,24 @@ describe("PlayerCardComponent", () => {
             // Switch to graphs tab (index 1 for single season data with scores)
             c.onTabChange(1);
             c.copyLinkToClipboard();
-            tick();
+
 
             // Season in path, tab as query param
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/goalie\/colorado\/goalie-one\/2024\?tab=graphs$/));
-        }));
+        });
     });
 
     describe('navigation', () => {
-        let apiServiceSpy: MockedObject<ApiService>;
-        let teamServiceSpy: MockedObject<TeamService>;
+        let apiServiceSpy: any;
+        let teamServiceSpy: any;
 
         beforeEach(() => {
             apiServiceSpy = {
                 getTeams: vi.fn().mockName("ApiService.getTeams")
-            };
+            } as any;
             teamServiceSpy = {
                 selectedTeamId: "1"
-            };
+            } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
             // Default to reduced motion so existing navigation tests get instant data swap
             vi.spyOn(window, 'matchMedia').mockReturnValue({
@@ -2686,7 +2686,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2732,7 +2732,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2779,7 +2779,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2824,7 +2824,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2868,7 +2868,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2913,7 +2913,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -2958,7 +2958,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -3002,7 +3002,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -3046,7 +3046,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -3090,7 +3090,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -3134,7 +3134,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -3174,7 +3174,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
@@ -3216,7 +3216,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
@@ -3254,7 +3254,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
@@ -3299,7 +3299,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
@@ -3344,7 +3344,7 @@ describe("PlayerCardComponent", () => {
 
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
-            };
+            } as any;
 
             await TestBed.configureTestingModule({
                 imports: [
@@ -3398,7 +3398,7 @@ describe("PlayerCardComponent", () => {
 
                 dialogRefSpy = {
                     close: vi.fn().mockName("MatDialogRef.close")
-                };
+                } as any;
 
                 await TestBed.configureTestingModule({
                     imports: [
@@ -3431,38 +3431,38 @@ describe("PlayerCardComponent", () => {
                 { name: 'Player 3', games: 14, goals: 7, assists: 5, points: 12, score: 140 } as Player,
             ];
 
-            it('should apply slide-out-left class when navigating to next player', fakeAsync(async () => {
+            it('should apply slide-out-left class when navigating to next player', async () => {
                 const c = await createNavComponent(twoPlayers);
 
                 (c.navigationService as any).navigateToNext();
 
                 expect(c.navigationService.slideClass).toContain('slide-out-left');
-                tick(250); // clean up timers
-            }));
 
-            it('should apply slide-out-right class when navigating to previous player', fakeAsync(async () => {
+            });
+
+            it('should apply slide-out-right class when navigating to previous player', async () => {
                 const c = await createNavComponent(twoPlayers, 1);
 
                 (c.navigationService as any).navigateToPrevious();
 
                 expect(c.navigationService.slideClass).toContain('slide-out-right');
-                tick(250);
-            }));
 
-            it('should swap player data after slide-out animation completes', fakeAsync(async () => {
+            });
+
+            it('should swap player data after slide-out animation completes', async () => {
                 const c = await createNavComponent(twoPlayers);
 
                 (c.navigationService as any).navigateToNext();
                 expect(c.data.name).toBe('Player 1'); // Not yet swapped
 
-                tick(125); // slide-out completes
+
                 expect(c.data.name).toBe('Player 2'); // Now swapped
 
-                tick(125); // slide-in completes
-                expect(c.navigationService.slideClass).toBe('card-content-wrapper'); // Clean state
-            }));
 
-            it('should skip animation when prefers-reduced-motion is set', fakeAsync(async () => {
+                expect(c.navigationService.slideClass).toBe('card-content-wrapper'); // Clean state
+            });
+
+            it('should skip animation when prefers-reduced-motion is set', async () => {
                 (window.matchMedia as Mock).mockReturnValue(mockMatchMedia(true));
 
                 const c = await createNavComponent(twoPlayers);
@@ -3473,34 +3473,34 @@ describe("PlayerCardComponent", () => {
 
                 expect(c.navigationService.slideClass).toBe(''); // No animation classes
                 expect(c.data.name).toBe('Player 2'); // Immediate swap
-            }));
+            });
 
-            it('should cancel in-progress animation on rapid navigation', fakeAsync(async () => {
+            it('should cancel in-progress animation on rapid navigation', async () => {
                 const c = await createNavComponent(threePlayers);
 
                 (c.navigationService as any).navigateToNext(); // Start animating to Player 2
-                tick(60); // Mid-animation — data not yet swapped, still at index 0
+
 
                 (c.navigationService as any).navigateToNext(); // Cancels first, starts new from index 0 → 1
-                tick(125); // New slide-out completes, data swaps to Player 2
+
 
                 // First animation was canceled before it could swap data
                 expect(c.data.name).toBe('Player 2');
 
-                tick(125); // Clean up
-            }));
 
-            it('should return to clean slideClass after full animation cycle', fakeAsync(async () => {
+            });
+
+            it('should return to clean slideClass after full animation cycle', async () => {
                 const c = await createNavComponent(twoPlayers);
 
                 (c.navigationService as any).navigateToNext();
 
-                tick(125); // slide-out done, slide-in starts
+
                 expect(c.navigationService.slideClass).toBe('card-content-wrapper');
 
-                tick(125); // slide-in done
+
                 expect(c.navigationService.slideClass).toBe('card-content-wrapper');
-            }));
+            });
         });
     });
 });
