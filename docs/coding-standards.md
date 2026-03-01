@@ -267,7 +267,7 @@ Accessibility is a required part of every feature and refactor.
 
 - Every interactive element must be operable via keyboard.
 - Prefer native semantics (`<button>`, `<a>`, proper form controls).
-- If you implement custom keyboard behavior (tables, lists, roving focus), include unit tests for key handlers.
+- If you implement custom keyboard behavior (tables, lists, roving focus), include tests for key handlers.
 
 ### Focus
 
@@ -332,82 +332,30 @@ getData(): Observable<Data[]> {
 
 ## Testing Standards
 
-### Component Tests
-
-```typescript
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-describe('MyComponent', () => {
-  let component: MyComponent;
-  let fixture: ComponentFixture<MyComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MyComponent]  // Standalone component
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(MyComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should display title', () => {
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Title');
-  });
-});
-```
-
-### Service Tests
-
-```typescript
-import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-
-describe('DataService', () => {
-  let service: DataService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
-    });
-    service = TestBed.inject(DataService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
-```
-
-### Behavior Test Standards
-
-**Policy: New feature tests use behavior testing (`@testing-library/angular`), not unit tests.** Existing unit tests are maintained but not expanded.
+All tests use **Testing Library** (`@testing-library/angular`) with **Vitest**.
 
 **Key conventions:**
 
 - **Accessible queries only**: Use `getByRole`, `getByText`, `getByLabelText` — never CSS selectors, class names, or `data-testid`
 - **Translation keys as rendered text**: Use the translation key directly (e.g., `'myTitle'`) with `TranslateModule.forRoot()` instead of loading locale files
-- **File naming**: `*.behavior.spec.ts`
+- **File naming**: `*.spec.ts`
 - **Minimize renders**: Group all assertions for a given scenario into one test with one `render()` call. Use comments to separate logical groups. Do not create separate `it()` blocks that each re-render the same component state
+- **Mock at the service boundary**: Provide mock services via Angular DI, not component internals
 
 ```typescript
-// Example: Behavior test for a component
 import { render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { MyComponent } from './my.component';
 
-it('renders the heading', async () => {
-  await render(MyComponent, {
-    imports: [TranslateModule.forRoot()],
-  });
+describe('MyComponent', { timeout: 15_000 }, () => {
+  it('renders the heading', async () => {
+    await render(MyComponent, {
+      imports: [TranslateModule.forRoot()],
+    });
 
-  expect(screen.getByRole('heading', { name: 'myTitle' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'myTitle' })).toBeInTheDocument();
+  });
 });
 ```
 

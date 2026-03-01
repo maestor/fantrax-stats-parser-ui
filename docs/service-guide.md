@@ -420,71 +420,25 @@ export class ApiService {
 
 ## Service Testing
 
-### Testing ApiService
+Services are tested through component behavior tests using Testing Library. Mock services at the DI boundary:
 
 ```typescript
-describe('ApiService', () => {
-  let service: ApiService;
-  let httpMock: HttpTestingController;
+import { render, screen } from '@testing-library/angular';
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ApiService]
-    });
+// Mock the service at the boundary
+const mockApiService = {
+  getPlayerData: () => of(mockPlayers),
+  getSeasons: () => of(mockSeasons),
+};
 
-    service = TestBed.inject(ApiService);
-    httpMock = TestBed.inject(HttpTestingController);
-  });
-
-  it('should fetch player stats', () => {
-    const mockData = [{ name: 'Player 1', goals: 10 }];
-
-    service.getPlayerStats('2023-2024').subscribe(data => {
-      expect(data).toEqual(mockData);
-    });
-
-    const req = httpMock.expectOne('/api/players/2023-2024');
-    expect(req.request.method).toBe('GET');
-    req.flush(mockData);
-  });
-
-  afterEach(() => {
-    httpMock.verify();
-  });
+await render(MyComponent, {
+  providers: [
+    { provide: ApiService, useValue: mockApiService },
+  ],
 });
-```
 
-### Testing StatsService
-
-```typescript
-describe('StatsService', () => {
-  let service: StatsService;
-  let apiService: jasmine.SpyObj<ApiService>;
-
-  beforeEach(() => {
-    const apiSpy = jasmine.createSpyObj('ApiService', ['getPlayerStats']);
-
-    TestBed.configureTestingModule({
-      providers: [
-        StatsService,
-        { provide: ApiService, useValue: apiSpy }
-      ]
-    });
-
-    service = TestBed.inject(StatsService);
-    apiService = TestBed.inject(ApiService) as jasmine.SpyObj<ApiService>;
-  });
-
-  it('should process player stats', () => {
-    const mockRawStats = [{ name: 'Player', goals: 10, assists: 5 }];
-    apiService.getPlayerStats.and.returnValue(of(mockRawStats));
-
-    service.getProcessedPlayerStats('2023-2024').subscribe(stats => {
-      expect(stats[0].points).toBe(15); // goals + assists
-    });
-  });
-});
+// Assert on user-visible behavior
+expect(screen.getByText('Player 1')).toBeInTheDocument();
 ```
 
 ## Best Practices

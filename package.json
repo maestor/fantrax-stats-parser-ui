@@ -14,7 +14,6 @@
     "test": "ng test --watch=false",
     "test:watch": "ng test",
     "test:coverage": "ng test --coverage --watch=false",
-    "test:behavior": "ng run fantrax-stats-parser-ui:test-behavior --watch=false --coverage",
     "lint": "eslint src --ext .ts --ignore-pattern '*.spec.ts'",
     "verify": "npm run lint && npm run test:coverage && npm run build",
     "clean:playwright": "rm -rf .playwright-mcp",

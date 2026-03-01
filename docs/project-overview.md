@@ -13,7 +13,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - **UI Library**: Angular Material
 - **State Management**: RxJS + Services
 - **Internationalization**: ngx-translate
-- **Testing**: Jasmine/Karma (unit), Playwright (E2E)
+- **Testing**: Vitest + Testing Library (component), Playwright (E2E)
 
 ### Backend Dependency
 - Requires [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) running
@@ -123,7 +123,7 @@ FilterService → Component → Table Display
 
 - Development: `npm start` (port 4200)
 - Production: `npm run build` (outputs to dist/)
-- Testing: `npm test` (unit tests)
+- Testing: `npm test` (component tests)
 - E2E: Playwright tests in e2e/
 
 ### Theming / Automatic Dark Mode

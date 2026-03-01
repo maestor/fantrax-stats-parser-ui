@@ -970,31 +970,22 @@ Each component has its own SCSS file:
 
 ## Testing Components
 
-Basic component test structure:
+All component tests use Testing Library with accessible queries:
 
 ```typescript
-describe("ComponentName", () => {
-  let component: ComponentName;
-  let fixture: ComponentFixture<ComponentName>;
+import { render, screen } from '@testing-library/angular';
+import { TranslateModule } from '@ngx-translate/core';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ComponentName /* dependencies */],
-    }).compileComponents();
+describe('ComponentName', { timeout: 15_000 }, () => {
+  it('renders expected content', async () => {
+    await render(ComponentName, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        { provide: SomeService, useValue: mockService },
+      ],
+    });
 
-    fixture = TestBed.createComponent(ComponentName);
-    component = fixture.componentInstance;
-  });
-
-  it("should create", () => {
-    expect(component).toBeTruthy();
-  });
-
-  it("should render title", () => {
-    component.title = "Test Title";
-    fixture.detectChanges();
-    const element = fixture.nativeElement;
-    expect(element.querySelector("h1").textContent).toContain("Test Title");
+    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument();
   });
 });
 ```

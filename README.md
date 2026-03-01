@@ -102,7 +102,7 @@ After changing Vercel env vars, redeploy so they take effect.
 npm start                              # Dev server on http://localhost:4200
 npm run generate:types                 # Regenerate API types from OpenAPI spec
 
-# Unit tests (Vitest)
+# Tests (Vitest + Testing Library)
 npm test                               # Run once (no browser required)
 npm run test:watch                     # Watch mode
 npm run test:coverage                  # With coverage report
@@ -114,9 +114,6 @@ npm run e2e:ui                         # Interactive UI mode
 npm run e2e:smoke                      # Smoke tests only
 npm run e2e:capture-fixtures           # Re-capture API fixtures from live backend
 
-# Behavior tests (Testing Library)
-npm run test:behavior                  # Run behavior tests with coverage
-
 # CI / verification
 npm run verify                         # Headless unit tests + production build
 
@@ -126,7 +123,7 @@ npm run build
 
 ## Testing
 
-This project uses **Vitest** for unit tests, **Testing Library** (`@testing-library/angular`) for behavior tests, and **Playwright** for end-to-end tests. New feature development uses behavior tests exclusively; existing unit tests are maintained but not expanded. Run `npm test` to see the current unit test count and status.
+This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests and **Playwright** for end-to-end tests. All tests follow a user-centric, accessible-query approach. Run `npm test` to see the current test count and status.
 
 📖 **[Read the complete Testing Documentation](docs/project-testing.md)**
 
@@ -144,16 +141,7 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 
 ### Test Coverage Summary
 
-Coverage is enforced in CI via `npm run verify` (headless unit tests with coverage + production build).
-
-In addition: every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
-
-- **Enforced coverage gate** (implementation under `src/`, test files excluded):
-	- >= 98% statements
-	- >= 98% lines
-	- >= 98% functions
-	- >= 96% branches
-- **Long-term target**: 100% statements/lines/functions/branches
+Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
@@ -174,7 +162,7 @@ Accessibility is a core requirement of this project (not optional).
 - **Language**: TypeScript 5.9
 - **State Management**: RxJS 7.8 (BehaviorSubjects)
 - **HTTP Client**: Angular HttpClient with caching
-- **Testing**: Vitest (unit), Testing Library (`@testing-library/angular`) (behavior), Playwright (E2E)
+- **Testing**: Vitest + Testing Library (`@testing-library/angular`), Playwright (E2E)
 - **i18n**: ngx-translate 17
 
 ## Project Structure
@@ -189,7 +177,6 @@ src/
 ├── app/
 │   ├── base/              # Base components (navigation, footer)
 │   ├── services/          # Core services (API, cache, stats, filters, team)
-│   │   └── tests/         # Service unit tests
 │   ├── shared/            # Shared components
 │   │   ├── comparison-bar/       # Floating comparison selection bar
 │   │   ├── comparison-dialog/    # Comparison dialog (stats + radar)

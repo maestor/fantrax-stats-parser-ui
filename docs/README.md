@@ -6,7 +6,7 @@ This directory contains documentation to help contributors understand and work e
 
 - [Project Overview](./project-overview.md) - High-level architecture and purpose
 - [Development Guide](./development-guide.md) - Setup, commands, and workflows
-- [Project Testing](./project-testing.md) - Unit/E2E testing guide
+- [Project Testing](./project-testing.md) - Testing guide (behavior + E2E)
 - [Codebase Structure](./codebase-structure.md) - Directory layout and organization
 - [Coding Standards](./coding-standards.md) - Conventions and best practices
 - [Component Guide](./component-guide.md) - Angular components reference
@@ -26,11 +26,11 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 - RxJS
 - ngx-translate (i18n)
 - Playwright (E2E testing)
-- Jasmine/Karma (unit testing)
+- Vitest + Testing Library (component/behavior testing)
 
 ## Testing Overview
 
-- Unit tests are implemented with Jasmine/Karma and focus on services, shared components, and page-level wiring (see project-testing.md and the various `*.spec.ts` files under `src/app`).
+- Component tests use Testing Library (`@testing-library/angular`) with Vitest, following accessible user-centric queries (`getByRole`, `getByText`, etc.).
 - End-to-end tests are implemented with Playwright in the `e2e` directory and exercise real user flows against a running dev server.
 - Playwright is configured via `playwright.config.ts` to start `npm start` automatically and run tests against `http://localhost:4200` in Chromium, Firefox and WebKit.
 - E2E tests are organized into feature-based specs under `e2e/specs/` (smoke, player-card, team-switching, filters, mobile) with page objects and shared helpers.
@@ -47,7 +47,7 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 1. Check existing components for similar patterns
 2. Follow the component/service structure
 3. Add translations for new UI text
-4. Write unit tests for new functionality
+4. Write behavior tests for new functionality using Testing Library
 5. Write E2E to existing scenario for new functionality (primarily), if not suitable one exists make new test case
 6. Update project README and every docs/*.md related
 7. Ask supervisor review what have done and ask if there is anything should fix

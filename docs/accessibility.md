@@ -141,10 +141,10 @@ Before you consider a feature “done”:
 
 ## Testing Guidance
 
-### Unit tests
+### Component tests
 
-- Add unit tests for keyboard handlers when you introduce keyboard behavior.
-- Prefer testing component-level handlers (e.g., `onKeydown`) rather than framework internals.
+- Add behavior tests for keyboard handlers when you introduce keyboard behavior.
+- Test through user-visible behavior using Testing Library accessible queries.
 
 ### E2E tests (Playwright)
 
