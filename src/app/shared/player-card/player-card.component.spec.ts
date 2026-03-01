@@ -16,6 +16,16 @@ describe("PlayerCardComponent", () => {
     let component: PlayerCardComponent;
     let dialogRefSpy: any;
 
+    // Stub requestAnimationFrame to prevent deferred chart resize callbacks from
+    // crashing between tests when chart.js tries to resize after the component is destroyed.
+    beforeEach(() => {
+        vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+    });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
     const mockGoalieWithSeasons: Goalie & {
         season: number;
         seasons: GoalieSeasonStats[];
@@ -2222,8 +2232,14 @@ describe("PlayerCardComponent", () => {
                 ],
             }).compileComponents();
 
+            // Prevent the real dynamic import: ensureGraphsLoaded is called in the constructor.
+            // A pending async import would resolve later and trigger zone.js change detection
+            // on an invalidated component, crashing subsequent tests.
+            const ensureSpy = vi.spyOn(PlayerCardComponent.prototype as any, 'ensureGraphsLoaded')
+                .mockReturnValue(new Promise<void>(() => { /* never resolves */ }));
             const f = TestBed.createComponent(PlayerCardComponent);
             const c = f.componentInstance;
+            ensureSpy.mockRestore();
 
             expect(c.initialTab).toBe("graphs");
             expect(c.selectedTabIndex).toBe(2);
@@ -2253,14 +2269,22 @@ describe("PlayerCardComponent", () => {
                 ],
             }).compileComponents();
 
-            const f = TestBed.createComponent(PlayerCardComponent);
-            const c = f.componentInstance;
-            f.detectChanges();
+            // ensureGraphsLoaded is called in the constructor (not ngOnInit).
+            // We must spy on the prototype BEFORE createComponent() so the constructor
+            // sees the stub instead of the real dynamic import, which would resolve
+            // asynchronously inside Angular's zone and crash the renderer in jsdom via
+            // zone.js-triggered change detection that runs after this test completes.
+            const ensureSpy = vi.spyOn(PlayerCardComponent.prototype as any, 'ensureGraphsLoaded')
+                .mockReturnValue(new Promise<void>(() => { /* never resolves */ }));
 
-            // Wait for the graphs to load
-            await (c as any).graphsLoadPromise;
+            TestBed.createComponent(PlayerCardComponent);
 
-            expect(c.graphsComponent).toBeTruthy();
+            try {
+                // The spy should have been called once in the constructor since initialTab === 'graphs'
+                expect(ensureSpy).toHaveBeenCalledTimes(1);
+            } finally {
+                ensureSpy.mockRestore();
+            }
         });
 
         it("should fall back to tab 0 for graphs when showGraphsTab is false", () => {
@@ -2364,8 +2388,13 @@ describe("PlayerCardComponent", () => {
                 ],
             }).compileComponents();
 
+            // Prevent the real dynamic import: ensureGraphsLoaded is called in the constructor
+            // when showGraphsTab is true and the selected tab is the graphs tab.
+            const ensureSpy = vi.spyOn(PlayerCardComponent.prototype as any, 'ensureGraphsLoaded')
+                .mockReturnValue(new Promise<void>(() => { /* never resolves */ }));
             const f = TestBed.createComponent(PlayerCardComponent);
             const c = f.componentInstance;
+            ensureSpy.mockRestore();
 
             // No seasons, so graphs is at index 1
             expect(c.selectedTabIndex).toBe(1);
@@ -2377,6 +2406,13 @@ describe("PlayerCardComponent", () => {
         let teamServiceSpy: any;
 
         beforeEach(async () => {
+            // jsdom does not implement navigator.clipboard - provide a minimal mock.
+            Object.defineProperty(navigator, 'clipboard', {
+                value: { writeText: vi.fn().mockResolvedValue(undefined) },
+                writable: true,
+                configurable: true,
+            });
+
             dialogRefSpy = {
                 close: vi.fn().mockName("MatDialogRef.close")
             } as any;
@@ -2422,28 +2458,31 @@ describe("PlayerCardComponent", () => {
             expect(writeTextSpy).toHaveBeenCalledWith(expect.stringMatching(/\/goalie\/colorado\/goalie-one$/));
         });
 
-        it("should set linkCopied to true after copying", () => {
+        it("should set linkCopied to true after copying", async () => {
             vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             expect(component.linkCopied).toBe(false);
 
             component.copyLinkToClipboard();
-
+            await new Promise(resolve => setTimeout(resolve, 0));
 
             expect(component.linkCopied).toBe(true);
         });
 
-        it("should reset linkCopied to false after 2 seconds", () => {
+        it("should reset linkCopied to false after 2 seconds", async () => {
+            vi.useFakeTimers();
             vi.spyOn(navigator.clipboard, "writeText").mockReturnValue(Promise.resolve());
 
             component.copyLinkToClipboard();
-
+            await Promise.resolve(); // Let the .then() callback run
 
             expect(component.linkCopied).toBe(true);
 
-
+            vi.advanceTimersByTime(2000);
 
             expect(component.linkCopied).toBe(false);
+
+            vi.useRealTimers();
         });
 
         it("should not copy if team not found", () => {
@@ -2656,16 +2695,19 @@ describe("PlayerCardComponent", () => {
             } as any;
             apiServiceSpy.getTeams.mockReturnValue(of([{ id: "1", name: "colorado", presentName: "Colorado Avalanche" }]));
             // Default to reduced motion so existing navigation tests get instant data swap
-            vi.spyOn(window, 'matchMedia').mockReturnValue({
-                matches: true,
-                media: '',
-                onchange: null,
-                addListener: () => { },
-                removeListener: () => { },
-                addEventListener: () => { },
-                removeEventListener: () => { },
-                dispatchEvent: () => false,
-            } as MediaQueryList);
+            Object.defineProperty(window, 'matchMedia', {
+                writable: true,
+                value: vi.fn().mockReturnValue({
+                    matches: true,
+                    media: '',
+                    onchange: null,
+                    addListener: () => { },
+                    removeListener: () => { },
+                    addEventListener: () => { },
+                    removeEventListener: () => { },
+                    dispatchEvent: () => false,
+                }),
+            });
         });
 
         it('should navigate to next player on ArrowRight', async () => {
@@ -3450,16 +3492,19 @@ describe("PlayerCardComponent", () => {
             });
 
             it('should swap player data after slide-out animation completes', async () => {
+                vi.useFakeTimers();
                 const c = await createNavComponent(twoPlayers);
 
                 (c.navigationService as any).navigateToNext();
                 expect(c.data.name).toBe('Player 1'); // Not yet swapped
 
-
+                vi.advanceTimersByTime(125);
                 expect(c.data.name).toBe('Player 2'); // Now swapped
 
-
+                vi.advanceTimersByTime(125);
                 expect(c.navigationService.slideClass).toBe('card-content-wrapper'); // Clean state
+
+                vi.useRealTimers();
             });
 
             it('should skip animation when prefers-reduced-motion is set', async () => {
@@ -3476,30 +3521,34 @@ describe("PlayerCardComponent", () => {
             });
 
             it('should cancel in-progress animation on rapid navigation', async () => {
+                vi.useFakeTimers();
                 const c = await createNavComponent(threePlayers);
 
                 (c.navigationService as any).navigateToNext(); // Start animating to Player 2
 
-
+                vi.advanceTimersByTime(50); // Halfway through first animation
                 (c.navigationService as any).navigateToNext(); // Cancels first, starts new from index 0 → 1
 
-
+                vi.advanceTimersByTime(125); // Complete second animation
                 // First animation was canceled before it could swap data
                 expect(c.data.name).toBe('Player 2');
 
-
+                vi.useRealTimers();
             });
 
             it('should return to clean slideClass after full animation cycle', async () => {
+                vi.useFakeTimers();
                 const c = await createNavComponent(twoPlayers);
 
                 (c.navigationService as any).navigateToNext();
 
-
+                vi.advanceTimersByTime(125);
                 expect(c.navigationService.slideClass).toBe('card-content-wrapper');
 
-
+                vi.advanceTimersByTime(125);
                 expect(c.navigationService.slideClass).toBe('card-content-wrapper');
+
+                vi.useRealTimers();
             });
         });
     });

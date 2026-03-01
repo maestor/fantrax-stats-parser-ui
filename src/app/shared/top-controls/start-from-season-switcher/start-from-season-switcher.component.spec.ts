@@ -94,135 +94,131 @@ describe('StartFromSeasonSwitcherComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should load regular seasons on init', () => {
+    it('should load regular seasons on init', async () => {
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(apiService.getSeasons).toHaveBeenCalledWith('regular');
         expect(component.seasons.length).toBe(2);
     });
 
-    it('should sort seasons from oldest to newest', () => {
+    it('should sort seasons from oldest to newest', async () => {
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(component.seasons.map((s) => s.season)).toEqual([2023, 2024]);
     });
 
-    it('should persist startFrom selection via SettingsService', () => {
+    it('should persist startFrom selection via SettingsService', async () => {
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         component.changeStartFrom({ value: 2023 } as any);
-
 
         expect(settingsService.startFromSeason).toBe(2023);
     });
 
-    it('should ignore non-numeric selections', () => {
+    it('should ignore non-numeric selections', async () => {
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         component.changeStartFrom({ value: 2024 } as any);
 
-
         component.changeStartFrom({ value: 'not-a-season' } as any);
-
 
         expect(settingsService.startFromSeason).toBe(2024);
     });
 
-    it('should load regular seasons with teamId when a non-default team is selected', () => {
+    it('should load regular seasons with teamId when a non-default team is selected', async () => {
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         (apiService.getSeasons as Mock).mockClear();
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         teamService.setTeamId('2');
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(apiService.getSeasons).toHaveBeenCalledWith('regular', '2');
     });
 
-    it('should normalize season numbers returned as strings', () => {
+    it('should normalize season numbers returned as strings', async () => {
         (apiService.getSeasons as Mock).mockReturnValue(of([
             { season: '2024', text: '2024-25' } as any,
             { season: '2023', text: '2023-24' } as any,
         ]));
 
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(component.seasons.every((s) => typeof s.season === 'number')).toBe(true);
     });
 
-    it('should keep season value when it cannot be normalized', () => {
+    it('should keep season value when it cannot be normalized', async () => {
         (apiService.getSeasons as Mock).mockReturnValue(of([{ season: 'not-a-season', text: '???' } as any]));
 
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(component.seasons.length).toBe(1);
         expect(component.seasons[0].season as any).toBe('not-a-season');
     });
 
-    it('should not persist anything when oldestSeason is not numeric (defensive early return)', () => {
+    it('should not persist anything when oldestSeason is not numeric (defensive early return)', async () => {
         const persistSpy = vi.spyOn(settingsService, 'setStartFromSeason');
 
         (apiService.getSeasons as Mock).mockReturnValue(of([{ season: 'not-a-season', text: '???' } as any]));
 
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(persistSpy).not.toHaveBeenCalled();
     });
 
-    it('should reset startFrom to oldest when selected season is not present in fetched seasons', () => {
+    it('should reset startFrom to oldest when selected season is not present in fetched seasons', async () => {
         const resetSpy = vi.spyOn(settingsService, 'setStartFromSeason');
 
         component.ngOnInit();
 
         // Ensure a value is selected before the seasons response is processed.
         settingsService.setStartFromSeason(2022);
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(resetSpy).toHaveBeenCalledWith(2023);
         expect(settingsService.startFromSeason).toBe(2023);
     });
 
-    it('should reset startFrom to team oldest on team changes (and reset again when switching back)', () => {
+    it('should reset startFrom to team oldest on team changes (and reset again when switching back)', async () => {
         const resetSpy = vi.spyOn(settingsService, 'setStartFromSeason');
 
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         // Choose a valid season for default team
         settingsService.setStartFromSeason(2024);
-
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
 
         resetSpy.mockClear();
         teamService.setTeamId('2');
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(resetSpy).toHaveBeenCalledWith(2015);
         expect(settingsService.startFromSeason).toBe(2015);
 
         resetSpy.mockClear();
         teamService.setTeamId('1');
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(resetSpy).toHaveBeenCalledWith(2023);
         expect(settingsService.startFromSeason).toBe(2023);
     });
 
-    it('should handle API errors by showing an empty season list', () => {
+    it('should handle API errors by showing an empty season list', async () => {
         (apiService.getSeasons as Mock).mockReturnValue(throwError(() => new Error('network')));
 
         component.ngOnInit();
-
+        await new Promise(r => setTimeout(r, 0));
 
         expect(component.seasons).toEqual([]);
     });

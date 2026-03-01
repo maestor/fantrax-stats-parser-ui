@@ -7,8 +7,12 @@ describe('SettingsService', () => {
         localStorage.clear();
     });
 
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
     it('should default and persist settings when no key exists', () => {
-        const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
         const service = TestBed.inject(SettingsService);
 
         expect(service.selectedTeamId).toBe('1');
@@ -37,7 +41,7 @@ describe('SettingsService', () => {
             reportType: 'playoffs',
         }));
 
-        const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
         const service = TestBed.inject(SettingsService);
 
         expect(service.selectedTeamId).toBe('7');
@@ -88,7 +92,7 @@ describe('SettingsService', () => {
 
     it('should normalize startFromSeason and avoid persisting unchanged values', () => {
         const service = TestBed.inject(SettingsService);
-        const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
         setItemSpy.mockClear();
 
         service.setStartFromSeason(undefined);
@@ -108,7 +112,7 @@ describe('SettingsService', () => {
 
     it('should persist setSeason and avoid persisting unchanged values', () => {
         const service = TestBed.inject(SettingsService);
-        const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
         setItemSpy.mockClear();
 
         service.setSeason(null);
@@ -128,7 +132,7 @@ describe('SettingsService', () => {
 
     it('should persist setReportType and avoid persisting unchanged values', () => {
         const service = TestBed.inject(SettingsService);
-        const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
         setItemSpy.mockClear();
 
         service.setReportType('regular');
@@ -145,7 +149,7 @@ describe('SettingsService', () => {
 
     it('should still update in-memory state if persist throws', () => {
         const service = TestBed.inject(SettingsService);
-        vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+        vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
             throw new Error('quota exceeded');
         });
 
@@ -164,7 +168,7 @@ describe('SettingsService', () => {
 
     it('should ignore no-op updates', () => {
         const service = TestBed.inject(SettingsService);
-        const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
         setItemSpy.mockClear();
 
         service.setSelectedTeamId('');

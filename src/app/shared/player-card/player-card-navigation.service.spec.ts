@@ -20,6 +20,19 @@ function makeService() {
 
 describe('PlayerCardNavigationService', () => {
     beforeEach(() => {
+        Object.defineProperty(window, 'matchMedia', {
+            writable: true,
+            value: vi.fn().mockImplementation((query: string) => ({
+                matches: false,
+                media: query,
+                onchange: null,
+                addListener: vi.fn(),
+                removeListener: vi.fn(),
+                addEventListener: vi.fn(),
+                removeEventListener: vi.fn(),
+                dispatchEvent: vi.fn(),
+            })),
+        });
         TestBed.configureTestingModule({ providers: [PlayerCardNavigationService] });
     });
 
@@ -132,12 +145,16 @@ describe('PlayerCardNavigationService', () => {
     });
 
     it('navigateToIndex sets slide-out class then applies navigation after animation duration', () => {
+        vi.useFakeTimers();
         const { service, navigateSpy } = makeService();
         service.navigateToIndex(1, 'left');
         expect(service.slideClass).toContain('slide-out-left');
 
+        vi.advanceTimersByTime(125);
+
         expect(navigateSpy).toHaveBeenCalledWith(p2, 1);
 
+        vi.useRealTimers();
     });
 
     it('ngOnDestroy removes wheel listener and clears timers', () => {
@@ -187,12 +204,15 @@ describe('PlayerCardNavigationService', () => {
     });
 
     it('startWheelCooldown resets wheelDeltaX and activates cooldown', () => {
+        vi.useFakeTimers();
         const { service } = makeService();
         (service as any).wheelDeltaX = 30;
         (service as any).startWheelCooldown();
         expect((service as any).wheelDeltaX).toBe(0);
         expect((service as any).wheelCooldown).toBe(true);
 
+        vi.advanceTimersByTime(600);
         expect((service as any).wheelCooldown).toBe(false);
+        vi.useRealTimers();
     });
 });

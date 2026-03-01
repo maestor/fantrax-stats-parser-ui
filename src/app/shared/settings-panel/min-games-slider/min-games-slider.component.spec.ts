@@ -146,7 +146,7 @@ describe('MinGamesSliderComponent', () => {
             expect(component.minGames).toBe(10);
         });
 
-        it('should call onValueChange when minGames is adjusted', () => {
+        it('should call onValueChange when minGames is adjusted', async () => {
             vi.spyOn(component, 'onValueChange');
             component.minGames = 25;
             component.maxGames = 15;
@@ -156,7 +156,7 @@ describe('MinGamesSliderComponent', () => {
             };
 
             component.ngOnChanges(changes);
-
+            await Promise.resolve();
 
             expect(component.onValueChange).toHaveBeenCalledWith(15);
         });

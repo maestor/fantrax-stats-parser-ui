@@ -7,6 +7,7 @@ describe('TeamService', () => {
         localStorage.clear();
     });
 
+
     it('should default to stored team id when present', () => {
         localStorage.setItem('fantrax.settings', JSON.stringify({
             selectedTeamId: '7',
@@ -46,7 +47,7 @@ describe('TeamService', () => {
         const service = TestBed.inject(TeamService);
 
         service.setTeamId('3');
-        const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
 
         service.setTeamId('');
 
@@ -65,6 +66,7 @@ describe('TeamService', () => {
         const service = TestBed.inject(TeamService);
 
         const setItemSpy = vi.spyOn(localStorage, 'setItem');
+        setItemSpy.mockClear();
 
         service.setTeamId('3');
 
@@ -95,13 +97,15 @@ describe('TeamService', () => {
     it('setTeamId should still update even if persist throws', () => {
         const service = TestBed.inject(TeamService);
 
-        vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+        const setItemSpy = vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
             throw new Error('quota exceeded');
         });
 
         service.setTeamId('11');
 
         expect(service.selectedTeamId).toBe('11');
+
+        setItemSpy.mockRestore();
     });
 
     it('setTeamId should clear startFromSeason to avoid cross-team stale requests', () => {

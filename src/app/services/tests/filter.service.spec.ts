@@ -238,7 +238,7 @@ describe('FilterService', () => {
             });
         });
 
-        it('should emit new values to subscribers', async () => {
+        it('should emit new values to subscribers', () => {
             const emissions: FilterState[] = [];
 
             const subscription = service.playerFilters$.subscribe((filters) => {
@@ -248,14 +248,11 @@ describe('FilterService', () => {
             service.updatePlayerFilters({ reportType: 'playoffs' });
             service.updatePlayerFilters({ season: 2024 });
 
-            setTimeout(() => {
-                expect(emissions.length).toBe(3);
-                expect(emissions[0].reportType).toBe('regular');
-                expect(emissions[1].reportType).toBe('playoffs');
-                expect(emissions[2].season).toBe(2024);
-                subscription.unsubscribe();
-
-            }, 10);
+            expect(emissions.length).toBe(3);
+            expect(emissions[0].reportType).toBe('regular');
+            expect(emissions[1].reportType).toBe('playoffs');
+            expect(emissions[2].season).toBe(2024);
+            subscription.unsubscribe();
         });
     });
 
@@ -466,7 +463,7 @@ describe('FilterService', () => {
     });
 
     describe('multiple subscribers', () => {
-        it('should emit to multiple player filter subscribers', async () => {
+        it('should emit to multiple player filter subscribers', () => {
             const emissions1: FilterState[] = [];
             const emissions2: FilterState[] = [];
 
@@ -475,18 +472,15 @@ describe('FilterService', () => {
 
             service.updatePlayerFilters({ reportType: 'playoffs' });
 
-            setTimeout(() => {
-                expect(emissions1.length).toBe(2);
-                expect(emissions2.length).toBe(2);
-                expect(emissions1[1].reportType).toBe('playoffs');
-                expect(emissions2[1].reportType).toBe('playoffs');
-                sub1.unsubscribe();
-                sub2.unsubscribe();
-
-            }, 10);
+            expect(emissions1.length).toBe(2);
+            expect(emissions2.length).toBe(2);
+            expect(emissions1[1].reportType).toBe('playoffs');
+            expect(emissions2[1].reportType).toBe('playoffs');
+            sub1.unsubscribe();
+            sub2.unsubscribe();
         });
 
-        it('should emit to multiple goalie filter subscribers', async () => {
+        it('should emit to multiple goalie filter subscribers', () => {
             const emissions1: FilterState[] = [];
             const emissions2: FilterState[] = [];
 
@@ -495,15 +489,12 @@ describe('FilterService', () => {
 
             service.updateGoalieFilters({ season: 2024 });
 
-            setTimeout(() => {
-                expect(emissions1.length).toBe(2);
-                expect(emissions2.length).toBe(2);
-                expect(emissions1[1].season).toBe(2024);
-                expect(emissions2[1].season).toBe(2024);
-                sub1.unsubscribe();
-                sub2.unsubscribe();
-
-            }, 10);
+            expect(emissions1.length).toBe(2);
+            expect(emissions2.length).toBe(2);
+            expect(emissions1[1].season).toBe(2024);
+            expect(emissions2[1].season).toBe(2024);
+            sub1.unsubscribe();
+            sub2.unsubscribe();
         });
     });
 

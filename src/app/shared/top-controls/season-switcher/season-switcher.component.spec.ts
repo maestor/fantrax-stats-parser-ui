@@ -96,75 +96,75 @@ describe('SeasonSwitcherComponent', () => {
     });
 
     describe('ngOnInit', () => {
-        it('should load seasons on init', () => {
+        it('should load seasons on init', async () => {
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(apiService.getSeasons).toHaveBeenCalledWith('regular');
             expect(component.seasons.length).toBe(3);
         });
 
-        it('should reverse seasons order (newest first)', () => {
+        it('should reverse seasons order (newest first)', async () => {
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.seasons[0].season).toBe(2022);
             expect(component.seasons[2].season).toBe(2024);
         });
 
-        it('should subscribe to player filters when context is player', () => {
+        it('should subscribe to player filters when context is player', async () => {
             component.context = 'player';
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.selectedSeason).toBe('all');
         });
 
-        it('should update selectedSeason when player filters change', () => {
+        it('should update selectedSeason when player filters change', async () => {
             component.context = 'player';
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updatePlayerFilters({ season: 2024 });
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.selectedSeason).toBe(2024);
         });
 
-        it('should subscribe to goalie filters when context is goalie', () => {
+        it('should subscribe to goalie filters when context is goalie', async () => {
             component.context = 'goalie';
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updateGoalieFilters({ season: 2023 });
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.selectedSeason).toBe(2023);
         });
 
-        it('should refetch seasons when reportType changes', () => {
+        it('should refetch seasons when reportType changes', async () => {
             component.context = 'player';
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             (apiService.getSeasons as Mock).mockClear();
 
             filterService.updatePlayerFilters({ reportType: 'playoffs' });
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(apiService.getSeasons).toHaveBeenCalledWith('playoffs');
         });
 
-        it('should include teamId when a non-default team is selected', () => {
+        it('should include teamId when a non-default team is selected', async () => {
             component.context = 'player';
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             (apiService.getSeasons as Mock).mockClear();
 
             const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
             teamService.setTeamId('2');
-
+            await new Promise(r => setTimeout(r, 0));
 
             // On team change we first show the unfiltered season list.
             expect(apiService.getSeasons).toHaveBeenCalledWith('regular', '2');
@@ -172,68 +172,68 @@ describe('SeasonSwitcherComponent', () => {
             // Once startFromSeason is resolved, SeasonSwitcher refetches filtered seasons.
             (apiService.getSeasons as Mock).mockClear();
             startFromSeasonSubject.next(2018);
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(apiService.getSeasons).toHaveBeenCalledWith('regular', '2', 2018);
         });
 
-        it('should not refetch when the same teamId re-emits after initialization', () => {
+        it('should not refetch when the same teamId re-emits after initialization', async () => {
             component.context = 'player';
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             (apiService.getSeasons as Mock).mockClear();
 
             const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
             teamService.setTeamId('1');
-
+            await new Promise(r => setTimeout(r, 0));
 
             // distinctUntilChanged should prevent redundant API calls, but scan still evaluates teamChanged.
             expect(apiService.getSeasons).not.toHaveBeenCalled();
         });
 
-        it('should refetch seasons with startFrom when startFromSeason changes', () => {
+        it('should refetch seasons with startFrom when startFromSeason changes', async () => {
             component.context = 'player';
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             (apiService.getSeasons as Mock).mockClear();
 
             startFromSeasonSubject.next(2018);
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(apiService.getSeasons).toHaveBeenCalledWith('regular', undefined, 2018);
         });
 
-        it('should show all seasons label when selectedSeason is all', () => {
+        it('should show all seasons label when selectedSeason is all', async () => {
             component.context = 'player';
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             fixture.detectChanges();
-
+            await new Promise(r => setTimeout(r, 0));
             fixture.detectChanges();
 
             expect(component.selectedSeason).toBe('all');
 
             const compiled = fixture.nativeElement as HTMLElement;
-            const trigger = (compiled.querySelector('.mat-mdc-select-min-line') as HTMLElement | null) ??
-                (compiled.querySelector('.mat-mdc-select-value-text') as HTMLElement | null) ??
-                (compiled.querySelector('.mat-mdc-select-trigger') as HTMLElement | null);
+            // Look specifically for the custom trigger content
+            const trigger = compiled.querySelector('mat-select-trigger') as HTMLElement | null;
 
             expect(trigger).toBeTruthy();
-            expect(trigger?.textContent).toContain('Kaikki kaudet');
+            expect(trigger?.textContent?.trim()).toContain('Kaikki kaudet');
         });
     });
 
     describe('API error handling', () => {
-        it('should clear seasons and selectedSeasonText on API error', () => {
+        it('should clear seasons and selectedSeasonText on API error', async () => {
             component.selectedSeason = 2024;
             component.seasons = [...mockSeasons];
 
             (apiService.getSeasons as Mock).mockReturnValue(throwError(() => new Error('boom')));
 
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.seasons).toEqual([]);
             expect(component.selectedSeasonText).toBeUndefined();
@@ -318,20 +318,20 @@ describe('SeasonSwitcherComponent', () => {
     });
 
     describe('seasons normalization + invalid selected season handling', () => {
-        it('should normalize numeric-string seasons and keep invalid seasons unchanged', () => {
+        it('should normalize numeric-string seasons and keep invalid seasons unchanged', async () => {
             (apiService.getSeasons as Mock).mockReturnValue(of([
                 { season: '2024', text: '2024-25' } as any,
                 { season: 'oops', text: 'N/A' } as any,
             ]));
 
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.seasons.some((s) => s.season === 2024)).toBe(true);
             expect(component.seasons.some((s: any) => s.season === 'oops')).toBe(true);
         });
 
-        it('should reset player season filter when selected season is not present in loaded seasons', () => {
+        it('should reset player season filter when selected season is not present in loaded seasons', async () => {
             component.context = 'player';
 
             // Drive selectedSeason via FilterService (ngOnInit subscribes to filters).
@@ -341,12 +341,12 @@ describe('SeasonSwitcherComponent', () => {
 
             (apiService.getSeasons as Mock).mockReturnValue(of(mockSeasons));
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(updateSpy).toHaveBeenCalledWith({ season: undefined });
         });
 
-        it('should reset goalie season filter when selected season is not present in loaded seasons', () => {
+        it('should reset goalie season filter when selected season is not present in loaded seasons', async () => {
             component.context = 'goalie';
 
             filterService.updateGoalieFilters({ season: 2099 });
@@ -355,7 +355,7 @@ describe('SeasonSwitcherComponent', () => {
 
             (apiService.getSeasons as Mock).mockReturnValue(of(mockSeasons));
             component.ngOnInit();
-
+            await new Promise(r => setTimeout(r, 0));
 
             expect(updateSpy).toHaveBeenCalledWith({ season: undefined });
         });

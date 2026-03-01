@@ -77,7 +77,7 @@ describe('PlayerStatsComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should subscribe to player filters on init and fetch data with defaults and updates', () => {
+    it('should subscribe to player filters on init and fetch data with defaults and updates', async () => {
         const mockPlayers: Player[] = [
             {
                 name: 'Player 1',
@@ -116,6 +116,7 @@ describe('PlayerStatsComponent', () => {
         apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayers));
 
         component.ngOnInit();
+        await new Promise(r => setTimeout(r, 0));
 
         expect(component.reportType).toBe('regular');
         expect(component.season).toBeUndefined();
@@ -140,6 +141,7 @@ describe('PlayerStatsComponent', () => {
             statsPerGame: true,
             minGames: 5,
         });
+        await new Promise(r => setTimeout(r, 0));
 
         expect(component.reportType).toBe('playoffs');
         expect(component.season).toBe(2024);
@@ -153,10 +155,11 @@ describe('PlayerStatsComponent', () => {
         });
     });
 
-    it('should set apiError and clear data when getPlayerData errors during init stream', () => {
+    it('should set apiError and clear data when getPlayerData errors during init stream', async () => {
         apiServiceMock.getPlayerData.mockReturnValue(throwError(() => new Error('network')));
 
         component.ngOnInit();
+        await new Promise(r => setTimeout(r, 0));
 
         expect(component.loading).toBe(false);
         expect(component.apiError).toBe(true);
@@ -282,14 +285,16 @@ describe('PlayerStatsComponent', () => {
         expect(component.maxGames).toBe(0);
     });
 
-    it('should include teamId when a non-default team is selected', () => {
+    it('should include teamId when a non-default team is selected', async () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
         component.ngOnInit();
+        await new Promise(r => setTimeout(r, 0));
 
         apiServiceMock.getPlayerData.mockClear();
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         teamService.setTeamId('2');
+        await new Promise(r => setTimeout(r, 0));
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -299,10 +304,11 @@ describe('PlayerStatsComponent', () => {
         });
     });
 
-    it('should coalesce team change + filter reset into a single fetch', () => {
+    it('should coalesce team change + filter reset into a single fetch', async () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
+        await new Promise(r => setTimeout(r, 0));
         apiServiceMock.getPlayerData.mockClear();
 
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
@@ -310,6 +316,7 @@ describe('PlayerStatsComponent', () => {
         // Simulate TeamSwitcher behavior: team change then resetAll (same tick).
         teamService.setTeamId('2');
         filterService.resetAll();
+        await new Promise(r => setTimeout(r, 0));
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledTimes(1);
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
@@ -320,13 +327,15 @@ describe('PlayerStatsComponent', () => {
         });
     });
 
-    it('should include startFrom when in combined mode and a startFromSeason is selected', () => {
+    it('should include startFrom when in combined mode and a startFromSeason is selected', async () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
+        await new Promise(r => setTimeout(r, 0));
         apiServiceMock.getPlayerData.mockClear();
 
         startFromSeasonSubject.next(2023);
+        await new Promise(r => setTimeout(r, 0));
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -335,20 +344,23 @@ describe('PlayerStatsComponent', () => {
         });
     });
 
-    it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', () => {
+    it('should not fetch combined stats while startFromSeason is undefined (e.g. during team change transition)', async () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
+        await new Promise(r => setTimeout(r, 0));
         apiServiceMock.getPlayerData.mockClear();
 
         // Simulate clearing startFromSeason before the new team's oldest season is resolved.
         startFromSeasonSubject.next(undefined);
         const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
         teamService.setTeamId('2');
+        await new Promise(r => setTimeout(r, 0));
         expect(apiServiceMock.getPlayerData).not.toHaveBeenCalled();
 
         // Once resolved, fetch should happen with the correct startFrom.
         startFromSeasonSubject.next(2021);
+        await new Promise(r => setTimeout(r, 0));
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -358,14 +370,16 @@ describe('PlayerStatsComponent', () => {
         });
     });
 
-    it('should not include startFrom when a specific season is selected', () => {
+    it('should not include startFrom when a specific season is selected', async () => {
         apiServiceMock.getPlayerData.mockReturnValue(of([]));
 
         component.ngOnInit();
+        await new Promise(r => setTimeout(r, 0));
         apiServiceMock.getPlayerData.mockClear();
 
         startFromSeasonSubject.next(2023);
         filterService.updatePlayerFilters({ season: 2024 });
+        await new Promise(r => setTimeout(r, 0));
 
         expect(apiServiceMock.getPlayerData).toHaveBeenCalledWith({
             reportType: 'regular',
@@ -477,36 +491,42 @@ describe('PlayerStatsComponent', () => {
             },
         ];
 
-        it('should filter by position F when positionFilter is F', () => {
+        it('should filter by position F when positionFilter is F', async () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.positionFilter).toBe('F');
             expect(component.tableData.length).toBe(2);
             expect(component.tableData.every(p => p.position === 'F')).toBe(true);
         });
 
-        it('should filter by position D when positionFilter is D', () => {
+        it('should filter by position D when positionFilter is D', async () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updatePlayerFilters({ positionFilter: 'D' });
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.positionFilter).toBe('D');
             expect(component.tableData.length).toBe(1);
             expect(component.tableData[0].name).toBe('Defenseman 1');
         });
 
-        it('should use scoreByPosition when positionFilter is active', () => {
+        it('should use scoreByPosition when positionFilter is active', async () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
+            await new Promise(r => setTimeout(r, 0));
 
             // Scores should be transformed to position-based values
             const forward1 = component.tableData.find(p => p.name === 'Forward 1');
@@ -514,25 +534,29 @@ describe('PlayerStatsComponent', () => {
             expect(forward1?.scoreAdjustedByGames).toBe(4.5);
         });
 
-        it('should show all players when positionFilter is all', () => {
+        it('should show all players when positionFilter is all', async () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.tableData.length).toBe(2);
 
             filterService.updatePlayerFilters({ positionFilter: 'all' });
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.positionFilter).toBe('all');
             expect(component.tableData.length).toBe(3);
         });
 
-        it('should use original scores when positionFilter is all', () => {
+        it('should use original scores when positionFilter is all', async () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             // Position filter is 'all' by default
             expect(component.positionFilter).toBe('all');
@@ -542,7 +566,7 @@ describe('PlayerStatsComponent', () => {
             expect(forward1?.scoreAdjustedByGames).toBe(4);
         });
 
-        it('should handle players without scoreByPosition gracefully', () => {
+        it('should handle players without scoreByPosition gracefully', async () => {
             const playersWithoutPositionScores: Player[] = [
                 {
                     name: 'Forward Without Position Scores',
@@ -566,21 +590,25 @@ describe('PlayerStatsComponent', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(playersWithoutPositionScores));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updatePlayerFilters({ positionFilter: 'F' });
+            await new Promise(r => setTimeout(r, 0));
 
             // Should fall back to original score values
             expect(component.tableData[0].score).toBe(70);
             expect(component.tableData[0].scoreAdjustedByGames).toBe(3.5);
         });
 
-        it('should use scoreByPositionAdjustedByGames for score in per-game mode with position filter', () => {
+        it('should use scoreByPositionAdjustedByGames for score in per-game mode with position filter', async () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(mockPlayersWithPositions));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             // Enable both statsPerGame and position filter
             filterService.updatePlayerFilters({ statsPerGame: true, positionFilter: 'F' });
+            await new Promise(r => setTimeout(r, 0));
 
             expect(component.statsPerGame).toBe(true);
             expect(component.positionFilter).toBe('F');
@@ -591,7 +619,7 @@ describe('PlayerStatsComponent', () => {
             expect(forward1?.scoreAdjustedByGames).toBe(4.5);
         });
 
-        it('should handle per-game mode with position filter for players without position scores', () => {
+        it('should handle per-game mode with position filter for players without position scores', async () => {
             const playersWithoutPositionScores: Player[] = [
                 {
                     name: 'Forward Without Position Scores',
@@ -615,8 +643,10 @@ describe('PlayerStatsComponent', () => {
             apiServiceMock.getPlayerData.mockReturnValue(of(playersWithoutPositionScores));
 
             component.ngOnInit();
+            await new Promise(r => setTimeout(r, 0));
 
             filterService.updatePlayerFilters({ statsPerGame: true, positionFilter: 'F' });
+            await new Promise(r => setTimeout(r, 0));
 
             // Should fall back to regular per-game score (statsService sets score = scoreAdjustedByGames)
             expect(component.tableData[0].score).toBe(3.5);

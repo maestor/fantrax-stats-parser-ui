@@ -50,6 +50,8 @@ class ViewportServiceMock {
 }
 
 describe("AppComponent", () => {
+    afterEach(() => vi.restoreAllMocks());
+
     let translateService: TranslateService;
     let titleService: Title;
     let dialog: {
@@ -169,11 +171,8 @@ describe("AppComponent", () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
 
-        setTimeout(() => {
-            expect(translateService.get).toHaveBeenCalledWith("pageTitle");
-            expect(titleService.setTitle).toHaveBeenCalledWith("Test Title");
-
-        }, 10);
+        expect(translateService.get).toHaveBeenCalledWith("pageTitle");
+        expect(titleService.setTitle).toHaveBeenCalledWith("Test Title");
     });
 
     it("should update page title for each emission from translateService", () => {
@@ -214,14 +213,13 @@ describe("AppComponent", () => {
         expect(bottomSheet.open).toHaveBeenCalledWith(GlobalNavComponent, { autoFocus: false });
     });
 
-    it("should update controls context and close settings drawer on navigation", () => {
+    it("should update controls context and close settings drawer on navigation", async () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
         const router = TestBed.inject(Router);
         fixture.detectChanges();
 
-        void router.navigateByUrl("/goalie-stats");
-
+        await router.navigateByUrl("/goalie-stats");
 
         expect(app.controlsContext).toBe("goalie");
     });
@@ -541,6 +539,7 @@ describe("AppComponent", () => {
         });
 
         it("should re-open snackbar if dismissed without action while update is available", () => {
+            vi.useFakeTimers();
             const fixture = TestBed.createComponent(AppComponent);
             fixture.detectChanges();
 
@@ -548,9 +547,10 @@ describe("AppComponent", () => {
             expect(snackBar.open).toHaveBeenCalledTimes(1);
 
             snackBarAfterDismissed$.next({ dismissedByAction: false });
-
+            vi.runAllTimers();
 
             expect(snackBar.open).toHaveBeenCalledTimes(2);
+            vi.useRealTimers();
         });
 
         it("should not re-open snackbar if dismissed by action", () => {
@@ -830,6 +830,7 @@ describe("AppComponent", () => {
         });
 
         it("should re-open snackbar if dismissed without action while update is available", () => {
+            vi.useFakeTimers();
             vi.spyOn(translateService, "get").mockImplementation((key: any) => {
                 if (key === "pageTitle")
                     return of("Test Title");
@@ -851,9 +852,10 @@ describe("AppComponent", () => {
             expect(vi.mocked(snackBar.open).mock.calls.length).toBe(1);
 
             snackBarAfterDismissed$.next({ dismissedByAction: false });
-
+            vi.runAllTimers();
 
             expect(vi.mocked(snackBar.open).mock.calls.length).toBe(2);
+            vi.useRealTimers();
         });
     });
 
@@ -965,9 +967,6 @@ describe("AppComponent", () => {
             const fixture = TestBed.createComponent(AppComponent);
             const app = fixture.componentInstance;
 
-            const editable = document.createElement("div");
-            editable.contentEditable = "true";
-
             app.onDocumentKeydown({
                 key: "?",
                 altKey: false,
@@ -975,7 +974,7 @@ describe("AppComponent", () => {
                 metaKey: false,
                 shiftKey: false,
                 preventDefault: vi.fn(),
-                target: editable,
+                target: { tagName: "DIV", isContentEditable: true },
             } as any);
 
             expect(dialog.open).not.toHaveBeenCalled();

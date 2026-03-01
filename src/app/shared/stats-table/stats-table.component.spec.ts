@@ -752,7 +752,8 @@ describe('StatsTableComponent', () => {
 
         it('should focus the navigated-to row after dialog closes', () => {
             component.dataSource.data = mockPlayerData;
-            const focusSpy = vi.spyOn(component as any as any, 'focusRow');
+            // Mock the implementation to prevent jsdom's missing scrollIntoView from crashing.
+            const focusSpy = vi.spyOn(component as any as any, 'focusRow').mockImplementation(() => {});
 
             const afterClosed$ = new Subject<void>();
             let capturedCallback: ((index: number) => void) | undefined;

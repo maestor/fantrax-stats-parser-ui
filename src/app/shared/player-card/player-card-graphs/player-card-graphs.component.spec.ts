@@ -65,6 +65,10 @@ describe('PlayerCardGraphsComponent', () => {
     };
 
     beforeEach(async () => {
+        // Stub requestAnimationFrame to prevent deferred chart resize callbacks from
+        // crashing between tests (chart.js uses rAF for resize operations).
+        vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+
         await TestBed.configureTestingModule({
             imports: [PlayerCardGraphsComponent, TranslateModule.forRoot()],
         }).compileComponents();
@@ -74,6 +78,10 @@ describe('PlayerCardGraphsComponent', () => {
 
         component.data = mockPlayer;
         fixture.detectChanges();
+    });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
     });
 
     it('should create and initialize chart data', () => {
@@ -95,7 +103,6 @@ describe('PlayerCardGraphsComponent', () => {
 
         // Turn on an additional series (goals)
         component.onStatToggle('goals', { checked: true } as any);
-        fixture.detectChanges();
 
         expect(component.lineChartData.datasets.length).toBeGreaterThanOrEqual(initialCount);
     });
@@ -276,7 +283,13 @@ describe('PlayerCardGraphsComponent', () => {
         const goalieComponent = goalieFixture.componentInstance;
 
         goalieComponent.data = goalie;
-        goalieFixture.detectChanges();
+
+        // Initialize chartSelections and chart data manually to avoid triggering
+        // chart.js DOM operations (canvas/setAttribute) in jsdom
+        goalieComponent.chartSelections = { score: true, scoreAdjustedByGames: true, games: false, wins: false, saves: false, shutouts: false };
+        (goalieComponent as any).chartYearsRange = [2023, 2024];
+        (goalieComponent as any).chartLabels = ['23-24', '24-25'];
+        (goalieComponent as any).updateChartData([...goalie.seasons]);
 
         expect(goalieComponent.isGoalie).toBe(true);
         expect(goalieComponent.chartStatKeys).toContain('wins');
@@ -284,7 +297,6 @@ describe('PlayerCardGraphsComponent', () => {
         expect(goalieComponent.chartStatKeys).toContain('shutouts');
 
         goalieComponent.onStatToggle('wins', { checked: true } as any);
-        goalieFixture.detectChanges();
         expect(goalieComponent.lineChartData.datasets.length).toBeGreaterThan(0);
     });
 

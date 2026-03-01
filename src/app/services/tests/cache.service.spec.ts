@@ -82,27 +82,27 @@ describe('CacheService', () => {
             expect(cachedData).toBe(testData);
         });
 
-        it('should return null for expired data', async () => {
+        it('should return null for expired data', () => {
+            vi.useFakeTimers();
             const testData = 'test value';
             service.set('test-key', testData, 50);
 
-            setTimeout(() => {
-                const cachedData = service.get<string>('test-key');
-                expect(cachedData).toBeNull();
-
-            }, 100);
+            vi.advanceTimersByTime(100);
+            const cachedData = service.get<string>('test-key');
+            expect(cachedData).toBeNull();
+            vi.useRealTimers();
         });
 
-        it('should delete expired data from cache', async () => {
+        it('should delete expired data from cache', () => {
+            vi.useFakeTimers();
             const testData = 'test value';
             service.set('test-key', testData, 50);
 
-            setTimeout(() => {
-                service.get<string>('test-key');
-                const cachedDataAfterExpiry = service.get<string>('test-key');
-                expect(cachedDataAfterExpiry).toBeNull();
-
-            }, 100);
+            vi.advanceTimersByTime(100);
+            service.get<string>('test-key');
+            const cachedDataAfterExpiry = service.get<string>('test-key');
+            expect(cachedDataAfterExpiry).toBeNull();
+            vi.useRealTimers();
         });
 
         it('should handle multiple keys independently', () => {
@@ -113,15 +113,15 @@ describe('CacheService', () => {
             expect(service.get<string>('key2')).toBe('value2');
         });
 
-        it('should not affect other keys when one expires', async () => {
+        it('should not affect other keys when one expires', () => {
+            vi.useFakeTimers();
             service.set('short-lived', 'expires soon', 50);
             service.set('long-lived', 'stays longer', 10000);
 
-            setTimeout(() => {
-                expect(service.get<string>('short-lived')).toBeNull();
-                expect(service.get<string>('long-lived')).toBe('stays longer');
-
-            }, 100);
+            vi.advanceTimersByTime(100);
+            expect(service.get<string>('short-lived')).toBeNull();
+            expect(service.get<string>('long-lived')).toBe('stays longer');
+            vi.useRealTimers();
         });
     });
 
