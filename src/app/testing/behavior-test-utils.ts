@@ -46,6 +46,15 @@ export function getBehaviorTestConfig(options: { isMobile: boolean }) {
   };
 }
 
+/**
+ * jsdom does not implement scrollIntoView — stub it for behavior tests.
+ */
+export function polyfillJsdom(): void {
+  if (typeof HTMLElement.prototype.scrollIntoView !== 'function') {
+    HTMLElement.prototype.scrollIntoView = () => {};
+  }
+}
+
 export function seedLocalStorage(): void {
   localStorage.setItem(
     'fantrax.settings',

@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/angular';
 import { AppComponent } from './app.component';
 import {
   getBehaviorTestConfig,
+  polyfillJsdom,
   seedLocalStorage,
   slicedPlayers,
   PLAYER_SLICE_COUNT,
@@ -11,6 +12,7 @@ import {
 // Full-render behavior tests with lazy-loaded routes need more time under load
 describe('AppComponent — mobile frontpage', { timeout: 15_000 }, () => {
   beforeEach(() => {
+    polyfillJsdom();
     seedLocalStorage();
   });
 
