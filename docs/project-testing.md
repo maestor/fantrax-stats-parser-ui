@@ -2,12 +2,12 @@
 
 ## Overview
 
-This project has comprehensive test coverage for all UI behaviors, services, and components. The test suite includes unit tests (Jasmine/Karma) and end-to-end tests (Playwright).
+This project has comprehensive test coverage for all UI behaviors, services, and components. The test suite includes unit tests (Vitest) and end-to-end tests (Playwright).
 
 ## Test Statistics
 
 - **Total Test Files / Tests**: Run `npm test` to see the current count and status
-- **Test Framework**: Jasmine + Karma
+- **Test Framework**: Vitest (jsdom)
 - **E2E Framework**: Playwright
 - **Coverage**: Enforced gate is >=98% statements/lines/functions and >=96% branches; long-term target is 100% statements/lines/functions/branches
 Note: avoid hard-coding a “current test count” in docs; it becomes stale quickly.
@@ -24,33 +24,25 @@ Every contribution must include tests for all new/changed behavior.
 ### Unit Tests
 
 ```bash
-# Run all tests (recommended - opens Chrome browser) without watch mode
+# Run all tests once (no browser window)
 npm test
 
-# Run all tests with watch mode (opens Chrome browser)
+# Run all tests with watch mode (re-runs on file changes)
 npm run test:watch
 
-# Run tests in headless mode (has Karma infrastructure issues)
-npm run test:headless
-# Note: This uses a CI-safe ChromeHeadless launcher (no-sandbox flags)
-
-# Run tests with coverage
+# Run tests with coverage report
 npm run test:coverage
-
-# Run tests with coverage in headless mode (what CI uses via `npm run verify`)
-npm run test:coverage:headless
 
 # Run the same checks CI enforces (coverage thresholds + production build)
 npm run verify
 
-# Run specific test file
-npm test -- --include='**/api.service.spec.ts'
+# Run a specific test file
+npm run test -- --reporter=verbose src/app/services/tests/api.service.spec.ts
 ```
 
 **Important Notes:**
 
-- ✅ **Regular Chrome mode** (`npm test`) is recommended - all tests pass reliably
-- ⚠️ **Headless mode** may crash due to Karma infrastructure issues (not test failures)
+- ✅ No browser required — tests run in jsdom (no Chrome installation needed)
 - 📋 **No tests are currently skipped**
 
 ### E2E Tests (Playwright)
@@ -347,13 +339,12 @@ it("should filter dataSource based on input value", () => {
 - ✅ `onValueChange()` updates
 - ✅ `ngOnChanges()` constraint enforcement (minGames ≤ maxGames)
 - ✅ Subscription cleanup with `ngOnDestroy()`
-- ✅ Proper async patterns with `fakeAsync` / `tick()`
+- ✅ Subscription cleanup with `ngOnDestroy()`
 
 **ReportSwitcherComponent (20 tests)**
 
 - ✅ Regular/Playoffs toggle
 - ✅ Observable stream with `reportType$`
-- ✅ Proper async patterns with `fakeAsync` / `tick()`
 - ✅ Context-specific filter updates
 - ✅ Fixed async subscription timing (subscribe before action)
 
@@ -380,30 +371,28 @@ it("should filter dataSource based on input value", () => {
 
 ```typescript
 // ❌ WRONG - Subscribe after action (will miss synchronous emission)
-it("should update filters when changed", fakeAsync(() => {
+it("should update filters when changed", () => {
   component.changeValue(10);
-  tick();
 
   filterService.playerFilters$.subscribe((filters) => {
     expect(filters.minGames).toBe(10); // This will fail!
   });
-}));
+});
 
 // ✅ CORRECT - Subscribe before action
-it("should update filters when changed", fakeAsync(() => {
+it("should update filters when changed", () => {
   let result: number | undefined;
   filterService.playerFilters$.subscribe((filters) => {
     result = filters.minGames;
   });
 
   component.changeValue(10);
-  tick();
 
   expect(result).toBe(10); // This works!
-}));
+});
 ```
 
-**Why**: BehaviorSubjects emit **synchronously** when `.next()` is called. If you subscribe after the action, you've already missed the emission.
+**Why**: BehaviorSubjects emit **synchronously** when `.next()` is called. If you subscribe after the action, you've already missed the emission. No `fakeAsync`/`tick()` needed — BehaviorSubject emissions are always synchronous.
 
 ### 2. Testing MatTableDataSource with MatSort
 
@@ -436,7 +425,7 @@ Mock dependencies properly in tests:
 
 ```typescript
 const apiServiceMock = {
-  getSeasons: jasmine.createSpy("getSeasons").and.callFake(() => of(mockSeasons)),
+  getSeasons: vi.fn().mockReturnValue(of(mockSeasons)),
 };
 
 await TestBed.configureTestingModule({
@@ -456,8 +445,8 @@ afterEach(() => {
 
 describe("ngOnDestroy", () => {
   it("should complete destroy$ subject", () => {
-    spyOn(component["destroy$"], "next");
-    spyOn(component["destroy$"], "complete");
+    vi.spyOn(component["destroy$"], "next");
+    vi.spyOn(component["destroy$"], "complete");
 
     component.ngOnDestroy();
 
@@ -472,20 +461,19 @@ describe("ngOnDestroy", () => {
 Test observable emissions properly:
 
 ```typescript
-it("should emit new values to subscribers", fakeAsync(() => {
+it("should emit new values to subscribers", () => {
   const emissions: FilterState[] = [];
   const subscription = service.playerFilters$.subscribe((filters) => {
     emissions.push(filters);
   });
 
   service.updatePlayerFilters({ reportType: "playoffs" });
-  tick();
 
   expect(emissions.length).toBe(2); // Initial + update
   expect(emissions[1].reportType).toBe("playoffs");
 
   subscription.unsubscribe();
-}));
+});
 ```
 
 ### 6. HTTP Testing
@@ -514,19 +502,29 @@ component.dataSource.data = mockPlayerData as any;
 
 ### Issue: Async tests timing out or failing
 
-**Solution**: Use `fakeAsync` with `tick()` and **subscribe before action** for BehaviorSubjects
+**Solution**: Subscribe before action for BehaviorSubjects — they emit synchronously. For real `setTimeout`/`Promise` code, use `vi.useFakeTimers()` + `vi.advanceTimersByTime()` or `await Promise.resolve()`.
 
 ```typescript
-// ✅ CORRECT pattern
-it("should handle async operation", fakeAsync(() => {
+// ✅ CORRECT pattern for BehaviorSubjects (no fakeAsync needed)
+it("should handle async operation", () => {
   let result;
   service.data$.subscribe((data) => (result = data));
 
   service.fetchData();
-  tick(); // Advance virtual clock
 
   expect(result).toBeDefined();
-}));
+});
+
+// ✅ CORRECT pattern for real setTimeout
+it("should call callback after delay", () => {
+  vi.useFakeTimers();
+  const cb = vi.fn();
+  service.scheduleCallback(cb, 1000);
+
+  vi.advanceTimersByTime(1000);
+  expect(cb).toHaveBeenCalled();
+  vi.useRealTimers();
+});
 ```
 
 ### Issue: "You provided 'undefined' where a stream was expected"
@@ -545,7 +543,7 @@ const mockSort = {
 } as any;
 
 // Option 2: Skip and focus on user behavior tests (recommended)
-xit("should set dataSource.sort", () => {
+it.skip("should set dataSource.sort", () => {
   // Test framework internals - skip this
 });
 
@@ -602,7 +600,7 @@ This fetches the API responses the E2E tests depend on and saves them as JSON fi
 ### Component Test Template
 
 ```typescript
-import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { YourComponent } from "./your.component";
 import { TranslateModule } from "@ngx-translate/core";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
@@ -625,17 +623,16 @@ describe("YourComponent", () => {
   });
 
   describe("feature name", () => {
-    it("should do something specific", fakeAsync(() => {
+    it("should do something specific", () => {
       // Arrange
       const expected = "value";
 
       // Act
       component.doSomething();
-      tick();
 
       // Assert
       expect(component.result).toBe(expected);
-    }));
+    });
   });
 });
 ```
@@ -682,7 +679,7 @@ To achieve 100% coverage:
 ## Resources
 
 - [Angular Testing Guide](https://angular.dev/guide/testing)
-- [Jasmine Documentation](https://jasmine.github.io/)
+- [Vitest Documentation](https://vitest.dev)
 - [Playwright Documentation](https://playwright.dev/)
 - [RxJS Testing](https://rxjs.dev/guide/testing)
 

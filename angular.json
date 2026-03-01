@@ -84,33 +84,23 @@
           "builder": "@angular/build:extract-i18n"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "karmaConfig": "karma.conf.cjs",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "codeCoverageExclude": [
+            "tsConfig": "tsconfig.spec.json",
+            "setupFiles": ["src/test-setup.ts"],
+            "coverageThresholds": {
+              "statements": 98,
+              "branches": 96,
+              "functions": 98,
+              "lines": 98
+            },
+            "coverageExclude": [
               "src/main.ts",
               "src/environments/**",
               "src/app/app.config.ts",
               "src/app/app.routes.ts",
-              "src/**/*.d.ts"
-            ],
-            "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
-            "styles": [
-              "src/theme.scss",
-              "src/styles.scss"
-            ],
-            "scripts": []
+              "**/*.html"
+            ]
           }
         }
       }

@@ -102,10 +102,9 @@ After changing Vercel env vars, redeploy so they take effect.
 npm start                              # Dev server on http://localhost:4200
 npm run generate:types                 # Regenerate API types from OpenAPI spec
 
-# Unit tests (Jasmine + Karma)
-npm test                               # Run once (Chrome)
+# Unit tests (Vitest)
+npm test                               # Run once (no browser required)
 npm run test:watch                     # Watch mode
-npm run test:headless                  # Headless Chrome (may be flaky)
 npm run test:coverage                  # With coverage report
 
 # E2E tests (Playwright) — requires backend running locally
@@ -124,7 +123,7 @@ npm run build
 
 ## Testing
 
-This project uses **Jasmine + Karma** for unit tests and **Playwright** for end-to-end tests. Run `npm test` to see the current unit test count and status.
+This project uses **Vitest** for unit tests and **Playwright** for end-to-end tests. Run `npm test` to see the current unit test count and status.
 
 📖 **[Read the complete Testing Documentation](docs/project-testing.md)**
 
@@ -172,7 +171,7 @@ Accessibility is a core requirement of this project (not optional).
 - **Language**: TypeScript 5.9
 - **State Management**: RxJS 7.8 (BehaviorSubjects)
 - **HTTP Client**: Angular HttpClient with caching
-- **Testing**: Jasmine + Karma (unit), Playwright (E2E)
+- **Testing**: Vitest (unit), Playwright (E2E)
 - **i18n**: ngx-translate 17
 
 ## Project Structure

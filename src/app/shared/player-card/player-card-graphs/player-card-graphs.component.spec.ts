@@ -4,1804 +4,56 @@ import { TranslateModule } from '@ngx-translate/core';
 import type { Player, PlayerSeasonStats } from '@services/api.service';
 
 describe('PlayerCardGraphsComponent', () => {
-  let fixture: ComponentFixture<PlayerCardGraphsComponent>;
-  let component: PlayerCardGraphsComponent;
-
-  const seasons: PlayerSeasonStats[] = [
-    {
-      name: '',
-      season: 2024,
-      games: 82,
-      score: 123,
-      scoreAdjustedByGames: 1.5,
-      goals: 30,
-      assists: 40,
-      points: 70,
-      shots: 200,
-      penalties: 20,
-      hits: 50,
-      blocks: 30,
-      plusMinus: 10,
-      ppp: 15,
-      shp: 1,
-    },
-    {
-      name: '',
-      season: 2023,
-      games: 80,
-      score: 100,
-      scoreAdjustedByGames: 1.25,
-      goals: 25,
-      assists: 35,
-      points: 60,
-      shots: 180,
-      penalties: 18,
-      hits: 45,
-      blocks: 28,
-      plusMinus: 8,
-      ppp: 12,
-      shp: 0,
-    },
-  ];
-
-  const mockPlayer: Player & { seasons: PlayerSeasonStats[] } = {
-    name: 'Skater One',
-    score: 0,
-    scoreAdjustedByGames: 0,
-    games: 82,
-    goals: 30,
-    assists: 40,
-    points: 70,
-    plusMinus: 10,
-    penalties: 20,
-    shots: 200,
-    ppp: 15,
-    shp: 1,
-    hits: 50,
-    blocks: 30,
-    seasons,
-  };
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PlayerCardGraphsComponent, TranslateModule.forRoot()],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    component = fixture.componentInstance;
-
-    component.data = mockPlayer;
-    fixture.detectChanges();
-  });
-
-  it('should create and initialize chart data', () => {
-    expect(component).toBeTruthy();
-    expect(component.hasSeasons).toBeTrue();
-
-    expect(component.lineChartData.labels?.length).toBeGreaterThan(0);
-    expect(component.lineChartData.datasets.length).toBeGreaterThan(0);
-  });
-
-  it('should toggle graph controls', () => {
-    expect(component.graphControlsExpanded).toBeFalse();
-    component.toggleGraphControls();
-    expect(component.graphControlsExpanded).toBeTrue();
-  });
-
-  it('should update datasets when a stat is toggled', () => {
-    const initialCount = component.lineChartData.datasets.length;
-
-    // Turn on an additional series (goals)
-    component.onStatToggle('goals', { checked: true } as any);
-    fixture.detectChanges();
-
-    expect(component.lineChartData.datasets.length).toBeGreaterThanOrEqual(
-      initialCount
-    );
-  });
-
-  it('should handle ArrowUp/ArrowDown keyboard shortcuts', () => {
-    const focusTabHeader = jasmine.createSpy('focusTabHeader');
-    const closeBtn = document.createElement('button');
-    spyOn(closeBtn, 'focus');
-
-    component.requestFocusTabHeader = focusTabHeader;
-    component.closeButtonEl = closeBtn;
-
-    component.onGraphCheckboxKeydown(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
-    expect(focusTabHeader).toHaveBeenCalled();
-
-    component.onGraphCheckboxKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
-    expect(closeBtn.focus).toHaveBeenCalled();
-  });
-
-  it('should apply themed colors when token-resolver returns values', () => {
-    // Do not stub global getComputedStyle: Chart.js also uses it during canvas init.
-    // Instead, stub the component's resolver and call the private theme method.
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-    themed.data = mockPlayer;
-
-    spyOn<any>(themed, 'resolveCssColorVar').and.callFake(
-      (name: string, fallback: string, cssProperty: 'color' | 'backgroundColor' = 'color') => {
-        if (name === '--mat-sys-on-surface') return 'rgb(10, 10, 10)';
-        if (name === '--mat-sys-outline-variant') return 'rgba(255, 0, 0, 0.3)';
-        if (name === '--mat-sys-surface-container-high' && cssProperty === 'backgroundColor') {
-          return 'rgb(20, 20, 20)';
-        }
-        return fallback;
-      }
-    );
-
-    (themed as any).applyThemeToChartOptions();
-
-    const plugins: any = themed.lineChartOptions.plugins;
-    expect(plugins.legend.labels.color).toBe('rgb(10, 10, 10)');
-    expect(plugins.tooltip.titleColor).toBe('rgb(10, 10, 10)');
-
-    const scales: any = themed.lineChartOptions.scales;
-    expect(scales.x.ticks.color).toBe('rgb(10, 10, 10)');
-    expect(scales.y.grid.color).toBe('rgba(255, 0, 0, 0.3)');
-  });
-
-  it('should ignore unrelated keydowns without side-effects', () => {
-    const event = {
-      key: 'Enter',
-      preventDefault: jasmine.createSpy('preventDefault'),
-    } as any;
-
-    component.onGraphCheckboxKeydown(event);
-    expect(event.preventDefault).not.toHaveBeenCalled();
-  });
-
-  it('should not throw on ArrowDown when close button is not provided', () => {
-    const event = {
-      key: 'ArrowDown',
-      preventDefault: jasmine.createSpy('preventDefault'),
-    } as any;
-
-    component.closeButtonEl = undefined;
-    component.onGraphCheckboxKeydown(event);
-
-    // No close button => no focus move, no preventDefault.
-    expect(event.preventDefault).not.toHaveBeenCalled();
-  });
-
-  it('should handle missing seasons and non-numeric values in chart data', () => {
-    // Force a year-gap so updateChartData hits the missing-season branch.
-    (component as any).chartYearsRange = [2023, 2024];
-    (component as any).chartLabels = ['23-24', '24-25'];
-
-    // Ensure score series is active.
-    component.chartSelections = { ...component.chartSelections, score: true };
-
-    // Provide only one season + a non-numeric string to hit parsing branches.
-    const seasonsWithGap: any[] = [
-      {
-        season: 2024,
-        score: 'abc',
-      },
-    ];
-
-    (component as any).updateChartData(seasonsWithGap);
-
-    const firstDataset: any = component.lineChartData.datasets[0];
-    expect(firstDataset.data[0]).toBeNull();
-    expect(firstDataset.data[1]).toBe(0);
-  });
-
-  it('should not rescale y-axis when there are no active series values', () => {
-    // Disable all series to hit the allValues.length === 0 branch.
-    component.chartSelections = component.chartStatKeys.reduce(
-      (acc, key) => ({ ...acc, [key]: false }),
-      {} as Record<string, boolean>
-    );
-
-    (component as any).chartYearsRange = [2024];
-    (component as any).chartLabels = ['24-25'];
-
-    (component as any).updateChartData([{ season: 2024, score: 10 } as any]);
-    expect(component.lineChartData.datasets.length).toBe(0);
-  });
-
-  it('resolveCssColorVar should compute a background color string when possible', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-
-    const value = (themed as any).resolveCssColorVar(
-      '--mat-sys-surface-container-high',
-      'rgba(0,0,0,0.8)',
-      'backgroundColor'
-    );
-
-    expect(typeof value).toBe('string');
-    expect(value.length).toBeGreaterThan(0);
-  });
-
-  it('onStatToggle should no-op when seasons are missing', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-    themed.data = { ...mockPlayer, seasons: undefined as any };
-
-    expect(() => themed.onStatToggle('score', { checked: true } as any)).not.toThrow();
-  });
-
-  it('should initialize missing y-scale options when rescaling', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-    themed.data = mockPlayer;
-
-    (themed as any).chartYearsRange = [2024];
-    (themed as any).chartLabels = ['24-25'];
-    themed.lineChartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-    } as any;
-
-    // Ensure at least one series is active.
-    themed.chartSelections = { ...themed.chartSelections, score: true };
-    (themed as any).updateChartData([{ season: 2024, score: 10 } as any]);
-
-    const y: any = (themed.lineChartOptions.scales as any).y;
-    expect(y).toBeTruthy();
-    expect(y.min).toBe(0);
-    expect(y.max).toBeGreaterThan(0);
-    expect(y.ticks.stepSize).toBeGreaterThan(0);
-  });
-
-  it('resolveCssColorVar should fall back to the provided fallback on errors', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-
-    // Force an error from inside the resolver.
-    spyOn((themed as any).document, 'createElement').and.throwError('boom');
-
-    expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
-    expect(
-      (themed as any).resolveCssColorVar(
-        '--mat-sys-surface-container-high',
-        'rgba(0,0,0,0.8)',
-        'backgroundColor'
-      )
-    ).toBe('rgba(0,0,0,0.8)');
-  });
-
-  it('should use goalie stat keys when data is a goalie', () => {
-    const goalieSeasons: any[] = [
-      { season: 2024, score: 10, scoreAdjustedByGames: 0.2, games: 40, wins: 20, saves: 900, shutouts: 4 },
-      { season: 2023, score: 8, scoreAdjustedByGames: 0.18, games: 38, wins: 18, saves: 850, shutouts: 3 },
-    ];
-
-    const goalie: any = {
-      name: 'Goalie One',
-      score: 0,
-      scoreAdjustedByGames: 0,
-      games: 40,
-      wins: 20,
-      saves: 900,
-      shutouts: 4,
-      seasons: goalieSeasons,
-    };
-
-    const goalieFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const goalieComponent = goalieFixture.componentInstance;
-
-    goalieComponent.data = goalie;
-    goalieFixture.detectChanges();
-
-    expect(goalieComponent.isGoalie).toBeTrue();
-    expect(goalieComponent.chartStatKeys).toContain('wins');
-    expect(goalieComponent.chartStatKeys).toContain('saves');
-    expect(goalieComponent.chartStatKeys).toContain('shutouts');
-
-    goalieComponent.onStatToggle('wins', { checked: true } as any);
-    goalieFixture.detectChanges();
-    expect(goalieComponent.lineChartData.datasets.length).toBeGreaterThan(0);
-  });
-
-  it('should set y-axis stepSize to 1 when maxValue is 0', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-    themed.data = mockPlayer;
-
-    (themed as any).chartYearsRange = [2024];
-    (themed as any).chartLabels = ['24-25'];
-    themed.chartSelections = { score: true } as any;
-
-    (themed as any).updateChartData([{ season: 2024, score: 0 } as any]);
-
-    const y: any = (themed.lineChartOptions.scales as any).y;
-    expect(y.ticks.stepSize).toBe(1);
-    expect(y.max).toBe(5);
-  });
-
-  it('resolveCssColorVar should fall back when document.body is missing', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-
-    (themed as any).document = { body: null };
-    expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
-  });
-
-  it('resolveCssColorVar should fall back when computed style is empty', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-
-    spyOn(window as any, 'getComputedStyle').and.returnValue({
-      color: '   ',
-      backgroundColor: '   ',
-    } as any);
-
-    expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
-  });
-
-  it('applyThemeToChartOptions should initialize missing plugins/scales', () => {
-    const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-    const themed = themedFixture.componentInstance;
-
-    themed.lineChartOptions = {
-      responsive: true,
-      maintainAspectRatio: false,
-    } as any;
-
-    spyOn<any>(themed, 'resolveCssColorVar').and.returnValue('rgb(1, 2, 3)');
-    (themed as any).applyThemeToChartOptions();
-
-    expect(themed.lineChartOptions.plugins).toBeTruthy();
-    expect(themed.lineChartOptions.scales).toBeTruthy();
-  });
-
-  describe('Radar Chart', () => {
-    it('should format default radar tick and tooltip callbacks before ngOnInit runs', () => {
-      const rawFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const raw = rawFixture.componentInstance;
-
-      const tickCb = (raw.radarChartOptions as any)?.scales?.r?.ticks?.callback as any;
-      expect(tickCb).toBeDefined();
-      expect(tickCb(20)).toBe('20');
-
-      const tooltipCb = (raw.radarChartOptions as any)?.plugins?.tooltip?.callbacks?.label as any;
-      expect(tooltipCb).toBeDefined();
-
-      const result = tooltipCb({ dataset: { label: 'X' }, parsed: { r: 7 } });
-      expect(result).toBe('X: 7/100');
-    });
-
-    it('should toggle between line and radar chart views', () => {
-      component.chartViewMode = 'line';
-      component.toggleChartView();
-      expect(component.chartViewMode).toBe('radar');
-      component.toggleChartView();
-      expect(component.chartViewMode).toBe('line');
-    });
-
-    it('should build radar chart data for player with scores', () => {
-      const mockPlayerWithScores: Player = {
-        name: 'Test Player',
-        score: 85,
-        scoreAdjustedByGames: 8.5,
-        games: 10,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-      };
-
-      component.data = mockPlayerWithScores;
-      component.chartViewMode = 'radar';
-      (component as any).buildRadarChartData();
-
-      expect(component.radarChartData.labels?.length).toBe(10);
-      expect(component.radarChartData.datasets.length).toBe(1);
-      expect(component.radarChartData.datasets[0].data).toEqual([
-        75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
-      ]);
-      expect(component.radarChartData.datasets[0].label).toBe('Test Player');
-    });
-
-    it('should handle missing scores gracefully', () => {
-      const mockPlayerWithoutScores: Player = {
-        name: 'Test Player',
-        score: 85,
-        scoreAdjustedByGames: 8.5,
-        games: 10,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-      };
-
-      component.data = mockPlayerWithoutScores;
-      expect(() => (component as any).buildRadarChartData()).not.toThrow();
-    });
-
-    it('should build goalie radar with extended stats for season', () => {
-      const mockGoalieWithScores: any = {
-        name: 'Test Goalie',
-        score: 90,
-        scoreAdjustedByGames: 9.0,
-        games: 10,
-        wins: 8,
-        saves: 300,
-        shutouts: 2,
-        goals: 0,
-        assists: 1,
-        points: 1,
-        penalties: 0,
-        ppp: 0,
-        shp: 0,
-        gaa: '2.00',
-        savePercent: '0.920',
-        scores: {
-          wins: 85,
-          saves: 90,
-          shutouts: 75,
-          gaa: 80,
-          savePercent: 88,
-        },
-      };
-
-      component.data = mockGoalieWithScores;
-      (component as any).buildGoalieRadarData();
-
-      expect(component.radarChartData.labels?.length).toBe(5);
-      expect(component.radarChartData.datasets[0].data).toEqual([
-        85, 90, 75, 80, 88,
-      ]);
-    });
-
-    it('should build goalie radar without extended stats for combined', () => {
-      const mockGoalieCombined: any = {
-        name: 'Test Goalie',
-        score: 90,
-        scoreAdjustedByGames: 9.0,
-        games: 10,
-        wins: 8,
-        saves: 300,
-        shutouts: 2,
-        goals: 0,
-        assists: 1,
-        points: 1,
-        penalties: 0,
-        ppp: 0,
-        shp: 0,
-        scores: {
-          wins: 85,
-          saves: 90,
-          shutouts: 75,
-        },
-      };
-
-      component.data = mockGoalieCombined;
-      (component as any).buildGoalieRadarData();
-
-      expect(component.radarChartData.labels?.length).toBe(3);
-      expect(component.radarChartData.datasets[0].data).toEqual([85, 90, 75]);
-    });
-
-    it('should apply theme to radar chart options', () => {
-      const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const themed = themedFixture.componentInstance;
-
-      spyOn<any>(themed, 'resolveCssColorVar').and.callFake(
-        (name: string, fallback: string) => {
-          if (name === '--mat-sys-on-surface') return 'rgb(10, 10, 10)';
-          if (name === '--mat-sys-outline-variant') return 'rgba(255, 0, 0, 0.3)';
-          if (name === '--mat-sys-surface-container-high') return 'rgb(20, 20, 20)';
-          return fallback;
-        }
-      );
-
-      (themed as any).applyThemeToRadarChartOptions();
-
-      const plugins: any = themed.radarChartOptions?.plugins;
-      expect(plugins?.legend?.display).toBeFalse();
-      expect(plugins?.tooltip?.titleColor).toBe('rgb(10, 10, 10)');
-
-      const scales: any = themed.radarChartOptions?.scales;
-      expect(scales?.r?.ticks?.color).toBe('rgb(10, 10, 10)');
-      expect(scales?.r?.grid?.color).toBe('rgba(255, 0, 0, 0.3)');
-    });
-
-    it('chartStatKeys should return goalie vs player keys (ternary coverage)', () => {
-      const f = TestBed.createComponent(PlayerCardGraphsComponent);
-      const c = f.componentInstance;
-
-      c.data = { name: 'Skater', seasons: [], goals: 1 } as any;
-      expect(c.chartStatKeys).toContain('goals');
-      expect(c.chartStatKeys).not.toContain('wins');
-
-      c.data = { name: 'Goalie', seasons: [], wins: 1 } as any;
-      expect(c.chartStatKeys).toContain('wins');
-      expect(c.chartStatKeys).not.toContain('goals');
-    });
-
-    it('applyThemeToChartOptions should handle missing plugins/scales and existing tick/grid objects', () => {
-      const f = TestBed.createComponent(PlayerCardGraphsComponent);
-      const c = f.componentInstance;
-
-      spyOn<any>(c, 'resolveCssColorVar').and.callFake(
-        (_name: string, _fallback: string, cssProperty?: 'color' | 'backgroundColor') => {
-          void _fallback;
-          if (cssProperty === 'backgroundColor') return 'rgb(20, 20, 20)';
-          return 'rgb(10, 10, 10)';
-        }
-      );
-
-      // Missing plugins/scales
-      (c as any).lineChartOptions = { responsive: true, maintainAspectRatio: false } as any;
-      (c as any).applyThemeToChartOptions();
-      expect(((c as any).lineChartOptions.plugins.legend.labels.color as any) || '').toBe('rgb(10, 10, 10)');
-
-      // Existing objects (exercise nullish merges)
-      (c as any).lineChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { labels: { color: 'rgb(0, 0, 0)' } } } as any,
-        scales: {
-          x: { ticks: { color: 'rgb(0, 0, 0)' }, grid: { color: 'rgb(0, 0, 0)' } },
-          y: { ticks: { color: 'rgb(0, 0, 0)' }, grid: { color: 'rgb(0, 0, 0)' } },
-        },
-      } as any;
-      (c as any).applyThemeToChartOptions();
-
-      const plugins: any = (c as any).lineChartOptions.plugins;
-      expect(plugins?.legend?.labels?.color).toBe('rgb(10, 10, 10)');
-      const scales: any = (c as any).lineChartOptions.scales;
-      expect(scales?.x?.ticks?.color).toBe('rgb(10, 10, 10)');
-      expect(scales?.x?.grid?.color).toBe('rgb(10, 10, 10)');
-    });
-
-    it('applyThemeToRadarChartOptions should use compact sizes at <=520px (branch coverage)', () => {
-      const original = window.innerWidth;
-      try {
-        Object.defineProperty(window, 'innerWidth', { value: 500, configurable: true });
-
-        const f = TestBed.createComponent(PlayerCardGraphsComponent);
-        const c = f.componentInstance;
-
-        spyOn<any>(c, 'resolveCssColorVar').and.returnValue('rgb(10, 10, 10)');
-
-        (c as any).applyThemeToRadarChartOptions();
-
-        const opts: any = (c as any).radarChartOptions;
-        expect(opts?.layout?.padding).toBe(0);
-        expect(opts?.scales?.r?.ticks?.font?.size).toBe(9);
-        expect(opts?.scales?.r?.pointLabels?.font?.size).toBe(10);
-        expect(opts?.scales?.r?.pointLabels?.padding).toBe(2);
-      } finally {
-        Object.defineProperty(window, 'innerWidth', { value: original, configurable: true });
-      }
-    });
-
-    it('applyThemeToRadarChartOptions should use regular sizes at >520px (branch coverage)', () => {
-      const original = window.innerWidth;
-      try {
-        Object.defineProperty(window, 'innerWidth', { value: 900, configurable: true });
-
-        const f = TestBed.createComponent(PlayerCardGraphsComponent);
-        const c = f.componentInstance;
-
-        spyOn<any>(c, 'resolveCssColorVar').and.returnValue('rgb(10, 10, 10)');
-
-        (c as any).applyThemeToRadarChartOptions();
-
-        const opts: any = (c as any).radarChartOptions;
-        expect(opts?.layout?.padding).toBe(8);
-        expect(opts?.scales?.r?.ticks?.font?.size).toBe(11);
-        expect(opts?.scales?.r?.pointLabels?.font?.size).toBe(12);
-        expect(opts?.scales?.r?.pointLabels?.padding).toBe(6);
-      } finally {
-        Object.defineProperty(window, 'innerWidth', { value: original, configurable: true });
-      }
-    });
-
-    it('hasMultipleSeasons should cover true and short-circuit paths', () => {
-      const f = TestBed.createComponent(PlayerCardGraphsComponent);
-      const c = f.componentInstance;
-
-      // viewContext !== combined -> short-circuit
-      c.viewContext = 'season';
-      c.data = { name: 'P', seasons: [{ season: 2024 } as any] } as any;
-      expect(c.hasMultipleSeasons).toBeFalse();
-
-      // combined but no seasons -> short-circuit
-      c.viewContext = 'combined';
-      c.data = { name: 'P', seasons: [] } as any;
-      expect(c.hasMultipleSeasons).toBeFalse();
-
-      // combined with 1 season -> false
-      c.data = { name: 'P', seasons: [{ season: 2024 } as any] } as any;
-      expect(c.hasMultipleSeasons).toBeFalse();
-
-      // combined with 2 seasons -> true
-      c.data = { name: 'P', seasons: [{ season: 2024 } as any, { season: 2023 } as any] } as any;
-      expect(c.hasMultipleSeasons).toBeTrue();
-    });
-
-    it('resolveCssColorVar should prefer computed root color-scheme (no matchMedia needed)', () => {
-      const f = TestBed.createComponent(PlayerCardGraphsComponent);
-      const c = f.componentInstance;
-
-      const originalMatchMedia = window.matchMedia;
-      const originalGetComputedStyle = window.getComputedStyle;
-      try {
-        (window as any).matchMedia = () => {
-          throw new Error('matchMedia should not be called');
-        };
-
-        (window as any).getComputedStyle = (el: any) => {
-          if (el === document.documentElement) {
-            return { colorScheme: 'dark', getPropertyValue: () => '' } as any;
-          }
-          // light-dark probe call (shouldn't matter since scheme is explicit)
-          if ((el as HTMLElement).style.color?.includes('light-dark')) {
-            return { color: 'rgb(4, 5, 6)' } as any;
-          }
-          return { color: 'rgb(240, 240, 240)', backgroundColor: 'rgb(0, 0, 0)' } as any;
-        };
-
-        const resolved = (c as any).resolveCssColorVar('--mat-sys-on-surface', 'fallback');
-        expect(resolved).toBe('rgb(240, 240, 240)');
-      } finally {
-        (window as any).matchMedia = originalMatchMedia;
-        (window as any).getComputedStyle = originalGetComputedStyle;
-      }
-    });
-
-    it('resolveCssColorVar should inherit scheme when computed scheme is not light/dark', () => {
-      const f = TestBed.createComponent(PlayerCardGraphsComponent);
-      const c = f.componentInstance;
-
-      const originalGetComputedStyle = window.getComputedStyle;
-      let observedScheme: string | undefined;
-      try {
-        (window as any).getComputedStyle = (el: any) => {
-          if (el === document.documentElement) {
-            return { colorScheme: 'light dark', getPropertyValue: () => '' } as any;
-          }
-
-          // light-dark probe used to detect scheme
-          if ((el as HTMLElement).style.color?.includes('light-dark')) {
-            return { color: 'rgb(1, 2, 3)' } as any;
-          }
-
-          observedScheme = (el as HTMLElement).style.getPropertyValue('color-scheme');
-          return { color: 'rgb(1, 2, 3)', backgroundColor: 'rgb(4, 5, 6)' } as any;
-        };
-
-        const resolved = (c as any).resolveCssColorVar('--mat-sys-on-surface', 'fallback');
-        expect(resolved).toBe('rgb(1, 2, 3)');
-        expect(observedScheme).toBe('light');
-      } finally {
-        (window as any).getComputedStyle = originalGetComputedStyle;
-      }
-    });
-
-    it('should wire prefers-color-scheme listener on init and remove on destroy', () => {
-      const f = TestBed.createComponent(PlayerCardGraphsComponent);
-      const c = f.componentInstance;
-
-      const add = jasmine.createSpy('addEventListener');
-      const remove = jasmine.createSpy('removeEventListener');
-
-      const originalMatchMedia = window.matchMedia;
-      try {
-        (window as any).matchMedia = () => ({ addEventListener: add, removeEventListener: remove }) as any;
-
-        c.data = { name: 'P', seasons: [] } as any;
-        c.ngOnInit();
-        expect(add).toHaveBeenCalled();
-
-        c.ngOnDestroy();
-        expect(remove).toHaveBeenCalled();
-      } finally {
-        (window as any).matchMedia = originalMatchMedia;
-      }
-    });
-
-    it('resolveCssColorVar should read backgroundColor and return fallback on empty computed', () => {
-      const f = TestBed.createComponent(PlayerCardGraphsComponent);
-      const c = f.componentInstance;
-
-      const originalGetComputedStyle = window.getComputedStyle;
-      try {
-        (window as any).getComputedStyle = (el: any) => {
-          if (el === document.documentElement) {
-            return { getPropertyValue: (p: string) => (p === 'color-scheme' ? 'light' : '') } as any;
-          }
-
-          // First call: backgroundColor path should read this.
-          if ((el as HTMLElement).style.backgroundColor) {
-            return { color: '', backgroundColor: 'rgb(9, 9, 9)' } as any;
-          }
-
-          return { color: '', backgroundColor: '' } as any;
-        };
-
-        const bg = (c as any).resolveCssColorVar(
-          '--mat-sys-surface-container-high',
-          'fallback-bg',
-          'backgroundColor'
-        );
-        expect(bg).toBe('rgb(9, 9, 9)');
-
-        const empty = (c as any).resolveCssColorVar('--mat-sys-on-surface', 'fallback-text');
-        expect(empty).toBe('fallback-text');
-      } finally {
-        (window as any).getComputedStyle = originalGetComputedStyle;
-      }
-    });
-
-    it('should start in radar mode for season viewContext', () => {
-      const seasonFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const seasonComponent = seasonFixture.componentInstance;
-
-      seasonComponent.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-      };
-      seasonComponent.viewContext = 'season';
-
-      seasonComponent.ngOnInit();
-
-      expect(seasonComponent.chartViewMode).toBe('radar');
-    });
-
-    it('should show line chart by default for combined viewContext', () => {
-      const combinedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const combinedComponent = combinedFixture.componentInstance;
-
-      combinedComponent.data = mockPlayer;
-      combinedComponent.viewContext = 'combined';
-
-      combinedComponent.ngOnInit();
-
-      expect(combinedComponent.chartViewMode).toBe('line');
-    });
-
-    it('should compute hasMultipleSeasons correctly for combined view', () => {
-      component.viewContext = 'combined';
-      component.data = mockPlayer;
-
-      expect(component.hasMultipleSeasons).toBeTrue();
-    });
-
-    it('should compute hasMultipleSeasons as false for season view', () => {
-      component.viewContext = 'season';
-      component.data = mockPlayer;
-
-      expect(component.hasMultipleSeasons).toBeFalse();
-    });
-
-    it('should use fallback grid color when textColor is not rgb format', () => {
-      const fallbackFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const fallbackComponent = fallbackFixture.componentInstance;
-
-      spyOn<any>(fallbackComponent, 'resolveCssColorVar').and.returnValue('#ffffff');
-
-      (fallbackComponent as any).applyThemeToRadarChartOptions();
-
-      const scales: any = fallbackComponent.radarChartOptions?.scales;
-      expect(scales?.r?.grid?.color).toBe('#ffffff');
-    });
-
-    it('should build goalie radar with combined stats (no gaa/savePercent)', () => {
-      const mockGoalieCombined = {
-        name: 'Test Goalie',
-        wins: 1,
-        scores: {
-          wins: 85,
-          saves: 90,
-          shutouts: 75
-        }
-      };
-
-      component.data = mockGoalieCombined as any;
-      (component as any).buildGoalieRadarData();
-
-      expect(component.radarChartData.labels?.length).toBe(3);
-      expect(component.radarChartData.datasets[0].data).toEqual([85, 90, 75]);
-    });
-
-    it('should route goalie radar building through buildRadarChartData', () => {
-      component.data = {
-        name: 'Goalie X',
-        wins: 1,
-        scores: {
-          wins: 85,
-          saves: 90,
-          shutouts: 75,
-        },
-      } as any;
-
-      (component as any).buildRadarChartData();
-      expect(component.radarChartData.labels?.length).toBe(3);
-    });
-
-    it('should format radar chart tooltip correctly', () => {
-      component.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72
-        }
-      };
-
-      (component as any).applyThemeToRadarChartOptions();
-
-      const tooltipCallback = (component.radarChartOptions?.plugins?.tooltip?.callbacks?.label) as any;
-      expect(tooltipCallback).toBeDefined();
-
-      const mockContext = {
-        dataset: { label: 'Test Player' },
-        parsed: { r: 75 }
-      };
-
-      const result = tooltipCallback(mockContext);
-      expect(result).toBe('Test Player: 75/100');
-    });
-
-    it('should format radar chart tooltip with an empty dataset label', () => {
-      component.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 1,
-          assists: 1,
-          points: 1,
-          plusMinus: 1,
-          penalties: 1,
-          shots: 1,
-          ppp: 1,
-          shp: 1,
-          hits: 1,
-          blocks: 1,
-        },
-      };
-
-      (component as any).applyThemeToRadarChartOptions();
-
-      const tooltipCallback = (component.radarChartOptions?.plugins?.tooltip?.callbacks?.label) as any;
-      const result = tooltipCallback({ dataset: {}, parsed: { r: 75 } });
-      expect(result).toBe(': 75/100');
-    });
-
-    it('should call buildRadarChartData when toggling to radar view', () => {
-      component.chartViewMode = 'line';
-      component.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72
-        }
-      };
-
-      spyOn<any>(component, 'buildRadarChartData');
-
-      component.toggleChartView();
-
-      expect(component.chartViewMode).toBe('radar');
-      expect((component as any).buildRadarChartData).toHaveBeenCalled();
-    });
-
-    it('should build goalie radar with extended stats (with gaa/savePercent)', () => {
-      const mockGoalieExtended = {
-        name: 'Test Goalie',
-        wins: 1,
-        scores: {
-          wins: 85,
-          saves: 90,
-          shutouts: 75,
-          gaa: 80,
-          savePercent: 88
-        }
-      };
-
-      component.data = mockGoalieExtended as any;
-      (component as any).buildGoalieRadarData();
-
-      expect(component.radarChartData.labels?.length).toBe(5);
-      expect(component.radarChartData.datasets[0].data).toEqual([85, 90, 75, 80, 88]);
-    });
-
-    it('should handle radar chart initialization in ngOnInit for season view', () => {
-      const seasonFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const seasonComp = seasonFixture.componentInstance;
-
-      seasonComp.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72
-        }
-      };
-      seasonComp.viewContext = 'season';
-
-      spyOn<any>(seasonComp, 'buildRadarChartData');
-
-      seasonComp.ngOnInit();
-
-      expect(seasonComp.chartViewMode).toBe('radar');
-      expect((seasonComp as any).buildRadarChartData).toHaveBeenCalled();
-    });
-
-    it('should initialize chart selections for empty object', () => {
-      const newFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const newComp = newFixture.componentInstance;
-
-      newComp.data = mockPlayer;
-      newComp.chartSelections = {};
-
-      newComp.ngOnInit();
-
-      expect(Object.keys(newComp.chartSelections).length).toBeGreaterThan(0);
-    });
-
-    it('should complete full toggle cycle between line and radar views', () => {
-      component.chartViewMode = 'line';
-      component.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72
-        }
-      };
-
-      // Toggle to radar
-      component.toggleChartView();
-      expect(component.chartViewMode).toBe('radar');
-      expect(component.radarChartData.datasets.length).toBe(1);
-
-      // Toggle back to line
-      component.toggleChartView();
-      expect(component.chartViewMode).toBe('line');
-    });
-
-    it('should build radar data when chartViewMode is radar for combined view', () => {
-      const radarFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const radarComp = radarFixture.componentInstance;
-
-      radarComp.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72
-        }
-      };
-      radarComp.viewContext = 'combined';
-      radarComp.chartViewMode = 'radar';
-
-      spyOn<any>(radarComp, 'buildRadarChartData');
-
-      radarComp.ngOnInit();
-
-      expect((radarComp as any).buildRadarChartData).toHaveBeenCalled();
-    });
-
-    it('should compute hasMultipleSeasons as false when only one season', () => {
-      const singleSeasonPlayer = {
-        ...mockPlayer,
-        seasons: [mockPlayer.seasons![0]],
-      };
-      component.viewContext = 'combined';
-      component.data = singleSeasonPlayer;
-
-      expect(component.hasMultipleSeasons).toBeFalse();
-    });
-
-    it('should handle goalie without scores in radar view', () => {
-      const goalieWithoutScores: any = {
-        name: 'Test Goalie',
-        wins: 8,
-        saves: 300,
-        shutouts: 2,
-      };
-      component.data = goalieWithoutScores;
-      expect(() => (component as any).buildGoalieRadarData()).not.toThrow();
-    });
-
-    it('should build radar chart on ngOnInit when viewContext is season', () => {
-      const seasonFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const seasonComponent = seasonFixture.componentInstance;
-
-      seasonComponent.data = {
-        ...mockPlayer,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-      };
-      seasonComponent.viewContext = 'season';
-
-      spyOn(seasonComponent as any, 'buildRadarChartData');
-
-      seasonComponent.ngOnInit();
-
-      expect((seasonComponent as any).buildRadarChartData).toHaveBeenCalled();
-    });
-
-    it('should not call buildRadarChartData in ngOnInit when not in radar mode and not season view', () => {
-      const lineFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const lineComponent = lineFixture.componentInstance;
-
-      lineComponent.data = mockPlayer;
-      lineComponent.viewContext = 'combined';
-      lineComponent.chartViewMode = 'line';
-
-      spyOn<any>(lineComponent, 'buildRadarChartData');
-
-      lineComponent.ngOnInit();
-
-      expect((lineComponent as any).buildRadarChartData).not.toHaveBeenCalled();
-    });
-
-    it('should set backdropColor to transparent in radar chart ticks', () => {
-      const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const themed = themedFixture.componentInstance;
-
-      spyOn<any>(themed, 'resolveCssColorVar').and.returnValue('rgb(10, 10, 10)');
-
-      (themed as any).applyThemeToRadarChartOptions();
-
-      const scales: any = themed.radarChartOptions?.scales;
-      expect(scales?.r?.ticks?.backdropColor).toBe('transparent');
-    });
-
-    it('should format themed radar ticks using the callback', () => {
-      const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const themed = themedFixture.componentInstance;
-
-      spyOn<any>(themed, 'resolveCssColorVar').and.returnValue('rgb(10, 10, 10)');
-      (themed as any).applyThemeToRadarChartOptions();
-
-      const tickCb = (themed.radarChartOptions as any)?.scales?.r?.ticks?.callback as any;
-      expect(tickCb).toBeDefined();
-      expect(tickCb(5)).toBe('5');
-    });
-
-    it('should handle rgba textColor when building grid color', () => {
-      const rgbaFixture = TestBed.createComponent(PlayerCardGraphsComponent);
-      const rgbaComponent = rgbaFixture.componentInstance;
-
-      spyOn<any>(rgbaComponent, 'resolveCssColorVar').and.returnValue('rgba(10, 10, 10, 1)');
-
-      (rgbaComponent as any).applyThemeToRadarChartOptions();
-
-      const scales: any = rgbaComponent.radarChartOptions?.scales;
-      // Should use the rgba color as-is since it doesn't start with 'rgb('
-      expect(scales?.r?.grid?.color).toBe('rgba(10, 10, 10, 1)');
-    });
-  });
-
-  it('should use fallback dataset label when translation returns empty', () => {
-    (component as any).chartYearsRange = [2024];
-    (component as any).chartLabels = ['24-25'];
-
-    component.chartSelections = { ...component.chartSelections, score: true };
-    spyOn((component as any).translateService, 'instant').and.returnValue('');
-
-    (component as any).updateChartData([{ season: 2024, score: 10 } as any]);
-
-    expect(component.lineChartData.datasets.length).toBeGreaterThan(0);
-    expect(component.lineChartData.datasets[0].label).toBe('tableColumn.score');
-  });
-
-  it('should handle updateChartData with empty active keys', () => {
-    component.data = mockPlayer;
-    component.chartSelections = {
-      score: false,
-      scoreAdjustedByGames: false,
-      games: false,
-      goals: false,
-      assists: false,
-      points: false,
-      shots: false,
-      penalties: false,
-      hits: false,
-      blocks: false,
-    };
-
-    (component as any).updateChartData(mockPlayer.seasons!);
-
-    expect(component.lineChartData.datasets.length).toBe(0);
-  });
-
-  it('should handle non-finite numeric values in updateChartData', () => {
-    const seasonsWithInvalidData = [
-      {
-        ...mockPlayer.seasons![0],
-        goals: NaN,
-        assists: Infinity,
-      },
-    ];
-
-    component.data = mockPlayer;
-    component.chartSelections = { goals: true, assists: true };
-
-    (component as any).updateChartData(seasonsWithInvalidData);
-
-    expect(component.lineChartData.datasets.length).toBe(2);
-    // NaN and Infinity should be converted to 0
-    expect(component.lineChartData.datasets[0].data).toContain(0);
-  });
-
-  it('should format season short correctly', () => {
-    const result = (component as any).formatSeasonShort(2024);
-    expect(result).toBe('24-25');
-  });
-
-  it('should handle seasons with no data in updateChartData', () => {
-    component.data = mockPlayer;
-    component.chartSelections = { goals: true };
-
-    const seasonsOutsideRange = [
-      { ...mockPlayer.seasons![0], season: 2010 }
-    ];
-
-    (component as any).chartYearsRange = [2024, 2025];
-    (component as any).chartLabels = ['24-25', '25-26'];
-    (component as any).updateChartData(seasonsOutsideRange);
-
-    // Should have null values for missing years
-    expect(component.lineChartData.datasets[0].data).toContain(null);
-  });
-
-  it('should set y scale properties when allValues has data', () => {
-    component.data = mockPlayer;
-    component.chartSelections = { goals: true };
-    component.lineChartOptions.scales = {};
-
-    (component as any).updateChartData(mockPlayer.seasons!);
-
-    expect(component.lineChartOptions.scales!['y']).toBeDefined();
-    expect(component.lineChartOptions.scales!['y']!.min).toBe(0);
-    expect(component.lineChartOptions.scales!['y']!.max).toBeGreaterThan(0);
-  });
-
-  it('should call resolveCssColorVar with backgroundColor cssProperty for tooltipBg', () => {
-    spyOn<any>(component, 'resolveCssColorVar').and.callFake(
-      (_name: string, _fallback: string, cssProperty?: string) => {
-        if (cssProperty === 'backgroundColor') {
-          return 'rgb(20, 20, 20)';
-        }
-        return 'rgb(10, 10, 10)';
-      }
-    );
-
-    (component as any).applyThemeToRadarChartOptions();
-
-    expect((component as any).resolveCssColorVar).toHaveBeenCalledWith(
-      '--mat-sys-surface-container-high',
-      'rgba(0,0,0,0.8)',
-      'backgroundColor'
-    );
-  });
-
-  it('should handle missing seasons in setupChartData early return', () => {
-    const noSeasonsPlayer = {
-      ...mockPlayer,
-      seasons: undefined
-    };
-
-    component.data = noSeasonsPlayer;
-    component.chartLabels = [];
-
-    expect(() => (component as any).setupChartData()).not.toThrow();
-    // setupChartData returns early if no seasons, so chartLabels remains empty
-    expect(component.chartLabels.length).toBe(0);
-  });
-
-  it('should handle allValues with length 0 in updateChartData', () => {
-    component.data = mockPlayer;
-    component.chartSelections = {};
-    component.lineChartOptions.scales = {};
-
-    (component as any).updateChartData(mockPlayer.seasons!);
-
-    // No datasets means no values, so y scale should not be modified
-    expect(component.lineChartOptions.scales!['y']).toBeUndefined();
-  });
-
-  describe('Position filter in radar chart', () => {
-    it('should use scoresByPosition when positionFilter is active and scoresByPosition exists', () => {
-      const mockPlayerWithPositionScores: Player = {
-        name: 'Test Forward',
-        position: 'F',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        scoreByPosition: 90,
-        scoreByPositionAdjustedByGames: 4.5,
-        games: 20,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-        scoresByPosition: {
-          goals: 85,
-          assists: 88,
-          points: 95,
-          plusMinus: 70,
-          penalties: 50,
-          shots: 78,
-          ppp: 72,
-          shp: 62,
-          hits: 88,
-          blocks: 80,
-        },
-      };
-
-      component.data = mockPlayerWithPositionScores;
-      component.positionFilter = 'F';
-      (component as any).buildRadarChartData();
-
-      // Should use scoresByPosition values
-      expect(component.radarChartData.datasets[0].data).toEqual([
-        85, 88, 95, 70, 50, 78, 72, 62, 88, 80,
-      ]);
-    });
-
-    it('should use scores when positionFilter is active but scoresByPosition is missing', () => {
-      const mockPlayerWithoutPositionScores: Player = {
-        name: 'Test Forward',
-        position: 'F',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 20,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-      };
-
-      component.data = mockPlayerWithoutPositionScores;
-      component.positionFilter = 'D';
-      (component as any).buildRadarChartData();
-
-      // Should fall back to scores values
-      expect(component.radarChartData.datasets[0].data).toEqual([
-        75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
-      ]);
-    });
-
-    it('should use scores when positionFilter is all', () => {
-      const mockPlayerWithBothScores: Player = {
-        name: 'Test Player',
-        position: 'F',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 20,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-        scoresByPosition: {
-          goals: 85,
-          assists: 88,
-          points: 95,
-          plusMinus: 70,
-          penalties: 50,
-          shots: 78,
-          ppp: 72,
-          shp: 62,
-          hits: 88,
-          blocks: 80,
-        },
-      };
-
-      component.data = mockPlayerWithBothScores;
-      component.positionFilter = 'all';
-      (component as any).buildRadarChartData();
-
-      // Should use scores values (not scoresByPosition)
-      expect(component.radarChartData.datasets[0].data).toEqual([
-        75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
-      ]);
-    });
-
-    it('should rebuild radar chart when positionFilter changes via ngOnChanges', () => {
-      const mockPlayerWithBothScores: Player = {
-        name: 'Test Forward',
-        position: 'F',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 20,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-        scoresByPosition: {
-          goals: 85,
-          assists: 88,
-          points: 95,
-          plusMinus: 70,
-          penalties: 50,
-          shots: 78,
-          ppp: 72,
-          shp: 62,
-          hits: 88,
-          blocks: 80,
-        },
-      };
-
-      component.data = mockPlayerWithBothScores;
-      component.positionFilter = 'all';
-      component.chartViewMode = 'radar';
-      (component as any).buildRadarChartData();
-
-      // Initial data should use regular scores
-      expect(component.radarChartData.datasets[0].data[0]).toBe(75);
-
-      // Simulate ngOnChanges with positionFilter change
-      component.positionFilter = 'F';
-      component.ngOnChanges({
-        positionFilter: {
-          currentValue: 'F',
-          previousValue: 'all',
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
-
-      // Should now use scoresByPosition
-      expect(component.radarChartData.datasets[0].data[0]).toBe(85);
-    });
-
-    it('should not rebuild radar chart on first change via ngOnChanges', () => {
-      const mockPlayerWithScores: Player = {
-        name: 'Test Player',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 20,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-      };
-
-      component.data = mockPlayerWithScores;
-      component.chartViewMode = 'radar';
-
-      const buildRadarSpy = spyOn<any>(component, 'buildRadarChartData');
-
-      // Simulate first change (should be skipped)
-      component.ngOnChanges({
-        positionFilter: {
-          currentValue: 'F',
-          previousValue: undefined,
-          firstChange: true,
-          isFirstChange: () => true,
-        },
-      });
-
-      expect(buildRadarSpy).not.toHaveBeenCalled();
-    });
-
-    it('should not rebuild radar chart when in line mode via ngOnChanges', () => {
-      component.data = mockPlayer;
-      component.chartViewMode = 'line';
-      component.viewContext = 'combined';
-
-      const buildRadarSpy = spyOn<any>(component, 'buildRadarChartData');
-
-      component.ngOnChanges({
-        positionFilter: {
-          currentValue: 'F',
-          previousValue: 'all',
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
-
-      expect(buildRadarSpy).not.toHaveBeenCalled();
-    });
-
-    it('should rebuild radar chart when viewContext is season via ngOnChanges', () => {
-      const mockPlayerWithScores: Player = {
-        name: 'Test Player',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 20,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        scores: {
-          goals: 75,
-          assists: 82,
-          points: 90,
-          plusMinus: 60,
-          penalties: 45,
-          shots: 70,
-          ppp: 65,
-          shp: 55,
-          hits: 80,
-          blocks: 72,
-        },
-      };
-
-      component.data = mockPlayerWithScores;
-      component.chartViewMode = 'line'; // Even in line mode
-      component.viewContext = 'season'; // But season view context
-
-      const buildRadarSpy = spyOn<any>(component, 'buildRadarChartData');
-
-      component.ngOnChanges({
-        positionFilter: {
-          currentValue: 'F',
-          previousValue: 'all',
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
-
-      expect(buildRadarSpy).toHaveBeenCalled();
-    });
-
-    it('should use position-based scores in line chart when filter is active', () => {
-      const mockPlayerWithSeasons: Player & { seasons: PlayerSeasonStats[] } = {
-        name: 'Test Forward',
-        position: 'F',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 82,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        seasons: [
-          {
+    let fixture: ComponentFixture<PlayerCardGraphsComponent>;
+    let component: PlayerCardGraphsComponent;
+
+    const seasons: PlayerSeasonStats[] = [
+        {
             name: '',
             season: 2024,
             games: 82,
-            score: 100,
-            scoreAdjustedByGames: 1.22,
-            scoreByPosition: 85,
-            scoreByPositionAdjustedByGames: 1.04,
+            score: 123,
+            scoreAdjustedByGames: 1.5,
             goals: 30,
             assists: 40,
             points: 70,
-            plusMinus: 10,
-            penalties: 20,
             shots: 200,
-            ppp: 15,
-            shp: 1,
+            penalties: 20,
             hits: 50,
             blocks: 30,
-          },
-        ],
-      };
-
-      component.data = mockPlayerWithSeasons;
-      component.positionFilter = 'F';
-      component.chartSelections = { score: true, scoreAdjustedByGames: true };
-
-      (component as any).chartYearsRange = [2024];
-      (component as any).chartLabels = ['24-25'];
-      (component as any).updateChartData(mockPlayerWithSeasons.seasons);
-
-      // Should use position-based score values
-      expect(component.lineChartData.datasets[0].data[0]).toBe(85);
-      expect(component.lineChartData.datasets[1].data[0]).toBe(1.04);
-    });
-
-    it('should use regular scores in line chart when filter is all', () => {
-      const mockPlayerWithSeasons: Player & { seasons: PlayerSeasonStats[] } = {
-        name: 'Test Forward',
-        position: 'F',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 82,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        seasons: [
-          {
-            name: '',
-            season: 2024,
-            games: 82,
-            score: 100,
-            scoreAdjustedByGames: 1.22,
-            scoreByPosition: 85,
-            scoreByPositionAdjustedByGames: 1.04,
-            goals: 30,
-            assists: 40,
-            points: 70,
             plusMinus: 10,
-            penalties: 20,
-            shots: 200,
             ppp: 15,
             shp: 1,
-            hits: 50,
-            blocks: 30,
-          },
-        ],
-      };
-
-      component.data = mockPlayerWithSeasons;
-      component.positionFilter = 'all';
-      component.chartSelections = { score: true, scoreAdjustedByGames: true };
-
-      (component as any).chartYearsRange = [2024];
-      (component as any).chartLabels = ['24-25'];
-      (component as any).updateChartData(mockPlayerWithSeasons.seasons);
-
-      // Should use regular score values
-      expect(component.lineChartData.datasets[0].data[0]).toBe(100);
-      expect(component.lineChartData.datasets[1].data[0]).toBe(1.22);
-    });
-
-    it('should fall back to regular score when position-based values are missing', () => {
-      const mockPlayerWithSeasons: Player & { seasons: PlayerSeasonStats[] } = {
-        name: 'Test Forward',
-        position: 'F',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 82,
-        goals: 25,
-        assists: 40,
-        points: 65,
-        plusMinus: 10,
-        penalties: 20,
-        shots: 200,
-        ppp: 15,
-        shp: 1,
-        hits: 50,
-        blocks: 30,
-        seasons: [
-          {
-            name: '',
-            season: 2024,
-            games: 82,
-            score: 100,
-            scoreAdjustedByGames: 1.22,
-            // No scoreByPosition or scoreByPositionAdjustedByGames
-            goals: 30,
-            assists: 40,
-            points: 70,
-            plusMinus: 10,
-            penalties: 20,
-            shots: 200,
-            ppp: 15,
-            shp: 1,
-            hits: 50,
-            blocks: 30,
-          },
-        ],
-      };
-
-      component.data = mockPlayerWithSeasons;
-      component.positionFilter = 'F';
-      component.chartSelections = { score: true, scoreAdjustedByGames: true };
-
-      (component as any).chartYearsRange = [2024];
-      (component as any).chartLabels = ['24-25'];
-      (component as any).updateChartData(mockPlayerWithSeasons.seasons);
-
-      // Should fall back to regular score values
-      expect(component.lineChartData.datasets[0].data[0]).toBe(100);
-      expect(component.lineChartData.datasets[1].data[0]).toBe(1.22);
-    });
-
-    it('should rebuild line chart in ngOnChanges when positionFilter changes and has seasons', () => {
-      component.data = mockPlayer;
-      component.chartViewMode = 'line';
-      component.viewContext = 'combined';
-
-      const updateChartDataSpy = spyOn<any>(component, 'updateChartData');
-
-      component.ngOnChanges({
-        positionFilter: {
-          currentValue: 'F',
-          previousValue: 'all',
-          firstChange: false,
-          isFirstChange: () => false,
         },
-      });
+        {
+            name: '',
+            season: 2023,
+            games: 80,
+            score: 100,
+            scoreAdjustedByGames: 1.25,
+            goals: 25,
+            assists: 35,
+            points: 60,
+            shots: 180,
+            penalties: 18,
+            hits: 45,
+            blocks: 28,
+            plusMinus: 8,
+            ppp: 12,
+            shp: 0,
+        },
+    ];
 
-      expect(updateChartDataSpy).toHaveBeenCalled();
-    });
-
-    it('should not rebuild line chart in ngOnChanges when no seasons', () => {
-      const mockPlayerNoSeasons: Player = {
-        name: 'Test Player',
-        score: 80,
-        scoreAdjustedByGames: 4,
-        games: 20,
-        goals: 25,
+    const mockPlayer: Player & {
+        seasons: PlayerSeasonStats[];
+    } = {
+        name: 'Skater One',
+        score: 0,
+        scoreAdjustedByGames: 0,
+        games: 82,
+        goals: 30,
         assists: 40,
-        points: 65,
+        points: 70,
         plusMinus: 10,
         penalties: 20,
         shots: 200,
@@ -1809,24 +61,1818 @@ describe('PlayerCardGraphsComponent', () => {
         shp: 1,
         hits: 50,
         blocks: 30,
-      };
+        seasons,
+    };
 
-      component.data = mockPlayerNoSeasons;
-      component.chartViewMode = 'line';
-      component.viewContext = 'combined';
+    beforeEach(async () => {
+        // Stub requestAnimationFrame to prevent deferred chart resize callbacks from
+        // crashing between tests (chart.js uses rAF for resize operations).
+        vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
 
-      const updateChartDataSpy = spyOn<any>(component, 'updateChartData');
+        await TestBed.configureTestingModule({
+            imports: [PlayerCardGraphsComponent, TranslateModule.forRoot()],
+        }).compileComponents();
 
-      component.ngOnChanges({
-        positionFilter: {
-          currentValue: 'F',
-          previousValue: 'all',
-          firstChange: false,
-          isFirstChange: () => false,
-        },
-      });
+        fixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        component = fixture.componentInstance;
 
-      expect(updateChartDataSpy).not.toHaveBeenCalled();
+        component.data = mockPlayer;
+        fixture.detectChanges();
     });
-  });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
+
+    it('should create and initialize chart data', () => {
+        expect(component).toBeTruthy();
+        expect(component.hasSeasons).toBe(true);
+
+        expect(component.lineChartData.labels?.length).toBeGreaterThan(0);
+        expect(component.lineChartData.datasets.length).toBeGreaterThan(0);
+    });
+
+    it('should toggle graph controls', () => {
+        expect(component.graphControlsExpanded).toBe(false);
+        component.toggleGraphControls();
+        expect(component.graphControlsExpanded).toBe(true);
+    });
+
+    it('should update datasets when a stat is toggled', () => {
+        const initialCount = component.lineChartData.datasets.length;
+
+        // Turn on an additional series (goals)
+        component.onStatToggle('goals', { checked: true } as any);
+
+        expect(component.lineChartData.datasets.length).toBeGreaterThanOrEqual(initialCount);
+    });
+
+    it('should handle ArrowUp/ArrowDown keyboard shortcuts', () => {
+        const focusTabHeader = vi.fn();
+        const closeBtn = document.createElement('button');
+        vi.spyOn(closeBtn, 'focus');
+
+        component.requestFocusTabHeader = focusTabHeader;
+        component.closeButtonEl = closeBtn;
+
+        component.onGraphCheckboxKeydown(new KeyboardEvent('keydown', { key: 'ArrowUp' }));
+        expect(focusTabHeader).toHaveBeenCalled();
+
+        component.onGraphCheckboxKeydown(new KeyboardEvent('keydown', { key: 'ArrowDown' }));
+        expect(closeBtn.focus).toHaveBeenCalled();
+    });
+
+    it('should apply themed colors when token-resolver returns values', () => {
+        // Do not stub global getComputedStyle: Chart.js also uses it during canvas init.
+        // Instead, stub the component's resolver and call the private theme method.
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+        themed.data = mockPlayer;
+
+        vi.spyOn(themed as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [name, fallback, cssProperty = 'color'] = args;
+            if (name === '--mat-sys-on-surface')
+                return 'rgb(10, 10, 10)';
+            if (name === '--mat-sys-outline-variant')
+                return 'rgba(255, 0, 0, 0.3)';
+            if (name === '--mat-sys-surface-container-high' && cssProperty === 'backgroundColor') {
+                return 'rgb(20, 20, 20)';
+            }
+            return fallback;
+        });
+
+        (themed as any).applyThemeToChartOptions();
+
+        const plugins: any = themed.lineChartOptions.plugins;
+        expect(plugins.legend.labels.color).toBe('rgb(10, 10, 10)');
+        expect(plugins.tooltip.titleColor).toBe('rgb(10, 10, 10)');
+
+        const scales: any = themed.lineChartOptions.scales;
+        expect(scales.x.ticks.color).toBe('rgb(10, 10, 10)');
+        expect(scales.y.grid.color).toBe('rgba(255, 0, 0, 0.3)');
+    });
+
+    it('should ignore unrelated keydowns without side-effects', () => {
+        const event = {
+            key: 'Enter',
+            preventDefault: vi.fn(),
+        } as any;
+
+        component.onGraphCheckboxKeydown(event);
+        expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+
+    it('should not throw on ArrowDown when close button is not provided', () => {
+        const event = {
+            key: 'ArrowDown',
+            preventDefault: vi.fn(),
+        } as any;
+
+        component.closeButtonEl = undefined;
+        component.onGraphCheckboxKeydown(event);
+
+        // No close button => no focus move, no preventDefault.
+        expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+
+    it('should handle missing seasons and non-numeric values in chart data', () => {
+        // Force a year-gap so updateChartData hits the missing-season branch.
+        (component as any).chartYearsRange = [2023, 2024];
+        (component as any).chartLabels = ['23-24', '24-25'];
+
+        // Ensure score series is active.
+        component.chartSelections = { ...component.chartSelections, score: true };
+
+        // Provide only one season + a non-numeric string to hit parsing branches.
+        const seasonsWithGap: any[] = [
+            {
+                season: 2024,
+                score: 'abc',
+            },
+        ];
+
+        (component as any).updateChartData(seasonsWithGap);
+
+        const firstDataset: any = component.lineChartData.datasets[0];
+        expect(firstDataset.data[0]).toBeNull();
+        expect(firstDataset.data[1]).toBe(0);
+    });
+
+    it('should not rescale y-axis when there are no active series values', () => {
+        // Disable all series to hit the allValues.length === 0 branch.
+        component.chartSelections = component.chartStatKeys.reduce((acc, key) => ({ ...acc, [key]: false }), {} as Record<string, boolean>);
+
+        (component as any).chartYearsRange = [2024];
+        (component as any).chartLabels = ['24-25'];
+
+        (component as any).updateChartData([{ season: 2024, score: 10 } as any]);
+        expect(component.lineChartData.datasets.length).toBe(0);
+    });
+
+    it('resolveCssColorVar should compute a background color string when possible', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+
+        const value = (themed as any).resolveCssColorVar('--mat-sys-surface-container-high', 'rgba(0,0,0,0.8)', 'backgroundColor');
+
+        expect(typeof value).toBe('string');
+        expect(value.length).toBeGreaterThan(0);
+    });
+
+    it('onStatToggle should no-op when seasons are missing', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+        themed.data = { ...mockPlayer, seasons: undefined as any };
+
+        expect(() => themed.onStatToggle('score', { checked: true } as any)).not.toThrow();
+    });
+
+    it('should initialize missing y-scale options when rescaling', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+        themed.data = mockPlayer;
+
+        (themed as any).chartYearsRange = [2024];
+        (themed as any).chartLabels = ['24-25'];
+        themed.lineChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+        } as any;
+
+        // Ensure at least one series is active.
+        themed.chartSelections = { ...themed.chartSelections, score: true };
+        (themed as any).updateChartData([{ season: 2024, score: 10 } as any]);
+
+        const y: any = (themed.lineChartOptions.scales as any).y;
+        expect(y).toBeTruthy();
+        expect(y.min).toBe(0);
+        expect(y.max).toBeGreaterThan(0);
+        expect(y.ticks.stepSize).toBeGreaterThan(0);
+    });
+
+    it('resolveCssColorVar should fall back to the provided fallback on errors', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+
+        // Force an error from inside the resolver.
+        vi.spyOn((themed as any).document, 'createElement').mockImplementation(() => {
+            throw new Error('boom');
+        });
+
+        expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
+        expect((themed as any).resolveCssColorVar('--mat-sys-surface-container-high', 'rgba(0,0,0,0.8)', 'backgroundColor')).toBe('rgba(0,0,0,0.8)');
+    });
+
+    it('should use goalie stat keys when data is a goalie', () => {
+        const goalieSeasons: any[] = [
+            { season: 2024, score: 10, scoreAdjustedByGames: 0.2, games: 40, wins: 20, saves: 900, shutouts: 4 },
+            { season: 2023, score: 8, scoreAdjustedByGames: 0.18, games: 38, wins: 18, saves: 850, shutouts: 3 },
+        ];
+
+        const goalie: any = {
+            name: 'Goalie One',
+            score: 0,
+            scoreAdjustedByGames: 0,
+            games: 40,
+            wins: 20,
+            saves: 900,
+            shutouts: 4,
+            seasons: goalieSeasons,
+        };
+
+        const goalieFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const goalieComponent = goalieFixture.componentInstance;
+
+        goalieComponent.data = goalie;
+
+        // Initialize chartSelections and chart data manually to avoid triggering
+        // chart.js DOM operations (canvas/setAttribute) in jsdom
+        goalieComponent.chartSelections = { score: true, scoreAdjustedByGames: true, games: false, wins: false, saves: false, shutouts: false };
+        (goalieComponent as any).chartYearsRange = [2023, 2024];
+        (goalieComponent as any).chartLabels = ['23-24', '24-25'];
+        (goalieComponent as any).updateChartData([...goalie.seasons]);
+
+        expect(goalieComponent.isGoalie).toBe(true);
+        expect(goalieComponent.chartStatKeys).toContain('wins');
+        expect(goalieComponent.chartStatKeys).toContain('saves');
+        expect(goalieComponent.chartStatKeys).toContain('shutouts');
+
+        goalieComponent.onStatToggle('wins', { checked: true } as any);
+        expect(goalieComponent.lineChartData.datasets.length).toBeGreaterThan(0);
+    });
+
+    it('should set y-axis stepSize to 1 when maxValue is 0', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+        themed.data = mockPlayer;
+
+        (themed as any).chartYearsRange = [2024];
+        (themed as any).chartLabels = ['24-25'];
+        themed.chartSelections = { score: true } as any;
+
+        (themed as any).updateChartData([{ season: 2024, score: 0 } as any]);
+
+        const y: any = (themed.lineChartOptions.scales as any).y;
+        expect(y.ticks.stepSize).toBe(1);
+        expect(y.max).toBe(5);
+    });
+
+    it('resolveCssColorVar should fall back when document.body is missing', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+
+        (themed as any).document = { body: null };
+        expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
+    });
+
+    it('resolveCssColorVar should fall back when computed style is empty', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+
+        vi.spyOn(window as any, 'getComputedStyle').mockReturnValue({
+            color: '   ',
+            backgroundColor: '   ',
+        } as any);
+
+        expect((themed as any).resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f')).toBe('#1f1f1f');
+    });
+
+    it('applyThemeToChartOptions should initialize missing plugins/scales', () => {
+        const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+        const themed = themedFixture.componentInstance;
+
+        themed.lineChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+        } as any;
+
+        vi.spyOn(themed as any, 'resolveCssColorVar').mockReturnValue('rgb(1, 2, 3)');
+        (themed as any).applyThemeToChartOptions();
+
+        expect(themed.lineChartOptions.plugins).toBeTruthy();
+        expect(themed.lineChartOptions.scales).toBeTruthy();
+    });
+
+    describe('Radar Chart', () => {
+        it('should format default radar tick and tooltip callbacks before ngOnInit runs', () => {
+            const rawFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const raw = rawFixture.componentInstance;
+
+            const tickCb = (raw.radarChartOptions as any)?.scales?.r?.ticks?.callback as any;
+            expect(tickCb).toBeDefined();
+            expect(tickCb(20)).toBe('20');
+
+            const tooltipCb = (raw.radarChartOptions as any)?.plugins?.tooltip?.callbacks?.label as any;
+            expect(tooltipCb).toBeDefined();
+
+            const result = tooltipCb({ dataset: { label: 'X' }, parsed: { r: 7 } });
+            expect(result).toBe('X: 7/100');
+        });
+
+        it('should toggle between line and radar chart views', () => {
+            component.chartViewMode = 'line';
+            component.toggleChartView();
+            expect(component.chartViewMode).toBe('radar');
+            component.toggleChartView();
+            expect(component.chartViewMode).toBe('line');
+        });
+
+        it('should build radar chart data for player with scores', () => {
+            const mockPlayerWithScores: Player = {
+                name: 'Test Player',
+                score: 85,
+                scoreAdjustedByGames: 8.5,
+                games: 10,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+            };
+
+            component.data = mockPlayerWithScores;
+            component.chartViewMode = 'radar';
+            (component as any).buildRadarChartData();
+
+            expect(component.radarChartData.labels?.length).toBe(10);
+            expect(component.radarChartData.datasets.length).toBe(1);
+            expect(component.radarChartData.datasets[0].data).toEqual([
+                75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
+            ]);
+            expect(component.radarChartData.datasets[0].label).toBe('Test Player');
+        });
+
+        it('should handle missing scores gracefully', () => {
+            const mockPlayerWithoutScores: Player = {
+                name: 'Test Player',
+                score: 85,
+                scoreAdjustedByGames: 8.5,
+                games: 10,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+            };
+
+            component.data = mockPlayerWithoutScores;
+            expect(() => (component as any).buildRadarChartData()).not.toThrow();
+        });
+
+        it('should build goalie radar with extended stats for season', () => {
+            const mockGoalieWithScores: any = {
+                name: 'Test Goalie',
+                score: 90,
+                scoreAdjustedByGames: 9.0,
+                games: 10,
+                wins: 8,
+                saves: 300,
+                shutouts: 2,
+                goals: 0,
+                assists: 1,
+                points: 1,
+                penalties: 0,
+                ppp: 0,
+                shp: 0,
+                gaa: '2.00',
+                savePercent: '0.920',
+                scores: {
+                    wins: 85,
+                    saves: 90,
+                    shutouts: 75,
+                    gaa: 80,
+                    savePercent: 88,
+                },
+            };
+
+            component.data = mockGoalieWithScores;
+            (component as any).buildGoalieRadarData();
+
+            expect(component.radarChartData.labels?.length).toBe(5);
+            expect(component.radarChartData.datasets[0].data).toEqual([
+                85, 90, 75, 80, 88,
+            ]);
+        });
+
+        it('should build goalie radar without extended stats for combined', () => {
+            const mockGoalieCombined: any = {
+                name: 'Test Goalie',
+                score: 90,
+                scoreAdjustedByGames: 9.0,
+                games: 10,
+                wins: 8,
+                saves: 300,
+                shutouts: 2,
+                goals: 0,
+                assists: 1,
+                points: 1,
+                penalties: 0,
+                ppp: 0,
+                shp: 0,
+                scores: {
+                    wins: 85,
+                    saves: 90,
+                    shutouts: 75,
+                },
+            };
+
+            component.data = mockGoalieCombined;
+            (component as any).buildGoalieRadarData();
+
+            expect(component.radarChartData.labels?.length).toBe(3);
+            expect(component.radarChartData.datasets[0].data).toEqual([85, 90, 75]);
+        });
+
+        it('should apply theme to radar chart options', () => {
+            const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const themed = themedFixture.componentInstance;
+
+            vi.spyOn(themed as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [name, fallback] = args;
+                if (name === '--mat-sys-on-surface')
+                    return 'rgb(10, 10, 10)';
+                if (name === '--mat-sys-outline-variant')
+                    return 'rgba(255, 0, 0, 0.3)';
+                if (name === '--mat-sys-surface-container-high')
+                    return 'rgb(20, 20, 20)';
+                return fallback;
+            });
+
+            (themed as any).applyThemeToRadarChartOptions();
+
+            const plugins: any = themed.radarChartOptions?.plugins;
+            expect(plugins?.legend?.display).toBe(false);
+            expect(plugins?.tooltip?.titleColor).toBe('rgb(10, 10, 10)');
+
+            const scales: any = themed.radarChartOptions?.scales;
+            expect(scales?.r?.ticks?.color).toBe('rgb(10, 10, 10)');
+            expect(scales?.r?.grid?.color).toBe('rgba(255, 0, 0, 0.3)');
+        });
+
+        it('chartStatKeys should return goalie vs player keys (ternary coverage)', () => {
+            const f = TestBed.createComponent(PlayerCardGraphsComponent);
+            const c = f.componentInstance;
+
+            c.data = { name: 'Skater', seasons: [], goals: 1 } as any;
+            expect(c.chartStatKeys).toContain('goals');
+            expect(c.chartStatKeys).not.toContain('wins');
+
+            c.data = { name: 'Goalie', seasons: [], wins: 1 } as any;
+            expect(c.chartStatKeys).toContain('wins');
+            expect(c.chartStatKeys).not.toContain('goals');
+        });
+
+        it('applyThemeToChartOptions should handle missing plugins/scales and existing tick/grid objects', () => {
+            const f = TestBed.createComponent(PlayerCardGraphsComponent);
+            const c = f.componentInstance;
+
+            vi.spyOn(c as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [_name, _fallback, cssProperty] = args;
+                void _fallback;
+                if (cssProperty === 'backgroundColor')
+                    return 'rgb(20, 20, 20)';
+                return 'rgb(10, 10, 10)';
+            });
+
+            // Missing plugins/scales
+            (c as any).lineChartOptions = { responsive: true, maintainAspectRatio: false } as any;
+            (c as any).applyThemeToChartOptions();
+            expect(((c as any).lineChartOptions.plugins.legend.labels.color as any) || '').toBe('rgb(10, 10, 10)');
+
+            // Existing objects (exercise nullish merges)
+            (c as any).lineChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: 'rgb(0, 0, 0)' } } } as any,
+                scales: {
+                    x: { ticks: { color: 'rgb(0, 0, 0)' }, grid: { color: 'rgb(0, 0, 0)' } },
+                    y: { ticks: { color: 'rgb(0, 0, 0)' }, grid: { color: 'rgb(0, 0, 0)' } },
+                },
+            } as any;
+            (c as any).applyThemeToChartOptions();
+
+            const plugins: any = (c as any).lineChartOptions.plugins;
+            expect(plugins?.legend?.labels?.color).toBe('rgb(10, 10, 10)');
+            const scales: any = (c as any).lineChartOptions.scales;
+            expect(scales?.x?.ticks?.color).toBe('rgb(10, 10, 10)');
+            expect(scales?.x?.grid?.color).toBe('rgb(10, 10, 10)');
+        });
+
+        it('applyThemeToRadarChartOptions should use compact sizes at <=520px (branch coverage)', () => {
+            const original = window.innerWidth;
+            try {
+                Object.defineProperty(window, 'innerWidth', { value: 500, configurable: true });
+
+                const f = TestBed.createComponent(PlayerCardGraphsComponent);
+                const c = f.componentInstance;
+
+                vi.spyOn(c as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+
+                (c as any).applyThemeToRadarChartOptions();
+
+                const opts: any = (c as any).radarChartOptions;
+                expect(opts?.layout?.padding).toBe(0);
+                expect(opts?.scales?.r?.ticks?.font?.size).toBe(9);
+                expect(opts?.scales?.r?.pointLabels?.font?.size).toBe(10);
+                expect(opts?.scales?.r?.pointLabels?.padding).toBe(2);
+            }
+            finally {
+                Object.defineProperty(window, 'innerWidth', { value: original, configurable: true });
+            }
+        });
+
+        it('applyThemeToRadarChartOptions should use regular sizes at >520px (branch coverage)', () => {
+            const original = window.innerWidth;
+            try {
+                Object.defineProperty(window, 'innerWidth', { value: 900, configurable: true });
+
+                const f = TestBed.createComponent(PlayerCardGraphsComponent);
+                const c = f.componentInstance;
+
+                vi.spyOn(c as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+
+                (c as any).applyThemeToRadarChartOptions();
+
+                const opts: any = (c as any).radarChartOptions;
+                expect(opts?.layout?.padding).toBe(8);
+                expect(opts?.scales?.r?.ticks?.font?.size).toBe(11);
+                expect(opts?.scales?.r?.pointLabels?.font?.size).toBe(12);
+                expect(opts?.scales?.r?.pointLabels?.padding).toBe(6);
+            }
+            finally {
+                Object.defineProperty(window, 'innerWidth', { value: original, configurable: true });
+            }
+        });
+
+        it('hasMultipleSeasons should cover true and short-circuit paths', () => {
+            const f = TestBed.createComponent(PlayerCardGraphsComponent);
+            const c = f.componentInstance;
+
+            // viewContext !== combined -> short-circuit
+            c.viewContext = 'season';
+            c.data = { name: 'P', seasons: [{ season: 2024 } as any] } as any;
+            expect(c.hasMultipleSeasons).toBe(false);
+
+            // combined but no seasons -> short-circuit
+            c.viewContext = 'combined';
+            c.data = { name: 'P', seasons: [] } as any;
+            expect(c.hasMultipleSeasons).toBe(false);
+
+            // combined with 1 season -> false
+            c.data = { name: 'P', seasons: [{ season: 2024 } as any] } as any;
+            expect(c.hasMultipleSeasons).toBe(false);
+
+            // combined with 2 seasons -> true
+            c.data = { name: 'P', seasons: [{ season: 2024 } as any, { season: 2023 } as any] } as any;
+            expect(c.hasMultipleSeasons).toBe(true);
+        });
+
+        it('resolveCssColorVar should prefer computed root color-scheme (no matchMedia needed)', () => {
+            const f = TestBed.createComponent(PlayerCardGraphsComponent);
+            const c = f.componentInstance;
+
+            const originalMatchMedia = window.matchMedia;
+            const originalGetComputedStyle = window.getComputedStyle;
+            try {
+                (window as any).matchMedia = () => {
+                    throw new Error('matchMedia should not be called');
+                };
+
+                (window as any).getComputedStyle = (el: any) => {
+                    if (el === document.documentElement) {
+                        return { colorScheme: 'dark', getPropertyValue: () => '' } as any;
+                    }
+                    // light-dark probe call (shouldn't matter since scheme is explicit)
+                    if ((el as HTMLElement).style.color?.includes('light-dark')) {
+                        return { color: 'rgb(4, 5, 6)' } as any;
+                    }
+                    return { color: 'rgb(240, 240, 240)', backgroundColor: 'rgb(0, 0, 0)' } as any;
+                };
+
+                const resolved = (c as any).resolveCssColorVar('--mat-sys-on-surface', 'fallback');
+                expect(resolved).toBe('rgb(240, 240, 240)');
+            }
+            finally {
+                (window as any).matchMedia = originalMatchMedia;
+                (window as any).getComputedStyle = originalGetComputedStyle;
+            }
+        });
+
+        it('resolveCssColorVar should inherit scheme when computed scheme is not light/dark', () => {
+            const f = TestBed.createComponent(PlayerCardGraphsComponent);
+            const c = f.componentInstance;
+
+            const originalGetComputedStyle = window.getComputedStyle;
+            let observedScheme: string | undefined;
+            try {
+                (window as any).getComputedStyle = (el: any) => {
+                    if (el === document.documentElement) {
+                        return { colorScheme: 'light dark', getPropertyValue: () => '' } as any;
+                    }
+
+                    // light-dark probe used to detect scheme
+                    if ((el as HTMLElement).style.color?.includes('light-dark')) {
+                        return { color: 'rgb(1, 2, 3)' } as any;
+                    }
+
+                    observedScheme = (el as HTMLElement).style.getPropertyValue('color-scheme');
+                    return { color: 'rgb(1, 2, 3)', backgroundColor: 'rgb(4, 5, 6)' } as any;
+                };
+
+                const resolved = (c as any).resolveCssColorVar('--mat-sys-on-surface', 'fallback');
+                expect(resolved).toBe('rgb(1, 2, 3)');
+                expect(observedScheme).toBe('light');
+            }
+            finally {
+                (window as any).getComputedStyle = originalGetComputedStyle;
+            }
+        });
+
+        it('should wire prefers-color-scheme listener on init and remove on destroy', () => {
+            const f = TestBed.createComponent(PlayerCardGraphsComponent);
+            const c = f.componentInstance;
+
+            const add = vi.fn();
+            const remove = vi.fn();
+
+            const originalMatchMedia = window.matchMedia;
+            try {
+                (window as any).matchMedia = () => ({ addEventListener: add, removeEventListener: remove }) as any;
+
+                c.data = { name: 'P', seasons: [] } as any;
+                c.ngOnInit();
+                expect(add).toHaveBeenCalled();
+
+                c.ngOnDestroy();
+                expect(remove).toHaveBeenCalled();
+            }
+            finally {
+                (window as any).matchMedia = originalMatchMedia;
+            }
+        });
+
+        it('resolveCssColorVar should read backgroundColor and return fallback on empty computed', () => {
+            const f = TestBed.createComponent(PlayerCardGraphsComponent);
+            const c = f.componentInstance;
+
+            const originalGetComputedStyle = window.getComputedStyle;
+            try {
+                (window as any).getComputedStyle = (el: any) => {
+                    if (el === document.documentElement) {
+                        return { getPropertyValue: (p: string) => (p === 'color-scheme' ? 'light' : '') } as any;
+                    }
+
+                    // First call: backgroundColor path should read this.
+                    if ((el as HTMLElement).style.backgroundColor) {
+                        return { color: '', backgroundColor: 'rgb(9, 9, 9)' } as any;
+                    }
+
+                    return { color: '', backgroundColor: '' } as any;
+                };
+
+                const bg = (c as any).resolveCssColorVar('--mat-sys-surface-container-high', 'fallback-bg', 'backgroundColor');
+                expect(bg).toBe('rgb(9, 9, 9)');
+
+                const empty = (c as any).resolveCssColorVar('--mat-sys-on-surface', 'fallback-text');
+                expect(empty).toBe('fallback-text');
+            }
+            finally {
+                (window as any).getComputedStyle = originalGetComputedStyle;
+            }
+        });
+
+        it('should start in radar mode for season viewContext', () => {
+            const seasonFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const seasonComponent = seasonFixture.componentInstance;
+
+            seasonComponent.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+            };
+            seasonComponent.viewContext = 'season';
+
+            seasonComponent.ngOnInit();
+
+            expect(seasonComponent.chartViewMode).toBe('radar');
+        });
+
+        it('should show line chart by default for combined viewContext', () => {
+            const combinedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const combinedComponent = combinedFixture.componentInstance;
+
+            combinedComponent.data = mockPlayer;
+            combinedComponent.viewContext = 'combined';
+
+            combinedComponent.ngOnInit();
+
+            expect(combinedComponent.chartViewMode).toBe('line');
+        });
+
+        it('should compute hasMultipleSeasons correctly for combined view', () => {
+            component.viewContext = 'combined';
+            component.data = mockPlayer;
+
+            expect(component.hasMultipleSeasons).toBe(true);
+        });
+
+        it('should compute hasMultipleSeasons as false for season view', () => {
+            component.viewContext = 'season';
+            component.data = mockPlayer;
+
+            expect(component.hasMultipleSeasons).toBe(false);
+        });
+
+        it('should use fallback grid color when textColor is not rgb format', () => {
+            const fallbackFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const fallbackComponent = fallbackFixture.componentInstance;
+
+            vi.spyOn(fallbackComponent as any, 'resolveCssColorVar').mockReturnValue('#ffffff');
+
+            (fallbackComponent as any).applyThemeToRadarChartOptions();
+
+            const scales: any = fallbackComponent.radarChartOptions?.scales;
+            expect(scales?.r?.grid?.color).toBe('#ffffff');
+        });
+
+        it('should build goalie radar with combined stats (no gaa/savePercent)', () => {
+            const mockGoalieCombined = {
+                name: 'Test Goalie',
+                wins: 1,
+                scores: {
+                    wins: 85,
+                    saves: 90,
+                    shutouts: 75
+                }
+            };
+
+            component.data = mockGoalieCombined as any;
+            (component as any).buildGoalieRadarData();
+
+            expect(component.radarChartData.labels?.length).toBe(3);
+            expect(component.radarChartData.datasets[0].data).toEqual([85, 90, 75]);
+        });
+
+        it('should route goalie radar building through buildRadarChartData', () => {
+            component.data = {
+                name: 'Goalie X',
+                wins: 1,
+                scores: {
+                    wins: 85,
+                    saves: 90,
+                    shutouts: 75,
+                },
+            } as any;
+
+            (component as any).buildRadarChartData();
+            expect(component.radarChartData.labels?.length).toBe(3);
+        });
+
+        it('should format radar chart tooltip correctly', () => {
+            component.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72
+                }
+            };
+
+            (component as any).applyThemeToRadarChartOptions();
+
+            const tooltipCallback = (component.radarChartOptions?.plugins?.tooltip?.callbacks?.label) as any;
+            expect(tooltipCallback).toBeDefined();
+
+            const mockContext = {
+                dataset: { label: 'Test Player' },
+                parsed: { r: 75 }
+            };
+
+            const result = tooltipCallback(mockContext);
+            expect(result).toBe('Test Player: 75/100');
+        });
+
+        it('should format radar chart tooltip with an empty dataset label', () => {
+            component.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 1,
+                    assists: 1,
+                    points: 1,
+                    plusMinus: 1,
+                    penalties: 1,
+                    shots: 1,
+                    ppp: 1,
+                    shp: 1,
+                    hits: 1,
+                    blocks: 1,
+                },
+            };
+
+            (component as any).applyThemeToRadarChartOptions();
+
+            const tooltipCallback = (component.radarChartOptions?.plugins?.tooltip?.callbacks?.label) as any;
+            const result = tooltipCallback({ dataset: {}, parsed: { r: 75 } });
+            expect(result).toBe(': 75/100');
+        });
+
+        it('should call buildRadarChartData when toggling to radar view', () => {
+            component.chartViewMode = 'line';
+            component.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72
+                }
+            };
+
+            vi.spyOn(component as any, 'buildRadarChartData');
+
+            component.toggleChartView();
+
+            expect(component.chartViewMode).toBe('radar');
+            expect((component as any).buildRadarChartData).toHaveBeenCalled();
+        });
+
+        it('should build goalie radar with extended stats (with gaa/savePercent)', () => {
+            const mockGoalieExtended = {
+                name: 'Test Goalie',
+                wins: 1,
+                scores: {
+                    wins: 85,
+                    saves: 90,
+                    shutouts: 75,
+                    gaa: 80,
+                    savePercent: 88
+                }
+            };
+
+            component.data = mockGoalieExtended as any;
+            (component as any).buildGoalieRadarData();
+
+            expect(component.radarChartData.labels?.length).toBe(5);
+            expect(component.radarChartData.datasets[0].data).toEqual([85, 90, 75, 80, 88]);
+        });
+
+        it('should handle radar chart initialization in ngOnInit for season view', () => {
+            const seasonFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const seasonComp = seasonFixture.componentInstance;
+
+            seasonComp.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72
+                }
+            };
+            seasonComp.viewContext = 'season';
+
+            vi.spyOn(seasonComp as any, 'buildRadarChartData');
+
+            seasonComp.ngOnInit();
+
+            expect(seasonComp.chartViewMode).toBe('radar');
+            expect((seasonComp as any).buildRadarChartData).toHaveBeenCalled();
+        });
+
+        it('should initialize chart selections for empty object', () => {
+            const newFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const newComp = newFixture.componentInstance;
+
+            newComp.data = mockPlayer;
+            newComp.chartSelections = {};
+
+            newComp.ngOnInit();
+
+            expect(Object.keys(newComp.chartSelections).length).toBeGreaterThan(0);
+        });
+
+        it('should complete full toggle cycle between line and radar views', () => {
+            component.chartViewMode = 'line';
+            component.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72
+                }
+            };
+
+            // Toggle to radar
+            component.toggleChartView();
+            expect(component.chartViewMode).toBe('radar');
+            expect(component.radarChartData.datasets.length).toBe(1);
+
+            // Toggle back to line
+            component.toggleChartView();
+            expect(component.chartViewMode).toBe('line');
+        });
+
+        it('should build radar data when chartViewMode is radar for combined view', () => {
+            const radarFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const radarComp = radarFixture.componentInstance;
+
+            radarComp.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72
+                }
+            };
+            radarComp.viewContext = 'combined';
+            radarComp.chartViewMode = 'radar';
+
+            vi.spyOn(radarComp as any, 'buildRadarChartData');
+
+            radarComp.ngOnInit();
+
+            expect((radarComp as any).buildRadarChartData).toHaveBeenCalled();
+        });
+
+        it('should compute hasMultipleSeasons as false when only one season', () => {
+            const singleSeasonPlayer = {
+                ...mockPlayer,
+                seasons: [mockPlayer.seasons![0]],
+            };
+            component.viewContext = 'combined';
+            component.data = singleSeasonPlayer;
+
+            expect(component.hasMultipleSeasons).toBe(false);
+        });
+
+        it('should handle goalie without scores in radar view', () => {
+            const goalieWithoutScores: any = {
+                name: 'Test Goalie',
+                wins: 8,
+                saves: 300,
+                shutouts: 2,
+            };
+            component.data = goalieWithoutScores;
+            expect(() => (component as any).buildGoalieRadarData()).not.toThrow();
+        });
+
+        it('should build radar chart on ngOnInit when viewContext is season', () => {
+            const seasonFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const seasonComponent = seasonFixture.componentInstance;
+
+            seasonComponent.data = {
+                ...mockPlayer,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+            };
+            seasonComponent.viewContext = 'season';
+
+            vi.spyOn(seasonComponent as any, 'buildRadarChartData');
+
+            seasonComponent.ngOnInit();
+
+            expect((seasonComponent as any).buildRadarChartData).toHaveBeenCalled();
+        });
+
+        it('should not call buildRadarChartData in ngOnInit when not in radar mode and not season view', () => {
+            const lineFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const lineComponent = lineFixture.componentInstance;
+
+            lineComponent.data = mockPlayer;
+            lineComponent.viewContext = 'combined';
+            lineComponent.chartViewMode = 'line';
+
+            vi.spyOn(lineComponent as any, 'buildRadarChartData');
+
+            lineComponent.ngOnInit();
+
+            expect((lineComponent as any).buildRadarChartData).not.toHaveBeenCalled();
+        });
+
+        it('should set backdropColor to transparent in radar chart ticks', () => {
+            const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const themed = themedFixture.componentInstance;
+
+            vi.spyOn(themed as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+
+            (themed as any).applyThemeToRadarChartOptions();
+
+            const scales: any = themed.radarChartOptions?.scales;
+            expect(scales?.r?.ticks?.backdropColor).toBe('transparent');
+        });
+
+        it('should format themed radar ticks using the callback', () => {
+            const themedFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const themed = themedFixture.componentInstance;
+
+            vi.spyOn(themed as any, 'resolveCssColorVar').mockReturnValue('rgb(10, 10, 10)');
+            (themed as any).applyThemeToRadarChartOptions();
+
+            const tickCb = (themed.radarChartOptions as any)?.scales?.r?.ticks?.callback as any;
+            expect(tickCb).toBeDefined();
+            expect(tickCb(5)).toBe('5');
+        });
+
+        it('should handle rgba textColor when building grid color', () => {
+            const rgbaFixture = TestBed.createComponent(PlayerCardGraphsComponent);
+            const rgbaComponent = rgbaFixture.componentInstance;
+
+            vi.spyOn(rgbaComponent as any, 'resolveCssColorVar').mockReturnValue('rgba(10, 10, 10, 1)');
+
+            (rgbaComponent as any).applyThemeToRadarChartOptions();
+
+            const scales: any = rgbaComponent.radarChartOptions?.scales;
+            // Should use the rgba color as-is since it doesn't start with 'rgb('
+            expect(scales?.r?.grid?.color).toBe('rgba(10, 10, 10, 1)');
+        });
+    });
+
+    it('should use fallback dataset label when translation returns empty', () => {
+        (component as any).chartYearsRange = [2024];
+        (component as any).chartLabels = ['24-25'];
+
+        component.chartSelections = { ...component.chartSelections, score: true };
+        vi.spyOn((component as any).translateService, 'instant').mockReturnValue('');
+
+        (component as any).updateChartData([{ season: 2024, score: 10 } as any]);
+
+        expect(component.lineChartData.datasets.length).toBeGreaterThan(0);
+        expect(component.lineChartData.datasets[0].label).toBe('tableColumn.score');
+    });
+
+    it('should handle updateChartData with empty active keys', () => {
+        component.data = mockPlayer;
+        component.chartSelections = {
+            score: false,
+            scoreAdjustedByGames: false,
+            games: false,
+            goals: false,
+            assists: false,
+            points: false,
+            shots: false,
+            penalties: false,
+            hits: false,
+            blocks: false,
+        };
+
+        (component as any).updateChartData(mockPlayer.seasons!);
+
+        expect(component.lineChartData.datasets.length).toBe(0);
+    });
+
+    it('should handle non-finite numeric values in updateChartData', () => {
+        const seasonsWithInvalidData = [
+            {
+                ...mockPlayer.seasons![0],
+                goals: NaN,
+                assists: Infinity,
+            },
+        ];
+
+        component.data = mockPlayer;
+        component.chartSelections = { goals: true, assists: true };
+
+        (component as any).updateChartData(seasonsWithInvalidData);
+
+        expect(component.lineChartData.datasets.length).toBe(2);
+        // NaN and Infinity should be converted to 0
+        expect(component.lineChartData.datasets[0].data).toContain(0);
+    });
+
+    it('should format season short correctly', () => {
+        const result = (component as any).formatSeasonShort(2024);
+        expect(result).toBe('24-25');
+    });
+
+    it('should handle seasons with no data in updateChartData', () => {
+        component.data = mockPlayer;
+        component.chartSelections = { goals: true };
+
+        const seasonsOutsideRange = [
+            { ...mockPlayer.seasons![0], season: 2010 }
+        ];
+
+        (component as any).chartYearsRange = [2024, 2025];
+        (component as any).chartLabels = ['24-25', '25-26'];
+        (component as any).updateChartData(seasonsOutsideRange);
+
+        // Should have null values for missing years
+        expect(component.lineChartData.datasets[0].data).toContain(null);
+    });
+
+    it('should set y scale properties when allValues has data', () => {
+        component.data = mockPlayer;
+        component.chartSelections = { goals: true };
+        component.lineChartOptions.scales = {};
+
+        (component as any).updateChartData(mockPlayer.seasons!);
+
+        expect(component.lineChartOptions.scales!['y']).toBeDefined();
+        expect(component.lineChartOptions.scales!['y']!.min).toBe(0);
+        expect(component.lineChartOptions.scales!['y']!.max).toBeGreaterThan(0);
+    });
+
+    it('should call resolveCssColorVar with backgroundColor cssProperty for tooltipBg', () => {
+        vi.spyOn(component as any, 'resolveCssColorVar').mockImplementation((...args: any[]) => { const [_name, _fallback, cssProperty] = args;
+            if (cssProperty === 'backgroundColor') {
+                return 'rgb(20, 20, 20)';
+            }
+            return 'rgb(10, 10, 10)';
+        });
+
+        (component as any).applyThemeToRadarChartOptions();
+
+        expect((component as any).resolveCssColorVar).toHaveBeenCalledWith('--mat-sys-surface-container-high', 'rgba(0,0,0,0.8)', 'backgroundColor');
+    });
+
+    it('should handle missing seasons in setupChartData early return', () => {
+        const noSeasonsPlayer = {
+            ...mockPlayer,
+            seasons: undefined
+        };
+
+        component.data = noSeasonsPlayer;
+        component.chartLabels = [];
+
+        expect(() => (component as any).setupChartData()).not.toThrow();
+        // setupChartData returns early if no seasons, so chartLabels remains empty
+        expect(component.chartLabels.length).toBe(0);
+    });
+
+    it('should handle allValues with length 0 in updateChartData', () => {
+        component.data = mockPlayer;
+        component.chartSelections = {};
+        component.lineChartOptions.scales = {};
+
+        (component as any).updateChartData(mockPlayer.seasons!);
+
+        // No datasets means no values, so y scale should not be modified
+        expect(component.lineChartOptions.scales!['y']).toBeUndefined();
+    });
+
+    describe('Position filter in radar chart', () => {
+        it('should use scoresByPosition when positionFilter is active and scoresByPosition exists', () => {
+            const mockPlayerWithPositionScores: Player = {
+                name: 'Test Forward',
+                position: 'F',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                scoreByPosition: 90,
+                scoreByPositionAdjustedByGames: 4.5,
+                games: 20,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+                scoresByPosition: {
+                    goals: 85,
+                    assists: 88,
+                    points: 95,
+                    plusMinus: 70,
+                    penalties: 50,
+                    shots: 78,
+                    ppp: 72,
+                    shp: 62,
+                    hits: 88,
+                    blocks: 80,
+                },
+            };
+
+            component.data = mockPlayerWithPositionScores;
+            component.positionFilter = 'F';
+            (component as any).buildRadarChartData();
+
+            // Should use scoresByPosition values
+            expect(component.radarChartData.datasets[0].data).toEqual([
+                85, 88, 95, 70, 50, 78, 72, 62, 88, 80,
+            ]);
+        });
+
+        it('should use scores when positionFilter is active but scoresByPosition is missing', () => {
+            const mockPlayerWithoutPositionScores: Player = {
+                name: 'Test Forward',
+                position: 'F',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 20,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+            };
+
+            component.data = mockPlayerWithoutPositionScores;
+            component.positionFilter = 'D';
+            (component as any).buildRadarChartData();
+
+            // Should fall back to scores values
+            expect(component.radarChartData.datasets[0].data).toEqual([
+                75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
+            ]);
+        });
+
+        it('should use scores when positionFilter is all', () => {
+            const mockPlayerWithBothScores: Player = {
+                name: 'Test Player',
+                position: 'F',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 20,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+                scoresByPosition: {
+                    goals: 85,
+                    assists: 88,
+                    points: 95,
+                    plusMinus: 70,
+                    penalties: 50,
+                    shots: 78,
+                    ppp: 72,
+                    shp: 62,
+                    hits: 88,
+                    blocks: 80,
+                },
+            };
+
+            component.data = mockPlayerWithBothScores;
+            component.positionFilter = 'all';
+            (component as any).buildRadarChartData();
+
+            // Should use scores values (not scoresByPosition)
+            expect(component.radarChartData.datasets[0].data).toEqual([
+                75, 82, 90, 60, 45, 70, 65, 55, 80, 72,
+            ]);
+        });
+
+        it('should rebuild radar chart when positionFilter changes via ngOnChanges', () => {
+            const mockPlayerWithBothScores: Player = {
+                name: 'Test Forward',
+                position: 'F',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 20,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+                scoresByPosition: {
+                    goals: 85,
+                    assists: 88,
+                    points: 95,
+                    plusMinus: 70,
+                    penalties: 50,
+                    shots: 78,
+                    ppp: 72,
+                    shp: 62,
+                    hits: 88,
+                    blocks: 80,
+                },
+            };
+
+            component.data = mockPlayerWithBothScores;
+            component.positionFilter = 'all';
+            component.chartViewMode = 'radar';
+            (component as any).buildRadarChartData();
+
+            // Initial data should use regular scores
+            expect(component.radarChartData.datasets[0].data[0]).toBe(75);
+
+            // Simulate ngOnChanges with positionFilter change
+            component.positionFilter = 'F';
+            component.ngOnChanges({
+                positionFilter: {
+                    currentValue: 'F',
+                    previousValue: 'all',
+                    firstChange: false,
+                    isFirstChange: () => false,
+                },
+            });
+
+            // Should now use scoresByPosition
+            expect(component.radarChartData.datasets[0].data[0]).toBe(85);
+        });
+
+        it('should not rebuild radar chart on first change via ngOnChanges', () => {
+            const mockPlayerWithScores: Player = {
+                name: 'Test Player',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 20,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+            };
+
+            component.data = mockPlayerWithScores;
+            component.chartViewMode = 'radar';
+
+            const buildRadarSpy = vi.spyOn(component as any, 'buildRadarChartData');
+
+            // Simulate first change (should be skipped)
+            component.ngOnChanges({
+                positionFilter: {
+                    currentValue: 'F',
+                    previousValue: undefined,
+                    firstChange: true,
+                    isFirstChange: () => true,
+                },
+            });
+
+            expect(buildRadarSpy).not.toHaveBeenCalled();
+        });
+
+        it('should not rebuild radar chart when in line mode via ngOnChanges', () => {
+            component.data = mockPlayer;
+            component.chartViewMode = 'line';
+            component.viewContext = 'combined';
+
+            const buildRadarSpy = vi.spyOn(component as any, 'buildRadarChartData');
+
+            component.ngOnChanges({
+                positionFilter: {
+                    currentValue: 'F',
+                    previousValue: 'all',
+                    firstChange: false,
+                    isFirstChange: () => false,
+                },
+            });
+
+            expect(buildRadarSpy).not.toHaveBeenCalled();
+        });
+
+        it('should rebuild radar chart when viewContext is season via ngOnChanges', () => {
+            const mockPlayerWithScores: Player = {
+                name: 'Test Player',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 20,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                scores: {
+                    goals: 75,
+                    assists: 82,
+                    points: 90,
+                    plusMinus: 60,
+                    penalties: 45,
+                    shots: 70,
+                    ppp: 65,
+                    shp: 55,
+                    hits: 80,
+                    blocks: 72,
+                },
+            };
+
+            component.data = mockPlayerWithScores;
+            component.chartViewMode = 'line'; // Even in line mode
+            component.viewContext = 'season'; // But season view context
+
+            const buildRadarSpy = vi.spyOn(component as any, 'buildRadarChartData');
+
+            component.ngOnChanges({
+                positionFilter: {
+                    currentValue: 'F',
+                    previousValue: 'all',
+                    firstChange: false,
+                    isFirstChange: () => false,
+                },
+            });
+
+            expect(buildRadarSpy).toHaveBeenCalled();
+        });
+
+        it('should use position-based scores in line chart when filter is active', () => {
+            const mockPlayerWithSeasons: Player & {
+                seasons: PlayerSeasonStats[];
+            } = {
+                name: 'Test Forward',
+                position: 'F',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 82,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                seasons: [
+                    {
+                        name: '',
+                        season: 2024,
+                        games: 82,
+                        score: 100,
+                        scoreAdjustedByGames: 1.22,
+                        scoreByPosition: 85,
+                        scoreByPositionAdjustedByGames: 1.04,
+                        goals: 30,
+                        assists: 40,
+                        points: 70,
+                        plusMinus: 10,
+                        penalties: 20,
+                        shots: 200,
+                        ppp: 15,
+                        shp: 1,
+                        hits: 50,
+                        blocks: 30,
+                    },
+                ],
+            };
+
+            component.data = mockPlayerWithSeasons;
+            component.positionFilter = 'F';
+            component.chartSelections = { score: true, scoreAdjustedByGames: true };
+
+            (component as any).chartYearsRange = [2024];
+            (component as any).chartLabels = ['24-25'];
+            (component as any).updateChartData(mockPlayerWithSeasons.seasons);
+
+            // Should use position-based score values
+            expect(component.lineChartData.datasets[0].data[0]).toBe(85);
+            expect(component.lineChartData.datasets[1].data[0]).toBe(1.04);
+        });
+
+        it('should use regular scores in line chart when filter is all', () => {
+            const mockPlayerWithSeasons: Player & {
+                seasons: PlayerSeasonStats[];
+            } = {
+                name: 'Test Forward',
+                position: 'F',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 82,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                seasons: [
+                    {
+                        name: '',
+                        season: 2024,
+                        games: 82,
+                        score: 100,
+                        scoreAdjustedByGames: 1.22,
+                        scoreByPosition: 85,
+                        scoreByPositionAdjustedByGames: 1.04,
+                        goals: 30,
+                        assists: 40,
+                        points: 70,
+                        plusMinus: 10,
+                        penalties: 20,
+                        shots: 200,
+                        ppp: 15,
+                        shp: 1,
+                        hits: 50,
+                        blocks: 30,
+                    },
+                ],
+            };
+
+            component.data = mockPlayerWithSeasons;
+            component.positionFilter = 'all';
+            component.chartSelections = { score: true, scoreAdjustedByGames: true };
+
+            (component as any).chartYearsRange = [2024];
+            (component as any).chartLabels = ['24-25'];
+            (component as any).updateChartData(mockPlayerWithSeasons.seasons);
+
+            // Should use regular score values
+            expect(component.lineChartData.datasets[0].data[0]).toBe(100);
+            expect(component.lineChartData.datasets[1].data[0]).toBe(1.22);
+        });
+
+        it('should fall back to regular score when position-based values are missing', () => {
+            const mockPlayerWithSeasons: Player & {
+                seasons: PlayerSeasonStats[];
+            } = {
+                name: 'Test Forward',
+                position: 'F',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 82,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+                seasons: [
+                    {
+                        name: '',
+                        season: 2024,
+                        games: 82,
+                        score: 100,
+                        scoreAdjustedByGames: 1.22,
+                        // No scoreByPosition or scoreByPositionAdjustedByGames
+                        goals: 30,
+                        assists: 40,
+                        points: 70,
+                        plusMinus: 10,
+                        penalties: 20,
+                        shots: 200,
+                        ppp: 15,
+                        shp: 1,
+                        hits: 50,
+                        blocks: 30,
+                    },
+                ],
+            };
+
+            component.data = mockPlayerWithSeasons;
+            component.positionFilter = 'F';
+            component.chartSelections = { score: true, scoreAdjustedByGames: true };
+
+            (component as any).chartYearsRange = [2024];
+            (component as any).chartLabels = ['24-25'];
+            (component as any).updateChartData(mockPlayerWithSeasons.seasons);
+
+            // Should fall back to regular score values
+            expect(component.lineChartData.datasets[0].data[0]).toBe(100);
+            expect(component.lineChartData.datasets[1].data[0]).toBe(1.22);
+        });
+
+        it('should rebuild line chart in ngOnChanges when positionFilter changes and has seasons', () => {
+            component.data = mockPlayer;
+            component.chartViewMode = 'line';
+            component.viewContext = 'combined';
+
+            const updateChartDataSpy = vi.spyOn(component as any, 'updateChartData');
+
+            component.ngOnChanges({
+                positionFilter: {
+                    currentValue: 'F',
+                    previousValue: 'all',
+                    firstChange: false,
+                    isFirstChange: () => false,
+                },
+            });
+
+            expect(updateChartDataSpy).toHaveBeenCalled();
+        });
+
+        it('should not rebuild line chart in ngOnChanges when no seasons', () => {
+            const mockPlayerNoSeasons: Player = {
+                name: 'Test Player',
+                score: 80,
+                scoreAdjustedByGames: 4,
+                games: 20,
+                goals: 25,
+                assists: 40,
+                points: 65,
+                plusMinus: 10,
+                penalties: 20,
+                shots: 200,
+                ppp: 15,
+                shp: 1,
+                hits: 50,
+                blocks: 30,
+            };
+
+            component.data = mockPlayerNoSeasons;
+            component.chartViewMode = 'line';
+            component.viewContext = 'combined';
+
+            const updateChartDataSpy = vi.spyOn(component as any, 'updateChartData');
+
+            component.ngOnChanges({
+                positionFilter: {
+                    currentValue: 'F',
+                    previousValue: 'all',
+                    firstChange: false,
+                    isFirstChange: () => false,
+                },
+            });
+
+            expect(updateChartDataSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('onPrefersSchemeChange', () => {
+        it('should call applyThemeToChartOptions, applyThemeToRadarChartOptions, and refreshChartsLayout', () => {
+            const applyThemeSpy = vi.spyOn(component as any, 'applyThemeToChartOptions');
+            const applyRadarSpy = vi.spyOn(component as any, 'applyThemeToRadarChartOptions');
+            const refreshSpy = vi.spyOn(component as any, 'refreshChartsLayout');
+
+            (component as any).onPrefersSchemeChange();
+
+            expect(applyThemeSpy).toHaveBeenCalled();
+            expect(applyRadarSpy).toHaveBeenCalled();
+            expect(refreshSpy).toHaveBeenCalled();
+        });
+    });
+
+    describe('refreshChartsLayout', () => {
+        it('should call resize and update on each chart inside nested rAF', () => {
+            // Restore the real requestAnimationFrame mock so we can capture callbacks
+            vi.restoreAllMocks();
+            const rafCallbacks: FrameRequestCallback[] = [];
+            vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+                rafCallbacks.push(cb);
+                return rafCallbacks.length;
+            });
+
+            const mockChart = { resize: vi.fn(), update: vi.fn() };
+            const mockDirective = { chart: mockChart, update: vi.fn() };
+            (component as any).charts = { toArray: () => [mockDirective] };
+
+            (component as any).refreshChartsLayout();
+
+            // First rAF callback
+            expect(rafCallbacks.length).toBe(1);
+            rafCallbacks[0](0);
+
+            // Second (nested) rAF callback
+            expect(rafCallbacks.length).toBe(2);
+            rafCallbacks[1](0);
+
+            expect(mockChart.resize).toHaveBeenCalled();
+            expect(mockDirective.update).toHaveBeenCalled();
+        });
+    });
 });

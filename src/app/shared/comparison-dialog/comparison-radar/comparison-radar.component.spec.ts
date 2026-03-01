@@ -246,4 +246,36 @@ describe('ComparisonRadarComponent', () => {
       expect(result).toBe(': 50/100');
     });
   });
+
+  describe('ticks callback', () => {
+    it('should format tick value as string', () => {
+      createComponent(mockPlayerA, mockPlayerB);
+      const scales = component.radarChartOptions?.scales as Record<string, any>;
+      const tickCallback = scales['r'].ticks.callback;
+      expect(tickCallback(40)).toBe('40');
+      expect(tickCallback(0)).toBe('0');
+    });
+  });
+
+  describe('resolveCssColorVar error handling', () => {
+    it('should return fallback when getComputedStyle throws', () => {
+      // Force resolveCssColorVar to throw by temporarily breaking document.body
+      createComponent(mockPlayerA, mockPlayerB);
+      const originalBody = Object.getOwnPropertyDescriptor(document, 'body');
+      Object.defineProperty(document, 'body', {
+        get() { throw new Error('test error'); },
+        configurable: true,
+      });
+
+      const result = (component as any).resolveCssColorVar('--fake-var', 'fallback-color');
+      expect(result).toBe('fallback-color');
+
+      // Restore
+      if (originalBody) {
+        Object.defineProperty(document, 'body', originalBody);
+      } else {
+        delete (document as any).body;
+      }
+    });
+  });
 });

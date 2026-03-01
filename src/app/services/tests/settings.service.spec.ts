@@ -2,235 +2,232 @@ import { TestBed } from '@angular/core/testing';
 import { SettingsService } from '../settings.service';
 
 describe('SettingsService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    localStorage.clear();
-  });
-
-  it('should default and persist settings when no key exists', () => {
-    const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
-    const service = TestBed.inject(SettingsService);
-
-    expect(service.selectedTeamId).toBe('1');
-    expect(service.startFromSeason).toBeUndefined();
-    expect(service.topControlsExpanded).toBe(true);
-    expect(service.season).toBeUndefined();
-    expect(service.reportType).toBe('regular');
-
-    expect(setItemSpy).toHaveBeenCalled();
-    const persisted = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
-    expect(persisted).toEqual({
-      selectedTeamId: '1',
-      startFromSeason: null,
-      topControlsExpanded: true,
-      season: null,
-      reportType: 'regular',
+    beforeEach(() => {
+        TestBed.configureTestingModule({});
+        localStorage.clear();
     });
-  });
 
-  it('should load all fields from stored settings', () => {
-    localStorage.setItem(
-      'fantrax.settings',
-      JSON.stringify({
-        selectedTeamId: '7',
-        startFromSeason: 2023,
-        topControlsExpanded: false,
-        season: 2024,
-        reportType: 'playoffs',
-      })
-    );
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
 
-    const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
-    const service = TestBed.inject(SettingsService);
+    it('should default and persist settings when no key exists', () => {
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+        const service = TestBed.inject(SettingsService);
 
-    expect(service.selectedTeamId).toBe('7');
-    expect(service.startFromSeason).toBe(2023);
-    expect(service.topControlsExpanded).toBe(false);
-    expect(service.season).toBe(2024);
-    expect(service.reportType).toBe('playoffs');
-    expect(setItemSpy).not.toHaveBeenCalled();
-  });
+        expect(service.selectedTeamId).toBe('1');
+        expect(service.startFromSeason).toBeUndefined();
+        expect(service.topControlsExpanded).toBe(true);
+        expect(service.season).toBeUndefined();
+        expect(service.reportType).toBe('regular');
 
-  it('should default new fields when loading old settings without them', () => {
-    localStorage.setItem(
-      'fantrax.settings',
-      JSON.stringify({
-        selectedTeamId: '3',
-        startFromSeason: null,
-        topControlsExpanded: true,
-      })
-    );
+        expect(setItemSpy).toHaveBeenCalled();
+        const persisted = JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}');
+        expect(persisted).toEqual({
+            selectedTeamId: '1',
+            startFromSeason: null,
+            topControlsExpanded: true,
+            season: null,
+            reportType: 'regular',
+        });
+    });
 
-    const service = TestBed.inject(SettingsService);
+    it('should load all fields from stored settings', () => {
+        localStorage.setItem('fantrax.settings', JSON.stringify({
+            selectedTeamId: '7',
+            startFromSeason: 2023,
+            topControlsExpanded: false,
+            season: 2024,
+            reportType: 'playoffs',
+        }));
 
-    expect(service.season).toBeUndefined();
-    expect(service.reportType).toBe('regular');
-  });
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+        const service = TestBed.inject(SettingsService);
 
-  it('should validate fields when unified key is present but partially invalid', () => {
-    localStorage.setItem(
-      'fantrax.settings',
-      JSON.stringify({
-        selectedTeamId: '   ',
-        startFromSeason: 'not-a-number',
-        season: 'bad',
-        reportType: 'unknown',
-      })
-    );
+        expect(service.selectedTeamId).toBe('7');
+        expect(service.startFromSeason).toBe(2023);
+        expect(service.topControlsExpanded).toBe(false);
+        expect(service.season).toBe(2024);
+        expect(service.reportType).toBe('playoffs');
+        expect(setItemSpy).not.toHaveBeenCalled();
+    });
 
-    const service = TestBed.inject(SettingsService);
+    it('should default new fields when loading old settings without them', () => {
+        localStorage.setItem('fantrax.settings', JSON.stringify({
+            selectedTeamId: '3',
+            startFromSeason: null,
+            topControlsExpanded: true,
+        }));
 
-    expect(service.selectedTeamId).toBe('1');
-    expect(service.startFromSeason).toBeUndefined();
-    expect(service.season).toBeUndefined();
-    expect(service.reportType).toBe('regular');
-  });
+        const service = TestBed.inject(SettingsService);
 
-  it('should use defaults when stored JSON is broken', () => {
-    localStorage.setItem('fantrax.settings', '{broken-json');
-    const service = TestBed.inject(SettingsService);
+        expect(service.season).toBeUndefined();
+        expect(service.reportType).toBe('regular');
+    });
 
-    expect(service.selectedTeamId).toBe('1');
-    expect(service.season).toBeUndefined();
-    expect(service.reportType).toBe('regular');
-  });
+    it('should validate fields when unified key is present but partially invalid', () => {
+        localStorage.setItem('fantrax.settings', JSON.stringify({
+            selectedTeamId: '   ',
+            startFromSeason: 'not-a-number',
+            season: 'bad',
+            reportType: 'unknown',
+        }));
 
-  it('should normalize startFromSeason and avoid persisting unchanged values', () => {
-    const service = TestBed.inject(SettingsService);
-    const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
-    setItemSpy.calls.reset();
+        const service = TestBed.inject(SettingsService);
 
-    service.setStartFromSeason(undefined);
-    expect(setItemSpy).not.toHaveBeenCalled();
+        expect(service.selectedTeamId).toBe('1');
+        expect(service.startFromSeason).toBeUndefined();
+        expect(service.season).toBeUndefined();
+        expect(service.reportType).toBe('regular');
+    });
 
-    service.setStartFromSeason(2022);
-    expect(service.startFromSeason).toBe(2022);
-    expect(setItemSpy).toHaveBeenCalled();
+    it('should use defaults when stored JSON is broken', () => {
+        localStorage.setItem('fantrax.settings', '{broken-json');
+        const service = TestBed.inject(SettingsService);
 
-    setItemSpy.calls.reset();
-    service.setStartFromSeason(2022);
-    expect(setItemSpy).not.toHaveBeenCalled();
+        expect(service.selectedTeamId).toBe('1');
+        expect(service.season).toBeUndefined();
+        expect(service.reportType).toBe('regular');
+    });
 
-    service.setStartFromSeason(undefined);
-    expect(service.startFromSeason).toBeUndefined();
-  });
+    it('should normalize startFromSeason and avoid persisting unchanged values', () => {
+        const service = TestBed.inject(SettingsService);
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+        setItemSpy.mockClear();
 
-  it('should persist setSeason and avoid persisting unchanged values', () => {
-    const service = TestBed.inject(SettingsService);
-    const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
-    setItemSpy.calls.reset();
+        service.setStartFromSeason(undefined);
+        expect(setItemSpy).not.toHaveBeenCalled();
 
-    service.setSeason(null);
-    expect(setItemSpy).not.toHaveBeenCalled();
+        service.setStartFromSeason(2022);
+        expect(service.startFromSeason).toBe(2022);
+        expect(setItemSpy).toHaveBeenCalled();
 
-    service.setSeason(2024);
-    expect(service.season).toBe(2024);
-    expect(setItemSpy).toHaveBeenCalled();
+        setItemSpy.mockClear();
+        service.setStartFromSeason(2022);
+        expect(setItemSpy).not.toHaveBeenCalled();
 
-    setItemSpy.calls.reset();
-    service.setSeason(2024);
-    expect(setItemSpy).not.toHaveBeenCalled();
+        service.setStartFromSeason(undefined);
+        expect(service.startFromSeason).toBeUndefined();
+    });
 
-    service.setSeason(null);
-    expect(service.season).toBeUndefined();
-  });
+    it('should persist setSeason and avoid persisting unchanged values', () => {
+        const service = TestBed.inject(SettingsService);
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+        setItemSpy.mockClear();
 
-  it('should persist setReportType and avoid persisting unchanged values', () => {
-    const service = TestBed.inject(SettingsService);
-    const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
-    setItemSpy.calls.reset();
+        service.setSeason(null);
+        expect(setItemSpy).not.toHaveBeenCalled();
 
-    service.setReportType('regular');
-    expect(setItemSpy).not.toHaveBeenCalled();
+        service.setSeason(2024);
+        expect(service.season).toBe(2024);
+        expect(setItemSpy).toHaveBeenCalled();
 
-    service.setReportType('playoffs');
-    expect(service.reportType).toBe('playoffs');
-    expect(setItemSpy).toHaveBeenCalled();
+        setItemSpy.mockClear();
+        service.setSeason(2024);
+        expect(setItemSpy).not.toHaveBeenCalled();
 
-    setItemSpy.calls.reset();
-    service.setReportType('playoffs');
-    expect(setItemSpy).not.toHaveBeenCalled();
-  });
+        service.setSeason(null);
+        expect(service.season).toBeUndefined();
+    });
 
-  it('should still update in-memory state if persist throws', () => {
-    const service = TestBed.inject(SettingsService);
-    spyOn(localStorage, 'setItem').and.throwError('quota exceeded');
+    it('should persist setReportType and avoid persisting unchanged values', () => {
+        const service = TestBed.inject(SettingsService);
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+        setItemSpy.mockClear();
 
-    service.setSelectedTeamId('12');
-    service.setTopControlsExpanded(false);
-    service.setStartFromSeason(2020);
-    service.setSeason(2024);
-    service.setReportType('playoffs');
+        service.setReportType('regular');
+        expect(setItemSpy).not.toHaveBeenCalled();
 
-    expect(service.selectedTeamId).toBe('12');
-    expect(service.topControlsExpanded).toBe(false);
-    expect(service.startFromSeason).toBe(2020);
-    expect(service.season).toBe(2024);
-    expect(service.reportType).toBe('playoffs');
-  });
+        service.setReportType('playoffs');
+        expect(service.reportType).toBe('playoffs');
+        expect(setItemSpy).toHaveBeenCalled();
 
-  it('should ignore no-op updates', () => {
-    const service = TestBed.inject(SettingsService);
-    const setItemSpy = spyOn(localStorage, 'setItem').and.callThrough();
-    setItemSpy.calls.reset();
+        setItemSpy.mockClear();
+        service.setReportType('playoffs');
+        expect(setItemSpy).not.toHaveBeenCalled();
+    });
 
-    service.setSelectedTeamId('');
-    service.setSelectedTeamId(service.selectedTeamId);
-    service.setTopControlsExpanded(service.topControlsExpanded);
-    service.setSeason(null);
-    service.setReportType('regular');
+    it('should still update in-memory state if persist throws', () => {
+        const service = TestBed.inject(SettingsService);
+        vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+            throw new Error('quota exceeded');
+        });
 
-    expect(setItemSpy).not.toHaveBeenCalled();
-  });
+        service.setSelectedTeamId('12');
+        service.setTopControlsExpanded(false);
+        service.setStartFromSeason(2020);
+        service.setSeason(2024);
+        service.setReportType('playoffs');
 
-  it('should emit derived observable values', () => {
-    const service = TestBed.inject(SettingsService);
+        expect(service.selectedTeamId).toBe('12');
+        expect(service.topControlsExpanded).toBe(false);
+        expect(service.startFromSeason).toBe(2020);
+        expect(service.season).toBe(2024);
+        expect(service.reportType).toBe('playoffs');
+    });
 
-    const seasons: Array<number | undefined> = [];
-    const reportTypes: string[] = [];
+    it('should ignore no-op updates', () => {
+        const service = TestBed.inject(SettingsService);
+        const setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+        setItemSpy.mockClear();
 
-    const seasonSub = service.season$.subscribe((v) => seasons.push(v));
-    const reportTypeSub = service.reportType$.subscribe((v) => reportTypes.push(v));
+        service.setSelectedTeamId('');
+        service.setSelectedTeamId(service.selectedTeamId);
+        service.setTopControlsExpanded(service.topControlsExpanded);
+        service.setSeason(null);
+        service.setReportType('regular');
 
-    expect(seasons[seasons.length - 1]).toBeUndefined();
-    expect(reportTypes[reportTypes.length - 1]).toBe('regular');
+        expect(setItemSpy).not.toHaveBeenCalled();
+    });
 
-    service.setSeason(2024);
-    service.setReportType('playoffs');
+    it('should emit derived observable values', () => {
+        const service = TestBed.inject(SettingsService);
 
-    expect(seasons[seasons.length - 1]).toBe(2024);
-    expect(reportTypes[reportTypes.length - 1]).toBe('playoffs');
+        const seasons: Array<number | undefined> = [];
+        const reportTypes: string[] = [];
 
-    // DistinctUntilChanged should prevent no-op emissions.
-    const seasonCount = seasons.length;
-    const reportTypeCount = reportTypes.length;
+        const seasonSub = service.season$.subscribe((v) => seasons.push(v));
+        const reportTypeSub = service.reportType$.subscribe((v) => reportTypes.push(v));
 
-    service.setSeason(2024);
-    service.setReportType('playoffs');
+        expect(seasons[seasons.length - 1]).toBeUndefined();
+        expect(reportTypes[reportTypes.length - 1]).toBe('regular');
 
-    expect(seasons.length).toBe(seasonCount);
-    expect(reportTypes.length).toBe(reportTypeCount);
+        service.setSeason(2024);
+        service.setReportType('playoffs');
 
-    seasonSub.unsubscribe();
-    reportTypeSub.unsubscribe();
-  });
+        expect(seasons[seasons.length - 1]).toBe(2024);
+        expect(reportTypes[reportTypes.length - 1]).toBe('playoffs');
 
-  it('should emit topControlsExpanded$ and suppress duplicate values', () => {
-    const service = TestBed.inject(SettingsService);
+        // DistinctUntilChanged should prevent no-op emissions.
+        const seasonCount = seasons.length;
+        const reportTypeCount = reportTypes.length;
 
-    const values: boolean[] = [];
-    const sub = service.topControlsExpanded$.subscribe((v) => values.push(v));
+        service.setSeason(2024);
+        service.setReportType('playoffs');
 
-    expect(values[values.length - 1]).toBe(true);
+        expect(seasons.length).toBe(seasonCount);
+        expect(reportTypes.length).toBe(reportTypeCount);
 
-    service.setTopControlsExpanded(false);
-    expect(values[values.length - 1]).toBe(false);
+        seasonSub.unsubscribe();
+        reportTypeSub.unsubscribe();
+    });
 
-    // DistinctUntilChanged should prevent no-op emissions.
-    const count = values.length;
-    service.setTopControlsExpanded(false);
-    expect(values.length).toBe(count);
+    it('should emit topControlsExpanded$ and suppress duplicate values', () => {
+        const service = TestBed.inject(SettingsService);
 
-    sub.unsubscribe();
-  });
+        const values: boolean[] = [];
+        const sub = service.topControlsExpanded$.subscribe((v) => values.push(v));
+
+        expect(values[values.length - 1]).toBe(true);
+
+        service.setTopControlsExpanded(false);
+        expect(values[values.length - 1]).toBe(false);
+
+        // DistinctUntilChanged should prevent no-op emissions.
+        const count = values.length;
+        service.setTopControlsExpanded(false);
+        expect(values.length).toBe(count);
+
+        sub.unsubscribe();
+    });
 });
