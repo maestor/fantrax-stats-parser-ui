@@ -102,6 +102,14 @@
               "**/*.html"
             ]
           }
+        },
+        "test-behavior": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "setupFiles": ["src/test-setup.ts"],
+            "include": ["**/*.behavior.spec.ts"]
+          }
         }
       }
     }
