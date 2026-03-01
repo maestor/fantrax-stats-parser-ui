@@ -203,6 +203,14 @@ describe('PlayerCardNavigationService', () => {
 
     });
 
+    it('wheelHandler arrow function delegates to onWheel', () => {
+        const { service } = makeService();
+        const onWheelSpy = vi.spyOn(service as any, 'onWheel');
+        const fakeEvent = { deltaX: 0, deltaY: 0, preventDefault: vi.fn() } as unknown as WheelEvent;
+        (service as any).wheelHandler(fakeEvent);
+        expect(onWheelSpy).toHaveBeenCalledWith(fakeEvent);
+    });
+
     it('startWheelCooldown resets wheelDeltaX and activates cooldown', () => {
         vi.useFakeTimers();
         const { service } = makeService();

@@ -1832,4 +1832,47 @@ describe('PlayerCardGraphsComponent', () => {
             expect(updateChartDataSpy).not.toHaveBeenCalled();
         });
     });
+
+    describe('onPrefersSchemeChange', () => {
+        it('should call applyThemeToChartOptions, applyThemeToRadarChartOptions, and refreshChartsLayout', () => {
+            const applyThemeSpy = vi.spyOn(component as any, 'applyThemeToChartOptions');
+            const applyRadarSpy = vi.spyOn(component as any, 'applyThemeToRadarChartOptions');
+            const refreshSpy = vi.spyOn(component as any, 'refreshChartsLayout');
+
+            (component as any).onPrefersSchemeChange();
+
+            expect(applyThemeSpy).toHaveBeenCalled();
+            expect(applyRadarSpy).toHaveBeenCalled();
+            expect(refreshSpy).toHaveBeenCalled();
+        });
+    });
+
+    describe('refreshChartsLayout', () => {
+        it('should call resize and update on each chart inside nested rAF', () => {
+            // Restore the real requestAnimationFrame mock so we can capture callbacks
+            vi.restoreAllMocks();
+            const rafCallbacks: FrameRequestCallback[] = [];
+            vi.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+                rafCallbacks.push(cb);
+                return rafCallbacks.length;
+            });
+
+            const mockChart = { resize: vi.fn(), update: vi.fn() };
+            const mockDirective = { chart: mockChart, update: vi.fn() };
+            (component as any).charts = { toArray: () => [mockDirective] };
+
+            (component as any).refreshChartsLayout();
+
+            // First rAF callback
+            expect(rafCallbacks.length).toBe(1);
+            rafCallbacks[0](0);
+
+            // Second (nested) rAF callback
+            expect(rafCallbacks.length).toBe(2);
+            rafCallbacks[1](0);
+
+            expect(mockChart.resize).toHaveBeenCalled();
+            expect(mockDirective.update).toHaveBeenCalled();
+        });
+    });
 });

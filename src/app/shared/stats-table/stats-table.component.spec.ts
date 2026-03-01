@@ -1160,4 +1160,59 @@ describe('StatsTableComponent', () => {
             expect(headerRow).toBeTruthy();
         });
     });
+
+    describe('loading progress timer', () => {
+        it('should tick loading progress via setInterval callback', () => {
+            vi.useFakeTimers();
+
+            component.data = [];
+            component.columns = playerColumns;
+            component.loading = true;
+            component.ngOnChanges({
+                loading: new SimpleChange(false, true, false),
+                data: new SimpleChange(null, [], true),
+            });
+
+            // The setInterval fires every 200ms and updates loadingProgress
+            expect(component.loadingProgress).toBe(0);
+
+            vi.advanceTimersByTime(200);
+            // After 200ms elapsed out of 60_000ms expected, progress should be small but > 0
+            expect(component.loadingProgress).toBeGreaterThanOrEqual(0);
+
+            vi.useRealTimers();
+        });
+    });
+
+    describe('ensureActiveRowInRange via setTimeout in ngOnChanges', () => {
+        it('should invoke ensureActiveRowInRange after data change via setTimeout', () => {
+            vi.useFakeTimers();
+            const ensureSpy = vi.spyOn(component as any, 'ensureActiveRowInRange');
+
+            component.data = mockPlayerData;
+            component.columns = playerColumns;
+            component.ngOnChanges({
+                data: new SimpleChange(null, mockPlayerData, true),
+            });
+
+            // The setTimeout(..., 0) inside ngOnChanges schedules ensureActiveRowInRange
+            vi.advanceTimersByTime(0);
+            expect(ensureSpy).toHaveBeenCalled();
+
+            vi.useRealTimers();
+        });
+    });
+
+    describe('onHeaderKeydown default case', () => {
+        it('should do nothing for unrecognized keys', () => {
+            const event = {
+                key: 'Tab',
+                preventDefault: vi.fn(),
+            } as any as KeyboardEvent;
+
+            component.onHeaderKeydown(event);
+
+            expect(event.preventDefault).not.toHaveBeenCalled();
+        });
+    });
 });

@@ -980,4 +980,16 @@ describe("AppComponent", () => {
             expect(dialog.open).not.toHaveBeenCalled();
         });
     });
+
+    describe("lastModifiedText$ error handling", () => {
+        it("should emit null when getLastModified throws an error", async () => {
+            apiServiceMock.getLastModified.mockReturnValue(throwError(() => new Error("API down")));
+
+            const fixture = TestBed.createComponent(AppComponent);
+            fixture.detectChanges();
+
+            const value = await firstValueFrom(fixture.componentInstance.lastModifiedText$);
+            expect(value).toBeNull();
+        });
+    });
 });

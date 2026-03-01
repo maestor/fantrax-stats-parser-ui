@@ -3551,5 +3551,83 @@ describe("PlayerCardComponent", () => {
                 vi.useRealTimers();
             });
         });
+
+        it('should call refreshSeasonData during navigation when hasSeasons is true', async () => {
+            const goalieA: Goalie = {
+                name: 'Goalie A', score: 50, scoreAdjustedByGames: 5,
+                games: 10, wins: 8, saves: 300, shutouts: 2,
+                goals: 0, assists: 1, points: 1, penalties: 0, ppp: 0, shp: 0,
+                gaa: '2.00', savePercent: '0.920',
+                seasons: [
+                    { name: '', season: 2024, games: 10, score: 50, scoreAdjustedByGames: 5, wins: 8, saves: 300, shutouts: 2, goals: 0, assists: 1, points: 1, penalties: 0, ppp: 0, shp: 0, gaa: '2.00', savePercent: '0.920' },
+                    { name: '', season: 2023, games: 15, score: 55, scoreAdjustedByGames: 5.5, wins: 10, saves: 450, shutouts: 3, goals: 0, assists: 2, points: 2, penalties: 0, ppp: 0, shp: 0, gaa: '2.10', savePercent: '0.915' },
+                ],
+            } as any;
+            const goalieB: Goalie = {
+                name: 'Goalie B', score: 60, scoreAdjustedByGames: 6,
+                games: 12, wins: 9, saves: 350, shutouts: 3,
+                goals: 0, assists: 0, points: 0, penalties: 0, ppp: 0, shp: 0,
+                gaa: '1.90', savePercent: '0.930',
+                seasons: [
+                    { name: '', season: 2024, games: 12, score: 60, scoreAdjustedByGames: 6, wins: 9, saves: 350, shutouts: 3, goals: 0, assists: 0, points: 0, penalties: 0, ppp: 0, shp: 0, gaa: '1.90', savePercent: '0.930' },
+                    { name: '', season: 2023, games: 14, score: 58, scoreAdjustedByGames: 5.8, wins: 11, saves: 400, shutouts: 4, goals: 0, assists: 1, points: 1, penalties: 0, ppp: 0, shp: 0, gaa: '2.05', savePercent: '0.918' },
+                ],
+            } as any;
+
+            const dialogData: PlayerCardDialogData = {
+                player: goalieA,
+                navigationContext: {
+                    allPlayers: [goalieA, goalieB],
+                    currentIndex: 0,
+                    onNavigate: vi.fn(),
+                },
+            };
+
+            dialogRefSpy = { close: vi.fn().mockName("MatDialogRef.close") } as any;
+
+            await TestBed.configureTestingModule({
+                imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+                providers: [
+                    { provide: MAT_DIALOG_DATA, useValue: dialogData },
+                    { provide: MatDialogRef, useValue: dialogRefSpy },
+                    { provide: ApiService, useValue: apiServiceSpy },
+                    { provide: TeamService, useValue: teamServiceSpy },
+                ],
+            }).compileComponents();
+
+            const f = TestBed.createComponent(PlayerCardComponent);
+            const c = f.componentInstance;
+            f.detectChanges();
+
+            const refreshSpy = vi.spyOn(c as any, 'refreshSeasonData');
+            const event = new KeyboardEvent('keydown', { key: 'ArrowRight' });
+            c.onKeydown(event);
+
+            expect(refreshSpy).toHaveBeenCalled();
+            expect(c.data.name).toBe('Goalie B');
+        });
+    });
+
+    describe('initial graphsInputs.requestFocusTabHeader', () => {
+        it('should invoke focusActiveTabHeader when called from the initial graphsInputs', async () => {
+            dialogRefSpy = { close: vi.fn().mockName("MatDialogRef.close") } as any;
+            const apiServiceSpy = { getTeams: vi.fn().mockReturnValue(of([])) } as any;
+
+            await TestBed.configureTestingModule({
+                imports: [PlayerCardComponent, TranslateModule.forRoot(), NoopAnimationsModule],
+                providers: [
+                    { provide: MAT_DIALOG_DATA, useValue: mockSkaterWithoutSeasons },
+                    { provide: MatDialogRef, useValue: dialogRefSpy },
+                    { provide: ApiService, useValue: apiServiceSpy },
+                ],
+            }).compileComponents();
+
+            const f = TestBed.createComponent(PlayerCardComponent);
+            const c = f.componentInstance;
+            // Do NOT call updateGraphsInputs — test the initial arrow function at line 134.
+            const focusSpy = vi.spyOn(c as any, 'focusActiveTabHeader');
+            (c.graphsInputs['requestFocusTabHeader'] as () => void)();
+            expect(focusSpy).toHaveBeenCalled();
+        });
     });
 });
