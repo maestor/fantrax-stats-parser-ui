@@ -2,12 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "resolveJsonModule": true,
-    "types": ["vitest/globals", "@testing-library/jest-dom"]
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
-    "src/test-setup.ts"
+    "src/test-setup.ts",
+    "src/app/testing/*.ts"
   ]
 }
