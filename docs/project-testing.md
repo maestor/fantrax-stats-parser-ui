@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project has comprehensive test coverage for all UI behaviors, services, and components. The test suite includes unit tests (Vitest) and end-to-end tests (Playwright).
+This project has comprehensive test coverage for all UI behaviors, services, and components. The test suite includes three layers: unit tests (Vitest, for existing/legacy code), behavior tests (Testing Library, for new feature development), and end-to-end tests (Playwright).
 
 ## Test Statistics
 
@@ -44,6 +44,62 @@ npm run test -- --reporter=verbose src/app/services/tests/api.service.spec.ts
 
 - ✅ No browser required — tests run in jsdom (no Chrome installation needed)
 - 📋 **No tests are currently skipped**
+
+### Behavior Tests (Testing Library)
+
+**Policy: No new unit tests for future feature development.** All new features must be tested with behavior tests using `@testing-library/angular`. Existing unit tests remain and are maintained.
+
+```bash
+# Run behavior tests with coverage
+npm run test:behavior
+```
+
+**Conventions:**
+
+- **File naming**: `*.behavior.spec.ts`
+- **Accessible queries only**: Use `getByRole`, `getByText`, `getByLabelText` — no CSS selectors, class names, or `data-testid`
+- **Translation keys as text**: Use translation keys directly (e.g., `'myTitle'`) instead of loading Finnish locale files
+- **Full rendering**: Render real components with their templates — no shallow rendering or stubs
+- **Mock at the service/API boundary**: Provide mock services via Angular DI, not component internals
+
+**Behavior Test Template:**
+
+```typescript
+import { render, screen } from '@testing-library/angular';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+
+import { MyComponent } from './my.component';
+import { ApiService } from '@services/api.service';
+
+describe('MyComponent — behavior', { timeout: 15_000 }, () => {
+  async function setup() {
+    const mockApiService = {
+      getData: () => of(mockData),
+    };
+
+    await render(MyComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        provideNoopAnimations(),
+        { provide: ApiService, useValue: mockApiService },
+      ],
+    });
+  }
+
+  it('renders the expected content', async () => {
+    await setup();
+
+    expect(screen.getByRole('heading', { name: 'myTitle' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'a11y.doAction' })).toBeInTheDocument();
+  });
+});
+```
 
 ### E2E Tests (Playwright)
 
@@ -599,6 +655,8 @@ This fetches the API responses the E2E tests depend on and saves them as JSON fi
 
 ### Component Test Template
 
+> **Note**: For new feature development, use the **Behavior Test Template** (Testing Library) in the "Behavior Tests" section above. The TestBed-based template below is for maintaining existing unit tests only.
+
 ```typescript
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { YourComponent } from "./your.component";
@@ -681,6 +739,8 @@ To achieve 100% coverage:
 - [Angular Testing Guide](https://angular.dev/guide/testing)
 - [Vitest Documentation](https://vitest.dev)
 - [Playwright Documentation](https://playwright.dev/)
+- [Testing Library for Angular](https://testing-library.com/docs/angular-testing-library/intro)
+- [@testing-library/jest-dom](https://github.com/testing-library/jest-dom)
 - [RxJS Testing](https://rxjs.dev/guide/testing)
 
 ## Recent Updates (January 2026)

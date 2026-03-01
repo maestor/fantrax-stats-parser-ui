@@ -114,6 +114,9 @@ npm run e2e:ui                         # Interactive UI mode
 npm run e2e:smoke                      # Smoke tests only
 npm run e2e:capture-fixtures           # Re-capture API fixtures from live backend
 
+# Behavior tests (Testing Library)
+npm run test:behavior                  # Run behavior tests with coverage
+
 # CI / verification
 npm run verify                         # Headless unit tests + production build
 
@@ -123,7 +126,7 @@ npm run build
 
 ## Testing
 
-This project uses **Vitest** for unit tests and **Playwright** for end-to-end tests. Run `npm test` to see the current unit test count and status.
+This project uses **Vitest** for unit tests, **Testing Library** (`@testing-library/angular`) for behavior tests, and **Playwright** for end-to-end tests. New feature development uses behavior tests exclusively; existing unit tests are maintained but not expanded. Run `npm test` to see the current unit test count and status.
 
 📖 **[Read the complete Testing Documentation](docs/project-testing.md)**
 
@@ -171,7 +174,7 @@ Accessibility is a core requirement of this project (not optional).
 - **Language**: TypeScript 5.9
 - **State Management**: RxJS 7.8 (BehaviorSubjects)
 - **HTTP Client**: Angular HttpClient with caching
-- **Testing**: Vitest (unit), Playwright (E2E)
+- **Testing**: Vitest (unit), Testing Library (`@testing-library/angular`) (behavior), Playwright (E2E)
 - **i18n**: ngx-translate 17
 
 ## Project Structure
