@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import 'vitest-canvas-mock';
 
 // Polyfill ResizeObserver for jsdom (used by Chart.js when canvas context is available)
