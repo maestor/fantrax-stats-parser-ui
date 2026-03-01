@@ -124,11 +124,11 @@ npm run watch
 - Watches for file changes
 - Rebuilds automatically
 
-### Run Unit Tests
+### Run Tests
 ```bash
-npm test
+npm test                # Unit tests (Vitest) — runs once, no browser window
+npm run test:behavior   # Behavior tests (Testing Library)
 ```
-- Runs Vitest tests once (no browser window)
 
 For watch mode (re-run on file changes):
 
@@ -197,8 +197,9 @@ The API endpoint is configured in the service layer. Check:
    - Update translation files for new UI text
 
 5. **Write tests**
-   - Unit tests for components/services
+   - Behavior tests (`*.behavior.spec.ts`) for new features using `@testing-library/angular`
    - Update E2E tests if needed
+   - Unit tests only for maintaining/fixing existing test files
 
 6. **Test locally**
    ```bash

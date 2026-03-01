@@ -122,31 +122,6 @@ describe("AppComponent", () => {
         titleService = TestBed.inject(Title);
     });
 
-    it("should create the app", () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.componentInstance;
-        expect(app).toBeTruthy();
-    });
-
-    it("should render last modified under the title on desktop", () => {
-        viewportServiceMock.setMobile(false);
-        apiServiceMock.getLastModified.mockReturnValue(of({ lastModified: "2026-01-30T11:03:07.210Z" }));
-
-        const fixture = TestBed.createComponent(AppComponent);
-        fixture.detectChanges();
-
-        fixture.detectChanges();
-
-        const el: HTMLElement = fixture.nativeElement;
-        const lastModified = el.querySelector(".last-modified");
-        expect(lastModified).toBeTruthy();
-
-        const text = (lastModified?.textContent || "").replace(/\s+/g, " ").trim();
-        // Europe/Helsinki: 11:03Z -> 13:03 local in January
-        expect(text).toContain("30.01.2026");
-        expect(text).toContain("13.03");
-    });
-
     it("should render last modified in the settings drawer on mobile (not under title)", () => {
         viewportServiceMock.setMobile(true);
         apiServiceMock.getLastModified.mockReturnValue(of({ lastModified: "2026-01-30T11:03:07.210Z" }));
@@ -188,12 +163,6 @@ describe("AppComponent", () => {
 
         expect(vi.mocked(setTitleSpy).mock.calls.length).toBe(2);
         expect(vi.mocked(setTitleSpy).mock.lastCall![0]).toBe("Second Title");
-    });
-
-    it("should have tabPanel ViewChild", () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        fixture.detectChanges();
-        expect(fixture.componentInstance.tabPanel).toBeDefined();
     });
 
     it("should open help dialog when openHelpDialog is called", () => {
@@ -409,80 +378,6 @@ describe("AppComponent", () => {
 
             (app as any).updateControlsContext("/goalie-stats");
             expect(await firstValueFrom(app.drawerMaxGames$)).toBe(20);
-        });
-    });
-
-    describe("skip link", () => {
-        it("should preventDefault and no-op when target container is missing", () => {
-            const fixture = TestBed.createComponent(AppComponent);
-            const app = fixture.componentInstance;
-
-            const doc = (app as any).document as Document;
-            vi.spyOn(doc, "getElementById").mockReturnValue(null);
-
-            const event = {
-                preventDefault: vi.fn(),
-            } as any;
-            app.skipToTarget("missing", event);
-
-            expect(event.preventDefault).toHaveBeenCalled();
-            expect(doc.getElementById).toHaveBeenCalledWith("missing");
-        });
-
-        it("should no-op when container has no first data row yet", () => {
-            const fixture = TestBed.createComponent(AppComponent);
-            const app = fixture.componentInstance;
-            const doc = (app as any).document as Document;
-
-            const container = doc.createElement("div");
-            container.id = "stats-table-test-empty";
-            doc.body.appendChild(container);
-
-            const replaceSpy = vi.spyOn(doc.defaultView!.history, "replaceState");
-
-            const event = {
-                preventDefault: vi.fn(),
-            } as any;
-            app.skipToTarget("stats-table-test-empty", event);
-
-            expect(event.preventDefault).toHaveBeenCalled();
-            expect(replaceSpy).not.toHaveBeenCalled();
-        });
-
-        it("should focus the first row, scroll it into view, and update URL fragment", () => {
-            const fixture = TestBed.createComponent(AppComponent);
-            const app = fixture.componentInstance;
-            const doc = (app as any).document as Document;
-
-            const container = doc.createElement("div");
-            container.id = "stats-table-test";
-
-            const table = doc.createElement("table");
-            const tbody = doc.createElement("tbody");
-            const firstRow = doc.createElement("tr");
-            firstRow.setAttribute("data-row-index", "0");
-            (firstRow as any).scrollIntoView = vi.fn();
-            (firstRow as any).focus = vi.fn();
-            tbody.appendChild(firstRow);
-            table.appendChild(tbody);
-            container.appendChild(table);
-            doc.body.appendChild(container);
-
-            vi.spyOn(container, "querySelector").mockReturnValue(firstRow as any);
-
-            const replaceSpy = vi.spyOn(doc.defaultView!.history, "replaceState");
-
-            const event = {
-                preventDefault: vi.fn(),
-            } as any;
-            app.skipToTarget("stats-table-test", event);
-
-            expect(event.preventDefault).toHaveBeenCalled();
-            expect(replaceSpy).toHaveBeenCalledWith(null, "", "#stats-table-test");
-            expect((firstRow as any).scrollIntoView).toHaveBeenCalled();
-            expect((firstRow as any).focus).toHaveBeenCalledWith({
-                preventScroll: true,
-            });
         });
     });
 

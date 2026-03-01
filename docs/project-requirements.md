@@ -123,6 +123,9 @@ Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
 - Use descriptive test names
 - Test edge cases and error scenarios
 - Keep tests isolated and independent
+- Use `@testing-library/angular` for new feature tests (`*.behavior.spec.ts`)
+- Use accessible queries (`getByRole`, `getByText`, `getByLabelText`) in behavior tests
+- Render translation keys directly with `TranslateModule.forRoot()` instead of loading locale files
 
 #### ❌ DON'T
 
@@ -132,6 +135,9 @@ Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
 - Skip cleanup in `afterEach`
 - Write tests that depend on execution order
 - Use production services in tests (use mocks)
+- Write new unit tests for features (use behavior tests with `@testing-library/angular` instead)
+- Use CSS selectors or class names in behavior tests (use accessible queries)
+- Load real translation files in behavior tests (use `TranslateModule.forRoot()` with translation keys)
 
 ### Test File Structure
 

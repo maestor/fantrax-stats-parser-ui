@@ -384,6 +384,33 @@ describe('DataService', () => {
 });
 ```
 
+### Behavior Test Standards
+
+**Policy: New feature tests use behavior testing (`@testing-library/angular`), not unit tests.** Existing unit tests are maintained but not expanded.
+
+**Key conventions:**
+
+- **Accessible queries only**: Use `getByRole`, `getByText`, `getByLabelText` — never CSS selectors, class names, or `data-testid`
+- **Translation keys as rendered text**: Use the translation key directly (e.g., `'myTitle'`) with `TranslateModule.forRoot()` instead of loading locale files
+- **File naming**: `*.behavior.spec.ts`
+- **Minimize renders**: Group all assertions for a given scenario into one test with one `render()` call. Use comments to separate logical groups. Do not create separate `it()` blocks that each re-render the same component state
+
+```typescript
+// Example: Behavior test for a component
+import { render, screen } from '@testing-library/angular';
+import { TranslateModule } from '@ngx-translate/core';
+
+import { MyComponent } from './my.component';
+
+it('renders the heading', async () => {
+  await render(MyComponent, {
+    imports: [TranslateModule.forRoot()],
+  });
+
+  expect(screen.getByRole('heading', { name: 'myTitle' })).toBeInTheDocument();
+});
+```
+
 ## File Organization
 
 ### No `.gitkeep` files
