@@ -1,5 +1,4 @@
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -14,7 +13,7 @@ import lastModifiedFixture from '../../../e2e/fixtures/data/last-modified.json';
 import seasonsFixture from '../../../e2e/fixtures/data/seasons--regular.json';
 import playersFixture from '../../../e2e/fixtures/data/players--combined--regular.json';
 
-export const PLAYER_SLICE_COUNT = 20;
+export const PLAYER_SLICE_COUNT = 12;
 
 export const slicedPlayers = playersFixture.slice(0, PLAYER_SLICE_COUNT);
 
@@ -37,7 +36,6 @@ export function getBehaviorTestConfig(options: { isMobile: boolean }) {
     imports: [TranslateModule.forRoot()],
     providers: [
       provideRouter(routes),
-      provideHttpClient(),
       provideNoopAnimations(),
       { provide: ApiService, useValue: createApiServiceMock() },
       { provide: ViewportService, useValue: { isMobile$: of(options.isMobile) } },
@@ -51,7 +49,7 @@ export function getBehaviorTestConfig(options: { isMobile: boolean }) {
  */
 export function polyfillJsdom(): void {
   if (typeof HTMLElement.prototype.scrollIntoView !== 'function') {
-    HTMLElement.prototype.scrollIntoView = () => {};
+    HTMLElement.prototype.scrollIntoView = () => { };
   }
 }
 

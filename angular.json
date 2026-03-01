@@ -88,6 +88,12 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "setupFiles": ["src/test-setup.ts"],
+            "coverageThresholds": {
+              "branches": 50,
+              "statements": 55,
+              "functions": 55,
+              "lines": 55
+            },
             "coverageExclude": [
               "src/main.ts",
               "src/environments/**",

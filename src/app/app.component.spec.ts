@@ -20,7 +20,7 @@ describe('AppComponent — desktop frontpage', { timeout: 15_000 }, () => {
     localStorage.clear();
   });
 
-  it('renders all user-visible elements', async () => {
+  it('renders all user-visible elements and supports skip link focus flow', async () => {
     await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
     // Wait for lazy-loaded route and async data pipeline to complete
@@ -84,14 +84,10 @@ describe('AppComponent — desktop frontpage', { timeout: 15_000 }, () => {
     expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();
     expect(screen.getByText('footer.copyright')).toBeInTheDocument();
-  });
 
-  it('skip link moves focus to the first data row', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
-
-    const firstPlayerName = slicedPlayers[0].name;
-    await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
-
+    // -- Accessibility flow (merged on purpose for speed):
+    // Verify the skip link moves focus directly to the first data row after initial content has loaded.
+    // Keeping this in the same render avoids a second expensive full-app render while preserving user-path behavior.
     const skipLink = screen.getByText('a11y.skipToTable');
     fireEvent.click(skipLink);
 
