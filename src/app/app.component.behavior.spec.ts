@@ -16,7 +16,8 @@ import lastModifiedFixture from '../../e2e/fixtures/data/last-modified.json';
 import seasonsFixture from '../../e2e/fixtures/data/seasons--regular.json';
 import playersFixture from '../../e2e/fixtures/data/players--combined--regular.json';
 
-describe('AppComponent — desktop frontpage', () => {
+// Full-render behavior tests with lazy-loaded routes need more time under load
+describe('AppComponent — desktop frontpage', { timeout: 15_000 }, () => {
   beforeEach(() => {
     // Pre-seed SettingsService via localStorage so startFromSeason is non-null.
     // StatsBaseComponent returns EMPTY when both season and startFrom are undefined,

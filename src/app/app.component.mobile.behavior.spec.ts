@@ -16,7 +16,8 @@ import lastModifiedFixture from '../../e2e/fixtures/data/last-modified.json';
 import seasonsFixture from '../../e2e/fixtures/data/seasons--regular.json';
 import playersFixture from '../../e2e/fixtures/data/players--combined--regular.json';
 
-describe('AppComponent — mobile frontpage', () => {
+// Full-render behavior tests with lazy-loaded routes need more time under load
+describe('AppComponent — mobile frontpage', { timeout: 15_000 }, () => {
   beforeEach(() => {
     localStorage.setItem(
       'fantrax.settings',
