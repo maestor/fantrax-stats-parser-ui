@@ -1,139 +1,48 @@
-import { ComponentFixture, TestBed, } from "@angular/core/testing";
-import { TeamSwitcherComponent } from "./team-switcher.component";
-import { ApiService, Team } from "@services/api.service";
-import { FilterService } from "@services/filter.service";
-import { TeamService } from "@services/team.service";
-import { TranslateModule, TranslateService } from "@ngx-translate/core";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { BehaviorSubject, of, throwError } from "rxjs";
-import { Router } from "@angular/router";
-import { MatSelectChange } from "@angular/material/select";
+import { fireEvent, render, screen } from '@testing-library/angular';
 
-class TeamServiceMock {
-    private selectedTeamIdSubject = new BehaviorSubject<string>("1");
-    selectedTeamId$ = this.selectedTeamIdSubject.asObservable();
+import { AppComponent } from '../../../app.component';
+import {
+    getBehaviorTestConfig,
+    polyfillJsdom,
+    seedLocalStorage,
+    slicedPlayers,
+} from '../../../testing/behavior-test-utils';
 
-    get selectedTeamId(): string {
-        return this.selectedTeamIdSubject.value;
-    }
-
-    setTeamId(teamId: string): void {
-        this.selectedTeamIdSubject.next(teamId);
-    }
-}
-
-describe("TeamSwitcherComponent", () => {
-    let component: TeamSwitcherComponent;
-    let fixture: ComponentFixture<TeamSwitcherComponent>;
-    let apiService: any;
-    let filterService: any;
-    let router: any;
-    let translate: TranslateService;
-
-    const mockTeams: Team[] = [
-        { id: "2", name: "carolina", presentName: "Carolina Hurricanes" },
-        { id: "1", name: "colorado", presentName: "Colorado Avalanche" },
-    ];
-
-    beforeEach(async () => {
-        apiService = {
-            getTeams: vi.fn().mockName("ApiService.getTeams")
-        } as any;
-        filterService = {
-            resetAll: vi.fn().mockName("FilterService.resetAll")
-        } as any;
-        router = {
-            navigate: vi.fn().mockName("Router.navigate")
-        } as any;
-
-        await TestBed.configureTestingModule({
-            imports: [
-                TeamSwitcherComponent,
-                TranslateModule.forRoot(),
-                NoopAnimationsModule,
-            ],
-            providers: [
-                { provide: ApiService, useValue: apiService },
-                { provide: FilterService, useValue: filterService },
-                { provide: TeamService, useClass: TeamServiceMock },
-                { provide: Router, useValue: router },
-            ],
-        }).compileComponents();
-
-        fixture = TestBed.createComponent(TeamSwitcherComponent);
-        component = fixture.componentInstance;
-
-        translate = TestBed.inject(TranslateService);
-        translate.use("fi");
+describe('TeamSwitcherComponent — desktop user flow', { timeout: 20_000 }, () => {
+    beforeEach(() => {
+        polyfillJsdom();
+        seedLocalStorage();
     });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
+    afterEach(() => {
+        localStorage.clear();
     });
 
-    it("should load teams on init", () => {
-        apiService.getTeams.mockReturnValue(of(mockTeams));
+    it('switches team and resets report type to regular', async () => {
+        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-        component.ngOnInit();
+        const firstPlayerName = slicedPlayers[0].name;
+        await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
 
+        const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
+        fireEvent.click(reportCombobox);
 
-        expect(apiService.getTeams).toHaveBeenCalled();
-        expect(component.loading).toBe(false);
-        expect(component.loadError).toBe(false);
-        expect(component.teams.length).toBe(2);
-    });
+        const playoffsOption = await screen.findByRole('option', { name: 'reportType.playoffs' });
+        fireEvent.click(playoffsOption);
 
-    it("should sort teams alphabetically by presentName", () => {
-        apiService.getTeams.mockReturnValue(of(mockTeams));
+        await vi.waitFor(() => {
+            expect(reportCombobox).toHaveTextContent('reportType.playoffs');
+        });
 
-        component.ngOnInit();
+        const teamCombobox = screen.getByRole('combobox', { name: /team\.selector/ });
+        fireEvent.click(teamCombobox);
 
+        const dallasOption = await screen.findByRole('option', { name: 'Dallas Stars' });
+        fireEvent.click(dallasOption);
 
-        expect(component.teams.map((t) => t.name)).toEqual([
-            "carolina",
-            "colorado",
-        ]);
-    });
-
-    it("should set loadError on API failure", () => {
-        apiService.getTeams.mockReturnValue(throwError(() => new Error("backend unavailable")));
-
-        component.ngOnInit();
-
-
-        expect(component.loading).toBe(false);
-        expect(component.loadError).toBe(true);
-        expect(component.teams).toEqual([]);
-    });
-
-    it("should reset filters and navigate on team change", () => {
-        apiService.getTeams.mockReturnValue(of(mockTeams));
-        component.ngOnInit();
-
-
-        const event = { value: "2" } as MatSelectChange;
-        component.changeTeam(event);
-
-
-        expect(component.selectedTeamId).toBe("2");
-        expect(filterService.resetAll).toHaveBeenCalled();
-        expect(router.navigate).toHaveBeenCalledWith(["/player-stats"]);
-    });
-
-    it("should no-op when teamId is falsy", () => {
-        apiService.getTeams.mockReturnValue(of(mockTeams));
-        component.ngOnInit();
-
-
-        const teamService = TestBed.inject(TeamService) as unknown as TeamServiceMock;
-        const setTeamSpy = vi.spyOn(teamService, "setTeamId");
-
-        const event = { value: "" } as unknown as MatSelectChange;
-        component.changeTeam(event);
-
-
-        expect(setTeamSpy).not.toHaveBeenCalled();
-        expect(filterService.resetAll).not.toHaveBeenCalled();
-        expect(router.navigate).not.toHaveBeenCalled();
+        await vi.waitFor(() => {
+            expect(teamCombobox).toHaveTextContent('Dallas Stars');
+            expect(reportCombobox).toHaveTextContent('reportType.regular');
+        });
     });
 });

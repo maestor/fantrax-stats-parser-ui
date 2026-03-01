@@ -126,8 +126,7 @@ npm run watch
 
 ### Run Tests
 ```bash
-npm test                # Unit tests (Vitest) — runs once, no browser window
-npm run test:behavior   # Behavior tests (Testing Library)
+npm test                # Tests (Vitest + Testing Library) — runs once, no browser window
 ```
 
 For watch mode (re-run on file changes):
@@ -197,9 +196,8 @@ The API endpoint is configured in the service layer. Check:
    - Update translation files for new UI text
 
 5. **Write tests**
-   - Behavior tests (`*.behavior.spec.ts`) for new features using `@testing-library/angular`
+   - Component tests (`*.spec.ts`) using `@testing-library/angular` with accessible queries
    - Update E2E tests if needed
-   - Unit tests only for maintaining/fixing existing test files
 
 6. **Test locally**
    ```bash
@@ -214,7 +212,7 @@ The API endpoint is configured in the service layer. Check:
    npm run verify
    ```
 
-   This ensures headless unit tests and the production build pass.
+   This ensures tests and the production build pass.
 
 ### Fixing a Bug
 
@@ -235,15 +233,15 @@ The API endpoint is configured in the service layer. Check:
 
 4. **Test the fix**
    - Manual testing
-   - Run unit tests
+   - Run tests
    - Run E2E tests
 
 ### Code Review Checklist
 
 - [ ] Code follows Angular style guide
 - [ ] No console.log statements in production code
-- [ ] Unit tests updated/added
-- [ ] `npm run verify` passes (coverage thresholds + production build)
+- [ ] Tests updated/added (Testing Library)
+- [ ] `npm run verify` passes (tests + production build)
 - [ ] No TypeScript errors
 - [ ] No `any` types — run `npm run lint` to verify
 - [ ] Components properly typed

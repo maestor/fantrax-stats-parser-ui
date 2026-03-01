@@ -1,167 +1,80 @@
-import type { Mock } from "vitest";
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GlobalNavComponent } from './global-nav.component';
-import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { provideRouter } from '@angular/router';
-import { Component } from '@angular/core';
-import { HelpDialogComponent } from '@shared/help-dialog/help-dialog.component';
+import { fireEvent, render, screen } from '@testing-library/angular';
 
-describe('GlobalNavComponent', () => {
-    let component: GlobalNavComponent;
-    let fixture: ComponentFixture<GlobalNavComponent>;
-    let routerMock: {
-        navigateByUrl: Mock;
-        url: string;
-    };
-    let bottomSheetRef: {
-        dismiss: Mock;
-    };
-    let dialog: {
-        open: Mock;
-    };
+import { AppComponent } from '../../app.component';
+import {
+  getBehaviorTestConfig,
+  polyfillJsdom,
+  seedLocalStorage,
+  slicedPlayers,
+} from '../../testing/behavior-test-utils';
 
-    @Component({ template: '' })
-    class DummyComponent {
-    }
+describe('GlobalNavComponent — navigation flow', { timeout: 30_000 }, () => {
+  beforeEach(() => {
+    polyfillJsdom();
+    seedLocalStorage();
+  });
 
-    const setup = async (url = '/') => {
-        routerMock = {
-            navigateByUrl: vi.fn().mockReturnValue(Promise.resolve(true)),
-            url,
-        };
-        bottomSheetRef = { dismiss: vi.fn() };
-        dialog = { open: vi.fn() };
+  afterEach(() => {
+    localStorage.clear();
+  });
 
-        await TestBed.configureTestingModule({
-            imports: [GlobalNavComponent, TranslateModule.forRoot()],
-            providers: [
-                provideRouter([{ path: '**', component: DummyComponent }]),
-            ],
-        })
-            .overrideProvider(Router, { useValue: routerMock })
-            .overrideProvider(MatBottomSheetRef, { useValue: bottomSheetRef })
-            .overrideProvider(MatDialog, { useValue: dialog })
-            .compileComponents();
+  it('opens navigation with default view active, navigates to leaderboards, opens info dialog, and closes', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-        fixture = TestBed.createComponent(GlobalNavComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    };
+    // Wait for the app to fully load
+    const firstPlayerName = slicedPlayers[0].name;
+    await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
 
-    it('should create', async () => {
-        await setup();
-        expect(component).toBeTruthy();
+    // -- Open navigation bottom sheet --
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
+
+    // Navigation appears with all three items
+    const hockeyBtn = await screen.findByRole('button', { name: /nav\.hockeyPlayerStats/ });
+    expect(screen.getByRole('button', { name: /nav\.leaderboards/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /nav\.info/ })).toBeInTheDocument();
+
+    // Hockey stats is the active (default) item — verified via active CSS class
+    // (aria-current binding does not propagate in jsdom bottom sheet context)
+    expect(hockeyBtn).toHaveClass('global-nav-item--active');
+    expect(screen.getByRole('button', { name: /nav\.leaderboards/ })).not.toHaveClass('global-nav-item--active');
+
+    // -- Navigate to leaderboards --
+    fireEvent.click(screen.getByRole('button', { name: /nav\.leaderboards/ }));
+
+    // Bottom sheet dismisses after route navigation; wait for leaderboard page tab links
+    await screen.findByText('leaderboards.tabs.regular', {}, { timeout: 5000 });
+
+    // Re-open navigation and verify leaderboards is now active
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
+
+    const leaderboardsBtn2 = await screen.findByRole('button', { name: /nav\.leaderboards/ });
+    expect(leaderboardsBtn2).toHaveClass('global-nav-item--active');
+
+    const hockeyBtn2 = screen.getByRole('button', { name: /nav\.hockeyPlayerStats/ });
+    expect(hockeyBtn2).not.toHaveClass('global-nav-item--active');
+
+    // -- Open info/help dialog from nav --
+    fireEvent.click(screen.getByRole('button', { name: /nav\.info/ }));
+
+    // Help dialog appears (opens as a separate overlay)
+    const closeBtn = await screen.findByRole('button', { name: 'helpDialog.close' });
+
+    // Close the help dialog via its close button
+    fireEvent.click(closeBtn);
+
+    // Navigation should still be open after closing the help dialog
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: 'helpDialog.close' })).not.toBeInTheDocument();
     });
+    expect(screen.getByRole('button', { name: /nav\.hockeyPlayerStats/ })).toBeInTheDocument();
 
-    describe('navItems', () => {
-        it('should have exactly 3 items', async () => {
-            await setup();
-            expect(component.navItems.length).toBe(3);
-        });
+    // -- Close navigation by clicking the backdrop overlay --
+    const backdrop = document.querySelector('.cdk-overlay-backdrop') as HTMLElement;
+    fireEvent.click(backdrop);
 
-        it('should define info item as action type with correct icon and label key', async () => {
-            await setup();
-            const item = component.navItems.find((i) => i.type === 'action');
-            expect(item).toBeTruthy();
-            expect(item?.icon).toBe('info');
-            expect(item?.labelKey).toBe('nav.info');
-        });
-
-        it('should define leaderboards item as route type with correct props', async () => {
-            await setup();
-            const item = component.navItems.find((i) => i.path === '/leaderboards');
-            expect(item).toBeTruthy();
-            expect(item?.icon).toBe('emoji_events');
-            expect(item?.labelKey).toBe('nav.leaderboards');
-            expect(item?.type).toBe('route');
-        });
-
-        it('should define hockey stats item as route type with correct props', async () => {
-            await setup();
-            const item = component.navItems.find((i) => i.path === '/');
-            expect(item).toBeTruthy();
-            expect(item?.icon).toBe('score');
-            expect(item?.labelKey).toBe('nav.hockeyPlayerStats');
-            expect(item?.type).toBe('route');
-        });
+    // Wait for navigation items to disappear
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: /nav\.hockeyPlayerStats/ })).not.toBeInTheDocument();
     });
-
-    describe('isActive', () => {
-        it('should return false for info action item regardless of url', async () => {
-            await setup('/');
-            const item = component.navItems.find((i) => i.type === 'action')!;
-            expect(component.isActive(item)).toBe(false);
-        });
-
-        it('should return true for hockey stats item when url is /', async () => {
-            await setup('/');
-            const item = component.navItems.find((i) => i.path === '/')!;
-            expect(component.isActive(item)).toBe(true);
-        });
-
-        it('should return true for hockey stats item when url starts with /player-stats', async () => {
-            await setup('/player-stats');
-            const item = component.navItems.find((i) => i.path === '/')!;
-            expect(component.isActive(item)).toBe(true);
-        });
-
-        it('should return true for hockey stats item when url starts with /goalie-stats', async () => {
-            await setup('/goalie-stats');
-            const item = component.navItems.find((i) => i.path === '/')!;
-            expect(component.isActive(item)).toBe(true);
-        });
-
-        it('should return false for hockey stats item when on leaderboards route', async () => {
-            await setup('/leaderboards/regular');
-            const item = component.navItems.find((i) => i.path === '/')!;
-            expect(component.isActive(item)).toBe(false);
-        });
-
-        it('should return true for leaderboards item when url starts with /leaderboards', async () => {
-            await setup('/leaderboards/regular');
-            const item = component.navItems.find((i) => i.path === '/leaderboards')!;
-            expect(component.isActive(item)).toBe(true);
-        });
-
-        it('should return true for leaderboards item when url is /leaderboards/playoffs', async () => {
-            await setup('/leaderboards/playoffs');
-            const item = component.navItems.find((i) => i.path === '/leaderboards')!;
-            expect(component.isActive(item)).toBe(true);
-        });
-
-        it('should return false for leaderboards item when on hockey stats route', async () => {
-            await setup('/player-stats');
-            const item = component.navItems.find((i) => i.path === '/leaderboards')!;
-            expect(component.isActive(item)).toBe(false);
-        });
-    });
-
-    describe('onItemClick', () => {
-        it('should navigate to / and dismiss sheet when hockey stats item clicked', async () => {
-            await setup('/leaderboards/regular');
-            const item = component.navItems.find((i) => i.path === '/')!;
-            component.onItemClick(item);
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/');
-            expect(bottomSheetRef.dismiss).toHaveBeenCalled();
-        });
-
-        it('should navigate to /leaderboards and dismiss sheet when leaderboards item clicked', async () => {
-            await setup('/');
-            const item = component.navItems.find((i) => i.path === '/leaderboards')!;
-            component.onItemClick(item);
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/leaderboards');
-            expect(bottomSheetRef.dismiss).toHaveBeenCalled();
-        });
-
-        it('should open HelpDialogComponent and NOT dismiss sheet when info item clicked', async () => {
-            await setup('/');
-            const item = component.navItems.find((i) => i.type === 'action')!;
-            component.onItemClick(item);
-            expect(dialog.open).toHaveBeenCalledWith(HelpDialogComponent, expect.objectContaining({ panelClass: 'help-dialog' }));
-            expect(bottomSheetRef.dismiss).not.toHaveBeenCalled();
-        });
-    });
+  });
 });

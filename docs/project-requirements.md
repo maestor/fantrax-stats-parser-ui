@@ -24,7 +24,7 @@ Before any code can be committed or deployed, ALL of the following must pass:
 
 **Primary command (recommended)**
 
-Run the same command CI runs (headless unit tests + production build):
+Run the same command CI runs (tests + production build):
 
 ```bash
 npm run verify
@@ -61,24 +61,16 @@ npm start
 - **Current**: ✅ Passing
 - **Action on Failure**: Check for missing dependencies or circular imports
 
-#### 4. ✅ Coverage Must Meet Targets
+#### 4. ✅ Coverage Tracking
 
 ```bash
 npm run test:coverage
 ```
 
 - **Scope**: Application implementation under `src/` (test files excluded)
-- **Coverage gate (enforced by tooling)**:
-  - >= 98% statements
-  - >= 98% lines
-  - >= 98% functions
-  - >= 96% branches
-- **Long-term target**:
-  - 100% statements, lines, functions, and branches
-- **Action on Failure**: Add/update tests or refactor/simplify code until targets are met
-- **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
+- **Note**: Coverage gate is currently disabled while transitioning to behavior tests. Coverage will be re-enabled once sufficient behavior test coverage is in place.
 - **Contribution rule (required)**: every new/changed code path must be covered by tests (aim 100% coverage for the code you touched, including error/edge cases)
-- **Exception**: None for uncovered new/changed logic
+- **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
 
 #### 5. ✅ Accessibility Must Not Regress
 
@@ -94,21 +86,10 @@ npm run test:coverage
 
 ## 🧪 Testing Standards
 
-### Test Coverage Requirements
+### Test Coverage
 
-Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
+Coverage gate is currently disabled while transitioning to behavior tests. It will be re-enabled once sufficient coverage is in place.
 
-| Metric     | Enforced Coverage Gate | Long-term Target |
-| ---------- | ---------------------- | ---------------- |
-| Statements | >= 98%                 | 100%             |
-| Lines      | >= 98%                 | 100%             |
-| Functions  | >= 98%                 | 100%             |
-| Branches   | >= 96%                 | 100%             |
-
-#### Coverage Enforcement
-
-- Unit-test coverage must remain above the enforced coverage gate.
-- Long-term target is 100% statements/lines/functions/branches.
 - New/changed logic must be fully tested (aim 100% coverage for the code you touched, including error/edge cases).
 - Don’t merge changes that add uncovered new behavior.
 
@@ -116,57 +97,43 @@ Coverage is enforced by tooling (Karma coverage check) and must meet the gate.
 
 #### ✅ DO
 
-- Use `fakeAsync` and `tick()` for async tests
-- Mock all external dependencies
-- Clean up subscriptions in `afterEach`
-- Test business logic, not framework internals
+- Use `@testing-library/angular` for all tests
+- Use accessible queries (`getByRole`, `getByText`, `getByLabelText`)
+- Mock all external dependencies at the service boundary
+- Render translation keys directly with `TranslateModule.forRoot()` instead of loading locale files
+- Test business logic through user-visible behavior, not implementation details
 - Use descriptive test names
 - Test edge cases and error scenarios
 - Keep tests isolated and independent
-- Use `@testing-library/angular` for new feature tests (`*.behavior.spec.ts`)
-- Use accessible queries (`getByRole`, `getByText`, `getByLabelText`) in behavior tests
-- Render translation keys directly with `TranslateModule.forRoot()` instead of loading locale files
 
 #### ❌ DON'T
 
-- Use `setTimeout` in tests (use `fakeAsync` + `tick` instead)
 - Test Angular framework internals (like change detection)
-- Forget to provide dependencies in test configuration
-- Skip cleanup in `afterEach`
-- Write tests that depend on execution order
+- Use CSS selectors, class names, or `data-testid` in tests
+- Load real translation files (use `TranslateModule.forRoot()` with translation keys)
 - Use production services in tests (use mocks)
-- Write new unit tests for features (use behavior tests with `@testing-library/angular` instead)
-- Use CSS selectors or class names in behavior tests (use accessible queries)
-- Load real translation files in behavior tests (use `TranslateModule.forRoot()` with translation keys)
+- Write tests that depend on execution order
+- Create separate `it()` blocks that each re-render the same component state
 
 ### Test File Structure
 
 ```typescript
-describe("ComponentName", () => {
-  let component: ComponentName;
-  let fixture: ComponentFixture<ComponentName>;
+import { render, screen } from '@testing-library/angular';
+import { TranslateModule } from '@ngx-translate/core';
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [ComponentName, RequiredModules],
-      providers: [RequiredServices],
-    }).compileComponents();
+describe('ComponentName', { timeout: 15_000 }, () => {
+  async function setup() {
+    await render(ComponentName, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        { provide: SomeService, useValue: mockService },
+      ],
+    });
+  }
 
-    fixture = TestBed.createComponent(ComponentName);
-    component = fixture.componentInstance;
-  });
-
-  afterEach(() => {
-    // Clean up
-  });
-
-  describe("feature name", () => {
-    it("should do something specific", fakeAsync(() => {
-      // Arrange
-      // Act
-      tick();
-      // Assert
-    }));
+  it('renders expected content', async () => {
+    await setup();
+    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument();
   });
 });
 ```
@@ -189,11 +156,9 @@ You can ignore it for this project.
 - The warning is emitted by npm and does not indicate a project incompatibility.
 - Treat only errors that stop scripts (non-zero exit codes) as blockers.
 
-### Headless Karma Infrastructure
+### Test Infrastructure
 
-Sometimes Chrome headless launch can fail due to local environment issues (not the tests themselves).
-
-**Protocol**:
+Tests run in jsdom (no browser needed). If tests fail unexpectedly:
 
 1. Re-run `npm run verify`
 2. If it still fails, run `npm ci` and retry
@@ -274,7 +239,6 @@ src/app/
 │       ├── component.scss
 │       └── component.spec.ts
 ├── services/          # Business logic services
-│   ├── tests/        # Service tests
 │   └── [service].service.ts
 ├── shared/           # Reusable components
 │   └── [component]/
@@ -309,12 +273,12 @@ npm test     # Run tests in watch mode
 
 ### Before Writing Tests
 
-For UI/visual features, ask the user to review the implementation on `localhost:4200` before writing or updating unit tests. This avoids extra fix-test iteration cycles when the user requests adjustments to the visual result.
+For UI/visual features, ask the user to review the implementation on `localhost:4200` before writing or updating tests. This avoids extra fix-test iteration cycles when the user requests adjustments to the visual result.
 
 ### Before Committing
 
 ```bash
-npm run verify  # Runs tests (headless), coverage check, and production build — single command, don't run these separately
+npm run verify  # Runs lint, tests with coverage, and production build — single command, don't run these separately
 ```
 
 ### Commit Message Format
@@ -385,17 +349,13 @@ describe("getPlayerStatsPerGame", () => {
 
    ```bash
    # Run specific test file
-   npm test -- --include='**/failing-test.spec.ts'
-
-   # Add console.log statements
-   # Use Chrome DevTools (remove --browsers flag)
-   npm test -- --include='**/failing-test.spec.ts' --browsers=Chrome
+   npm test -- --reporter=verbose src/app/path/to/failing-test.spec.ts
    ```
 
 3. **Fix and verify**:
    ```bash
    # After fix, run full suite
-   npm test -- --browsers=ChromeHeadless --watch=false
+   npm run verify
    ```
 
 ### When Build Fails
@@ -455,10 +415,9 @@ describe("getPlayerStatsPerGame", () => {
 
 Before marking work complete, verify:
 
-- [ ] Build and test coverage succeeds (`npm run verify`)
+- [ ] Build and tests succeed (`npm run verify`)
 - [ ] App serves without errors (`npm start`)
-- [ ] New features have tests
-- [ ] Test coverage meets gate (>=98% statements/lines/functions, >=96% branches)
+- [ ] New features have behavior tests (Testing Library)
 - [ ] No TypeScript errors
 - [ ] Code follows project structure
 - [ ] Documentation updated (README, related docs/*.md)

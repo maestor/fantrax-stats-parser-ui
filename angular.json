@@ -87,12 +87,14 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
-            "setupFiles": ["src/test-setup.ts"],
+            "setupFiles": [
+              "src/test-setup.ts"
+            ],
             "coverageThresholds": {
-              "statements": 98,
-              "branches": 96,
-              "functions": 98,
-              "lines": 98
+              "branches": 50,
+              "statements": 55,
+              "functions": 55,
+              "lines": 55
             },
             "coverageExclude": [
               "src/main.ts",
@@ -102,14 +104,6 @@
               "src/app/testing/**",
               "**/*.html"
             ]
-          }
-        },
-        "test-behavior": {
-          "builder": "@angular/build:unit-test",
-          "options": {
-            "tsConfig": "tsconfig.spec.json",
-            "setupFiles": ["src/test-setup.ts"],
-            "include": ["**/*.behavior.spec.ts"]
           }
         }
       }

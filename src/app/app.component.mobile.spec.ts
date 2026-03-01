@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/angular';
+import { fireEvent, render, screen, within } from '@testing-library/angular';
 
 import { AppComponent } from './app.component';
 import {
@@ -60,5 +60,44 @@ describe('AppComponent — mobile frontpage', { timeout: 15_000 }, () => {
     expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();
     expect(screen.getByText('footer.copyright')).toBeInTheDocument();
+  });
+
+  it('opens settings drawer with expected default content and closes it', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
+
+    const firstPlayerName = slicedPlayers[0].name;
+    await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+
+    // Drawer starts closed.
+    const drawerToggle = screen.getByRole('button', { name: 'a11y.openSettingsDrawer' });
+
+    // Open drawer from the page header.
+    fireEvent.click(drawerToggle);
+
+    await vi.waitFor(() => {
+      expect(screen.getByRole('button', { name: 'a11y.closeSettingsDrawer' })).toBeInTheDocument();
+    });
+
+    // Validate drawer sections and expected defaults are visible.
+    expect(screen.getByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'settingsPanel.settings' })).toBeInTheDocument();
+
+    expect(screen.getByRole('combobox', { name: /team\.selector/ })).toHaveTextContent('Colorado Avalanche');
+    expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toHaveTextContent('2012-2013');
+    expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent('season.allSeasons');
+    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent('reportType.regular');
+
+    expect(screen.getByText('positionFilter.label')).toBeInTheDocument();
+    expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
+    expect(screen.getByText('minGamesSlider.label')).toBeInTheDocument();
+    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
+
+    // Close from drawer header close button.
+    const drawerHeader = document.querySelector('.settings-drawer-header') as HTMLElement;
+    fireEvent.click(within(drawerHeader).getByRole('button', { name: 'a11y.closeSettingsDrawer' }));
+
+    await vi.waitFor(() => {
+      expect(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' })).toBeInTheDocument();
+    });
   });
 });

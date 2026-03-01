@@ -185,6 +185,6 @@ Static assets (images, fonts, etc.) go in:
 
 ## Test Organization
 
-- **Unit tests**: `*.spec.ts` files alongside components/services
+- **Component/behavior tests**: `*.spec.ts` files using Testing Library (`@testing-library/angular`)
 - **E2E tests**: `/e2e/` directory with Playwright tests
-- **Test utilities**: `/src/app/services/tests/`
+- **Test utilities**: `/src/app/testing/` (behavior test helpers)
