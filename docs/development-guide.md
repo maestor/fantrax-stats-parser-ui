@@ -128,8 +128,7 @@ npm run watch
 ```bash
 npm test
 ```
-- Runs Jasmine/Karma tests once (Chrome)
-- Opens a browser window with test results
+- Runs Vitest tests once (no browser window)
 
 For watch mode (re-run on file changes):
 
