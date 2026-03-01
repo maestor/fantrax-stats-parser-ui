@@ -393,6 +393,7 @@ describe('DataService', () => {
 - **Accessible queries only**: Use `getByRole`, `getByText`, `getByLabelText` — never CSS selectors, class names, or `data-testid`
 - **Translation keys as rendered text**: Use the translation key directly (e.g., `'myTitle'`) with `TranslateModule.forRoot()` instead of loading locale files
 - **File naming**: `*.behavior.spec.ts`
+- **Minimize renders**: Group all assertions for a given scenario into one test with one `render()` call. Use comments to separate logical groups. Do not create separate `it()` blocks that each re-render the same component state
 
 ```typescript
 // Example: Behavior test for a component

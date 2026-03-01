@@ -30,7 +30,7 @@ test.describe('Smoke Tests', () => {
       page.getByRole('combobox', { name: 'Kausivalitsin' })
     ).toBeVisible();
     await expect(
-      page.getByRole('combobox', { name: 'Stats report type' })
+      page.getByRole('combobox', { name: 'Raportti' })
     ).toBeVisible();
   });
 

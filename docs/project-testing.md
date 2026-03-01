@@ -61,6 +61,7 @@ npm run test:behavior
 - **Translation keys as text**: Use translation keys directly (e.g., `'myTitle'`) instead of loading Finnish locale files
 - **Full rendering**: Render real components with their templates — no shallow rendering or stubs
 - **Mock at the service/API boundary**: Provide mock services via Angular DI, not component internals
+- **Minimize renders**: Full-render behavior tests are expensive. Group all assertions for a given scenario into a single test with one `render()` call. Use comments to separate logical assertion groups. Do NOT create separate `it()` blocks that each call `render()` for the same component state
 
 **Behavior Test Template:**
 
