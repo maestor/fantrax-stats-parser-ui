@@ -21,5 +21,6 @@ export class LeaderboardPlayoffsComponent {
     { field: 'conferenceFinals' },
     { field: 'secondRound' },
     { field: 'firstRound' },
+    { field: 'appearances' },
   ];
 }
