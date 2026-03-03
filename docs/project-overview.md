@@ -59,7 +59,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 
 5. **Team Leaderboards** (`/leaderboards`)
    - All-time regular season ranking table: position, wins, points, win percentage, regular season titles
-   - All-time playoffs ranking table: position, championships, finals, conference finals, round results
+   - All-time playoffs ranking table: position, championships, finals, conference finals, round results, appearances
    - Tab navigation between Runkosarja and Playoffs views (default: Playoffs)
    - Column sorting via `mat-sort`; position ties handled correctly (first tied team shows number, subsequent show blank)
 

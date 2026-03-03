@@ -983,6 +983,8 @@ export interface components {
         PlayoffLeaderboardEntry: {
             teamId: string;
             teamName: string;
+            /** @description Total playoff appearances (sum of championships, finals, conferenceFinals, secondRound, and firstRound). */
+            appearances: number;
             championships: number;
             finals: number;
             conferenceFinals: number;
@@ -999,12 +1001,13 @@ export interface components {
             losses: number;
             ties: number;
             points: number;
-            pointsPercent: number;
             divWins: number;
             divLosses: number;
             divTies: number;
             winPercent: number;
             divWinPercent: number;
+            /** @description Achieved points as a fraction of the maximum possible points (wins×2 + ties) / (games×2). */
+            pointsPercent: number;
             /** @description Number of seasons the team finished rank 1 in regular standings. */
             regularTrophies: number;
             /** @description True when this entry's record matches the previous entry's record. */

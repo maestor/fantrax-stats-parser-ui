@@ -228,7 +228,8 @@
     "finals": "Finaalit",
     "conferenceFinals": "Konf. finaalit",
     "secondRound": "2. kierros",
-    "firstRound": "1. kierros"
+    "firstRound": "1. kierros",
+    "appearances": "Mukana playoffseissa"
   },
   "tableColumnShort": {
     "position": "#",
@@ -264,7 +265,8 @@
     "finals": "F",
     "conferenceFinals": "KF",
     "secondRound": "2K",
-    "firstRound": "1K"
+    "firstRound": "1K",
+    "appearances": "PO"
   },
   "season": {
     "selector": "Kausivalitsin",
