@@ -1023,6 +1023,7 @@ export interface components {
         };
         RegularLeaderboardSeason: {
             season: number;
+            regularTrophy: boolean;
             wins: number;
             losses: number;
             ties: number;

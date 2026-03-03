@@ -23,36 +23,14 @@ export function formatPercent(value: number): string {
 
 export function mapRegularLeaderboardSeasons(
   seasons: RegularLeaderboardEntry['seasons'],
-  regularTrophies = 0,
 ): ExpandedRowViewModel[] {
-  const sorted = [...seasons].sort((a, b) => b.season - a.season);
-  const explicitWinners = new Set<number>(
-    sorted
-      .filter(isRegularSeasonWinner)
-      .map((season) => season.season),
-  );
-  const neededFallbackWinners = Math.max(0, regularTrophies - explicitWinners.size);
-  const fallbackWinnerYears = new Set<number>(
-    [...sorted]
-      .sort((a, b) =>
-        b.points - a.points ||
-        b.winPercent - a.winPercent ||
-        b.pointsPercent - a.pointsPercent ||
-        b.season - a.season,
-      )
-      .filter((season) => !explicitWinners.has(season.season))
-      .slice(0, neededFallbackWinners)
-      .map((season) => season.season),
-  );
-
-  return sorted.map((season: RegularSeason) => {
-    const isWinner = explicitWinners.has(season.season) || fallbackWinnerYears.has(season.season);
-    return {
+  return [...seasons]
+    .sort((a, b) => b.season - a.season)
+    .map((season: RegularSeason) => ({
       seasonLabel: formatSeasonLabel(season.season),
       primary: `${season.points} p | ${season.wins}-${season.losses}-${season.ties} | P-${formatPercent(season.pointsPercent)} | V-${formatPercent(season.winPercent)}`,
-      secondary: isWinner ? '🏆' : undefined,
-    };
-  });
+      secondary: season.regularTrophy ? '🏆' : undefined,
+    }));
 }
 
 export function mapPlayoffLeaderboardSeasons(
@@ -66,9 +44,4 @@ export function mapPlayoffLeaderboardSeasons(
       primary: roundLabel(season.key),
       secondary: season.key === 'championship' ? '🏆' : undefined,
     }));
-}
-
-function isRegularSeasonWinner(season: RegularSeason): boolean {
-  const data = season as unknown as Record<string, unknown>;
-  return data['winner'] === true || data['regularTrophy'] === true || data['rank'] === 1;
 }

@@ -8,7 +8,7 @@ import {
     slicedPlayers,
 } from '../../../testing/behavior-test-utils';
 
-describe('SeasonSwitcherComponent — desktop user flow', { timeout: 20_000 }, () => {
+describe('SeasonSwitcherComponent — desktop user flow', () => {
     beforeEach(() => {
         polyfillJsdom();
         seedLocalStorage();

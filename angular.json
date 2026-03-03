@@ -87,14 +87,15 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "tsConfig": "tsconfig.spec.json",
+            "runnerConfig": "vitest.config.ts",
             "setupFiles": [
               "src/test-setup.ts"
             ],
             "coverageThresholds": {
               "branches": 50,
-              "statements": 55,
+              "statements": 60,
               "functions": 55,
-              "lines": 55
+              "lines": 60
             },
             "coverageExclude": [
               "src/main.ts",

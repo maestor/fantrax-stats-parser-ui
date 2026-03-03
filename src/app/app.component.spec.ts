@@ -10,7 +10,7 @@ import {
 } from './testing/behavior-test-utils';
 
 // Full-render behavior tests with lazy-loaded routes need more time under load
-describe('AppComponent — desktop frontpage', { timeout: 15_000 }, () => {
+describe('AppComponent — desktop frontpage', () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();

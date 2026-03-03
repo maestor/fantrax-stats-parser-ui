@@ -53,10 +53,7 @@ export class LeaderboardRegularComponent {
         primary: this.translate.instant('leaderboards.noSeasonBreakdown'),
       }];
     }
-    return mapRegularLeaderboardSeasons(
-      seasons,
-      Number((row as { regularTrophies?: number }).regularTrophies ?? 0),
-    );
+    return mapRegularLeaderboardSeasons(seasons);
   };
   readonly expandToggleAriaLabel = (
     row: { teamName: string },
