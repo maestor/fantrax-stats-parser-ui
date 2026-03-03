@@ -21,11 +21,14 @@ test.describe('Leaderboards', () => {
     for (let i = 0; i < count; i++) {
       positions.push((await positionCells.nth(i).textContent() ?? '').trim());
     }
-    expect(positions.some(p => /^\d+$/.test(p))).toBe(true);
-    expect(positions.some(p => p === '')).toBe(true);
+    const numericPositions = positions.filter(p => /^\d+$/.test(p)).map(Number);
+    expect(numericPositions.length).toBeGreaterThan(0);
+    expect(numericPositions[0]).toBe(1);
+    // Tie rows may be present (blank position) depending on fixture/live data.
+    expect(positions.every((p) => p === '' || /^\d+$/.test(p))).toBe(true);
 
     // regular table: expandable season details (multiple open rows)
-    const regularRows = page.locator('tr[mat-row]');
+    const regularRows = page.locator('tr[mat-row]:not(.expanded-detail-row)');
     await regularRows.nth(0).click();
     await expect(page.locator('.expanded-season-row').first()).toBeVisible();
 
@@ -44,7 +47,7 @@ test.describe('Leaderboards', () => {
     expect(await rows.count()).toBeGreaterThan(0);
 
     // playoffs table: season details include trophy marker only for championship seasons
-    const playoffRows = page.locator('tr[mat-row]');
+    const playoffRows = page.locator('tr[mat-row]:not(.expanded-detail-row)');
     await playoffRows.nth(0).click();
 
     const playoffSeasonRows = page.locator('.expanded-season-row');
