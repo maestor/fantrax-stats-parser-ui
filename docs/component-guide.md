@@ -218,6 +218,22 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 @Input() canSelectRow$: Observable<boolean> = of(true);
 @Input() onRowSelect?: (row: any) => void;
 @Input() formatCell?: (column: string, value: any) => string; // Custom cell formatter
+@Input() expandable = false;            // Enable expandable detail rows
+@Input() rowKey?: (row: any, index: number) => string;
+@Input() isRowExpandable: (row: any) => boolean = () => false;
+@Input() expandedRowsFor: (row: any) => ExpandedRowViewModel[] = () => [];
+@Input() expandToggleAriaLabel?: (row: any, expanded: boolean) => string;
+```
+
+`ExpandedRowViewModel`:
+
+```typescript
+type ExpandedRowViewModel = {
+  seasonLabel: string;
+  primary: string;
+  secondary?: string;
+  tooltip?: string;
+};
 ```
 
 **Outputs**: None — when `clickable` is true, row clicks open `PlayerCardComponent` directly via `MatDialog`, passing a `navigationContext` that enables in-dialog player navigation with active row syncing.
@@ -228,6 +244,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Optional search box (`showSearch`) that filters rows via `filterItems()`
 - Column configuration driven by `Column[]` objects from `column.types.ts`; column headers support emoji and Material icons via the `icon` property
 - Optional auto-numbered `position` column (`showPositionColumn`) with optional comparison checkboxes (`selectRow`)
+- Optional expandable detail rows (used by leaderboards season breakdown)
 - Compact stat headers from `tableColumnShort.*` with tooltips using full labels from `tableColumn.*`
 - Center-aligned numeric/stat headers and cells, with the name column left-aligned for readability
 - Responsive layout with horizontal scrolling on narrow viewports
@@ -247,6 +264,20 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
   [showSearch]="false" [showPositionColumn]="false"
   [clickable]="false" [selectRow]="false"
   [formatCell]="formatCell" tableId="leaderboard-table">
+</app-stats-table>
+```
+
+**Usage** (leaderboard with expandable season details):
+
+```html
+<app-stats-table [data]="data" [columns]="columns"
+  [showSearch]="false" [showPositionColumn]="false"
+  [clickable]="false" [selectRow]="false"
+  [expandable]="true"
+  [rowKey]="rowKey"
+  [isRowExpandable]="isRowExpandable"
+  [expandedRowsFor]="expandedRowsFor"
+  [expandToggleAriaLabel]="expandToggleAriaLabel">
 </app-stats-table>
 ```
 

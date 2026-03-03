@@ -2,7 +2,47 @@
   {
     "teamId": "1",
     "teamName": "Colorado Avalanche",
-    "seasons": 13,
+    "seasons": [
+      {
+        "season": 2024,
+        "wins": 8,
+        "losses": 2,
+        "ties": 0,
+        "points": 16,
+        "divWins": 2,
+        "divLosses": 0,
+        "divTies": 0,
+        "winPercent": 0.8,
+        "divWinPercent": 1,
+        "pointsPercent": 0.8
+      },
+      {
+        "season": 2023,
+        "wins": 7,
+        "losses": 3,
+        "ties": 0,
+        "points": 14,
+        "divWins": 2,
+        "divLosses": 1,
+        "divTies": 0,
+        "winPercent": 0.7,
+        "divWinPercent": 0.667,
+        "pointsPercent": 0.7
+      },
+      {
+        "season": 2022,
+        "wins": 6,
+        "losses": 4,
+        "ties": 0,
+        "points": 12,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.6,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.6
+      }
+    ],
     "wins": 86,
     "losses": 35,
     "ties": 9,
@@ -19,7 +59,47 @@
   {
     "teamId": "2",
     "teamName": "Vegas Golden Knights",
-    "seasons": 13,
+    "seasons": [
+      {
+        "season": 2024,
+        "wins": 7,
+        "losses": 3,
+        "ties": 0,
+        "points": 14,
+        "divWins": 2,
+        "divLosses": 1,
+        "divTies": 0,
+        "winPercent": 0.7,
+        "divWinPercent": 0.667,
+        "pointsPercent": 0.7
+      },
+      {
+        "season": 2023,
+        "wins": 6,
+        "losses": 4,
+        "ties": 0,
+        "points": 12,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.6,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.6
+      },
+      {
+        "season": 2022,
+        "wins": 5,
+        "losses": 5,
+        "ties": 0,
+        "points": 10,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.5,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.5
+      }
+    ],
     "wins": 78,
     "losses": 46,
     "ties": 6,
@@ -28,7 +108,7 @@
     "divWins": 19,
     "divLosses": 12,
     "divTies": 1,
-    "winPercent": 0.600,
+    "winPercent": 0.6,
     "divWinPercent": 0.594,
     "regularTrophies": 2,
     "tieRank": false
@@ -36,7 +116,47 @@
   {
     "teamId": "3",
     "teamName": "Tampa Bay Lightning",
-    "seasons": 13,
+    "seasons": [
+      {
+        "season": 2024,
+        "wins": 6,
+        "losses": 4,
+        "ties": 0,
+        "points": 12,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.6,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.6
+      },
+      {
+        "season": 2023,
+        "wins": 6,
+        "losses": 4,
+        "ties": 0,
+        "points": 12,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.6,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.6
+      },
+      {
+        "season": 2022,
+        "wins": 5,
+        "losses": 5,
+        "ties": 0,
+        "points": 10,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.5,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.5
+      }
+    ],
     "wins": 78,
     "losses": 47,
     "ties": 5,
@@ -53,7 +173,47 @@
   {
     "teamId": "4",
     "teamName": "Toronto Maple Leafs",
-    "seasons": 13,
+    "seasons": [
+      {
+        "season": 2024,
+        "wins": 5,
+        "losses": 5,
+        "ties": 0,
+        "points": 10,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.5,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.5
+      },
+      {
+        "season": 2023,
+        "wins": 5,
+        "losses": 5,
+        "ties": 0,
+        "points": 10,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.5,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.5
+      },
+      {
+        "season": 2022,
+        "wins": 4,
+        "losses": 6,
+        "ties": 0,
+        "points": 8,
+        "divWins": 1,
+        "divLosses": 2,
+        "divTies": 0,
+        "winPercent": 0.4,
+        "divWinPercent": 0.333,
+        "pointsPercent": 0.4
+      }
+    ],
     "wins": 72,
     "losses": 52,
     "ties": 6,

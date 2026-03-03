@@ -32,6 +32,21 @@
       "secondRound": "2. kierros",
       "firstRound": "1. kierros"
     },
+    "round": {
+      "championship": "Mestaruus",
+      "final": "Finaali",
+      "conferenceFinal": "Konferenssifinaali",
+      "secondRound": "2. kierros",
+      "firstRound": "1. kierros",
+      "notQualified": "Ei playoffs-paikkaa"
+    },
+    "detailHeader": {
+      "season": "Kausi",
+      "regularStats": "Tilastot",
+      "playoffResult": "Tulos",
+      "trophy": "🏆"
+    },
+    "noSeasonBreakdown": "Ei kausierittelyä saatavilla",
     "loading": "Ladataan taulukkoa...",
     "apiUnavailable": "Taulukkodata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen."
   },
@@ -59,7 +74,9 @@
     "closePlayerCard": "Sulje pelaajakortti",
     "closeComparisonDialog": "Sulje vertailu",
     "selectToCompare": "Valitse vertailuun: {{name}}",
-    "openNavMenu": "Avaa valikko"
+    "openNavMenu": "Avaa valikko",
+    "expandSeasonDetails": "Näytä kausierittely: {{name}}",
+    "collapseSeasonDetails": "Piilota kausierittely: {{name}}"
   },
   "pwa": {
     "updateAvailable": "Päivitys tarjolla!",

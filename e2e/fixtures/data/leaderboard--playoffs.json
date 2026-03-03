@@ -7,6 +7,12 @@
     "conferenceFinals": 6,
     "secondRound": 8,
     "firstRound": 10,
+    "appearances": 31,
+    "seasons": [
+      { "season": 2024, "round": 5, "key": "championship" },
+      { "season": 2023, "round": 2, "key": "secondRound" },
+      { "season": 2022, "round": 1, "key": "firstRound" }
+    ],
     "tieRank": false
   },
   {
@@ -17,6 +23,12 @@
     "conferenceFinals": 5,
     "secondRound": 7,
     "firstRound": 9,
+    "appearances": 26,
+    "seasons": [
+      { "season": 2024, "round": 4, "key": "final" },
+      { "season": 2023, "round": 5, "key": "championship" },
+      { "season": 2022, "round": 0, "key": "notQualified" }
+    ],
     "tieRank": false
   },
   {
@@ -27,6 +39,12 @@
     "conferenceFinals": 4,
     "secondRound": 6,
     "firstRound": 8,
+    "appearances": 23,
+    "seasons": [
+      { "season": 2024, "round": 3, "key": "conferenceFinal" },
+      { "season": 2023, "round": 2, "key": "secondRound" },
+      { "season": 2022, "round": 0, "key": "notQualified" }
+    ],
     "tieRank": true
   },
   {
@@ -37,6 +55,12 @@
     "conferenceFinals": 4,
     "secondRound": 6,
     "firstRound": 9,
+    "appearances": 22,
+    "seasons": [
+      { "season": 2024, "round": 1, "key": "firstRound" },
+      { "season": 2023, "round": 0, "key": "notQualified" },
+      { "season": 2022, "round": 0, "key": "notQualified" }
+    ],
     "tieRank": false
   }
 ]

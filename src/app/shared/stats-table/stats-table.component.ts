@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { Column, ColumnIcon } from '@shared/column.types';
 import { Player, Goalie, RegularLeaderboardEntry, PlayoffLeaderboardEntry } from '@services/api.service';
+import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
 
 export type TableRow = Player | Goalie | RegularLeaderboardEntry | PlayoffLeaderboardEntry;
 import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
@@ -73,13 +74,22 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   @Input() onRowSelect?: (row: TableRow) => void;
   @Input() clickable = true;
   @Input() formatCell?: (column: string, value: number | string | undefined) => string;
+  @Input() expandable = false;
+  @Input() rowKey?: (row: TableRow, index: number) => string;
+  @Input() isRowExpandable: (row: TableRow) => boolean = () => false;
+  @Input() expandedRowsFor: (row: TableRow) => ExpandedRowViewModel[] = () => [];
+  @Input() expandToggleAriaLabel?: (row: TableRow, expanded: boolean) => string;
+  @Input() expandedHeaderLabels?: { season: string; primary: string; secondary?: string };
 
   instructionsId = 'stats-table-instructions';
   activeRowIndex = 0;
+  readonly expandedDetailColumns = ['expandedDetail'];
 
   dataSource = new MatTableDataSource<TableRow>([]);
   dynamicColumns: Column[] = [];
   displayedFields: string[] = [];
+  private rowKeyMap = new WeakMap<object, string>();
+  private expandedRowKeys = new Set<string>();
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('searchInput', { read: ElementRef }) searchInput?: ElementRef<HTMLInputElement>;
@@ -99,6 +109,8 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
     if (changes['data'] && this.data) {
       this.dataSource.data = this.data;
+      this.rebuildRowKeyMap();
+      this.expandedRowKeys.clear();
 
       if (this.columns?.length > 0) {
         this.dynamicColumns = this.columns;
@@ -226,6 +238,81 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
     return (row as Record<string, unknown>)[field] as number | string | undefined;
   }
 
+  isExpandControlColumn(column: Column): boolean {
+    if (!this.expandable || this.dynamicColumns.length === 0) return false;
+    return this.dynamicColumns[0]?.field === column.field;
+  }
+
+  shouldShowExpandToggle(row: TableRow): boolean {
+    return this.expandable && this.isRowExpandable(row);
+  }
+
+  toggleRowExpansion(row: TableRow, event?: Event): void {
+    event?.stopPropagation();
+    if (!this.shouldShowExpandToggle(row)) return;
+
+    const key = this.resolveRowKey(row);
+    if (this.expandedRowKeys.has(key)) {
+      this.expandedRowKeys.delete(key);
+      this.refreshRenderedRows();
+      return;
+    }
+
+    this.expandedRowKeys.add(key);
+    this.refreshRenderedRows();
+  }
+
+  onExpandToggleKeydown(event: KeyboardEvent, row: TableRow): void {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    this.toggleRowExpansion(row, event);
+  }
+
+  onMainRowClick(row: TableRow, event: MouseEvent): void {
+    if (this.clickable) {
+      this.selectItem(row);
+      return;
+    }
+
+    if (this.expandable && this.shouldShowExpandToggle(row)) {
+      const wasExpanded = this.isExpanded(row);
+      this.toggleRowExpansion(row);
+      const isNowExpanded = this.isExpanded(row);
+      if (wasExpanded && !isNowExpanded) {
+        (event.currentTarget as HTMLElement | null)?.blur();
+      }
+    }
+  }
+
+  isRowInteractive(row: TableRow): boolean {
+    return this.clickable || (this.expandable && this.shouldShowExpandToggle(row));
+  }
+
+  isExpanded(row: TableRow): boolean {
+    if (!this.expandable) return false;
+    return this.expandedRowKeys.has(this.resolveRowKey(row));
+  }
+
+  isExpandedDetailRow = (_index: number, row: TableRow): boolean =>
+    this.expandable && this.isExpanded(row) && this.shouldShowExpandToggle(row);
+
+  getExpandedRows(row: TableRow): ExpandedRowViewModel[] {
+    if (!this.expandable || !this.shouldShowExpandToggle(row) || !this.isExpanded(row)) return [];
+    return this.expandedRowsFor(row);
+  }
+
+  getExpandToggleAriaLabel(row: TableRow): string {
+    const expanded = this.isExpanded(row);
+    if (this.expandToggleAriaLabel) return this.expandToggleAriaLabel(row, expanded);
+
+    const key = expanded ? 'a11y.collapseSeasonDetails' : 'a11y.expandSeasonDetails';
+    return this.translate.instant(key, { name: this.getRowLabel(row) });
+  }
+
+  getDetailRowId(row: TableRow): string {
+    return `expanded-detail-${this.resolveRowKey(row)}`;
+  }
+
   filterItems(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -317,10 +404,23 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   onRowKeydown(event: KeyboardEvent, row: TableRow, index: number): void {
     switch (event.key) {
-      case 'Enter': {
-        if (!this.clickable) return;
+      case ' ': {
+        if (this.clickable) return;
+        if (!this.expandable || !this.shouldShowExpandToggle(row)) return;
         event.preventDefault();
-        this.selectItem(row);
+        this.toggleRowExpansion(row, event);
+        return;
+      }
+      case 'Enter': {
+        if (this.clickable) {
+          event.preventDefault();
+          this.selectItem(row);
+          return;
+        }
+
+        if (!this.expandable || !this.shouldShowExpandToggle(row)) return;
+        event.preventDefault();
+        this.toggleRowExpansion(row, event);
         return;
       }
       case 'PageDown': {
@@ -359,8 +459,37 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   getRowAriaLabel(row: TableRow, translateKey: string): string {
-    const name = (row as { name?: string })?.name ?? '';
+    const name = this.getRowLabel(row);
     return this.translate.instant(translateKey, { name });
+  }
+
+  private getRowLabel(row: TableRow): string {
+    const rowWithLabel = row as { name?: string; teamName?: string };
+    return rowWithLabel.name ?? rowWithLabel.teamName ?? '';
+  }
+
+  private rebuildRowKeyMap(): void {
+    this.rowKeyMap = new WeakMap<object, string>();
+    this.dataSource.data.forEach((row, index) => {
+      this.rowKeyMap.set(row, this.resolveRowKey(row, index));
+    });
+  }
+
+  private resolveRowKey(row: TableRow, index?: number): string {
+    if (this.rowKey) {
+      const resolvedIndex = index ?? this.dataSource.data.indexOf(row);
+      return this.rowKey(row, resolvedIndex >= 0 ? resolvedIndex : 0);
+    }
+
+    const mapped = this.rowKeyMap.get(row);
+    if (mapped) return mapped;
+    const fallbackIndex = index ?? this.dataSource.data.indexOf(row);
+    return String(fallbackIndex >= 0 ? fallbackIndex : 0);
+  }
+
+  private refreshRenderedRows(): void {
+    this.dataSource.data = [...this.dataSource.data];
+    this.cdr.detectChanges();
   }
 
   private getRowCount(): number {

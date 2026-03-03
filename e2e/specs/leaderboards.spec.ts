@@ -24,6 +24,15 @@ test.describe('Leaderboards', () => {
     expect(positions.some(p => /^\d+$/.test(p))).toBe(true);
     expect(positions.some(p => p === '')).toBe(true);
 
+    // regular table: expandable season details (multiple open rows)
+    const regularRows = page.locator('tr[mat-row]');
+    await regularRows.nth(0).click();
+    await expect(page.locator('.expanded-season-row').first()).toBeVisible();
+
+    await regularRows.nth(1).click();
+    await expect(regularRows.nth(0)).toHaveAttribute('aria-expanded', 'true');
+    await expect(regularRows.nth(1)).toHaveAttribute('aria-expanded', 'true');
+
     // switch to Playoffs tab
     const playoffsTab = page.getByRole('tab', { name: LEADERBOARD_LABELS.PLAYOFFS });
     await playoffsTab.click();
@@ -33,6 +42,19 @@ test.describe('Leaderboards', () => {
     // playoffs table has data
     await rows.first().waitFor({ state: 'visible', timeout: 10000 });
     expect(await rows.count()).toBeGreaterThan(0);
+
+    // playoffs table: season details include trophy marker only for championship seasons
+    const playoffRows = page.locator('tr[mat-row]');
+    await playoffRows.nth(0).click();
+
+    const playoffSeasonRows = page.locator('.expanded-season-row');
+    await expect(playoffSeasonRows.first()).toBeVisible();
+
+    const trophyMarkers = page.locator('.expanded-season-secondary', { hasText: '🏆' });
+    const playoffRowsCount = await playoffSeasonRows.count();
+    const trophyCount = await trophyMarkers.count();
+    expect(trophyCount).toBeGreaterThan(0);
+    expect(playoffRowsCount).toBeGreaterThan(trophyCount);
   });
 
   test('direct URL /leaderboards/regular loads without redirect', async ({ page }) => {

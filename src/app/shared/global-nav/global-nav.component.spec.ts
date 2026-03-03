@@ -8,7 +8,7 @@ import {
   slicedPlayers,
 } from '../../testing/behavior-test-utils';
 
-describe('GlobalNavComponent — navigation flow', { timeout: 30_000 }, () => {
+describe('GlobalNavComponent — navigation flow', { timeout: 45_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();

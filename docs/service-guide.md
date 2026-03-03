@@ -115,6 +115,10 @@ npm run generate:types
 - `PlayerScores` / `GoalieScoresCombined` / `GoalieScoresSeason` — explicit score field shapes
   (spec defines these as loose objects; explicit types preserved for autocomplete safety)
 
+**Leaderboard response shape note**:
+- `RegularLeaderboardEntry` and `PlayoffLeaderboardEntry` include `seasons` arrays from the API schema.
+- The leaderboard UI uses these for expandable per-season detail rows while aggregate columns/ranking remain unchanged.
+
 **Key Methods**:
 ```typescript
 class ApiService {
