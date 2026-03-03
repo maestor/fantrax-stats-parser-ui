@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService, RegularLeaderboardEntry } from '@services/api.service';
+import { ViewportService } from '@services/viewport.service';
 import { Column } from '@shared/column.types';
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { mapRegularLeaderboardSeasons } from '../leaderboard/leaderboard-expansion.utils';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-leaderboard-regular',
@@ -23,6 +25,17 @@ import { mapRegularLeaderboardSeasons } from '../leaderboard/leaderboard-expansi
 export class LeaderboardRegularComponent {
   private apiService = inject(ApiService);
   private translate = inject(TranslateService);
+  private viewportService = inject(ViewportService);
+  private destroyRef = inject(DestroyRef);
+  private isMobile = false;
+
+  constructor() {
+    this.viewportService.isMobile$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((isMobile) => {
+        this.isMobile = isMobile;
+      });
+  }
 
   readonly fetchFn = () => this.apiService.getLeaderboardRegular();
   readonly columns: Column[] = [
@@ -53,7 +66,7 @@ export class LeaderboardRegularComponent {
         primary: this.translate.instant('leaderboards.noSeasonBreakdown'),
       }];
     }
-    return mapRegularLeaderboardSeasons(seasons);
+    return mapRegularLeaderboardSeasons(seasons, { shortSeasonLabel: this.isMobile });
   };
   readonly expandToggleAriaLabel = (
     row: { teamName: string },

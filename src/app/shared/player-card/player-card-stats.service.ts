@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Player, Goalie } from '@services/api.service';
 import { PositionFilter } from '@services/filter.service';
+import { formatSeasonDisplay } from '@shared/utils/season.utils';
 
 export interface StatRow {
   label: string;
@@ -38,7 +39,7 @@ export class PlayerCardStatsService {
       let value: string | number;
 
       if (key === 'season') {
-        value = this.formatSeasonDisplay(data[key as keyof typeof data] as number);
+        value = formatSeasonDisplay(data[key as keyof typeof data] as number);
       } else if (usePositionScores && key === 'score' && player.scoreByPosition != null) {
         value = player.scoreByPosition;
       } else if (usePositionScores && key === 'scoreAdjustedByGames' && player.scoreByPositionAdjustedByGames != null) {
@@ -72,9 +73,5 @@ export class PlayerCardStatsService {
     }
 
     return result;
-  }
-
-  formatSeasonDisplay(year: number): string {
-    return `${year}-${String(year + 1).slice(-2)}`;
   }
 }

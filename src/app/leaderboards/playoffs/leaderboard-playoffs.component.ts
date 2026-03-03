@@ -1,12 +1,14 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService, PlayoffLeaderboardEntry } from '@services/api.service';
+import { ViewportService } from '@services/viewport.service';
 import { Column } from '@shared/column.types';
 import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import {
   mapPlayoffLeaderboardSeasons,
   PLAYOFF_ROUND_TRANSLATION_KEY,
 } from '../leaderboard/leaderboard-expansion.utils';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-leaderboard-playoffs',
@@ -25,6 +27,17 @@ import {
 export class LeaderboardPlayoffsComponent {
   private apiService = inject(ApiService);
   private translate = inject(TranslateService);
+  private viewportService = inject(ViewportService);
+  private destroyRef = inject(DestroyRef);
+  private isMobile = false;
+
+  constructor() {
+    this.viewportService.isMobile$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((isMobile) => {
+        this.isMobile = isMobile;
+      });
+  }
 
   readonly fetchFn = () => this.apiService.getLeaderboardPlayoffs();
   readonly columns: Column[] = [
@@ -48,8 +61,10 @@ export class LeaderboardPlayoffsComponent {
         primary: this.translate.instant('leaderboards.noSeasonBreakdown'),
       }];
     }
-    return mapPlayoffLeaderboardSeasons(seasons, (key) =>
-      this.translate.instant(PLAYOFF_ROUND_TRANSLATION_KEY[key])
+    return mapPlayoffLeaderboardSeasons(
+      seasons,
+      (key) => this.translate.instant(PLAYOFF_ROUND_TRANSLATION_KEY[key]),
+      { shortSeasonLabel: this.isMobile },
     );
   };
   readonly expandToggleAriaLabel = (

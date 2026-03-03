@@ -179,11 +179,18 @@ th.mat-column-position {
 
 .expanded-season-row {
   display: grid;
-  grid-template-columns: minmax(95px, 130px) max-content auto;
+  grid-template-columns: minmax(60px, 95px) max-content auto;
   gap: 12px;
   align-items: center;
   color: var(--mat-sys-on-surface);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  height: 28px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: minmax(30px, 65px) max-content auto;
+  }
 }
+
 
 .expanded-season-label {
   color: var(--mat-sys-on-surface-variant);
@@ -192,7 +199,7 @@ th.mat-column-position {
 
 .expanded-season-primary {
   font-weight: 500;
-  min-width: 0;
+  min-width: 260px;
   overflow-wrap: anywhere;
 }
 
@@ -206,6 +213,7 @@ th.mat-column-position {
     opacity: 0;
     transform: translateY(-4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -305,11 +313,12 @@ tr.mat-mdc-row.expanded-master-row {
   }
 
   .expanded-season-header {
-    grid-template-columns: minmax(88px, 112px) max-content auto;
+    grid-template-columns: minmax(20px, 55px) max-content auto;
+
   }
 
   .expanded-season-row {
-    grid-template-columns: minmax(88px, 112px) max-content auto;
+    grid-template-columns: minmax(20px, 55px) max-content auto;
     gap: 8px;
   }
 }

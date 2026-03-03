@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
+import { ViewportService } from '@services/viewport.service';
 import { LeaderboardPlayoffsComponent } from '../playoffs/leaderboard-playoffs.component';
 import { LeaderboardRegularComponent } from '../regular/leaderboard-regular.component';
 
@@ -13,6 +14,12 @@ describe('Leaderboard expansion behavior', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideNoopAnimations(),
+        {
+          provide: ViewportService,
+          useValue: {
+            isMobile$: of(false),
+          },
+        },
         {
           provide: ApiService,
           useValue: {
@@ -87,8 +94,8 @@ describe('Leaderboard expansion behavior', () => {
     const team = await screen.findByText('Colorado Avalanche');
     fireEvent.click(team.closest('tr') as HTMLElement);
 
-    await screen.findByText('2024-2025');
-    expect(screen.getByText(/P-72,2%/)).toBeInTheDocument();
+    await screen.findByText('2024-25');
+    expect(screen.getByText(/P%: 72,2/)).toBeInTheDocument();
 
     const detailRow = document.querySelector('tr.expanded-detail-row') as HTMLElement;
     expect(detailRow).toBeTruthy();
@@ -101,6 +108,12 @@ describe('Leaderboard expansion behavior', () => {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideNoopAnimations(),
+        {
+          provide: ViewportService,
+          useValue: {
+            isMobile$: of(false),
+          },
+        },
         {
           provide: ApiService,
           useValue: {
