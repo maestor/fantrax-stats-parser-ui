@@ -18,7 +18,7 @@
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort matSortStart="desc"
       [attr.aria-describedby]="instructionsId"
-      multiTemplateDataRows>
+      [multiTemplateDataRows]="expandable">
 
       <!-- Position column (rank + optional checkbox) -->
       @if (showPositionColumn) {
