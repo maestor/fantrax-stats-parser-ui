@@ -43,6 +43,9 @@ describe('GlobalNavComponent — navigation flow', { timeout: 45_000 }, () => {
 
     // Bottom sheet dismisses after route navigation; wait for leaderboard page tab links
     await screen.findByText('leaderboards.tabs.regular', {}, { timeout: 5000 });
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: /nav\.leaderboards/ })).not.toBeInTheDocument();
+    });
 
     // Re-open navigation and verify leaderboards is now active
     fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
