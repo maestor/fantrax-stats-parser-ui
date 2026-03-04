@@ -1,0 +1,42 @@
+@mixin slide-fade-enter-leave(
+  $name,
+  $enter-duration: 600ms,
+  $leave-duration: 150ms,
+  $enter-ease: cubic-bezier(0.22, 0, 0.36, 1),
+  $leave-ease: cubic-bezier(0.4, 0, 1, 1),
+  $enter-y: -100%,
+  $leave-y: -4px,
+  $start-scale: 0.98
+) {
+  .#{$name}-enter {
+    animation: #{$name}-enter $enter-duration $enter-ease;
+  }
+
+  .#{$name}-leave {
+    animation: #{$name}-leave $leave-duration $leave-ease;
+  }
+
+  @keyframes #{$name}-enter {
+    from {
+      opacity: 0;
+      transform: translateY($enter-y) scaleY($start-scale);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scaleY(1);
+    }
+  }
+
+  @keyframes #{$name}-leave {
+    from {
+      opacity: 1;
+      transform: translateY(0) scaleY(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY($leave-y) scaleY($start-scale);
+    }
+  }
+}
