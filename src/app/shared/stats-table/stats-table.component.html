@@ -94,7 +94,8 @@
           [attr.colspan]="displayedFields.length">
           @let details = getExpandedRows(row);
           @if (details.length > 0) {
-            <div class="expanded-detail-content">
+            <div class="expanded-detail-content"
+              animate.enter="expanded-detail-enter">
               @if (expandedHeaderLabels) {
                 <div class="expanded-season-header">
                   <span class="expanded-season-header-cell">{{ expandedHeaderLabels.season }}</span>
@@ -138,6 +139,8 @@
         *matRowDef="let row; columns: displayedFields; let i = index">
       </tr>
       <tr mat-row class="expanded-detail-row"
+        animate.enter="expanded-detail-row-enter"
+        animate.leave="expanded-detail-row-leave"
         *matRowDef="let row; columns: expandedDetailColumns; when: isExpandedDetailRow">
       </tr>
       <tr class="mat-row" *matNoDataRow>
