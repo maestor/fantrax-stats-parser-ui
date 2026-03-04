@@ -24,6 +24,7 @@ import type {
   PlayerSeasonStats,
 } from '@services/api.service';
 import type { PositionFilter } from '@services/filter.service';
+import { formatSeasonShort } from '@shared/utils/season.utils';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -118,17 +119,17 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
     return this.isGoalie
       ? ['score', 'scoreAdjustedByGames', 'games', 'wins', 'saves', 'shutouts']
       : [
-          'score',
-          'scoreAdjustedByGames',
-          'games',
-          'goals',
-          'assists',
-          'points',
-          'shots',
-          'penalties',
-          'hits',
-          'blocks',
-        ];
+        'score',
+        'scoreAdjustedByGames',
+        'games',
+        'goals',
+        'assists',
+        'points',
+        'shots',
+        'penalties',
+        'hits',
+        'blocks',
+      ];
   }
 
   chartSelections: Record<string, boolean> = {};
@@ -611,16 +612,9 @@ export class PlayerCardGraphsComponent implements OnInit, OnChanges, AfterViewIn
       (_, index) => minYear + index
     );
 
-    this.chartLabels = this.chartYearsRange.map((year) => this.formatSeasonShort(year));
+    this.chartLabels = this.chartYearsRange.map((year) => formatSeasonShort(year));
 
     this.updateChartData(seasons);
-  }
-
-  private formatSeasonShort(year: number): string {
-    const startShort = String(year).slice(-2);
-    const nextYear = year + 1;
-    const endShort = String(nextYear).slice(-2);
-    return `${startShort}-${endShort}`;
   }
 
   private updateChartData(sortedSeasons: (PlayerSeasonStats | GoalieSeasonStats)[]): void {

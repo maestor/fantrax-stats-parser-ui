@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Player, Goalie, PlayerSeasonStats, GoalieSeasonStats } from '@services/api.service';
 import { PositionFilter } from '@services/filter.service';
 import { PlayerCardStatsService } from './player-card-stats.service';
+import { formatSeasonDisplay, formatSeasonShort } from '@shared/utils/season.utils';
 
 export interface SeasonDataResult {
   seasonColumns: string[];
@@ -47,8 +48,8 @@ export class PlayerCardSeasonsService {
       return {
         ...season,
         seasonDisplay: isMobile
-          ? this.formatSeasonShort(season.season)
-          : this.statsService.formatSeasonDisplay(season.season),
+          ? formatSeasonShort(season.season)
+          : formatSeasonDisplay(season.season),
         ...scoreOverrides,
       };
     }) as (PlayerSeasonStats | GoalieSeasonStats)[];
@@ -93,13 +94,6 @@ export class PlayerCardSeasonsService {
 
   isCareerBest(careerBests: Map<string, Set<number>>, column: string, season: number): boolean {
     return careerBests.get(column)?.has(season) ?? false;
-  }
-
-  private formatSeasonShort(year: number): string {
-    const startShort = String(year).slice(-2);
-    const nextYear = year + 1;
-    const endShort = String(nextYear).slice(-2);
-    return `${startShort}-${endShort}`;
   }
 
   private parseStatValue(value: unknown): number | null {

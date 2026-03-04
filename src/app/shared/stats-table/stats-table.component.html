@@ -17,7 +17,8 @@
 
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" matSort matSortStart="desc"
-      [attr.aria-describedby]="instructionsId">
+      [attr.aria-describedby]="instructionsId"
+      [multiTemplateDataRows]="expandable">
 
       <!-- Position column (rank + optional checkbox) -->
       @if (showPositionColumn) {
@@ -87,19 +88,57 @@
         </ng-container>
       }
 
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let row" class="expanded-detail-cell"
+          [attr.id]="getDetailRowId(row)"
+          [attr.colspan]="displayedFields.length">
+          @let details = getExpandedRows(row);
+          @if (details.length > 0) {
+            <div class="expanded-detail-content">
+              @if (expandedHeaderLabels) {
+                <div class="expanded-season-header">
+                  <span class="expanded-season-header-cell">{{ expandedHeaderLabels.season }}</span>
+                  <span class="expanded-season-header-cell">{{ expandedHeaderLabels.primary }}</span>
+                  @if (expandedHeaderLabels.secondary !== undefined) {
+                    <span class="expanded-season-header-cell expanded-season-header-cell--center">
+                      {{ expandedHeaderLabels.secondary }}
+                    </span>
+                  }
+                </div>
+              }
+              @for (detail of details; track detail.seasonLabel + ':' + $index) {
+                <div class="expanded-season-row">
+                  <span class="expanded-season-label">{{ detail.seasonLabel }}</span>
+                  <span class="expanded-season-primary">{{ detail.primary }}</span>
+                  @if (detail.secondary) {
+                    <span class="expanded-season-secondary">{{ detail.secondary }}</span>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </td>
+      </ng-container>
+
       <tr mat-header-row (keydown)="onHeaderKeydown($event)"
         *matHeaderRowDef="displayedFields; sticky: true"></tr>
       <tr mat-row
-        [class.clickable-row]="clickable"
-        (click)="clickable && selectItem(row)"
+        [class.clickable-row]="isRowInteractive(row)"
+        [class.expanded-master-row]="isExpanded(row)"
+        (click)="onMainRowClick(row, $event)"
         (focus)="onRowFocus(i)"
         (keydown)="onRowKeydown($event, row, i)"
         [attr.tabindex]="getRowTabIndex(i)"
         [attr.data-row-index]="i"
         [class.a11y-active]="i === activeRowIndex"
-        [attr.aria-label]="clickable ? getRowAriaLabel(row, 'a11y.openPlayerCard') : null"
+        [attr.aria-label]="clickable ? getRowAriaLabel(row, 'a11y.openPlayerCard') : (expandable ? getExpandToggleAriaLabel(row) : null)"
         [attr.aria-haspopup]="clickable ? 'dialog' : null"
+        [attr.aria-expanded]="expandable && shouldShowExpandToggle(row) ? isExpanded(row) : null"
+        [attr.aria-controls]="expandable && shouldShowExpandToggle(row) && isExpanded(row) ? getDetailRowId(row) : null"
         *matRowDef="let row; columns: displayedFields; let i = index">
+      </tr>
+      <tr mat-row class="expanded-detail-row"
+        *matRowDef="let row; columns: expandedDetailColumns; when: isExpandedDetailRow">
       </tr>
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell no-results" [colSpan]="displayedFields.length">

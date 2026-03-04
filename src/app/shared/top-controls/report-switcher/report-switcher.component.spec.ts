@@ -8,7 +8,7 @@ import {
     slicedPlayers,
 } from '../../../testing/behavior-test-utils';
 
-describe('ReportSwitcherComponent — desktop user flow', { timeout: 20_000 }, () => {
+describe('ReportSwitcherComponent — desktop user flow', () => {
     beforeEach(() => {
         polyfillJsdom();
         seedLocalStorage();

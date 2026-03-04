@@ -59,6 +59,8 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
     // ── Static endpoints ─────────────────────────────────────────────
     { path: 'teams' },
     { path: 'last-modified' },
+    { path: 'leaderboard/regular' },
+    { path: 'leaderboard/playoffs' },
 
     // ── Seasons ──────────────────────────────────────────────────────
     // Default team (no params → uses default startFrom=oldest internally)

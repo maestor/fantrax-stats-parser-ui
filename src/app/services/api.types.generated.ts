@@ -990,13 +990,21 @@ export interface components {
             conferenceFinals: number;
             secondRound: number;
             firstRound: number;
+            seasons: components["schemas"]["PlayoffLeaderboardSeason"][];
             /** @description True when this entry's record matches the previous entry's record. */
             tieRank: boolean;
+        };
+        PlayoffLeaderboardSeason: {
+            season: number;
+            /** @description Playoff round reached: 0=not qualified, 1-4=round reached, 5=championship. */
+            round: number;
+            /** @enum {string} */
+            key: "championship" | "final" | "conferenceFinal" | "secondRound" | "firstRound" | "notQualified";
         };
         RegularLeaderboardEntry: {
             teamId: string;
             teamName: string;
-            seasons: number;
+            seasons: components["schemas"]["RegularLeaderboardSeason"][];
             wins: number;
             losses: number;
             ties: number;
@@ -1012,6 +1020,20 @@ export interface components {
             regularTrophies: number;
             /** @description True when this entry's record matches the previous entry's record. */
             tieRank: boolean;
+        };
+        RegularLeaderboardSeason: {
+            season: number;
+            regularTrophy: boolean;
+            wins: number;
+            losses: number;
+            ties: number;
+            points: number;
+            divWins: number;
+            divLosses: number;
+            divTies: number;
+            winPercent: number;
+            divWinPercent: number;
+            pointsPercent: number;
         };
     };
     responses: never;

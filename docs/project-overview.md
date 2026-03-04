@@ -62,6 +62,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - All-time playoffs ranking table: position, championships, finals, conference finals, round results, appearances
    - Tab navigation between Runkosarja and Playoffs views (default: Playoffs)
    - Column sorting via `mat-sort`; position ties handled correctly (first tied team shows number, subsequent show blank)
+   - Expandable season breakdown rows per team (regular and playoffs) by clicking a team row, with multiple expanded rows allowed
+   - Season breakdown rows can show trophy markers for winner/championship seasons
 
 6. **Data Management**
    - Caching service to reduce API calls
