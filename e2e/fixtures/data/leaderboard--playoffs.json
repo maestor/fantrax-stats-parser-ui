@@ -1,66 +1,2428 @@
 [
   {
     "teamId": "1",
-    "teamName": "Colorado Avalanche",
     "championships": 3,
-    "finals": 4,
-    "conferenceFinals": 6,
-    "secondRound": 8,
-    "firstRound": 10,
-    "appearances": 31,
+    "finals": 2,
+    "conferenceFinals": 2,
+    "secondRound": 4,
+    "firstRound": 2,
+    "teamName": "Colorado Avalanche",
+    "appearances": 13,
     "seasons": [
-      { "season": 2024, "round": 5, "key": "championship" },
-      { "season": 2023, "round": 2, "key": "secondRound" },
-      { "season": 2022, "round": 1, "key": "firstRound" }
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2014,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2015,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2018,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2021,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2022,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2023,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2024,
+        "round": 3,
+        "key": "conferenceFinal"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "4",
+    "championships": 3,
+    "finals": 0,
+    "conferenceFinals": 4,
+    "secondRound": 2,
+    "firstRound": 4,
+    "teamName": "Vancouver Canucks",
+    "appearances": 13,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2013,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2014,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2015,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2016,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2022,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2023,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "5",
+    "championships": 2,
+    "finals": 5,
+    "conferenceFinals": 4,
+    "secondRound": 0,
+    "firstRound": 1,
+    "teamName": "Montreal Canadiens",
+    "appearances": 12,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2014,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2015,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2016,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2017,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2018,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2021,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2022,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2023,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2024,
+        "round": 3,
+        "key": "conferenceFinal"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "10",
+    "championships": 2,
+    "finals": 1,
+    "conferenceFinals": 1,
+    "secondRound": 5,
+    "firstRound": 4,
+    "teamName": "Nashville Predators",
+    "appearances": 13,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2017,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2018,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2023,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2024,
+        "round": 2,
+        "key": "secondRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "9",
+    "championships": 1,
+    "finals": 1,
+    "conferenceFinals": 2,
+    "secondRound": 6,
+    "firstRound": 3,
+    "teamName": "New York Rangers",
+    "appearances": 13,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2014,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2015,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2016,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2023,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2024,
+        "round": 5,
+        "key": "championship"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "22",
+    "championships": 1,
+    "finals": 0,
+    "conferenceFinals": 3,
+    "secondRound": 3,
+    "firstRound": 6,
+    "teamName": "Philadelphia Flyers",
+    "appearances": 13,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2016,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 5,
+        "key": "championship"
+      },
+      {
+        "season": 2021,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "26",
+    "championships": 0,
+    "finals": 1,
+    "conferenceFinals": 2,
+    "secondRound": 0,
+    "firstRound": 4,
+    "teamName": "Pittsburgh Penguins",
+    "appearances": 7,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2014,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
     ],
     "tieRank": false
   },
   {
     "teamId": "2",
-    "teamName": "Vegas Golden Knights",
-    "championships": 2,
-    "finals": 3,
-    "conferenceFinals": 5,
-    "secondRound": 7,
-    "firstRound": 9,
-    "appearances": 26,
+    "championships": 0,
+    "finals": 1,
+    "conferenceFinals": 0,
+    "secondRound": 1,
+    "firstRound": 2,
+    "teamName": "Carolina Hurricanes",
+    "appearances": 4,
     "seasons": [
-      { "season": 2024, "round": 4, "key": "final" },
-      { "season": 2023, "round": 5, "key": "championship" },
-      { "season": 2022, "round": 0, "key": "notQualified" }
+      {
+        "season": 2012,
+        "round": 4,
+        "key": "final"
+      },
+      {
+        "season": 2013,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "7",
+    "championships": 0,
+    "finals": 1,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 2,
+    "teamName": "Edmonton Oilers",
+    "appearances": 3,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 4,
+        "key": "final"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "12",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 2,
+    "secondRound": 4,
+    "firstRound": 4,
+    "teamName": "Anaheim Ducks",
+    "appearances": 10,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2017,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2018,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2022,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2023,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "8",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 1,
+    "secondRound": 2,
+    "firstRound": 5,
+    "teamName": "San Jose Sharks",
+    "appearances": 8,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2013,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2014,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "11",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 1,
+    "secondRound": 1,
+    "firstRound": 5,
+    "teamName": "Los Angeles Kings",
+    "appearances": 7,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "29",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 1,
+    "secondRound": 1,
+    "firstRound": 2,
+    "teamName": "Dallas Stars",
+    "appearances": 4,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "24",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 1,
+    "secondRound": 0,
+    "firstRound": 6,
+    "teamName": "New Jersey Devils",
+    "appearances": 7,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 3,
+        "key": "conferenceFinal"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "18",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 6,
+    "firstRound": 4,
+    "teamName": "Boston Bruins",
+    "appearances": 10,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2018,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 2,
+        "key": "secondRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "15",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 5,
+    "firstRound": 6,
+    "teamName": "St. Louis Blues",
+    "appearances": 11,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2014,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2015,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2016,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "16",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 5,
+    "firstRound": 2,
+    "teamName": "Tampa Bay Lightning",
+    "appearances": 7,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2021,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2022,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "17",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 3,
+    "firstRound": 5,
+    "teamName": "Florida Panthers",
+    "appearances": 8,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
     ],
     "tieRank": false
   },
   {
     "teamId": "3",
-    "teamName": "Tampa Bay Lightning",
-    "championships": 2,
-    "finals": 3,
-    "conferenceFinals": 4,
-    "secondRound": 6,
-    "firstRound": 8,
-    "appearances": 23,
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 3,
+    "firstRound": 4,
+    "teamName": "Calgary Flames",
+    "appearances": 7,
     "seasons": [
-      { "season": 2024, "round": 3, "key": "conferenceFinal" },
-      { "season": 2023, "round": 2, "key": "secondRound" },
-      { "season": 2022, "round": 0, "key": "notQualified" }
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 2,
+        "key": "secondRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "19",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 2,
+    "firstRound": 5,
+    "teamName": "Toronto Maple Leafs",
+    "appearances": 7,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "23",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 2,
+    "firstRound": 4,
+    "teamName": "New York Islanders",
+    "appearances": 6,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2024,
+        "round": 2,
+        "key": "secondRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "20",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 1,
+    "firstRound": 3,
+    "teamName": "Ottawa Senators",
+    "appearances": 4,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 2,
+        "key": "secondRound"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "14",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 7,
+    "teamName": "Minnesota Wild",
+    "appearances": 7,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 1,
+        "key": "firstRound"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "13",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 3,
+    "teamName": "Chicago Blackhawks",
+    "appearances": 3,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "25",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 3,
+    "teamName": "Washington Capitals",
+    "appearances": 3,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
     ],
     "tieRank": true
   },
   {
-    "teamId": "4",
-    "teamName": "Toronto Maple Leafs",
-    "championships": 1,
-    "finals": 2,
-    "conferenceFinals": 4,
-    "secondRound": 6,
-    "firstRound": 9,
-    "appearances": 22,
+    "teamId": "30",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 3,
+    "teamName": "Winnipeg Jets",
+    "appearances": 3,
     "seasons": [
-      { "season": 2024, "round": 1, "key": "firstRound" },
-      { "season": 2023, "round": 0, "key": "notQualified" },
-      { "season": 2022, "round": 0, "key": "notQualified" }
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2019,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2020,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": true
+  },
+  {
+    "teamId": "21",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 2,
+    "teamName": "Buffalo Sabres",
+    "appearances": 2,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2016,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
     ],
     "tieRank": false
+  },
+  {
+    "teamId": "27",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 1,
+    "teamName": "Columbus Blue Jackets",
+    "appearances": 1,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "28",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 1,
+    "teamName": "Seattle Kraken",
+    "appearances": 1,
+    "seasons": [
+      {
+        "season": 2021,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": true
+  },
+  {
+    "teamId": "6",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 1,
+    "teamName": "Detroit Red Wings",
+    "appearances": 1,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 1,
+        "key": "firstRound"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": true
+  },
+  {
+    "teamId": "31",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 0,
+    "teamName": "Utah Mammoth",
+    "appearances": 0,
+    "seasons": [
+      {
+        "season": 2012,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2013,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2014,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2015,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2016,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": false
+  },
+  {
+    "teamId": "32",
+    "championships": 0,
+    "finals": 0,
+    "conferenceFinals": 0,
+    "secondRound": 0,
+    "firstRound": 0,
+    "teamName": "Vegas Golden Knights",
+    "appearances": 0,
+    "seasons": [
+      {
+        "season": 2017,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2018,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2019,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2020,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2021,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2022,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2023,
+        "round": 0,
+        "key": "notQualified"
+      },
+      {
+        "season": 2024,
+        "round": 0,
+        "key": "notQualified"
+      }
+    ],
+    "tieRank": true
   }
 ]

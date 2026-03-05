@@ -1,5 +1,6 @@
 [
   {
+    "id": "00qs7",
     "name": "Jamie Benn",
     "position": "F",
     "games": 124,
@@ -18,6 +19,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "00qs7",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -60,6 +62,7 @@
       },
       {
         "season": 2013,
+        "id": "00qs7",
         "position": "F",
         "games": 14,
         "goals": 7,
@@ -103,6 +106,7 @@
       },
       {
         "season": 2014,
+        "id": "00qs7",
         "position": "F",
         "games": 12,
         "goals": 12,
@@ -146,6 +150,7 @@
       },
       {
         "season": 2015,
+        "id": "00qs7",
         "position": "F",
         "games": 15,
         "goals": 9,
@@ -189,6 +194,7 @@
       },
       {
         "season": 2016,
+        "id": "00qs7",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -232,6 +238,7 @@
       },
       {
         "season": 2017,
+        "id": "00qs7",
         "position": "F",
         "games": 8,
         "goals": 4,
@@ -275,6 +282,7 @@
       },
       {
         "season": 2018,
+        "id": "00qs7",
         "position": "F",
         "games": 16,
         "goals": 3,
@@ -318,6 +326,7 @@
       },
       {
         "season": 2019,
+        "id": "00qs7",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -359,6 +368,7 @@
       },
       {
         "season": 2020,
+        "id": "00qs7",
         "position": "F",
         "games": 11,
         "goals": 3,
@@ -402,6 +412,7 @@
       },
       {
         "season": 2021,
+        "id": "00qs7",
         "position": "F",
         "games": 8,
         "goals": 2,
@@ -445,6 +456,7 @@
       },
       {
         "season": 2022,
+        "id": "00qs7",
         "position": "F",
         "games": 7,
         "goals": 4,
@@ -486,6 +498,7 @@
       },
       {
         "season": 2023,
+        "id": "00qs7",
         "position": "F",
         "games": 13,
         "goals": 9,
@@ -529,6 +542,7 @@
       },
       {
         "season": 2024,
+        "id": "00qs7",
         "position": "F",
         "games": 9,
         "goals": 0,
@@ -599,6 +613,7 @@
     "scoreByPositionAdjustedByGames": 76.08
   },
   {
+    "id": "02b76",
     "name": "Vincent Trocheck",
     "position": "F",
     "games": 113,
@@ -617,6 +632,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "02b76",
         "position": "F",
         "games": 14,
         "goals": 3,
@@ -660,6 +676,7 @@
       },
       {
         "season": 2014,
+        "id": "02b76",
         "position": "F",
         "games": 11,
         "goals": 2,
@@ -703,6 +720,7 @@
       },
       {
         "season": 2015,
+        "id": "02b76",
         "position": "F",
         "games": 11,
         "goals": 6,
@@ -746,6 +764,7 @@
       },
       {
         "season": 2016,
+        "id": "02b76",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -789,6 +808,7 @@
       },
       {
         "season": 2017,
+        "id": "02b76",
         "position": "F",
         "games": 6,
         "goals": 4,
@@ -832,6 +852,7 @@
       },
       {
         "season": 2018,
+        "id": "02b76",
         "position": "F",
         "games": 17,
         "goals": 4,
@@ -875,6 +896,7 @@
       },
       {
         "season": 2019,
+        "id": "02b76",
         "position": "F",
         "games": 4,
         "goals": 1,
@@ -916,6 +938,7 @@
       },
       {
         "season": 2020,
+        "id": "02b76",
         "position": "F",
         "games": 10,
         "goals": 3,
@@ -959,6 +982,7 @@
       },
       {
         "season": 2021,
+        "id": "02b76",
         "position": "F",
         "games": 8,
         "goals": 1,
@@ -1002,6 +1026,7 @@
       },
       {
         "season": 2022,
+        "id": "02b76",
         "position": "F",
         "games": 7,
         "goals": 0,
@@ -1043,6 +1068,7 @@
       },
       {
         "season": 2023,
+        "id": "02b76",
         "position": "F",
         "games": 14,
         "goals": 1,
@@ -1086,6 +1112,7 @@
       },
       {
         "season": 2024,
+        "id": "02b76",
         "position": "F",
         "games": 8,
         "goals": 2,
@@ -1156,6 +1183,7 @@
     "scoreByPositionAdjustedByGames": 71.29
   },
   {
+    "id": "005is",
     "name": "Blake Wheeler",
     "position": "F",
     "games": 76,
@@ -1174,6 +1202,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "005is",
         "position": "F",
         "games": 13,
         "goals": 5,
@@ -1217,6 +1246,7 @@
       },
       {
         "season": 2014,
+        "id": "005is",
         "position": "F",
         "games": 12,
         "goals": 6,
@@ -1260,6 +1290,7 @@
       },
       {
         "season": 2015,
+        "id": "005is",
         "position": "F",
         "games": 17,
         "goals": 8,
@@ -1303,6 +1334,7 @@
       },
       {
         "season": 2016,
+        "id": "005is",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -1346,6 +1378,7 @@
       },
       {
         "season": 2017,
+        "id": "005is",
         "position": "F",
         "games": 7,
         "goals": 1,
@@ -1389,6 +1422,7 @@
       },
       {
         "season": 2018,
+        "id": "005is",
         "position": "F",
         "games": 17,
         "goals": 3,
@@ -1432,6 +1466,7 @@
       },
       {
         "season": 2019,
+        "id": "005is",
         "position": "F",
         "games": 4,
         "goals": 1,
@@ -1473,6 +1508,7 @@
       },
       {
         "season": 2020,
+        "id": "005is",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -1543,6 +1579,7 @@
     "scoreByPositionAdjustedByGames": 74.76
   },
   {
+    "id": "02zpp",
     "name": "Viktor Arvidsson",
     "position": "F",
     "games": 87,
@@ -1561,6 +1598,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "02zpp",
         "position": "F",
         "games": 5,
         "goals": 0,
@@ -1604,6 +1642,7 @@
       },
       {
         "season": 2015,
+        "id": "02zpp",
         "position": "F",
         "games": 15,
         "goals": 1,
@@ -1647,6 +1686,7 @@
       },
       {
         "season": 2016,
+        "id": "02zpp",
         "position": "F",
         "games": 3,
         "goals": 1,
@@ -1690,6 +1730,7 @@
       },
       {
         "season": 2017,
+        "id": "02zpp",
         "position": "F",
         "games": 6,
         "goals": 2,
@@ -1733,6 +1774,7 @@
       },
       {
         "season": 2018,
+        "id": "02zpp",
         "position": "F",
         "games": 13,
         "goals": 7,
@@ -1776,6 +1818,7 @@
       },
       {
         "season": 2019,
+        "id": "02zpp",
         "position": "F",
         "games": 5,
         "goals": 0,
@@ -1817,6 +1860,7 @@
       },
       {
         "season": 2020,
+        "id": "02zpp",
         "position": "F",
         "games": 9,
         "goals": 5,
@@ -1860,6 +1904,7 @@
       },
       {
         "season": 2021,
+        "id": "02zpp",
         "position": "F",
         "games": 7,
         "goals": 2,
@@ -1903,6 +1948,7 @@
       },
       {
         "season": 2022,
+        "id": "02zpp",
         "position": "F",
         "games": 6,
         "goals": 6,
@@ -1944,6 +1990,7 @@
       },
       {
         "season": 2023,
+        "id": "02zpp",
         "position": "F",
         "games": 14,
         "goals": 6,
@@ -1987,6 +2034,7 @@
       },
       {
         "season": 2024,
+        "id": "02zpp",
         "position": "F",
         "games": 4,
         "goals": 2,
@@ -2057,6 +2105,7 @@
     "scoreByPositionAdjustedByGames": 64.33
   },
   {
+    "id": "01f3d",
     "name": "Oliver Ekman-Larsson",
     "position": "D",
     "games": 80,
@@ -2075,6 +2124,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "01f3d",
         "position": "D",
         "games": 13,
         "goals": 6,
@@ -2118,6 +2168,7 @@
       },
       {
         "season": 2015,
+        "id": "01f3d",
         "position": "D",
         "games": 10,
         "goals": 2,
@@ -2160,6 +2211,7 @@
       },
       {
         "season": 2016,
+        "id": "01f3d",
         "position": "D",
         "games": 2,
         "goals": 0,
@@ -2203,6 +2255,7 @@
       },
       {
         "season": 2017,
+        "id": "01f3d",
         "position": "D",
         "games": 7,
         "goals": 2,
@@ -2245,6 +2298,7 @@
       },
       {
         "season": 2018,
+        "id": "01f3d",
         "position": "D",
         "games": 17,
         "goals": 5,
@@ -2288,6 +2342,7 @@
       },
       {
         "season": 2019,
+        "id": "01f3d",
         "position": "D",
         "games": 3,
         "goals": 1,
@@ -2329,6 +2384,7 @@
       },
       {
         "season": 2020,
+        "id": "01f3d",
         "position": "D",
         "games": 10,
         "goals": 0,
@@ -2371,6 +2427,7 @@
       },
       {
         "season": 2021,
+        "id": "01f3d",
         "position": "D",
         "games": 6,
         "goals": 0,
@@ -2414,6 +2471,7 @@
       },
       {
         "season": 2023,
+        "id": "01f3d",
         "position": "D",
         "games": 12,
         "goals": 0,
@@ -2484,6 +2542,7 @@
     "scoreByPositionAdjustedByGames": 73.55
   },
   {
+    "id": "01bvj",
     "name": "Ryan McDonagh",
     "position": "D",
     "games": 60,
@@ -2502,6 +2561,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "01bvj",
         "position": "D",
         "games": 8,
         "goals": 3,
@@ -2544,6 +2604,7 @@
       },
       {
         "season": 2014,
+        "id": "01bvj",
         "position": "D",
         "games": 14,
         "goals": 1,
@@ -2587,6 +2648,7 @@
       },
       {
         "season": 2015,
+        "id": "01bvj",
         "position": "D",
         "games": 13,
         "goals": 1,
@@ -2629,6 +2691,7 @@
       },
       {
         "season": 2016,
+        "id": "01bvj",
         "position": "D",
         "games": 4,
         "goals": 2,
@@ -2672,6 +2735,7 @@
       },
       {
         "season": 2017,
+        "id": "01bvj",
         "position": "D",
         "games": 3,
         "goals": 1,
@@ -2714,6 +2778,7 @@
       },
       {
         "season": 2018,
+        "id": "01bvj",
         "position": "D",
         "games": 16,
         "goals": 2,
@@ -2757,6 +2822,7 @@
       },
       {
         "season": 2019,
+        "id": "01bvj",
         "position": "D",
         "games": 2,
         "goals": 0,
@@ -2825,6 +2891,7 @@
     "scoreByPositionAdjustedByGames": 75.71
   },
   {
+    "id": "003ky",
     "name": "Jonathan Toews",
     "position": "F",
     "games": 76,
@@ -2843,6 +2910,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003ky",
         "position": "F",
         "games": 4,
         "goals": 2,
@@ -2885,6 +2953,7 @@
       },
       {
         "season": 2013,
+        "id": "003ky",
         "position": "F",
         "games": 8,
         "goals": 1,
@@ -2928,6 +2997,7 @@
       },
       {
         "season": 2014,
+        "id": "003ky",
         "position": "F",
         "games": 13,
         "goals": 7,
@@ -2971,6 +3041,7 @@
       },
       {
         "season": 2015,
+        "id": "003ky",
         "position": "F",
         "games": 14,
         "goals": 4,
@@ -3014,6 +3085,7 @@
       },
       {
         "season": 2016,
+        "id": "003ky",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -3057,6 +3129,7 @@
       },
       {
         "season": 2017,
+        "id": "003ky",
         "position": "F",
         "games": 7,
         "goals": 3,
@@ -3100,6 +3173,7 @@
       },
       {
         "season": 2018,
+        "id": "003ky",
         "position": "F",
         "games": 16,
         "goals": 6,
@@ -3143,6 +3217,7 @@
       },
       {
         "season": 2019,
+        "id": "003ky",
         "position": "F",
         "games": 5,
         "goals": 1,
@@ -3184,6 +3259,7 @@
       },
       {
         "season": 2021,
+        "id": "003ky",
         "position": "F",
         "games": 6,
         "goals": 2,
@@ -3254,6 +3330,7 @@
     "scoreByPositionAdjustedByGames": 62.98
   },
   {
+    "id": "004nk",
     "name": "Logan Couture",
     "position": "F",
     "games": 92,
@@ -3272,6 +3349,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "004nk",
         "position": "F",
         "games": 11,
         "goals": 3,
@@ -3315,6 +3393,7 @@
       },
       {
         "season": 2014,
+        "id": "004nk",
         "position": "F",
         "games": 13,
         "goals": 5,
@@ -3358,6 +3437,7 @@
       },
       {
         "season": 2015,
+        "id": "004nk",
         "position": "F",
         "games": 18,
         "goals": 7,
@@ -3401,6 +3481,7 @@
       },
       {
         "season": 2016,
+        "id": "004nk",
         "position": "F",
         "games": 4,
         "goals": 2,
@@ -3444,6 +3525,7 @@
       },
       {
         "season": 2017,
+        "id": "004nk",
         "position": "F",
         "games": 6,
         "goals": 2,
@@ -3487,6 +3569,7 @@
       },
       {
         "season": 2018,
+        "id": "004nk",
         "position": "F",
         "games": 14,
         "goals": 4,
@@ -3530,6 +3613,7 @@
       },
       {
         "season": 2019,
+        "id": "004nk",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -3571,6 +3655,7 @@
       },
       {
         "season": 2020,
+        "id": "004nk",
         "position": "F",
         "games": 10,
         "goals": 1,
@@ -3614,6 +3699,7 @@
       },
       {
         "season": 2021,
+        "id": "004nk",
         "position": "F",
         "games": 6,
         "goals": 2,
@@ -3657,6 +3743,7 @@
       },
       {
         "season": 2022,
+        "id": "004nk",
         "position": "F",
         "games": 6,
         "goals": 2,
@@ -3725,6 +3812,7 @@
     "scoreByPositionAdjustedByGames": 59.5
   },
   {
+    "id": "01mzf",
     "name": "Reilly Smith",
     "position": "F",
     "games": 98,
@@ -3743,6 +3831,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "01mzf",
         "position": "F",
         "games": 1,
         "goals": 0,
@@ -3785,6 +3874,7 @@
       },
       {
         "season": 2013,
+        "id": "01mzf",
         "position": "F",
         "games": 15,
         "goals": 2,
@@ -3828,6 +3918,7 @@
       },
       {
         "season": 2014,
+        "id": "01mzf",
         "position": "F",
         "games": 12,
         "goals": 1,
@@ -3871,6 +3962,7 @@
       },
       {
         "season": 2015,
+        "id": "01mzf",
         "position": "F",
         "games": 17,
         "goals": 4,
@@ -3914,6 +4006,7 @@
       },
       {
         "season": 2016,
+        "id": "01mzf",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -3957,6 +4050,7 @@
       },
       {
         "season": 2017,
+        "id": "01mzf",
         "position": "F",
         "games": 1,
         "goals": 0,
@@ -4000,6 +4094,7 @@
       },
       {
         "season": 2018,
+        "id": "01mzf",
         "position": "F",
         "games": 14,
         "goals": 6,
@@ -4043,6 +4138,7 @@
       },
       {
         "season": 2019,
+        "id": "01mzf",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -4084,6 +4180,7 @@
       },
       {
         "season": 2020,
+        "id": "01mzf",
         "position": "F",
         "games": 8,
         "goals": 2,
@@ -4127,6 +4224,7 @@
       },
       {
         "season": 2022,
+        "id": "01mzf",
         "position": "F",
         "games": 5,
         "goals": 2,
@@ -4168,6 +4266,7 @@
       },
       {
         "season": 2023,
+        "id": "01mzf",
         "position": "F",
         "games": 15,
         "goals": 1,
@@ -4211,6 +4310,7 @@
       },
       {
         "season": 2024,
+        "id": "01mzf",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -4281,6 +4381,7 @@
     "scoreByPositionAdjustedByGames": 44.47
   },
   {
+    "id": "01s5k",
     "name": "Jake Muzzin",
     "position": "D",
     "games": 66,
@@ -4299,6 +4400,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "01s5k",
         "position": "D",
         "games": 14,
         "goals": 3,
@@ -4342,6 +4444,7 @@
       },
       {
         "season": 2015,
+        "id": "01s5k",
         "position": "D",
         "games": 18,
         "goals": 1,
@@ -4384,6 +4487,7 @@
       },
       {
         "season": 2016,
+        "id": "01s5k",
         "position": "D",
         "games": 2,
         "goals": 0,
@@ -4427,6 +4531,7 @@
       },
       {
         "season": 2017,
+        "id": "01s5k",
         "position": "D",
         "games": 6,
         "goals": 0,
@@ -4469,6 +4574,7 @@
       },
       {
         "season": 2018,
+        "id": "01s5k",
         "position": "D",
         "games": 13,
         "goals": 4,
@@ -4512,6 +4618,7 @@
       },
       {
         "season": 2020,
+        "id": "01s5k",
         "position": "D",
         "games": 10,
         "goals": 0,
@@ -4554,6 +4661,7 @@
       },
       {
         "season": 2021,
+        "id": "01s5k",
         "position": "D",
         "games": 3,
         "goals": 1,
@@ -4624,6 +4732,7 @@
     "scoreByPositionAdjustedByGames": 68.26
   },
   {
+    "id": "038vb",
     "name": "Travis Konecny",
     "position": "F",
     "games": 70,
@@ -4642,6 +4751,7 @@
     "seasons": [
       {
         "season": 2016,
+        "id": "038vb",
         "position": "F",
         "games": 3,
         "goals": 1,
@@ -4685,6 +4795,7 @@
       },
       {
         "season": 2017,
+        "id": "038vb",
         "position": "F",
         "games": 7,
         "goals": 2,
@@ -4728,6 +4839,7 @@
       },
       {
         "season": 2018,
+        "id": "038vb",
         "position": "F",
         "games": 16,
         "goals": 3,
@@ -4771,6 +4883,7 @@
       },
       {
         "season": 2019,
+        "id": "038vb",
         "position": "F",
         "games": 4,
         "goals": 1,
@@ -4812,6 +4925,7 @@
       },
       {
         "season": 2020,
+        "id": "038vb",
         "position": "F",
         "games": 12,
         "goals": 2,
@@ -4855,6 +4969,7 @@
       },
       {
         "season": 2021,
+        "id": "038vb",
         "position": "F",
         "games": 5,
         "goals": 1,
@@ -4898,6 +5013,7 @@
       },
       {
         "season": 2023,
+        "id": "038vb",
         "position": "F",
         "games": 14,
         "goals": 6,
@@ -4941,6 +5057,7 @@
       },
       {
         "season": 2024,
+        "id": "038vb",
         "position": "F",
         "games": 9,
         "goals": 2,
@@ -5011,6 +5128,7 @@
     "scoreByPositionAdjustedByGames": 51.74
   },
   {
+    "id": "00577",
     "name": "Kyle Turris",
     "position": "F",
     "games": 43,
@@ -5029,6 +5147,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "00577",
         "position": "F",
         "games": 15,
         "goals": 5,
@@ -5072,6 +5191,7 @@
       },
       {
         "season": 2014,
+        "id": "00577",
         "position": "F",
         "games": 14,
         "goals": 7,
@@ -5115,6 +5235,7 @@
       },
       {
         "season": 2016,
+        "id": "00577",
         "position": "F",
         "games": 1,
         "goals": 0,
@@ -5158,6 +5279,7 @@
       },
       {
         "season": 2017,
+        "id": "00577",
         "position": "F",
         "games": 5,
         "goals": 1,
@@ -5201,6 +5323,7 @@
       },
       {
         "season": 2018,
+        "id": "00577",
         "position": "F",
         "games": 8,
         "goals": 0,
@@ -5271,6 +5394,7 @@
     "scoreByPositionAdjustedByGames": 60.63
   },
   {
+    "id": "02fnl",
     "name": "Andrew Shaw",
     "position": "F",
     "games": 50,
@@ -5289,6 +5413,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "02fnl",
         "position": "F",
         "games": 4,
         "goals": 1,
@@ -5331,6 +5456,7 @@
       },
       {
         "season": 2013,
+        "id": "02fnl",
         "position": "F",
         "games": 14,
         "goals": 4,
@@ -5374,6 +5500,7 @@
       },
       {
         "season": 2014,
+        "id": "02fnl",
         "position": "F",
         "games": 13,
         "goals": 5,
@@ -5417,6 +5544,7 @@
       },
       {
         "season": 2015,
+        "id": "02fnl",
         "position": "F",
         "games": 11,
         "goals": 3,
@@ -5460,6 +5588,7 @@
       },
       {
         "season": 2016,
+        "id": "02fnl",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -5503,6 +5632,7 @@
       },
       {
         "season": 2017,
+        "id": "02fnl",
         "position": "F",
         "games": 5,
         "goals": 0,
@@ -5573,6 +5703,7 @@
     "scoreByPositionAdjustedByGames": 48.98
   },
   {
+    "id": "03m26",
     "name": "Conor Garland",
     "position": "F",
     "games": 50,
@@ -5591,6 +5722,7 @@
     "seasons": [
       {
         "season": 2018,
+        "id": "03m26",
         "position": "F",
         "games": 4,
         "goals": 1,
@@ -5634,6 +5766,7 @@
       },
       {
         "season": 2019,
+        "id": "03m26",
         "position": "F",
         "games": 2,
         "goals": 0,
@@ -5675,6 +5808,7 @@
       },
       {
         "season": 2020,
+        "id": "03m26",
         "position": "F",
         "games": 8,
         "goals": 0,
@@ -5718,6 +5852,7 @@
       },
       {
         "season": 2021,
+        "id": "03m26",
         "position": "F",
         "games": 6,
         "goals": 1,
@@ -5761,6 +5896,7 @@
       },
       {
         "season": 2022,
+        "id": "03m26",
         "position": "F",
         "games": 8,
         "goals": 1,
@@ -5802,6 +5938,7 @@
       },
       {
         "season": 2023,
+        "id": "03m26",
         "position": "F",
         "games": 14,
         "goals": 7,
@@ -5845,6 +5982,7 @@
       },
       {
         "season": 2024,
+        "id": "03m26",
         "position": "F",
         "games": 8,
         "goals": 2,
@@ -5915,6 +6053,7 @@
     "scoreByPositionAdjustedByGames": 53.62
   },
   {
+    "id": "02np6",
     "name": "Jake McCabe",
     "position": "D",
     "games": 37,
@@ -5933,6 +6072,7 @@
     "seasons": [
       {
         "season": 2021,
+        "id": "02np6",
         "position": "D",
         "games": 6,
         "goals": 0,
@@ -5976,6 +6116,7 @@
       },
       {
         "season": 2022,
+        "id": "02np6",
         "position": "D",
         "games": 8,
         "goals": 1,
@@ -6016,6 +6157,7 @@
       },
       {
         "season": 2023,
+        "id": "02np6",
         "position": "D",
         "games": 14,
         "goals": 2,
@@ -6059,6 +6201,7 @@
       },
       {
         "season": 2024,
+        "id": "02np6",
         "position": "D",
         "games": 9,
         "goals": 0,
@@ -6129,6 +6272,7 @@
     "scoreByPositionAdjustedByGames": 56.57
   },
   {
+    "id": "042vl",
     "name": "Jordan Kyrou",
     "position": "F",
     "games": 40,
@@ -6147,6 +6291,7 @@
     "seasons": [
       {
         "season": 2019,
+        "id": "042vl",
         "position": "F",
         "games": 2,
         "goals": 0,
@@ -6188,6 +6333,7 @@
       },
       {
         "season": 2020,
+        "id": "042vl",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -6231,6 +6377,7 @@
       },
       {
         "season": 2021,
+        "id": "042vl",
         "position": "F",
         "games": 3,
         "goals": 1,
@@ -6274,6 +6421,7 @@
       },
       {
         "season": 2022,
+        "id": "042vl",
         "position": "F",
         "games": 7,
         "goals": 3,
@@ -6315,6 +6463,7 @@
       },
       {
         "season": 2023,
+        "id": "042vl",
         "position": "F",
         "games": 14,
         "goals": 10,
@@ -6358,6 +6507,7 @@
       },
       {
         "season": 2024,
+        "id": "042vl",
         "position": "F",
         "games": 10,
         "goals": 6,
@@ -6428,6 +6578,7 @@
     "scoreByPositionAdjustedByGames": 58.66
   },
   {
+    "id": "03yg4",
     "name": "Samuel Girard",
     "position": "D",
     "games": 58,
@@ -6446,6 +6597,7 @@
     "seasons": [
       {
         "season": 2017,
+        "id": "03yg4",
         "position": "D",
         "games": 6,
         "goals": 0,
@@ -6488,6 +6640,7 @@
       },
       {
         "season": 2018,
+        "id": "03yg4",
         "position": "D",
         "games": 16,
         "goals": 0,
@@ -6531,6 +6684,7 @@
       },
       {
         "season": 2019,
+        "id": "03yg4",
         "position": "D",
         "games": 6,
         "goals": 0,
@@ -6572,6 +6726,7 @@
       },
       {
         "season": 2020,
+        "id": "03yg4",
         "position": "D",
         "games": 8,
         "goals": 0,
@@ -6614,6 +6769,7 @@
       },
       {
         "season": 2021,
+        "id": "03yg4",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -6657,6 +6813,7 @@
       },
       {
         "season": 2022,
+        "id": "03yg4",
         "position": "D",
         "games": 8,
         "goals": 0,
@@ -6697,6 +6854,7 @@
       },
       {
         "season": 2023,
+        "id": "03yg4",
         "position": "D",
         "games": 8,
         "goals": 0,
@@ -6740,6 +6898,7 @@
       },
       {
         "season": 2024,
+        "id": "03yg4",
         "position": "D",
         "games": 5,
         "goals": 0,
@@ -6810,6 +6969,7 @@
     "scoreByPositionAdjustedByGames": 40.45
   },
   {
+    "id": "05tqt",
     "name": "Wyatt Johnston",
     "position": "F",
     "games": 31,
@@ -6828,6 +6988,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "05tqt",
         "position": "F",
         "games": 7,
         "goals": 5,
@@ -6869,6 +7030,7 @@
       },
       {
         "season": 2023,
+        "id": "05tqt",
         "position": "F",
         "games": 13,
         "goals": 6,
@@ -6912,6 +7074,7 @@
       },
       {
         "season": 2024,
+        "id": "05tqt",
         "position": "F",
         "games": 11,
         "goals": 7,
@@ -6982,6 +7145,7 @@
     "scoreByPositionAdjustedByGames": 64.12
   },
   {
+    "id": "0046i",
     "name": "Patrick Marleau",
     "position": "F",
     "games": 44,
@@ -7000,6 +7164,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "0046i",
         "position": "F",
         "games": 13,
         "goals": 5,
@@ -7043,6 +7208,7 @@
       },
       {
         "season": 2014,
+        "id": "0046i",
         "position": "F",
         "games": 13,
         "goals": 4,
@@ -7086,6 +7252,7 @@
       },
       {
         "season": 2015,
+        "id": "0046i",
         "position": "F",
         "games": 18,
         "goals": 6,
@@ -7156,6 +7323,7 @@
     "scoreByPositionAdjustedByGames": 54.86
   },
   {
+    "id": "04yu5",
     "name": "Thomas Harley",
     "position": "D",
     "games": 26,
@@ -7174,6 +7342,7 @@
     "seasons": [
       {
         "season": 2021,
+        "id": "04yu5",
         "position": "D",
         "games": 2,
         "goals": 0,
@@ -7217,6 +7386,7 @@
       },
       {
         "season": 2023,
+        "id": "04yu5",
         "position": "D",
         "games": 13,
         "goals": 0,
@@ -7260,6 +7430,7 @@
       },
       {
         "season": 2024,
+        "id": "04yu5",
         "position": "D",
         "games": 11,
         "goals": 4,
@@ -7330,6 +7501,7 @@
     "scoreByPositionAdjustedByGames": 80.02
   },
   {
+    "id": "01mjf",
     "name": "Travis Hamonic",
     "position": "D",
     "games": 37,
@@ -7348,6 +7520,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "01mjf",
         "position": "D",
         "games": 13,
         "goals": 0,
@@ -7390,6 +7563,7 @@
       },
       {
         "season": 2016,
+        "id": "01mjf",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -7433,6 +7607,7 @@
       },
       {
         "season": 2017,
+        "id": "01mjf",
         "position": "D",
         "games": 7,
         "goals": 0,
@@ -7475,6 +7650,7 @@
       },
       {
         "season": 2018,
+        "id": "01mjf",
         "position": "D",
         "games": 14,
         "goals": 1,
@@ -7545,6 +7721,7 @@
     "scoreByPositionAdjustedByGames": 46.42
   },
   {
+    "id": "03j8l",
     "name": "Noah Hanifin",
     "position": "D",
     "games": 29,
@@ -7563,6 +7740,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "03j8l",
         "position": "D",
         "games": 7,
         "goals": 1,
@@ -7603,6 +7781,7 @@
       },
       {
         "season": 2023,
+        "id": "03j8l",
         "position": "D",
         "games": 12,
         "goals": 1,
@@ -7646,6 +7825,7 @@
       },
       {
         "season": 2024,
+        "id": "03j8l",
         "position": "D",
         "games": 10,
         "goals": 0,
@@ -7716,6 +7896,7 @@
     "scoreByPositionAdjustedByGames": 71.07
   },
   {
+    "id": "02jrw",
     "name": "Yanni Gourde",
     "position": "F",
     "games": 26,
@@ -7734,6 +7915,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "02jrw",
         "position": "F",
         "games": 16,
         "goals": 3,
@@ -7777,6 +7959,7 @@
       },
       {
         "season": 2024,
+        "id": "02jrw",
         "position": "F",
         "games": 10,
         "goals": 0,
@@ -7847,6 +8030,7 @@
     "scoreByPositionAdjustedByGames": 54.94
   },
   {
+    "id": "03rf2",
     "name": "Roope Hintz",
     "position": "F",
     "games": 24,
@@ -7865,6 +8049,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "03rf2",
         "position": "F",
         "games": 13,
         "goals": 4,
@@ -7908,6 +8093,7 @@
       },
       {
         "season": 2024,
+        "id": "03rf2",
         "position": "F",
         "games": 11,
         "goals": 3,
@@ -7978,6 +8164,7 @@
     "scoreByPositionAdjustedByGames": 66.38
   },
   {
+    "id": "031p8",
     "name": "Oliver Bjorkstrand",
     "position": "F",
     "games": 32,
@@ -7996,6 +8183,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "031p8",
         "position": "F",
         "games": 6,
         "goals": 3,
@@ -8037,6 +8225,7 @@
       },
       {
         "season": 2023,
+        "id": "031p8",
         "position": "F",
         "games": 16,
         "goals": 2,
@@ -8080,6 +8269,7 @@
       },
       {
         "season": 2024,
+        "id": "031p8",
         "position": "F",
         "games": 10,
         "goals": 3,
@@ -8150,6 +8340,7 @@
     "scoreByPositionAdjustedByGames": 54.08
   },
   {
+    "id": "003m9",
     "name": "Derick Brassard",
     "position": "F",
     "games": 29,
@@ -8168,6 +8359,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "003m9",
         "position": "F",
         "games": 14,
         "goals": 5,
@@ -8211,6 +8403,7 @@
       },
       {
         "season": 2015,
+        "id": "003m9",
         "position": "F",
         "games": 15,
         "goals": 4,
@@ -8281,6 +8474,7 @@
     "scoreByPositionAdjustedByGames": 54.22
   },
   {
+    "id": "003l1",
     "name": "James Wisniewski",
     "position": "D",
     "games": 24,
@@ -8299,6 +8493,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "003l1",
         "position": "D",
         "games": 15,
         "goals": 1,
@@ -8341,6 +8536,7 @@
       },
       {
         "season": 2014,
+        "id": "003l1",
         "position": "D",
         "games": 9,
         "goals": 0,
@@ -8411,6 +8607,7 @@
     "scoreByPositionAdjustedByGames": 81.24
   },
   {
+    "id": "01f6j",
     "name": "Alex Chiasson",
     "position": "F",
     "games": 42,
@@ -8429,6 +8626,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "01f6j",
         "position": "F",
         "games": 15,
         "goals": 1,
@@ -8472,6 +8670,7 @@
       },
       {
         "season": 2014,
+        "id": "01f6j",
         "position": "F",
         "games": 13,
         "goals": 1,
@@ -8515,6 +8714,7 @@
       },
       {
         "season": 2015,
+        "id": "01f6j",
         "position": "F",
         "games": 14,
         "goals": 3,
@@ -8585,6 +8785,7 @@
     "scoreByPositionAdjustedByGames": 35.64
   },
   {
+    "id": "00445",
     "name": "Martin Hanzal",
     "position": "F",
     "games": 22,
@@ -8603,6 +8804,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "00445",
         "position": "F",
         "games": 10,
         "goals": 0,
@@ -8646,6 +8848,7 @@
       },
       {
         "season": 2015,
+        "id": "00445",
         "position": "F",
         "games": 12,
         "goals": 3,
@@ -8716,6 +8919,7 @@
     "scoreByPositionAdjustedByGames": 61.16
   },
   {
+    "id": "03cwq",
     "name": "Conor Sheary",
     "position": "F",
     "games": 47,
@@ -8734,6 +8938,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "03cwq",
         "position": "F",
         "games": 5,
         "goals": 1,
@@ -8777,6 +8982,7 @@
       },
       {
         "season": 2016,
+        "id": "03cwq",
         "position": "F",
         "games": 3,
         "goals": 1,
@@ -8820,6 +9026,7 @@
       },
       {
         "season": 2017,
+        "id": "03cwq",
         "position": "F",
         "games": 5,
         "goals": 2,
@@ -8863,6 +9070,7 @@
       },
       {
         "season": 2018,
+        "id": "03cwq",
         "position": "F",
         "games": 16,
         "goals": 1,
@@ -8906,6 +9114,7 @@
       },
       {
         "season": 2019,
+        "id": "03cwq",
         "position": "F",
         "games": 5,
         "goals": 1,
@@ -8947,6 +9156,7 @@
       },
       {
         "season": 2020,
+        "id": "03cwq",
         "position": "F",
         "games": 9,
         "goals": 4,
@@ -8990,6 +9200,7 @@
       },
       {
         "season": 2021,
+        "id": "03cwq",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -9060,6 +9271,7 @@
     "scoreByPositionAdjustedByGames": 38.38
   },
   {
+    "id": "0243f",
     "name": "Seth Jones",
     "position": "D",
     "games": 23,
@@ -9078,6 +9290,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "0243f",
         "position": "D",
         "games": 14,
         "goals": 4,
@@ -9121,6 +9334,7 @@
       },
       {
         "season": 2024,
+        "id": "0243f",
         "position": "D",
         "games": 9,
         "goals": 2,
@@ -9191,6 +9405,7 @@
     "scoreByPositionAdjustedByGames": 73.71
   },
   {
+    "id": "02azh",
     "name": "Jamie Oleksiak",
     "position": "D",
     "games": 27,
@@ -9209,6 +9424,7 @@
     "seasons": [
       {
         "season": 2019,
+        "id": "02azh",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -9250,6 +9466,7 @@
       },
       {
         "season": 2020,
+        "id": "02azh",
         "position": "D",
         "games": 11,
         "goals": 2,
@@ -9292,6 +9509,7 @@
       },
       {
         "season": 2021,
+        "id": "02azh",
         "position": "D",
         "games": 7,
         "goals": 0,
@@ -9335,6 +9553,7 @@
       },
       {
         "season": 2022,
+        "id": "02azh",
         "position": "D",
         "games": 5,
         "goals": 0,
@@ -9402,6 +9621,7 @@
     "scoreByPositionAdjustedByGames": 47.88
   },
   {
+    "id": "031pq",
     "name": "Andrew Copp",
     "position": "F",
     "games": 22,
@@ -9420,6 +9640,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "031pq",
         "position": "F",
         "games": 9,
         "goals": 3,
@@ -9463,6 +9684,7 @@
       },
       {
         "season": 2021,
+        "id": "031pq",
         "position": "F",
         "games": 7,
         "goals": 3,
@@ -9506,6 +9728,7 @@
       },
       {
         "season": 2022,
+        "id": "031pq",
         "position": "F",
         "games": 6,
         "goals": 0,
@@ -9574,6 +9797,7 @@
     "scoreByPositionAdjustedByGames": 59.72
   },
   {
+    "id": "01g5y",
     "name": "Jimmy Hayes",
     "position": "F",
     "games": 38,
@@ -9592,6 +9816,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "01g5y",
         "position": "F",
         "games": 1,
         "goals": 0,
@@ -9634,6 +9859,7 @@
       },
       {
         "season": 2013,
+        "id": "01g5y",
         "position": "F",
         "games": 14,
         "goals": 2,
@@ -9677,6 +9903,7 @@
       },
       {
         "season": 2014,
+        "id": "01g5y",
         "position": "F",
         "games": 12,
         "goals": 2,
@@ -9720,6 +9947,7 @@
       },
       {
         "season": 2015,
+        "id": "01g5y",
         "position": "F",
         "games": 11,
         "goals": 0,
@@ -9790,6 +10018,7 @@
     "scoreByPositionAdjustedByGames": 34.98
   },
   {
+    "id": "03rjq",
     "name": "Matt Roy",
     "position": "D",
     "games": 23,
@@ -9808,6 +10037,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "03rjq",
         "position": "D",
         "games": 15,
         "goals": 2,
@@ -9851,6 +10081,7 @@
       },
       {
         "season": 2024,
+        "id": "03rjq",
         "position": "D",
         "games": 8,
         "goals": 1,
@@ -9921,6 +10152,7 @@
     "scoreByPositionAdjustedByGames": 49.16
   },
   {
+    "id": "02oax",
     "name": "Vinnie Hinostroza",
     "position": "F",
     "games": 33,
@@ -9939,6 +10171,7 @@
     "seasons": [
       {
         "season": 2017,
+        "id": "02oax",
         "position": "F",
         "games": 6,
         "goals": 0,
@@ -9982,6 +10215,7 @@
       },
       {
         "season": 2018,
+        "id": "02oax",
         "position": "F",
         "games": 17,
         "goals": 5,
@@ -10025,6 +10259,7 @@
       },
       {
         "season": 2019,
+        "id": "02oax",
         "position": "F",
         "games": 2,
         "goals": 0,
@@ -10066,6 +10301,7 @@
       },
       {
         "season": 2021,
+        "id": "02oax",
         "position": "F",
         "games": 8,
         "goals": 1,
@@ -10136,6 +10372,7 @@
     "scoreByPositionAdjustedByGames": 41.36
   },
   {
+    "id": "004of",
     "name": "Karl Alzner",
     "position": "D",
     "games": 28,
@@ -10154,6 +10391,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "004of",
         "position": "D",
         "games": 17,
         "goals": 0,
@@ -10196,6 +10434,7 @@
       },
       {
         "season": 2016,
+        "id": "004of",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -10239,6 +10478,7 @@
       },
       {
         "season": 2017,
+        "id": "004of",
         "position": "D",
         "games": 7,
         "goals": 0,
@@ -10308,6 +10548,7 @@
     "scoreByPositionAdjustedByGames": 37.85
   },
   {
+    "id": "039cg",
     "name": "Sam Bennett",
     "position": "F",
     "games": 33,
@@ -10326,6 +10567,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "039cg",
         "position": "F",
         "games": 1,
         "goals": 0,
@@ -10369,6 +10611,7 @@
       },
       {
         "season": 2015,
+        "id": "039cg",
         "position": "F",
         "games": 12,
         "goals": 3,
@@ -10412,6 +10655,7 @@
       },
       {
         "season": 2016,
+        "id": "039cg",
         "position": "F",
         "games": 2,
         "goals": 0,
@@ -10455,6 +10699,7 @@
       },
       {
         "season": 2017,
+        "id": "039cg",
         "position": "F",
         "games": 7,
         "goals": 2,
@@ -10498,6 +10743,7 @@
       },
       {
         "season": 2018,
+        "id": "039cg",
         "position": "F",
         "games": 8,
         "goals": 2,
@@ -10541,6 +10787,7 @@
       },
       {
         "season": 2019,
+        "id": "039cg",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -10609,6 +10856,7 @@
     "scoreByPositionAdjustedByGames": 37.94
   },
   {
+    "id": "00qrt",
     "name": "Max Pacioretty",
     "position": "F",
     "games": 11,
@@ -10627,6 +10875,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "00qrt",
         "position": "F",
         "games": 11,
         "goals": 4,
@@ -10697,6 +10946,7 @@
     "scoreByPositionAdjustedByGames": 84.55
   },
   {
+    "id": "02noj",
     "name": "Tom Wilson",
     "position": "F",
     "games": 10,
@@ -10715,6 +10965,7 @@
     "seasons": [
       {
         "season": 2024,
+        "id": "02noj",
         "position": "F",
         "games": 10,
         "goals": 3,
@@ -10785,6 +11036,7 @@
     "scoreByPositionAdjustedByGames": 75.86
   },
   {
+    "id": "02oak",
     "name": "Connor Brown",
     "position": "F",
     "games": 13,
@@ -10803,6 +11055,7 @@
     "seasons": [
       {
         "season": 2016,
+        "id": "02oak",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -10846,6 +11099,7 @@
       },
       {
         "season": 2020,
+        "id": "02oak",
         "position": "F",
         "games": 10,
         "goals": 8,
@@ -10916,6 +11170,7 @@
     "scoreByPositionAdjustedByGames": 68.87
   },
   {
+    "id": "03rgp",
     "name": "Mathieu Joseph",
     "position": "F",
     "games": 7,
@@ -10934,6 +11189,7 @@
     "seasons": [
       {
         "season": 2021,
+        "id": "03rgp",
         "position": "F",
         "games": 7,
         "goals": 4,
@@ -11004,6 +11260,7 @@
     "scoreByPositionAdjustedByGames": 100
   },
   {
+    "id": "003zh",
     "name": "Andrew MacDonald",
     "position": "D",
     "games": 16,
@@ -11022,6 +11279,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "003zh",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -11065,6 +11323,7 @@
       },
       {
         "season": 2015,
+        "id": "003zh",
         "position": "D",
         "games": 12,
         "goals": 0,
@@ -11134,6 +11393,7 @@
     "scoreByPositionAdjustedByGames": 49.42
   },
   {
+    "id": "03xmh",
     "name": "Brandon Tanev",
     "position": "F",
     "games": 23,
@@ -11152,6 +11412,7 @@
     "seasons": [
       {
         "season": 2017,
+        "id": "03xmh",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -11195,6 +11456,7 @@
       },
       {
         "season": 2018,
+        "id": "03xmh",
         "position": "F",
         "games": 15,
         "goals": 1,
@@ -11238,6 +11500,7 @@
       },
       {
         "season": 2019,
+        "id": "03xmh",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -11306,6 +11569,7 @@
     "scoreByPositionAdjustedByGames": 42.79
   },
   {
+    "id": "0047f",
     "name": "Eric Brewer",
     "position": "D",
     "games": 15,
@@ -11324,6 +11588,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "0047f",
         "position": "D",
         "games": 15,
         "goals": 4,
@@ -11393,6 +11658,7 @@
     "scoreByPositionAdjustedByGames": 57.31
   },
   {
+    "id": "003gq",
     "name": "Brian Campbell",
     "position": "D",
     "games": 17,
@@ -11411,6 +11677,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "003gq",
         "position": "D",
         "games": 17,
         "goals": 0,
@@ -11480,6 +11747,7 @@
     "scoreByPositionAdjustedByGames": 39.53
   },
   {
+    "id": "00qmz",
     "name": "Ben Lovejoy",
     "position": "D",
     "games": 20,
@@ -11498,6 +11766,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "00qmz",
         "position": "D",
         "games": 13,
         "goals": 1,
@@ -11541,6 +11810,7 @@
       },
       {
         "season": 2015,
+        "id": "00qmz",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -11583,6 +11853,7 @@
       },
       {
         "season": 2016,
+        "id": "00qmz",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -11653,6 +11924,7 @@
     "scoreByPositionAdjustedByGames": 48.9
   },
   {
+    "id": "004ax",
     "name": "Alexander Edler",
     "position": "D",
     "games": 12,
@@ -11671,6 +11943,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "004ax",
         "position": "D",
         "games": 12,
         "goals": 2,
@@ -11740,6 +12013,7 @@
     "scoreByPositionAdjustedByGames": 89.47
   },
   {
+    "id": "01zr5",
     "name": "Derek Forbort",
     "position": "D",
     "games": 15,
@@ -11758,6 +12032,7 @@
     "seasons": [
       {
         "season": 2019,
+        "id": "01zr5",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -11799,6 +12074,7 @@
       },
       {
         "season": 2020,
+        "id": "01zr5",
         "position": "D",
         "games": 7,
         "goals": 0,
@@ -11841,6 +12117,7 @@
       },
       {
         "season": 2021,
+        "id": "01zr5",
         "position": "D",
         "games": 5,
         "goals": 0,
@@ -11911,6 +12188,7 @@
     "scoreByPositionAdjustedByGames": 45.05
   },
   {
+    "id": "01etq",
     "name": "Nick Leddy",
     "position": "D",
     "games": 21,
@@ -11929,6 +12207,7 @@
     "seasons": [
       {
         "season": 2018,
+        "id": "01etq",
         "position": "D",
         "games": 17,
         "goals": 2,
@@ -11972,6 +12251,7 @@
       },
       {
         "season": 2019,
+        "id": "01etq",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -12040,6 +12320,7 @@
     "scoreByPositionAdjustedByGames": 42.25
   },
   {
+    "id": "030x6",
     "name": "Michael Raffl",
     "position": "F",
     "games": 11,
@@ -12058,6 +12339,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "030x6",
         "position": "F",
         "games": 11,
         "goals": 5,
@@ -12128,6 +12410,7 @@
     "scoreByPositionAdjustedByGames": 70.35
   },
   {
+    "id": "003fy",
     "name": "David Krejci",
     "position": "F",
     "games": 13,
@@ -12146,6 +12429,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "003fy",
         "position": "F",
         "games": 13,
         "goals": 3,
@@ -12216,6 +12500,7 @@
     "scoreByPositionAdjustedByGames": 51.77
   },
   {
+    "id": "01f3j",
     "name": "Calvin de Haan",
     "position": "D",
     "games": 18,
@@ -12234,6 +12519,7 @@
     "seasons": [
       {
         "season": 2018,
+        "id": "01f3j",
         "position": "D",
         "games": 8,
         "goals": 0,
@@ -12277,6 +12563,7 @@
       },
       {
         "season": 2020,
+        "id": "01f3j",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -12319,6 +12606,7 @@
       },
       {
         "season": 2021,
+        "id": "01f3j",
         "position": "D",
         "games": 6,
         "goals": 2,
@@ -12389,6 +12677,7 @@
     "scoreByPositionAdjustedByGames": 50.9
   },
   {
+    "id": "02fzd",
     "name": "Mike Reilly",
     "position": "D",
     "games": 15,
@@ -12407,6 +12696,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "02fzd",
         "position": "D",
         "games": 9,
         "goals": 0,
@@ -12449,6 +12739,7 @@
       },
       {
         "season": 2021,
+        "id": "02fzd",
         "position": "D",
         "games": 6,
         "goals": 0,
@@ -12519,6 +12810,7 @@
     "scoreByPositionAdjustedByGames": 51.58
   },
   {
+    "id": "03yt9",
     "name": "Maxime Comtois",
     "position": "F",
     "games": 13,
@@ -12537,6 +12829,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "03yt9",
         "position": "F",
         "games": 9,
         "goals": 3,
@@ -12580,6 +12873,7 @@
       },
       {
         "season": 2021,
+        "id": "03yt9",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -12623,6 +12917,7 @@
       },
       {
         "season": 2022,
+        "id": "03yt9",
         "position": "F",
         "games": 1,
         "goals": 0,
@@ -12691,6 +12986,7 @@
     "scoreByPositionAdjustedByGames": 53.39
   },
   {
+    "id": "0047m",
     "name": "Erik Johnson",
     "position": "D",
     "games": 14,
@@ -12709,6 +13005,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "0047m",
         "position": "D",
         "games": 14,
         "goals": 1,
@@ -12778,6 +13075,7 @@
     "scoreByPositionAdjustedByGames": 60.91
   },
   {
+    "id": "04ldb",
     "name": "Bowen Byram",
     "position": "D",
     "games": 11,
@@ -12796,6 +13094,7 @@
     "seasons": [
       {
         "season": 2024,
+        "id": "04ldb",
         "position": "D",
         "games": 11,
         "goals": 0,
@@ -12866,6 +13165,7 @@
     "scoreByPositionAdjustedByGames": 47.34
   },
   {
+    "id": "03eam",
     "name": "Jayce Hawryluk",
     "position": "F",
     "games": 15,
@@ -12884,6 +13184,7 @@
     "seasons": [
       {
         "season": 2018,
+        "id": "03eam",
         "position": "F",
         "games": 7,
         "goals": 0,
@@ -12927,6 +13228,7 @@
       },
       {
         "season": 2019,
+        "id": "03eam",
         "position": "F",
         "games": 5,
         "goals": 2,
@@ -12968,6 +13270,7 @@
       },
       {
         "season": 2020,
+        "id": "03eam",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -13038,6 +13341,7 @@
     "scoreByPositionAdjustedByGames": 40.39
   },
   {
+    "id": "03w5m",
     "name": "Gabriel Vilardi",
     "position": "F",
     "games": 15,
@@ -13056,6 +13360,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "03w5m",
         "position": "F",
         "games": 6,
         "goals": 1,
@@ -13097,6 +13402,7 @@
       },
       {
         "season": 2023,
+        "id": "03w5m",
         "position": "F",
         "games": 9,
         "goals": 6,
@@ -13167,6 +13473,7 @@
     "scoreByPositionAdjustedByGames": 49.81
   },
   {
+    "id": "0040f",
     "name": "Dan Girardi",
     "position": "D",
     "games": 12,
@@ -13185,6 +13492,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "0040f",
         "position": "D",
         "games": 12,
         "goals": 1,
@@ -13254,6 +13562,7 @@
     "scoreByPositionAdjustedByGames": 56.03
   },
   {
+    "id": "02ytx",
     "name": "Ryan Hartman",
     "position": "F",
     "games": 15,
@@ -13272,6 +13581,7 @@
     "seasons": [
       {
         "season": 2016,
+        "id": "02ytx",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -13315,6 +13625,7 @@
       },
       {
         "season": 2017,
+        "id": "02ytx",
         "position": "F",
         "games": 6,
         "goals": 1,
@@ -13358,6 +13669,7 @@
       },
       {
         "season": 2018,
+        "id": "02ytx",
         "position": "F",
         "games": 6,
         "goals": 1,
@@ -13428,6 +13740,7 @@
     "scoreByPositionAdjustedByGames": 38.8
   },
   {
+    "id": "0320p",
     "name": "Lucas Wallmark",
     "position": "F",
     "games": 18,
@@ -13446,6 +13759,7 @@
     "seasons": [
       {
         "season": 2018,
+        "id": "0320p",
         "position": "F",
         "games": 15,
         "goals": 2,
@@ -13489,6 +13803,7 @@
       },
       {
         "season": 2019,
+        "id": "0320p",
         "position": "F",
         "games": 3,
         "goals": 1,
@@ -13557,6 +13872,7 @@
     "scoreByPositionAdjustedByGames": 31.06
   },
   {
+    "id": "003tm",
     "name": "Brad Stuart",
     "position": "D",
     "games": 12,
@@ -13575,6 +13891,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "003tm",
         "position": "D",
         "games": 12,
         "goals": 1,
@@ -13645,6 +13962,7 @@
     "scoreByPositionAdjustedByGames": 47.46
   },
   {
+    "id": "03ecn",
     "name": "Dakota Joshua",
     "position": "F",
     "games": 8,
@@ -13663,6 +13981,7 @@
     "seasons": [
       {
         "season": 2024,
+        "id": "03ecn",
         "position": "F",
         "games": 8,
         "goals": 1,
@@ -13733,6 +14052,7 @@
     "scoreByPositionAdjustedByGames": 51.89
   },
   {
+    "id": "01uoz",
     "name": "David Savard",
     "position": "D",
     "games": 9,
@@ -13751,6 +14071,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "01uoz",
         "position": "D",
         "games": 9,
         "goals": 1,
@@ -13820,6 +14141,7 @@
     "scoreByPositionAdjustedByGames": 47.42
   },
   {
+    "id": "003xk",
     "name": "David Clarkson",
     "position": "F",
     "games": 13,
@@ -13838,6 +14160,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "003xk",
         "position": "F",
         "games": 13,
         "goals": 1,
@@ -13908,6 +14231,7 @@
     "scoreByPositionAdjustedByGames": 33.93
   },
   {
+    "id": "05kdw",
     "name": "Ridly Greig",
     "position": "F",
     "games": 11,
@@ -13926,6 +14250,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "05kdw",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -13967,6 +14292,7 @@
       },
       {
         "season": 2023,
+        "id": "05kdw",
         "position": "F",
         "games": 8,
         "goals": 0,
@@ -14037,6 +14363,7 @@
     "scoreByPositionAdjustedByGames": 36.96
   },
   {
+    "id": "031pn",
     "name": "Nick Paul",
     "position": "F",
     "games": 10,
@@ -14055,6 +14382,7 @@
     "seasons": [
       {
         "season": 2024,
+        "id": "031pn",
         "position": "F",
         "games": 10,
         "goals": 2,
@@ -14125,6 +14453,7 @@
     "scoreByPositionAdjustedByGames": 45.57
   },
   {
+    "id": "02odt",
     "name": "Christian Djoos",
     "position": "D",
     "games": 12,
@@ -14143,6 +14472,7 @@
     "seasons": [
       {
         "season": 2017,
+        "id": "02odt",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -14185,6 +14515,7 @@
       },
       {
         "season": 2018,
+        "id": "02odt",
         "position": "D",
         "games": 5,
         "goals": 0,
@@ -14228,6 +14559,7 @@
       },
       {
         "season": 2019,
+        "id": "02odt",
         "position": "D",
         "games": 6,
         "goals": 1,
@@ -14296,6 +14628,7 @@
     "scoreByPositionAdjustedByGames": 37.93
   },
   {
+    "id": "00456",
     "name": "Deryk Engelland",
     "position": "D",
     "games": 6,
@@ -14314,6 +14647,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "00456",
         "position": "D",
         "games": 6,
         "goals": 2,
@@ -14383,6 +14717,7 @@
     "scoreByPositionAdjustedByGames": 56.51
   },
   {
+    "id": "05ui2",
     "name": "Logan Cooley",
     "position": "F",
     "games": 10,
@@ -14401,6 +14736,7 @@
     "seasons": [
       {
         "season": 2024,
+        "id": "05ui2",
         "position": "F",
         "games": 10,
         "goals": 4,
@@ -14471,6 +14807,7 @@
     "scoreByPositionAdjustedByGames": 49.11
   },
   {
+    "id": "020h1",
     "name": "Justin Schultz",
     "position": "D",
     "games": 13,
@@ -14489,6 +14826,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "020h1",
         "position": "D",
         "games": 8,
         "goals": 1,
@@ -14531,6 +14869,7 @@
       },
       {
         "season": 2021,
+        "id": "020h1",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -14574,6 +14913,7 @@
       },
       {
         "season": 2022,
+        "id": "020h1",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -14641,6 +14981,7 @@
     "scoreByPositionAdjustedByGames": 41.67
   },
   {
+    "id": "0041m",
     "name": "Nick Foligno",
     "position": "F",
     "games": 15,
@@ -14659,6 +15000,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "0041m",
         "position": "F",
         "games": 13,
         "goals": 2,
@@ -14702,6 +15044,7 @@
       },
       {
         "season": 2024,
+        "id": "0041m",
         "position": "F",
         "games": 2,
         "goals": 0,
@@ -14772,6 +15115,7 @@
     "scoreByPositionAdjustedByGames": 38.6
   },
   {
+    "id": "02i5q",
     "name": "Mike Halmo",
     "position": "F",
     "games": 8,
@@ -14790,6 +15134,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "02i5q",
         "position": "F",
         "games": 8,
         "goals": 1,
@@ -14860,6 +15205,7 @@
     "scoreByPositionAdjustedByGames": 36.89
   },
   {
+    "id": "00qnu",
     "name": "Drew Doughty",
     "position": "D",
     "games": 4,
@@ -14878,6 +15224,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "00qnu",
         "position": "D",
         "games": 4,
         "goals": 2,
@@ -14948,6 +15295,7 @@
     "scoreByPositionAdjustedByGames": 100
   },
   {
+    "id": "02oeo",
     "name": "Nick Jensen",
     "position": "D",
     "games": 12,
@@ -14966,6 +15314,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "02oeo",
         "position": "D",
         "games": 9,
         "goals": 0,
@@ -15009,6 +15358,7 @@
       },
       {
         "season": 2024,
+        "id": "02oeo",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -15079,6 +15429,7 @@
     "scoreByPositionAdjustedByGames": 35.36
   },
   {
+    "id": "003nn",
     "name": "Trevor Daley",
     "position": "D",
     "games": 4,
@@ -15097,6 +15448,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003nn",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -15167,6 +15519,7 @@
     "scoreByPositionAdjustedByGames": 55.09
   },
   {
+    "id": "02noh",
     "name": "Radek Faksa",
     "position": "F",
     "games": 11,
@@ -15185,6 +15538,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "02noh",
         "position": "F",
         "games": 8,
         "goals": 1,
@@ -15228,6 +15582,7 @@
       },
       {
         "season": 2016,
+        "id": "02noh",
         "position": "F",
         "games": 3,
         "goals": 1,
@@ -15298,6 +15653,7 @@
     "scoreByPositionAdjustedByGames": 37.53
   },
   {
+    "id": "02yjo",
     "name": "Jakub Vrana",
     "position": "F",
     "games": 7,
@@ -15316,6 +15672,7 @@
     "seasons": [
       {
         "season": 2017,
+        "id": "02yjo",
         "position": "F",
         "games": 7,
         "goals": 2,
@@ -15386,6 +15743,7 @@
     "scoreByPositionAdjustedByGames": 48.31
   },
   {
+    "id": "003y7",
     "name": "Johnny Oduya",
     "position": "D",
     "games": 11,
@@ -15404,6 +15762,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "003y7",
         "position": "D",
         "games": 11,
         "goals": 0,
@@ -15473,6 +15832,7 @@
     "scoreByPositionAdjustedByGames": 23.27
   },
   {
+    "id": "0044d",
     "name": "Derek Morris",
     "position": "D",
     "games": 3,
@@ -15491,6 +15851,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "0044d",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -15561,6 +15922,7 @@
     "scoreByPositionAdjustedByGames": 58.59
   },
   {
+    "id": "02b3v",
     "name": "Adam Clendening",
     "position": "D",
     "games": 6,
@@ -15579,6 +15941,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "02b3v",
         "position": "D",
         "games": 6,
         "goals": 0,
@@ -15648,6 +16011,7 @@
     "scoreByPositionAdjustedByGames": 39.89
   },
   {
+    "id": "003jy",
     "name": "Bryan Bickell",
     "position": "F",
     "games": 4,
@@ -15666,6 +16030,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003jy",
         "position": "F",
         "games": 4,
         "goals": 2,
@@ -15735,6 +16100,7 @@
     "scoreByPositionAdjustedByGames": 61.49
   },
   {
+    "id": "025e1",
     "name": "Nic Dowd",
     "position": "F",
     "games": 7,
@@ -15753,6 +16119,7 @@
     "seasons": [
       {
         "season": 2021,
+        "id": "025e1",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -15796,6 +16163,7 @@
       },
       {
         "season": 2022,
+        "id": "025e1",
         "position": "F",
         "games": 4,
         "goals": 1,
@@ -15864,6 +16232,7 @@
     "scoreByPositionAdjustedByGames": 40.59
   },
   {
+    "id": "004jg",
     "name": "Pat Maroon",
     "position": "F",
     "games": 10,
@@ -15882,6 +16251,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "004jg",
         "position": "F",
         "games": 10,
         "goals": 0,
@@ -15952,6 +16322,7 @@
     "scoreByPositionAdjustedByGames": 25.98
   },
   {
+    "id": "05kj5",
     "name": "Thomas Bordeleau",
     "position": "F",
     "games": 7,
@@ -15970,6 +16341,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "05kj5",
         "position": "F",
         "games": 7,
         "goals": 2,
@@ -16040,6 +16412,7 @@
     "scoreByPositionAdjustedByGames": 40.57
   },
   {
+    "id": "03mm6",
     "name": "Lawson Crouse",
     "position": "F",
     "games": 6,
@@ -16058,6 +16431,7 @@
     "seasons": [
       {
         "season": 2024,
+        "id": "03mm6",
         "position": "F",
         "games": 6,
         "goals": 1,
@@ -16128,6 +16502,7 @@
     "scoreByPositionAdjustedByGames": 37.9
   },
   {
+    "id": "0049z",
     "name": "John Mitchell",
     "position": "F",
     "games": 4,
@@ -16146,6 +16521,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "0049z",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -16215,6 +16591,7 @@
     "scoreByPositionAdjustedByGames": 44.71
   },
   {
+    "id": "01zum",
     "name": "Tim Heed",
     "position": "D",
     "games": 11,
@@ -16233,6 +16610,7 @@
     "seasons": [
       {
         "season": 2018,
+        "id": "01zum",
         "position": "D",
         "games": 11,
         "goals": 0,
@@ -16303,6 +16681,7 @@
     "scoreByPositionAdjustedByGames": 26.45
   },
   {
+    "id": "01zr6",
     "name": "Jarred Tinordi",
     "position": "D",
     "games": 7,
@@ -16321,6 +16700,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "01zr6",
         "position": "D",
         "games": 7,
         "goals": 0,
@@ -16388,6 +16768,7 @@
     "scoreByPositionAdjustedByGames": 33.92
   },
   {
+    "id": "003vi",
     "name": "Saku Koivu",
     "position": "F",
     "games": 4,
@@ -16406,6 +16787,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003vi",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -16475,6 +16857,7 @@
     "scoreByPositionAdjustedByGames": 41.12
   },
   {
+    "id": "02non",
     "name": "Scott Laughton",
     "position": "F",
     "games": 3,
@@ -16493,6 +16876,7 @@
     "seasons": [
       {
         "season": 2021,
+        "id": "02non",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -16563,6 +16947,7 @@
     "scoreByPositionAdjustedByGames": 45.64
   },
   {
+    "id": "003yp",
     "name": "Travis Zajac",
     "position": "F",
     "games": 4,
@@ -16581,6 +16966,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003yp",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -16650,6 +17036,7 @@
     "scoreByPositionAdjustedByGames": 32.31
   },
   {
+    "id": "004b1",
     "name": "Michael Grabner",
     "position": "F",
     "games": 4,
@@ -16668,6 +17055,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "004b1",
         "position": "F",
         "games": 4,
         "goals": 1,
@@ -16737,6 +17125,7 @@
     "scoreByPositionAdjustedByGames": 32.48
   },
   {
+    "id": "02fsw",
     "name": "Ryan Garbutt",
     "position": "F",
     "games": 3,
@@ -16755,6 +17144,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "02fsw",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -16824,6 +17214,7 @@
     "scoreByPositionAdjustedByGames": 42.08
   },
   {
+    "id": "03as9",
     "name": "Dylan Strome",
     "position": "F",
     "games": 7,
@@ -16842,6 +17233,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "03as9",
         "position": "F",
         "games": 7,
         "goals": 1,
@@ -16912,6 +17304,7 @@
     "scoreByPositionAdjustedByGames": 29.25
   },
   {
+    "id": "02o78",
     "name": "Brett Kulak",
     "position": "D",
     "games": 3,
@@ -16930,6 +17323,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "02o78",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -16997,6 +17391,7 @@
     "scoreByPositionAdjustedByGames": 44.21
   },
   {
+    "id": "015j6",
     "name": "Tyler Myers",
     "position": "D",
     "games": 3,
@@ -17015,6 +17410,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "015j6",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -17085,6 +17481,7 @@
     "scoreByPositionAdjustedByGames": 43.37
   },
   {
+    "id": "02zq7",
     "name": "Andrew Miller",
     "position": "F",
     "games": 4,
@@ -17103,6 +17500,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "02zq7",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -17173,6 +17571,7 @@
     "scoreByPositionAdjustedByGames": 39.78
   },
   {
+    "id": "031o3",
     "name": "Laurent Dauphin",
     "position": "F",
     "games": 2,
@@ -17191,6 +17590,7 @@
     "seasons": [
       {
         "season": 2021,
+        "id": "031o3",
         "position": "F",
         "games": 2,
         "goals": 1,
@@ -17261,6 +17661,7 @@
     "scoreByPositionAdjustedByGames": 56.03
   },
   {
+    "id": "0457b",
     "name": "Casey Mittelstadt",
     "position": "F",
     "games": 6,
@@ -17279,6 +17680,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "0457b",
         "position": "F",
         "games": 6,
         "goals": 0,
@@ -17347,6 +17749,7 @@
     "scoreByPositionAdjustedByGames": 32.62
   },
   {
+    "id": "024j1",
     "name": "Alexei Emelin",
     "position": "D",
     "games": 5,
@@ -17365,6 +17768,7 @@
     "seasons": [
       {
         "season": 2017,
+        "id": "024j1",
         "position": "D",
         "games": 5,
         "goals": 0,
@@ -17434,6 +17838,7 @@
     "scoreByPositionAdjustedByGames": 28.81
   },
   {
+    "id": "003fu",
     "name": "Matt Hunwick",
     "position": "D",
     "games": 4,
@@ -17452,6 +17857,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003fu",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -17522,6 +17928,7 @@
     "scoreByPositionAdjustedByGames": 38.41
   },
   {
+    "id": "05oxu",
     "name": "Matt Kessel",
     "position": "D",
     "games": 1,
@@ -17540,6 +17947,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "05oxu",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -17610,6 +18018,7 @@
     "scoreByPositionAdjustedByGames": 76.47
   },
   {
+    "id": "01587",
     "name": "Jordan Eberle",
     "position": "F",
     "games": 3,
@@ -17628,6 +18037,7 @@
     "seasons": [
       {
         "season": 2016,
+        "id": "01587",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -17698,6 +18108,7 @@
     "scoreByPositionAdjustedByGames": 33.23
   },
   {
+    "id": "01zub",
     "name": "Dylan McIlrath",
     "position": "D",
     "games": 2,
@@ -17716,6 +18127,7 @@
     "seasons": [
       {
         "season": 2023,
+        "id": "01zub",
         "position": "D",
         "games": 2,
         "goals": 0,
@@ -17786,6 +18198,7 @@
     "scoreByPositionAdjustedByGames": 50.64
   },
   {
+    "id": "003lu",
     "name": "Brad Richardson",
     "position": "F",
     "games": 4,
@@ -17804,6 +18217,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003lu",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -17873,6 +18287,7 @@
     "scoreByPositionAdjustedByGames": 27.91
   },
   {
+    "id": "03rfj",
     "name": "Keegan Kolesar",
     "position": "F",
     "games": 5,
@@ -17891,6 +18306,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "03rfj",
         "position": "F",
         "games": 1,
         "goals": 0,
@@ -17932,6 +18348,7 @@
       },
       {
         "season": 2023,
+        "id": "03rfj",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -18002,6 +18419,7 @@
     "scoreByPositionAdjustedByGames": 28.84
   },
   {
+    "id": "03mbo",
     "name": "Casey Nelson",
     "position": "D",
     "games": 1,
@@ -18020,6 +18438,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "03mbo",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -18089,6 +18508,7 @@
     "scoreByPositionAdjustedByGames": 36.42
   },
   {
+    "id": "02yjk",
     "name": "Nic Petan",
     "position": "F",
     "games": 3,
@@ -18107,6 +18527,7 @@
     "seasons": [
       {
         "season": 2015,
+        "id": "02yjk",
         "position": "F",
         "games": 3,
         "goals": 0,
@@ -18177,6 +18598,7 @@
     "scoreByPositionAdjustedByGames": 27.54
   },
   {
+    "id": "02npz",
     "name": "Esa Lindell",
     "position": "D",
     "games": 7,
@@ -18195,6 +18617,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "02npz",
         "position": "D",
         "games": 7,
         "goals": 0,
@@ -18262,6 +18685,7 @@
     "scoreByPositionAdjustedByGames": 18.78
   },
   {
+    "id": "02h1x",
     "name": "Barclay Goodrow",
     "position": "F",
     "games": 2,
@@ -18280,6 +18704,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "02h1x",
         "position": "F",
         "games": 2,
         "goals": 0,
@@ -18350,6 +18775,7 @@
     "scoreByPositionAdjustedByGames": 24.95
   },
   {
+    "id": "00482",
     "name": "Bryce Salvador",
     "position": "D",
     "games": 4,
@@ -18368,6 +18794,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "00482",
         "position": "D",
         "games": 4,
         "goals": 0,
@@ -18438,6 +18865,7 @@
     "scoreByPositionAdjustedByGames": 26.39
   },
   {
+    "id": "025z8",
     "name": "Oliver Lauridsen",
     "position": "D",
     "games": 3,
@@ -18456,6 +18884,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "025z8",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -18526,6 +18955,7 @@
     "scoreByPositionAdjustedByGames": 37.77
   },
   {
+    "id": "04qvh",
     "name": "Nicolas Beaudin",
     "position": "D",
     "games": 1,
@@ -18544,6 +18974,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "04qvh",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -18613,6 +19044,7 @@
     "scoreByPositionAdjustedByGames": 62.37
   },
   {
+    "id": "04qy0",
     "name": "Jack Drury",
     "position": "F",
     "games": 2,
@@ -18631,6 +19063,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "04qy0",
         "position": "F",
         "games": 2,
         "goals": 1,
@@ -18699,6 +19132,7 @@
     "scoreByPositionAdjustedByGames": 41.5
   },
   {
+    "id": "02g05",
     "name": "Sean Kuraly",
     "position": "F",
     "games": 5,
@@ -18717,6 +19151,7 @@
     "seasons": [
       {
         "season": 2017,
+        "id": "02g05",
         "position": "F",
         "games": 5,
         "goals": 0,
@@ -18787,6 +19222,7 @@
     "scoreByPositionAdjustedByGames": 17.97
   },
   {
+    "id": "030w0",
     "name": "Austin Czarnik",
     "position": "F",
     "games": 4,
@@ -18805,6 +19241,7 @@
     "seasons": [
       {
         "season": 2018,
+        "id": "030w0",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -18875,6 +19312,7 @@
     "scoreByPositionAdjustedByGames": 23.3
   },
   {
+    "id": "04r0g",
     "name": "Tim Berni",
     "position": "D",
     "games": 1,
@@ -18893,6 +19331,7 @@
     "seasons": [
       {
         "season": 2022,
+        "id": "04r0g",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -18960,6 +19399,7 @@
     "scoreByPositionAdjustedByGames": 16.18
   },
   {
+    "id": "03cyf",
     "name": "Pierre-Edouard Bellemare",
     "position": "F",
     "games": 2,
@@ -18978,6 +19418,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "03cyf",
         "position": "F",
         "games": 2,
         "goals": 0,
@@ -19048,6 +19489,7 @@
     "scoreByPositionAdjustedByGames": 32.18
   },
   {
+    "id": "025t1",
     "name": "Taylor Fedun",
     "position": "D",
     "games": 3,
@@ -19066,6 +19508,7 @@
     "seasons": [
       {
         "season": 2014,
+        "id": "025t1",
         "position": "D",
         "games": 3,
         "goals": 0,
@@ -19136,6 +19579,7 @@
     "scoreByPositionAdjustedByGames": 23.97
   },
   {
+    "id": "04mmk",
     "name": "Lawrence Pilut",
     "position": "D",
     "games": 1,
@@ -19154,6 +19598,7 @@
     "seasons": [
       {
         "season": 2019,
+        "id": "04mmk",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -19222,6 +19667,7 @@
     "scoreByPositionAdjustedByGames": 15.02
   },
   {
+    "id": "031uw",
     "name": "Kyle Burroughs",
     "position": "D",
     "games": 1,
@@ -19240,6 +19686,7 @@
     "seasons": [
       {
         "season": 2020,
+        "id": "031uw",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -19309,6 +19756,7 @@
     "scoreByPositionAdjustedByGames": 21.41
   },
   {
+    "id": "003d4",
     "name": "Ryan Carter",
     "position": "F",
     "games": 4,
@@ -19327,6 +19775,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "003d4",
         "position": "F",
         "games": 4,
         "goals": 0,
@@ -19396,6 +19845,7 @@
     "scoreByPositionAdjustedByGames": 9.9
   },
   {
+    "id": "04f0w",
     "name": "Alex Formenton",
     "position": "F",
     "games": 7,
@@ -19414,6 +19864,7 @@
     "seasons": [
       {
         "season": 2021,
+        "id": "04f0w",
         "position": "F",
         "games": 7,
         "goals": 0,
@@ -19484,6 +19935,7 @@
     "scoreByPositionAdjustedByGames": 15.41
   },
   {
+    "id": "01mzn",
     "name": "Kevin Connauton",
     "position": "D",
     "games": 1,
@@ -19502,6 +19954,7 @@
     "seasons": [
       {
         "season": 2013,
+        "id": "01mzn",
         "position": "D",
         "games": 1,
         "goals": 0,
@@ -19571,6 +20024,7 @@
     "scoreByPositionAdjustedByGames": 10.23
   },
   {
+    "id": "0243l",
     "name": "Craig Smith",
     "position": "F",
     "games": 5,
@@ -19589,6 +20043,7 @@
     "seasons": [
       {
         "season": 2012,
+        "id": "0243l",
         "position": "F",
         "games": 5,
         "goals": 0,

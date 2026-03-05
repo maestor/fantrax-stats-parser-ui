@@ -914,6 +914,8 @@ export interface components {
         };
         Player: {
             name: string;
+            /** @description Fantrax player identifier extracted from `*id*` in CSV name field. */
+            id: string;
             position?: string;
             games: number;
             goals: number;
@@ -942,6 +944,8 @@ export interface components {
         };
         Goalie: {
             name: string;
+            /** @description Fantrax goalie identifier extracted from `*id*` in CSV name field. */
+            id: string;
             position?: string;
             games: number;
             goals: number;
