@@ -96,7 +96,8 @@ export class ComparisonService {
 
   toggle(player: Player | Goalie): void {
     const current = this.selectedPlayers.value;
-    const index = current.findIndex((p) => p.name === player.name);
+    const key = this.playerKey(player);
+    const index = current.findIndex((p) => this.playerKey(p) === key);
     if (index >= 0) {
       this.selectedPlayers.next(current.filter((_, i) => i !== index));
     } else if (current.length < 2) {
@@ -105,10 +106,16 @@ export class ComparisonService {
   }
 
   isSelected(player: Player | Goalie): boolean {
-    return this.selectedPlayers.value.some((p) => p.name === player.name);
+    const key = this.playerKey(player);
+    return this.selectedPlayers.value.some((p) => this.playerKey(p) === key);
   }
 
   clear(): void {
     this.selectedPlayers.next([]);
+  }
+
+  private playerKey(player: Player | Goalie): string {
+    const context = 'wins' in player ? 'goalie' : 'player';
+    return `${context}:${player.id}`;
   }
 }
