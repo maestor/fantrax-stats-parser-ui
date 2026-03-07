@@ -125,7 +125,7 @@ npm run build
 
 ## Testing
 
-This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests and **Playwright** for end-to-end tests. All tests follow a user-centric, accessible-query approach. Run `npm test` to see the current test count and status.
+This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests, targeted **service-layer tests** for HTTP/cache/platform integrations, and **Playwright** for end-to-end tests. UI tests follow a user-centric, accessible-query approach. Run `npm test` to see the current test count and status.
 
 For planning-heavy changes, save the approved implementation plan locally under `docs/plans/YYYY-MM-DD-*.md` before editing code. The `docs/plans/` directory is gitignored and exists for session-to-session continuity only.
 
@@ -148,6 +148,11 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
+
+Service-layer note:
+
+- UI behavior should still be tested through rendered user flows
+- Lower-level services such as `ApiService`, `CacheService`, and `PwaUpdateService` may use focused `TestBed` specs when the real HTTP/platform pipeline itself is what needs coverage
 
 ## Accessibility
 

@@ -2,13 +2,14 @@
 
 ## Overview
 
-This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests and **Playwright** for end-to-end tests. All tests follow a user-centric, accessible-query approach — testing what the user sees and does, not implementation details.
+This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests, targeted **service-layer tests** for HTTP/cache/platform integrations, and **Playwright** for end-to-end tests. UI tests follow a user-centric, accessible-query approach — testing what the user sees and does, not implementation details.
 
 ## Test Statistics
 
 - **Total Test Files / Tests**: Run `npm test` to see the current count and status
 - **Test Framework**: Vitest (jsdom) + Testing Library
 - **E2E Framework**: Playwright
+- **Service-layer tests**: Angular `TestBed` with HTTP/platform fakes where needed
 
 Note: avoid hard-coding a "current test count" in docs; it becomes stale quickly.
 
@@ -55,6 +56,24 @@ npm run test -- --reporter=verbose src/app/app.component.spec.ts
 - **Mock at the service/API boundary**: Provide mock services via Angular DI, not component internals
 - **Minimize renders**: Full-render tests are expensive. Group all assertions for a given scenario into a single test with one `render()` call. Use comments to separate logical assertion groups. Do NOT create separate `it()` blocks that each call `render()` for the same component state
 
+### Service-Layer Tests
+
+Use service-layer tests when the thing being verified is not a user flow, but the service's own transport/platform logic:
+
+- **`ApiService`**: run the real service with `provideHttpClientTesting()` and `HttpTestingController`
+- **`CacheService`**: direct unit tests are fine; no component render needed
+- **`PwaUpdateService`**: use injected `SwUpdate`, `DOCUMENT`, and `PLATFORM_ID` fakes
+
+Rules:
+
+- Prefer behavior tests for UI work and user paths
+- Prefer service-layer tests only for logic that behavior tests intentionally bypass, such as HTTP request construction, caching, in-flight deduping, service worker update plumbing, or browser/platform APIs
+- In service-layer tests, mock at the lowest useful boundary:
+  - HTTP boundary for `ApiService`
+  - clock/time boundary for `CacheService`
+  - browser/service worker boundary for `PwaUpdateService`
+- Do not rewrite UI behavior tests into service tests just to raise coverage
+
 ### Test Template
 
 ```typescript
@@ -90,6 +109,40 @@ describe('MyComponent', { timeout: 15_000 }, () => {
 
     expect(screen.getByRole('heading', { name: 'myTitle' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'a11y.doAction' })).toBeInTheDocument();
+  });
+});
+```
+
+### Service Test Template
+
+```typescript
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+
+import { ApiService } from './api.service';
+import { CacheService } from './cache.service';
+
+describe('ApiService', () => {
+  let service: ApiService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+        ApiService,
+        CacheService,
+      ],
+    });
+
+    service = TestBed.inject(ApiService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 });
 ```
