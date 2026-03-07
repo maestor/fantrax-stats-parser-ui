@@ -20,7 +20,6 @@ type LeaderboardRow = {
     <app-stats-table
       [data]="data"
       [columns]="columns"
-      [showSearch]="false"
       [showPositionColumn]="false"
       [clickable]="false"
       [expandable]="true"
@@ -55,6 +54,16 @@ class StatsTableExpansionHostComponent {
 }
 
 describe('StatsTableComponent expansion', () => {
+  function findDataRowByText(text: string): HTMLElement {
+    const rows = Array.from(document.querySelectorAll<HTMLElement>('tr[mat-row]'));
+    const row = rows.find((candidate) => candidate.textContent?.includes(text));
+    if (!row) {
+      throw new Error(`Could not find row containing "${text}"`);
+    }
+
+    return row;
+  }
+
   it('toggles expanded details, supports multiple open rows, and handles keyboard', async () => {
     await render(StatsTableExpansionHostComponent, {
       imports: [TranslateModule.forRoot()],
@@ -63,9 +72,8 @@ describe('StatsTableComponent expansion', () => {
 
     await screen.findByText('Colorado Avalanche');
 
-    const rows = document.querySelectorAll('tr[mat-row]');
-    const firstRow = rows[0] as HTMLElement;
-    const secondRow = rows[1] as HTMLElement;
+    const firstRow = findDataRowByText('Colorado Avalanche');
+    const secondRow = findDataRowByText('Vegas Golden Knights');
 
     expect(firstRow).toHaveAttribute('aria-expanded', 'false');
     expect(secondRow).toHaveAttribute('aria-expanded', 'false');
@@ -84,5 +92,28 @@ describe('StatsTableComponent expansion', () => {
     await vi.waitFor(() => {
       expect(firstRow).toHaveAttribute('aria-expanded', 'false');
     });
+  });
+
+  it('supports space-key expansion and blurs collapsed rows after mouse close', async () => {
+    await render(StatsTableExpansionHostComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [provideNoopAnimations()],
+    });
+
+    await screen.findByText('Colorado Avalanche');
+
+    const firstRow = findDataRowByText('Vegas Golden Knights');
+
+    fireEvent.keyDown(firstRow, { key: ' ' });
+    await screen.findByText(/Detail /);
+    expect(firstRow).toHaveAttribute('aria-expanded', 'true');
+
+    firstRow.focus();
+    fireEvent.click(firstRow);
+
+    await vi.waitFor(() => {
+      expect(firstRow).toHaveAttribute('aria-expanded', 'false');
+    });
+    expect(firstRow).not.toHaveFocus();
   });
 });

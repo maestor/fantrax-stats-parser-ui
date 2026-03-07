@@ -4,13 +4,14 @@ import { AppComponent } from './app.component';
 import {
   getBehaviorTestConfig,
   polyfillJsdom,
+  slicedGoalies,
   seedLocalStorage,
   slicedPlayers,
   PLAYER_SLICE_COUNT,
 } from './testing/behavior-test-utils';
 
-// Full-render behavior tests with lazy-loaded routes need more time under load
-describe('AppComponent — mobile frontpage', () => {
+// Full-render behavior tests with lazy-loaded routes need more time under coverage load.
+describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();
@@ -99,5 +100,83 @@ describe('AppComponent — mobile frontpage', () => {
     await vi.waitFor(() => {
       expect(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' })).toBeInTheDocument();
     });
+  });
+
+  it('closes the settings drawer on Escape and keeps desktop-only toggle buttons out of the mobile UI', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(
+      screen.queryByRole('button', { name: /topControls\.controls/ })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /settingsPanel\.settings/ })
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
+
+    const closeDrawerButton = await screen.findByRole('button', { name: 'a11y.closeSettingsDrawer' });
+    closeDrawerButton.focus();
+
+    fireEvent.keyDown(closeDrawerButton, { key: 'Escape' });
+
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: 'a11y.closeSettingsDrawer' })).not.toBeInTheDocument();
+    });
+  });
+
+  it('persists drawer filter changes across reopen and updates player-only content when switching to goalie stats', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({ isMobile: true, goalies: slicedGoalies })
+    );
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
+    await screen.findByRole('button', { name: 'a11y.closeSettingsDrawer' });
+
+    const statsModeToggle = screen.getByRole('switch', { name: 'statsModeToggle' });
+    fireEvent.click(statsModeToggle);
+
+    await vi.waitFor(() => {
+      expect(statsModeToggle).toHaveAttribute('aria-checked', 'true');
+    });
+
+    const minGamesSlider = screen.getByRole('slider', {
+      name: 'minGamesSlider.ariaLabel',
+    });
+    fireEvent.input(minGamesSlider, { target: { value: '7' } });
+    fireEvent.change(minGamesSlider, { target: { value: '7' } });
+
+    await vi.waitFor(() => {
+      expect(minGamesSlider).toHaveValue('7');
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.closeSettingsDrawer' }));
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: 'a11y.closeSettingsDrawer' })).not.toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
+
+    const reopenedToggle = await screen.findByRole('switch', { name: 'statsModeToggle' });
+    expect(reopenedToggle).toHaveAttribute('aria-checked', 'true');
+    expect(
+      screen.getByRole('slider', { name: 'minGamesSlider.ariaLabel' })
+    ).toHaveValue('7');
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.closeSettingsDrawer' }));
+    fireEvent.click(screen.getByRole('tab', { name: 'link.goalieStats' }));
+
+    await screen.findByText(slicedGoalies[0].name, {}, { timeout: 5000 });
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
+
+    await screen.findByRole('heading', { name: 'settingsPanel.settings' });
+    expect(screen.queryByText('positionFilter.label')).not.toBeInTheDocument();
+    expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
+    expect(screen.getByText('minGamesSlider.label')).toBeInTheDocument();
+    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
   });
 });

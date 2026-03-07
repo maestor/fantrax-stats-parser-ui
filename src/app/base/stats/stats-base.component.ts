@@ -161,27 +161,4 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  fetchData(params: ApiParams = {}): void {
-    this.loading = true;
-    this.apiError = false;
-
-    this.fetchApi(params)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data) => {
-          const baseData = this.statsPerGame ? this.applyPerGame(data) : data;
-          this.maxGames = Math.max(0, ...baseData.map(({ games }) => games));
-          this.drawerContextService.setMaxGames(this.drawerKey, this.maxGames);
-          this.tableData = baseData.filter((g) => g.games >= this.minGames);
-          this.loading = false;
-        },
-        error: () => {
-          this.tableData = [];
-          this.maxGames = 0;
-          this.loading = false;
-          this.apiError = true;
-        },
-      });
-  }
 }

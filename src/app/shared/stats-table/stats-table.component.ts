@@ -69,15 +69,15 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   @Input() showPositionColumn = true;
   @Input() positionValue?: (row: TableRow, index: number) => string | number;
   @Input() selectRow = false;
-  @Input() isRowSelected: (row: TableRow) => boolean = () => false;
+  @Input() isRowSelected?: (row: TableRow) => boolean;
   @Input() canSelectRow$: Observable<boolean> = of(true);
   @Input() onRowSelect?: (row: TableRow) => void;
   @Input() clickable = true;
   @Input() formatCell?: (column: string, value: number | string | undefined) => string;
   @Input() expandable = false;
   @Input() rowKey?: (row: TableRow, index: number) => string;
-  @Input() isRowExpandable: (row: TableRow) => boolean = () => false;
-  @Input() expandedRowsFor: (row: TableRow) => ExpandedRowViewModel[] = () => [];
+  @Input() isRowExpandable?: (row: TableRow) => boolean;
+  @Input() expandedRowsFor?: (row: TableRow) => ExpandedRowViewModel[];
   @Input() expandToggleAriaLabel?: (row: TableRow, expanded: boolean) => string;
   @Input() expandedHeaderLabels?: { season: string; primary: string; secondary?: string };
 
@@ -200,6 +200,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   private applyDefaultSort(): void {
+    if (!this.sort) {
+      return;
+    }
+
     if (!this.defaultSortColumn) {
       this.sort.active = '';
       this.sort.direction = '';
@@ -217,6 +221,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
     this.sort.active = canUseDesired ? desired : (fallback ?? desired);
     this.sort.direction = 'desc';
+    this.dataSource.data = this.dataSource.sortData(
+      [...this.dataSource.data],
+      this.sort,
+    );
   }
 
   getHeaderIconType(column: Column): ColumnIcon['type'] | null {
@@ -244,7 +252,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   shouldShowExpandToggle(row: TableRow): boolean {
-    return this.expandable && this.isRowExpandable(row);
+    return this.expandable && this.isRowExpandable!(row);
   }
 
   toggleRowExpansion(row: TableRow, event?: Event): void {
@@ -298,7 +306,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   getExpandedRows(row: TableRow): ExpandedRowViewModel[] {
     if (!this.expandable || !this.shouldShowExpandToggle(row) || !this.isExpanded(row)) return [];
-    return this.expandedRowsFor(row);
+    return this.expandedRowsFor!(row);
   }
 
   getExpandToggleAriaLabel(row: TableRow): string {

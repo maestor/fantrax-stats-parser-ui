@@ -16,6 +16,7 @@
   >
     <input
       matSliderThumb
+      [attr.aria-label]="'minGamesSlider.ariaLabel' | translate"
       [value]="minGames"
       (valueChange)="onValueChange($event)"
     />

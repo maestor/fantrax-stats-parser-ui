@@ -264,6 +264,12 @@ export class AppComponent implements OnInit {
     const target = event.target as HTMLElement | null;
     if (target?.isContentEditable) return;
 
+    if (event.key === 'Escape' && (this.settingsDrawer?.opened ?? this.isSettingsDrawerOpen)) {
+      event.preventDefault();
+      this.settingsDrawer?.close();
+      return;
+    }
+
     const tagName = target?.tagName?.toLowerCase();
     const isInFormField =
       tagName === "input" || tagName === "textarea" || tagName === "select";

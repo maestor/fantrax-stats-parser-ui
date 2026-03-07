@@ -68,7 +68,7 @@ npm run test:coverage
 ```
 
 - **Scope**: Application implementation under `src/` (test files excluded)
-- **Note**: Coverage gate is currently disabled while transitioning to behavior tests. Coverage will be re-enabled once sufficient behavior test coverage is in place.
+- **Coverage gate**: `npm run verify` enforces minimum coverage of 92% statements, 82% branches, 93% functions, and 94% lines.
 - **Contribution rule (required)**: every new/changed code path must be covered by tests (aim 100% coverage for the code you touched, including error/edge cases)
 - **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
 
@@ -88,9 +88,8 @@ npm run test:coverage
 
 ### Test Coverage
 
-Coverage gate is currently disabled while transitioning to behavior tests. It will be re-enabled once sufficient coverage is in place.
-
 - New/changed logic must be fully tested (aim 100% coverage for the code you touched, including error/edge cases).
+- `npm run verify` must keep overall coverage at or above 92% statements, 82% branches, 93% functions, and 94% lines.
 - Don’t merge changes that add uncovered new behavior.
 
 ### Testing Best Practices

@@ -2,13 +2,14 @@
 
 ## Overview
 
-This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests and **Playwright** for end-to-end tests. All tests follow a user-centric, accessible-query approach — testing what the user sees and does, not implementation details.
+This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests, targeted **service-layer tests** for HTTP/cache/platform integrations, and **Playwright** for end-to-end tests. UI tests follow a user-centric, accessible-query approach — testing what the user sees and does, not implementation details.
 
 ## Test Statistics
 
 - **Total Test Files / Tests**: Run `npm test` to see the current count and status
 - **Test Framework**: Vitest (jsdom) + Testing Library
 - **E2E Framework**: Playwright
+- **Service-layer tests**: Angular `TestBed` with HTTP/platform fakes where needed
 
 Note: avoid hard-coding a "current test count" in docs; it becomes stale quickly.
 
@@ -18,6 +19,8 @@ Every contribution must include tests for all new/changed behavior.
 
 - **Rule**: new/changed logic should be tested (include error and edge cases)
 - **CI Gate**: `npm run verify` must pass (tests + production build)
+- **Coverage thresholds**: `npm run verify` enforces minimum coverage of 92% statements, 82% branches, 93% functions, and 94% lines via `angular.json` (`architect.test.options.coverageThresholds`)
+- **Planning-heavy changes**: save the approved implementation plan locally under gitignored `docs/plans/YYYY-MM-DD-*.md` before editing code so behavior-test work can resume cleanly in a later session
 
 ## Running Tests
 
@@ -40,6 +43,8 @@ npm run verify
 npm run test -- --reporter=verbose src/app/app.component.spec.ts
 ```
 
+The coverage gate used by `npm run test:coverage` and `npm run verify` is configured in `angular.json`, not `vitest.config.ts`, because the project runs tests through Angular's `@angular/build:unit-test` builder.
+
 **Important Notes:**
 
 - ✅ No browser required — tests run in jsdom (no Chrome installation needed)
@@ -53,6 +58,24 @@ npm run test -- --reporter=verbose src/app/app.component.spec.ts
 - **Full rendering**: Render real components with their templates — no shallow rendering or stubs
 - **Mock at the service/API boundary**: Provide mock services via Angular DI, not component internals
 - **Minimize renders**: Full-render tests are expensive. Group all assertions for a given scenario into a single test with one `render()` call. Use comments to separate logical assertion groups. Do NOT create separate `it()` blocks that each call `render()` for the same component state
+
+### Service-Layer Tests
+
+Use service-layer tests when the thing being verified is not a user flow, but the service's own transport/platform logic:
+
+- **`ApiService`**: run the real service with `provideHttpClientTesting()` and `HttpTestingController`
+- **`CacheService`**: direct unit tests are fine; no component render needed
+- **`PwaUpdateService`**: use injected `SwUpdate`, `DOCUMENT`, and `PLATFORM_ID` fakes
+
+Rules:
+
+- Prefer behavior tests for UI work and user paths
+- Prefer service-layer tests only for logic that behavior tests intentionally bypass, such as HTTP request construction, caching, in-flight deduping, service worker update plumbing, or browser/platform APIs
+- In service-layer tests, mock at the lowest useful boundary:
+  - HTTP boundary for `ApiService`
+  - clock/time boundary for `CacheService`
+  - browser/service worker boundary for `PwaUpdateService`
+- Do not rewrite UI behavior tests into service tests just to raise coverage
 
 ### Test Template
 
@@ -93,13 +116,47 @@ describe('MyComponent', { timeout: 15_000 }, () => {
 });
 ```
 
+### Service Test Template
+
+```typescript
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
+
+import { ApiService } from './api.service';
+import { CacheService } from './cache.service';
+
+describe('ApiService', () => {
+  let service: ApiService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+        ApiService,
+        CacheService,
+      ],
+    });
+
+    service = TestBed.inject(ApiService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
+  });
+});
+```
+
 ### E2E Tests (Playwright)
 
 The project uses **Playwright Test** for end-to-end (E2E) coverage with a feature-based test organization.
 
 **Prerequisites (local):**
 
-- Playwright browsers installed: `npx playwright install`
+- Playwright browser installed: `npx playwright install chromium`
 - Backend API running on `http://localhost:3000` (see project README and backend repo)
 
 **In CI:** E2E tests run without a live backend. API responses are served from JSON fixtures in `e2e/fixtures/data/` via Playwright's `page.route()` mocking. The production build is served with `npx serve`.
@@ -109,12 +166,12 @@ The Playwright config is defined in `playwright.config.ts` and:
 - Uses `baseURL` `http://localhost:4200`
 - Locally: starts (or reuses) the Angular dev server via `npm start`
 - In CI: serves the production build via `npx serve dist/fantrax-stats-parser-ui/browser`
-- Runs tests against Chromium, Firefox and WebKit
+- Runs tests against Chromium only
 
 **Basic commands:**
 
 ```bash
-# Run all E2E tests (headless, all browsers) — requires backend on :3000
+# Run all E2E tests (headless, Chromium) — requires backend on :3000
 npx playwright test
 
 # Run in headed mode (for debugging)
@@ -122,9 +179,6 @@ npx playwright test --headed
 
 # Run specific test file
 npx playwright test e2e/specs/smoke.spec.ts
-
-# Run only in a single browser, e.g. Chromium
-npx playwright test --project=chromium
 
 # Run with API mocking (simulates CI mode)
 CI=true npx playwright test

@@ -214,7 +214,6 @@ export class ApiService {
     if (!queryParams) return path;
 
     const keys = Object.keys(queryParams).sort();
-    if (keys.length === 0) return path;
 
     const query = keys
       .map((key) => {

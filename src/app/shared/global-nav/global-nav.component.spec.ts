@@ -8,7 +8,8 @@ import {
   slicedPlayers,
 } from '../../testing/behavior-test-utils';
 
-describe('GlobalNavComponent — navigation flow', { timeout: 45_000 }, () => {
+// Full-render navigation flow re-renders overlays and lazy routes, so coverage runs need more headroom.
+describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();

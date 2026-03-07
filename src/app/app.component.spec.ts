@@ -1,18 +1,22 @@
 import { fireEvent, render, screen } from '@testing-library/angular';
+import { TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import {
   getBehaviorTestConfig,
   polyfillJsdom,
+  polyfillMatchMedia,
   seedLocalStorage,
   slicedPlayers,
   PLAYER_SLICE_COUNT,
 } from './testing/behavior-test-utils';
 
-// Full-render behavior tests with lazy-loaded routes need more time under load
-describe('AppComponent — desktop frontpage', () => {
+// Full-render behavior tests with lazy-loaded routes need more time under coverage load.
+describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
+    polyfillMatchMedia();
     seedLocalStorage();
   });
 
@@ -92,5 +96,107 @@ describe('AppComponent — desktop frontpage', () => {
     fireEvent.click(skipLink);
 
     expect(document.activeElement?.textContent).toContain(firstPlayerName);
+  });
+
+  it('supports keyboard shortcuts and ignores help shortcut while typing in the search field', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    const searchInput = screen.getByLabelText('table.playerSearch');
+
+    fireEvent.keyDown(document, { key: '/' });
+    expect(searchInput).toHaveFocus();
+
+    fireEvent.keyDown(searchInput, { key: '?' });
+    expect(screen.queryByRole('button', { name: 'helpDialog.close' })).not.toBeInTheDocument();
+
+    searchInput.blur();
+    fireEvent.keyDown(document, { key: '?' });
+
+    const helpCloseButton = await screen.findByRole('button', { name: 'helpDialog.close' });
+    fireEvent.click(helpCloseButton);
+
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: 'helpDialog.close' })).not.toBeInTheDocument();
+    });
+  });
+
+  it('shows the update snackbar, reopens it after Escape dismissal, and triggers reload from the snackbar action', async () => {
+    const activateAndReload = vi.fn<() => Promise<void>>().mockResolvedValue(undefined);
+
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        pwaUpdateAvailable: true,
+        pwaActivateAndReload: activateAndReload,
+      })
+    );
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    const initialActionText = await screen.findByText('pwa.updateAction');
+    const initialActionButton = initialActionText.closest('button');
+    expect(initialActionButton).not.toBeNull();
+    const snackbar = TestBed.inject(MatSnackBar);
+    snackbar.dismiss();
+
+    await vi.waitFor(() => {
+      const reopenedActionText = screen.getByText('pwa.updateAction');
+      const reopenedActionButton = reopenedActionText.closest('button');
+      expect(reopenedActionButton).not.toBeNull();
+      expect(reopenedActionButton).not.toBe(initialActionButton);
+    });
+
+    fireEvent.click(screen.getByText('pwa.updateAction'));
+
+    await vi.waitFor(() => {
+      expect(activateAndReload).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('starts with visible defaults when browser storage is empty', async () => {
+    localStorage.clear();
+
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(screen.getByRole('button', { name: /topControls\.controls/ })).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+    expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toHaveTextContent(
+      '2012-2013'
+    );
+    expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent(
+      'season.allSeasons'
+    );
+    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
+      'reportType.regular'
+    );
+  });
+
+  it('falls back to regular report type when persisted storage contains an invalid report type', async () => {
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        selectedTeamId: '1',
+        startFromSeason: 2012,
+        topControlsExpanded: true,
+        season: null,
+        reportType: 'invalid-report-type',
+      })
+    );
+
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
+      'reportType.regular'
+    );
+    expect(screen.getByRole('table')).toBeInTheDocument();
   });
 });

@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/angular';
-
 import { AppComponent } from '../../../app.component';
 import {
     getBehaviorTestConfig,

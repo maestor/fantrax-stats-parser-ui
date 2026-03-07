@@ -1,5 +1,5 @@
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { fireEvent, render, screen } from '@testing-library/angular';
+import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
@@ -150,5 +150,77 @@ describe('Leaderboard expansion behavior', () => {
     expect(detailRow).toBeTruthy();
     const trophies = detailRow.textContent?.match(/🏆/g) ?? [];
     expect(trophies.length).toBe(1);
+  });
+
+  it('leaves the displayed rank blank for tied playoff rows', async () => {
+    await render(LeaderboardPlayoffsComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideNoopAnimations(),
+        {
+          provide: ViewportService,
+          useValue: {
+            isMobile$: of(false),
+          },
+        },
+        {
+          provide: ApiService,
+          useValue: {
+            getLeaderboardRegular: () => of([]),
+            getLeaderboardPlayoffs: () => of([
+              {
+                teamId: '1',
+                teamName: 'Colorado Avalanche',
+                championships: 3,
+                finals: 3,
+                conferenceFinals: 3,
+                secondRound: 3,
+                firstRound: 3,
+                appearances: 3,
+                tieRank: false,
+                seasons: [],
+              },
+              {
+                teamId: '2',
+                teamName: 'Dallas Stars',
+                championships: 2,
+                finals: 2,
+                conferenceFinals: 2,
+                secondRound: 2,
+                firstRound: 2,
+                appearances: 2,
+                tieRank: true,
+                seasons: [],
+              },
+              {
+                teamId: '3',
+                teamName: 'Edmonton Oilers',
+                championships: 1,
+                finals: 1,
+                conferenceFinals: 1,
+                secondRound: 1,
+                firstRound: 1,
+                appearances: 1,
+                tieRank: false,
+                seasons: [],
+              },
+            ]),
+          },
+        },
+      ],
+    });
+
+    await screen.findByText('Colorado Avalanche');
+
+    const rows = screen.getAllByRole('row').slice(1);
+    expect(rows).toHaveLength(3);
+
+    const [firstRank, secondRank, thirdRank] = rows.map((row) =>
+      within(row).getAllByRole('cell')[0]?.textContent?.trim() ?? ''
+    );
+
+    expect(firstRank).toBe('1');
+    expect(secondRank).toBe('');
+    expect(thirdRank).toBe('3');
   });
 });
