@@ -152,7 +152,54 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
         fireEvent.keyDown(goalsCheckbox, { key: 'ArrowDown' });
         expect(closePlayerCardButton).toHaveFocus();
 
+        goalsCheckbox.focus();
+        fireEvent.keyDown(goalsCheckbox, { key: 'ArrowUp' });
+        expect(within(dialog).getByRole('tab', { name: 'playerCard.graphs', selected: true })).toHaveFocus();
+
         fireEvent.click(switchToRadarButton);
         expect(await within(dialog).findByText('graphs.radarInfo')).toBeInTheDocument();
+
+        fireEvent.click(within(dialog).getByRole('button', { name: 'graphs.switchToLine' }));
+
+        await vi.waitFor(() => {
+            expect(
+                within(dialog).getByRole('button', { name: 'graphs.switchToRadar' })
+            ).toBeInTheDocument();
+        });
+    });
+
+    it('supports touch and wheel navigation while announcing the active player', async () => {
+        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+        const firstPlayerCell = await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        fireEvent.click(firstPlayerCell);
+
+        const dialog = await screen.findByRole('dialog');
+        const cardHost = document.querySelector('app-player-card');
+        expect(cardHost).not.toBeNull();
+
+        fireEvent.touchStart(cardHost!, {
+            touches: [{ identifier: 1, clientX: 240, clientY: 80 }],
+        });
+        fireEvent.touchEnd(cardHost!, {
+            changedTouches: [{ identifier: 1, clientX: 120, clientY: 82 }],
+        });
+
+        await vi.waitFor(() => {
+            expect(
+                within(dialog).getByText(slicedPlayers[1].name, { selector: '.player-card-player-name' })
+            ).toBeInTheDocument();
+        });
+        expect(
+            within(dialog).getByText(`Pelaaja 2 / ${slicedPlayers.length}: ${slicedPlayers[1].name}`)
+        ).toBeInTheDocument();
+
+        fireEvent.wheel(document, { deltaX: -120, deltaY: 0 });
+
+        await vi.waitFor(() => {
+            expect(
+                within(dialog).getByText(slicedPlayers[0].name, { selector: '.player-card-player-name' })
+            ).toBeInTheDocument();
+        });
     });
 });

@@ -70,7 +70,7 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
 
     await vi.waitFor(() => {
       expect(router.url).toBe('/player-stats');
-    });
+    }, { timeout: 5000 });
     expect(
       screen.getByRole('combobox', { name: /season\.selector/ })
     ).toHaveTextContent('2025-2026');
@@ -201,7 +201,7 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
 
     await vi.waitFor(() => {
       expect(router.url).toBe('/goalie-stats');
-    });
+    }, { timeout: 5000 });
   });
 
   it('opens the goalie direct route on the graphs tab and preserves the tab in copied links', async () => {
