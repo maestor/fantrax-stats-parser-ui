@@ -24,11 +24,27 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { Column, ColumnIcon } from '@shared/column.types';
-import { Player, Goalie, RegularLeaderboardEntry, PlayoffLeaderboardEntry } from '@services/api.service';
+import {
+  Player,
+  Goalie,
+  RegularLeaderboardEntry,
+  PlayoffLeaderboardEntry,
+  CareerPlayerListItem,
+  CareerGoalieListItem,
+} from '@services/api.service';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
-
-export type TableRow = Player | Goalie | RegularLeaderboardEntry | PlayoffLeaderboardEntry;
 import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
+
+const ROW_NUMBER_COLUMN = '__rowNumber';
+
+export type TableRow =
+  | Player
+  | Goalie
+  | RegularLeaderboardEntry
+  | PlayoffLeaderboardEntry
+  | CareerPlayerListItem
+  | CareerGoalieListItem
+  | ({ playerPosition: string } & CareerPlayerListItem);
 
 @Component({
   selector: 'app-stats-table',
@@ -66,6 +82,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   @Input() apiError = false;
   @Input() tableId = 'stats-table';
   @Input() showSearch = true;
+  @Input() searchLabelKey = 'table.playerSearch';
   @Input() showPositionColumn = true;
   @Input() positionValue?: (row: TableRow, index: number) => string | number;
   @Input() selectRow = false;
@@ -196,7 +213,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   private buildDisplayedFields(): string[] {
     const dynamic = this.dynamicColumns.map(c => c.field);
-    return this.showPositionColumn ? ['position', ...dynamic] : dynamic;
+    return this.showPositionColumn ? [ROW_NUMBER_COLUMN, ...dynamic] : dynamic;
   }
 
   private applyDefaultSort(): void {
@@ -216,7 +233,7 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
       (!hasColumns || this.dynamicColumns.some(c => c.field === desired));
 
     const fallback = hasColumns
-      ? (this.dynamicColumns.find(c => c.field !== 'position')?.field ?? this.dynamicColumns[0]?.field)
+      ? (this.dynamicColumns.find(c => c.field !== ROW_NUMBER_COLUMN)?.field ?? this.dynamicColumns[0]?.field)
       : desired;
 
     this.sort.active = canUseDesired ? desired : (fallback ?? desired);
@@ -229,6 +246,12 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   getHeaderIconType(column: Column): ColumnIcon['type'] | null {
     return column.icon?.type ?? null;
+  }
+
+  getInstructionsTranslateKey(): string {
+    if (this.clickable) return 'a11y.tableNavigationHint';
+    if (this.expandable) return 'a11y.tableNavigationHintExpandable';
+    return 'a11y.tableNavigationHintReadOnly';
   }
 
   getCellClass(column: Column): { 'col-left': boolean; 'col-center': boolean } {

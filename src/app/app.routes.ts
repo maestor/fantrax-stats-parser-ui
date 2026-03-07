@@ -79,5 +79,33 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'career',
+    loadComponent: () =>
+      import('./career/career.component').then(
+        (m) => m.CareerComponent
+      ),
+    children: [
+      {
+        path: '',
+        redirectTo: 'players',
+        pathMatch: 'full',
+      },
+      {
+        path: 'players',
+        loadComponent: () =>
+          import('./career/players/career-players.component').then(
+            (m) => m.CareerPlayersComponent
+          ),
+      },
+      {
+        path: 'goalies',
+        loadComponent: () =>
+          import('./career/goalies/career-goalies.component').then(
+            (m) => m.CareerGoaliesComponent
+          ),
+      },
+    ],
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

@@ -37,7 +37,7 @@ export default defineConfig({
   /* In CI: serve the production build; locally: run Angular dev server */
   webServer: process.env['CI']
     ? {
-        command: 'npx serve dist/fantrax-stats-parser-ui/browser -s -l 4200',
+        command: 'python3 -m http.server 4200 --directory dist/fantrax-stats-parser-ui/browser',
         url: 'http://localhost:4200',
         reuseExistingServer: false,
         timeout: 30000,

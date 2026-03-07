@@ -132,6 +132,8 @@ export class AppComponent implements OnInit {
 
   isSettingsDrawerOpen = false;
   isLeaderboardsRoute = false;
+  isCareerRoute = false;
+  showStatsShell = true;
 
   private readonly pwaUpdateService = inject(PwaUpdateService);
   readonly isUpdateAvailable$ = this.pwaUpdateService.updateAvailable$;
@@ -229,9 +231,13 @@ export class AppComponent implements OnInit {
   }
 
   private updateControlsContext(url: string): void {
-    this.controlsContext = url.includes("goalie-stats") ? "goalie" : "player";
+    const normalizedUrl = url.split('?')[0];
+
+    this.controlsContext = normalizedUrl.includes("goalie-stats") ? "goalie" : "player";
     this.controlsContextSubject.next(this.controlsContext);
-    this.isLeaderboardsRoute = url.startsWith("/leaderboards");
+    this.isLeaderboardsRoute = normalizedUrl.startsWith("/leaderboards");
+    this.isCareerRoute = normalizedUrl.startsWith('/career');
+    this.showStatsShell = !this.isLeaderboardsRoute && !this.isCareerRoute;
   }
 
   skipToTarget(targetId: string, event: MouseEvent): void {

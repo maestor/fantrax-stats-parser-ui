@@ -30,6 +30,7 @@ export class GlobalNavComponent {
 
   readonly navItems: NavItem[] = [
     { icon: 'score', labelKey: 'nav.hockeyPlayerStats', type: 'route', path: '/' },
+    { icon: 'history', labelKey: 'nav.playerCareers', type: 'route', path: '/career' },
     { icon: 'emoji_events', labelKey: 'nav.leaderboards', type: 'route', path: '/leaderboards' },
     { icon: 'info', labelKey: 'nav.info', type: 'action' },
   ];
@@ -47,6 +48,9 @@ export class GlobalNavComponent {
     const url = this.router.url;
     if (item.path === '/') {
       return url === '/' || url.startsWith('/player-stats') || url.startsWith('/goalie-stats');
+    }
+    if (item.path === '/career') {
+      return url.startsWith('/career');
     }
     return !!item.path && url.startsWith(item.path);
   }

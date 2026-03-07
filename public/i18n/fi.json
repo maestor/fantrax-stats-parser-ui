@@ -6,10 +6,17 @@
   },
   "nav": {
     "hockeyPlayerStats": "Pelaajatilastot",
+    "playerCareers": "Pelaajaurat",
     "leaderboards": "Maratontaulukot",
     "info": "Tietoa / Ohjeet",
     "openMenu": "Avaa valikko",
     "menuAriaLabel": "Päävalikko"
+  },
+  "career": {
+    "tabs": {
+      "players": "Kenttäpelaajat",
+      "goalies": "Maalivahdit"
+    }
   },
   "leaderboards": {
     "tabs": {
@@ -58,6 +65,8 @@
   },
   "table": {
     "playerSearch": "Pelaajahaku",
+    "careerPlayerSearch": "Pelaajaurahaku",
+    "careerGoalieSearch": "Maalivahtiurahaku",
     "noSearchResults": "Ei hakutuloksia",
     "loading": "Ladataan dataa...",
     "apiUnavailable": "Rajapinta ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen."
@@ -66,6 +75,8 @@
     "skipToTable": "Siirry taulukkoon",
     "openPlayerCard": "Avaa pelaajakortti: {{name}}",
     "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin.",
+    "tableNavigationHintReadOnly": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä.",
+    "tableNavigationHintExpandable": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi tai sulkeaksesi erittelyn.",
     "openHelpDialog": "Avaa ohje",
     "closeHelpDialog": "Sulje ohje",
     "openSettingsDrawer": "Avaa asetuspaneeli",
@@ -213,11 +224,22 @@
   },
   "tableColumn": {
     "position": "#",
+    "playerPosition": "Pelipaikka",
     "name": "Nimi",
     "score": "Fantasy-ranking (0-100)",
     "scoreAdjustedByGames": "Fantasy-ranking / ottelu",
     "season": "Kausi",
     "seasonDisplay": "Kausi",
+    "firstSeason": "Ensimmäinen kausi",
+    "lastSeason": "Viimeisin kausi",
+    "seasonsOwned": "Omistetut kaudet",
+    "seasonsPlayedRegular": "Runkosarjakaudet",
+    "seasonsPlayedPlayoffs": "Playoff-kaudet",
+    "teamsOwned": "Omistetut joukkueet",
+    "teamsPlayedRegular": "Runkosarjajoukkueet",
+    "teamsPlayedPlayoffs": "Playoff-joukkueet",
+    "regularGames": "Runkosarjan ottelut",
+    "playoffGames": "Playoffs-ottelut",
     "games": "Ottelut",
     "goals": "Maalit",
     "assists": "Syötöt",
@@ -250,11 +272,22 @@
   },
   "tableColumnShort": {
     "position": "#",
+    "playerPosition": "Pelip.",
     "name": "Nimi",
     "score": "FR",
     "scoreAdjustedByGames": "FR/O",
     "season": "Kausi",
     "seasonDisplay": "Kausi",
+    "firstSeason": "1. kausi",
+    "lastSeason": "Viim. kausi",
+    "seasonsOwned": "Om. kaudet",
+    "seasonsPlayedRegular": "RS kaudet",
+    "seasonsPlayedPlayoffs": "PO kaudet",
+    "teamsOwned": "Om. joukk.",
+    "teamsPlayedRegular": "RS joukk.",
+    "teamsPlayedPlayoffs": "PO joukk.",
+    "regularGames": "RS O",
+    "playoffGames": "PO O",
     "games": "O",
     "goals": "M",
     "assists": "S",

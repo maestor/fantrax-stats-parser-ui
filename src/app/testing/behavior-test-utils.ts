@@ -10,6 +10,8 @@ import {
   Goalie,
   LastModifiedResponse,
   Player,
+  CareerGoalieListItem,
+  CareerPlayerListItem,
   PlayoffLeaderboardEntry,
   RegularLeaderboardEntry,
   ReportType,
@@ -24,6 +26,8 @@ import lastModifiedFixture from '../../../e2e/fixtures/data/last-modified.json';
 import seasonsFixture from '../../../e2e/fixtures/data/seasons--regular.json';
 import playersFixture from '../../../e2e/fixtures/data/players--combined--regular.json';
 import goaliesFixtureData from '../../../e2e/fixtures/data/goalies--combined--regular--startFrom=2012.json';
+import careerPlayersFixtureData from '../../../e2e/fixtures/data/career--players.json';
+import careerGoaliesFixtureData from '../../../e2e/fixtures/data/career--goalies.json';
 
 export const PLAYER_SLICE_COUNT = 12;
 export const GOALIE_SLICE_COUNT = 5;
@@ -31,6 +35,8 @@ export const GOALIE_SLICE_COUNT = 5;
 export const slicedPlayers = playersFixture.slice(0, PLAYER_SLICE_COUNT);
 export const goaliesFixture = goaliesFixtureData as unknown as Goalie[];
 export const slicedGoalies = goaliesFixture.slice(0, GOALIE_SLICE_COUNT);
+export const careerPlayersFixture = careerPlayersFixtureData as unknown as CareerPlayerListItem[];
+export const careerGoaliesFixture = careerGoaliesFixtureData as unknown as CareerGoalieListItem[];
 
 export { teamsFixture, lastModifiedFixture, seasonsFixture, playersFixture };
 
@@ -40,6 +46,8 @@ type BehaviorApiErrorKey =
   | 'seasons'
   | 'players'
   | 'goalies'
+  | 'careerPlayers'
+  | 'careerGoalies'
   | 'leaderboardRegular'
   | 'leaderboardPlayoffs';
 
@@ -49,6 +57,8 @@ export type BehaviorApiMockOptions = {
   seasons?: Season[];
   players?: Player[];
   goalies?: Goalie[];
+  careerPlayers?: CareerPlayerListItem[];
+  careerGoalies?: CareerGoalieListItem[];
   leaderboardRegular?: RegularLeaderboardEntry[];
   leaderboardPlayoffs?: PlayoffLeaderboardEntry[];
   errorKeys?: BehaviorApiErrorKey[];
@@ -59,6 +69,8 @@ export type BehaviorApiMockOptions = {
   ) => Observable<Season[]>;
   getPlayerData?: (params: ApiParams) => Observable<Player[]>;
   getGoalieData?: (params: ApiParams) => Observable<Goalie[]>;
+  getCareerPlayers?: () => Observable<CareerPlayerListItem[]>;
+  getCareerGoalies?: () => Observable<CareerGoalieListItem[]>;
 };
 
 export type BehaviorTestConfigOptions = BehaviorApiMockOptions & {
@@ -103,6 +115,14 @@ export function createApiServiceMock(options: BehaviorApiMockOptions = {}) {
       errorKeys.has('goalies')
         ? createApiError()
         : (options.getGoalieData?.(params) ?? of(options.goalies ?? slicedGoalies)),
+    getCareerPlayers: () =>
+      errorKeys.has('careerPlayers')
+        ? createApiError()
+        : (options.getCareerPlayers?.() ?? of(options.careerPlayers ?? careerPlayersFixture)),
+    getCareerGoalies: () =>
+      errorKeys.has('careerGoalies')
+        ? createApiError()
+        : (options.getCareerGoalies?.() ?? of(options.careerGoalies ?? careerGoaliesFixture)),
     getLeaderboardRegular: () =>
       errorKeys.has('leaderboardRegular')
         ? createApiError()

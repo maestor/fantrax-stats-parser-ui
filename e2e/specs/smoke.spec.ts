@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/test-fixture';
-import { DEFAULT_TEAM, TAB_LABELS } from '../config/test-data';
+import { DEFAULT_TEAM, NAV_LABELS, TAB_LABELS } from '../config/test-data';
 
 test.describe('Smoke Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -58,5 +58,20 @@ test.describe('Smoke Tests', () => {
 
     await playerTab.click();
     await expect(page).toHaveURL(/.*\/player-stats$/);
+  });
+
+  test('global navigation opens career listings and career tabs switch between players and goalies', async ({ page }) => {
+    await page.getByRole('button', { name: 'Avaa valikko' }).click();
+    await page.getByRole('button', { name: NAV_LABELS.PLAYER_CAREERS }).click();
+
+    await expect(page).toHaveURL(/\/career\/players$/);
+    await expect(page.getByLabel('Pelaajaurahaku')).toBeVisible();
+    await expect(page.getByRole('combobox', { name: 'Joukkue' })).toHaveCount(0);
+
+    const goalieCareerTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_GOALIES });
+    await goalieCareerTab.click();
+
+    await expect(page).toHaveURL(/\/career\/goalies$/);
+    await expect(page.getByLabel('Maalivahtiurahaku')).toBeVisible();
   });
 });

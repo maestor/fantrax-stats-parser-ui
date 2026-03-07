@@ -793,6 +793,214 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/career/player/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Career stats for one player
+         * @description Returns all imported career records for a single Fantrax player ID across all fantasy teams.
+         *     Zero-game rows are included and count toward `owned` totals but not `played` totals.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Fantrax player or goalie identifier. */
+                    id: components["parameters"]["careerId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Career stats document for one player. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CareerPlayer"];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Player not found. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/career/players": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Career player list
+         * @description Returns one summary row per player across all fantasy teams.
+         *     Zero-game rows count toward owned seasons and teams, but not played counts.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Career player list entries. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CareerPlayerListItem"][];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/career/goalie/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Career stats for one goalie
+         * @description Returns all imported career records for a single Fantrax goalie ID across all fantasy teams.
+         *     Zero-game rows are included and count toward `owned` totals but not `played` totals.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Fantrax player or goalie identifier. */
+                    id: components["parameters"]["careerId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Career stats document for one goalie. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CareerGoalie"];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Goalie not found. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/career/goalies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Career goalie list
+         * @description Returns one summary row per goalie across all fantasy teams.
+         *     Zero-game rows count toward owned seasons and teams, but not played counts.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Career goalie list entries. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CareerGoalieListItem"][];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/leaderboard/playoffs": {
         parameters: {
             query?: never;
@@ -912,6 +1120,140 @@ export interface components {
             /** @example 2023-2024 */
             text: string;
         };
+        CountSplit: {
+            owned: number;
+            played: number;
+        };
+        CareerSummaryTeam: {
+            teamId: string;
+            teamName: string;
+            seasonCount: components["schemas"]["CountSplit"];
+            firstSeason: number;
+            lastSeason: number;
+        };
+        CareerSummary: {
+            firstSeason: number;
+            lastSeason: number;
+            seasonCount: components["schemas"]["CountSplit"];
+            teamCount: components["schemas"]["CountSplit"];
+            teams: components["schemas"]["CareerSummaryTeam"][];
+        };
+        CareerPlayerStatsLine: {
+            games: number;
+            goals: number;
+            assists: number;
+            points: number;
+            plusMinus: number;
+            penalties: number;
+            shots: number;
+            ppp: number;
+            shp: number;
+            hits: number;
+            blocks: number;
+        };
+        CareerGoalieStatsLine: {
+            games: number;
+            wins: number;
+            saves: number;
+            shutouts: number;
+            goals: number;
+            assists: number;
+            points: number;
+            penalties: number;
+            ppp: number;
+            shp: number;
+        };
+        CareerPlayerTeamTotals: components["schemas"]["CareerPlayerStatsLine"] & {
+            teamId: string;
+            teamName: string;
+            seasonCount: components["schemas"]["CountSplit"];
+        };
+        CareerGoalieTeamTotals: components["schemas"]["CareerGoalieStatsLine"] & {
+            teamId: string;
+            teamName: string;
+            seasonCount: components["schemas"]["CountSplit"];
+        };
+        CareerPlayerTotals: components["schemas"]["CareerPlayerStatsLine"] & {
+            seasonCount: components["schemas"]["CountSplit"];
+            teamCount: components["schemas"]["CountSplit"];
+            teams: components["schemas"]["CareerPlayerTeamTotals"][];
+        };
+        CareerGoalieTotals: components["schemas"]["CareerGoalieStatsLine"] & {
+            seasonCount: components["schemas"]["CountSplit"];
+            teamCount: components["schemas"]["CountSplit"];
+            teams: components["schemas"]["CareerGoalieTeamTotals"][];
+        };
+        CareerPlayerSeason: components["schemas"]["CareerPlayerStatsLine"] & {
+            season: number;
+            /** @enum {string} */
+            reportType: "regular" | "playoffs";
+            teamId: string;
+            teamName: string;
+            position: string;
+        };
+        CareerGoalieSeason: components["schemas"]["CareerGoalieStatsLine"] & {
+            season: number;
+            /** @enum {string} */
+            reportType: "regular" | "playoffs";
+            teamId: string;
+            teamName: string;
+            /** @description Omitted when source data only contains a zero placeholder. */
+            gaa?: string;
+            /** @description Omitted when source data only contains a zero placeholder. */
+            savePercent?: string;
+        };
+        CareerPlayer: {
+            id: string;
+            name: string;
+            position: string;
+            summary: components["schemas"]["CareerSummary"];
+            totals: {
+                career: components["schemas"]["CareerPlayerTotals"];
+                regular: components["schemas"]["CareerPlayerTotals"];
+                playoffs: components["schemas"]["CareerPlayerTotals"];
+            };
+            seasons: components["schemas"]["CareerPlayerSeason"][];
+        };
+        CareerPlayerListItem: {
+            id: string;
+            name: string;
+            position: string;
+            firstSeason: number;
+            lastSeason: number;
+            seasonsOwned: number;
+            seasonsPlayedRegular: number;
+            seasonsPlayedPlayoffs: number;
+            teamsOwned: number;
+            teamsPlayedRegular: number;
+            teamsPlayedPlayoffs: number;
+            regularGames: number;
+            playoffGames: number;
+        };
+        CareerGoalieListItem: {
+            id: string;
+            name: string;
+            firstSeason: number;
+            lastSeason: number;
+            seasonsOwned: number;
+            seasonsPlayedRegular: number;
+            seasonsPlayedPlayoffs: number;
+            teamsOwned: number;
+            teamsPlayedRegular: number;
+            teamsPlayedPlayoffs: number;
+            regularGames: number;
+            playoffGames: number;
+        };
+        CareerGoalie: {
+            id: string;
+            name: string;
+            summary: components["schemas"]["CareerSummary"];
+            totals: {
+                career: components["schemas"]["CareerGoalieTotals"];
+                regular: components["schemas"]["CareerGoalieTotals"];
+                playoffs: components["schemas"]["CareerGoalieTotals"];
+            };
+            seasons: components["schemas"]["CareerGoalieSeason"][];
+        };
         Player: {
             name: string;
             /** @description Fantrax player identifier extracted from `*id*` in CSV name field. */
@@ -957,9 +1299,9 @@ export interface components {
             wins: number;
             saves: number;
             shutouts: number;
-            /** @description Goals against average. Omitted for `reportType=both`. */
+            /** @description Goals against average. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
             gaa?: string;
-            /** @description Save percentage. Omitted for `reportType=both`. */
+            /** @description Save percentage. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
             savePercent?: string;
             score: number;
             scoreAdjustedByGames: number;
@@ -1056,6 +1398,8 @@ export interface components {
          *     Works with `/seasons`, `/players/combined/*`, and `/goalies/combined/*`.
          */
         startFrom: number;
+        /** @description Fantrax player or goalie identifier. */
+        careerId: string;
     };
     requestBodies: never;
     headers: never;
