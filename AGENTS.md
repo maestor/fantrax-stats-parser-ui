@@ -13,4 +13,6 @@ For planning-heavy tasks, save the approved plan first under `docs/plans/` using
 
 For an approved multi-batch plan, treat all batches as part of the same task until the user declares the plan complete or redirects to a different task.
 
+If a proposed change would alter user-visible application behavior or semantics, stop and confirm with the user before implementing it. Do not make behavior-changing production edits based only on inference from a plan or coverage goal.
+
 In every task, include a user review phase before final verify. After review is accepted and verify passes, you can commit. After each user-accepted and verified batch, you may commit if useful as a checkpoint. Offer PR notes as a copy-pasteable code block only when the branch is fully implemented and ready for PR; user will handle the rest.

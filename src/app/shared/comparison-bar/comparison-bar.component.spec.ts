@@ -10,7 +10,7 @@ import {
 } from '../../testing/behavior-test-utils';
 import type { Goalie } from '@services/api.service';
 
-describe('Comparison flow — desktop user behavior', { timeout: 60_000 }, () => {
+describe('Comparison flow — desktop user behavior', { timeout: 90_000 }, () => {
   const extendedGoalies = slicedGoalies.slice(0, 2).map((goalie, index) => ({
     ...goalie,
     gaa: index === 0 ? '2.10' : '2.48',

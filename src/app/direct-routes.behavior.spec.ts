@@ -96,6 +96,67 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
     });
   });
 
+  it('opens the player season route on the graphs tab and copies a season-aware graphs link', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        getPlayerData: (params: ApiParams) =>
+          params.season === 2025
+            ? of(seasonPlayers)
+            : of(slicedPlayers as unknown as Player[]),
+      })
+    );
+    const router = TestBed.inject(Router);
+    const seasonPlayer = seasonPlayers[0];
+
+    await router.navigateByUrl(`/player/colorado/${toSlug(seasonPlayer.name)}/2025?tab=graphs`);
+
+    expect(
+      await screen.findByRole('tab', { name: 'playerCard.graphs', selected: true })
+    ).toBeInTheDocument();
+    expect(await screen.findByText('graphs.radarInfo')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'graphs.switchToLine' })
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'playerCard.copyLink' }));
+
+    await vi.waitFor(() => {
+      expect(writeTextMock).toHaveBeenCalledWith(
+        `${window.location.origin}/player/colorado/${toSlug(seasonPlayer.name)}/2025?tab=graphs`
+      );
+    });
+  });
+
+  it('copies the active player link after keyboard navigation inside a direct-link session', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const router = TestBed.inject(Router);
+    const firstPlayer = slicedPlayers[0];
+    const lastPlayer = slicedPlayers.at(-1);
+
+    expect(lastPlayer).toBeDefined();
+
+    await router.navigateByUrl(`/player/colorado/${toSlug(firstPlayer.name)}?tab=by-season`);
+
+    const closeButton = await screen.findByRole('button', { name: 'a11y.closePlayerCard' });
+    fireEvent.keyDown(closeButton, { key: 'ArrowLeft' });
+
+    await vi.waitFor(() => {
+      expect(
+        screen.getByText(lastPlayer!.name, { selector: '.player-card-player-name' })
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'playerCard.copyLink' }));
+
+    await vi.waitFor(() => {
+      expect(writeTextMock).toHaveBeenCalledWith(
+        `${window.location.origin}/player/colorado/${toSlug(lastPlayer!.name)}?tab=by-season`
+      );
+    });
+  });
+
   it('shows a recovery path for invalid player links', async () => {
     await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
     const router = TestBed.inject(Router);

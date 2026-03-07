@@ -9,7 +9,7 @@ import {
 } from '../../testing/behavior-test-utils';
 
 // Full-render navigation flow re-renders overlays and lazy routes, so coverage runs need more headroom.
-describe('GlobalNavComponent — navigation flow', { timeout: 60_000 }, () => {
+describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();

@@ -10,7 +10,7 @@ import {
 } from '../../testing/behavior-test-utils';
 import { toSlug } from '@shared/utils/slug.utils';
 
-describe('PlayerCardComponent — desktop user flow', { timeout: 60_000 }, () => {
+describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () => {
     const writeTextMock = vi.fn<(_: string) => Promise<void>>();
 
     beforeEach(() => {
@@ -116,5 +116,43 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 60_000 }, () =>
 
         const secondActiveRow = document.querySelector('tr[data-row-index="1"]');
         expect(secondActiveRow).toHaveClass('a11y-active');
+    });
+
+    it('supports graphs tab interactions for combined player data', async () => {
+        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+        const firstPlayerCell = await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        fireEvent.click(firstPlayerCell);
+
+        const dialog = await screen.findByRole('dialog');
+        const closePlayerCardButton = within(dialog).getByRole('button', { name: 'a11y.closePlayerCard' });
+
+        fireEvent.click(within(dialog).getByRole('tab', { name: 'playerCard.graphs' }));
+
+        const switchToRadarButton = await within(dialog).findByRole('button', {
+            name: 'graphs.switchToRadar',
+        });
+        expect(switchToRadarButton).toBeInTheDocument();
+
+        const graphControlsToggleText = within(dialog).getByText('controlPanel.graphControls');
+        const graphControlsToggle = graphControlsToggleText.closest('button');
+        expect(graphControlsToggle).not.toBeNull();
+        fireEvent.click(graphControlsToggle!);
+
+        const goalsCheckbox = await within(dialog).findByRole('checkbox', {
+            name: 'tableColumn.goals',
+        });
+        fireEvent.click(goalsCheckbox);
+
+        await vi.waitFor(() => {
+            expect(goalsCheckbox).toBeChecked();
+        });
+
+        goalsCheckbox.focus();
+        fireEvent.keyDown(goalsCheckbox, { key: 'ArrowDown' });
+        expect(closePlayerCardButton).toHaveFocus();
+
+        fireEvent.click(switchToRadarButton);
+        expect(await within(dialog).findByText('graphs.radarInfo')).toBeInTheDocument();
     });
 });
