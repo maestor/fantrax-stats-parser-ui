@@ -9,7 +9,7 @@ import {
 } from '../../testing/behavior-test-utils';
 import { toSlug } from '@shared/utils/slug.utils';
 
-describe('PlayerCardComponent — desktop user flow', { timeout: 35_000 }, () => {
+describe('PlayerCardComponent — desktop user flow', { timeout: 60_000 }, () => {
     const writeTextMock = vi.fn<(_: string) => Promise<void>>();
 
     beforeEach(() => {

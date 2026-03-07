@@ -39,6 +39,7 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 
 ### Making Changes
 1. Read relevant files before making changes
+2. For planning-heavy work, save the approved plan under local gitignored `docs/plans/` with a dated filename before implementation starts
 2. Follow existing patterns and conventions
 3. Update tests when modifying components or services
 4. Use Angular Material components consistently

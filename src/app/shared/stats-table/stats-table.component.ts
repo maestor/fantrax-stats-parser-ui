@@ -200,6 +200,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   }
 
   private applyDefaultSort(): void {
+    if (!this.sort) {
+      return;
+    }
+
     if (!this.defaultSortColumn) {
       this.sort.active = '';
       this.sort.direction = '';
@@ -217,6 +221,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
     this.sort.active = canUseDesired ? desired : (fallback ?? desired);
     this.sort.direction = 'desc';
+    this.dataSource.data = this.dataSource.sortData(
+      [...this.dataSource.data],
+      this.sort,
+    );
   }
 
   getHeaderIconType(column: Column): ColumnIcon['type'] | null {

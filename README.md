@@ -127,6 +127,8 @@ npm run build
 
 This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests and **Playwright** for end-to-end tests. All tests follow a user-centric, accessible-query approach. Run `npm test` to see the current test count and status.
 
+For planning-heavy changes, save the approved implementation plan locally under `docs/plans/YYYY-MM-DD-*.md` before editing code. The `docs/plans/` directory is gitignored and exists for session-to-session continuity only.
+
 📖 **[Read the complete Testing Documentation](docs/project-testing.md)**
 
 E2E tests are organized into feature-based specs under `e2e/specs/`:

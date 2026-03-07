@@ -18,6 +18,7 @@ Every contribution must include tests for all new/changed behavior.
 
 - **Rule**: new/changed logic should be tested (include error and edge cases)
 - **CI Gate**: `npm run verify` must pass (tests + production build)
+- **Planning-heavy changes**: save the approved implementation plan locally under gitignored `docs/plans/YYYY-MM-DD-*.md` before editing code so behavior-test work can resume cleanly in a later session
 
 ## Running Tests
 
