@@ -33,7 +33,7 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 - Component tests use Testing Library (`@testing-library/angular`) with Vitest, following accessible user-centric queries (`getByRole`, `getByText`, etc.).
 - Service-layer tests use Angular `TestBed` directly when HTTP/cache/platform logic needs to be verified without bypassing the real service implementation.
 - End-to-end tests are implemented with Playwright in the `e2e` directory and exercise real user flows against a running dev server.
-- Playwright is configured via `playwright.config.ts` to start `npm start` automatically and run tests against `http://localhost:4200` in Chromium, Firefox and WebKit.
+- Playwright is configured via `playwright.config.ts` to start `npm start` automatically and run tests against `http://localhost:4200` in Chromium only.
 - E2E tests are organized into feature-based specs under `e2e/specs/` (smoke, player-card, team-switching, filters, mobile) with page objects and shared helpers.
 
 ## Common Tasks

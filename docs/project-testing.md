@@ -19,6 +19,7 @@ Every contribution must include tests for all new/changed behavior.
 
 - **Rule**: new/changed logic should be tested (include error and edge cases)
 - **CI Gate**: `npm run verify` must pass (tests + production build)
+- **Coverage thresholds**: `npm run verify` enforces minimum coverage of 92% statements, 82% branches, 93% functions, and 94% lines via `angular.json` (`architect.test.options.coverageThresholds`)
 - **Planning-heavy changes**: save the approved implementation plan locally under gitignored `docs/plans/YYYY-MM-DD-*.md` before editing code so behavior-test work can resume cleanly in a later session
 
 ## Running Tests
@@ -41,6 +42,8 @@ npm run verify
 # Run a specific test file
 npm run test -- --reporter=verbose src/app/app.component.spec.ts
 ```
+
+The coverage gate used by `npm run test:coverage` and `npm run verify` is configured in `angular.json`, not `vitest.config.ts`, because the project runs tests through Angular's `@angular/build:unit-test` builder.
 
 **Important Notes:**
 
@@ -153,7 +156,7 @@ The project uses **Playwright Test** for end-to-end (E2E) coverage with a featur
 
 **Prerequisites (local):**
 
-- Playwright browsers installed: `npx playwright install`
+- Playwright browser installed: `npx playwright install chromium`
 - Backend API running on `http://localhost:3000` (see project README and backend repo)
 
 **In CI:** E2E tests run without a live backend. API responses are served from JSON fixtures in `e2e/fixtures/data/` via Playwright's `page.route()` mocking. The production build is served with `npx serve`.
@@ -163,12 +166,12 @@ The Playwright config is defined in `playwright.config.ts` and:
 - Uses `baseURL` `http://localhost:4200`
 - Locally: starts (or reuses) the Angular dev server via `npm start`
 - In CI: serves the production build via `npx serve dist/fantrax-stats-parser-ui/browser`
-- Runs tests against Chromium, Firefox and WebKit
+- Runs tests against Chromium only
 
 **Basic commands:**
 
 ```bash
-# Run all E2E tests (headless, all browsers) — requires backend on :3000
+# Run all E2E tests (headless, Chromium) — requires backend on :3000
 npx playwright test
 
 # Run in headed mode (for debugging)
@@ -176,9 +179,6 @@ npx playwright test --headed
 
 # Run specific test file
 npx playwright test e2e/specs/smoke.spec.ts
-
-# Run only in a single browser, e.g. Chromium
-npx playwright test --project=chromium
 
 # Run with API mocking (simulates CI mode)
 CI=true npx playwright test

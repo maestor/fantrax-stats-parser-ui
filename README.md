@@ -109,8 +109,8 @@ npm test                               # Run once (no browser required)
 npm run test:watch                     # Watch mode
 npm run test:coverage                  # With coverage report
 
-# E2E tests (Playwright) — requires backend running locally
-npm run e2e                            # Run all (headless)
+# E2E tests (Playwright / Chromium only) — requires backend running locally
+npm run e2e                            # Run all (headless, Chromium)
 npm run e2e:headed                     # Run with visible browser
 npm run e2e:ui                         # Interactive UI mode
 npm run e2e:smoke                      # Smoke tests only
@@ -145,7 +145,7 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 
 ### Test Coverage Summary
 
-Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
+Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). CI now enforces minimum thresholds of **92% statements**, **82% branches**, **93% functions**, and **94% lines** via `angular.json` (`architect.test.options.coverageThresholds`). Every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
