@@ -10,8 +10,8 @@ import {
   PLAYER_SLICE_COUNT,
 } from './testing/behavior-test-utils';
 
-// Full-render behavior tests with lazy-loaded routes need more time under load
-describe('AppComponent — mobile frontpage', () => {
+// Full-render behavior tests with lazy-loaded routes need more time under coverage load.
+describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();

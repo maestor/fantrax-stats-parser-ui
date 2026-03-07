@@ -1,18 +1,22 @@
 import { fireEvent, render, screen } from '@testing-library/angular';
+import { TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import {
   getBehaviorTestConfig,
   polyfillJsdom,
+  polyfillMatchMedia,
   seedLocalStorage,
   slicedPlayers,
   PLAYER_SLICE_COUNT,
 } from './testing/behavior-test-utils';
 
-// Full-render behavior tests with lazy-loaded routes need more time under load
-describe('AppComponent — desktop frontpage', () => {
+// Full-render behavior tests with lazy-loaded routes need more time under coverage load.
+describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
+    polyfillMatchMedia();
     seedLocalStorage();
   });
 
@@ -92,5 +96,63 @@ describe('AppComponent — desktop frontpage', () => {
     fireEvent.click(skipLink);
 
     expect(document.activeElement?.textContent).toContain(firstPlayerName);
+  });
+
+  it('supports keyboard shortcuts and ignores help shortcut while typing in the search field', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    const searchInput = screen.getByLabelText('table.playerSearch');
+
+    fireEvent.keyDown(document, { key: '/' });
+    expect(searchInput).toHaveFocus();
+
+    fireEvent.keyDown(searchInput, { key: '?' });
+    expect(screen.queryByRole('button', { name: 'helpDialog.close' })).not.toBeInTheDocument();
+
+    searchInput.blur();
+    fireEvent.keyDown(document, { key: '?' });
+
+    const helpCloseButton = await screen.findByRole('button', { name: 'helpDialog.close' });
+    fireEvent.click(helpCloseButton);
+
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: 'helpDialog.close' })).not.toBeInTheDocument();
+    });
+  });
+
+  it('shows the update snackbar, reopens it after Escape dismissal, and triggers reload from the snackbar action', async () => {
+    const activateAndReload = vi.fn<() => Promise<void>>().mockResolvedValue(undefined);
+
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        pwaUpdateAvailable: true,
+        pwaActivateAndReload: activateAndReload,
+      })
+    );
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    const initialActionText = await screen.findByText('pwa.updateAction');
+    const initialActionButton = initialActionText.closest('button');
+    expect(initialActionButton).not.toBeNull();
+    const snackbar = TestBed.inject(MatSnackBar);
+    snackbar.dismiss();
+
+    await vi.waitFor(() => {
+      const reopenedActionText = screen.getByText('pwa.updateAction');
+      const reopenedActionButton = reopenedActionText.closest('button');
+      expect(reopenedActionButton).not.toBeNull();
+      expect(reopenedActionButton).not.toBe(initialActionButton);
+    });
+
+    fireEvent.click(screen.getByText('pwa.updateAction'));
+
+    await vi.waitFor(() => {
+      expect(activateAndReload).toHaveBeenCalledTimes(1);
+    });
   });
 });

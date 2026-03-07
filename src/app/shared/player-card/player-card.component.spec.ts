@@ -1,9 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/angular';
+import { fireEvent, render, screen, within } from '@testing-library/angular';
 
 import { AppComponent } from '../../app.component';
 import {
     getBehaviorTestConfig,
     polyfillJsdom,
+    polyfillMatchMedia,
     seedLocalStorage,
     slicedPlayers,
 } from '../../testing/behavior-test-utils';
@@ -14,6 +15,7 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 60_000 }, () =>
 
     beforeEach(() => {
         polyfillJsdom();
+        polyfillMatchMedia();
         seedLocalStorage();
 
         writeTextMock.mockResolvedValue(undefined);
@@ -68,5 +70,51 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 60_000 }, () =>
         await vi.waitFor(() => {
             expect(screen.queryByRole('button', { name: 'a11y.closePlayerCard' })).not.toBeInTheDocument();
         });
+    });
+
+    it('updates skater stats when position filter is toggled and keeps table row state in sync during keyboard navigation', async () => {
+        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+        const targetPlayerName = slicedPlayers[1].name;
+        const targetPlayerCell = await screen.findByText(targetPlayerName, {}, { timeout: 5000 });
+        fireEvent.click(targetPlayerCell);
+
+        const closePlayerCardButton = await screen.findByRole('button', { name: 'a11y.closePlayerCard' });
+        const playerName = screen.getByText(targetPlayerName, { selector: '.player-card-player-name' });
+        const dialog = screen.getByRole('dialog');
+        expect(playerName).toBeInTheDocument();
+
+        expect(within(dialog).getByText('75.5')).toBeInTheDocument();
+
+        const positionFilterToggle = screen.getByRole('switch', {
+            name: 'playerCardPositionFilter.forwards',
+        });
+        fireEvent.click(positionFilterToggle);
+
+        await vi.waitFor(() => {
+            expect(within(dialog).getByText('74.12')).toBeInTheDocument();
+        });
+
+        fireEvent.keyDown(closePlayerCardButton, { key: 'ArrowLeft' });
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByText(slicedPlayers[0].name, { selector: '.player-card-player-name' })
+            ).toBeInTheDocument();
+        });
+
+        const firstActiveRow = document.querySelector('tr[data-row-index="0"]');
+        expect(firstActiveRow).toHaveClass('a11y-active');
+
+        fireEvent.keyDown(closePlayerCardButton, { key: 'ArrowRight' });
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByText(targetPlayerName, { selector: '.player-card-player-name' })
+            ).toBeInTheDocument();
+        });
+
+        const secondActiveRow = document.querySelector('tr[data-row-index="1"]');
+        expect(secondActiveRow).toHaveClass('a11y-active');
     });
 });
