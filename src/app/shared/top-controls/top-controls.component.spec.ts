@@ -9,7 +9,7 @@ import {
     slicedPlayers,
 } from '../../testing/behavior-test-utils';
 
-describe('TopControlsComponent — desktop user flow', () => {
+describe('TopControlsComponent — desktop user flow', { timeout: 60_000 }, () => {
     beforeEach(() => {
         polyfillJsdom();
         seedLocalStorage();

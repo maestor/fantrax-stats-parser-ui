@@ -40,8 +40,8 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
   @Input() columns: Column[] = [];
   @Input() formatCell?: (column: string, value: number | string | undefined) => string;
   @Input() rowKey?: (row: LeaderboardRow, index: number) => string;
-  @Input() isRowExpandable: (row: LeaderboardRow) => boolean = () => false;
-  @Input() expandedRowsFor: (row: LeaderboardRow) => ExpandedRowViewModel[] = () => [];
+  @Input({ required: true }) isRowExpandable!: (row: LeaderboardRow) => boolean;
+  @Input({ required: true }) expandedRowsFor!: (row: LeaderboardRow) => ExpandedRowViewModel[];
   @Input() expandToggleAriaLabel?: (row: LeaderboardRow, expanded: boolean) => string;
   @Input() expandedHeaderLabels?: { season: string; primary: string; secondary?: string };
   readonly rowKeyForTable = (row: TableRow, index: number): string =>

@@ -36,8 +36,8 @@
             (click)="$event.stopPropagation()">
             @if (selectRow) {
               <mat-checkbox
-                [checked]="isRowSelected(row)"
-                [disabled]="!isRowSelected(row) && !(canSelectRow$ | async)"
+                [checked]="isRowSelected!(row)"
+                [disabled]="!isRowSelected!(row) && !(canSelectRow$ | async)"
                 (change)="onRowSelectToggle(row)"
                 [attr.aria-label]="getRowAriaLabel(row, 'a11y.selectToCompare')">
                 {{ getPositionDisplay(row, i) }}
