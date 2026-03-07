@@ -115,4 +115,32 @@ describe('Comparison flow — desktop user behavior', { timeout: 60_000 }, () =>
     fireEvent.click(screen.getByRole('tab', { name: 'comparison.graphsTab' }));
     expect(await screen.findByText('graphs.radarInfo')).toBeInTheDocument();
   });
+
+  it('shows stats-only comparison content when stats-per-game is enabled', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
+    const statsModeToggle = await screen.findByRole('switch', { name: 'statsModeToggle' });
+    fireEvent.click(statsModeToggle);
+
+    await vi.waitFor(() => {
+      expect(statsModeToggle).toHaveAttribute('aria-checked', 'true');
+    });
+
+    const [firstCheckbox, secondCheckbox] = screen.getAllByRole('checkbox');
+    fireEvent.click(firstCheckbox);
+    fireEvent.click(secondCheckbox);
+    fireEvent.click(screen.getByRole('button', { name: 'comparison.compare' }));
+
+    await screen.findByRole('button', { name: 'a11y.closeComparisonDialog' });
+    expect(screen.getByText('comparison.playerTitle')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('tab', { name: 'comparison.graphsTab' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('tableColumn.scoreAdjustedByGames', { selector: '.stat-label' })
+    ).toBeInTheDocument();
+  });
 });

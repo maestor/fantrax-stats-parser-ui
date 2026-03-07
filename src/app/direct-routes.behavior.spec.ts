@@ -76,6 +76,26 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
     ).toHaveTextContent('2025-2026');
   });
 
+  it('opens the player direct route on the requested tab and preserves the tab in copied links', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const router = TestBed.inject(Router);
+    const player = slicedPlayers[0];
+
+    await router.navigateByUrl(`/player/colorado/${toSlug(player.name)}?tab=by-season`);
+
+    expect(
+      await screen.findByRole('tab', { name: 'playerCard.bySeason', selected: true })
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'playerCard.copyLink' }));
+
+    await vi.waitFor(() => {
+      expect(writeTextMock).toHaveBeenCalledWith(
+        `${window.location.origin}/player/colorado/${toSlug(player.name)}?tab=by-season`
+      );
+    });
+  });
+
   it('shows a recovery path for invalid player links', async () => {
     await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
     const router = TestBed.inject(Router);
@@ -120,6 +140,29 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
 
     await vi.waitFor(() => {
       expect(router.url).toBe('/goalie-stats');
+    });
+  });
+
+  it('opens the goalie direct route on the graphs tab and preserves the tab in copied links', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({ isMobile: false, goalies: slicedGoalies })
+    );
+    const router = TestBed.inject(Router);
+    const goalie = slicedGoalies[0];
+
+    await router.navigateByUrl(`/goalie/colorado/${toSlug(goalie.name)}?tab=graphs`);
+
+    expect(
+      await screen.findByRole('tab', { name: 'playerCard.graphs', selected: true })
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'playerCard.copyLink' }));
+
+    await vi.waitFor(() => {
+      expect(writeTextMock).toHaveBeenCalledWith(
+        `${window.location.origin}/goalie/colorado/${toSlug(goalie.name)}?tab=graphs`
+      );
     });
   });
 
