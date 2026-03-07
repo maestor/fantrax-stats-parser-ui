@@ -20,7 +20,6 @@ type LeaderboardRow = {
     <app-stats-table
       [data]="data"
       [columns]="columns"
-      [showSearch]="false"
       [showPositionColumn]="false"
       [clickable]="false"
       [expandable]="true"
@@ -93,5 +92,28 @@ describe('StatsTableComponent expansion', () => {
     await vi.waitFor(() => {
       expect(firstRow).toHaveAttribute('aria-expanded', 'false');
     });
+  });
+
+  it('supports space-key expansion and blurs collapsed rows after mouse close', async () => {
+    await render(StatsTableExpansionHostComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [provideNoopAnimations()],
+    });
+
+    await screen.findByText('Colorado Avalanche');
+
+    const firstRow = findDataRowByText('Vegas Golden Knights');
+
+    fireEvent.keyDown(firstRow, { key: ' ' });
+    await screen.findByText(/Detail /);
+    expect(firstRow).toHaveAttribute('aria-expanded', 'true');
+
+    firstRow.focus();
+    fireEvent.click(firstRow);
+
+    await vi.waitFor(() => {
+      expect(firstRow).toHaveAttribute('aria-expanded', 'false');
+    });
+    expect(firstRow).not.toHaveFocus();
   });
 });

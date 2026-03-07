@@ -18,12 +18,14 @@ import { polyfillJsdom } from '../../testing/behavior-test-utils';
       [data]="data"
       [columns]="columns"
       [defaultSortColumn]="defaultSortColumn"
+      [loading]="loading"
       [apiError]="apiError"
     />
   `,
 })
 class StatsTableHostComponent {
   apiError = false;
+  loading = false;
   defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
 
   readonly columns: Column[] = [
@@ -57,6 +59,10 @@ class StatsTableHostComponent {
 describe('StatsTableComponent — user behavior', () => {
   beforeEach(() => {
     polyfillJsdom();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   async function setup(componentProperties: Partial<StatsTableHostComponent> = {}) {
@@ -157,6 +163,71 @@ describe('StatsTableComponent — user behavior', () => {
 
     await vi.waitFor(() => {
       expect(document.activeElement).toBe(getDataRows()[2]);
+    });
+  });
+
+  it('shows loading feedback for delayed loads and clears it when rows arrive', async () => {
+    vi.useFakeTimers();
+
+    const view = await setup({ loading: true, data: [] });
+
+    expect(await screen.findByText('table.loading')).toBeInTheDocument();
+    expect(document.querySelector('.loading-bar')).not.toBeNull();
+
+    vi.advanceTimersByTime(600);
+
+    view.fixture.componentInstance.loading = false;
+    view.fixture.componentInstance.data = [
+      {
+        name: 'Alpha Center',
+        games: 82,
+        score: 100,
+        scoreAdjustedByGames: 2,
+      },
+    ] as unknown as TableRow[];
+    view.fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      expect(screen.getByText('Alpha Center')).toBeInTheDocument();
+      expect(screen.queryByText('table.loading')).not.toBeInTheDocument();
+      expect(document.querySelector('.loading-bar')).toBeNull();
+    });
+  });
+
+  it('clamps the active row after filtering reduces the result set and lets the header move focus back to search', async () => {
+    await setup();
+
+    await screen.findByText('Alpha Center');
+
+    const searchInput = screen.getByLabelText('table.playerSearch');
+    const headerRow = document.querySelector<HTMLElement>('tr[mat-header-row]');
+    expect(headerRow).not.toBeNull();
+
+    fireEvent.keyDown(headerRow!, { key: 'ArrowDown' });
+    await vi.waitFor(() => {
+      expect(document.activeElement).toBe(getDataRows()[0]);
+    });
+
+    headerRow!.focus();
+    fireEvent.keyDown(headerRow!, { key: 'ArrowUp' });
+    expect(searchInput).toHaveFocus();
+
+    fireEvent.keyDown(searchInput, { key: 'ArrowDown' });
+
+    const rows = getDataRows();
+    fireEvent.keyDown(rows[0], { key: 'End' });
+    expect(document.activeElement).toBe(rows[2]);
+
+    fireEvent.input(searchInput, { target: { value: 'Alpha' } });
+
+    await vi.waitFor(() => {
+      expect(screen.queryByText('Beta Blueliner')).not.toBeInTheDocument();
+      expect(getDataRows()).toHaveLength(1);
+    });
+    fireEvent.keyDown(searchInput, { key: 'ArrowDown' });
+
+    await vi.waitFor(() => {
+      expect(document.activeElement).toBe(getDataRows()[0]);
     });
   });
 

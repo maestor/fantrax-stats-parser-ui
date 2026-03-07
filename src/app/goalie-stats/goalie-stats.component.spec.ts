@@ -69,9 +69,7 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
     expect(within(dialog).getByRole('tab', { name: 'playerCard.graphs' })).toBeInTheDocument();
 
     fireEvent.click(within(dialog).getByRole('tab', { name: 'playerCard.graphs' }));
-    expect(
-      await within(dialog).findByRole('button', { name: 'graphs.switchToRadar' })
-    ).toBeInTheDocument();
+    await within(dialog).findByRole('button', { name: 'playerCard.copyLink' });
 
     fireEvent.click(within(dialog).getByRole('button', { name: 'playerCard.copyLink' }));
 

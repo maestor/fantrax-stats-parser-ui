@@ -159,6 +159,16 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
         fireEvent.click(switchToRadarButton);
         expect(await within(dialog).findByText('graphs.radarInfo')).toBeInTheDocument();
 
+        const positionFilterToggle = within(dialog).getByRole('switch', {
+            name: 'playerCardPositionFilter.forwards',
+        });
+        fireEvent.click(positionFilterToggle);
+
+        await vi.waitFor(() => {
+            expect(positionFilterToggle).toHaveAttribute('aria-checked', 'true');
+            expect(within(dialog).getByText('graphs.radarInfo')).toBeInTheDocument();
+        });
+
         fireEvent.click(within(dialog).getByRole('button', { name: 'graphs.switchToLine' }));
 
         await vi.waitFor(() => {

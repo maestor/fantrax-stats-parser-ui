@@ -14,11 +14,25 @@ import {
 } from './testing/behavior-test-utils';
 import { toSlug } from '@shared/utils/slug.utils';
 import seasonPlayersFixture from '../../e2e/fixtures/data/players--season--regular--2025.json';
-import type { ApiParams, Player } from '@services/api.service';
+import type { ApiParams, Goalie, Player } from '@services/api.service';
 
 describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
   const writeTextMock = vi.fn<(_: string) => Promise<void>>();
   const seasonPlayers = seasonPlayersFixture as unknown as Player[];
+  const seasonGoalie = {
+    ...slicedGoalies[0],
+    games: slicedGoalies[0].seasons?.[4]?.games ?? slicedGoalies[0].games,
+    wins: slicedGoalies[0].seasons?.[4]?.wins ?? slicedGoalies[0].wins,
+    saves: slicedGoalies[0].seasons?.[4]?.saves ?? slicedGoalies[0].saves,
+    shutouts: slicedGoalies[0].seasons?.[4]?.shutouts ?? slicedGoalies[0].shutouts,
+    gaa: slicedGoalies[0].seasons?.[4]?.gaa ?? '2.50',
+    savePercent: slicedGoalies[0].seasons?.[4]?.savePercent ?? '0.915',
+    score: slicedGoalies[0].seasons?.[4]?.score ?? slicedGoalies[0].score,
+    scoreAdjustedByGames:
+      slicedGoalies[0].seasons?.[4]?.scoreAdjustedByGames ?? slicedGoalies[0].scoreAdjustedByGames,
+    scores: slicedGoalies[0].seasons?.[4]?.scores ?? slicedGoalies[0].scores,
+    seasons: undefined,
+  } as unknown as Goalie;
 
   beforeEach(() => {
     polyfillJsdom();
@@ -217,6 +231,40 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
     expect(
       await screen.findByRole('tab', { name: 'playerCard.graphs', selected: true })
     ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'playerCard.copyLink' }));
+
+    await vi.waitFor(() => {
+      expect(writeTextMock).toHaveBeenCalledWith(
+        `${window.location.origin}/goalie/colorado/${toSlug(goalie.name)}?tab=graphs`
+      );
+    });
+  });
+
+  it('opens the goalie direct season route on the graphs tab and shows season radar content', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        goalies: slicedGoalies,
+        getGoalieData: (params: ApiParams) =>
+          params.season === 2024
+            ? of([seasonGoalie])
+            : of(slicedGoalies as unknown as Goalie[]),
+      })
+    );
+    const router = TestBed.inject(Router);
+    const goalie = slicedGoalies[0];
+
+    await router.navigateByUrl(`/goalie/colorado/${toSlug(goalie.name)}/2024?tab=graphs`);
+
+    expect(
+      await screen.findByRole('tab', { name: 'playerCard.graphs', selected: true })
+    ).toBeInTheDocument();
+    expect(await screen.findByText('graphs.radarInfo')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'graphs.switchToLine' })
+    ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'playerCard.copyLink' }));
 
