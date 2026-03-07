@@ -155,4 +155,48 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       expect(activateAndReload).toHaveBeenCalledTimes(1);
     });
   });
+
+  it('starts with visible defaults when browser storage is empty', async () => {
+    localStorage.clear();
+
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(screen.getByRole('button', { name: /topControls\.controls/ })).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+    expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toHaveTextContent(
+      '2012-2013'
+    );
+    expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent(
+      'season.allSeasons'
+    );
+    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
+      'reportType.regular'
+    );
+  });
+
+  it('falls back to regular report type when persisted storage contains an invalid report type', async () => {
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        selectedTeamId: '1',
+        startFromSeason: 2012,
+        topControlsExpanded: true,
+        season: null,
+        reportType: 'invalid-report-type',
+      })
+    );
+
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
+      'reportType.regular'
+    );
+    expect(screen.getByRole('table')).toBeInTheDocument();
+  });
 });
