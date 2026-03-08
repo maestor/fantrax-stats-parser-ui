@@ -128,7 +128,7 @@ npm run verify                         # Headless unit tests + production build
 npm run build
 ```
 
-Local test policy: avoid partial targeted test runs by default, run only one heavy test command at a time, and wait about 2 minutes between repeated `npm run verify` runs on local machines. See [docs/project-testing.md](docs/project-testing.md).
+Local test policy: run only one heavy test command at a time, and wait about 2 minutes between repeated `npm run verify` runs on local machines. See [docs/project-testing.md](docs/project-testing.md).
 
 ## Testing
 
