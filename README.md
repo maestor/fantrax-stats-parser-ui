@@ -176,6 +176,7 @@ See [docs/project-testing.md](docs/project-testing.md) for detailed information 
 Service-layer note:
 
 - UI behavior should still be tested through rendered user flows
+- UI tests should keep real app state services in place; only external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService` should normally be mocked
 - Lower-level services such as `ApiService`, `CacheService`, and `PwaUpdateService` may use focused `TestBed` specs when the real HTTP/platform pipeline itself is what needs coverage
 
 ## Accessibility

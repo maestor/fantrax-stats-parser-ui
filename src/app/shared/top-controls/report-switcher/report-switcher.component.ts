@@ -1,61 +1,42 @@
-import { Component, Input, inject, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
-import { Subject, takeUntil, map, Observable, of, BehaviorSubject, distinctUntilChanged, switchMap } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { startWith } from 'rxjs';
 import { ReportType } from '@services/api.service';
-import { FilterService, FilterState } from '@services/filter.service';
+import { FilterService } from '@services/filter.service';
 import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-report-switcher',
-  imports: [MatFormFieldModule, MatSelectModule, TranslateModule, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AsyncPipe, MatFormFieldModule, MatSelectModule, TranslateModule],
   templateUrl: './report-switcher.component.html',
   styleUrl: './report-switcher.component.scss',
 })
-export class ReportSwitcherComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() context: StatsContext = 'player';
-  readonly reportTypeOptions: ReportType[] = ['regular', 'playoffs', 'both'];
-  destroy$ = new Subject<void>();
+export class ReportSwitcherComponent {
+  readonly context = input<StatsContext>('player');
+  private readonly filterService = inject(FilterService);
+  private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {
+    initialValue: this.filterService.playerFilters,
+  });
+  private readonly goalieFilterState = toSignal(this.filterService.goalieFilters$, {
+    initialValue: this.filterService.goalieFilters,
+  });
+  private readonly filterState = computed(() =>
+    this.context() === 'goalie' ? this.goalieFilterState() : this.playerFilterState()
+  );
 
-  filterService = inject(FilterService);
-  reportType$: Observable<ReportType> = of('regular');
-
-  private readonly context$ = new BehaviorSubject<StatsContext>(this.context);
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['context']) {
-      this.context$.next(this.context);
-    }
-  }
-
-  ngOnInit() {
-    const filters$ = this.context$.pipe(
-      distinctUntilChanged(),
-      switchMap((context) =>
-        context === 'goalie'
-          ? this.filterService.goalieFilters$
-          : this.filterService.playerFilters$
-      )
-    );
-
-    this.reportType$ = filters$.pipe(
-      map((filters: FilterState) => filters.reportType),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    );
-  }
+  readonly reportType = computed<ReportType>(() => this.filterState().reportType);
+  readonly reportTypeValue$ = toObservable(this.reportType).pipe(
+    startWith(this.reportType())
+  );
 
   changeReportType(value: ReportType): void {
-    const context = this.context$.value;
-    context === 'goalie'
+    this.context() === 'goalie'
       ? this.filterService.updateGoalieFilters({ reportType: value })
       : this.filterService.updatePlayerFilters({ reportType: value });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

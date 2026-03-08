@@ -1,7 +1,7 @@
 <div class="position-filter-container">
   <label class="position-filter-label">{{ "positionFilter.label" | translate }}</label>
   <mat-button-toggle-group
-    [value]="positionFilter"
+    [value]="positionFilter()"
     (change)="onPositionChange($event)"
     [attr.aria-label]="'positionFilter.ariaLabel' | translate"
   >

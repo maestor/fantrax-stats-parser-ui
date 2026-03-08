@@ -99,7 +99,7 @@ npm run test:coverage
 
 - Use `@testing-library/angular` for all tests
 - Use accessible queries (`getByRole`, `getByText`, `getByLabelText`)
-- Mock all external dependencies at the service boundary
+- For UI tests, keep real stateful UI services in place and mock only approved external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService`
 - Render translation keys directly with `TranslateModule.forRoot()` instead of loading locale files
 - Test business logic through user-visible behavior, not implementation details
 - Use descriptive test names
@@ -111,7 +111,7 @@ npm run test:coverage
 - Test Angular framework internals (like change detection)
 - Use CSS selectors, class names, or `data-testid` in tests
 - Load real translation files (use `TranslateModule.forRoot()` with translation keys)
-- Use production services in tests (use mocks)
+- Do not replace user-facing app state services with mocks in UI tests just to isolate a control path
 - Write tests that depend on execution order
 - Create separate `it()` blocks that each re-render the same component state
 

@@ -12,6 +12,7 @@ For new component work and low-risk refactors in this repo:
 - Prefer signal-based component APIs with `input()` and `input.required()`.
 - Prefer `host` metadata for host listeners and host bindings.
 - Add `ChangeDetectionStrategy.OnPush` only when the component is already safe for it.
+- If a component is only ever rendered in one real context, remove inputs and branches for impossible contexts instead of preserving unused flexibility.
 
 Some sections below describe current public inputs for existing components. Those interface listings do not imply `@Input()` is the preferred declaration style for new code.
 
@@ -427,12 +428,6 @@ readonly context = input<'player' | 'goalie'>('player');
 **Location**: `src/app/shared/settings-panel/position-filter-toggle/`
 
 **Purpose**: 3-way toggle for filtering players by position (All/Forwards/Defensemen)
-
-**Inputs**:
-
-```typescript
-readonly context = input<'player' | 'goalie'>('player');
-```
 
 **Behavior**:
 

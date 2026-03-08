@@ -39,13 +39,21 @@ export class FilterService {
   playerFilters$ = this.filters.players.asObservable();
   goalieFilters$ = this.filters.goalies.asObservable();
 
-  updatePlayerFilters(change: Partial<FilterState>) {
+  get playerFilters(): FilterState {
+    return this.filters.players.value;
+  }
+
+  get goalieFilters(): FilterState {
+    return this.filters.goalies.value;
+  }
+
+  updatePlayerFilters(change: Partial<FilterState>): void {
     const current = this.filters.players.value;
     this.filters.players.next({ ...current, ...change });
     this.syncGlobalFilters('players', change);
   }
 
-  updateGoalieFilters(change: Partial<FilterState>) {
+  updateGoalieFilters(change: Partial<FilterState>): void {
     const current = this.filters.goalies.value;
     this.filters.goalies.next({ ...current, ...change });
     this.syncGlobalFilters('goalies', change);
@@ -71,7 +79,7 @@ export class FilterService {
     target.next({ ...current, ...globalChange });
   }
 
-  resetPlayerFilters() {
+  resetPlayerFilters(): void {
     const current = this.filters.players.value;
     this.filters.players.next({
       ...current,
@@ -81,7 +89,7 @@ export class FilterService {
     });
   }
 
-  resetGoalieFilters() {
+  resetGoalieFilters(): void {
     const current = this.filters.goalies.value;
     this.filters.goalies.next({
       ...current,
@@ -90,7 +98,7 @@ export class FilterService {
     });
   }
 
-  resetAll() {
+  resetAll(): void {
     this.updatePlayerFilters({ reportType: 'regular', season: undefined });
     this.resetPlayerFilters();
     this.resetGoalieFilters();

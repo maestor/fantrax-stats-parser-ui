@@ -424,7 +424,7 @@ export class ApiService {
 
 ## Service Testing
 
-Services are tested through component behavior tests using Testing Library. Mock services at the DI boundary:
+Services are tested through component behavior tests using Testing Library. For UI tests, mock only approved external boundaries such as `ApiService`:
 
 ```typescript
 import { render, screen } from '@testing-library/angular';

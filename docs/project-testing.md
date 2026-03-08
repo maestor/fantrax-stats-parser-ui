@@ -60,8 +60,11 @@ The coverage gate used by `npm run test:coverage` and `npm run verify` is config
 - **Accessible queries only**: Use `getByRole`, `getByText`, `getByLabelText` — no CSS selectors, class names, or `data-testid`
 - **Translation keys as text**: Use translation keys directly (e.g., `'myTitle'`) instead of loading Finnish locale files
 - **Full rendering**: Render real components with their templates — no shallow rendering or stubs
-- **Mock at the service/API boundary**: Provide mock services via Angular DI, not component internals
+- **UI tests use real app state/services**: For components and user flows, render the real feature/shell path and assert visible behavior
+- **Approved mock boundaries only**: In UI tests, mock only external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService`
+- **Do not mock stateful UI services just to isolate controls**: Avoid mocking services like `FilterService`, `SettingsService`, or `TeamService` when the control is something the user sees and clicks
 - **Minimize renders**: Full-render tests are expensive. Group all assertions for a given scenario into a single test with one `render()` call. Use comments to separate logical assertion groups. Do NOT create separate `it()` blocks that each call `render()` for the same component state
+- **Prefer removing dead logic to covering it**: If a branch cannot be reached through any real user path, delete it instead of adding isolated tests that only exercise internal implementation details
 
 ### Service-Layer Tests
 
@@ -79,6 +82,8 @@ Rules:
   - HTTP boundary for `ApiService`
   - clock/time boundary for `CacheService`
   - browser/service worker boundary for `PwaUpdateService`
+- In component/behavior tests, do not introduce partial control harnesses with mocked state services just to drive a specific branch; cover the branch through the real page flow instead
+- If a branch exists only because the component API still models an impossible state, simplify the component first and test the smaller real behavior surface
 - Do not rewrite UI behavior tests into service tests just to raise coverage
 
 ### Test Template
@@ -344,7 +349,7 @@ fixture.nativeElement.querySelector('#my-id');
 
 ### 2. Service Mocking
 
-Mock dependencies at the service boundary via Angular DI:
+Mock only approved external boundaries via Angular DI in UI tests:
 
 ```typescript
 const mockApiService = {

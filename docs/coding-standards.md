@@ -352,7 +352,10 @@ All tests use **Testing Library** (`@testing-library/angular`) with **Vitest**.
 - **Translation keys as rendered text**: Use the translation key directly (e.g., `'myTitle'`) with `TranslateModule.forRoot()` instead of loading locale files
 - **File naming**: `*.spec.ts`
 - **Minimize renders**: Group all assertions for a given scenario into one test with one `render()` call. Use comments to separate logical groups. Do not create separate `it()` blocks that each re-render the same component state
-- **Mock at the service boundary**: Provide mock services via Angular DI, not component internals
+- **Prefer full behavior paths for UI tests**: Render the real feature/shell flow for controls the user can see and interact with
+- **Mock only approved external boundaries in UI tests**: `ApiService`, `ViewportService`, and `PwaUpdateService` are normal mock points; do not mock stateful UI services like `FilterService`, `SettingsService`, or `TeamService` just to isolate a control
+- **Delete impossible-state branches**: If a branch cannot happen in any real usage path, remove it instead of keeping defensive context checks or dead fallback code
+- **Simplify before adding tests**: For behavior-neutral refactors, prefer deleting unreachable logic over adding narrow tests whose only purpose is to preserve coverage for code the UI can never hit
 
 ```typescript
 import { render, screen } from '@testing-library/angular';
@@ -370,6 +373,17 @@ describe('MyComponent', { timeout: 15_000 }, () => {
   });
 });
 ```
+
+### Simplify Impossible States
+
+When the parent/template structure already guarantees a component is used only in one mode, encode that directly in the component API.
+
+- Remove unused inputs that only describe impossible states
+- Remove branches that only exist to defend against contexts the component can never receive
+- Update the caller/template and docs to match the smaller API
+- Then test the remaining real user behavior through the normal feature flow
+
+Do not keep dead conditional logic only because it was easy to write or because coverage tools can still "see" it.
 
 ## File Organization
 

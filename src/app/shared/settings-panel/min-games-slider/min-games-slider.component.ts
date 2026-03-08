@@ -1,63 +1,59 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  OnChanges,
-  SimpleChanges,
+  computed,
+  effect,
   inject,
+  input,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSliderModule } from '@angular/material/slider';
-import { Subject, takeUntil } from 'rxjs';
-import { FilterService, FilterState } from '@services/filter.service';
+import { FilterService } from '@services/filter.service';
 import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-min-games-slider',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslateModule, MatSliderModule],
   templateUrl: './min-games-slider.component.html',
   styleUrl: './min-games-slider.component.scss',
 })
-export class MinGamesSliderComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() context: StatsContext = 'player';
-  @Input() maxGames = 0;
+export class MinGamesSliderComponent {
+  readonly context = input<StatsContext>('player');
+  readonly maxGames = input(0);
 
-  minGames: number = 0;
-  private filterService = inject(FilterService);
-  private destroy$ = new Subject<void>();
+  private readonly filterService = inject(FilterService);
+  private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {
+    initialValue: this.filterService.playerFilters,
+  });
+  private readonly goalieFilterState = toSignal(this.filterService.goalieFilters$, {
+    initialValue: this.filterService.goalieFilters,
+  });
+  private readonly filterState = computed(() =>
+    this.context() === 'goalie' ? this.goalieFilterState() : this.playerFilterState()
+  );
 
-  ngOnInit(): void {
-    const filters$ =
-      this.context === 'goalie'
-        ? this.filterService.goalieFilters$
-        : this.filterService.playerFilters$;
-    filters$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((filters: FilterState) => {
-        this.minGames = filters.minGames;
-      });
+  readonly minGames = computed(() => this.filterState().minGames);
+
+  constructor() {
+    effect(() => {
+      const maxGames = this.maxGames();
+      const minGames = this.minGames();
+
+      if (maxGames < minGames) {
+        queueMicrotask(() => this.onValueChange(maxGames));
+      }
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // We need to update minGames if maxGames decreases below it
-    if (changes['maxGames'] && this.maxGames < this.minGames) {
-      this.minGames = this.maxGames;
-      // Defer this so Angular can finish the change detection cycle
-      Promise.resolve().then(() => this.onValueChange(this.minGames));
-    }
-  }
+  onValueChange(minGames: number): void {
+    const clampedMinGames = Math.max(0, Math.min(minGames, this.maxGames()));
 
-  onValueChange(minGames: number) {
-    if (this.context === 'goalie') {
-      this.filterService.updateGoalieFilters({ minGames });
+    if (this.context() === 'goalie') {
+      this.filterService.updateGoalieFilters({ minGames: clampedMinGames });
     } else {
-      this.filterService.updatePlayerFilters({ minGames });
+      this.filterService.updatePlayerFilters({ minGames: clampedMinGames });
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

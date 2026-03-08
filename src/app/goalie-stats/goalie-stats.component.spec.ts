@@ -42,8 +42,35 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
     await screen.findByText(goalieName, {}, { timeout: 5000 });
 
     expect(screen.queryByText('positionFilter.label')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
+
     expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
     expect(screen.getByText('minGamesSlider.label')).toBeInTheDocument();
+
+    const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
+    fireEvent.click(reportCombobox);
+    fireEvent.click(await screen.findByRole('option', { name: 'reportType.playoffs' }));
+
+    await vi.waitFor(() => {
+      expect(reportCombobox).toHaveTextContent('reportType.playoffs');
+    });
+
+    const seasonCombobox = screen.getByRole('combobox', { name: /season\.selector/ });
+    fireEvent.click(seasonCombobox);
+    fireEvent.click(await screen.findByRole('option', { name: '2023-2024' }));
+
+    await vi.waitFor(() => {
+      expect(seasonCombobox).toHaveTextContent('2023-2024');
+    });
+
+    const statsModeToggle = screen.getByRole('switch', { name: 'statsModeToggle' });
+    fireEvent.click(statsModeToggle);
+
+    await vi.waitFor(() => {
+      expect(statsModeToggle).toHaveAttribute('aria-checked', 'true');
+      expect(screen.queryByText('tableColumnShort.score')).not.toBeInTheDocument();
+      expect(screen.getByText('tableColumnShort.scoreAdjustedByGames')).toBeInTheDocument();
+    });
 
     const searchInput = screen.getByLabelText('table.playerSearch');
     fireEvent.input(searchInput, { target: { value: goalieName } });
