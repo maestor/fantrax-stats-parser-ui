@@ -20,8 +20,8 @@ import { StatsContext } from '@shared/types/context.types';
   styleUrl: './min-games-slider.component.scss',
 })
 export class MinGamesSliderComponent {
-  readonly context = input<StatsContext>('player');
-  readonly maxGames = input(0);
+  readonly context = input.required<StatsContext>();
+  readonly maxGames = input.required<number>();
 
   private readonly filterService = inject(FilterService);
   private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {

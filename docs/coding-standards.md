@@ -31,10 +31,16 @@ Prefer signal inputs and outputs for new component APIs:
 import { input, output } from '@angular/core';
 
 export class ExampleComponent {
-  readonly context = input<'player' | 'goalie'>('player');
+  readonly context = input.required<'player' | 'goalie'>();
   readonly selected = output<string>();
 }
 ```
+
+Use `input.required()` whenever an input is not truly optional in real usage:
+
+- required inputs preserve the real parent/child contract in TypeScript
+- optional-by-default inputs create fake states that production never uses
+- those fake states add avoidable branch coverage noise and weaker typing
 
 ### Dependency Injection
 

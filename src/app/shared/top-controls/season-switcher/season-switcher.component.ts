@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
@@ -12,7 +11,6 @@ import {
   map,
   of,
   scan,
-  startWith,
   switchMap,
 } from 'rxjs';
 import { ApiService, ReportType, Season } from '@services/api.service';
@@ -27,7 +25,6 @@ import { StatsContext } from '@shared/types/context.types';
   selector: 'app-season-switcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
     MatFormFieldModule,
     MatSelectModule,
     TranslateModule
@@ -36,7 +33,7 @@ import { StatsContext } from '@shared/types/context.types';
   styleUrl: './season-switcher.component.scss',
 })
 export class SeasonSwitcherComponent {
-  readonly context = input<StatsContext>('player');
+  readonly context = input.required<StatsContext>();
 
   private readonly apiService = inject(ApiService);
   private readonly filterService = inject(FilterService);
@@ -55,12 +52,9 @@ export class SeasonSwitcherComponent {
   readonly selectedSeason = computed<number | 'all'>(() =>
     this.normalizeSelectedSeason(this.filterState().season)
   );
-  readonly selectedSeasonValue$ = toObservable(this.selectedSeason).pipe(
-    startWith(this.selectedSeason())
-  );
   private readonly seasonState = toSignal(
     combineLatest([
-      toObservable(this.reportType).pipe(startWith(this.reportType())),
+      toObservable(this.reportType).pipe(distinctUntilChanged()),
       this.teamService.selectedTeamId$.pipe(distinctUntilChanged()),
       this.settingsService.startFromSeason$.pipe(distinctUntilChanged()),
     ]).pipe(

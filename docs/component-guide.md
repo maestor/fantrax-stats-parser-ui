@@ -10,6 +10,7 @@ For new component work and low-risk refactors in this repo:
 
 - Standalone is the default. Omit redundant `standalone: true`.
 - Prefer signal-based component APIs with `input()` and `input.required()`.
+- Use `input.required()` when every real parent usage must provide the value. Do not keep signal inputs optional only as a defensive habit.
 - Prefer `host` metadata for host listeners and host bindings.
 - Add `ChangeDetectionStrategy.OnPush` only when the component is already safe for it.
 - If a component is only ever rendered in one real context, remove inputs and branches for impossible contexts instead of preserving unused flexibility.

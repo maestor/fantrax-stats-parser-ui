@@ -1,10 +1,8 @@
-import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { startWith } from 'rxjs';
 import { ReportType } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { StatsContext } from '@shared/types/context.types';
@@ -12,12 +10,12 @@ import { StatsContext } from '@shared/types/context.types';
 @Component({
   selector: 'app-report-switcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, MatFormFieldModule, MatSelectModule, TranslateModule],
+  imports: [MatFormFieldModule, MatSelectModule, TranslateModule],
   templateUrl: './report-switcher.component.html',
   styleUrl: './report-switcher.component.scss',
 })
 export class ReportSwitcherComponent {
-  readonly context = input<StatsContext>('player');
+  readonly context = input.required<StatsContext>();
   private readonly filterService = inject(FilterService);
   private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {
     initialValue: this.filterService.playerFilters,
@@ -30,9 +28,6 @@ export class ReportSwitcherComponent {
   );
 
   readonly reportType = computed<ReportType>(() => this.filterState().reportType);
-  readonly reportTypeValue$ = toObservable(this.reportType).pipe(
-    startWith(this.reportType())
-  );
 
   changeReportType(value: ReportType): void {
     this.context() === 'goalie'

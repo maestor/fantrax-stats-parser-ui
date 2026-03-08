@@ -28,6 +28,15 @@ Override the current auto-only system-preference-based theme. Persist choice in 
 
 Persist the user's last sort column and direction per table (players/goalies) in localStorage across sessions.
 
+## Modernizing components
+
+### Remaining modernization work
+
+- Add signal-facing read APIs to `filter.service.ts`, `settings.service.ts`, and `team.service.ts` while keeping the current observable APIs for compatibility.
+- Modernize the remaining decorator-era, stateful table and card components where it is behavior-safe: `stats-table.component.ts`, `virtual-table.component.ts`, `player-card.component.ts`, and `player-card-graphs.component.ts`.
+- Audit the remaining `@Input`-based shared components and convert only the inputs that are truly required/optional instead of preserving defensive flexibility by default.
+- Revisit the temporary branch-coverage workaround after Angular fixes signal-input coverage accounting, then raise the branch threshold back up.
+
 ## E2E Testing
 
 ### Test data management

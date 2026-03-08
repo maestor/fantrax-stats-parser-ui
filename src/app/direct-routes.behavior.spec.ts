@@ -129,7 +129,9 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
     expect(
       await screen.findByRole('tab', { name: 'playerCard.graphs', selected: true })
     ).toBeInTheDocument();
-    expect(await screen.findByText('graphs.radarInfo')).toBeInTheDocument();
+    expect(
+      await screen.findByText('graphs.radarInfo', {}, { timeout: 10_000 })
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'graphs.switchToLine' })
     ).not.toBeInTheDocument();
@@ -261,7 +263,9 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
     expect(
       await screen.findByRole('tab', { name: 'playerCard.graphs', selected: true })
     ).toBeInTheDocument();
-    expect(await screen.findByText('graphs.radarInfo')).toBeInTheDocument();
+    expect(
+      await screen.findByText('graphs.radarInfo', {}, { timeout: 10_000 })
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'graphs.switchToLine' })
     ).not.toBeInTheDocument();

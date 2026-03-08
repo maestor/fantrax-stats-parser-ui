@@ -3,11 +3,11 @@
 
   <mat-select
     name="reportType"
-    [value]="reportTypeValue$ | async"
+    [value]="reportType()"
     (selectionChange)="changeReportType($event.value)"
   >
     <mat-select-trigger>
-      {{ ('reportType.' + (reportTypeValue$ | async)) | translate }}
+      {{ ('reportType.' + reportType()) | translate }}
     </mat-select-trigger>
 
     <mat-option value="regular">

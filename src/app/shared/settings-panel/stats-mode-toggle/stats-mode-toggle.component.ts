@@ -17,7 +17,7 @@ import { StatsContext } from '@shared/types/context.types';
   styleUrl: './stats-mode-toggle.component.scss',
 })
 export class StatsModeToggleComponent {
-  readonly context = input<StatsContext>('player');
+  readonly context = input.required<StatsContext>();
   private readonly filterService = inject(FilterService);
   private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {
     initialValue: this.filterService.playerFilters,

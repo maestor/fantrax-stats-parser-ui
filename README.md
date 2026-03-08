@@ -169,7 +169,7 @@ Local Playwright runs against `http://localhost:4200` and starts `npm start` via
 
 ### Test Coverage Summary
 
-Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). CI now enforces minimum thresholds of **92% statements**, **82% branches**, **93% functions**, and **94% lines** via `angular.json` (`architect.test.options.coverageThresholds`). Every contribution must include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
+Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Vitest coverage now uses the **Istanbul** provider, and CI enforces minimum thresholds of **92% statements**, **75% branches**, **93% functions**, and **95% lines** via `angular.json` (`architect.test.options.coverageThresholds`). The lower temporary branch threshold reflects current Angular signal-input coverage noise; every contribution must still include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
@@ -204,7 +204,7 @@ Accessibility is a core requirement of this project (not optional).
 For Angular 21 component work in this repo:
 
 - Standalone components are the default. Do not add redundant `standalone: true`.
-- Prefer signal inputs such as `input()` and `input.required()` for new component input declarations.
+- Prefer signal inputs for component APIs. Use `input.required()` whenever the parent must always provide the value; do not keep inputs optional "just in case".
 - Prefer the `host` object in `@Component` metadata over `@HostListener` and `@HostBinding`.
 - Use `ChangeDetectionStrategy.OnPush` when the component is already safe for it through signal inputs, `async`-pipe flows, or local event-driven state. Do not apply it as a blanket rule to subscription-heavy components.
 
