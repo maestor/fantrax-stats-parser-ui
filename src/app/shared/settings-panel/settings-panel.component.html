@@ -1,10 +1,10 @@
-@if (contentOnly) {
+@if (contentOnly()) {
   <div class="control-panel-content expanded">
-    @if (context === 'player') {
-      <app-position-filter-toggle [context]="context" />
+    @if (context() === 'player') {
+      <app-position-filter-toggle />
     }
-    <app-stats-mode-toggle [context]="context" />
-    <app-min-games-slider [context]="context" [maxGames]="maxGames" />
+    <app-stats-mode-toggle [context]="context()" />
+    <app-min-games-slider [context]="context()" [maxGames]="maxGames()" />
   </div>
 } @else {
   <div class="control-panel">
@@ -12,22 +12,22 @@
       class="control-panel-toggle"
       (click)="toggleExpanded()"
       type="button"
-      [attr.aria-expanded]="isExpanded"
+      [attr.aria-expanded]="isExpanded()"
     >
       <span>{{ 'settingsPanel.settings' | translate }}</span>
-      <span class="toggle-icon">{{ isExpanded ? '▲' : '▼' }}</span>
+      <span class="toggle-icon">{{ isExpanded() ? '▲' : '▼' }}</span>
     </button>
     <div
       class="control-panel-content"
-      [class.expanded]="isExpanded"
-      [attr.aria-hidden]="!isExpanded"
-      [attr.inert]="!isExpanded ? '' : null"
+      [class.expanded]="isExpanded()"
+      [attr.aria-hidden]="!isExpanded()"
+      [attr.inert]="!isExpanded() ? '' : null"
     >
-      @if (context === 'player') {
-        <app-position-filter-toggle [context]="context" />
+      @if (context() === 'player') {
+        <app-position-filter-toggle />
       }
-      <app-stats-mode-toggle [context]="context" />
-      <app-min-games-slider [context]="context" [maxGames]="maxGames" />
+      <app-stats-mode-toggle [context]="context()" />
+      <app-min-games-slider [context]="context()" [maxGames]="maxGames()" />
     </div>
   </div>
 }

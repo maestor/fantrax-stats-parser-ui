@@ -4,7 +4,6 @@ import {
   ViewChild,
   inject,
   OnInit,
-  HostListener,
   DestroyRef,
 } from "@angular/core";
 import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
@@ -49,6 +48,9 @@ import { PwaUpdateService } from "@services/pwa-update.service";
 
 @Component({
   selector: "app-root",
+  host: {
+    "(document:keydown)": "onDocumentKeydown($event)",
+  },
   imports: [
     RouterOutlet,
     AsyncPipe,
@@ -277,7 +279,6 @@ export class AppComponent implements OnInit {
     firstRow.focus({ preventScroll: true });
   }
 
-  @HostListener("document:keydown", ["$event"])
   onDocumentKeydown(event: KeyboardEvent): void {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
 

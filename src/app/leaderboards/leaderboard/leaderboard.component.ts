@@ -11,7 +11,6 @@ type LeaderboardRow = LeaderboardEntry & { displayPosition: string };
 
 @Component({
   selector: 'app-leaderboard',
-  standalone: true,
   imports: [StatsTableComponent],
   template: `
     <app-stats-table

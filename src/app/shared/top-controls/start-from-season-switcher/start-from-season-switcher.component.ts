@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import {
-  Subject,
   auditTime,
   catchError,
   distinctUntilChanged,
@@ -11,7 +11,6 @@ import {
   of,
   scan,
   switchMap,
-  takeUntil,
 } from 'rxjs';
 import { ApiService, Season } from '@services/api.service';
 import { TeamService } from '@services/team.service';
@@ -21,31 +20,41 @@ import { toSeasonNumber } from '@shared/utils/season.utils';
 
 @Component({
   selector: 'app-start-from-season-switcher',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatFormFieldModule, MatSelectModule, TranslateModule],
   templateUrl: './start-from-season-switcher.component.html',
   styleUrl: './start-from-season-switcher.component.scss',
 })
-export class StartFromSeasonSwitcherComponent implements OnInit, OnDestroy {
-  seasons: Season[] = [];
-  selectedStartFrom?: number;
-  selectedStartFromText?: string;
+export class StartFromSeasonSwitcherComponent {
+  private readonly apiService = inject(ApiService);
+  private readonly teamService = inject(TeamService);
+  private readonly settingsService = inject(SettingsService);
+  readonly seasons = signal<Season[]>([]);
+  readonly selectedStartFrom = signal<number | undefined>(
+    toSeasonNumber(this.settingsService.startFromSeason)
+  );
+  readonly selectedStartFromText = computed(() => {
+    const selectedStartFrom = this.selectedStartFrom();
+    if (selectedStartFrom === undefined) {
+      return undefined;
+    }
 
-  private apiService = inject(ApiService);
-  private teamService = inject(TeamService);
-  private settingsService = inject(SettingsService);
-  private destroy$ = new Subject<void>();
+    return this.seasons().find((season) => season.season === selectedStartFrom)?.text;
+  });
 
-  ngOnInit(): void {
+  constructor() {
     this.settingsService.startFromSeason$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        map((season) => toSeasonNumber(season)),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
       .subscribe((season) => {
-        this.selectedStartFrom = toSeasonNumber(season);
-        this.updateSelectedSeasonText();
+        this.selectedStartFrom.set(season);
       });
 
     this.teamService.selectedTeamId$
       .pipe(
-        // Team switch + filter reset can happen in the same tick.
         auditTime(0),
         map((teamId) => toApiTeamId(teamId)),
         distinctUntilChanged(),
@@ -73,42 +82,20 @@ export class StartFromSeasonSwitcherComponent implements OnInit, OnDestroy {
             catchError(() => of({ data: [] as Season[], teamChanged }))
           );
         }),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed()
       )
       .subscribe(({ data, teamChanged }) => {
-        const normalized = [...data].map((s) => {
-          const normalizedSeason = toSeasonNumber(s.season);
-          return normalizedSeason === undefined ? s : { ...s, season: normalizedSeason };
-        });
+        const seasons = this.normalizeAndSortSeasons(data);
+        this.seasons.set(seasons);
 
-        // User intent is selecting a "starting" season, so present oldest → newest.
-        this.seasons = normalized.sort((a, b) => {
-          const aSeason = toSeasonNumber(a.season);
-          const bSeason = toSeasonNumber(b.season);
-          if (aSeason === undefined || bSeason === undefined) return 0;
-          return aSeason - bSeason;
-        });
-
-        this.updateSelectedSeasonText();
-
-        const oldestSeason = this.seasons[0]?.season;
-        if (typeof oldestSeason !== 'number' || !Number.isFinite(oldestSeason)) {
-          // If the API returns an unexpected format, don't attempt to persist anything.
-          return;
-        }
-
-        // Always reset the filter on team changes to avoid carrying over another team's range.
-        if (teamChanged) {
+        const oldestSeason = seasons[0]?.season;
+        const selectedStartFrom = this.selectedStartFrom();
+        if (teamChanged || selectedStartFrom === undefined) {
           this.settingsService.setStartFromSeason(oldestSeason);
           return;
         }
 
-        if (this.selectedStartFrom === undefined) {
-          this.settingsService.setStartFromSeason(oldestSeason);
-          return;
-        }
-
-        if (!this.seasons.some((s) => s.season === this.selectedStartFrom)) {
+        if (!seasons.some((season) => season.season === selectedStartFrom)) {
           this.settingsService.setStartFromSeason(oldestSeason);
         }
       });
@@ -118,23 +105,23 @@ export class StartFromSeasonSwitcherComponent implements OnInit, OnDestroy {
     const value = toSeasonNumber(event.value);
     if (value === undefined) return;
 
-    this.selectedStartFrom = value;
-    this.updateSelectedSeasonText();
-
     this.settingsService.setStartFromSeason(value);
   }
 
-  private updateSelectedSeasonText(): void {
-    if (this.selectedStartFrom === undefined) {
-      this.selectedStartFromText = undefined;
-      return;
-    }
+  private normalizeAndSortSeasons(data: Season[]): Season[] {
+    const normalized = [...data].map((season) => {
+      const normalizedSeason = toSeasonNumber(season.season);
+      return normalizedSeason === undefined
+        ? season
+        : { ...season, season: normalizedSeason };
+    });
 
-    this.selectedStartFromText = this.seasons.find((s) => s.season === this.selectedStartFrom)?.text;
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    // User intent is selecting a "starting" season, so present oldest -> newest.
+    return normalized.sort((a, b) => {
+      const aSeason = toSeasonNumber(a.season);
+      const bSeason = toSeasonNumber(b.season);
+      if (aSeason === undefined || bSeason === undefined) return 0;
+      return aSeason - bSeason;
+    });
   }
 }

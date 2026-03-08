@@ -3,7 +3,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  HostListener,
   Input,
   OnChanges,
   SimpleChanges,
@@ -28,7 +27,9 @@ const DEFAULT_ROW_HEIGHT = 52;
 
 @Component({
   selector: 'app-virtual-table',
-  standalone: true,
+  host: {
+    '(window:resize)': 'onWindowResize()',
+  },
   imports: [
     NgClass,
     ScrollingModule,
@@ -119,7 +120,6 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
     this.cdr.detectChanges();
   }
 
-  @HostListener('window:resize')
   onWindowResize(): void {
     this.syncViewportMetrics();
   }

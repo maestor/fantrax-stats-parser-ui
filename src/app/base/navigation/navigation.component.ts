@@ -26,7 +26,7 @@ export class NavigationComponent implements OnInit {
   ];
   activeLink = '';
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.router.events.subscribe(() => {
       this.activeLink = this.normalizeActiveLink(this.router.url);
       this.cdr.detectChanges();
@@ -41,7 +41,7 @@ export class NavigationComponent implements OnInit {
     return url;
   }
 
-  setActiveTab(path: string) {
+  setActiveTab(path: string): void {
     this.activeLink = path;
     this.cdr.detectChanges();
   }

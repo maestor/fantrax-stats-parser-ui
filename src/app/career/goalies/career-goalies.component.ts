@@ -10,7 +10,6 @@ import { formatSeasonDisplay } from '@shared/utils/season.utils';
 
 @Component({
   selector: 'app-career-goalies',
-  standalone: true,
   imports: [VirtualTableComponent],
   templateUrl: './career-goalies.component.html',
 })

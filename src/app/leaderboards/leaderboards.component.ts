@@ -5,7 +5,6 @@ import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-leaderboards',
-  standalone: true,
   imports: [RouterLink, RouterOutlet, TranslateModule, MatTabsModule],
   templateUrl: './leaderboards.component.html',
   styleUrl: './leaderboards.component.scss',

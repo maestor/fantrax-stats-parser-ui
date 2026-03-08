@@ -12,7 +12,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-leaderboard-playoffs',
-  standalone: true,
   imports: [LeaderboardComponent],
   template: `<app-leaderboard
     [fetchFn]="fetchFn"

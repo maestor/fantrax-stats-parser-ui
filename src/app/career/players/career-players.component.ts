@@ -10,7 +10,6 @@ import { formatSeasonDisplay } from '@shared/utils/season.utils';
 
 @Component({
   selector: 'app-career-players',
-  standalone: true,
   imports: [VirtualTableComponent],
   templateUrl: './career-players.component.html',
 })

@@ -4,23 +4,43 @@
 
 ### Component Structure
 
-Use standalone components (Angular 14+):
+Use Angular 21 standalone components. Standalone is the default, so do not add redundant `standalone: true`:
 
 ```typescript
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-component-name',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, /* other imports */],
+  host: {
+    'class': 'component-name',
+  },
   templateUrl: './component-name.component.html',
-  styleUrl: './component-name.component.scss'
+  styleUrl: './component-name.component.scss',
 })
 export class ComponentNameComponent {
-  // Component logic
+  readonly title = input.required<string>();
 }
 ```
+
+Prefer signal inputs and outputs for new component APIs:
+
+```typescript
+import { input, output } from '@angular/core';
+
+export class ExampleComponent {
+  readonly context = input.required<'player' | 'goalie'>();
+  readonly selected = output<string>();
+}
+```
+
+Use `input.required()` whenever an input is not truly optional in real usage:
+
+- required inputs preserve the real parent/child contract in TypeScript
+- optional-by-default inputs create fake states that production never uses
+- those fake states add avoidable branch coverage noise and weaker typing
 
 ### Dependency Injection
 
@@ -187,22 +207,22 @@ export class PlayerStatsComponent {
 ```
 
 **Dumb Components** (Presentational):
-- Receive data via @Input
-- Emit events via @Output
+- Receive data via signal inputs
+- Emit events via signal outputs
 - No service dependencies
 - Located in shared directory
 
 ```typescript
 // stats-table.component.ts
 export class StatsTableComponent {
-  @Input() data: PlayerStats[] = [];
-  @Output() rowClick = new EventEmitter<PlayerStats>();
+  readonly data = input<PlayerStats[]>([]);
+  readonly rowClick = output<PlayerStats>();
 }
 ```
 
 ### Change Detection
 
-Use OnPush when possible for better performance:
+Use `OnPush` when the component already updates safely from signal inputs, `async`-pipe bindings, or local event-driven state. Do not add it blindly to subscription-heavy components that still depend on manual change detection:
 
 ```typescript
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -213,7 +233,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
   // ...
 })
 export class StatsTableComponent {
-  // Component uses OnPush - only updates when inputs change
+  // Safe because updates flow through inputs or async-pipe bindings.
 }
 ```
 
@@ -235,18 +255,16 @@ export class StatsTableComponent {
 ### Structural Directives
 
 ```html
-<!-- Prefer *ngIf with else -->
-<div *ngIf="isLoading; else content">
-  Loading...
-</div>
-<ng-template #content>
-  <!-- Content -->
-</ng-template>
+<!-- Prefer Angular's built-in control flow -->
+@if (isLoading) {
+  <div>Loading...</div>
+} @else {
+  <div>Content</div>
+}
 
-<!-- Use trackBy for *ngFor -->
-<div *ngFor="let item of items; trackBy: trackByFn">
-  {{ item.name }}
-</div>
+@for (item of items; track item.id) {
+  <div>{{ item.name }}</div>
+}
 ```
 
 ### Async Pipe
@@ -340,7 +358,10 @@ All tests use **Testing Library** (`@testing-library/angular`) with **Vitest**.
 - **Translation keys as rendered text**: Use the translation key directly (e.g., `'myTitle'`) with `TranslateModule.forRoot()` instead of loading locale files
 - **File naming**: `*.spec.ts`
 - **Minimize renders**: Group all assertions for a given scenario into one test with one `render()` call. Use comments to separate logical groups. Do not create separate `it()` blocks that each re-render the same component state
-- **Mock at the service boundary**: Provide mock services via Angular DI, not component internals
+- **Prefer full behavior paths for UI tests**: Render the real feature/shell flow for controls the user can see and interact with
+- **Mock only approved external boundaries in UI tests**: `ApiService`, `ViewportService`, and `PwaUpdateService` are normal mock points; do not mock stateful UI services like `FilterService`, `SettingsService`, or `TeamService` just to isolate a control
+- **Delete impossible-state branches**: If a branch cannot happen in any real usage path, remove it instead of keeping defensive context checks or dead fallback code
+- **Simplify before adding tests**: For behavior-neutral refactors, prefer deleting unreachable logic over adding narrow tests whose only purpose is to preserve coverage for code the UI can never hit
 
 ```typescript
 import { render, screen } from '@testing-library/angular';
@@ -358,6 +379,17 @@ describe('MyComponent', { timeout: 15_000 }, () => {
   });
 });
 ```
+
+### Simplify Impossible States
+
+When the parent/template structure already guarantees a component is used only in one mode, encode that directly in the component API.
+
+- Remove unused inputs that only describe impossible states
+- Remove branches that only exist to defend against contexts the component can never receive
+- Update the caller/template and docs to match the smaller API
+- Then test the remaining real user behavior through the normal feature flow
+
+Do not keep dead conditional logic only because it was easy to write or because coverage tools can still "see" it.
 
 ## File Organization
 

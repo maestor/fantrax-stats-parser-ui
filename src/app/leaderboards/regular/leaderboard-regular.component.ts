@@ -9,7 +9,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-leaderboard-regular',
-  standalone: true,
   imports: [LeaderboardComponent],
   template: `<app-leaderboard
     [fetchFn]="fetchFn"

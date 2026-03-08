@@ -4,6 +4,19 @@
 
 This application uses Angular's standalone component architecture. Components are organized into base, feature, and shared directories.
 
+### Preferred Angular 21 Component Style
+
+For new component work and low-risk refactors in this repo:
+
+- Standalone is the default. Omit redundant `standalone: true`.
+- Prefer signal-based component APIs with `input()` and `input.required()`.
+- Use `input.required()` when every real parent usage must provide the value. Do not keep signal inputs optional only as a defensive habit.
+- Prefer `host` metadata for host listeners and host bindings.
+- Add `ChangeDetectionStrategy.OnPush` only when the component is already safe for it.
+- If a component is only ever rendered in one real context, remove inputs and branches for impossible contexts instead of preserving unused flexibility.
+
+Some sections below describe current public inputs for existing components. Those interface listings do not imply `@Input()` is the preferred declaration style for new code.
+
 ## Base Components
 
 ### NavigationComponent
@@ -221,26 +234,26 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 **Inputs**:
 
 ```typescript
-@Input() data: any[] = [];
-@Input() columns: Column[] = [];          // Column[] from column.types.ts; optional icon for emoji/material headers
-@Input() defaultSortColumn = 'score';
-@Input() loading = false;
-@Input() apiError = false;
-@Input() tableId = 'stats-table';
-@Input() showSearch = true;              // Show/hide search box
-@Input() showPositionColumn = true;      // Show/hide auto-numbered position column
-@Input() positionValue?: (row: any, index: number) => string; // Custom position display (e.g. "1", "")
-@Input() clickable = true;              // Whether rows open Player Card on click
-@Input() selectRow = false;             // Show comparison checkboxes in position column
-@Input() isRowSelected: (row: any) => boolean = () => false;
-@Input() canSelectRow$: Observable<boolean> = of(true);
-@Input() onRowSelect?: (row: any) => void;
-@Input() formatCell?: (column: string, value: any) => string; // Custom cell formatter
-@Input() expandable = false;            // Enable expandable detail rows
-@Input() rowKey?: (row: any, index: number) => string;
-@Input() isRowExpandable: (row: any) => boolean = () => false;
-@Input() expandedRowsFor: (row: any) => ExpandedRowViewModel[] = () => [];
-@Input() expandToggleAriaLabel?: (row: any, expanded: boolean) => string;
+readonly data = input<any[]>([]);
+readonly columns = input<Column[]>([]);   // optional icon support for emoji/material headers
+readonly defaultSortColumn = input('score');
+readonly loading = input(false);
+readonly apiError = input(false);
+readonly tableId = input('stats-table');
+readonly showSearch = input(true);
+readonly showPositionColumn = input(true);
+readonly positionValue = input<(row: any, index: number) => string>();
+readonly clickable = input(true);
+readonly selectRow = input(false);
+readonly isRowSelected = input<(row: any) => boolean>(() => false);
+readonly canSelectRow$ = input<Observable<boolean>>(of(true));
+readonly onRowSelect = input<(row: any) => void>();
+readonly formatCell = input<(column: string, value: any) => string>();
+readonly expandable = input(false);
+readonly rowKey = input<(row: any, index: number) => string>();
+readonly isRowExpandable = input<(row: any) => boolean>(() => false);
+readonly expandedRowsFor = input<(row: any) => ExpandedRowViewModel[]>(() => []);
+readonly expandToggleAriaLabel = input<(row: any, expanded: boolean) => string>();
 ```
 
 `ExpandedRowViewModel`:
@@ -312,8 +325,8 @@ type ExpandedRowViewModel = {
 **Inputs**:
 
 ```typescript
-@Input() context: 'player' | 'goalie' = 'player';
-@Input() contentOnly = false;
+readonly context = input<'player' | 'goalie'>('player');
+readonly contentOnly = input(false);
 ```
 
 **Notes**:
@@ -340,9 +353,9 @@ type ExpandedRowViewModel = {
 **Inputs**:
 
 ```typescript
-@Input() context: 'player' | 'goalie' = 'player';
-@Input() maxGames = 0;
-@Input() contentOnly = false;
+readonly context = input<'player' | 'goalie'>('player');
+readonly maxGames = input(0);
+readonly contentOnly = input(false);
 ```
 
 **Outputs**: None — each child component talks directly to `FilterService`.
@@ -361,7 +374,7 @@ type ExpandedRowViewModel = {
 isExpanded = false; // Controls panel visibility
 
 toggleExpanded(): void {
-  if (this.contentOnly) return;
+  if (this.contentOnly()) return;
   this.isExpanded = !this.isExpanded;
 }
 ```
@@ -379,7 +392,7 @@ toggleExpanded(): void {
 **Inputs**:
 
 ```typescript
-@Input() context: 'player' | 'goalie' = 'player';
+readonly context = input<'player' | 'goalie'>('player');
 ```
 
 **Behavior**:
@@ -395,16 +408,17 @@ toggleExpanded(): void {
 **Location**: `src/app/shared/top-controls/report-switcher/`
 
 **Purpose**: Toggle between regular season and playoffs for the current context.
+The current implementation uses a dropdown/select, not a button-toggle group.
 
 **Inputs**:
 
 ```typescript
-@Input() context: 'player' | 'goalie' = 'player';
+readonly context = input<'player' | 'goalie'>('player');
 ```
 
 **Behavior**:
 
-- Uses `MatButtonToggle` to let the user pick `regular` vs `playoffs`
+- Uses `MatSelect` to let the user pick `regular`, `playoffs`, or `both`
 - Subscribes to `FilterService` (`playerFilters$`/`goalieFilters$`) to expose `reportType$`
 - Calls `updatePlayerFilters` / `updateGoalieFilters` when the toggle changes
 
@@ -415,12 +429,6 @@ toggleExpanded(): void {
 **Location**: `src/app/shared/settings-panel/position-filter-toggle/`
 
 **Purpose**: 3-way toggle for filtering players by position (All/Forwards/Defensemen)
-
-**Inputs**:
-
-```typescript
-@Input() context: 'player' | 'goalie' = 'player';
-```
 
 **Behavior**:
 
@@ -443,7 +451,7 @@ toggleExpanded(): void {
 **Inputs**:
 
 ```typescript
-@Input() context: 'player' | 'goalie' = 'player';
+readonly context = input<'player' | 'goalie'>('player');
 ```
 
 **Behavior**:
@@ -462,8 +470,8 @@ toggleExpanded(): void {
 **Inputs**:
 
 ```typescript
-@Input() context: 'player' | 'goalie' = 'player';
-@Input() maxGames = 0;
+readonly context = input<'player' | 'goalie'>('player');
+readonly maxGames = input(0);
 ```
 
 **Behavior**:
@@ -674,11 +682,11 @@ this.dialog.open(PlayerCardComponent, {
 **Inputs**:
 
 ```typescript
-@Input() data!: Player | Goalie;                    // Player or goalie data with optional seasons array
-@Input() viewContext: 'combined' | 'season' = 'combined';  // Combined (multi-season) vs season-specific data
-@Input() positionFilter: PositionFilter = 'all';    // Position filter state ('all', 'F', or 'D')
-@Input() closeButtonEl?: HTMLElement;               // Reference to dialog close button for focus management
-@Input() requestFocusTabHeader!: () => void;        // Callback to return focus to tab header
+readonly data = input.required<Player | Goalie>();  // Player or goalie data with optional seasons array
+readonly viewContext = input<'combined' | 'season'>('combined');
+readonly positionFilter = input<PositionFilter>('all');
+readonly closeButtonEl = input<HTMLElement>();
+readonly requestFocusTabHeader = input<() => void>();
 ```
 
 **Position Filter Integration**:
@@ -886,7 +894,8 @@ data: {
 **Inputs**:
 
 ```typescript
-@Input() players!: [Player | Goalie, Player | Goalie];
+readonly playerA = input.required<Player | Goalie>();
+readonly playerB = input.required<Player | Goalie>();
 ```
 
 **Key Features**:
@@ -909,7 +918,8 @@ data: {
 **Inputs**:
 
 ```typescript
-@Input() players!: [Player | Goalie, Player | Goalie];
+readonly playerA = input.required<Player | Goalie>();
+readonly playerB = input.required<Player | Goalie>();
 ```
 
 **Key Features**:
@@ -933,14 +943,14 @@ data: {
 <app-child [data]="parentData"></app-child>
 
 // Child
-@Input() data: any;
+readonly data = input.required<unknown>();
 ```
 
 ### Child to Parent (Output)
 
 ```typescript
 // Child
-@Output() valueChange = new EventEmitter<string>();
+readonly valueChange = output<string>();
 
 onValueChange(value: string) {
   this.valueChange.emit(value);
