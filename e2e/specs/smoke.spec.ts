@@ -65,13 +65,13 @@ test.describe('Smoke Tests', () => {
     await page.getByRole('button', { name: NAV_LABELS.PLAYER_CAREERS }).click();
 
     await expect(page).toHaveURL(/\/career\/players$/);
-    await expect(page.getByLabel('Pelaajaurahaku')).toBeVisible();
+    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
     await expect(page.getByRole('combobox', { name: 'Joukkue' })).toHaveCount(0);
 
     const goalieCareerTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_GOALIES });
     await goalieCareerTab.click();
 
     await expect(page).toHaveURL(/\/career\/goalies$/);
-    await expect(page.getByLabel('Maalivahtiurahaku')).toBeVisible();
+    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
   });
 });

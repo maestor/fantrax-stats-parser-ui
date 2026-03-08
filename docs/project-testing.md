@@ -167,8 +167,9 @@ The project uses **Playwright Test** for end-to-end (E2E) coverage with a featur
 
 The Playwright config is defined in `playwright.config.ts` and:
 
-- Uses `baseURL` `http://localhost:4200`
+- Uses `PLAYWRIGHT_BASE_URL` when provided, otherwise defaults to `http://localhost:4200`
 - Locally: starts (or reuses) the Angular dev server via `npm start`
+- Skips `webServer` entirely when `PLAYWRIGHT_EXTERNAL_SERVER=1`
 - In CI: serves the production build via `python3 -m http.server 4200 --directory dist/fantrax-stats-parser-ui/browser`
 - Runs tests against Chromium only
 
@@ -178,6 +179,9 @@ The Playwright config is defined in `playwright.config.ts` and:
 # Run all E2E tests (headless, Chromium) — requires backend on :3000
 npx playwright test
 
+# Run against an already-running frontend without starting Playwright webServer
+PLAYWRIGHT_EXTERNAL_SERVER=1 npx playwright test
+
 # Run in headed mode (for debugging)
 npx playwright test --headed
 
@@ -186,6 +190,9 @@ npx playwright test e2e/specs/smoke.spec.ts
 
 # Run with API mocking (simulates CI mode)
 CI=true npx playwright test
+
+# Override the frontend URL if you need a non-default port
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:4300 PLAYWRIGHT_EXTERNAL_SERVER=1 npx playwright test
 
 # Capture/update API fixtures from live backend
 npm run e2e:capture-fixtures

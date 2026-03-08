@@ -116,6 +116,7 @@ npm run test:coverage                  # With coverage report
 
 # E2E tests (Playwright / Chromium only) — requires backend running locally
 npm run e2e                            # Run all (headless, Chromium)
+npm run e2e:external                   # Reuse an already-running frontend, do not start webServer
 npm run e2e:headed                     # Run with visible browser
 npm run e2e:ui                         # Interactive UI mode
 npm run e2e:smoke                      # Smoke tests only
@@ -150,6 +151,10 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 
 **Local:** Backend API must be running on `localhost:3000` (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
 **CI:** E2E tests run without a backend — API responses are served from JSON fixtures via Playwright's `page.route()` mocking.
+
+Local Playwright can now run in two modes:
+- default `npm run e2e`: reuse `localhost:4200` if reachable, otherwise start `npm start`
+- `npm run e2e:external`: never start `webServer`; always use the frontend you already have running
 
 ### Test Coverage Summary
 
