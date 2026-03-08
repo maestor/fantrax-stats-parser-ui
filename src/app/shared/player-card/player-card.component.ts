@@ -1,5 +1,5 @@
 import { DOCUMENT, NgComponentOutlet } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Type, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Type, ViewChild, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -39,6 +39,11 @@ export type PlayerCardDialogData = {
 
 @Component({
   selector: 'app-player-card',
+  host: {
+    '(keydown)': 'onKeydown($event)',
+    '(touchstart)': 'onTouchStart($event)',
+    '(touchend)': 'onTouchEnd($event)',
+  },
   imports: [
     MatButtonModule,
     MatIconModule,
@@ -199,13 +204,10 @@ export class PlayerCardComponent {
 
   // --- Navigation ---
 
-  @HostListener('keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void { this.navigationService.handleKeydown(event); }
 
-  @HostListener('touchstart', ['$event'])
   onTouchStart(event: TouchEvent): void { this.navigationService.handleTouchStart(event); }
 
-  @HostListener('touchend', ['$event'])
   onTouchEnd(event: TouchEvent): void { this.navigationService.handleTouchEnd(event); }
 
   private getTabIndexFromName(tabName: PlayerCardTab): number {

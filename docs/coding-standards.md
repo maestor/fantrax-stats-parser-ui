@@ -4,21 +4,35 @@
 
 ### Component Structure
 
-Use standalone components (Angular 14+):
+Use Angular 21 standalone components. Standalone is the default, so do not add redundant `standalone: true`:
 
 ```typescript
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-component-name',
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, /* other imports */],
+  host: {
+    'class': 'component-name',
+  },
   templateUrl: './component-name.component.html',
-  styleUrl: './component-name.component.scss'
+  styleUrl: './component-name.component.scss',
 })
 export class ComponentNameComponent {
-  // Component logic
+  readonly title = input.required<string>();
+}
+```
+
+Prefer signal inputs and outputs for new component APIs:
+
+```typescript
+import { input, output } from '@angular/core';
+
+export class ExampleComponent {
+  readonly context = input<'player' | 'goalie'>('player');
+  readonly selected = output<string>();
 }
 ```
 
@@ -187,22 +201,22 @@ export class PlayerStatsComponent {
 ```
 
 **Dumb Components** (Presentational):
-- Receive data via @Input
-- Emit events via @Output
+- Receive data via signal inputs
+- Emit events via signal outputs
 - No service dependencies
 - Located in shared directory
 
 ```typescript
 // stats-table.component.ts
 export class StatsTableComponent {
-  @Input() data: PlayerStats[] = [];
-  @Output() rowClick = new EventEmitter<PlayerStats>();
+  readonly data = input<PlayerStats[]>([]);
+  readonly rowClick = output<PlayerStats>();
 }
 ```
 
 ### Change Detection
 
-Use OnPush when possible for better performance:
+Use `OnPush` when the component already updates safely from signal inputs, `async`-pipe bindings, or local event-driven state. Do not add it blindly to subscription-heavy components that still depend on manual change detection:
 
 ```typescript
 import { ChangeDetectionStrategy } from '@angular/core';
@@ -213,7 +227,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
   // ...
 })
 export class StatsTableComponent {
-  // Component uses OnPush - only updates when inputs change
+  // Safe because updates flow through inputs or async-pipe bindings.
 }
 ```
 
@@ -235,18 +249,16 @@ export class StatsTableComponent {
 ### Structural Directives
 
 ```html
-<!-- Prefer *ngIf with else -->
-<div *ngIf="isLoading; else content">
-  Loading...
-</div>
-<ng-template #content>
-  <!-- Content -->
-</ng-template>
+<!-- Prefer Angular's built-in control flow -->
+@if (isLoading) {
+  <div>Loading...</div>
+} @else {
+  <div>Content</div>
+}
 
-<!-- Use trackBy for *ngFor -->
-<div *ngFor="let item of items; trackBy: trackByFn">
-  {{ item.name }}
-</div>
+@for (item of items; track item.id) {
+  <div>{{ item.name }}</div>
+}
 ```
 
 ### Async Pipe

@@ -198,6 +198,15 @@ Accessibility is a core requirement of this project (not optional).
 - **Testing**: Vitest + Testing Library (`@testing-library/angular`), Playwright (E2E)
 - **i18n**: ngx-translate 17
 
+## Angular Component Conventions
+
+For Angular 21 component work in this repo:
+
+- Standalone components are the default. Do not add redundant `standalone: true`.
+- Prefer signal inputs such as `input()` and `input.required()` for new component input declarations.
+- Prefer the `host` object in `@Component` metadata over `@HostListener` and `@HostBinding`.
+- Use `ChangeDetectionStrategy.OnPush` when the component is already safe for it through signal inputs, `async`-pipe flows, or local event-driven state. Do not apply it as a blanket rule to subscription-heavy components.
+
 ## Project Structure
 
 ```

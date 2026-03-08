@@ -5,7 +5,6 @@ import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-career',
-  standalone: true,
   imports: [RouterLink, RouterOutlet, TranslateModule, MatTabsModule],
   templateUrl: './career.component.html',
   styleUrl: './career.component.scss',

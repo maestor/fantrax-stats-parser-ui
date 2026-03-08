@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,15 +10,16 @@ import { StatsContext } from '@shared/types/context.types';
 
 @Component({
   selector: 'app-comparison-bar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [AsyncPipe, MatButtonModule, TranslateModule],
   templateUrl: './comparison-bar.component.html',
   styleUrl: './comparison-bar.component.scss',
 })
 export class ComparisonBarComponent implements OnChanges {
   @Input() context: StatsContext = 'player';
-  private comparisonService = inject(ComparisonService);
-  private translateService = inject(TranslateService);
-  private dialog = inject(MatDialog);
+  private readonly comparisonService = inject(ComparisonService);
+  private readonly translateService = inject(TranslateService);
+  private readonly dialog = inject(MatDialog);
 
   readonly selection$ = this.comparisonService.selection$;
 
