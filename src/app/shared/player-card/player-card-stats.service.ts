@@ -18,7 +18,7 @@ export interface BuildStatsOptions {
 @Injectable({ providedIn: 'root' })
 export class PlayerCardStatsService {
   readonly baseExcludedColumns = [
-    'name', 'seasons', 'scores', 'position',
+    'id', 'name', 'seasons', 'scores', 'position',
     'scoresByPosition', 'scoreByPosition', 'scoreByPositionAdjustedByGames',
     '_originalScore', '_originalScoreAdjustedByGames',
   ];
