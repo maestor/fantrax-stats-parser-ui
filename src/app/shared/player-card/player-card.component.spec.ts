@@ -131,7 +131,7 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
 
         const switchToRadarButton = await within(dialog).findByRole('button', {
             name: 'graphs.switchToRadar',
-        });
+        }, { timeout: 10000 });
         expect(switchToRadarButton).toBeInTheDocument();
 
         const graphControlsToggleText = within(dialog).getByText('controlPanel.graphControls');

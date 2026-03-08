@@ -1,7 +1,7 @@
 # Project Requirements & Standards
 
 **Project**: Fantrax Stats Parser UI
-**Last Updated**: January 23, 2026
+**Last Updated**: March 8, 2026
 
 ---
 
@@ -48,8 +48,9 @@ npm run build
 ```
 
 - **Requirement**: Build must complete without TypeScript errors
-- **Current**: ✅ Passing (warnings about bundle size are acceptable)
+- **Current budgets**: `initial` warning at `1.2 MB`, error at `1.6 MB`; `anyComponentStyle` warning at `4 kB`, error at `8 kB`
 - **Action on Failure**: Fix TypeScript errors in output
+- **Action on Warning**: Investigate the source of the bundle/style growth and either optimize it or intentionally update the budget with documentation
 
 #### 3. ✅ Application Must Serve
 
@@ -163,11 +164,14 @@ Tests run in jsdom (no browser needed). If tests fail unexpectedly:
 2. If it still fails, run `npm ci` and retry
 3. If it still fails, treat it as a blocker and fix the root cause (don’t merge)
 
-### Build Warnings (Acceptable)
+### Build Warnings (Must Be Reviewed)
 
-- **Bundle size warning**: "bundle initial exceeded maximum budget"
-  - This is a performance suggestion, not a blocker
-  - Can be ignored or addressed by code splitting later
+- **Bundle size warning**: for example `"bundle initial exceeded maximum budget"`
+  - This is not an automatic blocker, but it is also not something to ignore
+  - Treat it as a required review item during the task
+  - First identify the source of the growth
+  - Prefer optimization before budget changes
+  - Raise the budget only when the increase is understood, justified by shipped functionality, and the new threshold still catches regressions
 
 ### ❌ Never Add `"type": "module"` to package.json
 

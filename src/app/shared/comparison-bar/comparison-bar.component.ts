@@ -3,10 +3,9 @@ import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { Observable } from 'rxjs';
-import { map, first } from 'rxjs/operators';
+import { Observable, firstValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ComparisonService } from '@services/comparison.service';
-import { ComparisonDialogComponent, ComparisonDialogData } from '@shared/comparison-dialog/comparison-dialog.component';
 import { StatsContext } from '@shared/types/context.types';
 
 @Component({
@@ -54,17 +53,22 @@ export class ComparisonBarComponent implements OnChanges {
     this.comparisonService.clear();
   }
 
-  onCompare(): void {
-    this.comparisonService.orderedSelection$.pipe(first()).subscribe((ordered) => {
-      if (ordered) {
-        const dialogData: ComparisonDialogData = { ...ordered, context: this.context };
-        this.dialog.open(ComparisonDialogComponent, {
-          data: dialogData,
-          maxWidth: '95vw',
-          width: 'auto',
-          panelClass: 'comparison-dialog-panel',
-        });
-      }
+  async onCompare(): Promise<void> {
+    const ordered = await firstValueFrom(this.comparisonService.orderedSelection$);
+
+    if (!ordered) {
+      return;
+    }
+
+    const { ComparisonDialogComponent } = await import(
+      '@shared/comparison-dialog/comparison-dialog.component'
+    );
+
+    this.dialog.open(ComparisonDialogComponent, {
+      data: { ...ordered, context: this.context },
+      maxWidth: '95vw',
+      width: 'auto',
+      panelClass: 'comparison-dialog-panel',
     });
   }
 }

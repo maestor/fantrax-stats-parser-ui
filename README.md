@@ -129,6 +129,20 @@ npm run verify                         # Headless unit tests + production build
 npm run build
 ```
 
+### Production bundle budgets
+
+Production builds enforce Angular bundle budgets in `angular.json`:
+
+- `initial`: warning at `1.2 MB`, error at `1.6 MB`
+- `anyComponentStyle`: warning at `4 kB`, error at `8 kB`
+
+Best practice when `npm run verify` or `npm run build` shows a budget warning:
+
+1. Treat it as a review item, not background noise.
+2. Identify which bundle or stylesheet triggered it.
+3. Prefer reducing eager code, moving heavy UI behind lazy imports, or removing duplicated CSS before raising budgets.
+4. Raise a budget only when the size increase is understood, justified by real functionality, and the new threshold still acts as a meaningful guardrail.
+
 Local test policy: run only one heavy test command at a time, and wait about 2 minutes between repeated `npm run verify` runs on local machines. See [docs/project-testing.md](docs/project-testing.md).
 
 ## Testing
