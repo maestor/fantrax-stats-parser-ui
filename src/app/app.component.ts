@@ -132,6 +132,19 @@ export class AppComponent implements OnInit {
 
   isSettingsDrawerOpen = false;
   isLeaderboardsRoute = false;
+  isCareerRoute = false;
+  showStatsShell = true;
+  currentRouteSubtitleKey: string | null = null;
+
+  get skipLinkTargetId(): string {
+    if (this.isLeaderboardsRoute) return "leaderboard-table";
+    if (this.isCareerRoute) return "career-table";
+    return "stats-table";
+  }
+
+  get skipLinkTarget(): string {
+    return `#${this.skipLinkTargetId}`;
+  }
 
   private readonly pwaUpdateService = inject(PwaUpdateService);
   readonly isUpdateAvailable$ = this.pwaUpdateService.updateAvailable$;
@@ -229,9 +242,16 @@ export class AppComponent implements OnInit {
   }
 
   private updateControlsContext(url: string): void {
-    this.controlsContext = url.includes("goalie-stats") ? "goalie" : "player";
+    const normalizedUrl = url.split('?')[0];
+
+    this.controlsContext = normalizedUrl.includes("goalie-stats") ? "goalie" : "player";
     this.controlsContextSubject.next(this.controlsContext);
-    this.isLeaderboardsRoute = url.startsWith("/leaderboards");
+    this.isLeaderboardsRoute = normalizedUrl.startsWith("/leaderboards");
+    this.isCareerRoute = normalizedUrl.startsWith('/career');
+    this.showStatsShell = !this.isLeaderboardsRoute && !this.isCareerRoute;
+    this.currentRouteSubtitleKey = this.isCareerRoute
+      ? 'nav.playerCareers'
+      : (this.isLeaderboardsRoute ? 'nav.leaderboards' : null);
   }
 
   skipToTarget(targetId: string, event: MouseEvent): void {
@@ -244,7 +264,7 @@ export class AppComponent implements OnInit {
 
     // Prefer focusing the first actual data row (if present).
     const firstRow = container.querySelector(
-      'tr[data-row-index="0"]',
+      'tr[data-row-index="0"], .virtual-table-row[data-row-index="0"]',
     ) as HTMLElement | null;
 
     // If there are no rows yet (loading / no results), keep focus where it is.

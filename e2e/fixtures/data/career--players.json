@@ -1,0 +1,47 @@
+[
+  {
+    "id": "career-player-1",
+    "name": "Jamie Benn",
+    "position": "F",
+    "firstSeason": 2012,
+    "lastSeason": 2025,
+    "seasonsOwned": 10,
+    "seasonsPlayedRegular": 10,
+    "seasonsPlayedPlayoffs": 7,
+    "teamsOwned": 4,
+    "teamsPlayedRegular": 4,
+    "teamsPlayedPlayoffs": 3,
+    "regularGames": 601,
+    "playoffGames": 84
+  },
+  {
+    "id": "career-player-2",
+    "name": "Roman Josi",
+    "position": "D",
+    "firstSeason": 2013,
+    "lastSeason": 2025,
+    "seasonsOwned": 8,
+    "seasonsPlayedRegular": 8,
+    "seasonsPlayedPlayoffs": 5,
+    "teamsOwned": 3,
+    "teamsPlayedRegular": 3,
+    "teamsPlayedPlayoffs": 2,
+    "regularGames": 512,
+    "playoffGames": 47
+  },
+  {
+    "id": "career-player-3",
+    "name": "Patrik Laine",
+    "position": "F",
+    "firstSeason": 2016,
+    "lastSeason": 2025,
+    "seasonsOwned": 6,
+    "seasonsPlayedRegular": 6,
+    "seasonsPlayedPlayoffs": 4,
+    "teamsOwned": 2,
+    "teamsPlayedRegular": 2,
+    "teamsPlayedPlayoffs": 2,
+    "regularGames": 389,
+    "playoffGames": 36
+  }
+]

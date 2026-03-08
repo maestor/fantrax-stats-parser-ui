@@ -38,12 +38,16 @@ npm run test:coverage
 
 # Run the same checks CI enforces (tests + production build)
 npm run verify
-
-# Run a specific test file
-npm run test -- --reporter=verbose src/app/app.component.spec.ts
 ```
 
 The coverage gate used by `npm run test:coverage` and `npm run verify` is configured in `angular.json`, not `vitest.config.ts`, because the project runs tests through Angular's `@angular/build:unit-test` builder.
+
+### Local Safety Policy
+
+- Do not run partial or targeted test commands as a normal workflow. Use the full suite commands (`npm test`, `npm run test:coverage`, `npm run verify`) unless the user explicitly asks for isolated debugging.
+- Run only one heavy test command at a time. Do not start a new `npm run verify` while another `verify`, coverage run, or full E2E run is still active.
+- Leave cooldown time between repeated `npm run verify` runs on local machines. Wait about 2 minutes after a failed or completed `verify` before starting the next one.
+- If the user already has a dev server running, coordinate before starting anything that could compete for the same port or add unnecessary system load.
 
 **Important Notes:**
 
@@ -159,13 +163,14 @@ The project uses **Playwright Test** for end-to-end (E2E) coverage with a featur
 - Playwright browser installed: `npx playwright install chromium`
 - Backend API running on `http://localhost:3000` (see project README and backend repo)
 
-**In CI:** E2E tests run without a live backend. API responses are served from JSON fixtures in `e2e/fixtures/data/` via Playwright's `page.route()` mocking. The production build is served with `npx serve`.
+**In CI:** E2E tests run without a live backend. API responses are served from JSON fixtures in `e2e/fixtures/data/` via Playwright's `page.route()` mocking. The production build is served with `python3 -m http.server`.
 
 The Playwright config is defined in `playwright.config.ts` and:
 
-- Uses `baseURL` `http://localhost:4200`
+- Uses `PLAYWRIGHT_BASE_URL` when provided, otherwise defaults to `http://localhost:4200`
 - Locally: starts (or reuses) the Angular dev server via `npm start`
-- In CI: serves the production build via `npx serve dist/fantrax-stats-parser-ui/browser`
+- Skips `webServer` entirely when `PLAYWRIGHT_EXTERNAL_SERVER=1`
+- In CI: serves the production build via `python3 -m http.server 4200 --directory dist/fantrax-stats-parser-ui/browser`
 - Runs tests against Chromium only
 
 **Basic commands:**
@@ -173,6 +178,9 @@ The Playwright config is defined in `playwright.config.ts` and:
 ```bash
 # Run all E2E tests (headless, Chromium) — requires backend on :3000
 npx playwright test
+
+# Run against an already-running frontend without starting Playwright webServer
+PLAYWRIGHT_EXTERNAL_SERVER=1 npx playwright test
 
 # Run in headed mode (for debugging)
 npx playwright test --headed
@@ -182,6 +190,9 @@ npx playwright test e2e/specs/smoke.spec.ts
 
 # Run with API mocking (simulates CI mode)
 CI=true npx playwright test
+
+# Override the frontend URL if you need a non-default port
+PLAYWRIGHT_BASE_URL=http://127.0.0.1:4300 PLAYWRIGHT_EXTERNAL_SERVER=1 npx playwright test
 
 # Capture/update API fixtures from live backend
 npm run e2e:capture-fixtures
@@ -218,6 +229,12 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
   - Settings drawer on mobile viewports
   - Collapsible controls
   - Touch interactions
+
+- **career.spec.ts** - Career listings
+  - Career route shell and global-navigation entry
+  - Player/goalie tab switching
+  - Search and sort behavior in the virtualized career table
+  - Route-specific shell behavior (no stats controls/drawer)
 
 **Supporting files:**
 
@@ -293,6 +310,7 @@ test('Filter by season', async ({ page }) => {
 **Core Functionality:**
 - ✅ Front page rendering and initial UI state
 - ✅ Navigation between Kenttäpelaajat and Maalivahdit tabs
+- ✅ Navigation between Pelaajaurat player/goalie tabs
 - ✅ Opening Player Card dialog with career tabs
 - ✅ Search filtering with "no results" state
 - ✅ Report type switching (Runkosarja ↔ Playoffs)

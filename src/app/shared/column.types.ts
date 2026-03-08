@@ -8,4 +8,5 @@ export interface Column {
   icon?: ColumnIcon;
   align?: 'left' | 'center'; // default: center
   sortable?: boolean;         // default: true
+  initialSortDirection?: 'asc' | 'desc';
 }

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "career-goalie-1",
+    "name": "Juuse Saros",
+    "firstSeason": 2015,
+    "lastSeason": 2025,
+    "seasonsOwned": 7,
+    "seasonsPlayedRegular": 7,
+    "seasonsPlayedPlayoffs": 4,
+    "teamsOwned": 3,
+    "teamsPlayedRegular": 3,
+    "teamsPlayedPlayoffs": 2,
+    "regularGames": 304,
+    "playoffGames": 22
+  },
+  {
+    "id": "career-goalie-2",
+    "name": "Connor Hellebuyck",
+    "firstSeason": 2014,
+    "lastSeason": 2025,
+    "seasonsOwned": 8,
+    "seasonsPlayedRegular": 8,
+    "seasonsPlayedPlayoffs": 5,
+    "teamsOwned": 4,
+    "teamsPlayedRegular": 4,
+    "teamsPlayedPlayoffs": 3,
+    "regularGames": 356,
+    "playoffGames": 31
+  },
+  {
+    "id": "career-goalie-3",
+    "name": "Linus Ullmark",
+    "firstSeason": 2017,
+    "lastSeason": 2025,
+    "seasonsOwned": 5,
+    "seasonsPlayedRegular": 5,
+    "seasonsPlayedPlayoffs": 3,
+    "teamsOwned": 2,
+    "teamsPlayedRegular": 2,
+    "teamsPlayedPlayoffs": 1,
+    "regularGames": 218,
+    "playoffGames": 18
+  }
+]

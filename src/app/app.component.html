@@ -1,6 +1,6 @@
 <a class="skip-link"
-   [href]="isLeaderboardsRoute ? '#leaderboard-table' : '#stats-table'"
-   (click)="skipToTarget(isLeaderboardsRoute ? 'leaderboard-table' : 'stats-table', $event)">
+   [href]="skipLinkTarget"
+   (click)="skipToTarget(skipLinkTargetId, $event)">
   {{ "a11y.skipToTable" | translate }}
 </a>
 
@@ -8,7 +8,7 @@
   <div class="content">
     @if (mobileState$ | async; as mobileState) {
     @if (mobileState.ready && mobileState.isMobile) {
-    @if (!isLeaderboardsRoute) {
+    @if (showStatsShell) {
     <mat-sidenav-container class="mobile-shell">
       <mat-sidenav #settingsDrawer="matSidenav" class="settings-drawer" mode="over" position="start"
         [fixedInViewport]="true" (openedChange)="isSettingsDrawerOpen = $event">
@@ -110,6 +110,12 @@
       </div>
     </div>
 
+    @if (currentRouteSubtitleKey; as subtitleKey) {
+    <h2 class="route-subtitle">
+      {{ subtitleKey | translate }}
+    </h2>
+    }
+
     <router-outlet />
     }
     } @else if (mobileState.ready) {
@@ -132,14 +138,20 @@
     </div>
 
     @if (lastModifiedText$ | async; as lastModifiedText) {
-    @if (!isLeaderboardsRoute) {
+    @if (showStatsShell) {
     <div class="last-modified">
       {{ "lastModified.label" | translate }}: {{ lastModifiedText }}
     </div>
     }
     }
 
-    @if (!isLeaderboardsRoute) {
+    @if (currentRouteSubtitleKey; as subtitleKey) {
+    <h2 class="route-subtitle">
+      {{ subtitleKey | translate }}
+    </h2>
+    }
+
+    @if (showStatsShell) {
     <app-top-controls [context]="controlsContext" />
 
     <app-navigation [tabPanel]="tabPanel" />
@@ -153,7 +165,7 @@
     }
   </div>
 </main>
-@if (!isLeaderboardsRoute) {
+@if (showStatsShell) {
 <app-comparison-bar [context]="controlsContext" />
 }
 <app-footer />

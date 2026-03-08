@@ -1,4 +1,6 @@
+import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
+import { Router } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import {
@@ -178,5 +180,26 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
     expect(screen.getByText('minGamesSlider.label')).toBeInTheDocument();
     expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
+  });
+
+  it('hides the settings drawer controls on mobile career routes and shows career tabs instead', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
+
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/career/players');
+
+    expect(await screen.findByRole('tab', { name: 'career.tabs.players' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'career.tabs.goalies' })).toBeInTheDocument();
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(screen.getByLabelText('table.careerPlayerSearch')).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('button', { name: 'a11y.openSettingsDrawer' })
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
+
+    expect(await screen.findByLabelText('table.playerSearch')).toBeInTheDocument();
   });
 });

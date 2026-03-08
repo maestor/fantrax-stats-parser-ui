@@ -32,11 +32,17 @@ export const FILTER_LABELS = {
 export const TAB_LABELS = {
   PLAYERS: 'Kenttäpelaajat',
   GOALIES: 'Maalivahdit',
+  CAREER_PLAYERS: 'Kenttäpelaajat',
+  CAREER_GOALIES: 'Maalivahdit',
   PLAYER_CARD_STATS: 'Tilastot',
   PLAYER_CARD_BY_SEASON: 'Kausittain',
   PLAYER_CARD_GRAPHS: 'Graafit',
   LEADERBOARD_REGULAR: 'Runkosarja',
   LEADERBOARD_PLAYOFFS: 'Playoffs',
+};
+
+export const NAV_LABELS = {
+  PLAYER_CAREERS: 'Pelaajaurat',
 };
 
 export const LEADERBOARD_LABELS = {

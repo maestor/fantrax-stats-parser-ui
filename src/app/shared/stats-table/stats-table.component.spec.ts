@@ -20,18 +20,22 @@ import { polyfillJsdom } from '../../testing/behavior-test-utils';
       [defaultSortColumn]="defaultSortColumn"
       [loading]="loading"
       [apiError]="apiError"
+      [clickable]="clickable"
+      [searchLabelKey]="searchLabelKey"
     />
   `,
 })
 class StatsTableHostComponent {
   apiError = false;
   loading = false;
+  clickable = true;
   defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
+  searchLabelKey = 'table.playerSearch';
 
   readonly columns: Column[] = [
     { field: 'name', align: 'left' },
-    { field: 'score', align: 'left' },
-    { field: 'scoreAdjustedByGames', align: 'left' },
+    { field: 'score', align: 'left', initialSortDirection: 'desc' },
+    { field: 'scoreAdjustedByGames', align: 'left', initialSortDirection: 'desc' },
   ];
 
   data = [
@@ -116,6 +120,24 @@ describe('StatsTableComponent — user behavior', () => {
     await setup({ apiError: true, data: [] });
 
     expect(await screen.findByText('table.apiUnavailable')).toBeInTheDocument();
+  });
+
+  it('supports custom search labels and read-only keyboard instructions when rows are not clickable', async () => {
+    const { open } = await setup({
+      clickable: false,
+      searchLabelKey: 'table.careerPlayerSearch',
+    });
+
+    await screen.findByText('Alpha Center');
+
+    expect(screen.getByLabelText('table.careerPlayerSearch')).toBeInTheDocument();
+    expect(screen.getByText('a11y.tableNavigationHintReadOnly')).toBeInTheDocument();
+
+    const firstRow = getDataRows()[0];
+    fireEvent.click(firstRow);
+    fireEvent.keyDown(firstRow, { key: 'Enter' });
+
+    expect(open).not.toHaveBeenCalled();
   });
 
   it('supports keyboard navigation, opens the dialog on Enter, and restores focus to the navigated row on close', async () => {
@@ -241,6 +263,18 @@ describe('StatsTableComponent — user behavior', () => {
     view.fixture.componentInstance.defaultSortColumn = 'scoreAdjustedByGames';
     view.fixture.componentInstance.data = [...view.fixture.componentInstance.data];
     view.fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      expect(getFirstRowText()).toContain('Beta Blueliner');
+    });
+  });
+
+  it('uses descending first-click sorting for numeric headers', async () => {
+    await setup();
+
+    await screen.findByText('Alpha Center');
+
+    fireEvent.click(screen.getByText('tableColumnShort.scoreAdjustedByGames'));
 
     await vi.waitFor(() => {
       expect(getFirstRowText()).toContain('Beta Blueliner');

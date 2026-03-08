@@ -14,6 +14,10 @@ export type GoalieSeasonStats       = components['schemas']['GoalieSeasonData'];
 export type Team                    = components['schemas']['Team'];
 export type RegularLeaderboardEntry = components['schemas']['RegularLeaderboardEntry'];
 export type PlayoffLeaderboardEntry = components['schemas']['PlayoffLeaderboardEntry'];
+export type CareerPlayerListItem    = components['schemas']['CareerPlayerListItem'];
+export type CareerGoalieListItem    = components['schemas']['CareerGoalieListItem'];
+export type CareerPlayer            = components['schemas']['CareerPlayer'];
+export type CareerGoalie            = components['schemas']['CareerGoalie'];
 
 // Player includes frontend-only augmentation fields not present in the API spec.
 // seasons is made optional to match single-season endpoint usage (spec: CombinedPlayer has required seasons).
@@ -160,6 +164,20 @@ export class ApiService {
       path,
       cacheKey,
       this.queryParams(normalizedTeamId, startFromForRequest),
+    );
+  }
+
+  getCareerPlayers(): Observable<CareerPlayerListItem[]> {
+    return this.handleRequest<CareerPlayerListItem[]>(
+      'career/players',
+      'career-players',
+    );
+  }
+
+  getCareerGoalies(): Observable<CareerGoalieListItem[]> {
+    return this.handleRequest<CareerGoalieListItem[]>(
+      'career/goalies',
+      'career-goalies',
     );
   }
 

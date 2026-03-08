@@ -83,13 +83,13 @@
   overflow: visible;
 }
 
-// Static position column (player/goalie stats): contains rank number + optional checkbox
-.mat-column-position {
+// Static row number column: contains rank number + optional checkbox
+.mat-column-__rowNumber {
   text-align: left;
   padding: 0;
 }
 
-th.mat-column-position {
+th.mat-column-__rowNumber {
   text-align: center;
   padding-left: 16px;
 }

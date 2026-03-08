@@ -65,7 +65,13 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Expandable season breakdown rows per team (regular and playoffs) by clicking a team row, with multiple expanded rows allowed
    - Season breakdown rows can show trophy markers for winner/championship seasons
 
-6. **Data Management**
+6. **Career Listings** (`/career/players`, `/career/goalies`)
+   - Dedicated all-time career tables for players and goalies
+   - Searchable and sortable without the stats-page controls/drawer/comparison bar
+   - Player position is rendered inline with player name while sorting still uses the underlying plain `name`
+   - Uses a virtualized table implementation to keep large result sets responsive
+
+7. **Data Management**
    - Caching service to reduce API calls
    - Filter service for reactive UI filter state
    - Stats service for data transformation
@@ -107,6 +113,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - Simple routing with two main routes:
    - `/player-stats` - Player statistics view
    - `/goalie-stats` - Goalie statistics view
+   - `/career/players` - Player career listing
+   - `/career/goalies` - Goalie career listing
    - `/leaderboards/regular` — Regular season all-time ranking table
    - `/leaderboards/playoffs` — Playoffs all-time ranking table (default)
 

@@ -19,7 +19,7 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
     localStorage.clear();
   });
 
-  it('opens navigation with default view active, navigates to leaderboards, opens info dialog, and closes', async () => {
+  it('opens navigation with default view active, navigates to career and leaderboards, opens info dialog, and closes', async () => {
     await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
     // Wait for the app to fully load
@@ -29,15 +29,34 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
     // -- Open navigation bottom sheet --
     fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
 
-    // Navigation appears with all three items
+    // Navigation appears with all route/action items
     const hockeyBtn = await screen.findByRole('button', { name: /nav\.hockeyPlayerStats/ });
+    expect(screen.getByRole('button', { name: /nav\.playerCareers/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /nav\.leaderboards/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /nav\.info/ })).toBeInTheDocument();
 
     // Hockey stats is the active (default) item — verified via active CSS class
     // (aria-current binding does not propagate in jsdom bottom sheet context)
     expect(hockeyBtn).toHaveClass('global-nav-item--active');
+    expect(screen.getByRole('button', { name: /nav\.playerCareers/ })).not.toHaveClass('global-nav-item--active');
     expect(screen.getByRole('button', { name: /nav\.leaderboards/ })).not.toHaveClass('global-nav-item--active');
+
+    // -- Navigate to careers --
+    fireEvent.click(screen.getByRole('button', { name: /nav\.playerCareers/ }));
+
+    await screen.findByText('career.tabs.players', {}, { timeout: 5000 });
+    expect(screen.getByLabelText('table.careerPlayerSearch')).toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: /team\.selector/ })).not.toBeInTheDocument();
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: /nav\.playerCareers/ })).not.toBeInTheDocument();
+    });
+
+    // Re-open navigation and verify careers is now active
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
+
+    const careersBtn = await screen.findByRole('button', { name: /nav\.playerCareers/ });
+    expect(careersBtn).toHaveClass('global-nav-item--active');
+    expect(screen.getByRole('button', { name: /nav\.hockeyPlayerStats/ })).not.toHaveClass('global-nav-item--active');
 
     // -- Navigate to leaderboards --
     fireEvent.click(screen.getByRole('button', { name: /nav\.leaderboards/ }));

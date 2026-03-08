@@ -28,6 +28,16 @@
 	text-align: center;
 }
 
+.route-subtitle {
+	margin: -6px 8px 8px 8px;
+	padding: 0 4px;
+	font-size: 0.9rem;
+	font-weight: 400;
+	line-height: 1.2;
+	color: var(--mat-sys-on-surface-variant);
+	text-align: center;
+}
+
 @media (max-width: 768px) {
 	.title-row {
 		display: grid;
@@ -145,4 +155,3 @@
 .mobile-team-name {
 	color: var(--mat-sys-on-surface);
 }
-
