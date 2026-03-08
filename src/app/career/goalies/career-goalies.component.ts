@@ -20,11 +20,12 @@ export class CareerGoaliesComponent implements OnInit, OnDestroy {
 
   readonly columns: Column[] = CAREER_GOALIE_COLUMNS;
   readonly defaultSortColumn = 'regularGames';
-  readonly searchLabelKey = 'table.careerGoalieSearch';
-  readonly formatCell = (column: string, value: number | string | undefined): string =>
-    this.formatCellValue(column, value);
-  readonly rowKey = (row: TableRow, index: number): string =>
-    ((row as CareerGoalieListItem).id || `${index}`);
+  readonly searchLabelKey = 'table.playerSearch';
+  readonly formatCell = (
+    _row: TableRow,
+    column: string,
+    value: number | string | undefined,
+  ): string => this.formatCellValue(column, value);
 
   data: CareerGoalieListItem[] = [];
   loading = true;

@@ -200,6 +200,6 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
 
-    expect(await screen.findByLabelText('table.careerGoalieSearch')).toBeInTheDocument();
+    expect(await screen.findByLabelText('table.playerSearch')).toBeInTheDocument();
   });
 });

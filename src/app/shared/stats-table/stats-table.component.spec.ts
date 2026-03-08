@@ -34,8 +34,8 @@ class StatsTableHostComponent {
 
   readonly columns: Column[] = [
     { field: 'name', align: 'left' },
-    { field: 'score', align: 'left' },
-    { field: 'scoreAdjustedByGames', align: 'left' },
+    { field: 'score', align: 'left', initialSortDirection: 'desc' },
+    { field: 'scoreAdjustedByGames', align: 'left', initialSortDirection: 'desc' },
   ];
 
   data = [
@@ -263,6 +263,18 @@ describe('StatsTableComponent — user behavior', () => {
     view.fixture.componentInstance.defaultSortColumn = 'scoreAdjustedByGames';
     view.fixture.componentInstance.data = [...view.fixture.componentInstance.data];
     view.fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      expect(getFirstRowText()).toContain('Beta Blueliner');
+    });
+  });
+
+  it('uses descending first-click sorting for numeric headers', async () => {
+    await setup();
+
+    await screen.findByText('Alpha Center');
+
+    fireEvent.click(screen.getByText('tableColumnShort.scoreAdjustedByGames'));
 
     await vi.waitFor(() => {
       expect(getFirstRowText()).toContain('Beta Blueliner');

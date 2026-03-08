@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   Input,
   OnChanges,
   SimpleChanges,
@@ -16,10 +17,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { Column, ColumnIcon } from '@shared/column.types';
+import { Column } from '@shared/column.types';
 import { TableRow } from './stats-table.component';
 
 const ROW_NUMBER_COLUMN = '__rowNumber';
@@ -37,7 +37,6 @@ const DEFAULT_ROW_HEIGHT = 52;
     MatProgressBarModule,
     MatSortModule,
     MatTooltipModule,
-    MatIconModule,
   ],
   templateUrl: './virtual-table.component.html',
   styleUrl: './virtual-table.component.scss',
@@ -47,44 +46,40 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
 
   @Input() data: TableRow[] = [];
   @Input() columns: Column[] = [];
-  @Input() defaultSortColumn = '';
+  @Input() defaultSortColumn!: string;
   @Input() loading = false;
   @Input() apiError = false;
-  @Input() tableId = 'stats-table';
-  @Input() showSearch = true;
   @Input() searchLabelKey = 'table.playerSearch';
-  @Input() showPositionColumn = true;
-  @Input() positionValue?: (row: TableRow, index: number) => string | number;
-  @Input() formatCell?: (column: string, value: number | string | undefined) => string;
-  @Input() rowKey?: (row: TableRow, index: number) => string;
+  @Input() formatCell!: (
+    row: TableRow,
+    column: string,
+    value: number | string | undefined,
+  ) => string;
 
   @ViewChild(MatSort) sort?: MatSort;
   @ViewChild(CdkVirtualScrollViewport) viewport?: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { read: ElementRef })
+  viewportElementRef?: ElementRef<HTMLElement>;
   @ViewChild('searchInput', { read: ElementRef }) searchInput?: ElementRef<HTMLInputElement>;
   @ViewChild('tableRoot', { read: ElementRef }) tableRootRef?: ElementRef<HTMLElement>;
 
   readonly rowHeight = DEFAULT_ROW_HEIGHT;
 
-  instructionsId = 'stats-table-instructions';
   activeRowIndex = 0;
   dynamicColumns: Column[] = [];
   displayedFields: string[] = [];
   gridTemplateColumns = '';
   filteredRows: TableRow[] = [];
+  headerScrollbarOffset = 0;
+  tableMinWidth = 0;
 
   private filterValue = '';
   private initialized = false;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['tableId']) {
-      this.instructionsId = `${this.tableId}-instructions`;
-    }
-
-    if (changes['columns'] || changes['showPositionColumn']) {
-      this.dynamicColumns = this.columns;
-      this.displayedFields = this.showPositionColumn
-        ? [ROW_NUMBER_COLUMN, ...this.dynamicColumns.map((column) => column.field)]
-        : this.dynamicColumns.map((column) => column.field);
+    if (changes['columns']) {
+      this.dynamicColumns = this.columns ?? [];
+      this.displayedFields = [ROW_NUMBER_COLUMN, ...this.dynamicColumns.map((column) => column.field)];
       this.gridTemplateColumns = this.buildGridTemplateColumns();
     }
 
@@ -97,24 +92,23 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
     this.initialized = true;
 
     if (this.sort) {
-      if (this.defaultSortColumn) {
-        this.sort.active = this.defaultSortColumn;
-        this.sort.direction = 'desc';
-      }
-
+      this.sort.active = this.defaultSortColumn;
+      this.sort.direction = 'desc';
       this.sort.sortChange.subscribe(() => this.recomputeRows(false));
     }
 
     this.recomputeRows(false);
+    queueMicrotask(() => this.syncViewportMetrics());
     this.cdr.detectChanges();
   }
 
-  getInstructionsTranslateKey(): string {
-    return 'a11y.tableNavigationHintReadOnly';
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.syncViewportMetrics();
   }
 
-  getHeaderIconType(column: Column): ColumnIcon['type'] | null {
-    return column.icon?.type ?? null;
+  getInitialSortDirection(column: Column): SortDirection {
+    return column.initialSortDirection ?? 'asc';
   }
 
   getCellClass(column: Column): { 'col-left': boolean; 'col-center': boolean } {
@@ -124,17 +118,13 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
     };
   }
 
-  getPositionDisplay(row: TableRow, index: number): string | number {
-    return this.positionValue ? this.positionValue(row, index) : index + 1;
-  }
-
   getCellValue(row: TableRow, field: string): number | string | undefined {
     return (row as Record<string, unknown>)[field] as number | string | undefined;
   }
 
   formatValue(row: TableRow, field: string): string {
     const value = this.getCellValue(row, field);
-    return this.formatCell ? this.formatCell(field, value) : String(value ?? '-');
+    return this.formatCell(row, field, value);
   }
 
   filterItems(event: Event): void {
@@ -159,9 +149,8 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
         this.focusRow(0);
         return;
       case 'ArrowUp':
-        if (!this.showSearch || !this.searchInput) return;
         event.preventDefault();
-        this.searchInput.nativeElement.focus();
+        this.searchInput!.nativeElement.focus();
         return;
       default:
         return;
@@ -208,10 +197,6 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
   }
 
   trackRow = (index: number, row: TableRow): string => {
-    if (this.rowKey) {
-      return this.rowKey(row, index);
-    }
-
     const keyValue = (row as Record<string, unknown>)['id'];
     return typeof keyValue === 'string' && keyValue.length > 0 ? keyValue : `${index}`;
   };
@@ -225,6 +210,8 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
       this.activeRowIndex = 0;
       queueMicrotask(() => this.viewport?.scrollToIndex(0));
     }
+
+    queueMicrotask(() => this.syncViewportMetrics());
 
     if (this.initialized) {
       this.cdr.detectChanges();
@@ -242,10 +229,6 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
   private sortRows(rows: TableRow[]): TableRow[] {
     const active = this.sort?.active || this.defaultSortColumn;
     const direction = (this.sort?.direction || 'desc') as SortDirection;
-
-    if (!active || !direction) {
-      return [...rows];
-    }
 
     const sorted = [...rows].sort((left, right) =>
       this.compareValues(this.getCellValue(left, active), this.getCellValue(right, active))
@@ -277,28 +260,52 @@ export class VirtualTableComponent implements OnChanges, AfterViewInit {
   }
 
   private buildGridTemplateColumns(): string {
-    const columnWidths = this.displayedFields.map((field) => this.resolveColumnWidth(field));
-    return columnWidths.join(' ');
+    const columnTracks = this.displayedFields.map((field) => this.resolveColumnTrack(field));
+    this.tableMinWidth = columnTracks.reduce((sum, column) => sum + column.minWidth, 0);
+    return columnTracks.map((column) => column.track).join(' ');
   }
 
-  private resolveColumnWidth(field: string): string {
+  private resolveColumnTrack(field: string): { minWidth: number; track: string } {
     switch (field) {
       case ROW_NUMBER_COLUMN:
-        return '72px';
+        return { minWidth: 56, track: '56px' };
       case 'name':
-      case 'teamName':
-        return 'minmax(220px, 2.2fr)';
-      case 'playerPosition':
-      case 'position':
-        return '96px';
+        return { minWidth: 180, track: 'minmax(180px, 2.4fr)' };
       case 'firstSeason':
       case 'lastSeason':
-        return '120px';
+        return { minWidth: 72, track: 'minmax(72px, 0.9fr)' };
+      case 'seasonsOwned':
+      case 'seasonsPlayedRegular':
+      case 'seasonsPlayedPlayoffs':
+      case 'teamsOwned':
+      case 'teamsPlayedRegular':
+      case 'teamsPlayedPlayoffs':
+        return { minWidth: 82, track: 'minmax(82px, 1fr)' };
       case 'regularGames':
       case 'playoffGames':
-        return '120px';
+        return { minWidth: 88, track: 'minmax(88px, 1.05fr)' };
       default:
-        return 'minmax(112px, 1fr)';
+        return { minWidth: 80, track: 'minmax(80px, 1fr)' };
+    }
+  }
+
+  private syncViewportMetrics(): void {
+    const viewportElement = this.viewportElementRef?.nativeElement;
+
+    if (!viewportElement) {
+      this.headerScrollbarOffset = 0;
+      return;
+    }
+
+    const scrollbarWidth = viewportElement.offsetWidth - viewportElement.clientWidth;
+    const nextOffset = Math.max(scrollbarWidth, 0);
+
+    if (this.headerScrollbarOffset !== nextOffset) {
+      this.headerScrollbarOffset = nextOffset;
+
+      if (this.initialized) {
+        this.cdr.detectChanges();
+      }
     }
   }
 

@@ -8,8 +8,6 @@ import { CAREER_PLAYER_COLUMNS } from '@shared/table-columns';
 import { Column } from '@shared/column.types';
 import { formatSeasonDisplay } from '@shared/utils/season.utils';
 
-type CareerPlayerTableRow = CareerPlayerListItem & { playerPosition: string };
-
 @Component({
   selector: 'app-career-players',
   standalone: true,
@@ -23,12 +21,13 @@ export class CareerPlayersComponent implements OnInit, OnDestroy {
   readonly columns: Column[] = CAREER_PLAYER_COLUMNS;
   readonly defaultSortColumn = 'regularGames';
   readonly searchLabelKey = 'table.careerPlayerSearch';
-  readonly formatCell = (column: string, value: number | string | undefined): string =>
-    this.formatCellValue(column, value);
-  readonly rowKey = (row: TableRow, index: number): string =>
-    ((row as CareerPlayerTableRow).id || `${index}`);
+  readonly formatCell = (
+    row: TableRow,
+    column: string,
+    value: number | string | undefined,
+  ): string => this.formatCellValue(row as CareerPlayerListItem, column, value);
 
-  data: CareerPlayerTableRow[] = [];
+  data: CareerPlayerListItem[] = [];
   loading = true;
   apiError = false;
 
@@ -39,10 +38,7 @@ export class CareerPlayersComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
-          this.data = data.map((row) => ({
-            ...row,
-            playerPosition: row.position,
-          }));
+          this.data = data;
           this.loading = false;
         },
         error: () => {
@@ -58,7 +54,15 @@ export class CareerPlayersComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  private formatCellValue(column: string, value: number | string | undefined): string {
+  private formatCellValue(
+    row: CareerPlayerListItem,
+    column: string,
+    value: number | string | undefined,
+  ): string {
+    if (column === 'name') {
+      return `${row.position} ${String(value ?? '-')}`;
+    }
+
     if ((column === 'firstSeason' || column === 'lastSeason') && typeof value === 'number') {
       return formatSeasonDisplay(value);
     }

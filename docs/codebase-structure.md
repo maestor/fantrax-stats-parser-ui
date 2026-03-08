@@ -16,6 +16,7 @@ fantrax-stats-parser-ui/
 │   │   ├── base/       # Base layout components
 │   │   │   ├── footer/
 │   │   │   └── navigation/
+│   │   ├── career/            # Career listings feature (shell + players and goalies child components)
 │   │   ├── goalie-stats/     # Goalie stats page
 │   │   ├── goalie-route/     # Direct goalie card route handler
 │   │   ├── leaderboards/     # Leaderboards feature (shell + regular and playoffs child components)
@@ -80,6 +81,12 @@ Smart component for goalie statistics view:
 - Manages goalie-specific state
 - Renders stats table and controls
 
+### `/src/app/career/`
+Route shell and smart components for career listings:
+- Handles `/career/players` and `/career/goalies`
+- Renders tab navigation between career skaters and goalies
+- Uses dedicated backend endpoints and a virtualized read-only table
+
 ### `/src/app/player-route/`
 Route handler for direct player card URLs:
 - Handles `/player/:teamSlug/:playerSlug` and `/player/:teamSlug/:playerSlug/:season` routes
@@ -139,6 +146,7 @@ Main data table component:
 - Material table with sorting
 - Column configuration
 - Row selection
+- Also contains `VirtualTableComponent`, used by career listings for virtualized rendering with shared table styling
 
 #### `player-card/`
 Individual player information card display

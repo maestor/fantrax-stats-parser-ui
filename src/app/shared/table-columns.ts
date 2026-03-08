@@ -37,26 +37,25 @@ export const GOALIE_COLUMNS: Column[] = [...BASE_COLUMNS, ...GOALIE_ONLY_COMBINE
 export const GOALIE_SEASON_COLUMNS: Column[] = [...BASE_COLUMNS, ...GOALIE_ONLY_SEASON_COLUMNS, ...COMMON_COLUMNS];
 
 const CAREER_COMMON_COLUMNS: Column[] = [
-  { field: 'firstSeason' },
-  { field: 'lastSeason' },
-  { field: 'seasonsOwned' },
-  { field: 'seasonsPlayedRegular' },
-  { field: 'seasonsPlayedPlayoffs' },
-  { field: 'teamsOwned' },
-  { field: 'teamsPlayedRegular' },
-  { field: 'teamsPlayedPlayoffs' },
-  { field: 'regularGames' },
-  { field: 'playoffGames' },
+  { field: 'seasonsOwned', initialSortDirection: 'desc' },
+  { field: 'seasonsPlayedRegular', initialSortDirection: 'desc' },
+  { field: 'seasonsPlayedPlayoffs', initialSortDirection: 'desc' },
+  { field: 'teamsOwned', initialSortDirection: 'desc' },
+  { field: 'teamsPlayedRegular', initialSortDirection: 'desc' },
+  { field: 'teamsPlayedPlayoffs', initialSortDirection: 'desc' },
+  { field: 'regularGames', initialSortDirection: 'desc' },
+  { field: 'playoffGames', initialSortDirection: 'desc' },
+  { field: 'firstSeason', initialSortDirection: 'asc' },
+  { field: 'lastSeason', initialSortDirection: 'desc' },
 ];
 
 export const CAREER_PLAYER_COLUMNS: Column[] = [
-  { field: 'name', align: 'left' },
-  { field: 'playerPosition' },
+  { field: 'name', align: 'left', initialSortDirection: 'asc' },
   ...CAREER_COMMON_COLUMNS,
 ];
 
 export const CAREER_GOALIE_COLUMNS: Column[] = [
-  { field: 'name', align: 'left' },
+  { field: 'name', align: 'left', initialSortDirection: 'asc' },
   ...CAREER_COMMON_COLUMNS,
 ];
 

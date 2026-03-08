@@ -1,6 +1,6 @@
 <a class="skip-link"
-   [href]="isLeaderboardsRoute ? '#leaderboard-table' : '#stats-table'"
-   (click)="skipToTarget(isLeaderboardsRoute ? 'leaderboard-table' : 'stats-table', $event)">
+   [href]="skipLinkTarget"
+   (click)="skipToTarget(skipLinkTargetId, $event)">
   {{ "a11y.skipToTable" | translate }}
 </a>
 
@@ -110,6 +110,12 @@
       </div>
     </div>
 
+    @if (currentRouteSubtitleKey; as subtitleKey) {
+    <h2 class="route-subtitle">
+      {{ subtitleKey | translate }}
+    </h2>
+    }
+
     <router-outlet />
     }
     } @else if (mobileState.ready) {
@@ -137,6 +143,12 @@
       {{ "lastModified.label" | translate }}: {{ lastModifiedText }}
     </div>
     }
+    }
+
+    @if (currentRouteSubtitleKey; as subtitleKey) {
+    <h2 class="route-subtitle">
+      {{ subtitleKey | translate }}
+    </h2>
     }
 
     @if (showStatsShell) {

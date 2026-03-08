@@ -8,14 +8,14 @@ test.describe('Career listings', () => {
 
     const playerTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_PLAYERS });
     await expect(playerTab).toHaveAttribute('aria-selected', 'true');
-    await expect(page.getByLabel('Pelaajaurahaku')).toBeVisible();
+    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
     await expect(page.getByRole('combobox', { name: 'Joukkue' })).toHaveCount(0);
 
-    const playerRows = page.locator('tr[mat-row]');
+    const playerRows = page.locator('.virtual-table-row[data-row-index]');
     await playerRows.first().waitFor({ state: 'visible', timeout: 10000 });
     expect(await playerRows.count()).toBeGreaterThan(0);
 
-    await page.getByLabel('Pelaajaurahaku').fill('Jamie');
+    await page.getByLabel('Pelaajahaku').fill('Jamie');
     await expect(page.getByText('Jamie Benn')).toBeVisible();
 
     const goalieTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_GOALIES });
@@ -23,9 +23,9 @@ test.describe('Career listings', () => {
 
     await expect(page).toHaveURL(/\/career\/goalies$/);
     await expect(goalieTab).toHaveAttribute('aria-selected', 'true');
-    await expect(page.getByLabel('Maalivahtiurahaku')).toBeVisible();
+    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
 
-    const goalieRows = page.locator('tr[mat-row]');
+    const goalieRows = page.locator('.virtual-table-row[data-row-index]');
     await goalieRows.first().waitFor({ state: 'visible', timeout: 10000 });
     expect(await goalieRows.count()).toBeGreaterThan(0);
   });

@@ -163,6 +163,10 @@ export function polyfillJsdom(): void {
   if (typeof HTMLElement.prototype.scrollIntoView !== 'function') {
     HTMLElement.prototype.scrollIntoView = () => { };
   }
+
+  if (typeof HTMLElement.prototype.scrollTo !== 'function') {
+    HTMLElement.prototype.scrollTo = () => { };
+  }
 }
 
 export function polyfillMatchMedia(): void {

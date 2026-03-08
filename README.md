@@ -30,7 +30,11 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with two ranking tables — regular season (Runkosarja) and playoffs — showing all-time team standings with tie-rank position logic and column sorting
 	- Expand/collapse per-team season breakdown by clicking the team row (multiple rows can stay open)
 	- Season details show `🏆` markers for winner/championship seasons (regular + playoffs)
-- 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, leaderboards, info/help)
+- 📚 **Career Listings**: Standalone `/career/players` and `/career/goalies` routes for all-time player and goalie career tables
+	- Searchable and sortable, with no stats-page filters or mobile drawer
+	- Virtualized row rendering keeps long lists responsive
+	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
+- 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
 	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
 	- Goalies: `/goalie/:teamSlug/:goalieSlug` (e.g., `/goalie/colorado/philipp-grubauer`)
@@ -45,6 +49,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)
 - 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and collapsible controls
 - 🕒 **Last Updated Indicator**: Shows backend data last-modified timestamp under the title (desktop) and in the settings drawer (mobile)
+- 🏷️ **Route Subtitles**: Career and leaderboard sections show lightweight subtitles under the app title (`Pelaajaurat`, `Maratontaulukot`)
 
 More details:
 
@@ -123,6 +128,8 @@ npm run verify                         # Headless unit tests + production build
 npm run build
 ```
 
+Local test policy: avoid partial targeted test runs by default, run only one heavy test command at a time, and wait about 2 minutes between repeated `npm run verify` runs on local machines. See [docs/project-testing.md](docs/project-testing.md).
+
 ## Testing
 
 This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests, targeted **service-layer tests** for HTTP/cache/platform integrations, and **Playwright** for end-to-end tests. UI tests follow a user-centric, accessible-query approach. Run `npm test` to see the current test count and status.
@@ -133,6 +140,7 @@ For planning-heavy changes, save the approved implementation plan locally under 
 
 E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `smoke.spec.ts` — Core page rendering and navigation
+- `career.spec.ts` — Career players/goalies tabs, search, sorting, and route shell behavior
 - `leaderboards.spec.ts` — Leaderboards redirect, table data, tab navigation, position tie logic, expandable season details
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
 - `team-switching.spec.ts` — Team selector and filter reset behavior
@@ -193,11 +201,12 @@ src/
 │   │   │   └── comparison-radar/ # Radar chart overlay
 │   │   ├── player-card/   # Player detail dialog
 │   │   ├── settings-panel/# Settings UI (toggles/sliders)
-│   │   ├── stats-table/   # Reusable stats table
+│   │   ├── stats-table/   # Reusable stats table + virtualized career table
 │   │   ├── top-controls/  # Header controls (team/season/report switchers)
 │   │   └── table-columns.ts
 │   ├── player-stats/      # Player stats page
 │   ├── goalie-stats/      # Goalie stats page
+│   ├── career/            # Career listings (/career/players, /career/goalies)
 │   ├── leaderboards/      # All-time leaderboards (/leaderboards/regular, /leaderboards/playoffs)
 │   ├── player-route/      # Direct player card route handler
 │   ├── goalie-route/      # Direct goalie card route handler

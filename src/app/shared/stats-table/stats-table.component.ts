@@ -19,6 +19,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { SortDirection } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
@@ -246,6 +247,10 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
 
   getHeaderIconType(column: Column): ColumnIcon['type'] | null {
     return column.icon?.type ?? null;
+  }
+
+  getInitialSortDirection(column: Column): SortDirection {
+    return column.initialSortDirection ?? 'asc';
   }
 
   getInstructionsTranslateKey(): string {

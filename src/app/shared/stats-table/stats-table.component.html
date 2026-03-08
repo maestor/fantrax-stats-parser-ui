@@ -54,6 +54,7 @@
         <ng-container [matColumnDef]="column.field">
           @if (column.sortable !== false) {
             <th mat-header-cell *matHeaderCellDef mat-sort-header
+              [start]="getInitialSortDirection(column)"
               [ngClass]="getCellClass(column)"
               matTooltip="{{ 'tableColumn.' + column.field | translate }}">
               @if (getHeaderIconType(column) === 'emoji') {

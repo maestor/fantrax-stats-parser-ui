@@ -161,6 +161,24 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - `/goalie/:teamSlug/:goalieSlug` - Combined stats
 - `/goalie/:teamSlug/:goalieSlug/:season` - Single season stats
 
+---
+
+### CareerPlayersComponent / CareerGoaliesComponent
+
+**Location**: `src/app/career/players/`, `src/app/career/goalies/`
+
+**Type**: Smart Components (Container)
+
+**Purpose**: Render the read-only all-time career tables under `/career/players` and `/career/goalies`
+
+**Responsibilities**:
+
+- Fetch career rows from the dedicated API endpoints
+- Pass column definitions and formatters into the shared virtualized table
+- Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
+
+---
+
 ## Shared Components
 
 ### TeamSwitcherComponent

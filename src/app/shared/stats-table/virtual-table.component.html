@@ -1,131 +1,107 @@
-<div class="stats-table-wrapper mat-elevation-z4" [attr.id]="tableId" tabindex="-1" #tableRoot>
-  <p class="sr-only" [attr.id]="instructionsId">
-    {{ getInstructionsTranslateKey() | translate }}
+<div class="stats-table-wrapper mat-elevation-z4" id="career-table" tabindex="-1" #tableRoot>
+  <p class="sr-only" id="career-table-instructions">
+    {{ 'a11y.tableNavigationHintReadOnly' | translate }}
   </p>
 
-  @if (showSearch) {
-    <div class="search-container">
-      <mat-form-field subscriptSizing="dynamic">
-        <mat-label>{{ searchLabelKey | translate }}</mat-label>
-        <input
-          matInput
-          type="search"
-          autocomplete="off"
-          (input)="filterItems($event)"
-          (keydown)="onSearchKeydown($event)"
-          #searchInput
-        />
-      </mat-form-field>
-    </div>
-  }
+  <div class="search-container">
+    <mat-form-field class="search-field" subscriptSizing="dynamic">
+      <mat-label>{{ searchLabelKey | translate }}</mat-label>
+      <input
+        matInput
+        type="search"
+        autocomplete="off"
+        (input)="filterItems($event)"
+        (keydown)="onSearchKeydown($event)"
+        #searchInput
+      />
+    </mat-form-field>
+  </div>
 
   <div
     class="table-container table-container--virtual"
     role="table"
-    [attr.aria-describedby]="instructionsId"
-    matSort
+    aria-describedby="career-table-instructions"
   >
     <div
-      class="virtual-header-row mat-mdc-header-row"
-      role="row"
-      [style.gridTemplateColumns]="gridTemplateColumns"
-      (keydown)="onHeaderKeydown($event)"
+      class="virtual-table-grid"
+      [style.minWidth.px]="tableMinWidth"
+      matSort
     >
-      @if (showPositionColumn) {
+      <div
+        class="virtual-header-row mat-mdc-header-row"
+        role="row"
+        [style.gridTemplateColumns]="gridTemplateColumns"
+        [style.paddingInlineEnd.px]="headerScrollbarOffset"
+        (keydown)="onHeaderKeydown($event)"
+      >
         <div class="virtual-header-cell mat-mdc-header-cell mat-column-__rowNumber" role="columnheader">
           {{ "tableColumnShort.position" | translate }}
         </div>
-      }
 
-      @for (column of dynamicColumns; track column.field) {
-        @if (column.sortable !== false) {
+        @for (column of dynamicColumns; track column.field) {
           <div
             class="virtual-header-cell mat-mdc-header-cell"
             role="columnheader"
             [ngClass]="getCellClass(column)"
             [mat-sort-header]="column.field"
+            [start]="getInitialSortDirection(column)"
             matTooltip="{{ 'tableColumn.' + column.field | translate }}"
           >
-            @if (getHeaderIconType(column) === 'emoji') {
-              {{ column.icon!.name }}
-            } @else if (getHeaderIconType(column) === 'material') {
-              <mat-icon>{{ column.icon!.name }}</mat-icon>
-            }
-            <span [class.sr-only]="column.icon">
-              {{ "tableColumnShort." + column.field | translate }}
-            </span>
+            {{ "tableColumnShort." + column.field | translate }}
           </div>
-        } @else {
-          <div
-            class="virtual-header-cell mat-mdc-header-cell"
-            role="columnheader"
-            [ngClass]="getCellClass(column)"
-            matTooltip="{{ 'tableColumn.' + column.field | translate }}"
-          >
-            @if (getHeaderIconType(column) === 'emoji') {
-              {{ column.icon!.name }}
-            } @else if (getHeaderIconType(column) === 'material') {
-              <mat-icon>{{ column.icon!.name }}</mat-icon>
-            }
-            <span [class.sr-only]="column.icon">
-              {{ "tableColumnShort." + column.field | translate }}
-            </span>
-          </div>
-        }
-      }
-    </div>
-
-    @if (filteredRows.length > 0) {
-      <cdk-virtual-scroll-viewport
-        class="virtual-viewport"
-        [itemSize]="rowHeight"
-        [minBufferPx]="rowHeight * 8"
-        [maxBufferPx]="rowHeight * 16"
-      >
-        <div
-          class="virtual-table-row mat-mdc-row"
-          role="row"
-          *cdkVirtualFor="let row of filteredRows; let i = index; trackBy: trackRow"
-          [style.gridTemplateColumns]="gridTemplateColumns"
-          [attr.tabindex]="getRowTabIndex(i)"
-          [attr.data-row-index]="i"
-          [class.a11y-active]="i === activeRowIndex"
-          (focus)="onRowFocus(i)"
-          (keydown)="onRowKeydown($event, i)"
-        >
-          @if (showPositionColumn) {
-            <div class="virtual-table-cell mat-mdc-cell mat-column-__rowNumber" role="cell">
-              {{ getPositionDisplay(row, i) }}
-            </div>
-          }
-
-          @for (column of dynamicColumns; track column.field) {
-            <div class="virtual-table-cell mat-mdc-cell" role="cell" [ngClass]="getCellClass(column)">
-              {{ formatValue(row, column.field) }}
-            </div>
-          }
-        </div>
-      </cdk-virtual-scroll-viewport>
-    } @else {
-      <div class="no-results mat-mdc-cell">
-        <span>
-          @if (apiError) {
-            {{ "table.apiUnavailable" | translate }}
-          } @else if (loading) {
-            {{ "table.loading" | translate }}
-          } @else {
-            {{ "table.noSearchResults" | translate }}
-          }
-        </span>
-        @if (loading && !apiError) {
-          <mat-progress-bar
-            class="loading-bar"
-            mode="buffer"
-            [value]="5"
-            [bufferValue]="25"
-          />
         }
       </div>
-    }
+
+      @if (filteredRows.length > 0) {
+        <cdk-virtual-scroll-viewport
+          class="virtual-viewport"
+          [itemSize]="rowHeight"
+          [minBufferPx]="rowHeight * 8"
+          [maxBufferPx]="rowHeight * 16"
+        >
+          <div
+            class="virtual-table-row mat-mdc-row"
+            role="row"
+            *cdkVirtualFor="let row of filteredRows; let i = index; trackBy: trackRow"
+            [style.gridTemplateColumns]="gridTemplateColumns"
+            [attr.tabindex]="getRowTabIndex(i)"
+            [attr.data-row-index]="i"
+            [class.a11y-active]="i === activeRowIndex"
+            (focus)="onRowFocus(i)"
+            (keydown)="onRowKeydown($event, i)"
+          >
+            <div class="virtual-table-cell mat-mdc-cell mat-column-__rowNumber" role="cell">
+              {{ i + 1 }}
+            </div>
+
+            @for (column of dynamicColumns; track column.field) {
+              <div class="virtual-table-cell mat-mdc-cell" role="cell" [ngClass]="getCellClass(column)">
+                {{ formatValue(row, column.field) }}
+              </div>
+            }
+          </div>
+        </cdk-virtual-scroll-viewport>
+      } @else {
+        <div class="no-results mat-mdc-cell">
+          <span>
+            @if (apiError) {
+              {{ "table.apiUnavailable" | translate }}
+            } @else if (loading) {
+              {{ "table.loading" | translate }}
+            } @else {
+              {{ "table.noSearchResults" | translate }}
+            }
+          </span>
+          @if (loading && !apiError) {
+            <mat-progress-bar
+              class="loading-bar"
+              mode="buffer"
+              [value]="5"
+              [bufferValue]="25"
+            />
+          }
+        </div>
+      }
+    </div>
   </div>
 </div>
