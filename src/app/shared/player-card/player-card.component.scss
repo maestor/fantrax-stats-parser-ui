@@ -3,26 +3,14 @@
   min-width: 600px;
   max-width: 960px;
   width: 100%;
+  background-color: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface);
 
   // Wider card when showing season breakdown
   &.season-mode {
     max-width: 900px;
     width: auto;
   }
-}
-
-mat-card {
-  background-color: var(--mat-sys-surface-container-high);
-  color: var(--mat-sys-on-surface);
-}
-
-table.mat-mdc-table {
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-}
-
-.mat-mdc-cell {
-  color: var(--mat-sys-on-surface);
 }
 
 .card-title-icon {
@@ -92,12 +80,6 @@ mat-card-title {
   height: 48px;
 }
 
-// Close button positioning (exclude copy-link-button which is inside the title)
-.mdc-icon-button:not(.copy-link-button) {
-  position: absolute;
-  right: 8px;
-}
-
 .mat-cell-label {
   background-color: var(--mat-sys-surface-container-high);
   color: var(--mat-sys-on-surface);
@@ -106,81 +88,6 @@ mat-card-title {
 
 .mat-cell-value {
   text-align: right;
-}
-
-.tab-content {
-  padding: 8px 0;
-  overflow: visible;
-
-  // Add bottom padding on mobile to prevent content cut-off
-  @media (max-width: 768px) {
-    padding-bottom: 16px;
-  }
-}
-
-.all-stats-tab {
-  max-height: calc(var(--app-height) - 200px);
-  overflow-y: auto;
-  padding-bottom: calc(8px + var(--safe-bottom));
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-
-.all-stats-container {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.season-table-container {
-  max-height: calc(var(--app-height) - 200px);
-  overflow-y: auto;
-  overflow-x: auto;
-  width: 100%;
-  padding-bottom: calc(8px + var(--safe-bottom));
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-
-  // Scrollbar styling
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--mat-sys-surface-container);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--mat-sys-outline);
-    border-radius: 4px;
-
-    &:hover {
-      background: var(--mat-sys-on-surface-variant);
-    }
-  }
-}
-
-// Apply scrollbar styling to all scrollable containers
-.all-stats-container {
-  &::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--mat-sys-surface-container);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--mat-sys-outline);
-    border-radius: 4px;
-
-    &:hover {
-      background: var(--mat-sys-on-surface-variant);
-    }
-  }
 }
 
 .graphs-tab {

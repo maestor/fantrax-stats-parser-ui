@@ -163,14 +163,13 @@ The project uses **Playwright Test** for end-to-end (E2E) coverage with a featur
 - Playwright browser installed: `npx playwright install chromium`
 - Backend API running on `http://localhost:3000` (see project README and backend repo)
 
-**In CI:** E2E tests run without a live backend. API responses are served from JSON fixtures in `e2e/fixtures/data/` via Playwright's `page.route()` mocking. The production build is served with `python3 -m http.server`.
+**In CI:** E2E tests run without a live backend. API responses are served from JSON fixtures in `e2e/fixtures/data/` via Playwright's `page.route()` mocking. The production build is served with `npx serve -s` so direct client-side routes resolve to the Angular app shell.
 
 The Playwright config is defined in `playwright.config.ts` and:
 
-- Uses `PLAYWRIGHT_BASE_URL` when provided, otherwise defaults to `http://localhost:4200`
+- Uses `http://localhost:4200` as the base URL
 - Locally: starts (or reuses) the Angular dev server via `npm start`
-- Skips `webServer` entirely when `PLAYWRIGHT_EXTERNAL_SERVER=1`
-- In CI: serves the production build via `python3 -m http.server 4200 --directory dist/fantrax-stats-parser-ui/browser`
+- In CI: serves the production build via `npx serve dist/fantrax-stats-parser-ui/browser -s -l 4200`
 - Runs tests against Chromium only
 
 **Basic commands:**
@@ -180,9 +179,6 @@ The Playwright config is defined in `playwright.config.ts` and:
 npx playwright test
 
 # Run against an already-running frontend without starting Playwright webServer
-PLAYWRIGHT_EXTERNAL_SERVER=1 npx playwright test
-
-# Run in headed mode (for debugging)
 npx playwright test --headed
 
 # Run specific test file
@@ -190,9 +186,6 @@ npx playwright test e2e/specs/smoke.spec.ts
 
 # Run with API mocking (simulates CI mode)
 CI=true npx playwright test
-
-# Override the frontend URL if you need a non-default port
-PLAYWRIGHT_BASE_URL=http://127.0.0.1:4300 PLAYWRIGHT_EXTERNAL_SERVER=1 npx playwright test
 
 # Capture/update API fixtures from live backend
 npm run e2e:capture-fixtures

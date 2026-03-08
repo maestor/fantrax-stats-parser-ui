@@ -1,8 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const baseURL = process.env['PLAYWRIGHT_BASE_URL'] ?? 'http://localhost:4200';
-const useExternalServer = process.env['PLAYWRIGHT_EXTERNAL_SERVER'] === '1';
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -31,7 +28,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL,
+    baseURL: 'http://localhost:4200',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -40,19 +37,17 @@ export default defineConfig({
   /* In CI: serve the production build; locally: run Angular dev server */
   webServer: process.env['CI']
     ? {
-        command: 'python3 -m http.server 4200 --directory dist/fantrax-stats-parser-ui/browser',
-        url: baseURL,
+        command: 'npx serve dist/fantrax-stats-parser-ui/browser -s -l 4200',
+        url: 'http://localhost:4200',
         reuseExistingServer: false,
         timeout: 30000,
       }
-    : (useExternalServer
-        ? undefined
-        : {
-            command: 'npm start',
-            url: baseURL,
-            reuseExistingServer: true,
-            timeout: 120000,
-          }),
+    : {
+        command: 'npm start',
+        url: 'http://localhost:4200',
+        reuseExistingServer: true,
+        timeout: 120000,
+      },
 
   /* Configure Playwright for Chromium only */
   projects: [

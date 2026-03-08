@@ -116,7 +116,6 @@ npm run test:coverage                  # With coverage report
 
 # E2E tests (Playwright / Chromium only) — requires backend running locally
 npm run e2e                            # Run all (headless, Chromium)
-npm run e2e:external                   # Reuse an already-running frontend, do not start webServer
 npm run e2e:headed                     # Run with visible browser
 npm run e2e:ui                         # Interactive UI mode
 npm run e2e:smoke                      # Smoke tests only
@@ -128,6 +127,20 @@ npm run verify                         # Headless unit tests + production build
 # Production build
 npm run build
 ```
+
+### Production bundle budgets
+
+Production builds enforce Angular bundle budgets in `angular.json`:
+
+- `initial`: warning at `1.2 MB`, error at `1.6 MB`
+- `anyComponentStyle`: warning at `4 kB`, error at `8 kB`
+
+Best practice when `npm run verify` or `npm run build` shows a budget warning:
+
+1. Treat it as a review item, not background noise.
+2. Identify which bundle or stylesheet triggered it.
+3. Prefer reducing eager code, moving heavy UI behind lazy imports, or removing duplicated CSS before raising budgets.
+4. Raise a budget only when the size increase is understood, justified by real functionality, and the new threshold still acts as a meaningful guardrail.
 
 Local test policy: run only one heavy test command at a time, and wait about 2 minutes between repeated `npm run verify` runs on local machines. See [docs/project-testing.md](docs/project-testing.md).
 
@@ -152,9 +165,7 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 **Local:** Backend API must be running on `localhost:3000` (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
 **CI:** E2E tests run without a backend — API responses are served from JSON fixtures via Playwright's `page.route()` mocking.
 
-Local Playwright can now run in two modes:
-- default `npm run e2e`: reuse `localhost:4200` if reachable, otherwise start `npm start`
-- `npm run e2e:external`: never start `webServer`; always use the frontend you already have running
+Local Playwright runs against `http://localhost:4200` and starts `npm start` via Playwright `webServer` when needed.
 
 ### Test Coverage Summary
 

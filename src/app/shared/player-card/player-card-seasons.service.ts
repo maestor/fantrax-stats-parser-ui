@@ -59,6 +59,7 @@ export class PlayerCardSeasonsService {
     if (data.seasons.length > 0) {
       const columns = Object.keys(data.seasons[0]);
       const excludedSeasonColumns = [
+        'id',
         'position',
         'scores',
         'scoresByPosition',

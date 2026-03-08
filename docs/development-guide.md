@@ -55,8 +55,29 @@ npm run build
 - Outputs to `dist/` directory
 - Optimized and minified
 - Ready for deployment
+- Enforces production bundle budgets from `angular.json`
 
 Note: If the production build fails with a Node "heap out of memory" error, the repo scripts set a higher heap size via `NODE_OPTIONS` for `npm run build`.
+
+#### Current production budgets
+
+- `initial`: warning at `1.2 MB`, error at `1.6 MB`
+- `anyComponentStyle`: warning at `4 kB`, error at `8 kB`
+
+#### How to handle bundle warnings
+
+Do not treat build budget warnings as harmless background noise.
+
+Use this rule during development after `npm run verify`:
+
+1. Confirm which bundle or component stylesheet exceeded budget.
+2. Decide whether the increase is accidental or intentional.
+3. Prefer optimization first:
+   - lazy-load heavy dialogs, tabs, charts, or route-only UI
+   - remove duplicated SCSS or broad overrides
+   - move code out of the initial app shell when it is not needed at startup
+4. Adjust the budget only if the size increase is understood and justified by current product scope.
+5. When budgets are changed, update `README.md` and relevant docs so the threshold change is explicit.
 
 ### Theming / Automatic Dark Mode
 
@@ -213,6 +234,7 @@ The API endpoint is configured in the service layer. Check:
    ```
 
    This ensures tests and the production build pass.
+   If `verify` reports a bundle budget warning, investigate it before merging; either optimize the source of the increase or intentionally update the budget with documentation.
 
 ### Fixing a Bug
 
