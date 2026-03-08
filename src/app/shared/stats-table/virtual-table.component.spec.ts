@@ -77,19 +77,20 @@ describe('VirtualTableComponent — user behavior', () => {
   it('sorts by default column, formats custom cells, and filters rows via search', async () => {
     await setup();
 
-    await screen.findByText('Beta Blueliner');
+    await screen.findByText('Gamma Grinder');
 
-    expect(getRows()[0]).toHaveTextContent('Beta Blueliner');
-    expect(getRows()[0]).toHaveTextContent('95 pts');
+    expect(getRows()[0]).toHaveTextContent('Gamma Grinder');
+    expect(getRows()[0]).toHaveTextContent('40 pts');
     expect(screen.getByLabelText('table.careerPlayerSearch')).toBeInTheDocument();
 
     fireEvent.input(screen.getByLabelText('table.careerPlayerSearch'), {
-      target: { value: 'Gamma' },
+      target: { value: 'Beta' },
     });
 
     await vi.waitFor(() => {
-      expect(screen.getByText('Gamma Grinder')).toBeInTheDocument();
-      expect(screen.queryByText('Beta Blueliner')).not.toBeInTheDocument();
+      expect(screen.getByText('Beta Blueliner')).toBeInTheDocument();
+      expect(screen.queryByText('Gamma Grinder')).not.toBeInTheDocument();
+
     });
   });
 
@@ -211,7 +212,7 @@ describe('VirtualTableComponent — user behavior', () => {
 
     expect(screen.getByLabelText('table.careerPlayerSearch')).toBeInTheDocument();
     expect(screen.getAllByRole('columnheader')).toHaveLength(4);
-    expect(getRows()[0]).toHaveTextContent('Gamma Grinder');
+    expect(getRows()[0]).toHaveTextContent('Alpha Center');
   });
 
   it('covers helper methods and internal branches used by the career tables', async () => {

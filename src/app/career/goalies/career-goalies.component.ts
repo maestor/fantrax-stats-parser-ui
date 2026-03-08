@@ -19,7 +19,6 @@ export class CareerGoaliesComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
   readonly columns: Column[] = CAREER_GOALIE_COLUMNS;
-  readonly defaultSortColumn = 'regularGames';
   readonly searchLabelKey = 'table.playerSearch';
   readonly formatCell = (
     _row: TableRow,

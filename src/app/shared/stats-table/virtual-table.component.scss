@@ -1,38 +1,24 @@
-@use "../styles/animations" as motion;
-
-:host
-  ::ng-deep
-  .virtual-header-cell[mat-sort-header].col-center
-  .mat-sort-header-container {
+:host ::ng-deep .virtual-header-cell[mat-sort-header].col-center .mat-sort-header-container {
   display: grid !important;
   grid-template-columns: 1fr max-content 1fr !important;
   align-items: center;
   width: 100%;
 }
 
-:host
-  ::ng-deep
-  .virtual-header-cell[mat-sort-header].col-center
-  .mat-sort-header-content {
+:host ::ng-deep .virtual-header-cell[mat-sort-header].col-center .mat-sort-header-content {
   grid-column: 2;
   text-align: center;
   justify-self: center;
 }
 
-:host
-  ::ng-deep
-  .virtual-header-cell[mat-sort-header].col-center
-  .mat-sort-header-arrow {
+:host ::ng-deep .virtual-header-cell[mat-sort-header].col-center .mat-sort-header-arrow {
   grid-column: 3;
   position: absolute;
   right: 0;
   margin-left: 0;
 }
 
-:host
-  ::ng-deep
-  .virtual-header-cell[mat-sort-header].col-left
-  .mat-sort-header-container {
+:host ::ng-deep .virtual-header-cell[mat-sort-header].col-left .mat-sort-header-container {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -40,17 +26,11 @@
   width: 100%;
 }
 
-:host
-  ::ng-deep
-  .virtual-header-cell[mat-sort-header].col-left
-  .mat-sort-header-content {
+:host ::ng-deep .virtual-header-cell[mat-sort-header].col-left .mat-sort-header-content {
   text-align: left;
 }
 
-:host
-  ::ng-deep
-  .virtual-header-cell[mat-sort-header].col-left
-  .mat-sort-header-arrow {
+:host ::ng-deep .virtual-header-cell[mat-sort-header].col-left .mat-sort-header-arrow {
   margin-left: 6px;
 }
 

@@ -30,7 +30,7 @@ export class GlobalNavComponent {
 
   readonly navItems: NavItem[] = [
     { icon: 'score', labelKey: 'nav.hockeyPlayerStats', type: 'route', path: '/' },
-    { icon: 'history', labelKey: 'nav.playerCareers', type: 'route', path: '/career' },
+    { icon: 'assignment_ind', labelKey: 'nav.playerCareers', type: 'route', path: '/career' },
     { icon: 'emoji_events', labelKey: 'nav.leaderboards', type: 'route', path: '/leaderboards' },
     { icon: 'info', labelKey: 'nav.info', type: 'action' },
   ];

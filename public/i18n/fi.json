@@ -97,12 +97,12 @@
     "label": "Tilastot päivitetty"
   },
   "helpDialog": {
-    "title": "Tietoja sovelluksesta",
+    "title": "Tietoa ja ohjeet",
     "close": "Sulje",
     "blocks": [
       {
         "type": "p",
-        "text": "Tämä sovellus näyttää Fantraxissa pelattavan Suomalaisen FFHL-fantsyliigan tilastoja. Liigaa on pelattu kaudesta 2012-13 lähtien ja se on mahdollisesti suurin Suomalainen alati jatkuva NHL-fantasyliiga."
+        "text": "Sovellus näyttää Fantraxissa pelattavan suomalaisen FFHL-fantasyliigan tilastoja. Liigaa on pelattu kaudesta 2012-13 lähtien, ja palvelu kokoaa saman käyttöliittymän alle nykyiset pelaajatilastot, uralistat sekä joukkueiden maratontaulukot."
       },
       {
         "type": "h2",
@@ -110,45 +110,57 @@
       },
       {
         "type": "p",
-        "text": "Tekijä on innokas NHL-jääkiekon seuraaja ja ohjelmistokehittäjä, tämä harrasteprojekti tuo sekä lisäiloa fantasytaistoihin että tarjoaa mahdollisuuden harjoitella uusia asioita web-kehityksen saralla."
+        "text": "Tekijä on innokas NHL-jääkiekon seuraaja ja ohjelmistokehittäjä, tämä harrasteprojekti tuo sekä lisäiloa fantasytaistoihin että tarjoaa mahdollisuuden harjoitella uusia asioita ohjelmistokehityksen saralla."
       },
       {
         "type": "h2",
-        "text": "Mitä tarjolla?"
+        "text": "Näkymät"
       },
       {
         "type": "ul",
         "items": [
-          "Kenttäpelaajien ja maalivahtien tilastot",
-          "Runkosarja ja playoffs erikseen",
-          "Yksittäinen kausi tai uratilastot (Kaikki kaudet)",
-          "Fantasy-ranking (FR) ja Fantasy-ranking / ottelu (FR/O) helpottamaan vertailua"
+          "Pelaajatilastot: joukkuekohtaiset kenttäpelaaja- ja maalivahtitilastot, suodattimet, vertailu ja pelaajakortit",
+          "Pelaajaurat: kaikkien aikojen urataulukot kenttäpelaajille ja maalivahdeille",
+          "Maratontaulukot: joukkueiden kaikkien aikojen runkosarja- ja playoff-menestys kausierittelyineen"
         ]
       },
       {
         "type": "h2",
-        "text": "Valinnat ja suodattimet"
-      },
-      {
-        "type": "ul",
-        "items": [
-          "Joukkue: valitse tarkasteltava joukkue",
-          "Kausi: valitse kausi tai Kaikki kaudet",
-          "Alkaen kaudesta: rajaa tilastot valitusta kaudesta eteenpäin",
-          "Raportti: runkosarja, playoffs tai molemmat",
-          "Pelipaikka: suodata hyökkääjät ja puolustajat erikseen",
-          "Tilastot per ottelu: normalisoi tilastot pelattujen ottelujen mukaan",
-          "Otteluja pelattu vähintään: suodata pienillä otantamäärillä näkyvät pois",
-          "Haku ja lajittelu: etsi pelaajaa nimellä ja klikkaa sarakeotsikoita lajitteluun"
-        ]
-      },
-      {
-        "type": "h2",
-        "text": "Taulukon käyttö"
+        "text": "Pelaajatilastot"
       },
       {
         "type": "p",
-        "text": "Taulukkoa voi käyttää hiirellä tai näppäimistöllä. Haku rajaa tuloksia, ja sarakeotsikoista voi lajitella. Taulukon otsikot pysyvät näkyvissä, ja leveissä taulukoissa voit rullata vaakasuunnassa."
+        "text": "Pelaajatilastot-näkymässä voit vaihtaa kenttäpelaajien ja maalivahtien välillä sekä tarkastella yhden joukkueen tilastoja valitulla kaudella tai kaikilta kausilta yhteensä. Samassa näkymässä toimivat myös pelaajakortti, vertailu ja suurin osa suodattimista."
+      },
+      {
+        "type": "h3",
+        "text": "Suodattimet"
+      },
+      {
+        "type": "ul",
+        "items": [
+          "Joukkue, kausi, alkaen kaudesta ja raportti vaikuttavat pelaajatilastoihin",
+          "Kenttäpelaajia voi suodattaa pelipaikan perusteella",
+          "Tilastot per ottelu ja minimiottelut auttavat vertaamaan eri määrän pelanneita pelaajia",
+          "Haku rajaa näkyviä rivejä ja taulukon otsikot toimivat lajittelijoina",
+          "Leveitä taulukkoja voit vierittää myös vaakasuunnassa"
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "Pelaajaurat"
+      },
+      {
+        "type": "p",
+        "text": "Pelaajaurat-näkymä näyttää koko liigan urayhteenvedot erikseen kenttäpelaajille ja maalivahdeille. Taulukot ovat hakukelpoisia ja lajiteltavia, mutta niissä ei käytetä joukkue- tai kausisuodattimia kuten pelaajatilastoissa."
+      },
+      {
+        "type": "h2",
+        "text": "Maratontaulukot"
+      },
+      {
+        "type": "p",
+        "text": "Maratontaulukot kokoavat joukkueiden kaikkien aikojen runkosarja- ja playoff-menestyksen omille välilehdilleen. Joukkueen riviä avaamalla näet kausierittelyn, jossa näkyvät myös runkosarjavoitot ja mestaruudet."
       },
       {
         "type": "h2",
@@ -157,49 +169,38 @@
       {
         "type": "ul",
         "items": [
-          "/ — kohdista hakukenttä",
-          "? — avaa tämä ohje"
+          "/ - kohdista hakukenttä",
+          "? - avaa tämä ohje"
         ]
       },
       {
         "type": "h2",
-        "text": "Pelaajakortti"
+        "text": "Pelaajakortti ja vertailu"
       },
       {
         "type": "p",
-        "text": "Klikkaa riviä (aukeaa myös Enterillä tai välilyönnillä) avataksesi pelaajakortin. Kortista löydät pelaajan tai maalivahdin yhteenvedon, kausittaisen erittelyn sekä graafeja valituille tilastoille."
+        "text": "Pelaajatilastoissa voit avata pelaajakortin klikkaamalla riviä tai painamalla Enteriä tai välilyöntiä. Kortista löydät pelaajan tai maalivahdin yhteenvedon, kausittaisen erittelyn, graafit sekä suoran linkin jaettavaksi."
       },
       {
         "type": "ul",
         "items": [
-          "→ — siirry seuraavaan pelaajaan (toimii myös pyyhkäisyllä oikealle)",
-          "← — siirry edelliseen pelaajaan (toimii myös pyyhkäisyllä vasemmalle)",
-          "Kopioi linkki-ikonista pelaajakortin URL-osoite leikepöydälle ja jakoa/tallettamista varten"
+          "Nuoli oikealle - siirry seuraavaan pelaajaan tai maalivahtiin",
+          "Nuoli vasemmalle - siirry edelliseen pelaajaan tai maalivahtiin",
+          "Mobiilissa korttia voi selata myös pyyhkäisemällä",
+          "Valitse kaksi pelaajaa tai maalivahtia vertailuun taulukon valintaruuduista"
         ]
       },
       {
         "type": "h2",
-        "text": "Pelaajavertailu"
-      },
-      {
-        "type": "p",
-        "text": "Valitse tilastotaulukostavertailtavaksi kaksi pelaajaa ja klikkaa vertaa-painiketta. Vertailu avautuu dialogina, jossa näet pelaajien tilastot rinnakkain sekä graafit valitsemillesi tilastoille."
-      },
-      {
-        "type": "h2",
-        "text": "Vinkkejä tulkintaan"
+        "text": "Fantasy-ranking"
       },
       {
         "type": "ul",
         "items": [
-          "Toimii toistaiseksi vain joukkueen sisällä, joukkueen vaihto nollaa kaikki valinnat",
-          "Sisältää vain tilastot jotka ovat kirjautuneet FFHL:n otteluissa",
-          "FR (Fantasy-ranking) yrittää kuvata voimasuhteita eri pelaajien välillä",
-          "FR/O auttaa vertaamaan eri määrän pelanneita pelaajia",
-          "FR-arvot vertaavat joukkueen sisällä olevia pelaajia keskenään, maalivahdeilla oma vertailunsa",
-          "Löydät FR-algoritmista lisätietoja GitHubista (sivun alaosa, API-linkki)",
-          "Minimiottelusuodatin vähentää satunnaisvaihtelua",
-          "Jos tulokset näyttävät tyhjiltä, tarkista kausi, raportti ja hakusuodatin"
+          "Fantasy-ranking (FR) yrittää kuvata pelaajien tai maalivahtien suhteellista arvoa samassa näkymässä",
+          "Tilastot sisältävät vain FFHL:n otteluissa kirjatut suoritukset",
+          "FR/O suhteuttaa rankingin ottelumäärään",
+          "FR-algoritmista löytyy lisätietoa GitHubista API-linkin kautta"
         ]
       },
       {
@@ -211,6 +212,7 @@
         "items": [
           "Sovellus käyttää laitteen/selaimen asetusten mukaista vaaleaa/tummaa teemaa",
           "Sovelluksen voi asentaa omalle laitteelle (tuki työpöytä ja mobiili)",
+          "Pyritty rakentamaan täysin saavutettavaksi, kaikki toiminnot käytettävissä näppäimistöllä ja ruudunlukijoilla",
           "Tilastot on kerätty Fantraxin joukkuesivuilta eivätkä ne sisällä mitään henkilökohtaisia tietoja, vain oikeiden NHL-pelaajien suorituksia tässä fantasyliigan kontekstissa",
           "Sovellus on avoimen lähdekoodin, löydät lähteet GitHubista (alapalkki, UI- ja API-linkit)",
           "Jos satut olemaan FFHL-manageri ja haluat napista tilastojen puutteista tai virheistä, ota yhteyttä. Reilu pelaajakauppaehdotus nopeuttaa toimenpiteitä!",
