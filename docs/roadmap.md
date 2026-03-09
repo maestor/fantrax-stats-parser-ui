@@ -30,10 +30,6 @@ Persist the user's last sort column and direction per table (players/goalies) in
 
 ## Modernizing components
 
-### Recently completed
-
-- 2026-03-09: Retired deprecated Angular animation providers by removing runtime `provideAnimationsAsync()` from `src/app/app.config.ts`, replacing behavior-test `provideNoopAnimations()` usage with `MATERIAL_ANIMATIONS` disabling in the shared test setup and affected specs, and re-verifying animation-sensitive flows with `npm test` and `npm run verify`.
-
 ### Remaining modernization work
 
 - Revisit the temporary branch-coverage workaround after Angular fixes signal-input coverage accounting, then raise the branch threshold back up.
