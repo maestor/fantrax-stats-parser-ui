@@ -6,6 +6,15 @@ Planned improvements and future development ideas, roughly ordered by priority.
 
 ### High priority
 
+#### Startup Performance and Rendering Strategy (conditional follow-up only)
+
+Improve startup performance without defaulting to SSR where it is not worth the complexity.
+
+- The dashboard-shell split, the first startup deferrals, and the main-thread cleanup batch are already in place; keep the roadmap focused on whether any data-path cleanup is still necessary rather than repeating completed implementation detail here.
+- Recent build verification reduced the initial estimated transfer budget again and split the footer into its own lazy chunk; preserve those startup wins while validating real-user impact.
+- Treat data-path cleanup as optional follow-up only if later perf checks still show meaningful startup headroom on the homepage.
+- Track implementation detail in the active local `docs/plans/` plan; keep the roadmap high level and remove finished execution detail from here.
+
 #### Favorites / Watchlist (~4-6h)
 
 Star/bookmark players, persisted in localStorage. Add a "Suosikit" filter toggle to quickly view only watched players. No API changes needed.

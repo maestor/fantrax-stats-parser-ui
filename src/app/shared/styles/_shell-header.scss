@@ -1,0 +1,55 @@
+.title-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-row h1 {
+  text-align: center;
+}
+
+.title-row button[mat-icon-button],
+.title-row .mat-mdc-icon-button {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.title-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.route-subtitle {
+  margin: -6px 8px 8px 8px;
+  padding: 0 4px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .title-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-content: initial;
+    margin: 0 8px 0 8px;
+    padding: 6px;
+  }
+
+  .title-row-actions {
+    justify-self: end;
+  }
+
+  .title-row h1 {
+    margin: 0 !important;
+    text-align: center;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

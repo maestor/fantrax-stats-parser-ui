@@ -61,7 +61,7 @@ Note: If the production build fails with a Node "heap out of memory" error, the 
 
 #### Current production budgets
 
-- `initial`: warning at `1.2 MB`, error at `1.6 MB`
+- `initial`: warning at `1 MB`, error at `1.5 MB`
 - `anyComponentStyle`: warning at `4 kB`, error at `8 kB`
 
 #### How to handle bundle warnings

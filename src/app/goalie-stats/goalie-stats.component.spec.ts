@@ -36,7 +36,12 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
       getBehaviorTestConfig({ isMobile: false, goalies: slicedGoalies })
     );
 
-    fireEvent.click(screen.getByRole('tab', { name: 'link.goalieStats' }));
+    const goalieStatsTab = await screen.findByRole(
+      'tab',
+      { name: 'link.goalieStats' },
+      { timeout: 5000 }
+    );
+    fireEvent.click(goalieStatsTab);
 
     const goalieName = slicedGoalies[0].name;
     await screen.findByText(goalieName, {}, { timeout: 5000 });

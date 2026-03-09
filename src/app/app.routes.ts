@@ -2,56 +2,6 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: '',
-    loadComponent: () =>
-      import('./player-stats/player-stats.component').then(
-        (m) => m.PlayerStatsComponent
-      ),
-    pathMatch: 'full',
-  },
-  {
-    path: 'player-stats',
-    loadComponent: () =>
-      import('./player-stats/player-stats.component').then(
-        (m) => m.PlayerStatsComponent
-      ),
-  },
-  {
-    path: 'goalie-stats',
-    loadComponent: () =>
-      import('./goalie-stats/goalie-stats.component').then(
-        (m) => m.GoalieStatsComponent
-      ),
-  },
-  {
-    path: 'player/:teamSlug/:playerSlug/:season',
-    loadComponent: () =>
-      import('./player-route/player-route.component').then(
-        (m) => m.PlayerRouteComponent
-      ),
-  },
-  {
-    path: 'player/:teamSlug/:playerSlug',
-    loadComponent: () =>
-      import('./player-route/player-route.component').then(
-        (m) => m.PlayerRouteComponent
-      ),
-  },
-  {
-    path: 'goalie/:teamSlug/:goalieSlug/:season',
-    loadComponent: () =>
-      import('./goalie-route/goalie-route.component').then(
-        (m) => m.GoalieRouteComponent
-      ),
-  },
-  {
-    path: 'goalie/:teamSlug/:goalieSlug',
-    loadComponent: () =>
-      import('./goalie-route/goalie-route.component').then(
-        (m) => m.GoalieRouteComponent
-      ),
-  },
-  {
     path: 'leaderboards',
     loadComponent: () =>
       import('./leaderboards/leaderboards.component').then(
@@ -81,10 +31,7 @@ export const routes: Routes = [
   },
   {
     path: 'career',
-    loadComponent: () =>
-      import('./career/career.component').then(
-        (m) => m.CareerComponent
-      ),
+    loadComponent: () => import('./career/career.component').then((m) => m.CareerComponent),
     children: [
       {
         path: '',
@@ -104,6 +51,70 @@ export const routes: Routes = [
           import('./career/goalies/career-goalies.component').then(
             (m) => m.CareerGoaliesComponent
           ),
+      },
+    ],
+  },
+  {
+    path: '',
+    loadComponent: () =>
+      import('./dashboard-shell/dashboard-shell.component').then(
+        (m) => m.DashboardShellComponent
+      ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./player-stats/player-stats.component').then(
+            (m) => m.PlayerStatsComponent
+          ),
+        pathMatch: 'full',
+      },
+      {
+        path: 'player-stats',
+        loadComponent: () =>
+          import('./player-stats/player-stats.component').then(
+            (m) => m.PlayerStatsComponent
+          ),
+      },
+      {
+        path: 'goalie-stats',
+        loadComponent: () =>
+          import('./goalie-stats/goalie-stats.component').then(
+            (m) => m.GoalieStatsComponent
+          ),
+      },
+      {
+        path: 'player/:teamSlug/:playerSlug/:season',
+        loadComponent: () =>
+          import('./player-route/player-route.component').then(
+            (m) => m.PlayerRouteComponent
+          ),
+      },
+      {
+        path: 'player/:teamSlug/:playerSlug',
+        loadComponent: () =>
+          import('./player-route/player-route.component').then(
+            (m) => m.PlayerRouteComponent
+          ),
+      },
+      {
+        path: 'goalie/:teamSlug/:goalieSlug/:season',
+        loadComponent: () =>
+          import('./goalie-route/goalie-route.component').then(
+            (m) => m.GoalieRouteComponent
+          ),
+      },
+      {
+        path: 'goalie/:teamSlug/:goalieSlug',
+        loadComponent: () =>
+          import('./goalie-route/goalie-route.component').then(
+            (m) => m.GoalieRouteComponent
+          ),
+      },
+      {
+        path: '**',
+        redirectTo: '',
+        pathMatch: 'full',
       },
     ],
   },

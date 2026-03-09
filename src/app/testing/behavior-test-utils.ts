@@ -1,4 +1,5 @@
 import { Provider } from '@angular/core';
+import { DeferBlockBehavior } from '@angular/core/testing';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -149,6 +150,7 @@ export function getBehaviorTestConfig(options: BehaviorTestConfigOptions) {
     options.pwaActivateAndReload ?? vi.fn<() => Promise<void>>();
 
   return {
+    deferBlockBehavior: DeferBlockBehavior.Playthrough,
     imports: [TranslateModule.forRoot()],
     providers: [
       provideRouter(routes),

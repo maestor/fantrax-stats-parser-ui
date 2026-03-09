@@ -19,6 +19,12 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - Requires [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) running
 - API endpoint configurable via environment
 
+### Route Shells
+- **Root shell (`AppComponent`)**: stays lightweight and owns the skip link, footer, route subtitle, global keyboard shortcuts, update snackbar, and help/navigation overlays.
+  The footer now loads as a deferred chunk only when route readiness makes it visible, and the overlay services are resolved lazily on interaction.
+- **Dashboard shell (`DashboardShellComponent`)**: lazy-loaded only for the interactive dashboard routes (`/`, `/player-stats`, `/goalie-stats`, and direct player/goalie links). It owns the title row, last-modified metadata, top controls, mobile settings drawer, route tabs, and comparison bar.
+- **Browse routes**: career and leaderboard pages render directly under the root shell so they do not pay for dashboard-only shell code at startup.
+
 ## Key Features
 
 1. **Player Statistics Display**
@@ -56,6 +62,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
        - Minimum games slider
 
     On **mobile**, these controls are accessed via a left-side **settings drawer** (opened from the settings icon next to the title). Desktop layout remains unchanged.
+    The mobile drawer initializes its control content on first open so closed dashboard pages avoid that hidden startup work.
+    These controls are part of the lazy dashboard shell and are intentionally absent from the lighter career and leaderboard browsing routes.
 
 5. **Team Leaderboards** (`/leaderboards`)
    - All-time regular season ranking table: position, wins, points, win percentage, regular season titles
@@ -110,13 +118,18 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - **CacheService**: In-memory caching
 
 ### Routing
-- Simple routing with two main routes:
-   - `/player-stats` - Player statistics view
-   - `/goalie-stats` - Goalie statistics view
-   - `/career/players` - Player career listing
-   - `/career/goalies` - Goalie career listing
-   - `/leaderboards/regular` — Regular season all-time ranking table
-   - `/leaderboards/playoffs` — Playoffs all-time ranking table (default)
+- Route families are split by interaction model:
+   - Dashboard routes:
+     - `/` - Default player statistics view
+     - `/player-stats` - Player statistics view
+     - `/goalie-stats` - Goalie statistics view
+     - `/player/:teamSlug/:playerSlug[/:season]` - Direct player card route over the dashboard background
+     - `/goalie/:teamSlug/:goalieSlug[/:season]` - Direct goalie card route over the dashboard background
+   - Browse routes:
+     - `/career/players` - Player career listing
+     - `/career/goalies` - Goalie career listing
+     - `/leaderboards/regular` - Regular season all-time ranking table
+     - `/leaderboards/playoffs` - Playoffs all-time ranking table
 
 ## Data Flow
 

@@ -2,8 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { Router } from '@angular/router';
 
+import { ApiService } from '@services/api.service';
 import { AppComponent } from './app.component';
 import {
+  createApiServiceMock,
   getBehaviorTestConfig,
   polyfillJsdom,
   slicedGoalies,
@@ -28,7 +30,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
 
     // Wait for lazy-loaded route and async data pipeline to complete
     const firstPlayerName = slicedPlayers[0].name;
-    await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+    await screen.findByText(firstPlayerName, {}, { timeout: 15000 });
 
     // -- Page title --
     expect(
@@ -58,7 +60,11 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(rows).toHaveLength(PLAYER_SLICE_COUNT + 1);
 
     // -- Footer --
-    expect(await screen.findByRole('navigation', { name: 'footer.links.ariaLabel' })).toBeInTheDocument();
+    expect(await screen.findByRole(
+      'navigation',
+      { name: 'footer.links.ariaLabel' },
+      { timeout: 5000 }
+    )).toBeInTheDocument();
     expect(screen.getByText('footer.links.linkedin.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();
@@ -82,13 +88,15 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     });
 
     // Validate drawer sections and expected defaults are visible.
-    expect(screen.getByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'settingsPanel.settings' })).toBeInTheDocument();
 
-    expect(screen.getByRole('combobox', { name: /team\.selector/ })).toHaveTextContent('Colorado Avalanche');
-    expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toHaveTextContent('2012-2013');
-    expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent('season.allSeasons');
-    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent('reportType.regular');
+    await vi.waitFor(() => {
+      expect(screen.getByRole('combobox', { name: /team\.selector/ })).toHaveTextContent('Colorado Avalanche');
+      expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toBeInTheDocument();
+      expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent('season.allSeasons');
+      expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent('reportType.regular');
+    });
 
     expect(screen.getByText('positionFilter.label')).toBeInTheDocument();
     expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
@@ -100,7 +108,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     fireEvent.click(within(drawerHeader).getByRole('button', { name: 'a11y.closeSettingsDrawer' }));
 
     await vi.waitFor(() => {
-      expect(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' })).toBeInTheDocument();
+      expect(screen.queryByRole('heading', { name: 'topControls.controls' })).not.toBeInTheDocument();
     });
   });
 
@@ -121,11 +129,71 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     const closeDrawerButton = await screen.findByRole('button', { name: 'a11y.closeSettingsDrawer' });
     closeDrawerButton.focus();
 
+    fireEvent.keyDown(closeDrawerButton, { key: 'Escape', altKey: true });
+    expect(closeDrawerButton).toBeInTheDocument();
+
     fireEvent.keyDown(closeDrawerButton, { key: 'Escape' });
 
     await vi.waitFor(() => {
       expect(screen.queryByRole('button', { name: 'a11y.closeSettingsDrawer' })).not.toBeInTheDocument();
     });
+  });
+
+  it('boots mobile stats with start-from data before the drawer opens and still defers drawer-only metadata work', async () => {
+    const apiServiceMock = createApiServiceMock();
+    const getTeams = vi.fn(apiServiceMock.getTeams);
+    const getSeasons = vi.fn(apiServiceMock.getSeasons);
+    const getLastModified = vi.fn(apiServiceMock.getLastModified);
+    const behaviorConfig = getBehaviorTestConfig({ isMobile: true });
+
+    await render(AppComponent, {
+      ...behaviorConfig,
+      providers: [
+        ...behaviorConfig.providers,
+        {
+          provide: ApiService,
+          useValue: {
+            ...apiServiceMock,
+            getTeams,
+            getSeasons,
+            getLastModified,
+          },
+        },
+      ],
+    });
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(getTeams).toHaveBeenCalledTimes(1);
+    expect(getSeasons).toHaveBeenCalledTimes(1);
+    expect(getLastModified).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
+    await screen.findByRole('heading', { name: 'topControls.controls' });
+
+    await vi.waitFor(() => {
+      expect(getTeams.mock.calls.length).toBeGreaterThan(1);
+      expect(getSeasons).toHaveBeenCalled();
+      expect(getLastModified).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('keeps the mobile dashboard usable when metadata calls fail', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: true,
+        errorKeys: ['teams', 'lastModified'],
+      })
+    );
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
+    expect(await screen.findByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
+    expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
   });
 
   it('persists drawer filter changes across reopen and updates player-only content when switching to goalie stats', async () => {

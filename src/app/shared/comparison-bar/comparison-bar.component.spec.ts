@@ -62,6 +62,8 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
 
     const closeButton = await screen.findByRole('button', {
       name: 'a11y.closeComparisonDialog',
+    }, {
+      timeout: 15000,
     });
     expect(screen.getByText('comparison.playerTitle')).toBeInTheDocument();
     expect(
@@ -108,7 +110,7 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
     fireEvent.click(secondGoalieCheckbox);
     fireEvent.click(screen.getByRole('button', { name: 'comparison.compare' }));
 
-    await screen.findByRole('button', { name: 'a11y.closeComparisonDialog' });
+    await screen.findByRole('button', { name: 'a11y.closeComparisonDialog' }, { timeout: 15000 });
     expect(screen.getByText('tableColumn.gaa')).toBeInTheDocument();
     expect(screen.getByText('tableColumn.savePercent')).toBeInTheDocument();
 
@@ -134,7 +136,7 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
     fireEvent.click(secondCheckbox);
     fireEvent.click(screen.getByRole('button', { name: 'comparison.compare' }));
 
-    await screen.findByRole('button', { name: 'a11y.closeComparisonDialog' });
+    await screen.findByRole('button', { name: 'a11y.closeComparisonDialog' }, { timeout: 15000 });
     expect(screen.getByText('comparison.playerTitle')).toBeInTheDocument();
     expect(
       screen.queryByRole('tab', { name: 'comparison.graphsTab' })

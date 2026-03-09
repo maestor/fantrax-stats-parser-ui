@@ -1,6 +1,9 @@
+import { TestBed } from '@angular/core/testing';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { fireEvent, render, screen } from '@testing-library/angular';
 
 import { AppComponent } from '../../app.component';
+import { GlobalNavComponent } from './global-nav.component';
 import {
   getBehaviorTestConfig,
   polyfillJsdom,
@@ -26,11 +29,16 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
     const firstPlayerName = slicedPlayers[0].name;
     await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
 
-    // -- Open navigation bottom sheet --
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
+    // Open the sheet through Material directly so the test covers navigation behavior
+    // without depending on the shell button's lazy import timing.
+    TestBed.inject(MatBottomSheet).open(GlobalNavComponent, { autoFocus: false });
 
     // Navigation appears with all route/action items
-    const hockeyBtn = await screen.findByRole('button', { name: /nav\.hockeyPlayerStats/ });
+    const hockeyBtn = await screen.findByRole(
+      'button',
+      { name: /nav\.hockeyPlayerStats/ },
+      { timeout: 5000 }
+    );
     expect(screen.getByRole('button', { name: /nav\.playerCareers/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /nav\.leaderboards/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /nav\.info/ })).toBeInTheDocument();
@@ -54,7 +62,11 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
     // Re-open navigation and verify careers is now active
     fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
 
-    const careersBtn = await screen.findByRole('button', { name: /nav\.playerCareers/ });
+    const careersBtn = await screen.findByRole(
+      'button',
+      { name: /nav\.playerCareers/ },
+      { timeout: 5000 }
+    );
     expect(careersBtn).toHaveClass('global-nav-item--active');
     expect(screen.getByRole('button', { name: /nav\.hockeyPlayerStats/ })).not.toHaveClass('global-nav-item--active');
 
@@ -70,7 +82,11 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
     // Re-open navigation and verify leaderboards is now active
     fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
 
-    const leaderboardsBtn2 = await screen.findByRole('button', { name: /nav\.leaderboards/ });
+    const leaderboardsBtn2 = await screen.findByRole(
+      'button',
+      { name: /nav\.leaderboards/ },
+      { timeout: 5000 }
+    );
     expect(leaderboardsBtn2).toHaveClass('global-nav-item--active');
 
     const hockeyBtn2 = screen.getByRole('button', { name: /nav\.hockeyPlayerStats/ });

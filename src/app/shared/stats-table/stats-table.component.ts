@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   effect,
+  Injector,
   inject,
   input,
   ViewChild,
@@ -46,6 +47,39 @@ function loadPlayerCardComponent() {
   return playerCardComponentPromise;
 }
 
+type NetworkInformationLike = {
+  saveData?: boolean;
+  effectiveType?: string;
+};
+
+type PlayerCardPrefetchEnvironment = Pick<Window, 'matchMedia' | 'navigator'> | null | undefined;
+
+export function shouldSchedulePlayerCardPrefetch(
+  env: PlayerCardPrefetchEnvironment,
+): boolean {
+  if (typeof env?.matchMedia !== 'function') {
+    return false;
+  }
+
+  if (env.matchMedia('(max-width: 768px)').matches) {
+    return false;
+  }
+
+  if (!env.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    return false;
+  }
+
+  const connection = (env.navigator as Navigator & { connection?: NetworkInformationLike })
+    .connection;
+  if (connection?.saveData) {
+    return false;
+  }
+
+  return !['slow-2g', '2g', '3g'].includes(
+    connection?.effectiveType?.toLowerCase() ?? '',
+  );
+}
+
 export type TableRow =
   | Player
   | Goalie
@@ -75,7 +109,7 @@ export type TableRow =
 })
 export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
-  readonly dialog = inject(MatDialog);
+  private readonly injector = inject(Injector);
   private translate = inject(TranslateService);
 
   readonly dataInput = input.required<TableRow[]>({ alias: 'data' });
@@ -234,11 +268,6 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
       if (loadingChanged) {
         this.onLoadingChanged(loading);
-      }
-
-      if (clickable && !this.playerCardPrefetchScheduled) {
-        this.playerCardPrefetchScheduled = true;
-        this.schedulePlayerCardPrefetch();
       }
 
       const sortRelevantChange = columnsChanged || defaultSortChanged;
@@ -509,7 +538,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
     try {
       const { PlayerCardComponent } = await loadPlayerCardComponent();
-      const dialogRef = this.dialog.open(PlayerCardComponent, {
+      const dialogRef = this.injector.get(MatDialog).open(PlayerCardComponent, {
         data: dialogData,
         maxWidth: '95vw',
         width: 'auto',
@@ -527,6 +556,19 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
   onRowSelectToggle(row: TableRow): void {
     this.onRowSelect?.(row);
+  }
+
+  onPlayerCardPrefetchIntent(): void {
+    if (this.playerCardPrefetchScheduled || !this.clickable) {
+      return;
+    }
+
+    if (typeof window === 'undefined' || !shouldSchedulePlayerCardPrefetch(window)) {
+      return;
+    }
+
+    this.playerCardPrefetchScheduled = true;
+    this.schedulePlayerCardPrefetch();
   }
 
   private schedulePlayerCardPrefetch(): void {

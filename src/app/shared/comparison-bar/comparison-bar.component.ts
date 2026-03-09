@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, Injector, input } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -19,7 +19,7 @@ export class ComparisonBarComponent {
   readonly context = input.required<StatsContext>();
   private readonly comparisonService = inject(ComparisonService);
   private readonly translateService = inject(TranslateService);
-  private readonly dialog = inject(MatDialog);
+  private readonly injector = inject(Injector);
   private previousContext?: StatsContext;
 
   readonly selection$ = this.comparisonService.selection$;
@@ -71,7 +71,7 @@ export class ComparisonBarComponent {
       '@shared/comparison-dialog/comparison-dialog.component'
     );
 
-    this.dialog.open(ComparisonDialogComponent, {
+    this.injector.get(MatDialog).open(ComparisonDialogComponent, {
       data: { ...ordered, context: this.context() },
       maxWidth: '95vw',
       width: 'auto',
