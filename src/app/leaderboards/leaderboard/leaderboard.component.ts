@@ -6,6 +6,7 @@ import { Column } from '@shared/column.types';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
 import { derivePositions } from '@shared/utils/position.utils';
 import { RegularLeaderboardEntry, PlayoffLeaderboardEntry } from '@services/api.service';
+import { FooterVisibilityService } from '@services/footer-visibility.service';
 
 type LeaderboardEntry = RegularLeaderboardEntry | PlayoffLeaderboardEntry;
 type LeaderboardRow = LeaderboardEntry & { displayPosition: string };
@@ -53,6 +54,7 @@ export class LeaderboardComponent implements OnInit {
     secondary?: string;
   }>();
   private destroyRef = inject(DestroyRef);
+  private footerVisibilityService = inject(FooterVisibilityService);
 
   readonly rowKeyForTable = (row: TableRow, index: number): string =>
     this.rowKey()(row as LeaderboardRow, index);
@@ -66,8 +68,10 @@ export class LeaderboardComponent implements OnInit {
   data: LeaderboardRow[] = [];
   loading = true;
   apiError = false;
+  private footerVisibilityCycle = 0;
 
   ngOnInit(): void {
+    this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
     this.loading = true;
     this.fetchFn()()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -75,10 +79,12 @@ export class LeaderboardComponent implements OnInit {
         next: (data) => {
           this.data = derivePositions(data);
           this.loading = false;
+          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
         error: () => {
           this.apiError = true;
           this.loading = false;
+          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
       });
   }

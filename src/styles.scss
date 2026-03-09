@@ -740,6 +740,12 @@ app-stats-table {
       padding-left: 16px;
     }
   }
+
+  @media (min-width: 769px) {
+    .table-container.table-container--loading {
+      min-height: calc(var(--app-height) - 200px);
+    }
+  }
 }
 
 app-virtual-table {
@@ -855,6 +861,12 @@ app-virtual-table {
   @media (max-width: 768px) {
     .no-results {
       text-align: left;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .table-container--virtual.table-container--loading {
+      min-height: calc(var(--app-height) - 200px);
     }
   }
 }

@@ -33,9 +33,18 @@ import {
   CareerGoalieListItem,
 } from '@services/api.service';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
-import { PlayerCardComponent, PlayerCardDialogData } from '@shared/player-card/player-card.component';
+import type { PlayerCardDialogData } from '@shared/player-card/player-card.component';
 
 const ROW_NUMBER_COLUMN = '__rowNumber';
+
+let playerCardComponentPromise: Promise<
+  typeof import('@shared/player-card/player-card.component')
+> | null = null;
+
+function loadPlayerCardComponent() {
+  playerCardComponentPromise ??= import('@shared/player-card/player-card.component');
+  return playerCardComponentPromise;
+}
 
 export type TableRow =
   | Player
@@ -119,6 +128,10 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private previousLoading?: boolean;
   private previousTableId?: string;
   private previousShowPositionColumn?: boolean;
+  private playerCardPrefetchScheduled = false;
+  private openingPlayerCard = false;
+  private playerCardPrefetchIdleId?: number;
+  private playerCardPrefetchTimerId?: number;
 
   loadingProgress = 0;
   loadingBuffer = 0;
@@ -223,6 +236,11 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
         this.onLoadingChanged(loading);
       }
 
+      if (clickable && !this.playerCardPrefetchScheduled) {
+        this.playerCardPrefetchScheduled = true;
+        this.schedulePlayerCardPrefetch();
+      }
+
       const sortRelevantChange = columnsChanged || defaultSortChanged;
 
       if (dataChanged) {
@@ -272,6 +290,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clearLoadingProgressTimer();
+    this.clearPlayerCardPrefetch();
   }
 
   private onLoadingChanged(isLoading: boolean) {
@@ -414,7 +433,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
   onMainRowClick(row: TableRow, event: MouseEvent): void {
     if (this.clickable) {
-      this.selectItem(row);
+      void this.selectItem(row);
       return;
     }
 
@@ -463,7 +482,13 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
     setTimeout(() => this.ensureActiveRowInRange(), 0);
   }
 
-  selectItem(data: TableRow) {
+  async selectItem(data: TableRow): Promise<void> {
+    if (this.openingPlayerCard) {
+      return;
+    }
+
+    this.openingPlayerCard = true;
+
     // Track navigated index in a closure so CDK focus restoration
     // (which triggers onRowFocus) cannot overwrite it before afterClosed fires.
     let navigatedIndex = this.dataSource.filteredData.indexOf(data);
@@ -481,21 +506,66 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
         },
       },
     };
-    const dialogRef = this.dialog.open(PlayerCardComponent, {
-      data: dialogData,
-      maxWidth: '95vw',
-      width: 'auto',
-      panelClass: 'player-card-dialog',
-    });
 
-    // Focus the navigated-to row when dialog closes.
-    dialogRef.afterClosed().subscribe(() => {
-      this.focusRow(navigatedIndex);
-    });
+    try {
+      const { PlayerCardComponent } = await loadPlayerCardComponent();
+      const dialogRef = this.dialog.open(PlayerCardComponent, {
+        data: dialogData,
+        maxWidth: '95vw',
+        width: 'auto',
+        panelClass: 'player-card-dialog',
+      });
+
+      // Focus the navigated-to row when dialog closes.
+      dialogRef.afterClosed().subscribe(() => {
+        this.focusRow(navigatedIndex);
+      });
+    } finally {
+      this.openingPlayerCard = false;
+    }
   }
 
   onRowSelectToggle(row: TableRow): void {
     this.onRowSelect?.(row);
+  }
+
+  private schedulePlayerCardPrefetch(): void {
+    const warmPlayerCardChunk = () => {
+      void loadPlayerCardComponent();
+    };
+
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if ('requestIdleCallback' in window) {
+      this.playerCardPrefetchIdleId = window.requestIdleCallback(() => {
+        this.playerCardPrefetchIdleId = undefined;
+        warmPlayerCardChunk();
+      }, { timeout: 2000 });
+      return;
+    }
+
+    this.playerCardPrefetchTimerId = setTimeout(() => {
+      this.playerCardPrefetchTimerId = undefined;
+      warmPlayerCardChunk();
+    }, 1500);
+  }
+
+  private clearPlayerCardPrefetch(): void {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (this.playerCardPrefetchIdleId !== undefined && 'cancelIdleCallback' in window) {
+      window.cancelIdleCallback(this.playerCardPrefetchIdleId);
+      this.playerCardPrefetchIdleId = undefined;
+    }
+
+    if (this.playerCardPrefetchTimerId !== undefined) {
+      clearTimeout(this.playerCardPrefetchTimerId);
+      this.playerCardPrefetchTimerId = undefined;
+    }
   }
 
   onSearchKeydown(event: KeyboardEvent): void {
@@ -558,7 +628,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
       case 'Enter': {
         if (this.clickable) {
           event.preventDefault();
-          this.selectItem(row);
+          void this.selectItem(row);
           return;
         }
 

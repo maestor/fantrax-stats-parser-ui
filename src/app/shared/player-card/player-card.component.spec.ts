@@ -39,7 +39,11 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
         // Open card by clicking a player row in stats table.
         fireEvent.click(firstPlayerCell);
 
-        const closePlayerCardButton = await screen.findByRole('button', { name: 'a11y.closePlayerCard' });
+        const closePlayerCardButton = await screen.findByRole(
+            'button',
+            { name: 'a11y.closePlayerCard' },
+            { timeout: 5000 }
+        );
         expect(closePlayerCardButton).toBeInTheDocument();
 
         // Card tabs exist for combined player data.

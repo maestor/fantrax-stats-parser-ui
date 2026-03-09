@@ -6,7 +6,7 @@ import {
   OnInit,
   DestroyRef,
 } from "@angular/core";
-import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
+import { NavigationEnd, NavigationStart, Router, RouterOutlet } from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { MatTabNavPanel, MatTabsModule } from "@angular/material/tabs";
@@ -35,8 +35,6 @@ import {
   startWith,
   take,
 } from "rxjs";
-import { HelpDialogComponent } from "@shared/help-dialog/help-dialog.component";
-import { GlobalNavComponent } from "@shared/global-nav/global-nav.component";
 import { ViewportService } from "@services/viewport.service";
 import {
   ControlsContext,
@@ -45,6 +43,66 @@ import {
 import { ApiService, Team } from "@services/api.service";
 import { TeamService } from "@services/team.service";
 import { PwaUpdateService } from "@services/pwa-update.service";
+import { FooterVisibilityService } from "@services/footer-visibility.service";
+
+let helpDialogComponentPromise: Promise<
+  typeof import("@shared/help-dialog/help-dialog.component")
+> | null = null;
+
+function loadHelpDialogComponent() {
+  helpDialogComponentPromise ??= import("@shared/help-dialog/help-dialog.component");
+  return helpDialogComponentPromise;
+}
+
+let globalNavComponentPromise: Promise<
+  typeof import("@shared/global-nav/global-nav.component")
+> | null = null;
+
+function loadGlobalNavComponent() {
+  globalNavComponentPromise ??= import("@shared/global-nav/global-nav.component");
+  return globalNavComponentPromise;
+}
+
+type RouteUiState = {
+  controlsContext: ControlsContext;
+  isLeaderboardsRoute: boolean;
+  isCareerRoute: boolean;
+  showStatsShell: boolean;
+  currentRouteSubtitleKey: string | null;
+};
+
+type MobileState = {
+  ready: boolean;
+  isMobile: boolean;
+};
+
+export function buildRouteUiState(url: string): RouteUiState {
+  const normalizedUrl = url.split("?")[0]?.split("#")[0] ?? "/";
+  const isLeaderboardsRoute = normalizedUrl.startsWith("/leaderboards");
+  const isCareerRoute = normalizedUrl.startsWith("/career");
+
+  return {
+    controlsContext: normalizedUrl.includes("goalie-stats") ? "goalie" : "player",
+    isLeaderboardsRoute,
+    isCareerRoute,
+    showStatsShell: !isLeaderboardsRoute && !isCareerRoute,
+    currentRouteSubtitleKey: isCareerRoute
+      ? "nav.playerCareers"
+      : (isLeaderboardsRoute ? "nav.leaderboards" : null),
+  };
+}
+
+export function buildInitialMobileState(
+  defaultView: Pick<Window, "matchMedia"> | null | undefined,
+): MobileState {
+  return {
+    ready: true,
+    isMobile:
+      typeof defaultView?.matchMedia === "function"
+        ? defaultView.matchMedia("(max-width: 768px)").matches
+        : false,
+  };
+}
 
 @Component({
   selector: "app-root",
@@ -76,19 +134,29 @@ export class AppComponent implements OnInit {
   @ViewChild("tabPanel") tabPanel!: MatTabNavPanel;
   @ViewChild("settingsDrawer") settingsDrawer?: MatSidenav;
 
-  controlsContext: ControlsContext = "player";
+  private readonly document = inject(DOCUMENT);
+  private readonly initialRouteUiState = buildRouteUiState(
+    `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`,
+  );
+  private readonly initialMobileState = buildInitialMobileState(this.document.defaultView);
+
+  controlsContext: ControlsContext = this.initialRouteUiState.controlsContext;
   private readonly controlsContextSubject =
     new BehaviorSubject<ControlsContext>(this.controlsContext);
   readonly controlsContext$ = this.controlsContextSubject.asObservable();
 
   readonly mobileState$ = inject(ViewportService).isMobile$.pipe(
     map((isMobile) => ({ ready: true, isMobile })),
-    startWith({ ready: false, isMobile: false }),
+    startWith(this.initialMobileState),
+    distinctUntilChanged(
+      (a, b) => a.ready === b.ready && a.isMobile === b.isMobile,
+    ),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
   private readonly teamService = inject(TeamService);
   private readonly apiService = inject(ApiService);
+  readonly isFooterVisible = inject(FooterVisibilityService).footerVisible;
 
   private readonly fiLastModifiedFormatter = new Intl.DateTimeFormat("fi-FI", {
     timeZone: "Europe/Helsinki",
@@ -133,10 +201,10 @@ export class AppComponent implements OnInit {
   );
 
   isSettingsDrawerOpen = false;
-  isLeaderboardsRoute = false;
-  isCareerRoute = false;
-  showStatsShell = true;
-  currentRouteSubtitleKey: string | null = null;
+  isLeaderboardsRoute = this.initialRouteUiState.isLeaderboardsRoute;
+  isCareerRoute = this.initialRouteUiState.isCareerRoute;
+  showStatsShell = this.initialRouteUiState.showStatsShell;
+  currentRouteSubtitleKey: string | null = this.initialRouteUiState.currentRouteSubtitleKey;
 
   get skipLinkTargetId(): string {
     if (this.isLeaderboardsRoute) return "leaderboard-table";
@@ -161,7 +229,7 @@ export class AppComponent implements OnInit {
   private translateService = inject(TranslateService);
   private dialog = inject(MatDialog);
   private router = inject(Router);
-  private document = inject(DOCUMENT);
+  private footerVisibilityService = inject(FooterVisibilityService);
 
   ngOnInit(): void {
     this.translateService.get("pageTitle").subscribe((name) => {
@@ -178,14 +246,18 @@ export class AppComponent implements OnInit {
         this.openUpdateAvailableSnackbar();
       });
 
-    this.updateControlsContext(this.router.url);
     this.router.events
-      .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd,
-        ),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((event) => {
+        if (event instanceof NavigationStart) {
+          this.footerVisibilityService.beginNavigation();
+          return;
+        }
+
+        if (!(event instanceof NavigationEnd)) {
+          return;
+        }
+
         this.updateControlsContext(event.urlAfterRedirects);
         this.settingsDrawer?.close();
       });
@@ -244,16 +316,14 @@ export class AppComponent implements OnInit {
   }
 
   private updateControlsContext(url: string): void {
-    const normalizedUrl = url.split('?')[0];
+    const nextState = buildRouteUiState(url);
 
-    this.controlsContext = normalizedUrl.includes("goalie-stats") ? "goalie" : "player";
+    this.controlsContext = nextState.controlsContext;
     this.controlsContextSubject.next(this.controlsContext);
-    this.isLeaderboardsRoute = normalizedUrl.startsWith("/leaderboards");
-    this.isCareerRoute = normalizedUrl.startsWith('/career');
-    this.showStatsShell = !this.isLeaderboardsRoute && !this.isCareerRoute;
-    this.currentRouteSubtitleKey = this.isCareerRoute
-      ? 'nav.playerCareers'
-      : (this.isLeaderboardsRoute ? 'nav.leaderboards' : null);
+    this.isLeaderboardsRoute = nextState.isLeaderboardsRoute;
+    this.isCareerRoute = nextState.isCareerRoute;
+    this.showStatsShell = nextState.showStatsShell;
+    this.currentRouteSubtitleKey = nextState.currentRouteSubtitleKey;
   }
 
   skipToTarget(targetId: string, event: MouseEvent): void {
@@ -297,7 +367,7 @@ export class AppComponent implements OnInit {
 
     if (event.key === "?" && !isInFormField) {
       event.preventDefault();
-      this.openHelpDialog();
+      void this.openHelpDialog();
       return;
     }
 
@@ -318,7 +388,9 @@ export class AppComponent implements OnInit {
     }
   }
 
-  openHelpDialog(): void {
+  async openHelpDialog(): Promise<void> {
+    const { HelpDialogComponent } = await loadHelpDialogComponent();
+
     this.dialog.open(HelpDialogComponent, {
       panelClass: "help-dialog",
       autoFocus: "first-tabbable",
@@ -326,7 +398,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openNavMenu(): void {
+  async openNavMenu(): Promise<void> {
+    const { GlobalNavComponent } = await loadGlobalNavComponent();
     this.bottomSheet.open(GlobalNavComponent, { autoFocus: false });
   }
 

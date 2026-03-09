@@ -58,7 +58,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(rows).toHaveLength(PLAYER_SLICE_COUNT + 1);
 
     // -- Footer --
-    expect(screen.getByRole('navigation', { name: 'footer.links.ariaLabel' })).toBeInTheDocument();
+    expect(await screen.findByRole('navigation', { name: 'footer.links.ariaLabel' })).toBeInTheDocument();
     expect(screen.getByText('footer.links.linkedin.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();

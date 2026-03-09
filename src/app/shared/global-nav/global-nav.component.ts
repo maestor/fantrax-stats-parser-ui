@@ -5,7 +5,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { HelpDialogComponent } from '@shared/help-dialog/help-dialog.component';
+
+let helpDialogComponentPromise: Promise<
+  typeof import('@shared/help-dialog/help-dialog.component')
+> | null = null;
+
+function loadHelpDialogComponent() {
+  helpDialogComponentPromise ??= import('@shared/help-dialog/help-dialog.component');
+  return helpDialogComponentPromise;
+}
 
 type NavItemType = 'route' | 'action';
 
@@ -55,11 +63,12 @@ export class GlobalNavComponent {
     return !!item.path && url.startsWith(item.path);
   }
 
-  onItemClick(item: NavItem): void {
+  async onItemClick(item: NavItem): Promise<void> {
     if (item.type === 'route' && item.path) {
       void this.router.navigateByUrl(item.path);
       this.bottomSheetRef.dismiss();
     } else if (item.type === 'action') {
+      const { HelpDialogComponent } = await loadHelpDialogComponent();
       this.dialog.open(HelpDialogComponent, {
         panelClass: 'help-dialog',
         autoFocus: 'first-tabbable',

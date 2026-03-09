@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/angular';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AppComponent } from './app.component';
+import { AppComponent, buildInitialMobileState, buildRouteUiState } from './app.component';
 import {
   getBehaviorTestConfig,
   polyfillJsdom,
@@ -83,7 +83,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByLabelText('table.playerSearch')).toBeInTheDocument();
 
     // -- Footer --
-    expect(screen.getByRole('navigation', { name: 'footer.links.ariaLabel' })).toBeInTheDocument();
+    expect(await screen.findByRole('navigation', { name: 'footer.links.ariaLabel' })).toBeInTheDocument();
     expect(screen.getByText('footer.links.linkedin.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();
@@ -114,7 +114,11 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     searchInput.blur();
     fireEvent.keyDown(document, { key: '?' });
 
-    const helpCloseButton = await screen.findByRole('button', { name: 'helpDialog.close' });
+    const helpCloseButton = await screen.findByRole(
+      'button',
+      { name: 'helpDialog.close' },
+      { timeout: 5000 }
+    );
     fireEvent.click(helpCloseButton);
 
     await vi.waitFor(() => {
@@ -198,5 +202,51 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       'reportType.regular'
     );
     expect(screen.getByRole('table')).toBeInTheDocument();
+  });
+});
+
+describe('buildRouteUiState', () => {
+  it('hides the stats shell for career routes before navigation settles', () => {
+    expect(buildRouteUiState('/career/players?tab=goalies')).toEqual({
+      controlsContext: 'player',
+      isLeaderboardsRoute: false,
+      isCareerRoute: true,
+      showStatsShell: false,
+      currentRouteSubtitleKey: 'nav.playerCareers',
+    });
+  });
+
+  it('hides the stats shell for leaderboard routes before navigation settles', () => {
+    expect(buildRouteUiState('/leaderboards/playoffs')).toEqual({
+      controlsContext: 'player',
+      isLeaderboardsRoute: true,
+      isCareerRoute: false,
+      showStatsShell: false,
+      currentRouteSubtitleKey: 'nav.leaderboards',
+    });
+  });
+});
+
+describe('buildInitialMobileState', () => {
+  it('seeds desktop state synchronously from matchMedia', () => {
+    expect(
+      buildInitialMobileState({
+        matchMedia: () => ({ matches: false }) as MediaQueryList,
+      })
+    ).toEqual({
+      ready: true,
+      isMobile: false,
+    });
+  });
+
+  it('seeds mobile state synchronously from matchMedia', () => {
+    expect(
+      buildInitialMobileState({
+        matchMedia: () => ({ matches: true }) as MediaQueryList,
+      })
+    ).toEqual({
+      ready: true,
+      isMobile: true,
+    });
   });
 });

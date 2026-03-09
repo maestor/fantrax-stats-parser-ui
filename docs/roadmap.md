@@ -43,4 +43,3 @@ Persist the user's last sort column and direction per table (players/goalies) in
 ### Advanced testing
 
 - Visual regression testing (Playwright screenshot comparison)
-- Performance testing (Core Web Vitals)

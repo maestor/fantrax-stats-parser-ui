@@ -15,7 +15,10 @@
     </div>
   }
 
-  <div class="table-container">
+  <div
+    class="table-container"
+    [class.table-container--loading]="loadingInput() && !apiErrorInput() && dataSource.data.length === 0"
+  >
     <table mat-table [dataSource]="dataSource" matSort matSortStart="desc"
       [attr.aria-describedby]="instructionsId"
       [multiTemplateDataRows]="expandable">
@@ -147,15 +150,15 @@
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell no-results" [colSpan]="displayedFields.length">
           <span>
-            @if (apiError) {
+            @if (apiErrorInput()) {
               {{ "table.apiUnavailable" | translate }}
-            } @else if (loading) {
+            } @else if (loadingInput()) {
               {{ "table.loading" | translate }}
             } @else {
               {{ "table.noSearchResults" | translate }}
             }
           </span>
-          @if (loading && !apiError) {
+          @if (loadingInput() && !apiErrorInput()) {
             <mat-progress-bar class="loading-bar" mode="buffer"
               [value]="loadingProgress" [bufferValue]="loadingBuffer">
             </mat-progress-bar>

@@ -137,10 +137,14 @@
       </div>
     </div>
 
-    @if (lastModifiedText$ | async; as lastModifiedText) {
     @if (showStatsShell) {
+    @if (lastModifiedText$ | async; as lastModifiedText) {
     <div class="last-modified">
       {{ "lastModified.label" | translate }}: {{ lastModifiedText }}
+    </div>
+    } @else {
+    <div class="last-modified last-modified--empty" aria-hidden="true">
+      &nbsp;
     </div>
     }
     }
@@ -168,4 +172,6 @@
 @if (showStatsShell) {
 <app-comparison-bar [context]="controlsContext" />
 }
+@if (isFooterVisible()) {
 <app-footer />
+}

@@ -1,4 +1,15 @@
+:host {
+	display: block;
+	width: 100%;
+	min-width: 0;
+}
+
 .start-from-season-switcher {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	width: 100%;
+}
+
+mat-form-field {
+	width: 100%;
+	min-width: 0;
 }

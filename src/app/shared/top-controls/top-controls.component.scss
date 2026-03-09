@@ -71,8 +71,9 @@
 }
 
 .top-controls .top-control {
-	display: flex;
-	justify-content: center;
+	display: block;
+	width: 100%;
+	min-width: 0;
 }
 
 // Small mobile: stack controls for readability
@@ -97,5 +98,14 @@
 	.top-controls-panel .top-controls .top-control {
 		width: 100%;
 		justify-content: center;
+	}
+}
+
+@media (min-width: 961px) {
+	.top-controls-panel .top-controls {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		justify-items: stretch;
+		align-items: start;
 	}
 }
