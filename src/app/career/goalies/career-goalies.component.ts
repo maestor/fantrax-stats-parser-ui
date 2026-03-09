@@ -7,6 +7,7 @@ import { VirtualTableComponent } from '@shared/stats-table/virtual-table.compone
 import { CAREER_GOALIE_COLUMNS } from '@shared/table-columns';
 import { Column } from '@shared/column.types';
 import { formatSeasonDisplay } from '@shared/utils/season.utils';
+import { FooterVisibilityService } from '@services/footer-visibility.service';
 
 @Component({
   selector: 'app-career-goalies',
@@ -16,6 +17,7 @@ import { formatSeasonDisplay } from '@shared/utils/season.utils';
 export class CareerGoaliesComponent implements OnInit, OnDestroy {
   private readonly apiService = inject(ApiService);
   private readonly destroy$ = new Subject<void>();
+  private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   readonly columns: Column[] = CAREER_GOALIE_COLUMNS;
   readonly searchLabelKey = 'table.playerSearch';
@@ -28,8 +30,10 @@ export class CareerGoaliesComponent implements OnInit, OnDestroy {
   data: CareerGoalieListItem[] = [];
   loading = true;
   apiError = false;
+  private footerVisibilityCycle = 0;
 
   ngOnInit(): void {
+    this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
     this.loading = true;
     this.apiService
       .getCareerGoalies()
@@ -38,11 +42,13 @@ export class CareerGoaliesComponent implements OnInit, OnDestroy {
         next: (data) => {
           this.data = data;
           this.loading = false;
+          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
         error: () => {
           this.data = [];
           this.apiError = true;
           this.loading = false;
+          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
       });
   }

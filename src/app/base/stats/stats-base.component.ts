@@ -23,6 +23,7 @@ import { TableRow } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { ComparisonService } from '@services/comparison.service';
 import { toApiTeamId } from '@shared/utils/api.utils';
+import { FooterVisibilityService } from '@services/footer-visibility.service';
 
 @Directive()
 export abstract class StatsBaseComponent<T extends Player | Goalie> implements OnInit, OnDestroy {
@@ -33,6 +34,7 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
   protected settingsService = inject(SettingsService);
   protected drawerContextService = inject(DrawerContextService);
   protected destroy$ = new Subject<void>();
+  private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   readonly isMobile$ = inject(ViewportService).isMobile$;
   readonly comparisonService = inject(ComparisonService);
@@ -50,8 +52,10 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
   tableData: T[] = [];
   tableColumns: Column[] = [];
   defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
-  loading = false;
+  loading = true;
   apiError = false;
+  private footerVisibilityCycle = 0;
+  private footerReadyMarked = false;
 
   protected abstract get filters$(): Observable<FilterState>;
   protected abstract fetchApi(params: ApiParams): Observable<T[]>;
@@ -70,6 +74,9 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
   }
 
   ngOnInit(): void {
+    this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
+    this.footerReadyMarked = false;
+
     combineLatest([
       this.filters$,
       this.teamService.selectedTeamId$,
@@ -144,6 +151,7 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
             this.maxGames = 0;
             this.loading = false;
             this.apiError = true;
+            this.markFooterReady();
             return;
           }
           let processedData = this.statsPerGame ? this.applyPerGame(data) : data;
@@ -152,6 +160,7 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
           this.drawerContextService.setMaxGames(this.drawerKey, this.maxGames);
           this.tableData = processedData.filter((g) => g.games >= this.minGames);
           this.loading = false;
+          this.markFooterReady();
         },
         // Stream should not error due to catchError above.
       });
@@ -160,5 +169,14 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private markFooterReady(): void {
+    if (this.footerReadyMarked) {
+      return;
+    }
+
+    this.footerReadyMarked = true;
+    this.footerVisibilityService.markReady(this.footerVisibilityCycle);
   }
 }

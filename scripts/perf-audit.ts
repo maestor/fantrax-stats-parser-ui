@@ -14,6 +14,89 @@ import { setupApiMocks } from '../e2e/mocks/api-mock';
 
 const DIST_DIR = resolve('dist/fantrax-stats-parser-ui/browser');
 const INDEX_PATH = resolve(DIST_DIR, 'index.html');
+const PERF_OBSERVER_SCRIPT = `
+(() => {
+  const describeRect = (rect) => {
+    if (!rect) {
+      return null;
+    }
+
+    const round = (value) => Math.round(value * 10) / 10;
+    return 'x=' + round(rect.x) + ', y=' + round(rect.y) + ', w=' + round(rect.width) + ', h=' + round(rect.height);
+  };
+
+  const describeNode = (node) => {
+    if (!(node instanceof HTMLElement)) {
+      return 'unknown';
+    }
+
+    const selectorParts = [node.tagName.toLowerCase()];
+    if (node.id) {
+      selectorParts.push('#' + node.id);
+    }
+
+    const classNames = Array.from(node.classList).slice(0, 3);
+    for (const className of classNames) {
+      selectorParts.push('.' + className);
+    }
+
+    const text = (node.textContent || '').trim().replace(/\\s+/g, ' ').slice(0, 40);
+    return text ? selectorParts.join('') + ' "' + text + '"' : selectorParts.join('');
+  };
+
+  const state = {
+    cls: 0,
+    lcpMs: null,
+    interactionDelayMs: null,
+    interactionType: null,
+    shiftSources: [],
+  };
+
+  window.__perfAudit = state;
+
+  try {
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (entry.hadRecentInput) {
+          continue;
+        }
+
+        state.cls += entry.value || 0;
+        const topSource = entry.sources && entry.sources.length > 0 ? entry.sources[0] : null;
+        state.shiftSources.push({
+          value: Math.round((entry.value || 0) * 1000) / 1000,
+          selector: describeNode(topSource && topSource.node),
+          previousRect: describeRect(topSource && topSource.previousRect),
+          currentRect: describeRect(topSource && topSource.currentRect),
+        });
+      }
+    }).observe({ type: 'layout-shift', buffered: true });
+  } catch {}
+
+  try {
+    new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      if (lastEntry) {
+        state.lcpMs = lastEntry.startTime;
+      }
+    }).observe({ type: 'largest-contentful-paint', buffered: true });
+  } catch {}
+
+  try {
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        const processingStart = entry.processingStart || entry.startTime;
+        const delay = processingStart - entry.startTime;
+        if (state.interactionDelayMs === null || delay > state.interactionDelayMs) {
+          state.interactionDelayMs = delay;
+          state.interactionType = entry.name || 'interaction';
+        }
+      }
+    }).observe({ type: 'event', buffered: true, durationThreshold: 16 });
+  } catch {}
+})();
+`;
 
 type RouteSpec = {
   label: string;
@@ -42,6 +125,12 @@ type AuditResult = {
   loadMs: number | null;
   totalTransferKb: number;
   jsTransferKb: number;
+  shiftSources: Array<{
+    value: number;
+    selector: string;
+    previousRect: string | null;
+    currentRect: string | null;
+  }>;
 };
 
 const routes: RouteSpec[] = [
@@ -163,60 +252,6 @@ async function startStaticServer(): Promise<{ origin: string; close(): Promise<v
   };
 }
 
-async function installPerformanceObservers(page: Page): Promise<void> {
-  await page.addInitScript(() => {
-    const state = {
-      cls: 0,
-      lcpMs: null as number | null,
-      interactionDelayMs: null as number | null,
-      interactionType: null as string | null,
-    };
-
-    (window as typeof window & { __perfAudit?: typeof state }).__perfAudit = state;
-
-    new PerformanceObserver((list) => {
-      for (const entry of list.getEntries() as Array<PerformanceEntry & { hadRecentInput?: boolean; value?: number }>) {
-        if (entry.hadRecentInput) {
-          continue;
-        }
-
-        state.cls += entry.value ?? 0;
-      }
-    }).observe({ type: 'layout-shift', buffered: true });
-
-    new PerformanceObserver((list) => {
-      const entries = list.getEntries();
-      const lastEntry = entries[entries.length - 1];
-
-      if (lastEntry) {
-        state.lcpMs = lastEntry.startTime;
-      }
-    }).observe({ type: 'largest-contentful-paint', buffered: true });
-
-    try {
-      new PerformanceObserver((list) => {
-        for (const entry of list.getEntries() as Array<
-          PerformanceEntry & {
-            interactionId?: number;
-            name?: string;
-            processingStart?: number;
-          }
-        >) {
-          const processingStart = entry.processingStart ?? entry.startTime;
-          const delay = processingStart - entry.startTime;
-
-          if (state.interactionDelayMs === null || delay > state.interactionDelayMs) {
-            state.interactionDelayMs = delay;
-            state.interactionType = entry.name ?? 'interaction';
-          }
-        }
-      }).observe({ type: 'event', buffered: true, durationThreshold: 16 });
-    } catch {
-      // Event Timing is not available in every browser context.
-    }
-  });
-}
-
 function classifyLcp(value: number | null): MetricRating {
   if (value === null) return 'not-supported';
   if (value <= 2500) return 'good';
@@ -268,6 +303,10 @@ function formatNumber(value: number | null, digits = 2): string {
   return value === null ? 'n/a' : value.toFixed(digits);
 }
 
+async function installPerformanceObservers(page: Page): Promise<void> {
+  await page.addInitScript({ content: PERF_OBSERVER_SCRIPT });
+}
+
 async function collectResult(
   page: Page,
   profile: ProfileSpec,
@@ -294,6 +333,12 @@ async function collectResult(
         lcpMs: number | null;
         interactionDelayMs: number | null;
         interactionType: string | null;
+        shiftSources: Array<{
+          value: number;
+          selector: string;
+          previousRect: string | null;
+          currentRect: string | null;
+        }>;
       };
     }).__perfAudit;
 
@@ -348,6 +393,7 @@ async function collectResult(
     loadMs: round(navigation?.loadMs ?? null),
     totalTransferKb: round(resources.totalTransferKb, 1) ?? 0,
     jsTransferKb: round(resources.jsTransferKb, 1) ?? 0,
+    shiftSources: (perfState?.shiftSources ?? []).slice(0, 5),
   };
 }
 
@@ -367,6 +413,14 @@ function printResult(result: AuditResult, route: RouteSpec): void {
   console.log(
     `  Transfer -> ${result.totalTransferKb.toFixed(1)} kB total, ${result.jsTransferKb.toFixed(1)} kB JS`,
   );
+  if (result.shiftSources.length > 0) {
+    console.log('  Shift sources:');
+    for (const source of result.shiftSources) {
+      console.log(
+        `    - ${source.value.toFixed(3)} ${source.selector} (${source.previousRect ?? 'n/a'} -> ${source.currentRect ?? 'n/a'})`,
+      );
+    }
+  }
 }
 
 async function main(): Promise<void> {

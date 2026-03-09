@@ -154,6 +154,7 @@ Run `npm run perf:audit` to execute a local lab-style performance audit against 
 - Mocks API responses from `e2e/fixtures/data/` so results are deterministic and backend-independent
 - Audits `/` and `/career/players` in both desktop and mobile browser profiles
 - Reports `LCP`, `CLS`, and an interaction-delay proxy for common user actions
+- Logs the top layout-shift sources to make CLS regressions easier to diagnose
 
 Important:
 
@@ -161,6 +162,7 @@ Important:
 - `LCP` and `CLS` map directly to Core Web Vitals thresholds
 - The interaction number is a scripted lab proxy, not full field `INP`
 - Use PageSpeed Insights / CrUX field data to judge the real shipped user experience
+- Current local baseline as of `2026-03-09`: desktop `/` `CLS 0.040`, desktop `/career/players` `CLS 0.010`, mobile audited routes `CLS 0.000`
 
 ## Testing
 

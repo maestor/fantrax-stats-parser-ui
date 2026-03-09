@@ -21,6 +21,7 @@
     class="table-container table-container--virtual"
     role="table"
     [attr.aria-describedby]="instructionsId"
+    [class.table-container--loading]="loadingInput() && !apiErrorInput() && filteredRows.length === 0"
   >
     <div
       class="virtual-table-grid"
@@ -84,15 +85,15 @@
       } @else {
         <div class="no-results mat-mdc-cell">
           <span>
-            @if (apiError) {
+            @if (apiErrorInput()) {
               {{ "table.apiUnavailable" | translate }}
-            } @else if (loading) {
+            } @else if (loadingInput()) {
               {{ "table.loading" | translate }}
             } @else {
               {{ "table.noSearchResults" | translate }}
             }
           </span>
-          @if (loading && !apiError) {
+          @if (loadingInput() && !apiErrorInput()) {
             <mat-progress-bar
               class="loading-bar"
               mode="buffer"

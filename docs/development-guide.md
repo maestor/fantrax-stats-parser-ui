@@ -88,6 +88,7 @@ npm run perf:audit
 - Reuses Playwright plus the repo's fixture-backed API mocking to keep the audit deterministic
 - Covers `/` and `/career/players` in desktop + mobile profiles
 - Reports `LCP`, `CLS`, and a scripted interaction-delay proxy
+- Prints the top layout-shift sources so desktop/mobile CLS regressions are easier to trace
 
 Use this as a local regression check after startup-bundle or rendering changes. It is intentionally a lab audit, so keep using PageSpeed Insights / Chrome DevTools when you need public-score or field-data confirmation.
 

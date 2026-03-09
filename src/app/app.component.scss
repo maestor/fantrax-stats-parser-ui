@@ -23,9 +23,14 @@
 .last-modified {
 	margin: -6px 8px 12px 8px;
 	padding: 0 4px;
+	min-height: 1.1rem;
 	font-size: 0.85rem;
 	color: var(--mat-sys-on-surface-variant);
 	text-align: center;
+}
+
+.last-modified--empty {
+	visibility: hidden;
 }
 
 .route-subtitle {
