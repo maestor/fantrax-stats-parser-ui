@@ -36,6 +36,18 @@ export class ExampleComponent {
 }
 ```
 
+For state services, prefer signal-facing read APIs in component code and reserve observable APIs for async composition, interop, or compatibility:
+
+```typescript
+export class ExampleComponent {
+  private readonly filterService = inject(FilterService);
+
+  readonly filterState = computed(() => this.filterService.playerFiltersSignal());
+}
+```
+
+After refactors, investigate the replaced implementation paths and remove old code that is now unused. Do not keep dormant compatibility branches or leftover APIs without a real consumer.
+
 Use `input.required()` whenever an input is not truly optional in real usage:
 
 - required inputs preserve the real parent/child contract in TypeScript
@@ -362,6 +374,7 @@ All tests use **Testing Library** (`@testing-library/angular`) with **Vitest**.
 - **Mock only approved external boundaries in UI tests**: `ApiService`, `ViewportService`, and `PwaUpdateService` are normal mock points; do not mock stateful UI services like `FilterService`, `SettingsService`, or `TeamService` just to isolate a control
 - **Delete impossible-state branches**: If a branch cannot happen in any real usage path, remove it instead of keeping defensive context checks or dead fallback code
 - **Simplify before adding tests**: For behavior-neutral refactors, prefer deleting unreachable logic over adding narrow tests whose only purpose is to preserve coverage for code the UI can never hit
+- **Clean up after refactors**: When a refactor replaces an implementation, verify whether the old path still has consumers and delete it if it does not
 
 ```typescript
 import { render, screen } from '@testing-library/angular';

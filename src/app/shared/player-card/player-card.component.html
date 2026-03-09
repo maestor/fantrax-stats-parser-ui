@@ -96,7 +96,7 @@
       @if (showGraphsTab) {
       <mat-tab label="{{ 'playerCard.graphs' | translate }}">
         @if (graphsComponent) {
-        <ng-container *ngComponentOutlet="graphsComponent; inputs: graphsInputs"></ng-container>
+        <ng-container *ngComponentOutlet="graphsComponent; inputs: graphsInputs()"></ng-container>
         } @else {
         <div class="tab-content">
           @if (graphsLoading) {

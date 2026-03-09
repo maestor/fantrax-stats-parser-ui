@@ -34,10 +34,20 @@ Some sections below describe current public inputs for existing components. Thos
 **Usage**:
 
 ```html
-<app-navigation></app-navigation>
+<app-navigation [tabPanel]="tabPanel"></app-navigation>
 ```
 
-**Inputs/Outputs**: None (uses router for navigation)
+**Inputs**:
+
+```typescript
+readonly tabPanel = input.required<MatTabNavPanel>();
+```
+
+**Behavior**:
+
+- `tabPanel` is required because every real app-shell usage pairs the nav bar with a Material `mat-tab-nav-panel`
+- Reads the current router URL to keep the active tab highlight in sync
+- Normalizes `/` to `/player-stats` so the default route highlights the player tab
 
 ---
 
@@ -190,6 +200,39 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Pass column definitions and formatters into the shared virtualized table
 - Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
 
+### LeaderboardComponent
+
+**Location**: `src/app/leaderboards/leaderboard/`
+
+**Type**: Feature Wrapper Component
+
+**Purpose**: Reusable leaderboard shell that fetches leaderboard rows and feeds the read-only expandable stats table used by the regular-season and playoffs leaderboard views.
+
+**Inputs**:
+
+```typescript
+readonly fetchFn = input.required<() => Observable<LeaderboardEntry[]>>();
+readonly columns = input.required<Column[]>();
+readonly formatCell = input<((column: string, value: number | string | undefined) => string) | undefined>();
+readonly rowKey = input.required<(row: LeaderboardRow, index: number) => string>();
+readonly isRowExpandable = input.required<(row: LeaderboardRow) => boolean>();
+readonly expandedRowsFor = input.required<(row: LeaderboardRow) => ExpandedRowViewModel[]>();
+readonly expandToggleAriaLabel = input.required<
+  (row: LeaderboardRow, expanded: boolean) => string
+>();
+readonly expandedHeaderLabels = input.required<{
+  season: string;
+  primary: string;
+  secondary?: string;
+}>();
+```
+
+**Behavior**:
+
+- `formatCell` remains optional because only the regular-season leaderboard currently custom-formats percentage columns
+- All other inputs are required because both concrete leaderboard parents always provide them
+- Fetches rows once on init, derives tied-position display values, and forwards expansion callbacks into `StatsTableComponent`
+
 ---
 
 ## Shared Components
@@ -234,26 +277,46 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 **Inputs**:
 
 ```typescript
-readonly data = input<any[]>([]);
-readonly columns = input<Column[]>([]);   // optional icon support for emoji/material headers
-readonly defaultSortColumn = input('score');
-readonly loading = input(false);
-readonly apiError = input(false);
-readonly tableId = input('stats-table');
-readonly showSearch = input(true);
-readonly showPositionColumn = input(true);
-readonly positionValue = input<(row: any, index: number) => string>();
-readonly clickable = input(true);
-readonly selectRow = input(false);
-readonly isRowSelected = input<(row: any) => boolean>(() => false);
-readonly canSelectRow$ = input<Observable<boolean>>(of(true));
-readonly onRowSelect = input<(row: any) => void>();
-readonly formatCell = input<(column: string, value: any) => string>();
-readonly expandable = input(false);
-readonly rowKey = input<(row: any, index: number) => string>();
-readonly isRowExpandable = input<(row: any) => boolean>(() => false);
-readonly expandedRowsFor = input<(row: any) => ExpandedRowViewModel[]>(() => []);
-readonly expandToggleAriaLabel = input<(row: any, expanded: boolean) => string>();
+readonly dataInput = input.required<any[]>({ alias: 'data' });
+readonly columnsInput = input.required<Column[]>({ alias: 'columns' });
+readonly defaultSortColumnInput = input('score', { alias: 'defaultSortColumn' });
+readonly loadingInput = input(false, { alias: 'loading' });
+readonly apiErrorInput = input(false, { alias: 'apiError' });
+readonly tableIdInput = input('stats-table', { alias: 'tableId' });
+readonly showSearchInput = input(true, { alias: 'showSearch' });
+readonly showPositionColumnInput = input(true, { alias: 'showPositionColumn' });
+readonly positionValueInput = input<((row: any, index: number) => string) | undefined>(
+  undefined,
+  { alias: 'positionValue' },
+);
+readonly clickableInput = input(true, { alias: 'clickable' });
+readonly selectRowInput = input(false, { alias: 'selectRow' });
+readonly isRowSelectedInput = input<((row: any) => boolean) | undefined>(
+  undefined,
+  { alias: 'isRowSelected' },
+);
+readonly canSelectRowInput = input<Observable<boolean>>(of(true), { alias: 'canSelectRow$' });
+readonly onRowSelectInput = input<((row: any) => void) | undefined>(undefined, {
+  alias: 'onRowSelect',
+});
+readonly formatCellInput = input<
+  ((column: string, value: any) => string) | undefined
+>(undefined, { alias: 'formatCell' });
+readonly expandableInput = input(false, { alias: 'expandable' });
+readonly rowKeyInput = input<((row: any, index: number) => string) | undefined>(undefined, {
+  alias: 'rowKey',
+});
+readonly isRowExpandableInput = input<((row: any) => boolean) | undefined>(undefined, {
+  alias: 'isRowExpandable',
+});
+readonly expandedRowsForInput = input<
+  ((row: any) => ExpandedRowViewModel[]) | undefined
+>(undefined, { alias: 'expandedRowsFor' });
+readonly expandToggleAriaLabelInput = input<
+  ((row: any, expanded: boolean) => string) | undefined
+>(undefined, {
+  alias: 'expandToggleAriaLabel',
+});
 ```
 
 `ExpandedRowViewModel`:
@@ -276,6 +339,7 @@ type ExpandedRowViewModel = {
 - Column configuration driven by `Column[]` objects from `column.types.ts`; column headers support emoji and Material icons via the `icon` property
 - Optional auto-numbered `position` column (`showPositionColumn`) with optional comparison checkboxes (`selectRow`)
 - Optional expandable detail rows (used by leaderboards season breakdown)
+- Signal-input front with effect-driven synchronization of sorting, loading state, focus reset, and expansion bookkeeping
 - Compact stat headers from `tableColumnShort.*` with tooltips using full labels from `tableColumn.*`
 - Center-aligned numeric/stat headers and cells, with the name column left-aligned for readability
 - Responsive layout with horizontal scrolling on narrow viewports
@@ -287,6 +351,36 @@ type ExpandedRowViewModel = {
   [selectRow]="true" [isRowSelected]="isRowSelected" [onRowSelect]="onRowSelect">
 </app-stats-table>
 ```
+
+### VirtualTableComponent
+
+**Location**: `src/app/shared/stats-table/`
+
+**Type**: Presentational Component (read-only virtualized table)
+
+**Purpose**: Lightweight virtual-scroll table for the career player and goalie listings.
+
+**Inputs**:
+
+```typescript
+readonly dataInput = input.required<any[]>({ alias: 'data' });
+readonly columnsInput = input.required<Column[]>({ alias: 'columns' });
+readonly defaultSortColumnInput = input('name', { alias: 'defaultSortColumn' });
+readonly loadingInput = input(false, { alias: 'loading' });
+readonly apiErrorInput = input(false, { alias: 'apiError' });
+readonly searchLabelKeyInput = input('table.playerSearch', { alias: 'searchLabelKey' });
+readonly formatCellInput = input<
+  ((row: any, column: string, value: any) => string) | undefined
+>(undefined, { alias: 'formatCell' });
+```
+
+**Features**:
+
+- Read-only career table optimized for large result sets with `CdkVirtualScrollViewport`
+- Signal-input synchronization replaces the former `ngOnChanges` path for data and default-sort updates
+- Keeps the running-number column and search field always on, because those are the only real app contexts
+- Uses `MatSort` for keyboard-accessible sorting and destroy-aware subscription cleanup
+- Maintains row-focus keyboard navigation across filtering, scrolling, and resize updates
 
 **Usage** (leaderboard — read-only, no search, icon headers, custom cell format):
 
@@ -333,6 +427,7 @@ readonly contentOnly = input(false);
 
 - Default mode renders a collapsible panel (toggle button + collapsible content).
 - In the mobile settings drawer, it is rendered with `contentOnly=true` to show only the controls (no toggle UI).
+- Reads the persisted expand/collapse preference from `SettingsService.topControlsExpandedSignal`.
 
 ---
 
@@ -399,7 +494,8 @@ readonly context = input<'player' | 'goalie'>('player');
 
 - Loads seasons from `ApiService`
 - Displays seasons in reverse order (newest first)
-- Updates the appropriate filter stream in `FilterService` when the selection changes
+- Reads the active filter state through `FilterService` signal APIs
+- Updates the appropriate filter state in `FilterService` when the selection changes
 
 ---
 
@@ -419,7 +515,7 @@ readonly context = input<'player' | 'goalie'>('player');
 **Behavior**:
 
 - Uses `MatSelect` to let the user pick `regular`, `playoffs`, or `both`
-- Subscribes to `FilterService` (`playerFilters$`/`goalieFilters$`) to expose `reportType$`
+- Reads the active `reportType` through `FilterService` signal APIs
 - Calls `updatePlayerFilters` / `updateGoalieFilters` when the toggle changes
 
 ---
@@ -434,7 +530,8 @@ readonly context = input<'player' | 'goalie'>('player');
 
 - Only renders for player context (not goalies)
 - Uses `MatButtonToggle` for Kaikki/H/P selection (All/Forwards/Defensemen)
-- Updates `FilterService.playerFilters$` with `positionFilter` value
+- Reads `positionFilter` through `FilterService.playerFiltersSignal`
+- Updates `FilterService` with the selected `positionFilter` value
 - When position filter is active (H or P):
   - Stats table shows only players of that position
   - Score columns display position-relative values (`scoreByPosition`, `scoreByPositionAdjustedByGames`)
@@ -456,6 +553,7 @@ readonly context = input<'player' | 'goalie'>('player');
 
 **Behavior**:
 
+- Reads the active filter state through `FilterService` signal APIs
 - Uses a `MatSlideToggle` to manipulate the `statsPerGame` flag in `FilterService`
 - Keeps its visual state in sync with the current filter state for the given context
 
@@ -476,6 +574,7 @@ readonly maxGames = input(0);
 
 **Behavior**:
 
+- Reads the active filter state through `FilterService` signal APIs
 - Uses `MatSlider` to choose `minGames`
 - Constrains the slider range based on `maxGames`
 - Pushes changes into `FilterService` for the active context
@@ -578,6 +677,7 @@ For **Goalie Stats**, columns are intelligently reordered:
 **Implementation Details**:
 
 - Uses Material Dialog service with custom panel class
+- Internal player state, selected team, filter snapshot, and graphs inputs are signal-backed so navigation swaps keep derived labels/tabs in sync
 - Tracks active tab index to toggle `season-mode` class for dynamic width
 - `formatSeasonDisplay()` method converts year to "YYYY-YY" format
 - `reorderStatsForDisplay()` method handles:
@@ -694,7 +794,7 @@ readonly requestFocusTabHeader = input<() => void>();
 When `positionFilter` is not `'all'` (i.e., filtering by position):
 - **Radar Chart**: Uses `scoresByPosition` instead of `scores` for position-relative comparisons
 - **Line Chart**: Uses `scoreByPosition` and `scoreByPositionAdjustedByGames` for score trend lines
-- Charts automatically rebuild when `positionFilter` input changes via `ngOnChanges`
+- Charts automatically rebuild when signal inputs change via component effects
 
 **Chart Types**:
 
@@ -852,6 +952,15 @@ Supported block types:
 - `ComparisonService` — selection state
 - `MatDialog` — opens comparison dialog
 
+**Input Contract**:
+
+```typescript
+readonly context = input.required<StatsContext>();
+```
+
+- `context` is required because the app shell always provides the active stats context
+- Changing `context` clears any in-progress comparison selection through an effect-driven reset
+
 ---
 
 ### ComparisonDialogComponent
@@ -866,7 +975,9 @@ Supported block types:
 
 ```typescript
 data: {
-  players: [Player | Goalie, Player | Goalie];
+  context: StatsContext;
+  playerA: Player | Goalie;
+  playerB: Player | Goalie;
 }
 ```
 
@@ -894,8 +1005,10 @@ data: {
 **Inputs**:
 
 ```typescript
+readonly context = input.required<StatsContext>();
 readonly playerA = input.required<Player | Goalie>();
 readonly playerB = input.required<Player | Goalie>();
+readonly isMobile = input.required<boolean>();
 ```
 
 **Key Features**:
@@ -918,6 +1031,7 @@ readonly playerB = input.required<Player | Goalie>();
 **Inputs**:
 
 ```typescript
+readonly context = input.required<StatsContext>();
 readonly playerA = input.required<Player | Goalie>();
 readonly playerB = input.required<Player | Goalie>();
 ```
@@ -978,26 +1092,31 @@ this.sharedService.value$.subscribe((value) => {
 
 ## Component Lifecycle
 
-Common hooks used in this project:
+Preferred lifecycle patterns in this project:
 
-1. **ngOnInit**: Component initialization, data fetching
-2. **ngOnDestroy**: Cleanup, unsubscribe observables
-3. **ngOnChanges**: React to input changes (for presentational components)
+1. **constructor + `effect()` / `computed()`**: React to signal inputs and internal signal state
+2. **ngAfterViewInit**: View/query-dependent setup such as focus targets or chart sizing
+3. **ngOnDestroy**: Cleanup timers, DOM listeners, and non-RxJS resources
+4. **ngOnInit**: Only when initialization does not fit the signal/effect flow cleanly
 
 ```typescript
-export class MyComponent implements OnInit, OnDestroy, OnChanges {
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes["data"]) {
-      // React to data input changes
-    }
+export class MyComponent implements AfterViewInit, OnDestroy {
+  readonly dataInput = input.required<Item[]>({ alias: 'data' });
+  readonly selectedId = signal<string | null>(null);
+
+  constructor() {
+    effect(() => {
+      const data = this.dataInput();
+      this.selectedId.set(data[0]?.id ?? null);
+    });
   }
 
-  ngOnInit(): void {
-    // Initialize component, fetch data
+  ngAfterViewInit(): void {
+    // Handle query-based or DOM-dependent setup
   }
 
   ngOnDestroy(): void {
-    // Cleanup subscriptions
+    // Cleanup timers/listeners
   }
 }
 ```

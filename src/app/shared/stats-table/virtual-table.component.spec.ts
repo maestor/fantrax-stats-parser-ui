@@ -215,6 +215,20 @@ describe('VirtualTableComponent — user behavior', () => {
     expect(getRows()[0]).toHaveTextContent('Alpha Center');
   });
 
+  it('reacts when the parent changes the default sort column after render', async () => {
+    const view = await setup();
+
+    await screen.findByText('Beta Blueliner');
+    expect(getRows()[0]).toHaveTextContent('Gamma Grinder');
+
+    view.fixture.componentInstance.defaultSortColumn = 'name';
+    view.fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      expect(getRows()[0]).toHaveTextContent('Alpha Center');
+    });
+  });
+
   it('covers helper methods and internal branches used by the career tables', async () => {
     const view = await setup({ data: [] as unknown as TableRow[] });
     const table = view.fixture.debugElement.children[0].componentInstance as VirtualTableComponent;

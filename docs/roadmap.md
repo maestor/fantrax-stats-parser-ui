@@ -32,10 +32,17 @@ Persist the user's last sort column and direction per table (players/goalies) in
 
 ### Remaining modernization work
 
-- Add signal-facing read APIs to `filter.service.ts`, `settings.service.ts`, and `team.service.ts` while keeping the current observable APIs for compatibility.
-- Modernize the remaining decorator-era, stateful table and card components where it is behavior-safe: `stats-table.component.ts`, `virtual-table.component.ts`, `player-card.component.ts`, and `player-card-graphs.component.ts`.
-- Audit the remaining `@Input`-based shared components and convert only the inputs that are truly required/optional instead of preserving defensive flexibility by default.
 - Revisit the temporary branch-coverage workaround after Angular fixes signal-input coverage accounting, then raise the branch threshold back up.
+
+#### Retire Deprecated Angular Animation Providers (~2-4h)
+
+Angular 21.2.1 still builds cleanly, but the current animation provider APIs used in this repo were deprecated in Angular 20.2 and are marked with intent to remove in v23.
+
+Refactor steps:
+
+1. Verify whether runtime `provideAnimationsAsync()` is still required in `src/app/app.config.ts` for the current Angular Material usage, and remove it if the app behavior stays correct without it.
+2. Replace deprecated `provideNoopAnimations()` usage in `src/app/testing/behavior-test-utils.ts` and the remaining table / leaderboard specs with a non-deprecated test setup that matches the chosen runtime animation strategy.
+3. Re-run behavior coverage around animation-sensitive flows after the migration, especially the navigation sheet, settings drawer, player card dialog, comparison dialog, and expandable tables.
 
 ## E2E Testing
 

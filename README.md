@@ -169,7 +169,7 @@ Local Playwright runs against `http://localhost:4200` and starts `npm start` via
 
 ### Test Coverage Summary
 
-Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Vitest coverage now uses the **Istanbul** provider, and CI enforces minimum thresholds of **92% statements**, **75% branches**, **93% functions**, and **95% lines** via `angular.json` (`architect.test.options.coverageThresholds`). The lower temporary branch threshold reflects current Angular signal-input coverage noise; every contribution must still include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
+Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Vitest coverage now uses the **Istanbul** provider, and CI enforces minimum thresholds of **93% statements**, **75% branches**, **94% functions**, and **95% lines** via `angular.json` (`architect.test.options.coverageThresholds`). The lower temporary branch threshold reflects current Angular signal-input coverage noise; every contribution must still include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 
@@ -194,7 +194,7 @@ Accessibility is a core requirement of this project (not optional).
 - **Framework**: Angular 21
 - **UI Library**: Angular Material 21
 - **Language**: TypeScript 5.9
-- **State Management**: RxJS 7.8 (BehaviorSubjects)
+- **State Management**: Angular signals for synchronous UI state reads, RxJS 7.8 for async flows and compatibility streams
 - **HTTP Client**: Angular HttpClient with caching
 - **Testing**: Vitest + Testing Library (`@testing-library/angular`), Playwright (E2E)
 - **i18n**: ngx-translate 17
@@ -206,6 +206,8 @@ For Angular 21 component work in this repo:
 - Standalone components are the default. Do not add redundant `standalone: true`.
 - Prefer signal inputs for component APIs. Use `input.required()` whenever the parent must always provide the value; do not keep inputs optional "just in case".
 - Prefer the `host` object in `@Component` metadata over `@HostListener` and `@HostBinding`.
+- For app state services, prefer signal-facing read APIs in component code and keep observable APIs for async composition or compatibility only.
+- After refactors, investigate the replaced implementation paths and delete leftovers that are proven unused. Do not keep dormant fallback code "just in case".
 - Use `ChangeDetectionStrategy.OnPush` when the component is already safe for it through signal inputs, `async`-pipe flows, or local event-driven state. Do not apply it as a blanket rule to subscription-heavy components.
 
 ## Project Structure
@@ -248,7 +250,7 @@ This project was originally generated using [Angular CLI](https://github.com/ang
 ### Key Architectural Decisions
 
 1. **Standalone Components**: All components use Angular's standalone API (no modules)
-2. **Reactive Patterns**: RxJS observables for state management
+2. **Reactive Patterns**: Angular signals for synchronous UI reads, with RxJS retained for async composition and compatibility
 3. **Type Safety**: Strict TypeScript configuration enforced
 4. **Immutable State**: Filter state updates create new objects
 5. **Path Aliases**: `@base/*`, `@services/*`, `@shared/*` for clean imports

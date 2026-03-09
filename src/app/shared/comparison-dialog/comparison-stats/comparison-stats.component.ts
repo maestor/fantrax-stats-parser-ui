@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { Player, Goalie } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
@@ -28,10 +28,10 @@ export type StatRow = {
 export class ComparisonStatsComponent implements OnInit {
   private translateService = inject(TranslateService);
 
-  @Input() context: StatsContext = 'player';
-  @Input({ required: true }) playerA!: Player | Goalie;
-  @Input({ required: true }) playerB!: Player | Goalie;
-  @Input() isMobile = false;
+  readonly context = input.required<StatsContext>();
+  readonly playerA = input.required<Player | Goalie>();
+  readonly playerB = input.required<Player | Goalie>();
+  readonly isMobile = input.required<boolean>();
 
   private filterService = inject(FilterService);
 
@@ -39,7 +39,7 @@ export class ComparisonStatsComponent implements OnInit {
   statRows: StatRow[] = [];
 
   ngOnInit(): void {
-    const filters$ = this.context === 'goalie'
+    const filters$ = this.context() === 'goalie'
       ? this.filterService.goalieFilters$
       : this.filterService.playerFilters$;
 
@@ -65,8 +65,8 @@ export class ComparisonStatsComponent implements OnInit {
     const nameRow: StatRow = {
       key: 'name',
       label: this.translateService.instant('tableColumn.name'),
-      valueA: this.isMobile ? this.getShortName(this.playerA.name) : this.playerA.name,
-      valueB: this.isMobile ? this.getShortName(this.playerB.name) : this.playerB.name,
+      valueA: this.isMobile() ? this.getShortName(this.playerA().name) : this.playerA().name,
+      valueB: this.isMobile() ? this.getShortName(this.playerB().name) : this.playerB().name,
       boldA: true,
       boldB: false
     };
@@ -74,8 +74,8 @@ export class ComparisonStatsComponent implements OnInit {
     this.statRows = [
       nameRow,
       ...columns.map((key) => {
-        const valueA = this.getStatValue(this.playerA, key);
-        const valueB = this.getStatValue(this.playerB, key);
+        const valueA = this.getStatValue(this.playerA(), key);
+        const valueB = this.getStatValue(this.playerB(), key);
         const label = this.translateService.instant(`tableColumn.${key}`);
         const { boldA, boldB } = this.computeBold(key, valueA, valueB);
 
@@ -84,12 +84,13 @@ export class ComparisonStatsComponent implements OnInit {
   }
 
   private getStatColumns(): string[] {
-    if (this.context === 'player') {
+    if (this.context() === 'player') {
       return PLAYER_STAT_COLUMNS;
     }
 
     // Check if goalie has season-specific stats (gaa, savePercent)
-    const hasSeasonStats = 'gaa' in this.playerA && this.playerA.gaa !== undefined;
+    const playerA = this.playerA();
+    const hasSeasonStats = 'gaa' in playerA && playerA.gaa !== undefined;
     return hasSeasonStats ? GOALIE_SEASON_STAT_COLUMNS : GOALIE_STAT_COLUMNS;
   }
 

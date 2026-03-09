@@ -1,6 +1,6 @@
-<div class="comparison-stats" [class.mobile]="isMobile">
+<div class="comparison-stats" [class.mobile]="isMobile()">
   @for (row of statRows; track row.key) {
-  @if (isMobile) {
+  @if (isMobile()) {
   <div class="stat-row-mobile">
     <div class="stat-label">{{ row.label }}</div>
     <div class="stat-values">

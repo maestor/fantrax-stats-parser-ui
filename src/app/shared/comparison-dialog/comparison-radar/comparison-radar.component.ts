@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, input } from '@angular/core';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import type { ChartConfiguration, ChartData, TooltipItem } from 'chart.js';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -17,9 +17,9 @@ export class ComparisonRadarComponent implements OnInit {
   private document = inject(DOCUMENT);
   private translateService = inject(TranslateService);
 
-  @Input() context: StatsContext = 'player';
-  @Input({ required: true }) playerA!: Player | Goalie;
-  @Input({ required: true }) playerB!: Player | Goalie;
+  readonly context = input.required<StatsContext>();
+  readonly playerA = input.required<Player | Goalie>();
+  readonly playerB = input.required<Player | Goalie>();
 
   radarChartData: ChartData<'radar'> = { labels: [], datasets: [] };
   radarChartOptions: ChartConfiguration<'radar'>['options'] = {};
@@ -91,12 +91,12 @@ export class ComparisonRadarComponent implements OnInit {
   }
 
   private buildRadarChartData(): void {
-    return this.context === 'goalie' ? this.buildGoalieRadarData() : this.buildPlayerRadarData();
+    return this.context() === 'goalie' ? this.buildGoalieRadarData() : this.buildPlayerRadarData();
   }
 
   private buildPlayerRadarData(): void {
-    const playerA = this.playerA as Player;
-    const playerB = this.playerB as Player;
+    const playerA = this.playerA() as Player;
+    const playerB = this.playerB() as Player;
 
     const scoresA = playerA.scores;
     const scoresB = playerB.scores;
@@ -149,8 +149,8 @@ export class ComparisonRadarComponent implements OnInit {
   }
 
   private buildGoalieRadarData(): void {
-    const goalieA = this.playerA as Goalie;
-    const goalieB = this.playerB as Goalie;
+    const goalieA = this.playerA() as Goalie;
+    const goalieB = this.playerB() as Goalie;
 
     if (!goalieA.scores || !goalieB.scores) return;
 

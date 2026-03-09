@@ -49,9 +49,7 @@ export class TeamSwitcherComponent {
   readonly teams = computed(() => this.teamsState().teams);
   readonly loading = computed(() => this.teamsState().loading);
   readonly loadError = computed(() => this.teamsState().loadError);
-  readonly selectedTeamId = toSignal(this.teamService.selectedTeamId$, {
-    initialValue: this.teamService.selectedTeamId,
-  });
+  readonly selectedTeamId = this.teamService.selectedTeamIdSignal;
   readonly selectedTeam = computed(() =>
     this.teams().find((team) => team.id === this.selectedTeamId())
   );
