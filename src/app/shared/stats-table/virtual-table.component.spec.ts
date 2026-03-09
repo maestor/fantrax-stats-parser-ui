@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { Column } from '@shared/column.types';
-import { polyfillJsdom } from '../../testing/behavior-test-utils';
+import {
+  polyfillJsdom,
+  provideDisabledMaterialAnimations,
+} from '../../testing/behavior-test-utils';
 import { TableRow } from './stats-table.component';
 import { VirtualTableComponent } from './virtual-table.component';
 
@@ -65,7 +67,7 @@ describe('VirtualTableComponent — user behavior', () => {
   async function setup(componentProperties: Partial<VirtualTableHostComponent> = {}) {
     return render(VirtualTableHostComponent, {
       imports: [TranslateModule.forRoot()],
-      providers: [provideNoopAnimations()],
+      providers: [provideDisabledMaterialAnimations()],
       componentProperties,
     });
   }

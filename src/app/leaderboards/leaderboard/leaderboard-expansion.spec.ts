@@ -1,10 +1,10 @@
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
 import { ViewportService } from '@services/viewport.service';
+import { provideDisabledMaterialAnimations } from '../../testing/behavior-test-utils';
 import { LeaderboardPlayoffsComponent } from '../playoffs/leaderboard-playoffs.component';
 import { LeaderboardRegularComponent } from '../regular/leaderboard-regular.component';
 
@@ -13,7 +13,7 @@ describe('Leaderboard expansion behavior', () => {
     await render(LeaderboardRegularComponent, {
       imports: [TranslateModule.forRoot()],
       providers: [
-        provideNoopAnimations(),
+        provideDisabledMaterialAnimations(),
         {
           provide: ViewportService,
           useValue: {
@@ -107,7 +107,7 @@ describe('Leaderboard expansion behavior', () => {
     await render(LeaderboardPlayoffsComponent, {
       imports: [TranslateModule.forRoot()],
       providers: [
-        provideNoopAnimations(),
+        provideDisabledMaterialAnimations(),
         {
           provide: ViewportService,
           useValue: {
@@ -156,7 +156,7 @@ describe('Leaderboard expansion behavior', () => {
     await render(LeaderboardPlayoffsComponent, {
       imports: [TranslateModule.forRoot()],
       providers: [
-        provideNoopAnimations(),
+        provideDisabledMaterialAnimations(),
         {
           provide: ViewportService,
           useValue: {

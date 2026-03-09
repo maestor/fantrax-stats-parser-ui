@@ -87,6 +87,7 @@ Rules:
 - In component/behavior tests, do not introduce partial control harnesses with mocked state services just to drive a specific branch; cover the branch through the real page flow instead
 - If a branch exists only because the component API still models an impossible state, simplify the component first and test the smaller real behavior surface
 - Do not rewrite UI behavior tests into service tests just to raise coverage
+- When behavior tests need Material transitions disabled, prefer `MATERIAL_ANIMATIONS` with `{ animationsDisabled: true }` over deprecated Angular animation providers
 
 ### Test Template
 
@@ -94,7 +95,7 @@ Rules:
 import { render, screen } from '@testing-library/angular';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { MATERIAL_ANIMATIONS } from '@angular/material/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
@@ -112,7 +113,10 @@ describe('MyComponent', { timeout: 15_000 }, () => {
       providers: [
         provideRouter([]),
         provideHttpClient(),
-        provideNoopAnimations(),
+        {
+          provide: MATERIAL_ANIMATIONS,
+          useValue: { animationsDisabled: true },
+        },
         { provide: ApiService, useValue: mockApiService },
       ],
     });

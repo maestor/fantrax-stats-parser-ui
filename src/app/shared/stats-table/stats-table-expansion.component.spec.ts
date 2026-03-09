@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { Column } from '@shared/column.types';
+import { provideDisabledMaterialAnimations } from '../../testing/behavior-test-utils';
 import { StatsTableComponent, TableRow } from './stats-table.component';
 
 type LeaderboardRow = {
@@ -67,7 +67,7 @@ describe('StatsTableComponent expansion', () => {
   it('toggles expanded details, supports multiple open rows, and handles keyboard', async () => {
     await render(StatsTableExpansionHostComponent, {
       imports: [TranslateModule.forRoot()],
-      providers: [provideNoopAnimations()],
+      providers: [provideDisabledMaterialAnimations()],
     });
 
     await screen.findByText('Colorado Avalanche');
@@ -97,7 +97,7 @@ describe('StatsTableComponent expansion', () => {
   it('supports space-key expansion and blurs collapsed rows after mouse close', async () => {
     await render(StatsTableExpansionHostComponent, {
       imports: [TranslateModule.forRoot()],
-      providers: [provideNoopAnimations()],
+      providers: [provideDisabledMaterialAnimations()],
     });
 
     await screen.findByText('Colorado Avalanche');

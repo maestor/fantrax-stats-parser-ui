@@ -1,5 +1,6 @@
+import { Provider } from '@angular/core';
+import { MATERIAL_ANIMATIONS } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -83,6 +84,15 @@ function createApiError() {
   return throwError(() => new Error('Behavior test API error'));
 }
 
+export function provideDisabledMaterialAnimations(): Provider {
+  return {
+    provide: MATERIAL_ANIMATIONS,
+    useValue: {
+      animationsDisabled: true,
+    },
+  };
+}
+
 export function createApiServiceMock(options: BehaviorApiMockOptions = {}) {
   const errorKeys = new Set(options.errorKeys ?? []);
   const lastModified = Object.prototype.hasOwnProperty.call(options, 'lastModified')
@@ -142,7 +152,7 @@ export function getBehaviorTestConfig(options: BehaviorTestConfigOptions) {
     imports: [TranslateModule.forRoot()],
     providers: [
       provideRouter(routes),
-      provideNoopAnimations(),
+      provideDisabledMaterialAnimations(),
       { provide: ApiService, useValue: createApiServiceMock(options) },
       { provide: ViewportService, useValue: { isMobile$: of(options.isMobile) } },
       {
