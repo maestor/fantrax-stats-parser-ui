@@ -1,5 +1,18 @@
 import { DOCUMENT, NgComponentOutlet } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, Type, ViewChild, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  Type,
+  ViewChild,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -20,7 +33,7 @@ import { FilterService, PositionFilter } from '@services/filter.service';
 import { TeamService } from '@services/team.service';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { toSlug } from '@shared/utils/slug.utils';
-import { take } from 'rxjs';
+import { fromEvent, take } from 'rxjs';
 import { PlayerCardStatsService, StatRow } from './player-card-stats.service';
 import { PlayerCardSeasonsService } from './player-card-seasons.service';
 import { PlayerCardNavigationService } from './player-card-navigation.service';
@@ -59,141 +72,150 @@ export type PlayerCardDialogData = {
   styleUrl: './player-card.component.scss',
   providers: [PlayerCardNavigationService],
 })
-export class PlayerCardComponent {
+export class PlayerCardComponent implements AfterViewInit {
   readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
-  private rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
-  private document = inject(DOCUMENT);
-  private host = inject(ElementRef<HTMLElement>);
-  private apiService = inject(ApiService);
-  private teamService = inject(TeamService);
-  private filterService = inject(FilterService);
-  private cdr = inject(ChangeDetectorRef);
-  private statsService = inject(PlayerCardStatsService);
-  private seasonsService = inject(PlayerCardSeasonsService);
+  private readonly rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
+  private readonly document = inject(DOCUMENT);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly apiService = inject(ApiService);
+  private readonly teamService = inject(TeamService);
+  private readonly filterService = inject(FilterService);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private readonly statsService = inject(PlayerCardStatsService);
+  private readonly seasonsService = inject(PlayerCardSeasonsService);
   readonly navigationService = inject(PlayerCardNavigationService);
-
-  // Copy link feedback state
-  linkCopied = false;
-  positionFilter: PositionFilter = 'all';
-  statsPerGame = false;
-  selectedTeam: Team | undefined;
 
   @ViewChild('closeButton', { read: ElementRef })
   closeButton?: ElementRef<HTMLButtonElement>;
 
-  // Support both wrapped format { player, initialTab } and direct Player/Goalie
-  data: Player | Goalie = this.isWrappedData(this.rawDialogData)
-    ? this.rawDialogData.player
-    : this.rawDialogData;
+  private readonly initialData = this.unwrapDialogData(this.rawDialogData);
+  private readonly dataState = signal<Player | Goalie>(this.initialData);
+  private readonly positionFilterState = signal<PositionFilter>('all');
+  private readonly statsPerGameState = signal(false);
+  private readonly selectedTeamState = signal<Team | undefined>(undefined);
+  private readonly isMobileState = signal(false);
+  private readonly filtersHydratedState = signal(false);
+  private readonly closeButtonElementState = signal<HTMLButtonElement | undefined>(undefined);
+
+  private readonly isGoalieState = computed(() => 'wins' in this.dataState());
+  private readonly hasSeasonsState = computed(() => Boolean(this.dataState().seasons?.length));
+  private readonly viewContextState = computed<'combined' | 'season'>(() =>
+    this.hasSeasonsState() ? 'combined' : 'season',
+  );
+  private readonly showGraphsTabState = computed(() => {
+    const data = this.dataState();
+    const seasons = data.seasons ?? [];
+
+    return seasons.length > 1 || (seasons.length === 0 && Boolean(data.scores));
+  });
+
   readonly initialTab: PlayerCardTab | undefined = this.isWrappedData(this.rawDialogData)
     ? this.rawDialogData.initialTab
     : undefined;
 
-  // Navigation state
   readonly navigationContext = this.isWrappedData(this.rawDialogData)
     ? this.rawDialogData.navigationContext
     : undefined;
 
-  readonly isGoalie = 'wins' in this.data;
+  readonly graphsInputs = computed<Record<string, unknown>>(() => ({
+    data: this.dataState(),
+    viewContext: this.viewContextState(),
+    positionFilter: this.positionFilterState(),
+    closeButtonEl: this.closeButtonElementState(),
+    requestFocusTabHeader: () => this.focusActiveTabHeader(),
+  }));
 
-  private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
-    return 'player' in data && (data as PlayerCardDialogData).player !== undefined;
-  }
-
-  // Check if this data has seasons (combined stats)
-  readonly hasSeasons = !!this.data.seasons && this.data.seasons.length > 0;
-
-  // Determine view context (combined vs season)
-  readonly viewContext: 'combined' | 'season' = this.hasSeasons ? 'combined' : 'season';
-
-  // Show Graphs tab if combined data with multiple seasons OR season data with scores
-  readonly showGraphsTab = (this.hasSeasons && this.data.seasons!.length > 1) || (!this.hasSeasons && !!this.data.scores);
-
-  // Track which tab is active (0 = All, 1 = By Season)
+  linkCopied = false;
   selectedTabIndex = 0;
-
-  // Track screen size for season format
-  isMobile = false;
-
-  // Combined stats - will be populated in constructor after getting filter state
   stats: StatRow[] = [];
-
-  // Columns for combined stats table
   displayedColumns: string[] = ['label', 'value'];
-
-  // Columns for season breakdown table
   seasonColumns: string[] = [];
   seasonDataSource: (PlayerSeasonStats | GoalieSeasonStats)[] = [];
   careerBests: Map<string, Set<number>> = new Map();
   graphsComponent: Type<unknown> | null = null;
   graphsLoading = false;
   graphsLoadPromise: Promise<void> | null = null;
-  // Exposed mainly so tests can await the dynamic import deterministically.
-
-  // Keep inputs as a TS-visible field (so it isn't considered "template-only" usage).
-  graphsInputs: Record<string, unknown> = {
-    data: this.data,
-    viewContext: this.viewContext,
-    positionFilter: this.positionFilter,
-    closeButtonEl: undefined,
-    requestFocusTabHeader: () => this.focusActiveTabHeader(),
-  };
 
   constructor() {
     this.checkScreenSize();
-    window.addEventListener('resize', () => this.checkScreenSize());
 
-    // Fetch selected team once
-    this.apiService.getTeams().pipe(take(1)).subscribe((teams) => {
-      this.selectedTeam = teams.find((t) => t.id === this.teamService.selectedTeamId);
-    });
+    const defaultView = this.document.defaultView;
+    if (defaultView) {
+      fromEvent(defaultView, 'resize')
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.checkScreenSize());
+    }
 
-    // Get filter state for proper column display
+    this.apiService.getTeams()
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe((teams) => {
+        this.selectedTeamState.set(teams.find((t) => t.id === this.teamService.selectedTeamId));
+      });
+
     const filterObservable = this.isGoalie
       ? this.filterService.goalieFilters$
       : this.filterService.playerFilters$;
 
-    filterObservable.pipe(take(1)).subscribe((f) => {
-      this.statsPerGame = f.statsPerGame;
-      if (!this.isGoalie) {
-        this.positionFilter = f.positionFilter;
-      }
-      this.stats = this.statsService.buildStats(this.data, {
-        isGoalie: this.isGoalie,
-        statsPerGame: this.statsPerGame,
-        positionFilter: this.positionFilter,
-        viewContext: this.viewContext,
+    filterObservable
+      .pipe(take(1), takeUntilDestroyed(this.destroyRef))
+      .subscribe((filters) => {
+        this.statsPerGameState.set(filters.statsPerGame);
+        if (!this.isGoalie) {
+          this.positionFilterState.set(filters.positionFilter);
+        }
+        this.filtersHydratedState.set(true);
       });
-      if (this.hasSeasons) {
-        this.refreshSeasonData();
+
+    effect(() => {
+      if (!this.filtersHydratedState()) {
+        return;
       }
-      this.updateGraphsInputs();
+
+      this.stats = this.statsService.buildStats(this.dataState(), {
+        isGoalie: this.isGoalieState(),
+        statsPerGame: this.statsPerGameState(),
+        positionFilter: this.positionFilterState(),
+        viewContext: this.viewContextState(),
+      });
     });
 
-    // Initialize navigation service
+    effect(() => {
+      if (!this.filtersHydratedState()) {
+        return;
+      }
+
+      if (!this.hasSeasonsState()) {
+        this.seasonColumns = [];
+        this.seasonDataSource = [];
+        this.careerBests = new Map();
+        return;
+      }
+
+      const { seasonColumns, seasonDataSource, careerBests } =
+        this.seasonsService.setupSeasonData(this.dataState(), {
+          isGoalie: this.isGoalieState(),
+          statsPerGame: this.statsPerGameState(),
+          positionFilter: this.positionFilterState(),
+          isMobile: this.isMobileState(),
+        });
+
+      this.seasonColumns = seasonColumns;
+      this.seasonDataSource = seasonDataSource;
+      this.careerBests = careerBests;
+    });
+
     this.navigationService.init(
       this.navigationContext,
       this.host,
       this.cdr,
-      (player, _index) => {
-        this.data = player;
-        this.stats = this.statsService.buildStats(this.data, {
-          isGoalie: this.isGoalie,
-          statsPerGame: this.statsPerGame,
-          positionFilter: this.positionFilter,
-          viewContext: this.viewContext,
-        });
-        if (this.hasSeasons) {
-          this.refreshSeasonData();
-        }
-        this.updateGraphsInputs();
+      (player) => {
+        this.dataState.set(player);
       },
     );
 
-    // Set initial tab from dialog data if provided
     if (this.initialTab) {
       this.selectedTabIndex = this.getTabIndexFromName(this.initialTab);
-      // Pre-load graphs if that's the initial tab
       const graphsTabIndex = this.hasSeasons ? 2 : 1;
       if (this.selectedTabIndex === graphsTabIndex && this.showGraphsTab) {
         this.graphsLoadPromise = this.ensureGraphsLoaded();
@@ -202,29 +224,51 @@ export class PlayerCardComponent {
     }
   }
 
-  // --- Navigation ---
+  ngAfterViewInit(): void {
+    this.closeButtonElementState.set(this.closeButton?.nativeElement);
+  }
+
+  get data(): Player | Goalie {
+    return this.dataState();
+  }
+
+  get positionFilter(): PositionFilter {
+    return this.positionFilterState();
+  }
+
+  get statsPerGame(): boolean {
+    return this.statsPerGameState();
+  }
+
+  get selectedTeam(): Team | undefined {
+    return this.selectedTeamState();
+  }
+
+  get isMobile(): boolean {
+    return this.isMobileState();
+  }
+
+  get isGoalie(): boolean {
+    return this.isGoalieState();
+  }
+
+  get hasSeasons(): boolean {
+    return this.hasSeasonsState();
+  }
+
+  get viewContext(): 'combined' | 'season' {
+    return this.viewContextState();
+  }
+
+  get showGraphsTab(): boolean {
+    return this.showGraphsTabState();
+  }
 
   onKeydown(event: KeyboardEvent): void { this.navigationService.handleKeydown(event); }
 
   onTouchStart(event: TouchEvent): void { this.navigationService.handleTouchStart(event); }
 
   onTouchEnd(event: TouchEvent): void { this.navigationService.handleTouchEnd(event); }
-
-  private getTabIndexFromName(tabName: PlayerCardTab): number {
-    switch (tabName) {
-      case 'all':
-        return 0;
-      case 'by-season':
-        // Only valid if hasSeasons, otherwise fall back to 0
-        return this.hasSeasons ? 1 : 0;
-      case 'graphs':
-        // Graphs is at index 2 if hasSeasons, otherwise index 1
-        if (!this.showGraphsTab) return 0;
-        return this.hasSeasons ? 2 : 1;
-      default:
-        return 0;
-    }
-  }
 
   get positionAbbreviation(): string {
     if (this.isGoalie) return 'M';
@@ -238,7 +282,6 @@ export class PlayerCardComponent {
     return player.position === 'D' ? 'Puolustaja' : 'Hyökkääjä';
   }
 
-  // Getter for position filter switch label
   get positionSwitchLabel(): string {
     if (this.isGoalie) return '';
     const player = this.data as Player;
@@ -247,50 +290,16 @@ export class PlayerCardComponent {
       : 'playerCardPositionFilter.forwards';
   }
 
-  // Check if position filter is enabled (specific position selected, not 'all')
   get isPositionFilterEnabled(): boolean {
     return this.positionFilter !== 'all';
   }
 
-  // Toggle position filter between player's position and 'all'
   onPositionFilterToggle(checked: boolean): void {
     if (this.isGoalie) return;
     const player = this.data as Player;
     const newFilter: PositionFilter = checked ? ((player.position as PositionFilter) ?? 'F') : 'all';
     this.filterService.updatePlayerFilters({ positionFilter: newFilter });
-    this.positionFilter = newFilter;
-    this.stats = this.statsService.buildStats(this.data, {
-      isGoalie: this.isGoalie,
-      statsPerGame: this.statsPerGame,
-      positionFilter: this.positionFilter,
-      viewContext: this.viewContext,
-    });
-    if (this.hasSeasons) {
-      this.refreshSeasonData();
-    }
-    this.updateGraphsInputs();
-    this.cdr.detectChanges();
-  }
-
-  private checkScreenSize(): void {
-    this.isMobile = window.innerWidth <= 768;
-    // Update season display if already initialized
-    if (this.hasSeasons && this.seasonDataSource.length > 0) {
-      this.refreshSeasonData();
-    }
-  }
-
-  private refreshSeasonData(): void {
-    const { seasonColumns, seasonDataSource, careerBests } =
-      this.seasonsService.setupSeasonData(this.data, {
-        isGoalie: this.isGoalie,
-        statsPerGame: this.statsPerGame,
-        positionFilter: this.positionFilter,
-        isMobile: this.isMobile,
-      });
-    this.seasonColumns = seasonColumns;
-    this.seasonDataSource = seasonDataSource;
-    this.careerBests = careerBests;
+    this.positionFilterState.set(newFilter);
   }
 
   isCareerBest(column: string, season: number): boolean {
@@ -299,10 +308,7 @@ export class PlayerCardComponent {
 
   onTabChange(index: number): void {
     this.selectedTabIndex = index;
-    this.updateGraphsInputs();
 
-    // Graphs tab is heavy (Chart.js). Lazy-load it to keep the initial bundle small.
-    // Tab index: 0=All, 1=By Season (if hasSeasons), 2=Graphs (if hasSeasons) OR 1=Graphs (if !hasSeasons)
     const graphsTabIndex = this.hasSeasons ? 2 : 1;
     if (index === graphsTabIndex) {
       this.graphsLoadPromise = this.ensureGraphsLoaded();
@@ -321,11 +327,9 @@ export class PlayerCardComponent {
     const playerSlug = toSlug(this.data.name);
     const type = this.isGoalie ? 'goalie' : 'player';
 
-    // Build path - season is now in path for better SEO
     const season = (this.data as { season?: number }).season;
     const seasonPath = season !== undefined ? `/${season}` : '';
 
-    // Tab stays as query param (UI detail)
     const tabName = this.getCurrentTabName();
     const queryString = tabName !== 'all' ? `?tab=${tabName}` : '';
 
@@ -333,7 +337,6 @@ export class PlayerCardComponent {
 
     navigator.clipboard.writeText(url).then(() => {
       this.linkCopied = true;
-      // Show the tooltip with the "copied" message
       tooltip?.show();
       setTimeout(() => {
         this.linkCopied = false;
@@ -342,18 +345,43 @@ export class PlayerCardComponent {
     });
   }
 
+  private isWrappedData(data: Player | Goalie | PlayerCardDialogData): data is PlayerCardDialogData {
+    return 'player' in data && (data as PlayerCardDialogData).player !== undefined;
+  }
+
+  private unwrapDialogData(data: Player | Goalie | PlayerCardDialogData): Player | Goalie {
+    return this.isWrappedData(data) ? data.player : data;
+  }
+
+  private getTabIndexFromName(tabName: PlayerCardTab): number {
+    switch (tabName) {
+      case 'all':
+        return 0;
+      case 'by-season':
+        return this.hasSeasons ? 1 : 0;
+      case 'graphs':
+        if (!this.showGraphsTab) return 0;
+        return this.hasSeasons ? 2 : 1;
+      default:
+        return 0;
+    }
+  }
+
+  private checkScreenSize(): void {
+    const viewportWidth = this.document.defaultView?.innerWidth ?? 1024;
+    this.isMobileState.set(viewportWidth <= 768);
+  }
+
   private getCurrentTabName(): PlayerCardTab {
     if (this.hasSeasons) {
-      // Tabs: 0=all, 1=by-season, 2=graphs
       switch (this.selectedTabIndex) {
         case 1: return 'by-season';
         case 2: return 'graphs';
         default: return 'all';
       }
-    } else {
-      // Tabs: 0=all, 1=graphs (no by-season tab)
-      return this.selectedTabIndex === 1 ? 'graphs' : 'all';
     }
+
+    return this.selectedTabIndex === 1 ? 'graphs' : 'all';
   }
 
   private async ensureGraphsLoaded(): Promise<void> {
@@ -374,22 +402,10 @@ export class PlayerCardComponent {
     return this.graphsLoadPromise;
   }
 
-  private updateGraphsInputs(): void {
-    this.graphsInputs = {
-      data: this.data,
-      viewContext: this.viewContext,
-      positionFilter: this.positionFilter,
-      closeButtonEl: this.closeButton?.nativeElement,
-      requestFocusTabHeader: () => this.focusActiveTabHeader(),
-    };
-  }
-
   private focusActiveTabHeader(): void {
-    // Angular Material tabs render the header within the component DOM.
-    // Prefer focusing the active tab label so users can move between tabs.
     const root = this.host.nativeElement;
     const activeTab = root.querySelector(
-      '.mat-mdc-tab-header .mdc-tab--active'
+      '.mat-mdc-tab-header .mdc-tab--active',
     ) as HTMLElement | null;
 
     if (activeTab) {
@@ -397,9 +413,8 @@ export class PlayerCardComponent {
       return;
     }
 
-    // Fallback: if the component isn't fully rendered yet.
     const anyTabHeader = this.document.querySelector(
-      '.mat-mdc-tab-header .mdc-tab'
+      '.mat-mdc-tab-header .mdc-tab',
     ) as HTMLElement | null;
     anyTabHeader?.focus();
   }

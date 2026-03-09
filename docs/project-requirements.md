@@ -69,7 +69,7 @@ npm run test:coverage
 ```
 
 - **Scope**: Application implementation under `src/` (test files excluded)
-- **Coverage gate**: `npm run verify` enforces minimum coverage of 92% statements, 75% branches, 94% functions, and 95% lines.
+- **Coverage gate**: `npm run verify` enforces minimum coverage of 93% statements, 75% branches, 94% functions, and 95% lines.
 - **Contribution rule (required)**: every new/changed code path must be covered by tests (aim 100% coverage for the code you touched, including error/edge cases)
 - **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
 
@@ -90,7 +90,7 @@ npm run test:coverage
 ### Test Coverage
 
 - New/changed logic must be fully tested (aim 100% coverage for the code you touched, including error/edge cases).
-- `npm run verify` must keep overall coverage at or above 92% statements, 75% branches, 94% functions, and 95% lines.
+- `npm run verify` must keep overall coverage at or above 93% statements, 75% branches, 94% functions, and 95% lines.
 - The reduced branch threshold is a temporary workaround for current Angular signal-input coverage noise, not permission to leave real logic untested.
 - After refactors, investigate the implementation that was replaced and remove it if it no longer has real consumers.
 - Don’t merge changes that add uncovered new behavior.

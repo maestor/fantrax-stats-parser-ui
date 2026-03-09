@@ -19,7 +19,7 @@ Every contribution must include tests for all new/changed behavior.
 
 - **Rule**: new/changed logic should be tested (include error and edge cases)
 - **CI Gate**: `npm run verify` must pass (tests + production build)
-- **Coverage thresholds**: `npm run verify` enforces minimum coverage of 92% statements, 75% branches, 94% functions, and 95% lines via `angular.json` (`architect.test.options.coverageThresholds`)
+- **Coverage thresholds**: `npm run verify` enforces minimum coverage of 93% statements, 75% branches, 94% functions, and 95% lines via `angular.json` (`architect.test.options.coverageThresholds`)
 - **Temporary note**: the branch threshold is intentionally lower while Angular signal-input coverage is still over-counting framework branches; do not use that as a reason to skip meaningful behavior coverage
 - **Planning-heavy changes**: save the approved implementation plan locally under gitignored `docs/plans/YYYY-MM-DD-*.md` before editing code so behavior-test work can resume cleanly in a later session
 

@@ -169,7 +169,7 @@ Local Playwright runs against `http://localhost:4200` and starts `npm start` via
 
 ### Test Coverage Summary
 
-Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Vitest coverage now uses the **Istanbul** provider, and CI enforces minimum thresholds of **92% statements**, **75% branches**, **94% functions**, and **95% lines** via `angular.json` (`architect.test.options.coverageThresholds`). The lower temporary branch threshold reflects current Angular signal-input coverage noise; every contribution must still include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
+Coverage is tracked via `npm run test:coverage` and as part of `npm run verify` (tests with coverage + production build). Vitest coverage now uses the **Istanbul** provider, and CI enforces minimum thresholds of **93% statements**, **75% branches**, **94% functions**, and **95% lines** via `angular.json` (`architect.test.options.coverageThresholds`). The lower temporary branch threshold reflects current Angular signal-input coverage noise; every contribution must still include tests for all new/changed logic (aim for **100% coverage for touched code paths**, including error/edge cases).
 
 See [docs/project-testing.md](docs/project-testing.md) for detailed information about test patterns, best practices, and coverage.
 

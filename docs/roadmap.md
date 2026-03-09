@@ -32,7 +32,6 @@ Persist the user's last sort column and direction per table (players/goalies) in
 
 ### Remaining modernization work
 
-- Modernize the remaining decorator-era, stateful table and card components where it is behavior-safe: `stats-table.component.ts`, `virtual-table.component.ts`, `player-card.component.ts`, and `player-card-graphs.component.ts`.
 - Audit the remaining `@Input`-based shared components and convert only the inputs that are truly required/optional instead of preserving defensive flexibility by default.
 - Revisit the temporary branch-coverage workaround after Angular fixes signal-input coverage accounting, then raise the branch threshold back up.
 

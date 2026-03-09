@@ -1,13 +1,12 @@
 import {
-  ChangeDetectorRef,
-  inject,
-  Component,
-  Input,
-  ElementRef,
-  ViewChild,
-  SimpleChanges,
-  OnChanges,
   AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  effect,
+  inject,
+  input,
+  ViewChild,
   OnDestroy,
 } from '@angular/core';
 import { AsyncPipe, NgClass } from '@angular/common';
@@ -65,39 +64,87 @@ export type TableRow =
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
 })
-export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy {
+export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   readonly dialog = inject(MatDialog);
   private translate = inject(TranslateService);
 
+  readonly dataInput = input.required<TableRow[]>({ alias: 'data' });
+  readonly columnsInput = input.required<Column[]>({ alias: 'columns' });
+  readonly defaultSortColumnInput = input('score', { alias: 'defaultSortColumn' });
+  readonly loadingInput = input(false, { alias: 'loading' });
+  readonly apiErrorInput = input(false, { alias: 'apiError' });
+  readonly tableIdInput = input('stats-table', { alias: 'tableId' });
+  readonly showSearchInput = input(true, { alias: 'showSearch' });
+  readonly searchLabelKeyInput = input('table.playerSearch', { alias: 'searchLabelKey' });
+  readonly showPositionColumnInput = input(true, { alias: 'showPositionColumn' });
+  readonly positionValueInput = input<
+    ((row: TableRow, index: number) => string | number) | undefined
+  >(undefined, { alias: 'positionValue' });
+  readonly selectRowInput = input(false, { alias: 'selectRow' });
+  readonly isRowSelectedInput = input<((row: TableRow) => boolean) | undefined>(undefined, {
+    alias: 'isRowSelected',
+  });
+  readonly canSelectRowInput = input<Observable<boolean>>(of(true), { alias: 'canSelectRow$' });
+  readonly onRowSelectInput = input<((row: TableRow) => void) | undefined>(undefined, {
+    alias: 'onRowSelect',
+  });
+  readonly clickableInput = input(true, { alias: 'clickable' });
+  readonly formatCellInput = input<
+    ((column: string, value: number | string | undefined) => string) | undefined
+  >(undefined, { alias: 'formatCell' });
+  readonly expandableInput = input(false, { alias: 'expandable' });
+  readonly rowKeyInput = input<((row: TableRow, index: number) => string) | undefined>(undefined, {
+    alias: 'rowKey',
+  });
+  readonly isRowExpandableInput = input<((row: TableRow) => boolean) | undefined>(undefined, {
+    alias: 'isRowExpandable',
+  });
+  readonly expandedRowsForInput = input<((row: TableRow) => ExpandedRowViewModel[]) | undefined>(
+    undefined,
+    { alias: 'expandedRowsFor' },
+  );
+  readonly expandToggleAriaLabelInput = input<
+    ((row: TableRow, expanded: boolean) => string) | undefined
+  >(undefined, { alias: 'expandToggleAriaLabel' });
+  readonly expandedHeaderLabelsInput = input<
+    { season: string; primary: string; secondary?: string } | undefined
+  >(undefined, { alias: 'expandedHeaderLabels' });
+
   private loadingIntervalId?: ReturnType<typeof setInterval>;
   private loadingStartMs?: number;
+  private previousData?: TableRow[];
+  private previousColumns?: Column[];
+  private previousDefaultSortColumn?: string;
+  private previousLoading?: boolean;
+  private previousTableId?: string;
+  private previousShowPositionColumn?: boolean;
 
   loadingProgress = 0;
   loadingBuffer = 0;
 
-  @Input() data: TableRow[] = [];
-  @Input() columns: Column[] = [];
-  @Input() defaultSortColumn = 'score';
-  @Input() loading = false;
-  @Input() apiError = false;
-  @Input() tableId = 'stats-table';
-  @Input() showSearch = true;
-  @Input() searchLabelKey = 'table.playerSearch';
-  @Input() showPositionColumn = true;
-  @Input() positionValue?: (row: TableRow, index: number) => string | number;
-  @Input() selectRow = false;
-  @Input() isRowSelected?: (row: TableRow) => boolean;
-  @Input() canSelectRow$: Observable<boolean> = of(true);
-  @Input() onRowSelect?: (row: TableRow) => void;
-  @Input() clickable = true;
-  @Input() formatCell?: (column: string, value: number | string | undefined) => string;
-  @Input() expandable = false;
-  @Input() rowKey?: (row: TableRow, index: number) => string;
-  @Input() isRowExpandable?: (row: TableRow) => boolean;
-  @Input() expandedRowsFor?: (row: TableRow) => ExpandedRowViewModel[];
-  @Input() expandToggleAriaLabel?: (row: TableRow, expanded: boolean) => string;
-  @Input() expandedHeaderLabels?: { season: string; primary: string; secondary?: string };
+  data: TableRow[] = [];
+  columns: Column[] = [];
+  defaultSortColumn = 'score';
+  loading = false;
+  apiError = false;
+  tableId = 'stats-table';
+  showSearch = true;
+  searchLabelKey = 'table.playerSearch';
+  showPositionColumn = true;
+  positionValue?: (row: TableRow, index: number) => string | number;
+  selectRow = false;
+  isRowSelected?: (row: TableRow) => boolean;
+  canSelectRow$: Observable<boolean> = of(true);
+  onRowSelect?: (row: TableRow) => void;
+  clickable = true;
+  formatCell?: (column: string, value: number | string | undefined) => string;
+  expandable = false;
+  rowKey?: (row: TableRow, index: number) => string;
+  isRowExpandable?: (row: TableRow) => boolean;
+  expandedRowsFor?: (row: TableRow) => ExpandedRowViewModel[];
+  expandToggleAriaLabel?: (row: TableRow, expanded: boolean) => string;
+  expandedHeaderLabels?: { season: string; primary: string; secondary?: string };
 
   instructionsId = 'stats-table-instructions';
   activeRowIndex = 0;
@@ -113,53 +160,114 @@ export class StatsTableComponent implements OnChanges, AfterViewInit, OnDestroy 
   @ViewChild('searchInput', { read: ElementRef }) searchInput?: ElementRef<HTMLInputElement>;
   @ViewChild('tableRoot', { read: ElementRef }) tableRootRef?: ElementRef<HTMLElement>;
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['tableId']) {
-      this.instructionsId = `${this.tableId}-instructions`;
-    }
+  constructor() {
+    effect(() => {
+      const data = this.dataInput();
+      const columns = this.columnsInput();
+      const defaultSortColumn = this.defaultSortColumnInput();
+      const loading = this.loadingInput();
+      const apiError = this.apiErrorInput();
+      const tableId = this.tableIdInput();
+      const showSearch = this.showSearchInput();
+      const searchLabelKey = this.searchLabelKeyInput();
+      const showPositionColumn = this.showPositionColumnInput();
+      const positionValue = this.positionValueInput();
+      const selectRow = this.selectRowInput();
+      const isRowSelected = this.isRowSelectedInput();
+      const canSelectRow$ = this.canSelectRowInput();
+      const onRowSelect = this.onRowSelectInput();
+      const clickable = this.clickableInput();
+      const formatCell = this.formatCellInput();
+      const expandable = this.expandableInput();
+      const rowKey = this.rowKeyInput();
+      const isRowExpandable = this.isRowExpandableInput();
+      const expandedRowsFor = this.expandedRowsForInput();
+      const expandToggleAriaLabel = this.expandToggleAriaLabelInput();
+      const expandedHeaderLabels = this.expandedHeaderLabelsInput();
 
-    if (changes['loading']) {
-      this.onLoadingChanged(this.loading);
-    }
+      const dataChanged = data !== this.previousData;
+      const columnsChanged = columns !== this.previousColumns;
+      const defaultSortChanged = defaultSortColumn !== this.previousDefaultSortColumn;
+      const loadingChanged = loading !== this.previousLoading;
+      const tableIdChanged = tableId !== this.previousTableId;
+      const showPositionChanged = showPositionColumn !== this.previousShowPositionColumn;
 
-    const sortRelevantChange =
-      Boolean(changes['defaultSortColumn']) || Boolean(changes['columns']);
+      this.data = data;
+      this.columns = columns;
+      this.defaultSortColumn = defaultSortColumn;
+      this.loading = loading;
+      this.apiError = apiError;
+      this.tableId = tableId;
+      this.showSearch = showSearch;
+      this.searchLabelKey = searchLabelKey;
+      this.showPositionColumn = showPositionColumn;
+      this.positionValue = positionValue;
+      this.selectRow = selectRow;
+      this.isRowSelected = isRowSelected;
+      this.canSelectRow$ = canSelectRow$;
+      this.onRowSelect = onRowSelect;
+      this.clickable = clickable;
+      this.formatCell = formatCell;
+      this.expandable = expandable;
+      this.rowKey = rowKey;
+      this.isRowExpandable = isRowExpandable;
+      this.expandedRowsFor = expandedRowsFor;
+      this.expandToggleAriaLabel = expandToggleAriaLabel;
+      this.expandedHeaderLabels = expandedHeaderLabels;
 
-    if (changes['data'] && this.data) {
-      this.dataSource.data = this.data;
-      this.rebuildRowKeyMap();
-      this.expandedRowKeys.clear();
+      if (tableIdChanged) {
+        this.instructionsId = `${tableId}-instructions`;
+      }
 
-      if (this.columns?.length > 0) {
-        this.dynamicColumns = this.columns;
+      if (loadingChanged) {
+        this.onLoadingChanged(loading);
+      }
+
+      const sortRelevantChange = columnsChanged || defaultSortChanged;
+
+      if (dataChanged) {
+        this.dataSource.data = data;
+        this.rebuildRowKeyMap();
+        this.expandedRowKeys.clear();
+
+        if (columns.length > 0) {
+          this.dynamicColumns = columns;
+          this.displayedFields = this.buildDisplayedFields();
+        }
+        if (this.sort) {
+          this.dataSource.sort = this.sort;
+        }
+
+        if (this.sort && sortRelevantChange) {
+          this.applyDefaultSort();
+        }
+
+        // Reset focus to first row when the dataset changes.
+        this.activeRowIndex = 0;
+        setTimeout(() => this.ensureActiveRowInRange(), 0);
+      }
+
+      if (columnsChanged && !dataChanged) {
+        this.dynamicColumns = columns;
         this.displayedFields = this.buildDisplayedFields();
       }
-      if (this.sort) {
-        this.dataSource.sort = this.sort;
+
+      if (showPositionChanged) {
+        this.displayedFields = this.buildDisplayedFields();
       }
 
-      if (this.sort && sortRelevantChange) {
+      if (this.sort && sortRelevantChange && !dataChanged) {
+        // When only the sort inputs changed, apply immediately.
         this.applyDefaultSort();
       }
 
-      // Reset focus to first row when the dataset changes.
-      this.activeRowIndex = 0;
-      setTimeout(() => this.ensureActiveRowInRange(), 0);
-    }
-
-    if (changes['columns'] && !changes['data']) {
-      this.dynamicColumns = this.columns;
-      this.displayedFields = this.buildDisplayedFields();
-    }
-
-    if (changes['showPositionColumn']) {
-      this.displayedFields = this.buildDisplayedFields();
-    }
-
-    if (this.sort && sortRelevantChange && !(changes['data'] && this.data)) {
-      // When only the sort inputs changed, apply immediately.
-      this.applyDefaultSort();
-    }
+      this.previousData = data;
+      this.previousColumns = columns;
+      this.previousDefaultSortColumn = defaultSortColumn;
+      this.previousLoading = loading;
+      this.previousTableId = tableId;
+      this.previousShowPositionColumn = showPositionColumn;
+    });
   }
 
   ngOnDestroy(): void {

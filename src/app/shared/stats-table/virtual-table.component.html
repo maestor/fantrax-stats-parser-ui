@@ -1,5 +1,5 @@
 <div class="stats-table-wrapper mat-elevation-z4" id="career-table" tabindex="-1" #tableRoot>
-  <p class="sr-only" id="career-table-instructions">
+  <p class="sr-only" [attr.id]="instructionsId">
     {{ 'a11y.tableNavigationHintReadOnly' | translate }}
   </p>
 
@@ -20,7 +20,7 @@
   <div
     class="table-container table-container--virtual"
     role="table"
-    aria-describedby="career-table-instructions"
+    [attr.aria-describedby]="instructionsId"
   >
     <div
       class="virtual-table-grid"
