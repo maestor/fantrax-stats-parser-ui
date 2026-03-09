@@ -35,8 +35,6 @@ import {
   startWith,
   take,
 } from "rxjs";
-import { HelpDialogComponent } from "@shared/help-dialog/help-dialog.component";
-import { GlobalNavComponent } from "@shared/global-nav/global-nav.component";
 import { ViewportService } from "@services/viewport.service";
 import {
   ControlsContext,
@@ -45,6 +43,24 @@ import {
 import { ApiService, Team } from "@services/api.service";
 import { TeamService } from "@services/team.service";
 import { PwaUpdateService } from "@services/pwa-update.service";
+
+let helpDialogComponentPromise: Promise<
+  typeof import("@shared/help-dialog/help-dialog.component")
+> | null = null;
+
+function loadHelpDialogComponent() {
+  helpDialogComponentPromise ??= import("@shared/help-dialog/help-dialog.component");
+  return helpDialogComponentPromise;
+}
+
+let globalNavComponentPromise: Promise<
+  typeof import("@shared/global-nav/global-nav.component")
+> | null = null;
+
+function loadGlobalNavComponent() {
+  globalNavComponentPromise ??= import("@shared/global-nav/global-nav.component");
+  return globalNavComponentPromise;
+}
 
 @Component({
   selector: "app-root",
@@ -297,7 +313,7 @@ export class AppComponent implements OnInit {
 
     if (event.key === "?" && !isInFormField) {
       event.preventDefault();
-      this.openHelpDialog();
+      void this.openHelpDialog();
       return;
     }
 
@@ -318,7 +334,9 @@ export class AppComponent implements OnInit {
     }
   }
 
-  openHelpDialog(): void {
+  async openHelpDialog(): Promise<void> {
+    const { HelpDialogComponent } = await loadHelpDialogComponent();
+
     this.dialog.open(HelpDialogComponent, {
       panelClass: "help-dialog",
       autoFocus: "first-tabbable",
@@ -326,7 +344,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openNavMenu(): void {
+  async openNavMenu(): Promise<void> {
+    const { GlobalNavComponent } = await loadGlobalNavComponent();
     this.bottomSheet.open(GlobalNavComponent, { autoFocus: false });
   }
 

@@ -9,6 +9,7 @@
     "ng": "ng",
     "start": "npm run clean:playwright && ng serve",
     "build": "NODE_OPTIONS=--max-old-space-size=6144 ng build --configuration production",
+    "perf:audit": "npm run build && npx tsx scripts/perf-audit.ts",
     "generate:types": "openapi-typescript https://ffhl-stats-api.vercel.app/openapi.json -o src/app/services/api.types.generated.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",

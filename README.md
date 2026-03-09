@@ -123,6 +123,7 @@ npm run e2e:capture-fixtures           # Re-capture API fixtures from live backe
 
 # CI / verification
 npm run verify                         # Headless unit tests + production build
+npm run perf:audit                     # Local production performance audit (CWV-oriented)
 
 # Production build
 npm run build
@@ -143,6 +144,23 @@ Best practice when `npm run verify` or `npm run build` shows a budget warning:
 4. Raise a budget only when the size increase is understood, justified by real functionality, and the new threshold still acts as a meaningful guardrail.
 
 Local test policy: run only one heavy test command at a time, and wait about 2 minutes between repeated `npm run verify` runs on local machines. See [docs/project-testing.md](docs/project-testing.md).
+
+### Performance audit (Core Web Vitals oriented)
+
+Run `npm run perf:audit` to execute a local lab-style performance audit against the production build.
+
+- The command rebuilds the app in production mode
+- Serves `dist/fantrax-stats-parser-ui/browser` locally
+- Mocks API responses from `e2e/fixtures/data/` so results are deterministic and backend-independent
+- Audits `/` and `/career/players` in both desktop and mobile browser profiles
+- Reports `LCP`, `CLS`, and an interaction-delay proxy for common user actions
+
+Important:
+
+- This is a local guardrail, not a replacement for public PageSpeed Insights scores
+- `LCP` and `CLS` map directly to Core Web Vitals thresholds
+- The interaction number is a scripted lab proxy, not full field `INP`
+- Use PageSpeed Insights / CrUX field data to judge the real shipped user experience
 
 ## Testing
 

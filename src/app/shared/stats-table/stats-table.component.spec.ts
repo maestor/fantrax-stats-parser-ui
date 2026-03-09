@@ -173,7 +173,9 @@ describe('StatsTableComponent — user behavior', () => {
 
     fireEvent.keyDown(rows[0], { key: 'Enter' });
 
-    expect(open).toHaveBeenCalledTimes(1);
+    await vi.waitFor(() => {
+      expect(open).toHaveBeenCalledTimes(1);
+    });
 
     const dialogCall = open.mock.calls[0] as unknown as [
       unknown,

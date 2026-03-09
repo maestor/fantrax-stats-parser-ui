@@ -79,6 +79,18 @@ Use this rule during development after `npm run verify`:
 4. Adjust the budget only if the size increase is understood and justified by current product scope.
 5. When budgets are changed, update `README.md` and relevant docs so the threshold change is explicit.
 
+### Run Performance Audit
+```bash
+npm run perf:audit
+```
+- Builds the production bundle before auditing
+- Serves the local production output instead of `ng serve`
+- Reuses Playwright plus the repo's fixture-backed API mocking to keep the audit deterministic
+- Covers `/` and `/career/players` in desktop + mobile profiles
+- Reports `LCP`, `CLS`, and a scripted interaction-delay proxy
+
+Use this as a local regression check after startup-bundle or rendering changes. It is intentionally a lab audit, so keep using PageSpeed Insights / Chrome DevTools when you need public-score or field-data confirmation.
+
 ### Theming / Automatic Dark Mode
 
 The UI follows the device/browser color scheme automatically (no manual toggle).

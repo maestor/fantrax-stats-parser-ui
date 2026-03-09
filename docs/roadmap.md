@@ -44,3 +44,5 @@ Persist the user's last sort column and direction per table (players/goalies) in
 
 - Visual regression testing (Playwright screenshot comparison)
 - Performance testing (Core Web Vitals)
+  Local `npm run perf:audit` now covers the production build with fixture-backed API mocks for the front page and career players entry route.
+  Next steps are adding stable leaderboard coverage, comparing lab results against PageSpeed Insights / CrUX field data, and deciding whether more aggressive delivery work (for example font/icon delivery or deeper app-shell trimming) is justified.

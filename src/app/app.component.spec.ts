@@ -114,7 +114,11 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     searchInput.blur();
     fireEvent.keyDown(document, { key: '?' });
 
-    const helpCloseButton = await screen.findByRole('button', { name: 'helpDialog.close' });
+    const helpCloseButton = await screen.findByRole(
+      'button',
+      { name: 'helpDialog.close' },
+      { timeout: 5000 }
+    );
     fireEvent.click(helpCloseButton);
 
     await vi.waitFor(() => {
