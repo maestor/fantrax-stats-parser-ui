@@ -139,7 +139,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     });
   });
 
-  it('defers mobile drawer API work until the drawer is opened for the first time', async () => {
+  it('boots mobile stats with start-from data before the drawer opens and still defers drawer-only metadata work', async () => {
     const apiServiceMock = createApiServiceMock();
     const getTeams = vi.fn(apiServiceMock.getTeams);
     const getSeasons = vi.fn(apiServiceMock.getSeasons);
@@ -165,7 +165,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
 
     expect(getTeams).toHaveBeenCalledTimes(1);
-    expect(getSeasons).not.toHaveBeenCalled();
+    expect(getSeasons).toHaveBeenCalledTimes(1);
     expect(getLastModified).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));

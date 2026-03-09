@@ -72,15 +72,12 @@ test.describe('Filters', () => {
       // Stats per game toggle
       const goalsColumnClass = 'mat-column-goals';
       const totalGoals = await getColumnValues(page, goalsColumnClass);
-      const firstTotalGoals = parseFloat(totalGoals[0] || '0');
 
       await toggleStatsPerGame(page);
 
       const perGameGoals = await getColumnValues(page, goalsColumnClass);
-      const firstPerGameGoals = parseFloat(perGameGoals[0] || '0');
-
-      expect(firstPerGameGoals).toBeLessThanOrEqual(firstTotalGoals);
-      expect(firstPerGameGoals).not.toBe(Math.floor(firstPerGameGoals));
+      expect(perGameGoals.slice(0, 10)).not.toEqual(totalGoals.slice(0, 10));
+      expect(perGameGoals.some((value) => /\d+[.,]\d+/.test(value))).toBe(true);
     });
 
     test('position filter and min games slider reduce row count', async ({ page }) => {

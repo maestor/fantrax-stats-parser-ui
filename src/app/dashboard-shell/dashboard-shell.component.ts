@@ -31,6 +31,7 @@ import { TeamService } from '../services/team.service';
 import { ViewportService } from '../services/viewport.service';
 import { ComparisonBarComponent } from '../shared/comparison-bar/comparison-bar.component';
 import { SettingsPanelComponent } from '../shared/settings-panel/settings-panel.component';
+import { StartFromSeasonSyncService } from '../shared/top-controls/start-from-season-switcher/start-from-season-sync.service';
 import { TopControlsComponent } from '../shared/top-controls/top-controls.component';
 
 type DashboardRouteUiState = {
@@ -162,11 +163,14 @@ export class DashboardShellComponent implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
+  private readonly startFromSeasonSync = inject(StartFromSeasonSyncService);
 
   hasInitializedSettingsDrawerContent = false;
   isSettingsDrawerOpen = false;
 
   ngOnInit(): void {
+    void this.startFromSeasonSync;
+
     this.router.events
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((event) => {
