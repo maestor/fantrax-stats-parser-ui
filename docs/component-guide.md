@@ -34,10 +34,20 @@ Some sections below describe current public inputs for existing components. Thos
 **Usage**:
 
 ```html
-<app-navigation></app-navigation>
+<app-navigation [tabPanel]="tabPanel"></app-navigation>
 ```
 
-**Inputs/Outputs**: None (uses router for navigation)
+**Inputs**:
+
+```typescript
+readonly tabPanel = input.required<MatTabNavPanel>();
+```
+
+**Behavior**:
+
+- `tabPanel` is required because every real app-shell usage pairs the nav bar with a Material `mat-tab-nav-panel`
+- Reads the current router URL to keep the active tab highlight in sync
+- Normalizes `/` to `/player-stats` so the default route highlights the player tab
 
 ---
 
@@ -189,6 +199,39 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Fetch career rows from the dedicated API endpoints
 - Pass column definitions and formatters into the shared virtualized table
 - Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
+
+### LeaderboardComponent
+
+**Location**: `src/app/leaderboards/leaderboard/`
+
+**Type**: Feature Wrapper Component
+
+**Purpose**: Reusable leaderboard shell that fetches leaderboard rows and feeds the read-only expandable stats table used by the regular-season and playoffs leaderboard views.
+
+**Inputs**:
+
+```typescript
+readonly fetchFn = input.required<() => Observable<LeaderboardEntry[]>>();
+readonly columns = input.required<Column[]>();
+readonly formatCell = input<((column: string, value: number | string | undefined) => string) | undefined>();
+readonly rowKey = input.required<(row: LeaderboardRow, index: number) => string>();
+readonly isRowExpandable = input.required<(row: LeaderboardRow) => boolean>();
+readonly expandedRowsFor = input.required<(row: LeaderboardRow) => ExpandedRowViewModel[]>();
+readonly expandToggleAriaLabel = input.required<
+  (row: LeaderboardRow, expanded: boolean) => string
+>();
+readonly expandedHeaderLabels = input.required<{
+  season: string;
+  primary: string;
+  secondary?: string;
+}>();
+```
+
+**Behavior**:
+
+- `formatCell` remains optional because only the regular-season leaderboard currently custom-formats percentage columns
+- All other inputs are required because both concrete leaderboard parents always provide them
+- Fetches rows once on init, derives tied-position display values, and forwards expansion callbacks into `StatsTableComponent`
 
 ---
 
@@ -909,6 +952,15 @@ Supported block types:
 - `ComparisonService` — selection state
 - `MatDialog` — opens comparison dialog
 
+**Input Contract**:
+
+```typescript
+readonly context = input.required<StatsContext>();
+```
+
+- `context` is required because the app shell always provides the active stats context
+- Changing `context` clears any in-progress comparison selection through an effect-driven reset
+
 ---
 
 ### ComparisonDialogComponent
@@ -923,7 +975,9 @@ Supported block types:
 
 ```typescript
 data: {
-  players: [Player | Goalie, Player | Goalie];
+  context: StatsContext;
+  playerA: Player | Goalie;
+  playerB: Player | Goalie;
 }
 ```
 
@@ -951,8 +1005,10 @@ data: {
 **Inputs**:
 
 ```typescript
+readonly context = input.required<StatsContext>();
 readonly playerA = input.required<Player | Goalie>();
 readonly playerB = input.required<Player | Goalie>();
+readonly isMobile = input.required<boolean>();
 ```
 
 **Key Features**:
@@ -975,6 +1031,7 @@ readonly playerB = input.required<Player | Goalie>();
 **Inputs**:
 
 ```typescript
+readonly context = input.required<StatsContext>();
 readonly playerA = input.required<Player | Goalie>();
 readonly playerB = input.required<Player | Goalie>();
 ```

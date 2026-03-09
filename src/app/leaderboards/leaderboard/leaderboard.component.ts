@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Subject, Observable, takeUntil } from 'rxjs';
+import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 import { StatsTableComponent, TableRow } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
@@ -15,44 +16,52 @@ type LeaderboardRow = LeaderboardEntry & { displayPosition: string };
   template: `
     <app-stats-table
       [data]="data"
-      [columns]="columns"
+      [columns]="columns()"
       [loading]="loading"
       [apiError]="apiError"
       [showSearch]="false"
       [showPositionColumn]="false"
       [clickable]="false"
       [selectRow]="false"
-      [formatCell]="formatCell"
+      [formatCell]="formatCell()"
       [expandable]="true"
       [rowKey]="rowKeyForTable"
       [isRowExpandable]="isRowExpandableForTable"
       [expandedRowsFor]="expandedRowsForTable"
       [expandToggleAriaLabel]="expandToggleAriaLabelForTable"
-      [expandedHeaderLabels]="expandedHeaderLabels"
+      [expandedHeaderLabels]="expandedHeaderLabels()"
       defaultSortColumn=""
       tableId="leaderboard-table"
     />
   `,
 })
-export class LeaderboardComponent implements OnInit, OnDestroy {
-  @Input() fetchFn!: () => Observable<LeaderboardEntry[]>;
-  @Input() columns: Column[] = [];
-  @Input() formatCell?: (column: string, value: number | string | undefined) => string;
-  @Input() rowKey?: (row: LeaderboardRow, index: number) => string;
-  @Input({ required: true }) isRowExpandable!: (row: LeaderboardRow) => boolean;
-  @Input({ required: true }) expandedRowsFor!: (row: LeaderboardRow) => ExpandedRowViewModel[];
-  @Input() expandToggleAriaLabel?: (row: LeaderboardRow, expanded: boolean) => string;
-  @Input() expandedHeaderLabels?: { season: string; primary: string; secondary?: string };
-  readonly rowKeyForTable = (row: TableRow, index: number): string =>
-    this.rowKey?.(row as LeaderboardRow, index) ?? String(index);
-  readonly isRowExpandableForTable = (row: TableRow): boolean =>
-    this.isRowExpandable(row as LeaderboardRow);
-  readonly expandedRowsForTable = (row: TableRow): ExpandedRowViewModel[] =>
-    this.expandedRowsFor(row as LeaderboardRow);
-  readonly expandToggleAriaLabelForTable = (row: TableRow, expanded: boolean): string =>
-    this.expandToggleAriaLabel?.(row as LeaderboardRow, expanded) ?? '';
+export class LeaderboardComponent implements OnInit {
+  readonly fetchFn = input.required<() => Observable<LeaderboardEntry[]>>();
+  readonly columns = input.required<Column[]>();
+  readonly formatCell = input<
+    ((column: string, value: number | string | undefined) => string) | undefined
+  >();
+  readonly rowKey = input.required<(row: LeaderboardRow, index: number) => string>();
+  readonly isRowExpandable = input.required<(row: LeaderboardRow) => boolean>();
+  readonly expandedRowsFor = input.required<(row: LeaderboardRow) => ExpandedRowViewModel[]>();
+  readonly expandToggleAriaLabel = input.required<
+    (row: LeaderboardRow, expanded: boolean) => string
+  >();
+  readonly expandedHeaderLabels = input.required<{
+    season: string;
+    primary: string;
+    secondary?: string;
+  }>();
+  private destroyRef = inject(DestroyRef);
 
-  private destroy$ = new Subject<void>();
+  readonly rowKeyForTable = (row: TableRow, index: number): string =>
+    this.rowKey()(row as LeaderboardRow, index);
+  readonly isRowExpandableForTable = (row: TableRow): boolean =>
+    this.isRowExpandable()(row as LeaderboardRow);
+  readonly expandedRowsForTable = (row: TableRow): ExpandedRowViewModel[] =>
+    this.expandedRowsFor()(row as LeaderboardRow);
+  readonly expandToggleAriaLabelForTable = (row: TableRow, expanded: boolean): string =>
+    this.expandToggleAriaLabel()(row as LeaderboardRow, expanded);
 
   data: LeaderboardRow[] = [];
   loading = true;
@@ -60,8 +69,8 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loading = true;
-    this.fetchFn()
-      .pipe(takeUntil(this.destroy$))
+    this.fetchFn()()
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
           this.data = derivePositions(data);
@@ -72,10 +81,5 @@ export class LeaderboardComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
