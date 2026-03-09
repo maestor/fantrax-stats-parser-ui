@@ -1,10 +1,10 @@
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
 import { ViewportService } from '@services/viewport.service';
+import { provideDisabledMaterialAnimations } from '../../testing/behavior-test-utils';
 import { LeaderboardRegularComponent } from '../regular/leaderboard-regular.component';
 
 describe('Leaderboard expansion behavior on mobile', () => {
@@ -12,7 +12,7 @@ describe('Leaderboard expansion behavior on mobile', () => {
     await render(LeaderboardRegularComponent, {
       imports: [TranslateModule.forRoot()],
       providers: [
-        provideNoopAnimations(),
+        provideDisabledMaterialAnimations(),
         {
           provide: ViewportService,
           useValue: {

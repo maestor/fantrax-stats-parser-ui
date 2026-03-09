@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,7 +7,10 @@ import { Subject } from 'rxjs';
 import { Column } from '@shared/column.types';
 import { PlayerCardDialogData } from '@shared/player-card/player-card.component';
 import { StatsTableComponent, TableRow } from './stats-table.component';
-import { polyfillJsdom } from '../../testing/behavior-test-utils';
+import {
+  polyfillJsdom,
+  provideDisabledMaterialAnimations,
+} from '../../testing/behavior-test-utils';
 
 @Component({
   standalone: true,
@@ -78,7 +80,7 @@ describe('StatsTableComponent — user behavior', () => {
     const view = await render(StatsTableHostComponent, {
       imports: [TranslateModule.forRoot()],
       providers: [
-        provideNoopAnimations(),
+        provideDisabledMaterialAnimations(),
         { provide: MatDialog, useValue: { open } },
       ],
       componentProperties,
