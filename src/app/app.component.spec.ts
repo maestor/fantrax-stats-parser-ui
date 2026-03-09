@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/angular';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AppComponent, buildRouteUiState } from './app.component';
+import { AppComponent, buildInitialMobileState, buildRouteUiState } from './app.component';
 import {
   getBehaviorTestConfig,
   polyfillJsdom,
@@ -223,6 +223,30 @@ describe('buildRouteUiState', () => {
       isCareerRoute: false,
       showStatsShell: false,
       currentRouteSubtitleKey: 'nav.leaderboards',
+    });
+  });
+});
+
+describe('buildInitialMobileState', () => {
+  it('seeds desktop state synchronously from matchMedia', () => {
+    expect(
+      buildInitialMobileState({
+        matchMedia: () => ({ matches: false }) as MediaQueryList,
+      })
+    ).toEqual({
+      ready: true,
+      isMobile: false,
+    });
+  });
+
+  it('seeds mobile state synchronously from matchMedia', () => {
+    expect(
+      buildInitialMobileState({
+        matchMedia: () => ({ matches: true }) as MediaQueryList,
+      })
+    ).toEqual({
+      ready: true,
+      isMobile: true,
     });
   });
 });

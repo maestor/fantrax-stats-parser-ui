@@ -71,6 +71,11 @@ type RouteUiState = {
   currentRouteSubtitleKey: string | null;
 };
 
+type MobileState = {
+  ready: boolean;
+  isMobile: boolean;
+};
+
 export function buildRouteUiState(url: string): RouteUiState {
   const normalizedUrl = url.split("?")[0]?.split("#")[0] ?? "/";
   const isLeaderboardsRoute = normalizedUrl.startsWith("/leaderboards");
@@ -84,6 +89,18 @@ export function buildRouteUiState(url: string): RouteUiState {
     currentRouteSubtitleKey: isCareerRoute
       ? "nav.playerCareers"
       : (isLeaderboardsRoute ? "nav.leaderboards" : null),
+  };
+}
+
+export function buildInitialMobileState(
+  defaultView: Pick<Window, "matchMedia"> | null | undefined,
+): MobileState {
+  return {
+    ready: true,
+    isMobile:
+      typeof defaultView?.matchMedia === "function"
+        ? defaultView.matchMedia("(max-width: 768px)").matches
+        : false,
   };
 }
 
@@ -121,6 +138,7 @@ export class AppComponent implements OnInit {
   private readonly initialRouteUiState = buildRouteUiState(
     `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`,
   );
+  private readonly initialMobileState = buildInitialMobileState(this.document.defaultView);
 
   controlsContext: ControlsContext = this.initialRouteUiState.controlsContext;
   private readonly controlsContextSubject =
@@ -129,7 +147,10 @@ export class AppComponent implements OnInit {
 
   readonly mobileState$ = inject(ViewportService).isMobile$.pipe(
     map((isMobile) => ({ ready: true, isMobile })),
-    startWith({ ready: false, isMobile: false }),
+    startWith(this.initialMobileState),
+    distinctUntilChanged(
+      (a, b) => a.ready === b.ready && a.isMobile === b.isMobile,
+    ),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 

@@ -54,7 +54,7 @@ This command is a local production performance audit, not a replacement for unit
 - It builds the production bundle first
 - Serves the built app locally
 - Mocks API responses from `e2e/fixtures/data/`
-- Audits `/` and `/career/players`
+- Audits `/`, `/career/players`, and `/leaderboards/regular`
 - Reports `LCP`, `CLS`, and a scripted interaction-delay proxy
 - Prints the top layout-shift sources to speed up CLS debugging
 
@@ -64,7 +64,7 @@ Interpretation rules:
 - Treat the interaction number as an `INP`-style proxy only; it is useful for regressions, but it is not field `INP`
 - Treat PageSpeed Insights / CrUX field data as the source of truth for real public performance
 - Keep `npm run perf:audit` outside `npm run verify` unless the repo later adopts stable CI thresholds for it
-- Current local baseline as of `2026-03-09`: desktop `/` `CLS 0.040`, desktop `/career/players` `CLS 0.010`, mobile audited routes `CLS 0.000`
+- Current local baseline as of `2026-03-09`: desktop `/` `CLS 0.040`, desktop `/career/players` `CLS 0.010`, desktop `/leaderboards/regular` `CLS 0.010`, mobile audited routes `CLS 0.000`
 
 ### Local Safety Policy
 

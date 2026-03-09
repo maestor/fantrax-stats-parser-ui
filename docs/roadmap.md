@@ -43,8 +43,3 @@ Persist the user's last sort column and direction per table (players/goalies) in
 ### Advanced testing
 
 - Visual regression testing (Playwright screenshot comparison)
-- Performance testing (Core Web Vitals)
-  Local `npm run perf:audit` now covers the production build with fixture-backed API mocks for the front page and career players entry route.
-  The first optimization pass is now in place: overlay-only UI is lazy-loaded, footer rendering waits for route readiness, and route shells no longer flash stats-only controls on `/career` or `/leaderboards`.
-  Current local baseline as of `2026-03-09`: desktop `/` `CLS 0.040`, desktop `/career/players` `CLS 0.010`, mobile audited routes `CLS 0.000`.
-  Next steps are adding stable leaderboard coverage, comparing lab results against PageSpeed Insights / CrUX field data, and deciding whether the remaining front-page top-controls shift is worth further polish.

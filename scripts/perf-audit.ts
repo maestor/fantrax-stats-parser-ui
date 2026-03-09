@@ -157,6 +157,17 @@ const routes: RouteSpec[] = [
       await searchInput.fill('jamie');
     },
   },
+  {
+    label: 'leaderboards regular',
+    path: '/leaderboards/regular',
+    readySelector: '#leaderboard-table tr[mat-row]',
+    interactionLabel: 'expand leaderboard details',
+    async runInteraction(page) {
+      const firstRow = page.locator('#leaderboard-table tr[mat-row]:not(.expanded-detail-row)').first();
+      await firstRow.click();
+      await page.locator('#leaderboard-table .expanded-detail-content').waitFor({ state: 'visible' });
+    },
+  },
 ];
 
 const profiles: ProfileSpec[] = [
@@ -320,7 +331,7 @@ async function collectResult(
   await setupApiMocks(page);
 
   await page.goto(`${origin}${route.path}`, { waitUntil: 'domcontentloaded' });
-  await page.locator(route.readySelector).waitFor({ state: 'visible' });
+  await page.locator(route.readySelector).first().waitFor({ state: 'visible' });
   await page.waitForTimeout(800);
 
   await route.runInteraction(page);

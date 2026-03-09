@@ -86,7 +86,7 @@ npm run perf:audit
 - Builds the production bundle before auditing
 - Serves the local production output instead of `ng serve`
 - Reuses Playwright plus the repo's fixture-backed API mocking to keep the audit deterministic
-- Covers `/` and `/career/players` in desktop + mobile profiles
+- Covers `/`, `/career/players`, and `/leaderboards/regular` in desktop + mobile profiles
 - Reports `LCP`, `CLS`, and a scripted interaction-delay proxy
 - Prints the top layout-shift sources so desktop/mobile CLS regressions are easier to trace
 
