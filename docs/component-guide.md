@@ -866,7 +866,7 @@ graphsInputs = {
 **Dependencies**:
 
 - Chart.js 4.5.1 (peer dependency, lazy-loaded)
-- ng2-charts 8.0 (Angular wrapper for Chart.js)
+- ng2-charts 10.0 (Angular wrapper for Chart.js)
 - Angular Material (for toggle button)
 - ngx-translate (for stat labels)
 
