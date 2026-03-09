@@ -125,8 +125,9 @@ Backend API → ApiService → Component → Template
          ↓
       CacheService
 
-TeamService → Component
-FilterService → Component → Table Display
+TeamService / FilterService / SettingsService signals → Component → Template
+                                         ↓
+                             observable APIs for async composition
 ```
 
 ## Build & Deployment

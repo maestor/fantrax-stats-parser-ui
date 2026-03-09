@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from 'rxjs';
 import { ReportType } from './api.service';
 import { SettingsService } from './settings.service';
@@ -38,14 +39,8 @@ export class FilterService {
 
   playerFilters$ = this.filters.players.asObservable();
   goalieFilters$ = this.filters.goalies.asObservable();
-
-  get playerFilters(): FilterState {
-    return this.filters.players.value;
-  }
-
-  get goalieFilters(): FilterState {
-    return this.filters.goalies.value;
-  }
+  readonly playerFiltersSignal = toSignal(this.playerFilters$, { requireSync: true });
+  readonly goalieFiltersSignal = toSignal(this.goalieFilters$, { requireSync: true });
 
   updatePlayerFilters(change: Partial<FilterState>): void {
     const current = this.filters.players.value;

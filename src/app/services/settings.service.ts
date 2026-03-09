@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, distinctUntilChanged, map } from 'rxjs';
 import { ReportType } from './api.service';
 
@@ -23,32 +24,20 @@ export class SettingsService {
     this.loadInitialSettings()
   );
 
-  readonly settings$ = this.settingsSubject.asObservable();
+  private readonly settings$ = this.settingsSubject.asObservable();
+  private readonly settingsSignal = toSignal(this.settings$, { requireSync: true });
 
   readonly selectedTeamId$ = this.settings$.pipe(
     map((s) => s.selectedTeamId),
     distinctUntilChanged()
   );
+  readonly selectedTeamIdSignal = computed(() => this.settingsSignal().selectedTeamId);
 
   readonly startFromSeason$ = this.settings$.pipe(
-    map((s) => (s.startFromSeason === null ? undefined : s.startFromSeason)),
+    map((s) => this.normalizeOptionalSeason(s.startFromSeason)),
     distinctUntilChanged()
   );
-
-  readonly topControlsExpanded$ = this.settings$.pipe(
-    map((s) => s.topControlsExpanded),
-    distinctUntilChanged()
-  );
-
-  readonly season$ = this.settings$.pipe(
-    map((s) => (s.season === null ? undefined : s.season)),
-    distinctUntilChanged()
-  );
-
-  readonly reportType$ = this.settings$.pipe(
-    map((s) => s.reportType),
-    distinctUntilChanged()
-  );
+  readonly topControlsExpandedSignal = computed(() => this.settingsSignal().topControlsExpanded);
 
   get selectedTeamId(): string {
     return this.settingsSubject.value.selectedTeamId;
@@ -58,10 +47,6 @@ export class SettingsService {
     return this.settingsSubject.value.startFromSeason === null
       ? undefined
       : this.settingsSubject.value.startFromSeason;
-  }
-
-  get topControlsExpanded(): boolean {
-    return this.settingsSubject.value.topControlsExpanded;
   }
 
   get season(): number | undefined {
@@ -86,7 +71,7 @@ export class SettingsService {
   }
 
   setTopControlsExpanded(expanded: boolean): void {
-    if (expanded === this.topControlsExpanded) return;
+    if (expanded === this.settingsSubject.value.topControlsExpanded) return;
     this.updateSettings({ topControlsExpanded: expanded });
   }
 
@@ -154,6 +139,10 @@ export class SettingsService {
   private parseReportType(value: unknown): ReportType {
     if (value === 'regular' || value === 'playoffs' || value === 'both') return value;
     return 'regular';
+  }
+
+  private normalizeOptionalSeason(season: number | null): number | undefined {
+    return season === null ? undefined : season;
   }
 
   private persist(settings: AppSettings): void {

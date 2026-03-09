@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { TeamSwitcherComponent } from './team-switcher/team-switcher.component';
 import { ReportSwitcherComponent } from './report-switcher/report-switcher.component';
@@ -25,9 +24,7 @@ export class TopControlsComponent {
   readonly context = input.required<StatsContext>();
   readonly contentOnly = input(false);
   private readonly settingsService = inject(SettingsService);
-  private readonly persistedExpanded = toSignal(this.settingsService.topControlsExpanded$, {
-    initialValue: this.settingsService.topControlsExpanded,
-  });
+  private readonly persistedExpanded = this.settingsService.topControlsExpandedSignal;
 
   readonly isExpanded = computed(() =>
     this.contentOnly() ? true : this.persistedExpanded()

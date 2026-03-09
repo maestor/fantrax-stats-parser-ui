@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MatSlideToggleModule,
   MatSlideToggleChange,
@@ -19,14 +18,10 @@ import { StatsContext } from '@shared/types/context.types';
 export class StatsModeToggleComponent {
   readonly context = input.required<StatsContext>();
   private readonly filterService = inject(FilterService);
-  private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {
-    initialValue: this.filterService.playerFilters,
-  });
-  private readonly goalieFilterState = toSignal(this.filterService.goalieFilters$, {
-    initialValue: this.filterService.goalieFilters,
-  });
   private readonly filterState = computed(() =>
-    this.context() === 'goalie' ? this.goalieFilterState() : this.playerFilterState()
+    this.context() === 'goalie'
+      ? this.filterService.goalieFiltersSignal()
+      : this.filterService.playerFiltersSignal()
   );
 
   readonly statsPerGame = computed(() => this.filterState().statsPerGame);

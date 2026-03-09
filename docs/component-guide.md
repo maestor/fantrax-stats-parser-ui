@@ -333,6 +333,7 @@ readonly contentOnly = input(false);
 
 - Default mode renders a collapsible panel (toggle button + collapsible content).
 - In the mobile settings drawer, it is rendered with `contentOnly=true` to show only the controls (no toggle UI).
+- Reads the persisted expand/collapse preference from `SettingsService.topControlsExpandedSignal`.
 
 ---
 
@@ -399,7 +400,8 @@ readonly context = input<'player' | 'goalie'>('player');
 
 - Loads seasons from `ApiService`
 - Displays seasons in reverse order (newest first)
-- Updates the appropriate filter stream in `FilterService` when the selection changes
+- Reads the active filter state through `FilterService` signal APIs
+- Updates the appropriate filter state in `FilterService` when the selection changes
 
 ---
 
@@ -419,7 +421,7 @@ readonly context = input<'player' | 'goalie'>('player');
 **Behavior**:
 
 - Uses `MatSelect` to let the user pick `regular`, `playoffs`, or `both`
-- Subscribes to `FilterService` (`playerFilters$`/`goalieFilters$`) to expose `reportType$`
+- Reads the active `reportType` through `FilterService` signal APIs
 - Calls `updatePlayerFilters` / `updateGoalieFilters` when the toggle changes
 
 ---
@@ -434,7 +436,8 @@ readonly context = input<'player' | 'goalie'>('player');
 
 - Only renders for player context (not goalies)
 - Uses `MatButtonToggle` for Kaikki/H/P selection (All/Forwards/Defensemen)
-- Updates `FilterService.playerFilters$` with `positionFilter` value
+- Reads `positionFilter` through `FilterService.playerFiltersSignal`
+- Updates `FilterService` with the selected `positionFilter` value
 - When position filter is active (H or P):
   - Stats table shows only players of that position
   - Score columns display position-relative values (`scoreByPosition`, `scoreByPositionAdjustedByGames`)
@@ -456,6 +459,7 @@ readonly context = input<'player' | 'goalie'>('player');
 
 **Behavior**:
 
+- Reads the active filter state through `FilterService` signal APIs
 - Uses a `MatSlideToggle` to manipulate the `statsPerGame` flag in `FilterService`
 - Keeps its visual state in sync with the current filter state for the given context
 
@@ -476,6 +480,7 @@ readonly maxGames = input(0);
 
 **Behavior**:
 
+- Reads the active filter state through `FilterService` signal APIs
 - Uses `MatSlider` to choose `minGames`
 - Constrains the slider range based on `maxGames`
 - Pushes changes into `FilterService` for the active context

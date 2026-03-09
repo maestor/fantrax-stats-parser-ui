@@ -10,6 +10,7 @@ export class TeamService {
   private readonly settingsService = inject(SettingsService);
 
   readonly selectedTeamId$: Observable<string> = this.settingsService.selectedTeamId$;
+  readonly selectedTeamIdSignal = this.settingsService.selectedTeamIdSignal;
 
   get selectedTeamId(): string {
     return this.settingsService.selectedTeamId;

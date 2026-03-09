@@ -13,7 +13,7 @@ Services in this application handle data fetching, business logic, state managem
 
 **Responsibilities**:
 - Store user settings in a single `localStorage` key: `fantrax.settings`
-- Provide reactive settings slices as observables (team id, start-from season, top-controls expanded, season, report type)
+- Provide the currently used reactive settings reads for team id, start-from season, and top-controls expand/collapse state
 - Validate all fields on load; invalid or missing fields fall back to defaults
 
 **Notes**:
@@ -26,16 +26,13 @@ Services in this application handle data fetching, business logic, state managem
 **Key API**:
 ```typescript
 class SettingsService {
-  readonly settings$: Observable<AppSettings>;
   readonly selectedTeamId$: Observable<string>;
+  readonly selectedTeamIdSignal: Signal<string>;
   readonly startFromSeason$: Observable<number | undefined>;
-  readonly topControlsExpanded$: Observable<boolean>;
-  readonly season$: Observable<number | undefined>;
-  readonly reportType$: Observable<ReportType>;
+  readonly topControlsExpandedSignal: Signal<boolean>;
 
   get selectedTeamId(): string;
   get startFromSeason(): number | undefined;
-  get topControlsExpanded(): boolean;
   get season(): number | undefined;
   get reportType(): ReportType;
 
@@ -64,7 +61,7 @@ export type AppSettings = {
 **Purpose**: Global selected-team state with persistence
 
 **Responsibilities**:
-- Provide current team id as an observable (`selectedTeamId$`)
+- Provide current team id as both a signal (`selectedTeamIdSignal`) and an observable (`selectedTeamId$`)
 - Persist selection via `SettingsService` (`fantrax.settings` → `selectedTeamId`)
 - Default to Colorado (team id `"1"`) — there is no "no team" state
 
@@ -72,6 +69,7 @@ export type AppSettings = {
 ```typescript
 class TeamService {
   readonly selectedTeamId$: Observable<string>;
+  readonly selectedTeamIdSignal: Signal<string>;
   get selectedTeamId(): string;
   setTeamId(teamId: string): void;
 }
@@ -202,7 +200,7 @@ class StatsService {
 
 **Responsibilities**:
 - Maintain independent filter state for players and goalies
-- Expose filter state as observables for components
+- Expose filter state as both signals and observables for components
 - Keep `season` and `reportType` in sync globally between players and goalies
 - Provide reset helpers (including a global reset)
 
@@ -229,6 +227,8 @@ export interface FilterState {
 class FilterService {
   playerFilters$: Observable<FilterState>;
   goalieFilters$: Observable<FilterState>;
+  playerFiltersSignal: Signal<FilterState>;
+  goalieFiltersSignal: Signal<FilterState>;
 
   updatePlayerFilters(change: Partial<FilterState>): void;
   updateGoalieFilters(change: Partial<FilterState>): void;

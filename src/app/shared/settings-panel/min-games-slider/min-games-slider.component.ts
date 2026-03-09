@@ -6,7 +6,6 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatSliderModule } from '@angular/material/slider';
 import { FilterService } from '@services/filter.service';
@@ -24,14 +23,10 @@ export class MinGamesSliderComponent {
   readonly maxGames = input.required<number>();
 
   private readonly filterService = inject(FilterService);
-  private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {
-    initialValue: this.filterService.playerFilters,
-  });
-  private readonly goalieFilterState = toSignal(this.filterService.goalieFilters$, {
-    initialValue: this.filterService.goalieFilters,
-  });
   private readonly filterState = computed(() =>
-    this.context() === 'goalie' ? this.goalieFilterState() : this.playerFilterState()
+    this.context() === 'goalie'
+      ? this.filterService.goalieFiltersSignal()
+      : this.filterService.playerFiltersSignal()
   );
 
   readonly minGames = computed(() => this.filterState().minGames);

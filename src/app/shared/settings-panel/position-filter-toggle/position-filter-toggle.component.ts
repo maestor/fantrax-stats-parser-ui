@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MatButtonToggleModule,
   MatButtonToggleChange,
@@ -17,12 +16,8 @@ import { FilterService, PositionFilter } from '@services/filter.service';
 })
 export class PositionFilterToggleComponent {
   private readonly filterService = inject(FilterService);
-  private readonly playerFilterState = toSignal(this.filterService.playerFilters$, {
-    initialValue: this.filterService.playerFilters,
-  });
-
   readonly positionFilter = computed<PositionFilter>(() =>
-    this.playerFilterState().positionFilter
+    this.filterService.playerFiltersSignal().positionFilter
   );
 
   onPositionChange(event: MatButtonToggleChange): void {
