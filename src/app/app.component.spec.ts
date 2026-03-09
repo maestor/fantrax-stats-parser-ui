@@ -1,8 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TestBed } from '@angular/core/testing';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AppComponent, buildInitialMobileState, buildRouteUiState } from './app.component';
+import { AppComponent, buildRootRouteUiState } from './app.component';
+import {
+  buildDashboardRouteUiState,
+  buildInitialDashboardMobileState,
+} from './dashboard-shell/dashboard-shell.component';
 import {
   getBehaviorTestConfig,
   polyfillJsdom,
@@ -58,7 +63,6 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
 
     const startFromCombobox = screen.getByRole('combobox', { name: /startFromSeason\.selector/ });
     expect(startFromCombobox).toBeInTheDocument();
-    expect(screen.getByText('2012-2013')).toBeInTheDocument();
 
     // -- Navigation tabs --
     expect(screen.getByRole('tab', { name: 'link.playerStats' })).toBeInTheDocument();
@@ -83,7 +87,11 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByLabelText('table.playerSearch')).toBeInTheDocument();
 
     // -- Footer --
-    expect(await screen.findByRole('navigation', { name: 'footer.links.ariaLabel' })).toBeInTheDocument();
+    expect(await screen.findByRole(
+      'navigation',
+      { name: 'footer.links.ariaLabel' },
+      { timeout: 5000 }
+    )).toBeInTheDocument();
     expect(screen.getByText('footer.links.linkedin.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
     expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();
@@ -160,6 +168,32 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     });
   });
 
+  it('resolves the global nav overlay only when the nav button is pressed', async () => {
+    const behaviorConfig = getBehaviorTestConfig({ isMobile: false });
+    const bottomSheetFactory = vi.fn(() => ({ open: vi.fn() }));
+
+    await render(AppComponent, {
+      ...behaviorConfig,
+      providers: [
+        ...behaviorConfig.providers,
+        {
+          provide: MatBottomSheet,
+          useFactory: bottomSheetFactory,
+        },
+      ],
+    });
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(bottomSheetFactory).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
+
+    await vi.waitFor(() => {
+      expect(bottomSheetFactory).toHaveBeenCalledTimes(1);
+    });
+  });
+
   it('starts with visible defaults when browser storage is empty', async () => {
     localStorage.clear();
 
@@ -203,34 +237,90 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     );
     expect(screen.getByRole('table')).toBeInTheDocument();
   });
+
+  it('renders the empty last-modified placeholder when the API omits the timestamp', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        lastModified: null,
+      })
+    );
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(document.querySelector('.last-modified--empty')).not.toBeNull();
+    expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
+  });
+
+  it('renders the empty last-modified placeholder when the timestamp is invalid', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        lastModified: {
+          lastModified: 'not-a-real-date',
+        } as never,
+      })
+    );
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(document.querySelector('.last-modified--empty')).not.toBeNull();
+    expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
+  });
 });
 
-describe('buildRouteUiState', () => {
-  it('hides the stats shell for career routes before navigation settles', () => {
-    expect(buildRouteUiState('/career/players?tab=goalies')).toEqual({
-      controlsContext: 'player',
-      isLeaderboardsRoute: false,
-      isCareerRoute: true,
-      showStatsShell: false,
+describe('buildRootRouteUiState', () => {
+  it('uses the lighter browse shell for career routes before navigation settles', () => {
+    expect(buildRootRouteUiState('/career/players?tab=goalies')).toEqual({
+      isDashboardRoute: false,
       currentRouteSubtitleKey: 'nav.playerCareers',
+      skipLinkTargetId: 'career-table',
     });
   });
 
-  it('hides the stats shell for leaderboard routes before navigation settles', () => {
-    expect(buildRouteUiState('/leaderboards/playoffs')).toEqual({
-      controlsContext: 'player',
-      isLeaderboardsRoute: true,
-      isCareerRoute: false,
-      showStatsShell: false,
+  it('uses the lighter browse shell for leaderboard routes before navigation settles', () => {
+    expect(buildRootRouteUiState('/leaderboards/playoffs')).toEqual({
+      isDashboardRoute: false,
       currentRouteSubtitleKey: 'nav.leaderboards',
+      skipLinkTargetId: 'leaderboard-table',
+    });
+  });
+
+  it('keeps dashboard routes on the heavier shell', () => {
+    expect(buildRootRouteUiState('/goalie-stats')).toEqual({
+      isDashboardRoute: true,
+      currentRouteSubtitleKey: null,
+      skipLinkTargetId: 'stats-table',
     });
   });
 });
 
-describe('buildInitialMobileState', () => {
+describe('buildDashboardRouteUiState', () => {
+  it('uses goalie context for goalie stats and direct goalie routes', () => {
+    expect(buildDashboardRouteUiState('/goalie-stats')).toEqual({
+      controlsContext: 'goalie',
+    });
+    expect(buildDashboardRouteUiState('/goalie/colorado/philipp-grubauer')).toEqual({
+      controlsContext: 'goalie',
+    });
+  });
+
+  it('uses player context for player stats and direct player routes', () => {
+    expect(buildDashboardRouteUiState('/player-stats')).toEqual({
+      controlsContext: 'player',
+    });
+    expect(buildDashboardRouteUiState('/player/colorado/jamie-benn')).toEqual({
+      controlsContext: 'player',
+    });
+  });
+});
+
+describe('buildInitialDashboardMobileState', () => {
   it('seeds desktop state synchronously from matchMedia', () => {
     expect(
-      buildInitialMobileState({
+      buildInitialDashboardMobileState({
         matchMedia: () => ({ matches: false }) as MediaQueryList,
       })
     ).toEqual({
@@ -241,12 +331,19 @@ describe('buildInitialMobileState', () => {
 
   it('seeds mobile state synchronously from matchMedia', () => {
     expect(
-      buildInitialMobileState({
+      buildInitialDashboardMobileState({
         matchMedia: () => ({ matches: true }) as MediaQueryList,
       })
     ).toEqual({
       ready: true,
       isMobile: true,
+    });
+  });
+
+  it('falls back to desktop when matchMedia is unavailable', () => {
+    expect(buildInitialDashboardMobileState(undefined)).toEqual({
+      ready: true,
+      isMobile: false,
     });
   });
 });

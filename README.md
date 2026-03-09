@@ -34,6 +34,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- Searchable and sortable, with no stats-page filters or mobile drawer
 	- Virtualized row rendering keeps long lists responsive
 	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
+- 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
 	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
@@ -133,7 +134,7 @@ npm run build
 
 Production builds enforce Angular bundle budgets in `angular.json`:
 
-- `initial`: warning at `1.2 MB`, error at `1.6 MB`
+- `initial`: warning at `1 MB`, error at `1.5 MB`
 - `anyComponentStyle`: warning at `4 kB`, error at `8 kB`
 
 Best practice when `npm run verify` or `npm run build` shows a budget warning:
@@ -254,12 +255,13 @@ src/
 │   │   └── table-columns.ts
 │   ├── player-stats/      # Player stats page
 │   ├── goalie-stats/      # Goalie stats page
+│   ├── dashboard-shell/   # Lazy shell for dashboard routes
 │   ├── career/            # Career listings (/career/players, /career/goalies)
 │   ├── leaderboards/      # All-time leaderboards (/leaderboards/regular, /leaderboards/playoffs)
 │   ├── player-route/      # Direct player card route handler
 │   ├── goalie-route/      # Direct goalie card route handler
 │   ├── utils/             # Utility functions (slug generation)
-│   └── app.component.ts   # Root component
+│   └── app.component.ts   # Lightweight root shell
 └── environments/          # Build-time environment config
 ```
 
@@ -274,6 +276,7 @@ This project was originally generated using [Angular CLI](https://github.com/ang
 3. **Type Safety**: Strict TypeScript configuration enforced
 4. **Immutable State**: Filter state updates create new objects
 5. **Path Aliases**: `@base/*`, `@services/*`, `@shared/*` for clean imports
+6. **Route-Shell Split**: Dashboard routes lazy-load their heavier shell so career and leaderboard browsing routes ship less startup UI code
 
 ### Mobile Responsiveness
 

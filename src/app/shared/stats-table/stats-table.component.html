@@ -1,4 +1,11 @@
-<div class="stats-table-wrapper mat-elevation-z4" [attr.id]="tableId" tabindex="-1" #tableRoot>
+<div
+  class="stats-table-wrapper mat-elevation-z4"
+  [attr.id]="tableId"
+  tabindex="-1"
+  #tableRoot
+  (mouseenter)="onPlayerCardPrefetchIntent()"
+  (focusin)="onPlayerCardPrefetchIntent()"
+>
   <p class="sr-only" [attr.id]="instructionsId">
     {{ getInstructionsTranslateKey() | translate }}
   </p>

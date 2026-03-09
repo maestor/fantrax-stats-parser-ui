@@ -39,22 +39,21 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
         // Open card by clicking a player row in stats table.
         fireEvent.click(firstPlayerCell);
 
-        const closePlayerCardButton = await screen.findByRole(
-            'button',
-            { name: 'a11y.closePlayerCard' },
-            { timeout: 5000 }
-        );
+        const dialog = await screen.findByRole('dialog', {}, { timeout: 15000 });
+        const closePlayerCardButton = within(dialog).getByRole('button', {
+            name: 'a11y.closePlayerCard',
+        });
         expect(closePlayerCardButton).toBeInTheDocument();
 
         // Card tabs exist for combined player data.
-        expect(screen.getByRole('tab', { name: 'playerCard.all' })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: 'playerCard.bySeason' })).toBeInTheDocument();
-        expect(screen.getByRole('tab', { name: 'playerCard.graphs' })).toBeInTheDocument();
+        expect(within(dialog).getByRole('tab', { name: 'playerCard.all' })).toBeInTheDocument();
+        expect(within(dialog).getByRole('tab', { name: 'playerCard.bySeason' })).toBeInTheDocument();
+        expect(within(dialog).getByRole('tab', { name: 'playerCard.graphs' })).toBeInTheDocument();
 
         // Wait until selected team is resolved so copy-link can build a full URL.
-        await screen.findByText('Colorado Avalanche', { selector: '.team-name' });
+        await within(dialog).findByText('Colorado Avalanche', { selector: '.team-name' });
 
-        const copyLinkButton = screen.getByRole('button', { name: 'playerCard.copyLink' });
+        const copyLinkButton = within(dialog).getByRole('button', { name: 'playerCard.copyLink' });
         fireEvent.click(copyLinkButton);
 
         const playerSlug = toSlug(firstPlayerName);

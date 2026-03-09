@@ -48,7 +48,7 @@ npm run build
 ```
 
 - **Requirement**: Build must complete without TypeScript errors
-- **Current budgets**: `initial` warning at `1.2 MB`, error at `1.6 MB`; `anyComponentStyle` warning at `4 kB`, error at `8 kB`
+- **Current budgets**: `initial` warning at `1 MB`, error at `1.5 MB`; `anyComponentStyle` warning at `4 kB`, error at `8 kB`
 - **Action on Failure**: Fix TypeScript errors in output
 - **Action on Warning**: Investigate the source of the bundle/style growth and either optimize it or intentionally update the budget with documentation
 

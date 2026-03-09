@@ -1,0 +1,163 @@
+@if (mobileState$ | async; as mobileState) {
+  @if (mobileState.ready && mobileState.isMobile) {
+    <mat-sidenav-container class="mobile-shell">
+      <mat-sidenav
+        #settingsDrawer="matSidenav"
+        class="settings-drawer"
+        mode="over"
+        position="start"
+        [fixedInViewport]="true"
+        (openedChange)="onSettingsDrawerOpenedChange($event)"
+      >
+        <div class="settings-drawer-header">
+          <button
+            mat-icon-button
+            type="button"
+            (click)="closeSettingsDrawer()"
+            [attr.aria-label]="'a11y.closeSettingsDrawer' | translate"
+            [matTooltip]="'a11y.closeSettingsDrawer' | translate"
+          >
+            <mat-icon fontIcon="close" />
+          </button>
+        </div>
+
+        @if (hasInitializedSettingsDrawerContent) {
+          <div class="settings-drawer-section settings-drawer-section--top-controls">
+            <h3 class="settings-drawer-section-title">
+              {{ 'topControls.controls' | translate }}
+            </h3>
+            <app-top-controls [context]="controlsContext" [contentOnly]="true" />
+          </div>
+
+          <div class="settings-drawer-section settings-drawer-section--settings">
+            <h3 class="settings-drawer-section-title">
+              {{ 'settingsPanel.settings' | translate }}
+            </h3>
+            <app-settings-panel
+              [context]="controlsContext"
+              [maxGames]="(drawerMaxGames$ | async) ?? 0"
+              [contentOnly]="true"
+            />
+          </div>
+
+          @if (lastModifiedText$ | async; as lastModifiedText) {
+            <div class="settings-drawer-last-modified">
+              {{ 'lastModified.label' | translate }}: {{ lastModifiedText }}
+            </div>
+          }
+        }
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <div class="title-row">
+          <button
+            mat-icon-button
+            type="button"
+            (click)="toggleSettingsDrawer()"
+            [attr.aria-label]="
+              (
+                isSettingsDrawerOpen
+                  ? 'a11y.closeSettingsDrawer'
+                  : 'a11y.openSettingsDrawer'
+              ) | translate
+            "
+            [matTooltip]="
+              (
+                isSettingsDrawerOpen
+                  ? 'a11y.closeSettingsDrawer'
+                  : 'a11y.openSettingsDrawer'
+              ) | translate
+            "
+          >
+            <mat-icon fontIcon="settings" />
+          </button>
+
+          <h1 class="mat-display-1">{{ 'pageTitle' | translate }}</h1>
+
+          <div class="title-row-actions">
+            @if (app.isUpdateAvailable$ | async) {
+              <button
+                mat-icon-button
+                type="button"
+                (click)="app.activateUpdateAndReload()"
+                [attr.aria-label]="'a11y.reloadToUpdate' | translate"
+                [matTooltip]="'a11y.reloadToUpdate' | translate"
+              >
+                <mat-icon fontIcon="system_update" />
+              </button>
+            }
+
+            <button
+              mat-icon-button
+              type="button"
+              (click)="app.openNavMenu()"
+              [attr.aria-label]="'a11y.openNavMenu' | translate"
+              [matTooltip]="'a11y.openNavMenu' | translate"
+            >
+              <mat-icon fontIcon="menu" />
+            </button>
+          </div>
+        </div>
+
+        @if (selectedTeamName$ | async; as teamName) {
+          <div class="mobile-team-summary">
+            {{ 'team.selector' | translate }}:
+            <span class="mobile-team-name">{{ teamName }}</span>
+          </div>
+        }
+
+        <app-navigation [tabPanel]="tabPanel" />
+        <mat-tab-nav-panel #tabPanel>
+          <router-outlet />
+        </mat-tab-nav-panel>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  } @else if (mobileState.ready) {
+    <div class="title-row">
+      <h1 class="mat-display-1">{{ 'pageTitle' | translate }}</h1>
+
+      <div class="title-row-actions">
+        @if (app.isUpdateAvailable$ | async) {
+          <button
+            mat-icon-button
+            type="button"
+            (click)="app.activateUpdateAndReload()"
+            [attr.aria-label]="'a11y.reloadToUpdate' | translate"
+            [matTooltip]="'a11y.reloadToUpdate' | translate"
+          >
+            <mat-icon fontIcon="system_update" />
+          </button>
+        }
+
+        <button
+          mat-icon-button
+          type="button"
+          (click)="app.openNavMenu()"
+          [attr.aria-label]="'a11y.openNavMenu' | translate"
+          [matTooltip]="'a11y.openNavMenu' | translate"
+        >
+          <mat-icon fontIcon="menu" />
+        </button>
+      </div>
+    </div>
+
+    @if (lastModifiedText$ | async; as lastModifiedText) {
+      <div class="last-modified">
+        {{ 'lastModified.label' | translate }}: {{ lastModifiedText }}
+      </div>
+    } @else {
+      <div class="last-modified last-modified--empty" aria-hidden="true">
+        &nbsp;
+      </div>
+    }
+
+    <app-top-controls [context]="controlsContext" />
+
+    <app-navigation [tabPanel]="tabPanel" />
+    <mat-tab-nav-panel #tabPanel>
+      <router-outlet />
+    </mat-tab-nav-panel>
+  }
+}
+
+<app-comparison-bar [context]="controlsContext" />

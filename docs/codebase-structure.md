@@ -17,6 +17,7 @@ fantrax-stats-parser-ui/
 │   │   │   ├── footer/
 │   │   │   └── navigation/
 │   │   ├── career/            # Career listings feature (shell + players and goalies child components)
+│   │   ├── dashboard-shell/   # Lazy route shell for interactive dashboard routes
 │   │   ├── goalie-stats/     # Goalie stats page
 │   │   ├── goalie-route/     # Direct goalie card route handler
 │   │   ├── leaderboards/     # Leaderboards feature (shell + regular and playoffs child components)
@@ -49,8 +50,9 @@ fantrax-stats-parser-ui/
 │   │   │   │   ├── report-switcher/
 │   │   │   │   ├── season-switcher/
 │   │   │   │   └── team-switcher/
+│   │   │   ├── styles/        # Shared shell/header styles
 │   │   │   └── table-columns.ts
-│   │   ├── app.component.ts
+│   │   ├── app.component.ts   # Lightweight root shell
 │   │   ├── app.config.ts
 │   │   └── app.routes.ts
 │   ├── main.ts         # Application bootstrap
@@ -67,7 +69,7 @@ fantrax-stats-parser-ui/
 ### `/src/app/base/`
 Layout components that appear on all pages:
 - **footer/** - Footer component with links/info
-- **navigation/** - Top navigation with tabs
+- **navigation/** - Dashboard route tab navigation
 
 ### `/src/app/player-stats/`
 Smart component for player statistics view:
@@ -86,6 +88,13 @@ Route shell and smart components for career listings:
 - Handles `/career/players` and `/career/goalies`
 - Renders tab navigation between career skaters and goalies
 - Uses dedicated backend endpoints and a virtualized read-only table
+- Loads under the lighter root shell without dashboard-only controls, comparison bar, or mobile settings drawer
+
+### `/src/app/dashboard-shell/`
+Lazy route shell for the interactive dashboard experience:
+- Wraps `/`, `/player-stats`, `/goalie-stats`, and direct player/goalie card routes
+- Owns the title row, last-modified metadata, top controls, mobile settings drawer, navigation tabs, and comparison bar
+- Keeps dashboard-only UI out of the lighter root shell used by career and leaderboard browsing routes
 
 ### `/src/app/player-route/`
 Route handler for direct player card URLs:
@@ -120,7 +129,7 @@ Application-wide services:
 Reusable presentational components:
 
 #### `top-controls/`
-Header control strip shown under the app title:
+Dashboard header control strip shown under the app title:
 - **team-switcher/** - Select team
 - **season-switcher/** - Select season
 - **report-switcher/** - Regular vs playoffs
@@ -153,6 +162,9 @@ Individual player information card display
 
 #### `table-columns.ts`
 Column definitions for stats tables
+
+#### `styles/`
+Shared SCSS partials used by multiple shells or route families.
 
 #### `column.types.ts`
 `Column` and `ColumnIcon` type definitions shared by all table consumers
