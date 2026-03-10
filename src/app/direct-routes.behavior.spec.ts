@@ -173,21 +173,6 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
     });
   });
 
-  it('shows a recovery path for invalid player links', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
-    const router = TestBed.inject(Router);
-
-    await router.navigateByUrl('/player/colorado/not-a-player');
-
-    expect(await screen.findByText('Player "not-a-player" not found')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'Go to Player Stats' }));
-
-    await vi.waitFor(() => {
-      expect(router.url).toBe('/player-stats');
-    });
-  });
-
   it('opens the goalie direct route, omits skater-only controls, and copies a goalie link', async () => {
     await render(
       AppComponent,
@@ -279,21 +264,41 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
     });
   });
 
-  it('shows a recovery path for invalid goalie links', async () => {
-    await render(
-      AppComponent,
-      getBehaviorTestConfig({ isMobile: false, goalies: slicedGoalies })
-    );
+  it.each([
+    {
+      caseName: 'player',
+      behaviorConfig: getBehaviorTestConfig({ isMobile: false }),
+      invalidUrl: '/player/colorado/not-a-player',
+      errorText: 'Player "not-a-player" not found',
+      recoveryButton: 'Go to Player Stats',
+      recoveryUrl: '/player-stats',
+    },
+    {
+      caseName: 'goalie',
+      behaviorConfig: getBehaviorTestConfig({ isMobile: false, goalies: slicedGoalies }),
+      invalidUrl: '/goalie/colorado/not-a-goalie',
+      errorText: 'Goalie "not-a-goalie" not found',
+      recoveryButton: 'Go to Goalie Stats',
+      recoveryUrl: '/goalie-stats',
+    },
+  ])('shows a recovery path for invalid $caseName links', async ({
+    behaviorConfig,
+    invalidUrl,
+    errorText,
+    recoveryButton,
+    recoveryUrl,
+  }) => {
+    await render(AppComponent, behaviorConfig);
     const router = TestBed.inject(Router);
 
-    await router.navigateByUrl('/goalie/colorado/not-a-goalie');
+    await router.navigateByUrl(invalidUrl);
 
-    expect(await screen.findByText('Goalie "not-a-goalie" not found')).toBeInTheDocument();
+    expect(await screen.findByText(errorText)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Go to Goalie Stats' }));
+    fireEvent.click(screen.getByRole('button', { name: recoveryButton }));
 
     await vi.waitFor(() => {
-      expect(router.url).toBe('/goalie-stats');
+      expect(router.url).toBe(recoveryUrl);
     });
   });
 });
