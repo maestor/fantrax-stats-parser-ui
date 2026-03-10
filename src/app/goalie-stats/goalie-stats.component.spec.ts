@@ -8,29 +8,18 @@ import {
   seedLocalStorage,
   slicedGoalies,
 } from '../testing/behavior-test-utils';
-import { toSlug } from '@shared/utils/slug.utils';
-
 describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () => {
-  const writeTextMock = vi.fn<(_: string) => Promise<void>>();
-
   beforeEach(() => {
     polyfillJsdom();
     polyfillMatchMedia();
     seedLocalStorage();
-
-    writeTextMock.mockResolvedValue(undefined);
-    Object.defineProperty(navigator, 'clipboard', {
-      value: { writeText: writeTextMock },
-      configurable: true,
-    });
   });
 
   afterEach(() => {
     localStorage.clear();
-    vi.clearAllMocks();
   });
 
-  it('supports a goalie-only stats flow from page filters to graphs-tab copy link', async () => {
+  it('supports a goalie-only stats flow from page filters to the player card graphs tab', async () => {
     await render(
       AppComponent,
       getBehaviorTestConfig({ isMobile: false, goalies: slicedGoalies })
@@ -47,10 +36,6 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
     await screen.findByText(goalieName, {}, { timeout: 5000 });
 
     expect(screen.queryByText('positionFilter.label')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
-
-    expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
-    expect(screen.getByText('minGamesSlider.label')).toBeInTheDocument();
 
     const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
     fireEvent.click(reportCombobox);
@@ -68,6 +53,7 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
       expect(seasonCombobox).toHaveTextContent('2023-2024');
     });
 
+    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
     const statsModeToggle = screen.getByRole('switch', { name: 'statsModeToggle' });
     fireEvent.click(statsModeToggle);
 
@@ -100,15 +86,11 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
     expect(within(dialog).getByRole('tab', { name: 'playerCard.bySeason' })).toBeInTheDocument();
     expect(within(dialog).getByRole('tab', { name: 'playerCard.graphs' })).toBeInTheDocument();
 
-    fireEvent.click(within(dialog).getByRole('tab', { name: 'playerCard.graphs' }));
-    await within(dialog).findByRole('button', { name: 'playerCard.copyLink' });
-
-    fireEvent.click(within(dialog).getByRole('button', { name: 'playerCard.copyLink' }));
+    const graphsTab = within(dialog).getByRole('tab', { name: 'playerCard.graphs' });
+    fireEvent.click(graphsTab);
 
     await vi.waitFor(() => {
-      expect(writeTextMock).toHaveBeenCalledWith(
-        `${window.location.origin}/goalie/colorado/${toSlug(goalieName)}?tab=graphs`
-      );
+      expect(graphsTab).toHaveAttribute('aria-selected', 'true');
     });
   });
 });

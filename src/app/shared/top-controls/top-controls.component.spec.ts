@@ -19,37 +19,6 @@ describe('TopControlsComponent — desktop user flow', { timeout: 60_000 }, () =
         localStorage.clear();
     });
 
-    it('lets user switch report type and season from top controls', async () => {
-        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
-
-        const firstPlayerName = slicedPlayers[0].name;
-        await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
-
-        // -- Report type: regular -> playoffs --
-        const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
-        fireEvent.click(reportCombobox);
-
-        const playoffsOption = await screen.findByRole('option', { name: 'reportType.playoffs' });
-        fireEvent.click(playoffsOption);
-
-        await vi.waitFor(() => {
-            expect(reportCombobox).toHaveTextContent('reportType.playoffs');
-        });
-
-        // -- Season: all -> specific season --
-        const seasonCombobox = screen.getByRole('combobox', { name: /season\.selector/ });
-        fireEvent.click(seasonCombobox);
-
-        const seasonOption = await screen.findByRole('option', { name: '2023-2024' });
-        fireEvent.click(seasonOption);
-
-        await vi.waitFor(() => {
-            expect(seasonCombobox).toHaveTextContent('2023-2024');
-        });
-
-        expect(screen.getByRole('table')).toBeInTheDocument();
-    });
-
     it('persists collapsed top-controls state across app reload', async () => {
         const firstRender = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 

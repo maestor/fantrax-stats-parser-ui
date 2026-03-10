@@ -238,29 +238,23 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByRole('table')).toBeInTheDocument();
   });
 
-  it('renders the empty last-modified placeholder when the API omits the timestamp', async () => {
+  it.each([
+    {
+      caseName: 'when the API omits the timestamp',
+      lastModified: null,
+    },
+    {
+      caseName: 'when the timestamp is invalid',
+      lastModified: {
+        lastModified: 'not-a-real-date',
+      } as never,
+    },
+  ])('renders the empty last-modified placeholder $caseName', async ({ lastModified }) => {
     await render(
       AppComponent,
       getBehaviorTestConfig({
         isMobile: false,
-        lastModified: null,
-      })
-    );
-
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
-
-    expect(document.querySelector('.last-modified--empty')).not.toBeNull();
-    expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
-  });
-
-  it('renders the empty last-modified placeholder when the timestamp is invalid', async () => {
-    await render(
-      AppComponent,
-      getBehaviorTestConfig({
-        isMobile: false,
-        lastModified: {
-          lastModified: 'not-a-real-date',
-        } as never,
+        lastModified,
       })
     );
 
