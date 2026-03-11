@@ -406,7 +406,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   }
 
   getInitialSortDirection(column: Column): SortDirection {
-    return column.initialSortDirection ?? 'asc';
+    return column.initialSortDirection ?? 'desc';
   }
 
   getInstructionsTranslateKey(): string {

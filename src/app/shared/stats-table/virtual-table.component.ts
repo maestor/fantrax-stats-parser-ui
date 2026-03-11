@@ -159,7 +159,7 @@ export class VirtualTableComponent implements AfterViewInit {
   }
 
   getInitialSortDirection(column: Column): SortDirection {
-    return column.initialSortDirection ?? 'asc';
+    return column.initialSortDirection ?? 'desc';
   }
 
   getCellClass(column: Column): { 'col-left': boolean; 'col-center': boolean } {

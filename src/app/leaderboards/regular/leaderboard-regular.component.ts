@@ -39,7 +39,7 @@ export class LeaderboardRegularComponent {
   readonly fetchFn = () => this.apiService.getLeaderboardRegular();
   readonly columns: Column[] = [
     { field: 'displayPosition', align: 'left', sortable: false },
-    { field: 'teamName', align: 'left' },
+    { field: 'teamName', align: 'left', initialSortDirection: 'asc' },
     { field: 'regularTrophies', icon: { name: '🏆', type: 'emoji' } },
     { field: 'points' },
     { field: 'wins' },

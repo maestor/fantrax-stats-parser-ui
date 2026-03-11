@@ -40,9 +40,9 @@ class StatsTableHostComponent {
   searchLabelKey = 'table.playerSearch';
 
   readonly columns: Column[] = [
-    { field: 'name', align: 'left' },
-    { field: 'score', align: 'left', initialSortDirection: 'desc' },
-    { field: 'scoreAdjustedByGames', align: 'left', initialSortDirection: 'desc' },
+    { field: 'name', align: 'left', initialSortDirection: 'asc' },
+    { field: 'score', align: 'left' },
+    { field: 'scoreAdjustedByGames', align: 'left' },
   ];
 
   data = [
