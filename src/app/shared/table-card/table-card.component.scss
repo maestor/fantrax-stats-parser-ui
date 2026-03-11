@@ -150,3 +150,11 @@ mat-card-header {
     width: 100%;
   }
 }
+
+@media (max-width: 480px) {
+
+  .value-column,
+  .info-column {
+    width: 42px;
+  }
+}

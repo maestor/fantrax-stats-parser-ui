@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, WritableSignal, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  WritableSignal,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -13,7 +22,7 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
 
-import { CareerHighlightCardState } from './career-highlights.types';
+import { CareerHighlightCardState, CareerHighlightCardView } from './career-highlights.types';
 
 const PAGE_SIZE = 10;
 
@@ -37,6 +46,27 @@ const SAME_TEAM_SEASONS_PLAYED_CONFIG: HighlightCardConfig = {
   descriptionKey: 'career.highlights.cards.sameTeamSeasonsPlayed.description',
   valueColumnLabelKey: 'career.highlights.columns.seasonCount',
 };
+
+const MOST_TEAMS_OWNED_CONFIG: HighlightCardConfig = {
+  type: 'most-teams-owned',
+  titleKey: 'career.highlights.cards.mostTeamsOwned.title',
+  descriptionKey: 'career.highlights.cards.mostTeamsOwned.description',
+  valueColumnLabelKey: 'career.highlights.columns.teamCount',
+};
+
+const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
+  type: 'same-team-seasons-owned',
+  titleKey: 'career.highlights.cards.sameTeamSeasonsOwned.title',
+  descriptionKey: 'career.highlights.cards.sameTeamSeasonsOwned.description',
+  valueColumnLabelKey: 'career.highlights.columns.seasonCount',
+};
+
+const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
+  MOST_TEAMS_PLAYED_CONFIG,
+  MOST_TEAMS_OWNED_CONFIG,
+  SAME_TEAM_SEASONS_PLAYED_CONFIG,
+  SAME_TEAM_SEASONS_OWNED_CONFIG,
+];
 
 function createInitialCardState(config: HighlightCardConfig): CareerHighlightCardState {
   return {
@@ -64,11 +94,21 @@ export class CareerHighlightsComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
-  readonly mostTeamsPlayedState = signal(
-    createInitialCardState(MOST_TEAMS_PLAYED_CONFIG),
-  );
-  readonly sameTeamSeasonsPlayedState = signal(
-    createInitialCardState(SAME_TEAM_SEASONS_PLAYED_CONFIG),
+  private readonly cardSignals: Record<
+    CareerHighlightType,
+    WritableSignal<CareerHighlightCardState>
+  > = {
+    'most-teams-played': signal(createInitialCardState(MOST_TEAMS_PLAYED_CONFIG)),
+    'most-teams-owned': signal(createInitialCardState(MOST_TEAMS_OWNED_CONFIG)),
+    'same-team-seasons-played': signal(createInitialCardState(SAME_TEAM_SEASONS_PLAYED_CONFIG)),
+    'same-team-seasons-owned': signal(createInitialCardState(SAME_TEAM_SEASONS_OWNED_CONFIG)),
+  };
+
+  readonly cards = computed<readonly CareerHighlightCardView[]>(() =>
+    HIGHLIGHT_CARD_CONFIGS.map((config) => ({
+      type: config.type,
+      state: this.cardSignals[config.type](),
+    })),
   );
 
   private footerVisibilityCycle = 0;
@@ -76,10 +116,11 @@ export class CareerHighlightsComponent implements OnInit {
 
   ngOnInit(): void {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
-    this.pendingInitialLoads = 2;
+    this.pendingInitialLoads = HIGHLIGHT_CARD_CONFIGS.length;
 
-    this.loadCard(MOST_TEAMS_PLAYED_CONFIG.type, 0, true);
-    this.loadCard(SAME_TEAM_SEASONS_PLAYED_CONFIG.type, 0, true);
+    for (const config of HIGHLIGHT_CARD_CONFIGS) {
+      this.loadCard(config.type, 0, true);
+    }
   }
 
   loadPreviousPage(type: CareerHighlightType): void {
@@ -183,9 +224,7 @@ export class CareerHighlightsComponent implements OnInit {
   }
 
   private getCardSignal(type: CareerHighlightType): WritableSignal<CareerHighlightCardState> {
-    return type === MOST_TEAMS_PLAYED_CONFIG.type
-      ? this.mostTeamsPlayedState
-      : this.sameTeamSeasonsPlayedState;
+    return this.cardSignals[type];
   }
 
   private markInitialLoadReady(initialLoad: boolean): void {

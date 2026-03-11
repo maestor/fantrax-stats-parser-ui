@@ -273,9 +273,15 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
       await screen.findByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
     ).toBeInTheDocument();
     expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.mostTeamsOwned.title' })
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsPlayed.title' })
     ).toBeInTheDocument();
-    expect(screen.getAllByRole('table')).toHaveLength(2);
+    expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsOwned.title' })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('table')).toHaveLength(4);
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
 

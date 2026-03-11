@@ -8,34 +8,21 @@
   </h3>
 
   <div class="career-highlights-grid">
-    <app-table-card
-      [titleKey]="mostTeamsPlayedState().titleKey"
-      [descriptionKey]="mostTeamsPlayedState().descriptionKey"
-      primaryColumnLabelKey="career.highlights.columns.player"
-      [valueColumnLabelKey]="mostTeamsPlayedState().valueColumnLabelKey"
-      [rows]="mostTeamsPlayedState().rows"
-      [loading]="mostTeamsPlayedState().loading"
-      [apiError]="mostTeamsPlayedState().apiError"
-      [skip]="mostTeamsPlayedState().skip"
-      [take]="mostTeamsPlayedState().take"
-      [total]="mostTeamsPlayedState().total"
-      (previousPageRequested)="loadPreviousPage('most-teams-played')"
-      (nextPageRequested)="loadNextPage('most-teams-played')"
-    />
-
-    <app-table-card
-      [titleKey]="sameTeamSeasonsPlayedState().titleKey"
-      [descriptionKey]="sameTeamSeasonsPlayedState().descriptionKey"
-      primaryColumnLabelKey="career.highlights.columns.player"
-      [valueColumnLabelKey]="sameTeamSeasonsPlayedState().valueColumnLabelKey"
-      [rows]="sameTeamSeasonsPlayedState().rows"
-      [loading]="sameTeamSeasonsPlayedState().loading"
-      [apiError]="sameTeamSeasonsPlayedState().apiError"
-      [skip]="sameTeamSeasonsPlayedState().skip"
-      [take]="sameTeamSeasonsPlayedState().take"
-      [total]="sameTeamSeasonsPlayedState().total"
-      (previousPageRequested)="loadPreviousPage('same-team-seasons-played')"
-      (nextPageRequested)="loadNextPage('same-team-seasons-played')"
-    />
+    @for (card of cards(); track card.type) {
+      <app-table-card
+        [titleKey]="card.state.titleKey"
+        [descriptionKey]="card.state.descriptionKey"
+        primaryColumnLabelKey="career.highlights.columns.player"
+        [valueColumnLabelKey]="card.state.valueColumnLabelKey"
+        [rows]="card.state.rows"
+        [loading]="card.state.loading"
+        [apiError]="card.state.apiError"
+        [skip]="card.state.skip"
+        [take]="card.state.take"
+        [total]="card.state.total"
+        (previousPageRequested)="loadPreviousPage(card.type)"
+        (nextPageRequested)="loadNextPage(card.type)"
+      />
+    }
   </div>
 </section>

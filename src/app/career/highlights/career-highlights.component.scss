@@ -19,3 +19,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+@media (max-width: 480px) {
+  .career-highlights-grid {
+    margin: 12px 8px;
+    gap: 12px;
+  }
+}

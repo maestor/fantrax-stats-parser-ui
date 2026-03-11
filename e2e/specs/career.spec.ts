@@ -24,9 +24,11 @@ test.describe('Career listings', () => {
     await expect(page).toHaveURL(/\/career\/highlights$/);
     await expect(highlightsTab).toHaveAttribute('aria-selected', 'true');
     const highlightCards = page.locator('app-table-card');
-    await expect(highlightCards).toHaveCount(2);
+    await expect(highlightCards).toHaveCount(4);
     await expect(highlightCards.first().getByRole('table')).toBeVisible();
     await expect(highlightCards.nth(1).getByRole('table')).toBeVisible();
+    await expect(highlightCards.nth(2).getByRole('table')).toBeVisible();
+    await expect(highlightCards.nth(3).getByRole('table')).toBeVisible();
 
     const mostTeamsCard = highlightCards.first();
     const firstMostTeamsRow = mostTeamsCard.locator('tbody tr').first();

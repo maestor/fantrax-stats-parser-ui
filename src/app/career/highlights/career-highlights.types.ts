@@ -1,4 +1,5 @@
 import { TableCardRow } from '@shared/table-card/table-card.types';
+import { CareerHighlightType } from '@services/api.service';
 
 export interface CareerHighlightCardState {
   readonly titleKey: string;
@@ -10,4 +11,9 @@ export interface CareerHighlightCardState {
   readonly skip: number;
   readonly take: number;
   readonly total: number;
+}
+
+export interface CareerHighlightCardView {
+  readonly type: CareerHighlightType;
+  readonly state: CareerHighlightCardState;
 }

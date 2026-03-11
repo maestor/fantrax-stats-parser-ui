@@ -1,0 +1,252 @@
+{
+  "type": "most-teams-owned",
+  "skip": 0,
+  "take": 10,
+  "total": 12,
+  "items": [
+    {
+      "id": "goalie-201",
+      "name": "Andrei Vasilevskiy",
+      "position": "G",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "201",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "202",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "203",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "204",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "205",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "206",
+          "name": "Anaheim Ducks"
+        }
+      ]
+    },
+    {
+      "id": "player-202",
+      "name": "Claude Giroux",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "207",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "208",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "209",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "210",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "211",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "player-203",
+      "name": "John Tavares",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "212",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "213",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "214",
+          "name": "Seattle Kraken"
+        },
+        {
+          "id": "215",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "216",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "player-204",
+      "name": "Brent Burns",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "217",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "218",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "219",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "220",
+          "name": "Florida Panthers"
+        }
+      ]
+    },
+    {
+      "id": "goalie-205",
+      "name": "Cam Talbot",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "221",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "222",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "223",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "224",
+          "name": "Minnesota Wild"
+        }
+      ]
+    },
+    {
+      "id": "player-206",
+      "name": "Ryan Nugent-Hopkins",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "225",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "226",
+          "name": "Seattle Kraken"
+        },
+        {
+          "id": "227",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "228",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "player-207",
+      "name": "Steven Stamkos",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "229",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "230",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "231",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "232",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "player-208",
+      "name": "Roman Josi",
+      "position": "D",
+      "teamCount": 3,
+      "teams": [
+        {
+          "id": "233",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "234",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "235",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "player-209",
+      "name": "Mikko Rantanen",
+      "position": "F",
+      "teamCount": 3,
+      "teams": [
+        {
+          "id": "236",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "237",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "238",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "goalie-210",
+      "name": "Jacob Markstrom",
+      "position": "G",
+      "teamCount": 3,
+      "teams": [
+        {
+          "id": "239",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "240",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "241",
+          "name": "New Jersey Devils"
+        }
+      ]
+    }
+  ]
+}
