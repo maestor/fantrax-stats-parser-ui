@@ -60,6 +60,7 @@ Implementation:
 
 - Skip link in the app shell
 - Target table container uses a stable `id` (default `stats-table`)
+- Career highlights reuse the career skip target (`career-table`) and move focus to the first available card row without adding those rows to normal tab order
 
 ### Stats table keyboard navigation
 

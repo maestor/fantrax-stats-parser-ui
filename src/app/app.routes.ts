@@ -52,6 +52,13 @@ export const routes: Routes = [
             (m) => m.CareerGoaliesComponent
           ),
       },
+      {
+        path: 'highlights',
+        loadComponent: () =>
+          import('./career/highlights/career-highlights.component').then(
+            (m) => m.CareerHighlightsComponent
+          ),
+      },
     ],
   },
   {

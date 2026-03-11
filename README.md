@@ -34,6 +34,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- Searchable and sortable, with no stats-page filters or mobile drawer
 	- Virtualized row rendering keeps long lists responsive
 	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
+	- `/career/highlights` adds compact paged highlight cards for focused career leaderboard slices such as most teams played and most seasons played with the same team
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
@@ -47,6 +48,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 🌐 **Internationalization**: i18n support with ngx-translate (currently ships with Finnish UI; additional languages can be added under `public/i18n/`)
 - 🎨 **Material Design**: Clean UI with Angular Material components
 - 🌓 **Automatic Dark Mode**: Follows device/browser `prefers-color-scheme` (no manual toggle)
+  - Every UI/styling change must be verified in both light mode and dark mode before review or merge
 - 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)
 - 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and collapsible controls
 - 🕒 **Last Updated Indicator**: Shows backend data last-modified timestamp under the title (desktop) and in the settings drawer (mobile)
@@ -175,7 +177,7 @@ For planning-heavy changes, save the approved implementation plan locally under 
 
 E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `smoke.spec.ts` — Core page rendering and navigation
-- `career.spec.ts` — Career players/goalies tabs, search, sorting, and route shell behavior
+- `career.spec.ts` — Career players/goalies/highlights tabs, search, paging, and route shell behavior
 - `leaderboards.spec.ts` — Leaderboards redirect, table data, tab navigation, position tie logic, expandable season details
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
 - `team-switching.spec.ts` — Team selector and filter reset behavior
@@ -251,12 +253,13 @@ src/
 │   │   ├── player-card/   # Player detail dialog
 │   │   ├── settings-panel/# Settings UI (toggles/sliders)
 │   │   ├── stats-table/   # Reusable stats table + virtualized career table
+│   │   ├── table-card/    # Reusable paged card with semantic table layout
 │   │   ├── top-controls/  # Header controls (team/season/report switchers)
 │   │   └── table-columns.ts
 │   ├── player-stats/      # Player stats page
 │   ├── goalie-stats/      # Goalie stats page
 │   ├── dashboard-shell/   # Lazy shell for dashboard routes
-│   ├── career/            # Career listings (/career/players, /career/goalies)
+│   ├── career/            # Career listings + highlights (/career/players, /career/goalies, /career/highlights)
 │   ├── leaderboards/      # All-time leaderboards (/leaderboards/regular, /leaderboards/playoffs)
 │   ├── player-route/      # Direct player card route handler
 │   ├── goalie-route/      # Direct goalie card route handler

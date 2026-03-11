@@ -132,6 +132,13 @@ class ApiService {
   // Fetch goalie statistics
   getGoalieData(params: ApiParams): Observable<Goalie[]>
 
+  // Fetch paged career highlight leaderboard slices
+  getCareerHighlights(
+    type: CareerHighlightType,
+    skip?: number,
+    take?: number
+  ): Observable<CareerHighlightPage>
+
   // Fetch available seasons for a given report type (regular/playoffs)
   // Optional `startFrom` filters out earlier seasons.
   getSeasons(reportType?: ReportType, teamId?: string, startFrom?: number): Observable<Season[]>

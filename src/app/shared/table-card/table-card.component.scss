@@ -1,0 +1,152 @@
+:host {
+  display: block;
+}
+
+.table-card {
+  height: 100%;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
+      var(--mat-sys-surface) 100%);
+}
+
+mat-card-header {
+  padding-bottom: 0;
+}
+
+.table-card [mat-card-title] {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface);
+}
+
+.table-card [mat-card-subtitle] {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: normal;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+mat-card-header {
+  margin-bottom: 8px;
+}
+
+.card-inline-error,
+.card-status-message {
+  margin: 0;
+  padding: 16px 4px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.card-inline-error {
+  padding-top: 0;
+}
+
+.table-shell {
+  overflow-x: none;
+}
+
+.table-card-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.table-card-table th {
+  padding: 0.5rem 0.95rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  color: var(--mat-sys-on-surface);
+}
+
+.table-card-table td {
+  padding: 0.1rem 0.95rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.table-card-table th {
+  background: var(--mat-sys-surface-container);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.table-card-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-card-table tbody tr:focus {
+  outline: 2px solid var(--mat-sys-primary);
+  outline-offset: -2px;
+  background: var(--mat-sys-primary-container);
+}
+
+.primary-cell {
+  font-size: 0.9rem;
+  font-weight: normal;
+}
+
+.name-column {
+  text-align: left;
+}
+
+.value-column {
+  width: 92px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.info-column {
+  width: 72px;
+  text-align: center;
+}
+
+.table-card .info-column .mat-mdc-icon-button {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.table-card .info-column .mat-mdc-icon-button:hover,
+.table-card .info-column .mat-mdc-icon-button:focus-visible {
+  background: color-mix(in srgb, var(--mat-sys-primary) 14%, transparent);
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 0;
+}
+
+.table-card .card-actions .mat-mdc-outlined-button:not(:disabled) {
+  color: var(--mat-sys-on-surface);
+  border-color: var(--mat-sys-outline);
+}
+
+.table-card .card-actions .mat-mdc-outlined-button:disabled {
+  color: color-mix(in srgb, var(--mat-sys-on-surface) 38%, transparent);
+  border-color: color-mix(in srgb, var(--mat-sys-on-surface) 12%, transparent);
+}
+
+.page-summary {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+
+  .card-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .page-summary {
+    order: -1;
+    width: 100%;
+  }
+}

@@ -1,0 +1,41 @@
+<section
+  class="career-highlights"
+  id="career-table"
+  aria-labelledby="career-highlights-title"
+>
+  <h3 id="career-highlights-title" class="sr-only">
+    {{ 'career.highlights.sectionTitle' | translate }}
+  </h3>
+
+  <div class="career-highlights-grid">
+    <app-table-card
+      [titleKey]="mostTeamsPlayedState().titleKey"
+      [descriptionKey]="mostTeamsPlayedState().descriptionKey"
+      primaryColumnLabelKey="career.highlights.columns.player"
+      [valueColumnLabelKey]="mostTeamsPlayedState().valueColumnLabelKey"
+      [rows]="mostTeamsPlayedState().rows"
+      [loading]="mostTeamsPlayedState().loading"
+      [apiError]="mostTeamsPlayedState().apiError"
+      [skip]="mostTeamsPlayedState().skip"
+      [take]="mostTeamsPlayedState().take"
+      [total]="mostTeamsPlayedState().total"
+      (previousPageRequested)="loadPreviousPage('most-teams-played')"
+      (nextPageRequested)="loadNextPage('most-teams-played')"
+    />
+
+    <app-table-card
+      [titleKey]="sameTeamSeasonsPlayedState().titleKey"
+      [descriptionKey]="sameTeamSeasonsPlayedState().descriptionKey"
+      primaryColumnLabelKey="career.highlights.columns.player"
+      [valueColumnLabelKey]="sameTeamSeasonsPlayedState().valueColumnLabelKey"
+      [rows]="sameTeamSeasonsPlayedState().rows"
+      [loading]="sameTeamSeasonsPlayedState().loading"
+      [apiError]="sameTeamSeasonsPlayedState().apiError"
+      [skip]="sameTeamSeasonsPlayedState().skip"
+      [take]="sameTeamSeasonsPlayedState().take"
+      [total]="sameTeamSeasonsPlayedState().total"
+      (previousPageRequested)="loadPreviousPage('same-team-seasons-played')"
+      (nextPageRequested)="loadNextPage('same-team-seasons-played')"
+    />
+  </div>
+</section>

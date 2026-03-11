@@ -96,6 +96,11 @@ Use this as a local regression check after startup-bundle or rendering changes. 
 
 The UI follows the device/browser color scheme automatically (no manual toggle).
 
+Dark mode verification is mandatory for every UI/styling change.
+
+- Any new component, layout, card, table, dialog, tooltip, or color tweak must be checked in both light mode and dark mode before the task is considered done.
+- Do not assume a change is "too small" to affect dark mode.
+
 Key files:
 
 - `src/theme.scss`: Angular Material theme configuration (emits `--mat-sys-*` tokens via `theme-type: color-scheme`)
@@ -112,6 +117,12 @@ If the page looks like it’s using a stale/light bundle (common during theming 
 
 - Hard refresh: `Cmd+Shift+R`
 - If still wrong under `ng serve`, restart `npm start` (browser/dev-server caching can keep older CSS around)
+
+Before review/verify for any UI-facing change:
+
+- Check the changed view in light mode
+- Check the changed view in dark mode
+- Verify focus, hover, tooltip, loading, and empty/error states in the affected UI where relevant
 
 ### PWA (Installable App)
 

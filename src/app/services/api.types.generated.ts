@@ -1001,6 +1001,69 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/career/highlights/{type}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Career highlights leaderboard
+         * @description Returns a paged mixed skater + goalie career highlights leaderboard.
+         *     `most-teams-played` and `most-teams-owned` return team-count rows.
+         *     `same-team-seasons-played` and `same-team-seasons-owned` return one row per top team, so the same person can appear multiple times on tied same-team results.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Number of rows to skip from the start of the sorted highlight list. Defaults to `0`. */
+                    skip?: components["parameters"]["skip"];
+                    /** @description Number of rows to return from the sorted highlight list. Defaults to `10`. Maximum `100`. */
+                    take?: components["parameters"]["take"];
+                };
+                header?: never;
+                path: {
+                    /** @description Career highlight leaderboard type. */
+                    type: components["schemas"]["CareerHighlightType"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Paged career highlight results. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CareerTeamCountHighlightPage"] | components["schemas"]["CareerSameTeamHighlightPage"];
+                    };
+                };
+                /** @description Invalid highlight type or paging params. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/leaderboard/playoffs": {
         parameters: {
             query?: never;
@@ -1243,6 +1306,42 @@ export interface components {
             regularGames: number;
             playoffGames: number;
         };
+        /** @enum {string} */
+        CareerHighlightType: "most-teams-played" | "most-teams-owned" | "same-team-seasons-played" | "same-team-seasons-owned";
+        CareerHighlightTeam: {
+            id: string;
+            name: string;
+        };
+        CareerTeamCountHighlightItem: {
+            id: string;
+            name: string;
+            position: string;
+            teamCount: number;
+            teams: components["schemas"]["CareerHighlightTeam"][];
+        };
+        CareerSameTeamHighlightItem: {
+            id: string;
+            name: string;
+            position: string;
+            seasonCount: number;
+            team: components["schemas"]["CareerHighlightTeam"];
+        };
+        CareerTeamCountHighlightPage: {
+            /** @enum {string} */
+            type: "most-teams-played" | "most-teams-owned";
+            skip: number;
+            take: number;
+            total: number;
+            items: components["schemas"]["CareerTeamCountHighlightItem"][];
+        };
+        CareerSameTeamHighlightPage: {
+            /** @enum {string} */
+            type: "same-team-seasons-played" | "same-team-seasons-owned";
+            skip: number;
+            take: number;
+            total: number;
+            items: components["schemas"]["CareerSameTeamHighlightItem"][];
+        };
         CareerGoalie: {
             id: string;
             name: string;
@@ -1272,13 +1371,14 @@ export interface components {
             blocks: number;
             /** @description Composite score (0-100 range). */
             score: number;
-            /** @description Score adjusted by games played. */
+            /** @description Stabilized per-game pace score. */
             scoreAdjustedByGames: number;
             /** @description Per-stat score breakdown. */
             scores?: {
                 [key: string]: number;
             };
             scoreByPosition?: number;
+            /** @description Stabilized per-game pace score compared to the same position only. */
             scoreByPositionAdjustedByGames?: number;
             scoresByPosition?: {
                 [key: string]: number;
@@ -1304,21 +1404,81 @@ export interface components {
             /** @description Save percentage. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
             savePercent?: string;
             score: number;
+            /** @description Stabilized per-game pace score. */
             scoreAdjustedByGames: number;
             scores?: {
                 [key: string]: number;
             };
             scoreByPosition?: number;
+            /** @description Stabilized per-game pace score compared to the same position only. */
             scoreByPositionAdjustedByGames?: number;
             scoresByPosition?: {
                 [key: string]: number;
             };
         };
-        PlayerSeasonData: components["schemas"]["Player"] & {
+        /** @description Per-season row nested under `CombinedPlayer.seasons`. Omits `name` because the combined root object already includes it. */
+        PlayerSeasonData: {
             season: number;
+            /** @description Fantrax player identifier extracted from `*id*` in CSV name field. */
+            id: string;
+            position?: string;
+            games: number;
+            goals: number;
+            assists: number;
+            points: number;
+            plusMinus: number;
+            penalties: number;
+            shots: number;
+            ppp: number;
+            shp: number;
+            hits: number;
+            blocks: number;
+            score: number;
+            /** @description Stabilized per-game pace score. */
+            scoreAdjustedByGames: number;
+            /** @description Per-stat score breakdown. */
+            scores?: {
+                [key: string]: number;
+            };
+            scoreByPosition?: number;
+            /** @description Stabilized per-game pace score compared to the same position only. */
+            scoreByPositionAdjustedByGames?: number;
+            scoresByPosition?: {
+                [key: string]: number;
+            };
         };
-        GoalieSeasonData: components["schemas"]["Goalie"] & {
+        /** @description Per-season row nested under `CombinedGoalie.seasons`. Omits `name` because the combined root object already includes it. */
+        GoalieSeasonData: {
             season: number;
+            /** @description Fantrax goalie identifier extracted from `*id*` in CSV name field. */
+            id: string;
+            position?: string;
+            games: number;
+            goals: number;
+            assists: number;
+            points: number;
+            penalties: number;
+            ppp: number;
+            shp: number;
+            wins: number;
+            saves: number;
+            shutouts: number;
+            /** @description Goals against average. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
+            gaa?: string;
+            /** @description Save percentage. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
+            savePercent?: string;
+            score: number;
+            /** @description Stabilized per-game pace score. */
+            scoreAdjustedByGames: number;
+            scores?: {
+                [key: string]: number;
+            };
+            scoreByPosition?: number;
+            /** @description Stabilized per-game pace score compared to the same position only. */
+            scoreByPositionAdjustedByGames?: number;
+            scoresByPosition?: {
+                [key: string]: number;
+            };
         };
         CombinedPlayer: components["schemas"]["Player"] & {
             seasons: components["schemas"]["PlayerSeasonData"][];
@@ -1398,6 +1558,10 @@ export interface components {
          *     Works with `/seasons`, `/players/combined/*`, and `/goalies/combined/*`.
          */
         startFrom: number;
+        /** @description Number of rows to skip from the start of the sorted highlight list. Defaults to `0`. */
+        skip: number;
+        /** @description Number of rows to return from the sorted highlight list. Defaults to `10`. Maximum `100`. */
+        take: number;
         /** @description Fantrax player or goalie identifier. */
         careerId: string;
     };

@@ -175,6 +175,72 @@ describe('ApiService', () => {
     ]);
   });
 
+  it('requests career highlights with explicit paging params', async () => {
+    const responsePromise = firstValueFrom(
+      service.getCareerHighlights('most-teams-played', 10, 10)
+    );
+
+    const request = httpMock.expectOne((req) =>
+      req.url === 'http://localhost:3000/career/highlights/most-teams-played' &&
+      req.params.get('skip') === '10' &&
+      req.params.get('take') === '10'
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({
+      type: 'most-teams-played',
+      skip: 10,
+      take: 10,
+      total: 12,
+      items: [],
+    });
+
+    await expect(responsePromise).resolves.toEqual({
+      type: 'most-teams-played',
+      skip: 10,
+      take: 10,
+      total: 12,
+      items: [],
+    });
+  });
+
+  it('caches career highlights by type and paging window', async () => {
+    const firstResponse = firstValueFrom(
+      service.getCareerHighlights('same-team-seasons-played', 0, 10)
+    );
+
+    const request = httpMock.expectOne((req) =>
+      req.url === 'http://localhost:3000/career/highlights/same-team-seasons-played' &&
+      req.params.get('skip') === '0' &&
+      req.params.get('take') === '10'
+    );
+    request.flush({
+      type: 'same-team-seasons-played',
+      skip: 0,
+      take: 10,
+      total: 11,
+      items: [],
+    });
+
+    await expect(firstResponse).resolves.toEqual({
+      type: 'same-team-seasons-played',
+      skip: 0,
+      take: 10,
+      total: 11,
+      items: [],
+    });
+
+    await expect(
+      firstValueFrom(service.getCareerHighlights('same-team-seasons-played', 0, 10))
+    ).resolves.toEqual({
+      type: 'same-team-seasons-played',
+      skip: 0,
+      take: 10,
+      total: 11,
+      items: [],
+    });
+    httpMock.expectNone('http://localhost:3000/career/highlights/same-team-seasons-played');
+  });
+
   it('transforms http errors into a user-friendly error', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 

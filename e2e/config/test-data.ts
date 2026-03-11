@@ -34,6 +34,7 @@ export const TAB_LABELS = {
   GOALIES: 'Maalivahdit',
   CAREER_PLAYERS: 'Kenttäpelaajat',
   CAREER_GOALIES: 'Maalivahdit',
+  CAREER_HIGHLIGHTS: 'Nostot',
   PLAYER_CARD_STATS: 'Tilastot',
   PLAYER_CARD_BY_SEASON: 'Kausittain',
   PLAYER_CARD_GRAPHS: 'Graafit',

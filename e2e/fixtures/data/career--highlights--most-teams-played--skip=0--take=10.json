@@ -1,0 +1,126 @@
+{
+  "type": "most-teams-played",
+  "skip": 0,
+  "take": 10,
+  "total": 12,
+  "items": [
+    {
+      "id": "player-1",
+      "name": "Jamie Benn",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        { "id": "1", "name": "Colorado Avalanche" },
+        { "id": "2", "name": "Carolina Hurricanes" },
+        { "id": "3", "name": "Ottawa Senators" },
+        { "id": "4", "name": "Dallas Stars" },
+        { "id": "5", "name": "Boston Bruins" }
+      ]
+    },
+    {
+      "id": "player-2",
+      "name": "Phil Kessel",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        { "id": "6", "name": "Toronto Maple Leafs" },
+        { "id": "7", "name": "Pittsburgh Penguins" },
+        { "id": "8", "name": "Arizona Coyotes" },
+        { "id": "9", "name": "Vegas Golden Knights" },
+        { "id": "10", "name": "Vancouver Canucks" }
+      ]
+    },
+    {
+      "id": "player-3",
+      "name": "Brent Burns",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        { "id": "11", "name": "Minnesota Wild" },
+        { "id": "12", "name": "San Jose Sharks" },
+        { "id": "13", "name": "Carolina Hurricanes" },
+        { "id": "14", "name": "Florida Panthers" }
+      ]
+    },
+    {
+      "id": "player-4",
+      "name": "Jonathan Quick",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        { "id": "15", "name": "Los Angeles Kings" },
+        { "id": "16", "name": "Vegas Golden Knights" },
+        { "id": "17", "name": "New York Rangers" },
+        { "id": "18", "name": "New Jersey Devils" }
+      ]
+    },
+    {
+      "id": "player-5",
+      "name": "Ryan O'Reilly",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        { "id": "19", "name": "Colorado Avalanche" },
+        { "id": "20", "name": "Buffalo Sabres" },
+        { "id": "21", "name": "St. Louis Blues" },
+        { "id": "22", "name": "Nashville Predators" }
+      ]
+    },
+    {
+      "id": "player-6",
+      "name": "Tyler Seguin",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        { "id": "23", "name": "Boston Bruins" },
+        { "id": "24", "name": "Dallas Stars" },
+        { "id": "25", "name": "Seattle Kraken" },
+        { "id": "26", "name": "Calgary Flames" }
+      ]
+    },
+    {
+      "id": "player-7",
+      "name": "Jeff Skinner",
+      "position": "F",
+      "teamCount": 3,
+      "teams": [
+        { "id": "27", "name": "Carolina Hurricanes" },
+        { "id": "28", "name": "Buffalo Sabres" },
+        { "id": "29", "name": "Edmonton Oilers" }
+      ]
+    },
+    {
+      "id": "player-8",
+      "name": "Erik Karlsson",
+      "position": "D",
+      "teamCount": 3,
+      "teams": [
+        { "id": "30", "name": "Ottawa Senators" },
+        { "id": "31", "name": "San Jose Sharks" },
+        { "id": "32", "name": "Pittsburgh Penguins" }
+      ]
+    },
+    {
+      "id": "player-9",
+      "name": "Mikko Koskinen",
+      "position": "G",
+      "teamCount": 3,
+      "teams": [
+        { "id": "33", "name": "Edmonton Oilers" },
+        { "id": "34", "name": "Winnipeg Jets" },
+        { "id": "35", "name": "Columbus Blue Jackets" }
+      ]
+    },
+    {
+      "id": "player-10",
+      "name": "Dougie Hamilton",
+      "position": "D",
+      "teamCount": 3,
+      "teams": [
+        { "id": "36", "name": "Boston Bruins" },
+        { "id": "37", "name": "Calgary Flames" },
+        { "id": "38", "name": "New Jersey Devils" }
+      ]
+    }
+  ]
+}

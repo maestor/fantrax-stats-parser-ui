@@ -1,0 +1,103 @@
+<mat-card class="table-card mat-elevation-z4">
+  <mat-card-header>
+    <h3 mat-card-title>
+      {{ titleKey() | translate }}
+    </h3>
+    <p mat-card-subtitle>
+      {{ descriptionKey() | translate }}
+    </p>
+  </mat-card-header>
+
+  @if (loading() && !hasRows()) {
+  <mat-progress-bar mode="indeterminate" />
+  }
+
+  <mat-card-content>
+    @if (apiError() && !hasRows()) {
+    <p class="card-status-message" role="status">
+      {{ 'tableCard.apiUnavailable' | translate }}
+    </p>
+    } @else if (!hasRows() && !loading()) {
+    <p class="card-status-message" role="status">
+      {{ 'tableCard.noResults' | translate }}
+    </p>
+    } @else {
+    @if (loading() && hasRows()) {
+    <mat-progress-bar mode="indeterminate" />
+    }
+
+    @if (apiError() && hasRows()) {
+    <p class="card-inline-error" role="status">
+      {{ 'tableCard.apiUnavailable' | translate }}
+    </p>
+    }
+
+    <div class="table-shell">
+      <table class="table-card-table">
+        <thead>
+          <tr>
+            <th scope="col" class="name-column">
+              {{ primaryColumnLabelKey() | translate }}
+            </th>
+            <th scope="col" class="value-column">
+              {{ valueColumnLabelKey() | translate }}
+            </th>
+            <th scope="col" class="info-column">
+              <span class="sr-only">
+                {{ 'tableCard.columns.details' | translate }}
+              </span>
+              <mat-icon aria-hidden="true">info</mat-icon>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (row of rows(); track row.key; let rowIndex = $index) {
+          <tr [attr.data-row-index]="rowIndex" tabindex="-1">
+            <td class="primary-cell">
+              {{ row.primaryText }}
+            </td>
+            <td class="value-column">
+              {{ row.value }}
+            </td>
+            <td class="info-column">
+              <button mat-icon-button type="button" [matTooltip]="getDetailsTooltip(row)"
+                matTooltipClass="table-card-tooltip"
+                [attr.aria-label]="'tableCard.showDetails' | translate : { label: row.detailLabel }">
+                <mat-icon>info_outline</mat-icon>
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+  </mat-card-content>
+
+  <mat-card-actions class="card-actions">
+    <button mat-stroked-button type="button" (click)="previousPageRequested.emit()"
+      [disabled]="loading() || !hasPreviousPage()" [attr.aria-label]="'tableCard.previousPage' | translate">
+      <mat-icon>chevron_left</mat-icon>
+      {{ 'tableCard.previous' | translate }}
+    </button>
+
+    <div class="page-summary" aria-live="polite">
+      {{
+      'tableCard.paginationSummary'
+      | translate
+      : {
+      start: pageStart(),
+      end: pageEnd(),
+      total: total(),
+      }
+      }}
+    </div>
+
+    <button mat-stroked-button type="button" (click)="nextPageRequested.emit()" [disabled]="loading() || !hasNextPage()"
+      [attr.aria-label]="'tableCard.nextPage' | translate">
+      {{ 'tableCard.next' | translate }}
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>
