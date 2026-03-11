@@ -15,7 +15,34 @@
   "career": {
     "tabs": {
       "players": "Kenttäpelaajat",
-      "goalies": "Maalivahdit"
+      "goalies": "Maalivahdit",
+      "highlights": "Nostot"
+    },
+    "highlights": {
+      "sectionTitle": "Uranostot",
+      "columns": {
+        "player": "Pelaaja",
+        "teamCount": "Seurat",
+        "seasonCount": "Kaudet"
+      },
+      "cards": {
+        "mostTeamsPlayed": {
+          "title": "Eniten seuroja - pelanneet",
+          "description": "Pelannut vähintään ottelun seurassa."
+        },
+        "mostTeamsOwned": {
+          "title": "Eniten edustusseuroja",
+          "description": "Ollut seurassa vähintään käymässä."
+        },
+        "sameTeamSeasonsPlayed": {
+          "title": "Eniten pelikausia - sama seura",
+          "description": "Pelannut vähintään ottelun joka kaudella."
+        },
+        "sameTeamSeasonsOwned": {
+          "title": "Eniten edustuskausia - sama seura",
+          "description": "Ollut seurassa joka kaudella."
+        }
+      }
     }
   },
   "leaderboards": {
@@ -71,6 +98,19 @@
     "loading": "Ladataan dataa...",
     "apiUnavailable": "Rajapinta ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen."
   },
+  "tableCard": {
+    "columns": {
+      "details": "Lisätiedot"
+    },
+    "showDetails": "Näytä lisätiedot: {{label}}",
+    "apiUnavailable": "Korttidata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen.",
+    "noResults": "Ei tuloksia.",
+    "previous": "Edelliset",
+    "next": "Seuraavat",
+    "previousPage": "Näytä edelliset rivit",
+    "nextPage": "Näytä seuraavat rivit",
+    "paginationSummary": "{{start}}-{{end}} / {{total}}"
+  },
   "a11y": {
     "skipToTable": "Siirry taulukkoon",
     "openPlayerCard": "Avaa pelaajakortti: {{name}}",
@@ -120,7 +160,7 @@
         "type": "ul",
         "items": [
           "Pelaajatilastot: joukkuekohtaiset kenttäpelaaja- ja maalivahtitilastot, suodattimet, vertailu ja pelaajakortit",
-          "Pelaajaurat: kaikkien aikojen urataulukot kenttäpelaajille ja maalivahdeille",
+          "Pelaajaurat: kaikkien aikojen urataulukot kenttäpelaajille ja maalivahdeille sekä uranostot",
           "Maratontaulukot: joukkueiden kaikkien aikojen runkosarja- ja playoff-menestys kausierittelyineen"
         ]
       },
@@ -152,7 +192,7 @@
       },
       {
         "type": "p",
-        "text": "Pelaajaurat-näkymä näyttää koko liigan urayhteenvedot erikseen kenttäpelaajille ja maalivahdeille. Taulukot ovat hakukelpoisia ja lajiteltavia, mutta niissä ei käytetä joukkue- tai kausisuodattimia kuten pelaajatilastoissa."
+        "text": "Pelaajaurat-näkymä näyttää koko liigan urayhteenvedot erikseen kenttäpelaajille ja maalivahdeille. Taulukot ovat hakukelpoisia ja lajiteltavia, mutta niissä ei käytetä joukkue- tai kausisuodattimia kuten pelaajatilastoissa. Nostot-välilehdellä näet lisäksi tiiviit kärkilistat uran eri huipuista."
       },
       {
         "type": "h2",

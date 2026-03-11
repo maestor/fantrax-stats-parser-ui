@@ -1,0 +1,30 @@
+{
+  "type": "most-teams-played",
+  "skip": 10,
+  "take": 10,
+  "total": 12,
+  "items": [
+    {
+      "id": "player-11",
+      "name": "Anthony Duclair",
+      "position": "F",
+      "teamCount": 3,
+      "teams": [
+        { "id": "39", "name": "Arizona Coyotes" },
+        { "id": "40", "name": "Florida Panthers" },
+        { "id": "41", "name": "Tampa Bay Lightning" }
+      ]
+    },
+    {
+      "id": "player-12",
+      "name": "Anton Stralman",
+      "position": "D",
+      "teamCount": 3,
+      "teams": [
+        { "id": "42", "name": "New York Rangers" },
+        { "id": "43", "name": "Tampa Bay Lightning" },
+        { "id": "44", "name": "Florida Panthers" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.career-highlights {
+  width: 100%;
+}
+
+.career-highlights-grid {
+  display: grid;
+  margin: 24px;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .career-highlights-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .career-highlights-grid {
+    margin: 12px 8px;
+    gap: 12px;
+  }
+}

@@ -45,6 +45,7 @@ Fantrax Stats Parser UI is an Angular 21 application that provides a user interf
 2. Follow existing patterns and conventions
 3. Update tests when modifying components or services
 4. Use Angular Material components consistently
+5. For every UI/styling change, verify the affected view in both light mode and dark mode before asking for review
 
 ### Adding Features
 1. Check existing components for similar patterns

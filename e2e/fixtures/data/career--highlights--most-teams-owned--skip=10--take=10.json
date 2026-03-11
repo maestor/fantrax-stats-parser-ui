@@ -1,0 +1,48 @@
+{
+  "type": "most-teams-owned",
+  "skip": 10,
+  "take": 10,
+  "total": 12,
+  "items": [
+    {
+      "id": "player-211",
+      "name": "Jonathan Huberdeau",
+      "position": "F",
+      "teamCount": 3,
+      "teams": [
+        {
+          "id": "242",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "243",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "244",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "player-212",
+      "name": "Mikael Granlund",
+      "position": "F",
+      "teamCount": 3,
+      "teams": [
+        {
+          "id": "245",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "246",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "247",
+          "name": "San Jose Sharks"
+        }
+      ]
+    }
+  ]
+}

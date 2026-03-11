@@ -9,6 +9,8 @@ import { routes } from '../app.routes';
 import {
   ApiParams,
   ApiService,
+  CareerHighlightPage,
+  CareerHighlightType,
   Goalie,
   LastModifiedResponse,
   Player,
@@ -30,6 +32,14 @@ import playersFixture from '../../../e2e/fixtures/data/players--combined--regula
 import goaliesFixtureData from '../../../e2e/fixtures/data/goalies--combined--regular--startFrom=2012.json';
 import careerPlayersFixtureData from '../../../e2e/fixtures/data/career--players.json';
 import careerGoaliesFixtureData from '../../../e2e/fixtures/data/career--goalies.json';
+import mostTeamsPlayedHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--most-teams-played--skip=0--take=10.json';
+import mostTeamsPlayedHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--most-teams-played--skip=10--take=10.json';
+import mostTeamsOwnedHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--most-teams-owned--skip=0--take=10.json';
+import mostTeamsOwnedHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--most-teams-owned--skip=10--take=10.json';
+import sameTeamSeasonsHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-played--skip=0--take=10.json';
+import sameTeamSeasonsHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-played--skip=10--take=10.json';
+import sameTeamSeasonsOwnedHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-owned--skip=0--take=10.json';
+import sameTeamSeasonsOwnedHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-owned--skip=10--take=10.json';
 
 export const PLAYER_SLICE_COUNT = 12;
 export const GOALIE_SLICE_COUNT = 5;
@@ -39,6 +49,22 @@ export const goaliesFixture = goaliesFixtureData as unknown as Goalie[];
 export const slicedGoalies = goaliesFixture.slice(0, GOALIE_SLICE_COUNT);
 export const careerPlayersFixture = careerPlayersFixtureData as unknown as CareerPlayerListItem[];
 export const careerGoaliesFixture = careerGoaliesFixtureData as unknown as CareerGoalieListItem[];
+export const mostTeamsPlayedHighlightsPage0Fixture =
+  mostTeamsPlayedHighlightsPage0FixtureData as CareerHighlightPage;
+export const mostTeamsPlayedHighlightsPage1Fixture =
+  mostTeamsPlayedHighlightsPage1FixtureData as CareerHighlightPage;
+export const mostTeamsOwnedHighlightsPage0Fixture =
+  mostTeamsOwnedHighlightsPage0FixtureData as CareerHighlightPage;
+export const mostTeamsOwnedHighlightsPage1Fixture =
+  mostTeamsOwnedHighlightsPage1FixtureData as CareerHighlightPage;
+export const sameTeamSeasonsHighlightsPage0Fixture =
+  sameTeamSeasonsHighlightsPage0FixtureData as CareerHighlightPage;
+export const sameTeamSeasonsHighlightsPage1Fixture =
+  sameTeamSeasonsHighlightsPage1FixtureData as CareerHighlightPage;
+export const sameTeamSeasonsOwnedHighlightsPage0Fixture =
+  sameTeamSeasonsOwnedHighlightsPage0FixtureData as CareerHighlightPage;
+export const sameTeamSeasonsOwnedHighlightsPage1Fixture =
+  sameTeamSeasonsOwnedHighlightsPage1FixtureData as CareerHighlightPage;
 
 export { teamsFixture, lastModifiedFixture, seasonsFixture, playersFixture };
 
@@ -50,6 +76,7 @@ type BehaviorApiErrorKey =
   | 'goalies'
   | 'careerPlayers'
   | 'careerGoalies'
+  | 'careerHighlights'
   | 'leaderboardRegular'
   | 'leaderboardPlayoffs';
 
@@ -61,6 +88,10 @@ export type BehaviorApiMockOptions = {
   goalies?: Goalie[];
   careerPlayers?: CareerPlayerListItem[];
   careerGoalies?: CareerGoalieListItem[];
+  careerHighlightsMostTeamsPlayed?: CareerHighlightPage;
+  careerHighlightsMostTeamsOwned?: CareerHighlightPage;
+  careerHighlightsSameTeamSeasonsPlayed?: CareerHighlightPage;
+  careerHighlightsSameTeamSeasonsOwned?: CareerHighlightPage;
   leaderboardRegular?: RegularLeaderboardEntry[];
   leaderboardPlayoffs?: PlayoffLeaderboardEntry[];
   errorKeys?: BehaviorApiErrorKey[];
@@ -73,6 +104,11 @@ export type BehaviorApiMockOptions = {
   getGoalieData?: (params: ApiParams) => Observable<Goalie[]>;
   getCareerPlayers?: () => Observable<CareerPlayerListItem[]>;
   getCareerGoalies?: () => Observable<CareerGoalieListItem[]>;
+  getCareerHighlights?: (
+    type: CareerHighlightType,
+    skip?: number,
+    take?: number,
+  ) => Observable<CareerHighlightPage>;
 };
 
 export type BehaviorTestConfigOptions = BehaviorApiMockOptions & {
@@ -83,6 +119,31 @@ export type BehaviorTestConfigOptions = BehaviorApiMockOptions & {
 
 function createApiError() {
   return throwError(() => new Error('Behavior test API error'));
+}
+
+function getDefaultCareerHighlightsFixture(
+  options: BehaviorApiMockOptions,
+  type: CareerHighlightType,
+  skip: number,
+): CareerHighlightPage {
+  switch (type) {
+    case 'most-teams-played':
+      return skip >= 10
+        ? (options.careerHighlightsMostTeamsPlayed ?? mostTeamsPlayedHighlightsPage1Fixture)
+        : (options.careerHighlightsMostTeamsPlayed ?? mostTeamsPlayedHighlightsPage0Fixture);
+    case 'most-teams-owned':
+      return skip >= 10
+        ? (options.careerHighlightsMostTeamsOwned ?? mostTeamsOwnedHighlightsPage1Fixture)
+        : (options.careerHighlightsMostTeamsOwned ?? mostTeamsOwnedHighlightsPage0Fixture);
+    case 'same-team-seasons-played':
+      return skip >= 10
+        ? (options.careerHighlightsSameTeamSeasonsPlayed ?? sameTeamSeasonsHighlightsPage1Fixture)
+        : (options.careerHighlightsSameTeamSeasonsPlayed ?? sameTeamSeasonsHighlightsPage0Fixture);
+    case 'same-team-seasons-owned':
+      return skip >= 10
+        ? (options.careerHighlightsSameTeamSeasonsOwned ?? sameTeamSeasonsOwnedHighlightsPage1Fixture)
+        : (options.careerHighlightsSameTeamSeasonsOwned ?? sameTeamSeasonsOwnedHighlightsPage0Fixture);
+  }
 }
 
 export function provideDisabledMaterialAnimations(): Provider {
@@ -134,6 +195,15 @@ export function createApiServiceMock(options: BehaviorApiMockOptions = {}) {
       errorKeys.has('careerGoalies')
         ? createApiError()
         : (options.getCareerGoalies?.() ?? of(options.careerGoalies ?? careerGoaliesFixture)),
+    getCareerHighlights: (
+      type: CareerHighlightType,
+      skip = 0,
+      take = 10,
+    ) =>
+      errorKeys.has('careerHighlights')
+        ? createApiError()
+        : (options.getCareerHighlights?.(type, skip, take)
+          ?? of(getDefaultCareerHighlightsFixture(options, type, skip))),
     getLeaderboardRegular: () =>
       errorKeys.has('leaderboardRegular')
         ? createApiError()

@@ -257,10 +257,11 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
   - Collapsible controls
   - Touch interactions
 
-- **career.spec.ts** - Career listings
+- **career.spec.ts** - Career listings and highlights
   - Career route shell and global-navigation entry
-  - Player/goalie tab switching
+  - Player/goalie/highlights tab switching
   - Search and sort behavior in the virtualized career table
+  - Server-paged highlight card behavior
   - Route-specific shell behavior (no stats controls/drawer)
 
 **Supporting files:**
@@ -337,7 +338,7 @@ test('Filter by season', async ({ page }) => {
 **Core Functionality:**
 - ✅ Front page rendering and initial UI state
 - ✅ Navigation between Kenttäpelaajat and Maalivahdit tabs
-- ✅ Navigation between Pelaajaurat player/goalie tabs
+- ✅ Navigation between Pelaajaurat player/goalie/highlights tabs
 - ✅ Opening Player Card dialog with career tabs
 - ✅ Search filtering with "no results" state
 - ✅ Report type switching (Runkosarja ↔ Playoffs)

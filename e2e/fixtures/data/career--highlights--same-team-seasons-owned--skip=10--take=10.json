@@ -1,0 +1,18 @@
+{
+  "type": "same-team-seasons-owned",
+  "skip": 10,
+  "take": 10,
+  "total": 11,
+  "items": [
+    {
+      "id": "player-311",
+      "name": "John Carlson",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "311",
+        "name": "Washington Capitals"
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "type": "same-team-seasons-played",
+  "skip": 0,
+  "take": 10,
+  "total": 11,
+  "items": [
+    {
+      "id": "player-101",
+      "name": "Jamie Benn",
+      "position": "F",
+      "seasonCount": 9,
+      "team": { "id": "1", "name": "Colorado Avalanche" }
+    },
+    {
+      "id": "player-102",
+      "name": "Victor Hedman",
+      "position": "D",
+      "seasonCount": 8,
+      "team": { "id": "2", "name": "Tampa Bay Lightning" }
+    },
+    {
+      "id": "player-103",
+      "name": "Marc-Andre Fleury",
+      "position": "G",
+      "seasonCount": 8,
+      "team": { "id": "3", "name": "Vegas Golden Knights" }
+    },
+    {
+      "id": "player-104",
+      "name": "Brent Burns",
+      "position": "D",
+      "seasonCount": 7,
+      "team": { "id": "4", "name": "San Jose Sharks" }
+    },
+    {
+      "id": "player-105",
+      "name": "Aleksander Barkov",
+      "position": "F",
+      "seasonCount": 7,
+      "team": { "id": "5", "name": "Florida Panthers" }
+    },
+    {
+      "id": "player-106",
+      "name": "Jonathan Quick",
+      "position": "G",
+      "seasonCount": 7,
+      "team": { "id": "6", "name": "Los Angeles Kings" }
+    },
+    {
+      "id": "player-107",
+      "name": "Roman Josi",
+      "position": "D",
+      "seasonCount": 6,
+      "team": { "id": "7", "name": "Nashville Predators" }
+    },
+    {
+      "id": "player-108",
+      "name": "Ryan O'Reilly",
+      "position": "F",
+      "seasonCount": 6,
+      "team": { "id": "8", "name": "St. Louis Blues" }
+    },
+    {
+      "id": "player-109",
+      "name": "Cam Talbot",
+      "position": "G",
+      "seasonCount": 6,
+      "team": { "id": "9", "name": "Edmonton Oilers" }
+    },
+    {
+      "id": "player-110",
+      "name": "Tyler Seguin",
+      "position": "F",
+      "seasonCount": 6,
+      "team": { "id": "10", "name": "Dallas Stars" }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "same-team-seasons-played",
+  "skip": 10,
+  "take": 10,
+  "total": 11,
+  "items": [
+    {
+      "id": "player-111",
+      "name": "Nico Hischier",
+      "position": "F",
+      "seasonCount": 6,
+      "team": { "id": "11", "name": "New Jersey Devils" }
+    }
+  ]
+}

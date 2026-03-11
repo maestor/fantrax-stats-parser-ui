@@ -186,19 +186,34 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 ---
 
-### CareerPlayersComponent / CareerGoaliesComponent
+### CareerPlayersComponent / CareerGoaliesComponent / CareerHighlightsComponent
 
-**Location**: `src/app/career/players/`, `src/app/career/goalies/`
+**Location**: `src/app/career/players/`, `src/app/career/goalies/`, `src/app/career/highlights/`
 
 **Type**: Smart Components (Container)
 
-**Purpose**: Render the read-only all-time career tables under `/career/players` and `/career/goalies`
+**Purpose**: Render the read-only career browse views under `/career/players`, `/career/goalies`, and `/career/highlights`
 
 **Responsibilities**:
 
 - Fetch career rows from the dedicated API endpoints
 - Pass column definitions and formatters into the shared virtualized table
 - Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
+- Normalize paged highlight responses into the shared `TableCardComponent` row shape for the `/career/highlights` route
+
+### TableCardComponent
+
+**Location**: `src/app/shared/table-card/`
+
+**Type**: Shared Presentational Component
+
+**Purpose**: Render compact paged read-only leaderboards or highlight slices inside a Material card using semantic table markup.
+
+**Responsibilities**:
+
+- Show title/description copy, a semantic HTML table, and previous/next paging controls
+- Keep tooltip buttons and pagination controls keyboard accessible
+- Reuse shared loading, empty, and API-error states for compact card views
 
 ### LeaderboardComponent
 

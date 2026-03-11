@@ -1,0 +1,28 @@
+<section
+  class="career-highlights"
+  id="career-table"
+  aria-labelledby="career-highlights-title"
+>
+  <h3 id="career-highlights-title" class="sr-only">
+    {{ 'career.highlights.sectionTitle' | translate }}
+  </h3>
+
+  <div class="career-highlights-grid">
+    @for (card of cards(); track card.type) {
+      <app-table-card
+        [titleKey]="card.state.titleKey"
+        [descriptionKey]="card.state.descriptionKey"
+        primaryColumnLabelKey="career.highlights.columns.player"
+        [valueColumnLabelKey]="card.state.valueColumnLabelKey"
+        [rows]="card.state.rows"
+        [loading]="card.state.loading"
+        [apiError]="card.state.apiError"
+        [skip]="card.state.skip"
+        [take]="card.state.take"
+        [total]="card.state.total"
+        (previousPageRequested)="loadPreviousPage(card.type)"
+        (nextPageRequested)="loadNextPage(card.type)"
+      />
+    }
+  </div>
+</section>

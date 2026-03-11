@@ -1,0 +1,108 @@
+{
+  "type": "same-team-seasons-owned",
+  "skip": 0,
+  "take": 10,
+  "total": 11,
+  "items": [
+    {
+      "id": "player-301",
+      "name": "Sidney Crosby",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "301",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "goalie-302",
+      "name": "Andrei Vasilevskiy",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "302",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "player-303",
+      "name": "Victor Hedman",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "303",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "player-304",
+      "name": "Jamie Benn",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "304",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "player-305",
+      "name": "Aleksander Barkov",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "305",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "player-306",
+      "name": "Roman Josi",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "306",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "goalie-307",
+      "name": "Connor Hellebuyck",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "307",
+        "name": "Winnipeg Jets"
+      }
+    },
+    {
+      "id": "player-308",
+      "name": "Brad Marchand",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "308",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "player-309",
+      "name": "Mark Scheifele",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "309",
+        "name": "Winnipeg Jets"
+      }
+    },
+    {
+      "id": "player-310",
+      "name": "Anze Kopitar",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "310",
+        "name": "Los Angeles Kings"
+      }
+    }
+  ]
+}

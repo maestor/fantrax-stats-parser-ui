@@ -1,7 +1,7 @@
 # Project Requirements & Standards
 
 **Project**: Fantrax Stats Parser UI
-**Last Updated**: March 8, 2026
+**Last Updated**: March 11, 2026
 
 ---
 
@@ -81,6 +81,16 @@ npm run test:coverage
   - Is focus always visible?
   - Does focus avoid collapsed/hidden areas?
   - Are labels/announcements meaningful?
+- **Action on Failure**: Fix before merging
+
+#### 6. ✅ Dark Mode Must Not Regress
+
+- **Requirement**: Every UI, styling, layout, color, or surface change must be checked in both light mode and dark mode before merging
+- **This is mandatory**: do not treat dark mode verification as optional polish or something to check only when a change is "theme related"
+- **Minimum checks (manual)**:
+  - Are text, icons, dividers, and surfaces readable in dark mode?
+  - Do hover, focus, selected, tooltip, dialog, and loading states still have sufficient contrast?
+  - Do new cards/tables/overlays use theme tokens or otherwise render correctly in both schemes?
 - **Action on Failure**: Fix before merging
 
 ---

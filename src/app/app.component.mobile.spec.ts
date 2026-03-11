@@ -258,6 +258,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
 
     expect(await screen.findByRole('tab', { name: 'career.tabs.players' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'career.tabs.goalies' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'career.tabs.highlights' })).toBeInTheDocument();
     expect(screen.getByRole('table')).toBeInTheDocument();
     expect(screen.getByLabelText('table.careerPlayerSearch')).toBeInTheDocument();
 
@@ -265,6 +266,22 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
       screen.queryByRole('button', { name: 'a11y.openSettingsDrawer' })
     ).not.toBeInTheDocument();
     expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.highlights' }));
+
+    expect(
+      await screen.findByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.mostTeamsOwned.title' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsPlayed.title' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsOwned.title' })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('table')).toHaveLength(4);
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
 

@@ -16,7 +16,7 @@ fantrax-stats-parser-ui/
 │   │   ├── base/       # Base layout components
 │   │   │   ├── footer/
 │   │   │   └── navigation/
-│   │   ├── career/            # Career listings feature (shell + players and goalies child components)
+│   │   ├── career/            # Career listings feature (shell + players, goalies, and highlights child components)
 │   │   ├── dashboard-shell/   # Lazy route shell for interactive dashboard routes
 │   │   ├── goalie-stats/     # Goalie stats page
 │   │   ├── goalie-route/     # Direct goalie card route handler
@@ -46,6 +46,7 @@ fantrax-stats-parser-ui/
 │   │   │   │   ├── min-games-slider/
 │   │   │   │   └── stats-mode-toggle/
 │   │   │   ├── stats-table/
+│   │   │   ├── table-card/
 │   │   │   ├── top-controls/
 │   │   │   │   ├── report-switcher/
 │   │   │   │   ├── season-switcher/
@@ -85,10 +86,16 @@ Smart component for goalie statistics view:
 
 ### `/src/app/career/`
 Route shell and smart components for career listings:
-- Handles `/career/players` and `/career/goalies`
-- Renders tab navigation between career skaters and goalies
-- Uses dedicated backend endpoints and a virtualized read-only table
+- Handles `/career/players`, `/career/goalies`, and `/career/highlights`
+- Renders tab navigation between career skaters, goalies, and highlights
+- Uses dedicated backend endpoints and either a virtualized read-only table or compact paged table cards
 - Loads under the lighter root shell without dashboard-only controls, comparison bar, or mobile settings drawer
+
+### `/src/app/shared/table-card/`
+Reusable card-based read-only table presentation:
+- Semantic HTML table inside a Material card container
+- Server-side paging controls for compact leaderboard/highlight lists
+- Shared loading, empty, and API-error states for paged card views
 
 ### `/src/app/dashboard-shell/`
 Lazy route shell for the interactive dashboard experience:
@@ -156,6 +163,12 @@ Main data table component:
 - Column configuration
 - Row selection
 - Also contains `VirtualTableComponent`, used by career listings for virtualized rendering with shared table styling
+
+#### `table-card/`
+Compact paged card table component:
+- Semantic HTML table inside a Material card
+- Previous/next controls for server-paged highlight or leaderboard slices
+- Shared tooltip, loading, empty, and API-error presentation for read-only card lists
 
 #### `player-card/`
 Individual player information card display
