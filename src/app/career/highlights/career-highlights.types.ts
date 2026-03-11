@@ -5,6 +5,7 @@ export interface CareerHighlightCardState {
   readonly titleKey: string;
   readonly descriptionKey: string;
   readonly valueColumnLabelKey: string;
+  readonly activated: boolean;
   readonly rows: readonly TableCardRow[];
   readonly loading: boolean;
   readonly apiError: boolean;

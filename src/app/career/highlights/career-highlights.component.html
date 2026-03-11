@@ -10,10 +10,14 @@
   <div class="career-highlights-grid">
     @for (card of cards(); track card.type) {
       <app-table-card
+        class="career-highlights-card"
+        appActivateOnViewport
+        (appActivateOnViewportVisible)="activateCard(card.type)"
         [titleKey]="card.state.titleKey"
         [descriptionKey]="card.state.descriptionKey"
         primaryColumnLabelKey="career.highlights.columns.player"
         [valueColumnLabelKey]="card.state.valueColumnLabelKey"
+        [deferred]="!card.state.activated"
         [rows]="card.state.rows"
         [loading]="card.state.loading"
         [apiError]="card.state.apiError"

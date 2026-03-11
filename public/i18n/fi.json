@@ -103,6 +103,7 @@
       "details": "Lisätiedot"
     },
     "showDetails": "Näytä lisätiedot: {{label}}",
+    "loadWhenVisible": "Kortin data ladataan, kun se tulee näkyviin.",
     "apiUnavailable": "Korttidata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen.",
     "noResults": "Ei tuloksia.",
     "previous": "Edelliset",

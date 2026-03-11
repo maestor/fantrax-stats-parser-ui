@@ -281,7 +281,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(
       screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsOwned.title' })
     ).toBeInTheDocument();
-    expect(screen.getAllByRole('table')).toHaveLength(4);
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(5);
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
 

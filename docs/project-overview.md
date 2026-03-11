@@ -79,6 +79,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Player position is rendered inline with player name while sorting still uses the underlying plain `name`
    - Uses a virtualized table implementation to keep large result sets responsive
    - The highlights tab uses compact paged table cards for focused leaderboard slices such as most teams played/owned and most same-team seasons played/owned
+   - Highlight cards lazy-load their API data as they enter or near the viewport so the route scales better as more cards are added
 
 7. **Data Management**
    - Caching service to reduce API calls

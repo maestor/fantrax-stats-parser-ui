@@ -89,11 +89,13 @@ Route shell and smart components for career listings:
 - Handles `/career/players`, `/career/goalies`, and `/career/highlights`
 - Renders tab navigation between career skaters, goalies, and highlights
 - Uses dedicated backend endpoints and either a virtualized read-only table or compact paged table cards
+- Defers each highlight card's API request until the card nears the viewport
 - Loads under the lighter root shell without dashboard-only controls, comparison bar, or mobile settings drawer
 
 ### `/src/app/shared/table-card/`
 Reusable card-based read-only table presentation:
 - Semantic HTML table inside a Material card container
+- Supports a deferred placeholder before viewport-activated cards fetch their data
 - Server-side paging controls for compact leaderboard/highlight lists
 - Shared loading, empty, and API-error states for paged card views
 

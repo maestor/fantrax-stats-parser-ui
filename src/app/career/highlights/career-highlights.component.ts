@@ -22,6 +22,7 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
 
+import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
 import { CareerHighlightCardState, CareerHighlightCardView } from './career-highlights.types';
 
 const PAGE_SIZE = 10;
@@ -73,8 +74,9 @@ function createInitialCardState(config: HighlightCardConfig): CareerHighlightCar
     titleKey: config.titleKey,
     descriptionKey: config.descriptionKey,
     valueColumnLabelKey: config.valueColumnLabelKey,
+    activated: false,
     rows: [],
-    loading: true,
+    loading: false,
     apiError: false,
     skip: 0,
     take: PAGE_SIZE,
@@ -85,7 +87,7 @@ function createInitialCardState(config: HighlightCardConfig): CareerHighlightCar
 @Component({
   selector: 'app-career-highlights',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TableCardComponent, TranslateModule],
+  imports: [ActivateOnViewportDirective, TableCardComponent, TranslateModule],
   templateUrl: './career-highlights.component.html',
   styleUrl: './career-highlights.component.scss',
 })
@@ -112,20 +114,15 @@ export class CareerHighlightsComponent implements OnInit {
   );
 
   private footerVisibilityCycle = 0;
-  private pendingInitialLoads = 0;
+  private footerMarkedReady = false;
 
   ngOnInit(): void {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
-    this.pendingInitialLoads = HIGHLIGHT_CARD_CONFIGS.length;
-
-    for (const config of HIGHLIGHT_CARD_CONFIGS) {
-      this.loadCard(config.type, 0, true);
-    }
   }
 
   loadPreviousPage(type: CareerHighlightType): void {
     const current = this.getCardSignal(type)();
-    if (current.loading) {
+    if (!current.activated || current.loading) {
       return;
     }
 
@@ -139,7 +136,7 @@ export class CareerHighlightsComponent implements OnInit {
 
   loadNextPage(type: CareerHighlightType): void {
     const current = this.getCardSignal(type)();
-    if (current.loading) {
+    if (!current.activated || current.loading) {
       return;
     }
 
@@ -149,6 +146,20 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     this.loadCard(type, nextSkip);
+  }
+
+  activateCard(type: CareerHighlightType): void {
+    const cardSignal = this.getCardSignal(type);
+    if (cardSignal().activated) {
+      return;
+    }
+
+    cardSignal.update((current) => ({
+      ...current,
+      activated: true,
+    }));
+
+    this.loadCard(type, 0, true);
   }
 
   private loadCard(
@@ -228,13 +239,11 @@ export class CareerHighlightsComponent implements OnInit {
   }
 
   private markInitialLoadReady(initialLoad: boolean): void {
-    if (!initialLoad) {
+    if (!initialLoad || this.footerMarkedReady) {
       return;
     }
 
-    this.pendingInitialLoads -= 1;
-    if (this.pendingInitialLoads === 0) {
-      this.footerVisibilityService.markReady(this.footerVisibilityCycle);
-    }
+    this.footerMarkedReady = true;
+    this.footerVisibilityService.markReady(this.footerVisibilityCycle);
   }
 }

@@ -17,6 +17,7 @@ import { TableCardRow } from './table-card.types';
       [descriptionKey]="descriptionKey"
       [primaryColumnLabelKey]="primaryColumnLabelKey"
       [valueColumnLabelKey]="valueColumnLabelKey"
+      [deferred]="deferred"
       [rows]="rows"
       [loading]="loading"
       [apiError]="apiError"
@@ -31,6 +32,7 @@ class TableCardHostComponent {
   descriptionKey = 'career.highlights.cards.mostTeamsPlayed.description';
   primaryColumnLabelKey = 'career.highlights.columns.player';
   valueColumnLabelKey = 'career.highlights.columns.teamCount';
+  deferred = false;
   loading = false;
   apiError = false;
   skip = 0;
@@ -78,5 +80,17 @@ describe('TableCardComponent', () => {
 
     expect(await screen.findByText('tableCard.noResults')).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
+  });
+
+  it('shows a deferred placeholder until the card is activated', async () => {
+    await setup({
+      deferred: true,
+      rows: [],
+      total: 0,
+    });
+
+    expect(await screen.findByText('tableCard.loadWhenVisible')).toBeInTheDocument();
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'tableCard.nextPage' })).not.toBeInTheDocument();
   });
 });

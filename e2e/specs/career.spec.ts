@@ -26,11 +26,15 @@ test.describe('Career listings', () => {
     const highlightCards = page.locator('app-table-card');
     await expect(highlightCards).toHaveCount(4);
     await expect(highlightCards.first().getByRole('table')).toBeVisible();
+    await highlightCards.nth(1).scrollIntoViewIfNeeded();
     await expect(highlightCards.nth(1).getByRole('table')).toBeVisible();
+    await highlightCards.nth(2).scrollIntoViewIfNeeded();
     await expect(highlightCards.nth(2).getByRole('table')).toBeVisible();
+    await highlightCards.nth(3).scrollIntoViewIfNeeded();
     await expect(highlightCards.nth(3).getByRole('table')).toBeVisible();
 
     const mostTeamsCard = highlightCards.first();
+    await mostTeamsCard.scrollIntoViewIfNeeded();
     const firstMostTeamsRow = mostTeamsCard.locator('tbody tr').first();
     const firstMostTeamsRowText = (await firstMostTeamsRow.textContent())?.trim() ?? '';
     await mostTeamsCard.getByRole('button', { name: 'Näytä seuraavat rivit' }).click();

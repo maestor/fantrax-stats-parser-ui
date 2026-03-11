@@ -34,7 +34,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- Searchable and sortable, with no stats-page filters or mobile drawer
 	- Virtualized row rendering keeps long lists responsive
 	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
-	- `/career/highlights` adds compact paged highlight cards for focused career leaderboard slices such as most teams played/owned and most same-team seasons played/owned
+	- `/career/highlights` adds compact paged highlight cards for focused career leaderboard slices such as most teams played/owned and most same-team seasons played/owned, and each card now lazy-loads its dataset as it approaches the viewport
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
