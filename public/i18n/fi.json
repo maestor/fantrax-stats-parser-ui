@@ -28,19 +28,19 @@
       "cards": {
         "mostTeamsPlayed": {
           "title": "Eniten seuroja - pelanneet",
-          "description": "Pelannut vähintään ottelun seurassa."
+          "description": "Väh. 3 eri seurassa pelanneet."
         },
         "mostTeamsOwned": {
           "title": "Eniten edustusseuroja",
-          "description": "Ollut seurassa vähintään käymässä."
+          "description": "Väh. 3 eri seurassa käyneet."
         },
         "sameTeamSeasonsPlayed": {
           "title": "Eniten pelikausia - sama seura",
-          "description": "Pelannut vähintään ottelun joka kaudella."
+          "description": "Väh. 5 kautta samassa seurassa pelanneet."
         },
         "sameTeamSeasonsOwned": {
           "title": "Eniten edustuskausia - sama seura",
-          "description": "Ollut seurassa joka kaudella."
+          "description": "Väh. 5 kautta samassa seurassa käyneet."
         }
       }
     }
