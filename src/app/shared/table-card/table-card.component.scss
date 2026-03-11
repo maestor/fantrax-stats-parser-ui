@@ -2,6 +2,10 @@
   display: block;
 }
 
+.table-card--deferred {
+  --table-card-deferred-content-min-height: 27.5rem;
+}
+
 .table-card {
   height: 100%;
   border: 1px solid var(--mat-sys-outline-variant);
@@ -41,9 +45,14 @@ mat-card-header {
   color: var(--mat-sys-on-surface-variant);
 }
 
-.table-card--deferred .card-status-message--deferred {
+.table-card--deferred .mat-mdc-card-content {
   display: flex;
-  min-height: 15rem;
+  min-height: var(--table-card-deferred-content-min-height);
+}
+
+.table-card--deferred .card-status-message--deferred {
+  flex: 1 1 auto;
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -54,6 +63,7 @@ mat-card-header {
 }
 
 .table-shell {
+  min-height: 440px;
   overflow-x: none;
 }
 

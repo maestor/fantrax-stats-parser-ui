@@ -1,7 +1,7 @@
 import { DestroyRef, Directive, ElementRef, afterNextRender, inject, input, output } from '@angular/core';
 
 const DEFAULT_ROOT_MARGIN = '0px';
-const DEFAULT_MINIMUM_VISIBLE_PIXELS = 240;
+const DEFAULT_MINIMUM_VISIBLE_PIXELS = 100;
 const OBSERVER_THRESHOLDS = Array.from({ length: 21 }, (_, index) => index / 20);
 
 @Directive({
