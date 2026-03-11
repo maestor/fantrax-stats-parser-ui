@@ -37,12 +37,6 @@ Override the current auto-only system-preference-based theme. Persist choice in 
 
 Persist the user's last sort column and direction per table (players/goalies) in localStorage across sessions.
 
-## Modernizing components
-
-### Remaining modernization work
-
-- Revisit the temporary branch-coverage workaround after Angular fixes signal-input coverage accounting, then raise the branch threshold back up.
-
 ## E2E Testing
 
 ### Test data management
