@@ -41,6 +41,14 @@ mat-card-header {
   color: var(--mat-sys-on-surface-variant);
 }
 
+.table-card--deferred .card-status-message--deferred {
+  display: flex;
+  min-height: 15rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .card-inline-error {
   padding-top: 0;
 }

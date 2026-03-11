@@ -1,4 +1,4 @@
-<mat-card class="table-card mat-elevation-z4">
+<mat-card class="table-card mat-elevation-z4" [class.table-card--deferred]="deferred()">
   <mat-card-header>
     <h3 mat-card-title>
       {{ titleKey() | translate }}
@@ -8,12 +8,16 @@
     </p>
   </mat-card-header>
 
-  @if (loading() && !hasRows()) {
+  @if (loading() && !hasRows() && !deferred()) {
   <mat-progress-bar mode="indeterminate" />
   }
 
   <mat-card-content>
-    @if (apiError() && !hasRows()) {
+    @if (deferred()) {
+    <p class="card-status-message card-status-message--deferred">
+      {{ 'tableCard.loadWhenVisible' | translate }}
+    </p>
+    } @else if (apiError() && !hasRows()) {
     <p class="card-status-message" role="status">
       {{ 'tableCard.apiUnavailable' | translate }}
     </p>
@@ -75,6 +79,7 @@
     }
   </mat-card-content>
 
+  @if (!deferred()) {
   <mat-card-actions class="card-actions">
     <button mat-stroked-button type="button" (click)="previousPageRequested.emit()"
       [disabled]="loading() || !hasPreviousPage()" [attr.aria-label]="'tableCard.previousPage' | translate">
@@ -100,4 +105,5 @@
       <mat-icon>chevron_right</mat-icon>
     </button>
   </mat-card-actions>
+  }
 </mat-card>

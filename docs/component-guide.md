@@ -200,6 +200,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Pass column definitions and formatters into the shared virtualized table
 - Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
 - Normalize paged highlight responses into the shared `TableCardComponent` row shape for the `/career/highlights` route
+- Activate highlight-card API loads lazily as each card approaches the viewport instead of requesting every card during route startup
 
 ### TableCardComponent
 
@@ -212,6 +213,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 **Responsibilities**:
 
 - Show title/description copy, a semantic HTML table, and previous/next paging controls
+- Support a deferred placeholder before a card has been activated by viewport visibility
 - Keep tooltip buttons and pagination controls keyboard accessible
 - Reuse shared loading, empty, and API-error states for compact card views
 

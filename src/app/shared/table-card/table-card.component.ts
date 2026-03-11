@@ -27,6 +27,7 @@ export class TableCardComponent {
   readonly descriptionKey = input.required<string>();
   readonly primaryColumnLabelKey = input.required<string>();
   readonly valueColumnLabelKey = input.required<string>();
+  readonly deferred = input(false);
   readonly rows = input.required<readonly TableCardRow[]>();
   readonly loading = input(false);
   readonly apiError = input(false);

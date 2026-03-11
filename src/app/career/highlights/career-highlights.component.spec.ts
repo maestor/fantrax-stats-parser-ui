@@ -14,8 +14,67 @@ import {
 } from '../../testing/behavior-test-utils';
 import { CareerHighlightsComponent } from './career-highlights.component';
 
+class FakeIntersectionObserver {
+  static instances: FakeIntersectionObserver[] = [];
+
+  private target: Element | null = null;
+
+  constructor(private readonly callback: IntersectionObserverCallback) {
+    FakeIntersectionObserver.instances.push(this);
+  }
+
+  observe(target: Element): void {
+    this.target = target;
+  }
+
+  disconnect(): void {
+    this.target = null;
+  }
+
+  unobserve(target: Element): void {
+    if (this.target === target) {
+      this.target = null;
+    }
+  }
+
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
+
+  trigger(isIntersecting = true, visibleHeight = 260, targetHeight = 320): void {
+    if (!this.target) {
+      return;
+    }
+
+    this.callback(
+      [
+        {
+          isIntersecting,
+          intersectionRatio: isIntersecting ? visibleHeight / targetHeight : 0,
+          intersectionRect: { height: isIntersecting ? visibleHeight : 0 } as DOMRectReadOnly,
+          boundingClientRect: { height: targetHeight } as DOMRectReadOnly,
+          target: this.target,
+        } as IntersectionObserverEntry,
+      ],
+      this as unknown as IntersectionObserver,
+    );
+  }
+}
+
 describe('CareerHighlightsComponent', () => {
-  it('renders all configured highlight cards and pages the first card forward', async () => {
+  beforeEach(() => {
+    FakeIntersectionObserver.instances = [];
+    vi.stubGlobal(
+      'IntersectionObserver',
+      FakeIntersectionObserver as unknown as typeof IntersectionObserver,
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('loads only activated cards first and fetches additional cards when they approach the viewport', async () => {
     const getCareerHighlights = vi.fn(
       (type: CareerHighlightType, skip = 0) => {
         switch (type) {
@@ -67,6 +126,17 @@ describe('CareerHighlightsComponent', () => {
         name: 'career.highlights.cards.sameTeamSeasonsOwned.title',
       })
     ).toBeInTheDocument();
+
+    await vi.waitFor(() => {
+      expect(FakeIntersectionObserver.instances).toHaveLength(4);
+    });
+
+    expect(getCareerHighlights).not.toHaveBeenCalled();
+    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(4);
+
+    FakeIntersectionObserver.instances[0]?.trigger();
+    FakeIntersectionObserver.instances[1]?.trigger();
+
     const mostTeamsCardTitle = screen.getByRole('heading', {
       name: 'career.highlights.cards.mostTeamsPlayed.title',
     });
@@ -78,8 +148,17 @@ describe('CareerHighlightsComponent', () => {
 
     expect(mostTeamsCard).not.toBeNull();
     expect(sameTeamPlayedCard).not.toBeNull();
-    expect(within(mostTeamsCard!).getByText('F Jamie Benn')).toBeInTheDocument();
-    expect(within(sameTeamPlayedCard!).getByText('D Victor Hedman')).toBeInTheDocument();
+    expect(await within(mostTeamsCard!).findByText('F Jamie Benn')).toBeInTheDocument();
+    expect(screen.getByText('G Andrei Vasilevskiy')).toBeInTheDocument();
+    expect(getCareerHighlights).toHaveBeenCalledTimes(2);
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(1, 'most-teams-played', 0, 10);
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(2, 'most-teams-owned', 0, 10);
+    expect(within(sameTeamPlayedCard!).queryByText('D Victor Hedman')).not.toBeInTheDocument();
+
+    FakeIntersectionObserver.instances[2]?.trigger();
+
+    expect(await within(sameTeamPlayedCard!).findByText('D Victor Hedman')).toBeInTheDocument();
+    expect(getCareerHighlights).toHaveBeenCalledWith('same-team-seasons-played', 0, 10);
 
     fireEvent.click(screen.getAllByRole('button', { name: 'tableCard.nextPage' })[0]);
 
@@ -88,7 +167,7 @@ describe('CareerHighlightsComponent', () => {
     expect(getCareerHighlights).toHaveBeenCalledWith('most-teams-played', 10, 10);
   });
 
-  it('shows an error state for a failing card without hiding the successful cards', async () => {
+  it('shows an error state for an activated failing card without forcing untouched cards to load', async () => {
     await render(CareerHighlightsComponent, {
       imports: [TranslateModule.forRoot()],
       providers: [
@@ -112,6 +191,13 @@ describe('CareerHighlightsComponent', () => {
       ],
     });
 
+    await vi.waitFor(() => {
+      expect(FakeIntersectionObserver.instances).toHaveLength(4);
+    });
+
+    FakeIntersectionObserver.instances[0]?.trigger();
+    FakeIntersectionObserver.instances[3]?.trigger();
+
     const mostTeamsPlayedCardTitle = await screen.findByRole('heading', {
       name: 'career.highlights.cards.mostTeamsPlayed.title',
     });
@@ -129,8 +215,8 @@ describe('CareerHighlightsComponent', () => {
     expect(mostTeamsPlayedCard).not.toBeNull();
     expect(mostTeamsOwnedCard).not.toBeNull();
     expect(sameTeamOwnedCard).not.toBeNull();
-    expect(within(mostTeamsPlayedCard!).getByText('F Jamie Benn')).toBeInTheDocument();
-    expect(within(mostTeamsOwnedCard!).getByText('G Andrei Vasilevskiy')).toBeInTheDocument();
+    expect(await within(mostTeamsPlayedCard!).findByText('F Jamie Benn')).toBeInTheDocument();
+    expect(within(mostTeamsOwnedCard!).getByText('tableCard.loadWhenVisible')).toBeInTheDocument();
     expect(within(sameTeamOwnedCard!).getByText('tableCard.apiUnavailable')).toBeInTheDocument();
   });
 });
