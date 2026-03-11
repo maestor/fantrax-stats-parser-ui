@@ -32,9 +32,9 @@ class VirtualTableHostComponent {
   searchLabelKey = 'table.careerPlayerSearch';
 
   readonly columns: Column[] = [
-    { field: 'name', align: 'left' },
-    { field: 'score', initialSortDirection: 'desc' },
-    { field: 'regularGames', initialSortDirection: 'desc' },
+    { field: 'name', align: 'left', initialSortDirection: 'asc' },
+    { field: 'score' },
+    { field: 'regularGames' },
   ];
 
   readonly formatCell = (_row: unknown, column: string, value: number | string | undefined): string => {

@@ -41,7 +41,7 @@ export class LeaderboardPlayoffsComponent {
   readonly fetchFn = () => this.apiService.getLeaderboardPlayoffs();
   readonly columns: Column[] = [
     { field: 'displayPosition', align: 'left', sortable: false },
-    { field: 'teamName', align: 'left' },
+    { field: 'teamName', align: 'left', initialSortDirection: 'asc' },
     { field: 'championships', icon: { name: '🏆', type: 'emoji' } },
     { field: 'finals' },
     { field: 'conferenceFinals' },
