@@ -23,7 +23,7 @@ import {
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
-import { formatSeasonDisplay } from '@shared/utils/season.utils';
+import { formatPlayoffYear } from '@shared/utils/season.utils';
 
 import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
 import {
@@ -276,7 +276,7 @@ export class CareerHighlightsComponent implements OnInit {
         primaryText: `${item.position} ${item.name}`,
         value: item.cupCount,
         detailLines: item.cups.map(
-          (cup) => `${formatSeasonDisplay(cup.season)} ${cup.team.name}`,
+          (cup) => `${formatPlayoffYear(cup.season)} ${cup.team.name}`,
         ),
         detailLabel: item.name,
       }));
