@@ -93,4 +93,12 @@ describe('TableCardComponent', () => {
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'tableCard.nextPage' })).not.toBeInTheDocument();
   });
+
+  it('renders a literal value column label when the provided label is not a translation key', async () => {
+    await setup({
+      valueColumnLabelKey: '💍',
+    });
+
+    expect(await screen.findByText('💍')).toBeInTheDocument();
+  });
 });

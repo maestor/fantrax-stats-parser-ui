@@ -1,0 +1,59 @@
+{
+  "type": "most-stanley-cups",
+  "skip": 0,
+  "take": 10,
+  "total": 2,
+  "items": [
+    {
+      "id": "cup-1",
+      "name": "Patrick Maroon",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2020,
+          "team": {
+            "id": "2",
+            "name": "Dallas Stars"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "3",
+            "name": "Tampa Bay Lightning"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cup-2",
+      "name": "Pat Maroon",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2020,
+          "team": {
+            "id": "2",
+            "name": "Dallas Stars"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1013,6 +1013,19 @@ export interface paths {
          * @description Returns a paged mixed skater + goalie career highlights leaderboard.
          *     `most-teams-played` and `most-teams-owned` return team-count rows.
          *     `same-team-seasons-played` and `same-team-seasons-owned` return one row per top team, so the same person can appear multiple times on tied same-team results.
+         *     `most-stanley-cups` returns one row per player/goalie with cup seasons and fantasy teams.
+         *     `reunion-king` returns one row per top reunion team, so the same person can appear multiple
+         *     times on tied reunion results, and includes stint ranges for each return.
+         *     `stash-king` returns the top same-team zero-game season counts, similar to
+         *     `same-team-seasons-owned` but counting only team seasons where both regular and playoff
+         *     games stayed at zero.
+         *     `regular-grinder-without-playoffs` returns total regular-season games plus the played fantasy teams
+         *     for players/goalies who never recorded a playoff appearance.
+         *     Minimum cutoffs are 4 teams for `most-teams-played`, 5 teams for `most-teams-owned`,
+         *     8 same-team seasons for `same-team-seasons-played`, 10 same-team seasons for
+         *     `same-team-seasons-owned`, 2 cups for `most-stanley-cups`, 2 reunion stints for
+         *     `reunion-king`, 10 stash counts for `stash-king`, and 60 games for
+         *     `regular-grinder-without-playoffs`.
          */
         get: {
             parameters: {
@@ -1037,7 +1050,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["CareerTeamCountHighlightPage"] | components["schemas"]["CareerSameTeamHighlightPage"];
+                        "application/json": components["schemas"]["CareerTeamCountHighlightPage"] | components["schemas"]["CareerSameTeamHighlightPage"] | components["schemas"]["CareerStanleyCupHighlightPage"] | components["schemas"]["CareerReunionHighlightPage"] | components["schemas"]["CareerStashHighlightPage"] | components["schemas"]["CareerRegularGrinderHighlightPage"];
                     };
                 };
                 /** @description Invalid highlight type or paging params. */
@@ -1307,7 +1320,7 @@ export interface components {
             playoffGames: number;
         };
         /** @enum {string} */
-        CareerHighlightType: "most-teams-played" | "most-teams-owned" | "same-team-seasons-played" | "same-team-seasons-owned";
+        CareerHighlightType: "most-teams-played" | "most-teams-owned" | "same-team-seasons-played" | "same-team-seasons-owned" | "most-stanley-cups" | "reunion-king" | "stash-king" | "regular-grinder-without-playoffs";
         CareerHighlightTeam: {
             id: string;
             name: string;
@@ -1326,6 +1339,43 @@ export interface components {
             seasonCount: number;
             team: components["schemas"]["CareerHighlightTeam"];
         };
+        CareerStanleyCupHighlightCup: {
+            season: number;
+            team: components["schemas"]["CareerHighlightTeam"];
+        };
+        CareerStanleyCupHighlightItem: {
+            id: string;
+            name: string;
+            position: string;
+            cupCount: number;
+            cups: components["schemas"]["CareerStanleyCupHighlightCup"][];
+        };
+        CareerReunionHighlightItem: {
+            id: string;
+            name: string;
+            position: string;
+            reunionCount: number;
+            team: components["schemas"]["CareerHighlightTeam"];
+            stints: components["schemas"]["CareerReunionHighlightStint"][];
+        };
+        CareerReunionHighlightStint: {
+            fromSeason: number;
+            toSeason: number;
+        };
+        CareerStashHighlightItem: {
+            id: string;
+            name: string;
+            position: string;
+            seasonCount: number;
+            team: components["schemas"]["CareerHighlightTeam"];
+        };
+        CareerRegularGrinderHighlightItem: {
+            id: string;
+            name: string;
+            position: string;
+            regularGames: number;
+            teams: components["schemas"]["CareerHighlightTeam"][];
+        };
         CareerTeamCountHighlightPage: {
             /** @enum {string} */
             type: "most-teams-played" | "most-teams-owned";
@@ -1341,6 +1391,38 @@ export interface components {
             take: number;
             total: number;
             items: components["schemas"]["CareerSameTeamHighlightItem"][];
+        };
+        CareerStanleyCupHighlightPage: {
+            /** @enum {string} */
+            type: "most-stanley-cups";
+            skip: number;
+            take: number;
+            total: number;
+            items: components["schemas"]["CareerStanleyCupHighlightItem"][];
+        };
+        CareerReunionHighlightPage: {
+            /** @enum {string} */
+            type: "reunion-king";
+            skip: number;
+            take: number;
+            total: number;
+            items: components["schemas"]["CareerReunionHighlightItem"][];
+        };
+        CareerStashHighlightPage: {
+            /** @enum {string} */
+            type: "stash-king";
+            skip: number;
+            take: number;
+            total: number;
+            items: components["schemas"]["CareerStashHighlightItem"][];
+        };
+        CareerRegularGrinderHighlightPage: {
+            /** @enum {string} */
+            type: "regular-grinder-without-playoffs";
+            skip: number;
+            take: number;
+            total: number;
+            items: components["schemas"]["CareerRegularGrinderHighlightItem"][];
         };
         CareerGoalie: {
             id: string;

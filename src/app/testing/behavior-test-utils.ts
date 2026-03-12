@@ -65,6 +65,97 @@ export const sameTeamSeasonsOwnedHighlightsPage0Fixture =
   sameTeamSeasonsOwnedHighlightsPage0FixtureData as CareerHighlightPage;
 export const sameTeamSeasonsOwnedHighlightsPage1Fixture =
   sameTeamSeasonsOwnedHighlightsPage1FixtureData as CareerHighlightPage;
+export const mostStanleyCupsHighlightsPage0Fixture = {
+  type: 'most-stanley-cups',
+  skip: 0,
+  take: 10,
+  total: 2,
+  items: [
+    {
+      id: 'cup-1',
+      name: 'Patrick Maroon',
+      position: 'F',
+      cupCount: 3,
+      cups: [
+        {
+          season: 2018,
+          team: { id: '1', name: 'Colorado Avalanche' },
+        },
+        {
+          season: 2020,
+          team: { id: '2', name: 'Dallas Stars' },
+        },
+        {
+          season: 2021,
+          team: { id: '3', name: 'Tampa Bay Lightning' },
+        },
+      ],
+    },
+    {
+      id: 'cup-2',
+      name: 'Pat Maroon',
+      position: 'F',
+      cupCount: 2,
+      cups: [
+        {
+          season: 2018,
+          team: { id: '1', name: 'Colorado Avalanche' },
+        },
+        {
+          season: 2020,
+          team: { id: '2', name: 'Dallas Stars' },
+        },
+      ],
+    },
+  ],
+} as CareerHighlightPage;
+export const regularGrinderWithoutPlayoffsHighlightsPage0Fixture = {
+  type: 'regular-grinder-without-playoffs',
+  skip: 0,
+  take: 10,
+  total: 2,
+  items: [
+    {
+      id: 'grinder-1',
+      name: 'Radek Faksa',
+      position: 'F',
+      regularGames: 512,
+      teams: [
+        { id: '2', name: 'Dallas Stars' },
+        { id: '4', name: 'Carolina Hurricanes' },
+      ],
+    },
+    {
+      id: 'grinder-2',
+      name: 'Jack Johnson',
+      position: 'D',
+      regularGames: 484,
+      teams: [{ id: '1', name: 'Colorado Avalanche' }],
+    },
+  ],
+} as CareerHighlightPage;
+export const stashKingHighlightsPage0Fixture = {
+  type: 'stash-king',
+  skip: 0,
+  take: 10,
+  total: 2,
+  items: [
+    {
+      id: 'stash-1',
+      name: 'Anton Khudobin',
+      position: 'G',
+      seasonCount: 11,
+      team: { id: '2', name: 'Dallas Stars' },
+    },
+    {
+      id: 'stash-2',
+      name: 'Mark Pysyk',
+      position: 'D',
+      seasonCount: 10,
+      team: { id: '4', name: 'Carolina Hurricanes' },
+    },
+  ],
+} as CareerHighlightPage;
 
 export { teamsFixture, lastModifiedFixture, seasonsFixture, playersFixture };
 
@@ -92,6 +183,9 @@ export type BehaviorApiMockOptions = {
   careerHighlightsMostTeamsOwned?: CareerHighlightPage;
   careerHighlightsSameTeamSeasonsPlayed?: CareerHighlightPage;
   careerHighlightsSameTeamSeasonsOwned?: CareerHighlightPage;
+  careerHighlightsMostStanleyCups?: CareerHighlightPage;
+  careerHighlightsRegularGrinderWithoutPlayoffs?: CareerHighlightPage;
+  careerHighlightsStashKing?: CareerHighlightPage;
   leaderboardRegular?: RegularLeaderboardEntry[];
   leaderboardPlayoffs?: PlayoffLeaderboardEntry[];
   errorKeys?: BehaviorApiErrorKey[];
@@ -143,6 +237,15 @@ function getDefaultCareerHighlightsFixture(
       return skip >= 10
         ? (options.careerHighlightsSameTeamSeasonsOwned ?? sameTeamSeasonsOwnedHighlightsPage1Fixture)
         : (options.careerHighlightsSameTeamSeasonsOwned ?? sameTeamSeasonsOwnedHighlightsPage0Fixture);
+    case 'most-stanley-cups':
+      return options.careerHighlightsMostStanleyCups ?? mostStanleyCupsHighlightsPage0Fixture;
+    case 'regular-grinder-without-playoffs':
+      return options.careerHighlightsRegularGrinderWithoutPlayoffs
+        ?? regularGrinderWithoutPlayoffsHighlightsPage0Fixture;
+    case 'stash-king':
+      return options.careerHighlightsStashKing ?? stashKingHighlightsPage0Fixture;
+    case 'reunion-king':
+      throw new Error('Behavior test mock for reunion-king is not configured.');
   }
 }
 

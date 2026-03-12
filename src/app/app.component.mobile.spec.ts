@@ -276,12 +276,23 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
       screen.getByRole('heading', { name: 'career.highlights.cards.mostTeamsOwned.title' })
     ).toBeInTheDocument();
     expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.mostStanleyCups.title' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
+      })
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsPlayed.title' })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsOwned.title' })
     ).toBeInTheDocument();
-    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(5);
+    expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.stashKing.title' })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(8);
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
 

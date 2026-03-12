@@ -14,16 +14,23 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   ApiService,
   CareerHighlightPage,
+  CareerRegularGrinderHighlightPage,
   CareerSameTeamHighlightPage,
+  CareerStashHighlightPage,
+  CareerStanleyCupHighlightPage,
   CareerTeamCountHighlightPage,
-  CareerHighlightType,
 } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
+import { formatSeasonDisplay } from '@shared/utils/season.utils';
 
 import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
-import { CareerHighlightCardState, CareerHighlightCardView } from './career-highlights.types';
+import {
+  CareerHighlightCardState,
+  CareerHighlightCardView,
+  CareerHighlightsUiType,
+} from './career-highlights.types';
 
 const PAGE_SIZE = 10;
 
@@ -31,7 +38,7 @@ type HighlightCardConfig = Pick<
   CareerHighlightCardState,
   'titleKey' | 'descriptionKey' | 'valueColumnLabelKey'
 > & {
-  readonly type: CareerHighlightType;
+  readonly type: CareerHighlightsUiType;
 };
 
 const MOST_TEAMS_PLAYED_CONFIG: HighlightCardConfig = {
@@ -55,6 +62,21 @@ const MOST_TEAMS_OWNED_CONFIG: HighlightCardConfig = {
   valueColumnLabelKey: 'career.highlights.columns.teamCount',
 };
 
+const MOST_STANLEY_CUPS_CONFIG: HighlightCardConfig = {
+  type: 'most-stanley-cups',
+  titleKey: 'career.highlights.cards.mostStanleyCups.title',
+  descriptionKey: 'career.highlights.cards.mostStanleyCups.description',
+  valueColumnLabelKey: '💍',
+};
+
+const REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG: HighlightCardConfig = {
+  type: 'regular-grinder-without-playoffs',
+  titleKey: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
+  descriptionKey:
+    'career.highlights.cards.regularGrinderWithoutPlayoffs.description',
+  valueColumnLabelKey: 'career.highlights.columns.games',
+};
+
 const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
   type: 'same-team-seasons-owned',
   titleKey: 'career.highlights.cards.sameTeamSeasonsOwned.title',
@@ -62,14 +84,26 @@ const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
   valueColumnLabelKey: 'career.highlights.columns.seasonCount',
 };
 
+const STASH_KING_CONFIG: HighlightCardConfig = {
+  type: 'stash-king',
+  titleKey: 'career.highlights.cards.stashKing.title',
+  descriptionKey: 'career.highlights.cards.stashKing.description',
+  valueColumnLabelKey: 'career.highlights.columns.seasonCount',
+};
+
 const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
+  MOST_STANLEY_CUPS_CONFIG,
+  REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG,
   MOST_TEAMS_PLAYED_CONFIG,
   MOST_TEAMS_OWNED_CONFIG,
   SAME_TEAM_SEASONS_PLAYED_CONFIG,
   SAME_TEAM_SEASONS_OWNED_CONFIG,
+  STASH_KING_CONFIG,
 ];
 
-function createInitialCardState(config: HighlightCardConfig): CareerHighlightCardState {
+function createInitialCardState(
+  config: HighlightCardConfig,
+): CareerHighlightCardState {
   return {
     titleKey: config.titleKey,
     descriptionKey: config.descriptionKey,
@@ -97,13 +131,26 @@ export class CareerHighlightsComponent implements OnInit {
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   private readonly cardSignals: Record<
-    CareerHighlightType,
+    CareerHighlightsUiType,
     WritableSignal<CareerHighlightCardState>
   > = {
-    'most-teams-played': signal(createInitialCardState(MOST_TEAMS_PLAYED_CONFIG)),
+    'most-teams-played': signal(
+      createInitialCardState(MOST_TEAMS_PLAYED_CONFIG),
+    ),
     'most-teams-owned': signal(createInitialCardState(MOST_TEAMS_OWNED_CONFIG)),
-    'same-team-seasons-played': signal(createInitialCardState(SAME_TEAM_SEASONS_PLAYED_CONFIG)),
-    'same-team-seasons-owned': signal(createInitialCardState(SAME_TEAM_SEASONS_OWNED_CONFIG)),
+    'most-stanley-cups': signal(
+      createInitialCardState(MOST_STANLEY_CUPS_CONFIG),
+    ),
+    'regular-grinder-without-playoffs': signal(
+      createInitialCardState(REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG),
+    ),
+    'same-team-seasons-played': signal(
+      createInitialCardState(SAME_TEAM_SEASONS_PLAYED_CONFIG),
+    ),
+    'same-team-seasons-owned': signal(
+      createInitialCardState(SAME_TEAM_SEASONS_OWNED_CONFIG),
+    ),
+    'stash-king': signal(createInitialCardState(STASH_KING_CONFIG)),
   };
 
   readonly cards = computed<readonly CareerHighlightCardView[]>(() =>
@@ -120,7 +167,7 @@ export class CareerHighlightsComponent implements OnInit {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
   }
 
-  loadPreviousPage(type: CareerHighlightType): void {
+  loadPreviousPage(type: CareerHighlightsUiType): void {
     const current = this.getCardSignal(type)();
     if (!current.activated || current.loading) {
       return;
@@ -134,7 +181,7 @@ export class CareerHighlightsComponent implements OnInit {
     this.loadCard(type, nextSkip);
   }
 
-  loadNextPage(type: CareerHighlightType): void {
+  loadNextPage(type: CareerHighlightsUiType): void {
     const current = this.getCardSignal(type)();
     if (!current.activated || current.loading) {
       return;
@@ -148,7 +195,7 @@ export class CareerHighlightsComponent implements OnInit {
     this.loadCard(type, nextSkip);
   }
 
-  activateCard(type: CareerHighlightType): void {
+  activateCard(type: CareerHighlightsUiType): void {
     const cardSignal = this.getCardSignal(type);
     if (cardSignal().activated) {
       return;
@@ -163,7 +210,7 @@ export class CareerHighlightsComponent implements OnInit {
   }
 
   private loadCard(
-    type: CareerHighlightType,
+    type: CareerHighlightsUiType,
     targetSkip: number,
     initialLoad = false,
   ): void {
@@ -213,28 +260,89 @@ export class CareerHighlightsComponent implements OnInit {
       }));
     }
 
-    if (!this.isSameTeamPage(page)) {
-      return [];
+    if (this.isSameTeamPage(page)) {
+      return page.items.map((item) => ({
+        key: `${item.id}:${item.team.id}`,
+        primaryText: `${item.position} ${item.name}`,
+        value: item.seasonCount,
+        detailLines: [item.team.name],
+        detailLabel: item.name,
+      }));
     }
 
-    return page.items.map((item) => ({
-      key: `${item.id}:${item.team.id}`,
-      primaryText: `${item.position} ${item.name}`,
-      value: item.seasonCount,
-      detailLines: [item.team.name],
-      detailLabel: item.name,
-    }));
+    if (this.isStanleyCupPage(page)) {
+      return page.items.map((item) => ({
+        key: item.id,
+        primaryText: `${item.position} ${item.name}`,
+        value: item.cupCount,
+        detailLines: item.cups.map(
+          (cup) => `${formatSeasonDisplay(cup.season)} ${cup.team.name}`,
+        ),
+        detailLabel: item.name,
+      }));
+    }
+
+    if (this.isRegularGrinderPage(page)) {
+      return page.items.map((item) => ({
+        key: item.id,
+        primaryText: `${item.position} ${item.name}`,
+        value: item.regularGames,
+        detailLines: item.teams.map((team) => team.name),
+        detailLabel: item.name,
+      }));
+    }
+
+    if (this.isStashPage(page)) {
+      return page.items.map((item) => ({
+        key: `${item.id}:${item.team.id}`,
+        primaryText: `${item.position} ${item.name}`,
+        value: item.seasonCount,
+        detailLines: [item.team.name],
+        detailLabel: item.name,
+      }));
+    }
+
+    return [];
   }
 
-  private isTeamCountPage(page: CareerHighlightPage): page is CareerTeamCountHighlightPage {
-    return page.type === 'most-teams-played' || page.type === 'most-teams-owned';
+  private isTeamCountPage(
+    page: CareerHighlightPage,
+  ): page is CareerTeamCountHighlightPage {
+    return (
+      page.type === 'most-teams-played' || page.type === 'most-teams-owned'
+    );
   }
 
-  private isSameTeamPage(page: CareerHighlightPage): page is CareerSameTeamHighlightPage {
-    return page.type === 'same-team-seasons-played' || page.type === 'same-team-seasons-owned';
+  private isSameTeamPage(
+    page: CareerHighlightPage,
+  ): page is CareerSameTeamHighlightPage {
+    return (
+      page.type === 'same-team-seasons-played' ||
+      page.type === 'same-team-seasons-owned'
+    );
   }
 
-  private getCardSignal(type: CareerHighlightType): WritableSignal<CareerHighlightCardState> {
+  private isStanleyCupPage(
+    page: CareerHighlightPage,
+  ): page is CareerStanleyCupHighlightPage {
+    return page.type === 'most-stanley-cups';
+  }
+
+  private isRegularGrinderPage(
+    page: CareerHighlightPage,
+  ): page is CareerRegularGrinderHighlightPage {
+    return page.type === 'regular-grinder-without-playoffs';
+  }
+
+  private isStashPage(
+    page: CareerHighlightPage,
+  ): page is CareerStashHighlightPage {
+    return page.type === 'stash-king';
+  }
+
+  private getCardSignal(
+    type: CareerHighlightsUiType,
+  ): WritableSignal<CareerHighlightCardState> {
     return this.cardSignals[type];
   }
 

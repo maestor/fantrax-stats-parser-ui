@@ -1,0 +1,28 @@
+{
+  "type": "stash-king",
+  "skip": 0,
+  "take": 10,
+  "total": 2,
+  "items": [
+    {
+      "id": "stash-1",
+      "name": "Anton Khudobin",
+      "position": "G",
+      "seasonCount": 11,
+      "team": {
+        "id": "2",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "stash-2",
+      "name": "Mark Pysyk",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "4",
+        "name": "Carolina Hurricanes"
+      }
+    }
+  ]
+}

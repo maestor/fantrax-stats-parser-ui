@@ -1,3 +1,5 @@
+import { Locator } from '@playwright/test';
+
 import { test, expect } from '../fixtures/test-fixture';
 import { TAB_LABELS } from '../config/test-data';
 
@@ -24,7 +26,7 @@ test.describe('Career listings', () => {
     await expect(page).toHaveURL(/\/career\/highlights$/);
     await expect(highlightsTab).toHaveAttribute('aria-selected', 'true');
     const highlightCards = page.locator('app-table-card');
-    await expect(highlightCards).toHaveCount(4);
+    await expect(highlightCards).toHaveCount(7);
     await expect(highlightCards.first().getByRole('table')).toBeVisible();
     await highlightCards.nth(1).scrollIntoViewIfNeeded();
     await expect(highlightCards.nth(1).getByRole('table')).toBeVisible();
@@ -32,13 +34,34 @@ test.describe('Career listings', () => {
     await expect(highlightCards.nth(2).getByRole('table')).toBeVisible();
     await highlightCards.nth(3).scrollIntoViewIfNeeded();
     await expect(highlightCards.nth(3).getByRole('table')).toBeVisible();
+    await highlightCards.nth(4).scrollIntoViewIfNeeded();
+    await expect(highlightCards.nth(4).getByRole('table')).toBeVisible();
+    await highlightCards.nth(5).scrollIntoViewIfNeeded();
+    await expect(highlightCards.nth(5).getByRole('table')).toBeVisible();
+    await highlightCards.nth(6).scrollIntoViewIfNeeded();
+    await expect(highlightCards.nth(6).getByRole('table')).toBeVisible();
 
-    const mostTeamsCard = highlightCards.first();
-    await mostTeamsCard.scrollIntoViewIfNeeded();
-    const firstMostTeamsRow = mostTeamsCard.locator('tbody tr').first();
-    const firstMostTeamsRowText = (await firstMostTeamsRow.textContent())?.trim() ?? '';
-    await mostTeamsCard.getByRole('button', { name: 'Näytä seuraavat rivit' }).click();
-    await expect(firstMostTeamsRow).not.toHaveText(firstMostTeamsRowText);
+    const nextPageButtons = page.getByRole('button', { name: 'Näytä seuraavat rivit' });
+    let pagedCard: Locator | null = null;
+    let pagedCardFirstRow: Locator | null = null;
+
+    for (let index = 0; index < await nextPageButtons.count(); index += 1) {
+      const button = nextPageButtons.nth(index);
+      if (!(await button.isEnabled())) {
+        continue;
+      }
+
+      pagedCard = button.locator('xpath=ancestor::app-table-card[1]');
+      pagedCardFirstRow = pagedCard.locator('tbody tr').first();
+      const firstRowText = (await pagedCardFirstRow.textContent())?.trim() ?? '';
+
+      await button.click();
+      await expect(pagedCardFirstRow).not.toHaveText(firstRowText);
+      break;
+    }
+
+    expect(pagedCard).not.toBeNull();
+    expect(pagedCardFirstRow).not.toBeNull();
 
     const goalieTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_GOALIES });
     await goalieTab.click();

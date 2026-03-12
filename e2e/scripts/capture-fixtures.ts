@@ -100,10 +100,13 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
     { path: 'career/highlights/most-teams-played', params: { skip: '10', take: '10' } },
     { path: 'career/highlights/most-teams-owned', params: { skip: '0', take: '10' } },
     { path: 'career/highlights/most-teams-owned', params: { skip: '10', take: '10' } },
+    { path: 'career/highlights/most-stanley-cups', params: { skip: '0', take: '10' } },
+    { path: 'career/highlights/regular-grinder-without-playoffs', params: { skip: '0', take: '10' } },
     { path: 'career/highlights/same-team-seasons-played', params: { skip: '0', take: '10' } },
     { path: 'career/highlights/same-team-seasons-played', params: { skip: '10', take: '10' } },
     { path: 'career/highlights/same-team-seasons-owned', params: { skip: '0', take: '10' } },
     { path: 'career/highlights/same-team-seasons-owned', params: { skip: '10', take: '10' } },
+    { path: 'career/highlights/stash-king', params: { skip: '0', take: '10' } },
   ];
 
   return entries;
