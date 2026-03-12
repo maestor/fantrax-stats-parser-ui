@@ -1,0 +1,36 @@
+{
+  "type": "regular-grinder-without-playoffs",
+  "skip": 0,
+  "take": 10,
+  "total": 2,
+  "items": [
+    {
+      "id": "grinder-1",
+      "name": "Radek Faksa",
+      "position": "F",
+      "regularGames": 512,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "4",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "grinder-2",
+      "name": "Jack Johnson",
+      "position": "D",
+      "regularGames": 484,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    }
+  ]
+}

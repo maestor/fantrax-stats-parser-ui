@@ -149,13 +149,17 @@ export class PlayerCardDialog {
    * Navigate to next player via ArrowRight
    */
   async navigateNext(): Promise<void> {
-    await this.page.keyboard.press('ArrowRight');
+    const closeButton = this.dialog.getByRole('button', { name: 'Sulje pelaajakortti' });
+    await closeButton.focus();
+    await closeButton.press('ArrowRight');
   }
 
   /**
    * Navigate to previous player via ArrowLeft
    */
   async navigatePrevious(): Promise<void> {
-    await this.page.keyboard.press('ArrowLeft');
+    const closeButton = this.dialog.getByRole('button', { name: 'Sulje pelaajakortti' });
+    await closeButton.focus();
+    await closeButton.press('ArrowLeft');
   }
 }
