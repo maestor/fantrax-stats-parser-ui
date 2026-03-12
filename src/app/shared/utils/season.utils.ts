@@ -15,6 +15,14 @@ export function formatSeasonDisplay(year: number): string {
 }
 
 /**
+ * Formats a season start year into the calendar year when that season's playoffs ended.
+ * Example: 2013 season -> "2014".
+ */
+export function formatPlayoffYear(year: number): string {
+  return String(year + 1);
+}
+
+/**
  * Formats a season year (e.g. 2023) into a short display string (e.g. "23-24").
  */
 export function formatSeasonShort(year: number): string {
