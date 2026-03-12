@@ -199,7 +199,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Fetch career rows from the dedicated API endpoints
 - Pass column definitions and formatters into the shared virtualized table
 - Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
-- Normalize paged highlight responses into the shared `TableCardComponent` row shape for the `/career/highlights` route
+- Normalize paged highlight responses into the shared `TableCardComponent` row shape for the `/career/highlights` route, including team-count, same-team, Stanley Cup, stash, and regular-grinder highlight variants
 - Activate highlight-card API loads lazily as each card approaches the viewport instead of requesting every card during route startup
 
 ### TableCardComponent

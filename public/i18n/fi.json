@@ -23,7 +23,8 @@
       "columns": {
         "player": "Pelaaja",
         "teamCount": "Seurat",
-        "seasonCount": "Kaudet"
+        "seasonCount": "Kaudet",
+        "games": "Ott."
       },
       "cards": {
         "mostTeamsPlayed": {
@@ -41,6 +42,18 @@
         "sameTeamSeasonsOwned": {
           "title": "Eniten edustuskausia - sama seura",
           "description": "Väh. 10 kautta samassa seurassa käyneet."
+        },
+        "mostStanleyCups": {
+          "title": "Eniten Stanley Cup -sormuksia",
+          "description": "Väh. 2 mestaruutta FFHL-uran aikana."
+        },
+        "regularGrinderWithoutPlayoffs": {
+          "title": "Runkosarjajyrät",
+          "description": "Eniten otteluita ilman playoffseja."
+        },
+        "stashKing": {
+          "title": "Eniten farmikausia - sama seura",
+          "description": "Väh. 10 kautta joukkueessa pelaamatta."
         }
       }
     }
@@ -209,10 +222,7 @@
       },
       {
         "type": "ul",
-        "items": [
-          "/ - kohdista hakukenttä",
-          "? - avaa tämä ohje"
-        ]
+        "items": ["/ - kohdista hakukenttä", "? - avaa tämä ohje"]
       },
       {
         "type": "h2",

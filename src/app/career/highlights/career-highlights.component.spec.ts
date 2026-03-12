@@ -5,10 +5,13 @@ import { of, throwError } from 'rxjs';
 import { ApiService, CareerHighlightType } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import {
+  mostStanleyCupsHighlightsPage0Fixture,
   mostTeamsOwnedHighlightsPage0Fixture,
   mostTeamsPlayedHighlightsPage0Fixture,
   mostTeamsPlayedHighlightsPage1Fixture,
   provideDisabledMaterialAnimations,
+  regularGrinderWithoutPlayoffsHighlightsPage0Fixture,
+  stashKingHighlightsPage0Fixture,
   sameTeamSeasonsOwnedHighlightsPage0Fixture,
   sameTeamSeasonsHighlightsPage0Fixture,
 } from '../../testing/behavior-test-utils';
@@ -90,6 +93,14 @@ describe('CareerHighlightsComponent', () => {
             return of(sameTeamSeasonsHighlightsPage0Fixture);
           case 'same-team-seasons-owned':
             return of(sameTeamSeasonsOwnedHighlightsPage0Fixture);
+          case 'most-stanley-cups':
+            return of(mostStanleyCupsHighlightsPage0Fixture);
+          case 'regular-grinder-without-playoffs':
+            return of(regularGrinderWithoutPlayoffsHighlightsPage0Fixture);
+          case 'stash-king':
+            return of(stashKingHighlightsPage0Fixture);
+          case 'reunion-king':
+            throw new Error('reunion-king should not be requested by the UI');
         }
       }
     );
@@ -118,6 +129,16 @@ describe('CareerHighlightsComponent', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', {
+        name: 'career.highlights.cards.mostStanleyCups.title',
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
         name: 'career.highlights.cards.sameTeamSeasonsPlayed.title',
       })
     ).toBeInTheDocument();
@@ -126,41 +147,54 @@ describe('CareerHighlightsComponent', () => {
         name: 'career.highlights.cards.sameTeamSeasonsOwned.title',
       })
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'career.highlights.cards.stashKing.title',
+      })
+    ).toBeInTheDocument();
 
     await vi.waitFor(() => {
-      expect(FakeIntersectionObserver.instances).toHaveLength(4);
+      expect(FakeIntersectionObserver.instances).toHaveLength(7);
     });
 
     expect(getCareerHighlights).not.toHaveBeenCalled();
-    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(4);
+    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(7);
 
     FakeIntersectionObserver.instances[0]?.trigger();
-    FakeIntersectionObserver.instances[1]?.trigger();
+    FakeIntersectionObserver.instances[2]?.trigger();
 
     const mostTeamsCardTitle = screen.getByRole('heading', {
       name: 'career.highlights.cards.mostTeamsPlayed.title',
     });
+    const stanleyCupCardTitle = screen.getByRole('heading', {
+      name: 'career.highlights.cards.mostStanleyCups.title',
+    });
+    const mostTeamsCard = mostTeamsCardTitle.closest('mat-card') as HTMLElement | null;
+    const stanleyCupCard = stanleyCupCardTitle.closest('mat-card') as HTMLElement | null;
+
+    expect(mostTeamsCard).not.toBeNull();
+    expect(stanleyCupCard).not.toBeNull();
+    expect(await within(mostTeamsCard!).findByText('F Jamie Benn')).toBeInTheDocument();
+    expect(await within(stanleyCupCard!).findByText('F Patrick Maroon')).toBeInTheDocument();
+    expect(getCareerHighlights).toHaveBeenCalledTimes(2);
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(1, 'most-stanley-cups', 0, 10);
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(2, 'most-teams-played', 0, 10);
+    expect(within(stanleyCupCard!).getByText('💍')).toBeInTheDocument();
+    expect(within(stanleyCupCard!).getByText('3')).toBeInTheDocument();
+    expect(within(stanleyCupCard!).queryByText('D Victor Hedman')).not.toBeInTheDocument();
+
+    FakeIntersectionObserver.instances[4]?.trigger();
+
     const sameTeamPlayedCardTitle = screen.getByRole('heading', {
       name: 'career.highlights.cards.sameTeamSeasonsPlayed.title',
     });
-    const mostTeamsCard = mostTeamsCardTitle.closest('mat-card') as HTMLElement | null;
     const sameTeamPlayedCard = sameTeamPlayedCardTitle.closest('mat-card') as HTMLElement | null;
 
-    expect(mostTeamsCard).not.toBeNull();
     expect(sameTeamPlayedCard).not.toBeNull();
-    expect(await within(mostTeamsCard!).findByText('F Jamie Benn')).toBeInTheDocument();
-    expect(screen.getByText('G Andrei Vasilevskiy')).toBeInTheDocument();
-    expect(getCareerHighlights).toHaveBeenCalledTimes(2);
-    expect(getCareerHighlights).toHaveBeenNthCalledWith(1, 'most-teams-played', 0, 10);
-    expect(getCareerHighlights).toHaveBeenNthCalledWith(2, 'most-teams-owned', 0, 10);
-    expect(within(sameTeamPlayedCard!).queryByText('D Victor Hedman')).not.toBeInTheDocument();
-
-    FakeIntersectionObserver.instances[2]?.trigger();
-
     expect(await within(sameTeamPlayedCard!).findByText('D Victor Hedman')).toBeInTheDocument();
     expect(getCareerHighlights).toHaveBeenCalledWith('same-team-seasons-played', 0, 10);
 
-    fireEvent.click(screen.getAllByRole('button', { name: 'tableCard.nextPage' })[0]);
+    fireEvent.click(within(mostTeamsCard!).getByRole('button', { name: 'tableCard.nextPage' }));
 
     expect(await within(mostTeamsCard!).findByText('F Anthony Duclair')).toBeInTheDocument();
     expect(within(mostTeamsCard!).queryByText('F Jamie Benn')).not.toBeInTheDocument();
@@ -182,6 +216,12 @@ describe('CareerHighlightsComponent', () => {
                 : of(
                   type === 'most-teams-owned'
                     ? mostTeamsOwnedHighlightsPage0Fixture
+                    : type === 'most-stanley-cups'
+                      ? mostStanleyCupsHighlightsPage0Fixture
+                      : type === 'regular-grinder-without-playoffs'
+                        ? regularGrinderWithoutPlayoffsHighlightsPage0Fixture
+                        : type === 'stash-king'
+                          ? stashKingHighlightsPage0Fixture
                     : type === 'same-team-seasons-played'
                       ? sameTeamSeasonsHighlightsPage0Fixture
                       : mostTeamsPlayedHighlightsPage0Fixture
@@ -192,11 +232,11 @@ describe('CareerHighlightsComponent', () => {
     });
 
     await vi.waitFor(() => {
-      expect(FakeIntersectionObserver.instances).toHaveLength(4);
+      expect(FakeIntersectionObserver.instances).toHaveLength(7);
     });
 
-    FakeIntersectionObserver.instances[0]?.trigger();
-    FakeIntersectionObserver.instances[3]?.trigger();
+    FakeIntersectionObserver.instances[2]?.trigger();
+    FakeIntersectionObserver.instances[5]?.trigger();
 
     const mostTeamsPlayedCardTitle = await screen.findByRole('heading', {
       name: 'career.highlights.cards.mostTeamsPlayed.title',
