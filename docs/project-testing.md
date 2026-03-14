@@ -286,9 +286,9 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
 
 - **leaderboards.spec.ts** - Leaderboard routes and expandable team breakdowns
   - Redirect from `/leaderboards` to the default regular-season tab
-  - Regular/playoff/transfers tab switching
-  - Tie-rank handling for regular/playoffs and incremental ranks for transfers
-  - Expanded season detail rows for trophies and transfer summaries
+  - Regular/playoff/transactions tab switching
+  - Tie-rank handling for regular/playoffs and incremental ranks for transactions
+  - Expanded season detail rows for trophies and transaction summaries
 
 **Supporting files:**
 

@@ -28,10 +28,10 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'transfers',
+        path: 'transactions',
         loadComponent: () =>
-          import('./leaderboards/transfers/leaderboard-transfers.component').then(
-            (m) => m.LeaderboardTransfersComponent
+          import('./leaderboards/transactions/leaderboard-transactions.component').then(
+            (m) => m.LeaderboardTransactionsComponent
           ),
       },
     ],

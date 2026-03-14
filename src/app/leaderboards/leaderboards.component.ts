@@ -20,7 +20,7 @@ export class LeaderboardsComponent implements OnInit {
   readonly tabs = [
     { label: 'leaderboards.tabs.regular', path: '/leaderboards/regular' },
     { label: 'leaderboards.tabs.playoffs', path: '/leaderboards/playoffs' },
-    { label: 'leaderboards.tabs.transfers', path: '/leaderboards/transfers' },
+    { label: 'leaderboards.tabs.transactions', path: '/leaderboards/transactions' },
   ];
 
   ngOnInit(): void {

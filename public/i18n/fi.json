@@ -62,16 +62,16 @@
     "tabs": {
       "regular": "Runkosarja",
       "playoffs": "Playoffs",
-      "transfers": "Siirrot"
+      "transactions": "Siirrot"
     },
     "columns": {
       "position": "#",
       "team": "Joukkue",
       "regularTrophies": "Runkosarjavoitot",
       "championships": "Mestaruudet",
-      "trades": "Treidit",
-      "claims": "Claimit",
-      "drops": "Dropit",
+      "trades": "Kaupat",
+      "claims": "Nostot",
+      "drops": "Pudotukset",
       "points": "Pisteet",
       "wins": "Voitot",
       "ties": "Tasapelit",
@@ -95,7 +95,7 @@
       "season": "Kausi",
       "regularStats": "Tilastot",
       "playoffResult": "Tulos",
-      "transfers": "Siirrot",
+      "transactions": "Siirrot",
       "trophy": "🏆"
     },
     "noSeasonBreakdown": "Ei kausierittelyä saatavilla",
@@ -227,7 +227,10 @@
       },
       {
         "type": "ul",
-        "items": ["/ - kohdista hakukenttä", "? - avaa tämä ohje"]
+        "items": [
+          "/ - kohdista hakukenttä",
+          "? - avaa tämä ohje"
+        ]
       },
       {
         "type": "h2",
@@ -318,9 +321,9 @@
     "teamName": "Joukkue",
     "regularTrophies": "Runkosarjavoitot",
     "championships": "Mestaruudet",
-    "trades": "Treidit",
-    "claims": "Claimit",
-    "drops": "Dropit",
+    "trades": "Kaupat",
+    "claims": "Nostot",
+    "drops": "Pudotukset",
     "ties": "Tasapelit",
     "losses": "Häviöt",
     "pointsPercent": "Piste-%",
@@ -369,9 +372,9 @@
     "teamName": "Joukkue",
     "regularTrophies": "RSV",
     "championships": "Mest.",
-    "trades": "Treidit",
-    "claims": "Claimit",
-    "drops": "Dropit",
+    "trades": "Kaupat",
+    "claims": "Nostot",
+    "drops": "Pud.",
     "ties": "T",
     "losses": "H",
     "pointsPercent": "P-%",

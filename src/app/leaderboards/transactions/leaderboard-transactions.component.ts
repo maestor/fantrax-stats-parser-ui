@@ -9,7 +9,7 @@ import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
 import { mapTransactionLeaderboardSeasons } from '../leaderboard/leaderboard-expansion.utils';
 
 @Component({
-  selector: 'app-leaderboard-transfers',
+  selector: 'app-leaderboard-transactions',
   imports: [LeaderboardComponent],
   template: `<app-leaderboard
     [fetchFn]="fetchFn"
@@ -22,7 +22,7 @@ import { mapTransactionLeaderboardSeasons } from '../leaderboard/leaderboard-exp
     [expandedHeaderLabels]="expandedHeaderLabels"
   />`,
 })
-export class LeaderboardTransfersComponent {
+export class LeaderboardTransactionsComponent {
   private apiService = inject(ApiService);
   private translate = inject(TranslateService);
   private viewportService = inject(ViewportService);
@@ -67,6 +67,6 @@ export class LeaderboardTransfersComponent {
   );
   readonly expandedHeaderLabels = {
     season: this.translate.instant('leaderboards.detailHeader.season'),
-    primary: this.translate.instant('leaderboards.detailHeader.transfers'),
+    primary: this.translate.instant('leaderboards.detailHeader.transactions'),
   };
 }
