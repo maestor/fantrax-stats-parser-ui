@@ -14,6 +14,7 @@ export type GoalieSeasonStats       = components['schemas']['GoalieSeasonData'];
 export type Team                    = components['schemas']['Team'];
 export type RegularLeaderboardEntry = components['schemas']['RegularLeaderboardEntry'];
 export type PlayoffLeaderboardEntry = components['schemas']['PlayoffLeaderboardEntry'];
+export type TransactionLeaderboardEntry = components['schemas']['TransactionLeaderboardEntry'];
 export type CareerPlayerListItem    = components['schemas']['CareerPlayerListItem'];
 export type CareerGoalieListItem    = components['schemas']['CareerGoalieListItem'];
 export type CareerPlayer            = components['schemas']['CareerPlayer'];
@@ -135,6 +136,14 @@ export class ApiService {
     return this.handleRequest<PlayoffLeaderboardEntry[]>(
       "leaderboard/playoffs",
       "leaderboard-playoffs",
+    );
+  }
+
+  // Fetching transaction leaderboard data
+  getLeaderboardTransactions(): Observable<TransactionLeaderboardEntry[]> {
+    return this.handleRequest<TransactionLeaderboardEntry[]>(
+      "leaderboard/transactions",
+      "leaderboard-transactions",
     );
   }
 

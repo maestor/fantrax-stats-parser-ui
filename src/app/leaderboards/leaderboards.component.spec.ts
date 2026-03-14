@@ -33,10 +33,10 @@ describe('LeaderboardsComponent', () => {
 
     expect(component.activeLink).toBe('/leaderboards/regular');
 
-    router.url = '/leaderboards/playoffs?bar=1';
+    router.url = '/leaderboards/transfers?bar=1';
     events$.next({});
 
-    expect(component.activeLink).toBe('/leaderboards/playoffs');
+    expect(component.activeLink).toBe('/leaderboards/transfers');
     expect(detectChanges).toHaveBeenCalledTimes(1);
   });
 });

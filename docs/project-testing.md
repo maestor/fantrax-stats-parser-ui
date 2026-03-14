@@ -206,24 +206,44 @@ The Playwright config is defined in `playwright.config.ts` and:
 - In CI: serves the production build via `npx serve dist/fantrax-stats-parser-ui/browser -s -l 4200`
 - Runs tests against Chromium only
 
+**Recommended local flow:**
+
+1. Start the backend separately on `http://localhost:3000`
+2. Run `npm run e2e` for the full suite, or `npx playwright test e2e/specs/<spec>.ts` while iterating
+3. Let Playwright start the frontend itself, or keep `http://localhost:4200` already running and let Playwright reuse it
+
+Local rule of thumb:
+
+- Prefer normal local mode against the live backend
+- Do **not** set `CI=true` for routine local verification
+- Use the CI/fixture mode only when you intentionally want the mocked CI behavior
+- If the backend on `localhost:3000` is not running in a paired session, ask the user to start it instead of swapping local verification over to CI-mode fixtures
+
 **Basic commands:**
 
 ```bash
 # Run all E2E tests (headless, Chromium) — requires backend on :3000
 npx playwright test
 
-# Run against an already-running frontend without starting Playwright webServer
+# Run headed locally (still starts or reuses the frontend via Playwright webServer)
 npx playwright test --headed
 
 # Run specific test file
 npx playwright test e2e/specs/smoke.spec.ts
 
-# Run with API mocking (simulates CI mode)
+# Run with API mocking (CI or explicit fixture-debugging only; not normal local usage)
 CI=true npx playwright test
 
 # Capture/update API fixtures from live backend
 npm run e2e:capture-fixtures
 ```
+
+**Troubleshooting local runs**
+
+- If Playwright waits for `webServer`, first check that `CI=true` is not set accidentally in your shell.
+- If you already have the frontend open on `http://localhost:4200`, Playwright should reuse it locally because `reuseExistingServer` is enabled.
+- If the backend is down, local E2E runs will fail even if the frontend starts correctly.
+- In this repo, the user may control the local backend separately. If it is down, ask them to start it before treating the run as blocked.
 
 #### Test Organization
 
@@ -263,6 +283,12 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
   - Search and sort behavior in the virtualized career table
   - Server-paged highlight card behavior
   - Route-specific shell behavior (no stats controls/drawer)
+
+- **leaderboards.spec.ts** - Leaderboard routes and expandable team breakdowns
+  - Redirect from `/leaderboards` to the default regular-season tab
+  - Regular/playoff/transfers tab switching
+  - Tie-rank handling for regular/playoffs and incremental ranks for transfers
+  - Expanded season detail rows for trophies and transfer summaries
 
 **Supporting files:**
 

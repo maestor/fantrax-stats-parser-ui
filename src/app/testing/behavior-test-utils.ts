@@ -18,6 +18,7 @@ import {
   CareerPlayerListItem,
   PlayoffLeaderboardEntry,
   RegularLeaderboardEntry,
+  TransactionLeaderboardEntry,
   ReportType,
   Season,
   Team,
@@ -40,6 +41,7 @@ import sameTeamSeasonsHighlightsPage0FixtureData from '../../../e2e/fixtures/dat
 import sameTeamSeasonsHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-played--skip=10--take=10.json';
 import sameTeamSeasonsOwnedHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-owned--skip=0--take=10.json';
 import sameTeamSeasonsOwnedHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-owned--skip=10--take=10.json';
+import leaderboardTransactionsFixtureData from '../../../e2e/fixtures/data/leaderboard--transactions.json';
 
 export const PLAYER_SLICE_COUNT = 12;
 export const GOALIE_SLICE_COUNT = 5;
@@ -65,6 +67,8 @@ export const sameTeamSeasonsOwnedHighlightsPage0Fixture =
   sameTeamSeasonsOwnedHighlightsPage0FixtureData as CareerHighlightPage;
 export const sameTeamSeasonsOwnedHighlightsPage1Fixture =
   sameTeamSeasonsOwnedHighlightsPage1FixtureData as CareerHighlightPage;
+export const leaderboardTransactionsFixture =
+  leaderboardTransactionsFixtureData as TransactionLeaderboardEntry[];
 export const mostStanleyCupsHighlightsPage0Fixture = {
   type: 'most-stanley-cups',
   skip: 0,
@@ -169,7 +173,8 @@ type BehaviorApiErrorKey =
   | 'careerGoalies'
   | 'careerHighlights'
   | 'leaderboardRegular'
-  | 'leaderboardPlayoffs';
+  | 'leaderboardPlayoffs'
+  | 'leaderboardTransactions';
 
 export type BehaviorApiMockOptions = {
   teams?: Team[];
@@ -188,6 +193,7 @@ export type BehaviorApiMockOptions = {
   careerHighlightsStashKing?: CareerHighlightPage;
   leaderboardRegular?: RegularLeaderboardEntry[];
   leaderboardPlayoffs?: PlayoffLeaderboardEntry[];
+  leaderboardTransactions?: TransactionLeaderboardEntry[];
   errorKeys?: BehaviorApiErrorKey[];
   getSeasons?: (
     reportType?: ReportType,
@@ -315,6 +321,10 @@ export function createApiServiceMock(options: BehaviorApiMockOptions = {}) {
       errorKeys.has('leaderboardPlayoffs')
         ? createApiError()
         : of(options.leaderboardPlayoffs ?? []),
+    getLeaderboardTransactions: () =>
+      errorKeys.has('leaderboardTransactions')
+        ? createApiError()
+        : of(options.leaderboardTransactions ?? leaderboardTransactionsFixture),
   };
 }
 

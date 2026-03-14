@@ -27,9 +27,10 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- 🎯 Radar chart view showing 0-100 normalized score breakdown for individual stats, toggleable with line charts
 	- 🏆 Career bests highlighted in By Season tab with tooltip showing stat name (only for players with 2+ seasons)
 	- ⬅️➡️ Navigate between players/goalies without closing the card: keyboard arrows (←/→), touch swipe (mobile), or trackpad two-finger swipe (laptop). Wraps circularly with screen reader announcements. Active row in the stats table stays in sync. Direction-aware slide transition provides visual feedback
-- 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with two ranking tables — regular season (Runkosarja) and playoffs — showing all-time team standings with tie-rank position logic and column sorting
+- 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with three ranking tables — regular season (Runkosarja), playoffs, and transfers (Siirrot) — showing all-time team standings and transaction activity with column sorting
 	- Expand/collapse per-team season breakdown by clicking the team row (multiple rows can stay open)
-	- Season details show `🏆` markers for winner/championship seasons (regular + playoffs)
+	- Regular/playoffs keep blank tied ranks, while transfers always show incremental positions
+	- Season details show `🏆` markers for winner/championship seasons (regular + playoffs) and `🤝 | 🟢 | 🔴` summaries for transfers
 - 📚 **Career Listings**: Standalone `/career/players` and `/career/goalies` routes for all-time player and goalie career tables
 	- Searchable and sortable, with no stats-page filters or mobile drawer
 	- Virtualized row rendering keeps long lists responsive
@@ -178,7 +179,7 @@ For planning-heavy changes, save the approved implementation plan locally under 
 E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `smoke.spec.ts` — Core page rendering and navigation
 - `career.spec.ts` — Career players/goalies/highlights tabs, search, paging, and route shell behavior
-- `leaderboards.spec.ts` — Leaderboards redirect, table data, tab navigation, position tie logic, expandable season details
+- `leaderboards.spec.ts` — Leaderboards redirect, regular/playoff/transfers tabs, tie-rank vs incremental position logic, and expandable season details
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
 - `team-switching.spec.ts` — Team selector and filter reset behavior
 - `filters.spec.ts` — Report type, season, position, stats-per-game, and min games filters
@@ -188,7 +189,25 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 **Local:** Backend API must be running on `localhost:3000` (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
 **CI:** E2E tests run without a backend — API responses are served from JSON fixtures via Playwright's `page.route()` mocking.
 
-Local Playwright runs against `http://localhost:4200` and starts `npm start` via Playwright `webServer` when needed.
+Local Playwright runs against `http://localhost:4200`. The Playwright `webServer` starts `npm start` automatically when needed, or reuses an already-running frontend on port `4200`.
+
+Recommended local flow:
+
+```bash
+# 1. Start the backend separately on http://localhost:3000
+
+# 2. Run all E2E tests
+npm run e2e
+
+# or run one spec while iterating
+npx playwright test e2e/specs/leaderboards.spec.ts
+```
+
+Important:
+
+- Do not use `CI=true` for normal local E2E runs. In this repo that switches Playwright into the fixture-backed CI flow, which is meant for CI and explicit offline debugging, not routine local verification against your real backend.
+- `npx playwright test --headed` still uses the same `webServer` config. It does not disable server startup by itself; it simply opens the browser UI while Playwright starts or reuses the frontend.
+- If the backend on `localhost:3000` is not running during a paired session, ask the user to start it. Do not silently swap to CI-mode mocking for routine local verification.
 
 ### Test Coverage Summary
 
@@ -260,7 +279,7 @@ src/
 │   ├── goalie-stats/      # Goalie stats page
 │   ├── dashboard-shell/   # Lazy shell for dashboard routes
 │   ├── career/            # Career listings + highlights (/career/players, /career/goalies, /career/highlights)
-│   ├── leaderboards/      # All-time leaderboards (/leaderboards/regular, /leaderboards/playoffs)
+│   ├── leaderboards/      # All-time leaderboards (/leaderboards/regular, /leaderboards/playoffs, /leaderboards/transfers)
 │   ├── player-route/      # Direct player card route handler
 │   ├── goalie-route/      # Direct goalie card route handler
 │   ├── utils/             # Utility functions (slug generation)

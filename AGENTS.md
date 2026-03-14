@@ -18,3 +18,5 @@ If a proposed change would alter user-visible application behavior or semantics,
 In every task, include a user review phase before final verify. After review is accepted and verify passes, you can commit. After each user-accepted and verified batch, you may commit if useful as a checkpoint. Offer PR notes as a copy-pasteable code block only when the branch is fully implemented and ready for PR; user will handle the rest.
 
 If using Playwright MCP during a task, close the browser after you are done with it and no longer need it. Do not leave Playwright browser sessions open across unrelated steps or future sessions.
+
+For local Playwright E2E runs, the user controls the backend on `localhost:3000`. If it is not running, ask the user to start it instead of switching to CI-mode mocking as a workaround.

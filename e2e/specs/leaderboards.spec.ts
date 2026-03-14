@@ -2,7 +2,7 @@ import { test, expect } from '../fixtures/test-fixture';
 import { LEADERBOARD_LABELS } from '../config/test-data';
 
 test.describe('Leaderboards', () => {
-  test('full flow: redirect, regular table with position tie logic, tab switch, playoffs table', async ({ page }) => {
+  test('full flow: redirect, regular table with position tie logic, tab switch, playoffs table, and transfers table', async ({ page }) => {
     // /leaderboards redirects to regular
     await page.goto('/leaderboards');
     await expect(page).toHaveURL(/\/leaderboards\/regular/);
@@ -58,11 +58,36 @@ test.describe('Leaderboards', () => {
     const trophyCount = await trophyMarkers.count();
     expect(trophyCount).toBeGreaterThan(0);
     expect(playoffRowsCount).toBeGreaterThan(trophyCount);
+
+    // switch to Transfers tab
+    const transfersTab = page.getByRole('tab', { name: LEADERBOARD_LABELS.TRANSFERS });
+    await transfersTab.click();
+    await expect(page).toHaveURL(/\/leaderboards\/transfers/);
+    await expect(transfersTab).toHaveAttribute('aria-selected', 'true');
+
+    // transfers table has data and uses incremental positions even when API marks a tie
+    await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+    expect(await rows.count()).toBeGreaterThan(0);
+
+    const transferPositions = page.locator('tr[mat-row] td:first-child');
+    await expect(transferPositions.nth(0)).toHaveText('1');
+    await expect(transferPositions.nth(1)).toHaveText('2');
+    await expect(transferPositions.nth(2)).toHaveText('3');
+
+    const transferRows = page.locator('tr[mat-row]:not(.expanded-detail-row)');
+    await transferRows.nth(1).click();
+    await expect(page.locator('.expanded-season-row').first()).toContainText('🤝');
   });
 
   test('direct URL /leaderboards/regular loads without redirect', async ({ page }) => {
     await page.goto('/leaderboards/regular');
     await expect(page).toHaveURL(/\/leaderboards\/regular/);
+    await page.locator('tr[mat-row]').first().waitFor({ state: 'visible', timeout: 10000 });
+  });
+
+  test('direct URL /leaderboards/transfers loads without redirect', async ({ page }) => {
+    await page.goto('/leaderboards/transfers');
+    await expect(page).toHaveURL(/\/leaderboards\/transfers/);
     await page.locator('tr[mat-row]').first().waitFor({ state: 'visible', timeout: 10000 });
   });
 });

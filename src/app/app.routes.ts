@@ -27,6 +27,13 @@ export const routes: Routes = [
             (m) => m.LeaderboardPlayoffsComponent
           ),
       },
+      {
+        path: 'transfers',
+        loadComponent: () =>
+          import('./leaderboards/transfers/leaderboard-transfers.component').then(
+            (m) => m.LeaderboardTransfersComponent
+          ),
+      },
     ],
   },
   {

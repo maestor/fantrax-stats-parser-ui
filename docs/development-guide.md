@@ -187,6 +187,23 @@ npx playwright test
 - Runs Playwright E2E tests
 - Headless by default
 - Results in `test-results/`
+- Requires the backend API on `http://localhost:3000`
+- Playwright starts `npm start` automatically when needed, or reuses an existing frontend on `http://localhost:4200`
+- Do not use `CI=true` for routine local runs; that switches to the repo's fixture-backed CI flow instead of using your live local backend
+- If the backend is not running during a collaborative session, ask the user to start it before trying fallback approaches
+
+Useful local variants:
+
+```bash
+# Full suite
+npm run e2e
+
+# Single spec while iterating
+npx playwright test e2e/specs/leaderboards.spec.ts
+
+# Headed browser run
+npx playwright test --headed
+```
 
 ### Angular CLI Commands
 ```bash

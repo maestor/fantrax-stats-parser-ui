@@ -30,6 +30,7 @@ import {
   Goalie,
   RegularLeaderboardEntry,
   PlayoffLeaderboardEntry,
+  TransactionLeaderboardEntry,
   CareerPlayerListItem,
   CareerGoalieListItem,
 } from '@services/api.service';
@@ -85,6 +86,7 @@ export type TableRow =
   | Goalie
   | RegularLeaderboardEntry
   | PlayoffLeaderboardEntry
+  | TransactionLeaderboardEntry
   | CareerPlayerListItem
   | CareerGoalieListItem
   | ({ playerPosition: string } & CareerPlayerListItem);

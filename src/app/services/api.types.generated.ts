@@ -1172,6 +1172,53 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/leaderboard/transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * All-time transaction leaderboard
+         * @description Returns each team's total claim, drop, and trade counts with a per-season breakdown.
+         *     Trade totals count distinct team participations by `season + occurred_at`.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Transaction leaderboard entries. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TransactionLeaderboardEntry"][];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1622,6 +1669,24 @@ export interface components {
             winPercent: number;
             divWinPercent: number;
             pointsPercent: number;
+        };
+        TransactionLeaderboardEntry: {
+            teamId: string;
+            teamName: string;
+            claims: number;
+            drops: number;
+            /** @description Count of distinct trade participations by `season + occurred_at`. */
+            trades: number;
+            seasons: components["schemas"]["TransactionLeaderboardSeason"][];
+            /** @description True when this entry's record matches the previous entry's record. */
+            tieRank: boolean;
+        };
+        TransactionLeaderboardSeason: {
+            season: number;
+            claims: number;
+            drops: number;
+            /** @description Count of distinct trade participations by `season + occurred_at`. */
+            trades: number;
         };
     };
     responses: never;
