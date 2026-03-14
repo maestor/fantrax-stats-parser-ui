@@ -1021,11 +1021,15 @@ export interface paths {
          *     games stayed at zero.
          *     `regular-grinder-without-playoffs` returns total regular-season games plus the played fantasy teams
          *     for players/goalies who never recorded a playoff appearance.
+         *     `most-trades`, `most-claims`, and `most-drops` return total matched player/goalie transaction counts
+         *     plus per-team breakdowns sorted by descending transaction count. Trade counts use the fantasy team that
+         *     traded the player away.
          *     Minimum cutoffs are 4 teams for `most-teams-played`, 5 teams for `most-teams-owned`,
          *     8 same-team seasons for `same-team-seasons-played`, 10 same-team seasons for
          *     `same-team-seasons-owned`, 2 cups for `most-stanley-cups`, 2 reunion stints for
-         *     `reunion-king`, 10 stash counts for `stash-king`, and 60 games for
-         *     `regular-grinder-without-playoffs`.
+         *     `reunion-king`, 10 stash counts for `stash-king`, 60 games for
+         *     `regular-grinder-without-playoffs`, 4 trades for `most-trades`, and 3 claims/drops for
+         *     `most-claims` / `most-drops`.
          */
         get: {
             parameters: {
@@ -1050,7 +1054,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["CareerTeamCountHighlightPage"] | components["schemas"]["CareerSameTeamHighlightPage"] | components["schemas"]["CareerStanleyCupHighlightPage"] | components["schemas"]["CareerReunionHighlightPage"] | components["schemas"]["CareerStashHighlightPage"] | components["schemas"]["CareerRegularGrinderHighlightPage"];
+                        "application/json": components["schemas"]["CareerTeamCountHighlightPage"] | components["schemas"]["CareerSameTeamHighlightPage"] | components["schemas"]["CareerStanleyCupHighlightPage"] | components["schemas"]["CareerReunionHighlightPage"] | components["schemas"]["CareerStashHighlightPage"] | components["schemas"]["CareerRegularGrinderHighlightPage"] | components["schemas"]["CareerTransactionHighlightPage"];
                     };
                 };
                 /** @description Invalid highlight type or paging params. */
@@ -1367,7 +1371,7 @@ export interface components {
             playoffGames: number;
         };
         /** @enum {string} */
-        CareerHighlightType: "most-teams-played" | "most-teams-owned" | "same-team-seasons-played" | "same-team-seasons-owned" | "most-stanley-cups" | "reunion-king" | "stash-king" | "regular-grinder-without-playoffs";
+        CareerHighlightType: "most-teams-played" | "most-teams-owned" | "same-team-seasons-played" | "same-team-seasons-owned" | "most-stanley-cups" | "reunion-king" | "stash-king" | "regular-grinder-without-playoffs" | "most-trades" | "most-claims" | "most-drops";
         CareerHighlightTeam: {
             id: string;
             name: string;
@@ -1423,6 +1427,18 @@ export interface components {
             regularGames: number;
             teams: components["schemas"]["CareerHighlightTeam"][];
         };
+        CareerTransactionHighlightTeam: {
+            id: string;
+            name: string;
+            count: number;
+        };
+        CareerTransactionHighlightItem: {
+            id: string;
+            name: string;
+            position: string;
+            transactionCount: number;
+            teams: components["schemas"]["CareerTransactionHighlightTeam"][];
+        };
         CareerTeamCountHighlightPage: {
             /** @enum {string} */
             type: "most-teams-played" | "most-teams-owned";
@@ -1470,6 +1486,14 @@ export interface components {
             take: number;
             total: number;
             items: components["schemas"]["CareerRegularGrinderHighlightItem"][];
+        };
+        CareerTransactionHighlightPage: {
+            /** @enum {string} */
+            type: "most-trades" | "most-claims" | "most-drops";
+            skip: number;
+            take: number;
+            total: number;
+            items: components["schemas"]["CareerTransactionHighlightItem"][];
         };
         CareerGoalie: {
             id: string;

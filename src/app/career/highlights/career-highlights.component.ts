@@ -2,13 +2,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  OnInit,
   WritableSignal,
+  OnInit,
   computed,
   inject,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  MatButtonToggleChange,
+  MatButtonToggleModule,
+} from '@angular/material/button-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 
 import {
@@ -19,6 +23,7 @@ import {
   CareerStashHighlightPage,
   CareerStanleyCupHighlightPage,
   CareerTeamCountHighlightPage,
+  CareerTransactionHighlightPage,
 } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
@@ -29,6 +34,7 @@ import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
 import {
   CareerHighlightCardState,
   CareerHighlightCardView,
+  CareerHighlightSection,
   CareerHighlightsUiType,
 } from './career-highlights.types';
 
@@ -38,10 +44,12 @@ type HighlightCardConfig = Pick<
   CareerHighlightCardState,
   'titleKey' | 'descriptionKey' | 'valueColumnLabelKey'
 > & {
+  readonly section: CareerHighlightSection;
   readonly type: CareerHighlightsUiType;
 };
 
 const MOST_TEAMS_PLAYED_CONFIG: HighlightCardConfig = {
+  section: 'general',
   type: 'most-teams-played',
   titleKey: 'career.highlights.cards.mostTeamsPlayed.title',
   descriptionKey: 'career.highlights.cards.mostTeamsPlayed.description',
@@ -49,6 +57,7 @@ const MOST_TEAMS_PLAYED_CONFIG: HighlightCardConfig = {
 };
 
 const SAME_TEAM_SEASONS_PLAYED_CONFIG: HighlightCardConfig = {
+  section: 'general',
   type: 'same-team-seasons-played',
   titleKey: 'career.highlights.cards.sameTeamSeasonsPlayed.title',
   descriptionKey: 'career.highlights.cards.sameTeamSeasonsPlayed.description',
@@ -56,6 +65,7 @@ const SAME_TEAM_SEASONS_PLAYED_CONFIG: HighlightCardConfig = {
 };
 
 const MOST_TEAMS_OWNED_CONFIG: HighlightCardConfig = {
+  section: 'general',
   type: 'most-teams-owned',
   titleKey: 'career.highlights.cards.mostTeamsOwned.title',
   descriptionKey: 'career.highlights.cards.mostTeamsOwned.description',
@@ -63,6 +73,7 @@ const MOST_TEAMS_OWNED_CONFIG: HighlightCardConfig = {
 };
 
 const MOST_STANLEY_CUPS_CONFIG: HighlightCardConfig = {
+  section: 'general',
   type: 'most-stanley-cups',
   titleKey: 'career.highlights.cards.mostStanleyCups.title',
   descriptionKey: 'career.highlights.cards.mostStanleyCups.description',
@@ -70,6 +81,7 @@ const MOST_STANLEY_CUPS_CONFIG: HighlightCardConfig = {
 };
 
 const REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG: HighlightCardConfig = {
+  section: 'general',
   type: 'regular-grinder-without-playoffs',
   titleKey: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
   descriptionKey:
@@ -78,6 +90,7 @@ const REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG: HighlightCardConfig = {
 };
 
 const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
+  section: 'general',
   type: 'same-team-seasons-owned',
   titleKey: 'career.highlights.cards.sameTeamSeasonsOwned.title',
   descriptionKey: 'career.highlights.cards.sameTeamSeasonsOwned.description',
@@ -85,10 +98,35 @@ const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
 };
 
 const STASH_KING_CONFIG: HighlightCardConfig = {
+  section: 'general',
   type: 'stash-king',
   titleKey: 'career.highlights.cards.stashKing.title',
   descriptionKey: 'career.highlights.cards.stashKing.description',
   valueColumnLabelKey: 'career.highlights.columns.seasonCount',
+};
+
+const MOST_TRADES_CONFIG: HighlightCardConfig = {
+  section: 'transactions',
+  type: 'most-trades',
+  titleKey: 'career.highlights.cards.mostTrades.title',
+  descriptionKey: 'career.highlights.cards.mostTrades.description',
+  valueColumnLabelKey: 'career.highlights.columns.trades',
+};
+
+const MOST_CLAIMS_CONFIG: HighlightCardConfig = {
+  section: 'transactions',
+  type: 'most-claims',
+  titleKey: 'career.highlights.cards.mostClaims.title',
+  descriptionKey: 'career.highlights.cards.mostClaims.description',
+  valueColumnLabelKey: 'career.highlights.columns.claims',
+};
+
+const MOST_DROPS_CONFIG: HighlightCardConfig = {
+  section: 'transactions',
+  type: 'most-drops',
+  titleKey: 'career.highlights.cards.mostDrops.title',
+  descriptionKey: 'career.highlights.cards.mostDrops.description',
+  valueColumnLabelKey: 'career.highlights.columns.drops',
 };
 
 const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
@@ -99,6 +137,9 @@ const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
   SAME_TEAM_SEASONS_PLAYED_CONFIG,
   SAME_TEAM_SEASONS_OWNED_CONFIG,
   STASH_KING_CONFIG,
+  MOST_TRADES_CONFIG,
+  MOST_CLAIMS_CONFIG,
+  MOST_DROPS_CONFIG,
 ];
 
 function createInitialCardState(
@@ -121,7 +162,12 @@ function createInitialCardState(
 @Component({
   selector: 'app-career-highlights',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ActivateOnViewportDirective, TableCardComponent, TranslateModule],
+  imports: [
+    ActivateOnViewportDirective,
+    MatButtonToggleModule,
+    TableCardComponent,
+    TranslateModule,
+  ],
   templateUrl: './career-highlights.component.html',
   styleUrl: './career-highlights.component.scss',
 })
@@ -129,6 +175,8 @@ export class CareerHighlightsComponent implements OnInit {
   private readonly apiService = inject(ApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
+
+  readonly selectedSection = signal<CareerHighlightSection>('general');
 
   private readonly cardSignals: Record<
     CareerHighlightsUiType,
@@ -151,13 +199,18 @@ export class CareerHighlightsComponent implements OnInit {
       createInitialCardState(SAME_TEAM_SEASONS_OWNED_CONFIG),
     ),
     'stash-king': signal(createInitialCardState(STASH_KING_CONFIG)),
+    'most-trades': signal(createInitialCardState(MOST_TRADES_CONFIG)),
+    'most-claims': signal(createInitialCardState(MOST_CLAIMS_CONFIG)),
+    'most-drops': signal(createInitialCardState(MOST_DROPS_CONFIG)),
   };
 
   readonly cards = computed<readonly CareerHighlightCardView[]>(() =>
-    HIGHLIGHT_CARD_CONFIGS.map((config) => ({
-      type: config.type,
-      state: this.cardSignals[config.type](),
-    })),
+    HIGHLIGHT_CARD_CONFIGS
+      .filter((config) => config.section === this.selectedSection())
+      .map((config) => ({
+        type: config.type,
+        state: this.cardSignals[config.type](),
+      })),
   );
 
   private footerVisibilityCycle = 0;
@@ -165,6 +218,10 @@ export class CareerHighlightsComponent implements OnInit {
 
   ngOnInit(): void {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
+  }
+
+  onSectionChange(event: MatButtonToggleChange): void {
+    this.selectedSection.set(event.value as CareerHighlightSection);
   }
 
   loadPreviousPage(type: CareerHighlightsUiType): void {
@@ -302,6 +359,16 @@ export class CareerHighlightsComponent implements OnInit {
       }));
     }
 
+    if (this.isTransactionPage(page)) {
+      return page.items.map((item) => ({
+        key: `${page.type}:${item.id}`,
+        primaryText: `${item.position} ${item.name}`,
+        value: item.transactionCount,
+        detailLines: item.teams.map((team) => `${team.name} ${team.count}`),
+        detailLabel: item.name,
+      }));
+    }
+
     return [];
   }
 
@@ -338,6 +405,16 @@ export class CareerHighlightsComponent implements OnInit {
     page: CareerHighlightPage,
   ): page is CareerStashHighlightPage {
     return page.type === 'stash-king';
+  }
+
+  private isTransactionPage(
+    page: CareerHighlightPage,
+  ): page is CareerTransactionHighlightPage {
+    return (
+      page.type === 'most-trades' ||
+      page.type === 'most-claims' ||
+      page.type === 'most-drops'
+    );
   }
 
   private getCardSignal(

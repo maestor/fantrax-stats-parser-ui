@@ -5,6 +5,9 @@ import { of, throwError } from 'rxjs';
 import { ApiService, CareerHighlightType } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import {
+  mostClaimsHighlightsPage0Fixture,
+  mostDropsHighlightsPage0Fixture,
+  mostTradesHighlightsPage0Fixture,
   mostStanleyCupsHighlightsPage0Fixture,
   mostTeamsOwnedHighlightsPage0Fixture,
   mostTeamsPlayedHighlightsPage0Fixture,
@@ -99,6 +102,12 @@ describe('CareerHighlightsComponent', () => {
             return of(regularGrinderWithoutPlayoffsHighlightsPage0Fixture);
           case 'stash-king':
             return of(stashKingHighlightsPage0Fixture);
+          case 'most-trades':
+            return of(mostTradesHighlightsPage0Fixture);
+          case 'most-claims':
+            return of(mostClaimsHighlightsPage0Fixture);
+          case 'most-drops':
+            return of(mostDropsHighlightsPage0Fixture);
           case 'reunion-king':
             throw new Error('reunion-king should not be requested by the UI');
         }
@@ -201,6 +210,104 @@ describe('CareerHighlightsComponent', () => {
     expect(getCareerHighlights).toHaveBeenCalledWith('most-teams-played', 10, 10);
   });
 
+  it('switches to transactions and preserves per-team tooltip lines in API order', async () => {
+    const getCareerHighlights = vi.fn((type: CareerHighlightType) => {
+      switch (type) {
+        case 'most-teams-played':
+          return of(mostTeamsPlayedHighlightsPage0Fixture);
+        case 'most-teams-owned':
+          return of(mostTeamsOwnedHighlightsPage0Fixture);
+        case 'same-team-seasons-played':
+          return of(sameTeamSeasonsHighlightsPage0Fixture);
+        case 'same-team-seasons-owned':
+          return of(sameTeamSeasonsOwnedHighlightsPage0Fixture);
+        case 'most-stanley-cups':
+          return of(mostStanleyCupsHighlightsPage0Fixture);
+        case 'regular-grinder-without-playoffs':
+          return of(regularGrinderWithoutPlayoffsHighlightsPage0Fixture);
+        case 'stash-king':
+          return of(stashKingHighlightsPage0Fixture);
+        case 'most-trades':
+          return of(mostTradesHighlightsPage0Fixture);
+        case 'most-claims':
+          return of(mostClaimsHighlightsPage0Fixture);
+        case 'most-drops':
+          return of(mostDropsHighlightsPage0Fixture);
+        case 'reunion-king':
+          throw new Error('reunion-king should not be requested by the UI');
+      }
+    });
+
+    const view = await render(CareerHighlightsComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideDisabledMaterialAnimations(),
+        FooterVisibilityService,
+        {
+          provide: ApiService,
+          useValue: {
+            getCareerHighlights,
+          },
+        },
+      ],
+    });
+
+    await vi.waitFor(() => {
+      expect(FakeIntersectionObserver.instances).toHaveLength(7);
+    });
+
+    fireEvent.click(
+      screen.getByRole('radio', {
+        name: 'career.highlights.sections.transactions',
+      }),
+    );
+
+    expect(
+      screen.queryByRole('heading', {
+        name: 'career.highlights.cards.mostTeamsPlayed.title',
+      }),
+    ).not.toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', {
+        name: 'career.highlights.cards.mostTrades.title',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'career.highlights.cards.mostClaims.title',
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', {
+        name: 'career.highlights.cards.mostDrops.title',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(3);
+
+    const transactionObservers = FakeIntersectionObserver.instances.slice(-3);
+    transactionObservers[0]?.trigger();
+
+    const tradesCardTitle = screen.getByRole('heading', {
+      name: 'career.highlights.cards.mostTrades.title',
+    });
+    const tradesCard = tradesCardTitle.closest('mat-card') as HTMLElement | null;
+
+    expect(tradesCard).not.toBeNull();
+    expect(await within(tradesCard!).findByText('F Mike Hoffman')).toBeInTheDocument();
+    expect(within(tradesCard!).getByText('6')).toBeInTheDocument();
+    expect(getCareerHighlights).toHaveBeenCalledWith('most-trades', 0, 10);
+
+    const tradesState = view.fixture.componentInstance
+      .cards()
+      .find((card) => card.type === 'most-trades')?.state;
+
+    expect(tradesState?.rows[0]?.detailLines).toEqual([
+      'Colorado Avalanche 3',
+      'Dallas Stars 2',
+      'Carolina Hurricanes 1',
+    ]);
+  });
+
   it('shows an error state for an activated failing card without forcing untouched cards to load', async () => {
     await render(CareerHighlightsComponent, {
       imports: [TranslateModule.forRoot()],
@@ -222,6 +329,12 @@ describe('CareerHighlightsComponent', () => {
                         ? regularGrinderWithoutPlayoffsHighlightsPage0Fixture
                         : type === 'stash-king'
                           ? stashKingHighlightsPage0Fixture
+                          : type === 'most-trades'
+                            ? mostTradesHighlightsPage0Fixture
+                            : type === 'most-claims'
+                              ? mostClaimsHighlightsPage0Fixture
+                              : type === 'most-drops'
+                                ? mostDropsHighlightsPage0Fixture
                     : type === 'same-team-seasons-played'
                       ? sameTeamSeasonsHighlightsPage0Fixture
                       : mostTeamsPlayedHighlightsPage0Fixture

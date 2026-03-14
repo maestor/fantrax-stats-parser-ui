@@ -7,6 +7,24 @@
     {{ 'career.highlights.sectionTitle' | translate }}
   </h3>
 
+  <div class="career-highlights-controls">
+    <mat-button-toggle-group
+      class="career-highlights-section-switch"
+      [value]="selectedSection()"
+      (change)="onSectionChange($event)"
+      [attr.aria-label]="
+        'career.highlights.sectionSwitcher.ariaLabel' | translate
+      "
+    >
+      <mat-button-toggle value="general">
+        {{ 'career.highlights.sections.general' | translate }}
+      </mat-button-toggle>
+      <mat-button-toggle value="transactions">
+        {{ 'career.highlights.sections.transactions' | translate }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
   <div class="career-highlights-grid">
     @for (card of cards(); track card.type) {
       <app-table-card

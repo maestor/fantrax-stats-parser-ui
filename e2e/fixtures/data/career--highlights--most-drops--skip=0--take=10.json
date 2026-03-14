@@ -1,0 +1,72 @@
+{
+  "type": "most-drops",
+  "skip": 0,
+  "take": 10,
+  "total": 3,
+  "items": [
+    {
+      "id": "drop-1",
+      "name": "Tyler Toffoli",
+      "position": "F",
+      "transactionCount": 6,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Dallas Stars",
+          "count": 3
+        },
+        {
+          "id": "5",
+          "name": "Winnipeg Jets",
+          "count": 2
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "drop-2",
+      "name": "Mark Pysyk",
+      "position": "D",
+      "transactionCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Carolina Hurricanes",
+          "count": 2
+        },
+        {
+          "id": "10",
+          "name": "Florida Panthers",
+          "count": 1
+        },
+        {
+          "id": "11",
+          "name": "Buffalo Sabres",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "drop-3",
+      "name": "Chris Driedger",
+      "position": "G",
+      "transactionCount": 3,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Florida Panthers",
+          "count": 2
+        },
+        {
+          "id": "12",
+          "name": "Seattle Kraken",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

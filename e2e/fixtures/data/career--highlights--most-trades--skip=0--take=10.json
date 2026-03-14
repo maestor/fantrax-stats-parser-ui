@@ -1,0 +1,72 @@
+{
+  "type": "most-trades",
+  "skip": 0,
+  "take": 10,
+  "total": 3,
+  "items": [
+    {
+      "id": "trade-1",
+      "name": "Mike Hoffman",
+      "position": "F",
+      "transactionCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche",
+          "count": 3
+        },
+        {
+          "id": "2",
+          "name": "Dallas Stars",
+          "count": 2
+        },
+        {
+          "id": "4",
+          "name": "Carolina Hurricanes",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "trade-2",
+      "name": "Nino Niederreiter",
+      "position": "F",
+      "transactionCount": 5,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Tampa Bay Lightning",
+          "count": 3
+        },
+        {
+          "id": "5",
+          "name": "Winnipeg Jets",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "trade-3",
+      "name": "Anton Khudobin",
+      "position": "G",
+      "transactionCount": 4,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Dallas Stars",
+          "count": 2
+        },
+        {
+          "id": "6",
+          "name": "Boston Bruins",
+          "count": 1
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

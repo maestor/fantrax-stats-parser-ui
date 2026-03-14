@@ -20,11 +20,21 @@
     },
     "highlights": {
       "sectionTitle": "Uranostot",
+      "sectionSwitcher": {
+        "ariaLabel": "Nostoryhmä"
+      },
+      "sections": {
+        "general": "Sekalaiset",
+        "transactions": "Siirrot"
+      },
       "columns": {
         "player": "Pelaaja",
         "teamCount": "Seurat",
         "seasonCount": "Kaudet",
-        "games": "Ott."
+        "games": "Ott.",
+        "trades": "Kaupat",
+        "claims": "Nostot",
+        "drops": "Pudotukset"
       },
       "cards": {
         "mostTeamsPlayed": {
@@ -54,6 +64,18 @@
         "stashKing": {
           "title": "Eniten farmikausia - sama seura",
           "description": "Väh. 10 kautta joukkueessa pelaamatta."
+        },
+        "mostTrades": {
+          "title": "Eniten kaupatut",
+          "description": "Väh. 4 kaupassa mukana."
+        },
+        "mostClaims": {
+          "title": "Eniten nostetut",
+          "description": "Väh. 3 nostoa."
+        },
+        "mostDrops": {
+          "title": "Eniten pudotetut",
+          "description": "Väh. 3 pudotusta."
         }
       }
     }

@@ -90,6 +90,7 @@ Route shell and smart components for career listings:
 - Handles `/career/players`, `/career/goalies`, and `/career/highlights`
 - Renders tab navigation between career skaters, goalies, and highlights
 - Uses dedicated backend endpoints and either a virtualized read-only table or compact paged table cards
+- Splits the highlights route into `Sekalaiset` and `Siirrot` card groups while reusing the same paged-card UI
 - Defers each highlight card's API request until the card nears the viewport
 - Loads under the lighter root shell without dashboard-only controls, comparison bar, or mobile settings drawer
 
