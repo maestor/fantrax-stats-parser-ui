@@ -110,7 +110,7 @@ const MOST_TRADES_CONFIG: HighlightCardConfig = {
   type: 'most-trades',
   titleKey: 'career.highlights.cards.mostTrades.title',
   descriptionKey: 'career.highlights.cards.mostTrades.description',
-  valueColumnLabelKey: 'career.highlights.columns.trades',
+  valueColumnLabelKey: '🤝',
 };
 
 const MOST_CLAIMS_CONFIG: HighlightCardConfig = {
@@ -118,7 +118,7 @@ const MOST_CLAIMS_CONFIG: HighlightCardConfig = {
   type: 'most-claims',
   titleKey: 'career.highlights.cards.mostClaims.title',
   descriptionKey: 'career.highlights.cards.mostClaims.description',
-  valueColumnLabelKey: 'career.highlights.columns.claims',
+  valueColumnLabelKey: '✅',
 };
 
 const MOST_DROPS_CONFIG: HighlightCardConfig = {
@@ -126,7 +126,7 @@ const MOST_DROPS_CONFIG: HighlightCardConfig = {
   type: 'most-drops',
   titleKey: 'career.highlights.cards.mostDrops.title',
   descriptionKey: 'career.highlights.cards.mostDrops.description',
-  valueColumnLabelKey: 'career.highlights.columns.drops',
+  valueColumnLabelKey: '❌',
 };
 
 const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
@@ -182,27 +182,27 @@ export class CareerHighlightsComponent implements OnInit {
     CareerHighlightsUiType,
     WritableSignal<CareerHighlightCardState>
   > = {
-    'most-teams-played': signal(
-      createInitialCardState(MOST_TEAMS_PLAYED_CONFIG),
-    ),
-    'most-teams-owned': signal(createInitialCardState(MOST_TEAMS_OWNED_CONFIG)),
-    'most-stanley-cups': signal(
-      createInitialCardState(MOST_STANLEY_CUPS_CONFIG),
-    ),
-    'regular-grinder-without-playoffs': signal(
-      createInitialCardState(REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG),
-    ),
-    'same-team-seasons-played': signal(
-      createInitialCardState(SAME_TEAM_SEASONS_PLAYED_CONFIG),
-    ),
-    'same-team-seasons-owned': signal(
-      createInitialCardState(SAME_TEAM_SEASONS_OWNED_CONFIG),
-    ),
-    'stash-king': signal(createInitialCardState(STASH_KING_CONFIG)),
-    'most-trades': signal(createInitialCardState(MOST_TRADES_CONFIG)),
-    'most-claims': signal(createInitialCardState(MOST_CLAIMS_CONFIG)),
-    'most-drops': signal(createInitialCardState(MOST_DROPS_CONFIG)),
-  };
+      'most-teams-played': signal(
+        createInitialCardState(MOST_TEAMS_PLAYED_CONFIG),
+      ),
+      'most-teams-owned': signal(createInitialCardState(MOST_TEAMS_OWNED_CONFIG)),
+      'most-stanley-cups': signal(
+        createInitialCardState(MOST_STANLEY_CUPS_CONFIG),
+      ),
+      'regular-grinder-without-playoffs': signal(
+        createInitialCardState(REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG),
+      ),
+      'same-team-seasons-played': signal(
+        createInitialCardState(SAME_TEAM_SEASONS_PLAYED_CONFIG),
+      ),
+      'same-team-seasons-owned': signal(
+        createInitialCardState(SAME_TEAM_SEASONS_OWNED_CONFIG),
+      ),
+      'stash-king': signal(createInitialCardState(STASH_KING_CONFIG)),
+      'most-trades': signal(createInitialCardState(MOST_TRADES_CONFIG)),
+      'most-claims': signal(createInitialCardState(MOST_CLAIMS_CONFIG)),
+      'most-drops': signal(createInitialCardState(MOST_DROPS_CONFIG)),
+    };
 
   readonly cards = computed<readonly CareerHighlightCardView[]>(() =>
     HIGHLIGHT_CARD_CONFIGS

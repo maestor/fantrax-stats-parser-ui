@@ -31,10 +31,7 @@
         "player": "Pelaaja",
         "teamCount": "Seurat",
         "seasonCount": "Kaudet",
-        "games": "Ott.",
-        "trades": "Kaupat",
-        "claims": "Nostot",
-        "drops": "Pudotukset"
+        "games": "Ott."
       },
       "cards": {
         "mostTeamsPlayed": {

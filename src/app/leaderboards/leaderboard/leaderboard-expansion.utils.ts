@@ -62,6 +62,6 @@ export function mapTransactionLeaderboardSeasons(
     .sort((a, b) => b.season - a.season)
     .map((season: TransactionSeason) => ({
       seasonLabel: formatSeason(season.season),
-      primary: `🤝 ${season.trades} | 🟢 ${season.claims} | 🔴 ${season.drops}`,
+      primary: `🤝 ${season.trades} | ✅ ${season.claims} | ❌ ${season.drops}`,
     }));
 }

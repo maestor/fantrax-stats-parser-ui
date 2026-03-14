@@ -266,7 +266,7 @@ readonly expandedHeaderLabels = input.required<{
 - Fetch the transaction leaderboard from `ApiService`
 - Keep the main table column order as position, team, trades, claims, drops
 - Force incremental ranking even when the backend marks a tie
-- Format expanded season rows as emoji-prefixed transaction summaries (`🤝`, `🟢`, `🔴`)
+- Format expanded season rows as emoji-prefixed transaction summaries (`🤝`, `✅`, `❌`)
 
 ---
 

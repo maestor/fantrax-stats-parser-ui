@@ -299,6 +299,6 @@ describe('Leaderboard expansion behavior', () => {
     fireEvent.click(team.closest('tr') as HTMLElement);
 
     await screen.findByText('2024-25');
-    expect(screen.getByText('🤝 8 | 🟢 16 | 🔴 15')).toBeInTheDocument();
+    expect(screen.getByText('🤝 8 | ✅ 16 | ❌ 15')).toBeInTheDocument();
   });
 });
