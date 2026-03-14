@@ -68,11 +68,11 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 5. **Team Leaderboards** (`/leaderboards`)
    - All-time regular season ranking table: position, wins, points, win percentage, regular season titles
    - All-time playoffs ranking table: position, championships, finals, conference finals, round results, appearances
-   - All-time transfers ranking table: position, team, trades, claims, drops
+   - All-time transactions ranking table: position, team, trades, claims, drops
    - Tab navigation between Runkosarja, Playoffs, and Siirrot views (default route: Runkosarja)
-   - Column sorting via `mat-sort`; regular/playoff position ties stay blank after the first tied team, while transfers always show incremental positions
-   - Expandable season breakdown rows per team (regular, playoffs, and transfers) by clicking a team row, with multiple expanded rows allowed
-   - Season breakdown rows can show trophy markers for winner/championship seasons or emoji-prefixed transfer counts per season
+   - Column sorting via `mat-sort`; regular/playoff position ties stay blank after the first tied team, while transactions always show incremental positions
+   - Expandable season breakdown rows per team (regular, playoffs, and transactions) by clicking a team row, with multiple expanded rows allowed
+   - Season breakdown rows can show trophy markers for winner/championship seasons or emoji-prefixed transaction counts per season
 
 6. **Career Listings & Highlights** (`/career/players`, `/career/goalies`, `/career/highlights`)
    - Dedicated all-time career tables for players and goalies
@@ -134,7 +134,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
      - `/career/highlights` - Compact career highlight cards
      - `/leaderboards/regular` - Regular season all-time ranking table
      - `/leaderboards/playoffs` - Playoffs all-time ranking table
-     - `/leaderboards/transfers` - Transfer leaderboard with trades, claims, and drops
+     - `/leaderboards/transactions` - Transaction leaderboard with trades, claims, and drops
 
 ## Data Flow
 

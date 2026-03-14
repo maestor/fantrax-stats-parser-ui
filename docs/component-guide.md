@@ -223,7 +223,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Type**: Feature Wrapper Component
 
-**Purpose**: Reusable leaderboard shell that fetches leaderboard rows and feeds the read-only expandable stats table used by the regular-season, playoffs, and transfers leaderboard views.
+**Purpose**: Reusable leaderboard shell that fetches leaderboard rows and feeds the read-only expandable stats table used by the regular-season, playoffs, and transactions leaderboard views.
 
 **Inputs**:
 
@@ -248,24 +248,24 @@ readonly expandedHeaderLabels = input.required<{
 **Behavior**:
 
 - `formatCell` remains optional because only the regular-season leaderboard currently custom-formats percentage columns
-- `blankTieRanks` defaults to `true` so regular/playoff views preserve blank tied positions, while the transfers view can opt into always-numbered ranks
+- `blankTieRanks` defaults to `true` so regular/playoff views preserve blank tied positions, while the transactions view can opt into always-numbered ranks
 - All other inputs are required because every concrete leaderboard parent provides them
 - Fetches rows once on init, derives position display values, and forwards expansion callbacks into `StatsTableComponent`
 
-### LeaderboardTransfersComponent
+### LeaderboardTransactionsComponent
 
-**Location**: `src/app/leaderboards/transfers/`
+**Location**: `src/app/leaderboards/transactions/`
 
 **Type**: Smart Component (Container)
 
-**Purpose**: Render the `/leaderboards/transfers` view with all-time trade, claim, and drop totals plus expandable season-by-season transfer summaries.
+**Purpose**: Render the `/leaderboards/transactions` view with all-time trade, claim, and drop totals plus expandable season-by-season transaction summaries.
 
 **Responsibilities**:
 
 - Fetch the transaction leaderboard from `ApiService`
 - Keep the main table column order as position, team, trades, claims, drops
 - Force incremental ranking even when the backend marks a tie
-- Format expanded season rows as emoji-prefixed transfer summaries (`🤝`, `🟢`, `🔴`)
+- Format expanded season rows as emoji-prefixed transaction summaries (`🤝`, `🟢`, `🔴`)
 
 ---
 

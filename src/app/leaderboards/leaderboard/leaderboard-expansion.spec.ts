@@ -7,7 +7,7 @@ import { ViewportService } from '@services/viewport.service';
 import { provideDisabledMaterialAnimations } from '../../testing/behavior-test-utils';
 import { LeaderboardPlayoffsComponent } from '../playoffs/leaderboard-playoffs.component';
 import { LeaderboardRegularComponent } from '../regular/leaderboard-regular.component';
-import { LeaderboardTransfersComponent } from '../transfers/leaderboard-transfers.component';
+import { LeaderboardTransactionsComponent } from '../transactions/leaderboard-transactions.component';
 
 describe('Leaderboard expansion behavior', () => {
   it('renders regular season expansion with percent formatting and trophy mapping', async () => {
@@ -225,8 +225,8 @@ describe('Leaderboard expansion behavior', () => {
     expect(thirdRank).toBe('3');
   });
 
-  it('renders transfers expansion with incremental ranks even when the API marks a tie', async () => {
-    await render(LeaderboardTransfersComponent, {
+  it('renders transactions expansion with incremental ranks even when the API marks a tie', async () => {
+    await render(LeaderboardTransactionsComponent, {
       imports: [TranslateModule.forRoot()],
       providers: [
         provideDisabledMaterialAnimations(),
