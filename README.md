@@ -323,9 +323,9 @@ The application is fully responsive with optimized layouts for all screen sizes:
 When contributing, please ensure:
 
 1. All new/changed code has corresponding tests (aim 100% coverage for the code you touched)
-2. `npm run verify` passes (includes coverage gate + production build)
+2. For non-documentation-only changes, `npm run verify` passes (includes coverage gate + production build)
 3. Follow existing code style and patterns
-4. Run `npm run verify` before committing
+4. Run `npm run verify` before committing non-documentation-only changes
 5. Update documentation when changes affect usage/behavior, scripts/workflows, or project standards
 
 In addition, treat accessibility as a hard requirement for every change. If a feature is not keyboard-accessible and properly labeled, it is not considered done.

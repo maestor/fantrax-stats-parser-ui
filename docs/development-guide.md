@@ -315,7 +315,7 @@ The API endpoint is configured in the service layer. Check:
 - [ ] Code follows Angular style guide
 - [ ] No console.log statements in production code
 - [ ] Tests updated/added (Testing Library)
-- [ ] `npm run verify` passes (tests + production build)
+- [ ] `npm run verify` passes (tests + production build) for non-documentation-only changes
 - [ ] No TypeScript errors
 - [ ] No `any` types — run `npm run lint` to verify
 - [ ] Components properly typed
