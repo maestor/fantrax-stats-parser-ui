@@ -11,7 +11,8 @@ If documentation includes clearly bad decisions, challenge them and propose bett
 - Default workflow is a user-created branch (not `main`).
 - If currently on `main`, ask user to create a branch before implementing task changes.
 - If considering `git worktree`, always ask explicitly first and explain why worktree would help.
-- In every task, include a user review phase before final verify. After review is accepted and verify passes, you can commit. After each user-accepted and verified batch, you may commit if useful as a checkpoint. Offer PR notes as a copy-pasteable code block only when the branch is fully implemented and ready for PR; user will handle the rest.
+- In every task, include a user review phase before final verify. After implementation, pause and hand the work to the user for review before running the final `npm run verify` or creating a commit.
+- Do not run the final verification gate and do not commit until the user has explicitly accepted the review phase for that batch. After review is accepted and verify passes, you can commit. After each user-accepted and verified batch, you may commit if useful as a checkpoint. Offer PR notes as a copy-pasteable code block only when the branch is fully implemented and ready for PR; user will handle the rest.
 - Before any commit, `npm run verify` must pass. Targeted tests are not a substitute for the full verification gate.
 - Commit message prefixes should use capitalized conventional labels.
 - New features must use the prefix `Feature: `.

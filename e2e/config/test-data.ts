@@ -49,9 +49,9 @@ export const CAREER_HIGHLIGHT_SECTION_LABELS = {
 };
 
 export const CAREER_HIGHLIGHT_CARD_LABELS = {
-  MOST_TRADES: 'Eniten kaupattu',
-  MOST_CLAIMS: 'Eniten nostettu',
-  MOST_DROPS: 'Eniten pudotettu',
+  MOST_TRADES: 'Eniten kaupatut',
+  MOST_CLAIMS: 'Eniten nostetut',
+  MOST_DROPS: 'Eniten pudotetut',
 };
 
 export const NAV_LABELS = {

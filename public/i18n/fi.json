@@ -66,16 +66,16 @@
           "description": "Väh. 10 kautta joukkueessa pelaamatta."
         },
         "mostTrades": {
-          "title": "Eniten kaupattu",
-          "description": "Väh. 4 kauppasiirtoa FFHL-uralla."
+          "title": "Eniten kaupatut",
+          "description": "Väh. 4 kaupassa mukana."
         },
         "mostClaims": {
-          "title": "Eniten nostettu",
-          "description": "Väh. 3 nostoa FFHL-uralla."
+          "title": "Eniten nostetut",
+          "description": "Väh. 3 nostoa."
         },
         "mostDrops": {
-          "title": "Eniten pudotettu",
-          "description": "Väh. 3 pudotusta FFHL-uralla."
+          "title": "Eniten pudotetut",
+          "description": "Väh. 3 pudotusta."
         }
       }
     }
