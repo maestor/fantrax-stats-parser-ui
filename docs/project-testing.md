@@ -280,6 +280,7 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
 - **career.spec.ts** - Career listings and highlights
   - Career route shell and global-navigation entry
   - Player/goalie/highlights tab switching
+  - Highlights section switching between `Sekalaiset` and `Siirrot`
   - Search and sort behavior in the virtualized career table
   - Server-paged highlight card behavior
   - Route-specific shell behavior (no stats controls/drawer)

@@ -292,7 +292,30 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(
       screen.getByRole('heading', { name: 'career.highlights.cards.stashKing.title' })
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('radio', { name: 'career.highlights.sections.general' })
+    ).toHaveAttribute('aria-checked', 'true');
+    expect(
+      screen.getByRole('radio', { name: 'career.highlights.sections.transactions' })
+    ).toBeInTheDocument();
     expect(screen.getAllByRole('heading', { level: 3 })).toHaveLength(8);
+
+    fireEvent.click(
+      screen.getByRole('radio', { name: 'career.highlights.sections.transactions' })
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'career.highlights.cards.mostTrades.title' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.mostClaims.title' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.mostDrops.title' })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
+    ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
 

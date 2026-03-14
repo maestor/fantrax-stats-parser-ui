@@ -43,6 +43,17 @@ export const TAB_LABELS = {
   LEADERBOARD_TRANSACTIONS: 'Siirrot',
 };
 
+export const CAREER_HIGHLIGHT_SECTION_LABELS = {
+  GENERAL: 'Sekalaiset',
+  TRANSACTIONS: 'Siirrot',
+};
+
+export const CAREER_HIGHLIGHT_CARD_LABELS = {
+  MOST_TRADES: 'Eniten kaupattu',
+  MOST_CLAIMS: 'Eniten nostettu',
+  MOST_DROPS: 'Eniten pudotettu',
+};
+
 export const NAV_LABELS = {
   PLAYER_CAREERS: 'Pelaajaurat',
 };

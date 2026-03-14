@@ -1,0 +1,67 @@
+{
+  "type": "most-claims",
+  "skip": 0,
+  "take": 10,
+  "total": 3,
+  "items": [
+    {
+      "id": "claim-1",
+      "name": "Tyler Johnson",
+      "position": "F",
+      "transactionCount": 5,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Tampa Bay Lightning",
+          "count": 3
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "claim-2",
+      "name": "Jack Johnson",
+      "position": "D",
+      "transactionCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche",
+          "count": 2
+        },
+        {
+          "id": "8",
+          "name": "Pittsburgh Penguins",
+          "count": 1
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "claim-3",
+      "name": "Casey DeSmith",
+      "position": "G",
+      "transactionCount": 3,
+      "teams": [
+        {
+          "id": "8",
+          "name": "Pittsburgh Penguins",
+          "count": 2
+        },
+        {
+          "id": "4",
+          "name": "Carolina Hurricanes",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

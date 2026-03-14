@@ -2,6 +2,7 @@ import { CareerHighlightType } from '@services/api.service';
 import { TableCardRow } from '@shared/table-card/table-card.types';
 
 export type CareerHighlightsUiType = Exclude<CareerHighlightType, 'reunion-king'>;
+export type CareerHighlightSection = 'general' | 'transactions';
 
 export interface CareerHighlightCardState {
   readonly titleKey: string;

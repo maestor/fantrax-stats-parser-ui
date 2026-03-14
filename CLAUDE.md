@@ -7,7 +7,15 @@ Update @README and @docs/* after every task if needed.
 
 If documentation includes clearly bad decisions, challenge them and propose better alternatives. User decides whether to apply changes.
 
-Always ask explicitly (with explanation) whether to use git worktree instead of a user-created branch before the first mutating step of a new implementation task or approved plan. Do not ask again between batches, review rounds, verify runs, or commits within the same plan unless the user asks to revisit the workflow or circumstances materially change.
+## Git Workflow Rules
+- Default workflow is a user-created branch (not `main`).
+- If currently on `main`, ask user to create a branch before implementing task changes.
+- If considering `git worktree`, always ask explicitly first and explain why worktree would help.
+- Before any commit, `npm run verify` must pass. Targeted tests are not a substitute for the full verification gate.
+- Commit message prefixes should use capitalized conventional labels.
+- New features must use the prefix `Feature: `.
+- Non-feature commits should use a capitalized prefix such as `Fix:`, `Docs:`, `Chore:`, etc.
+- Use sentence-style capitalization after the colon: capitalize the first word, but do not title-case the whole message unless normal capitalization requires it. Example: `Feature: Add career player and goalie listings`.
 
 For planning-heavy tasks, save the approved plan first under @docs/plans/ using a dated filename before implementation starts. Plans in @docs/plans/ are intentionally gitignored local working files and must not be committed unless the user explicitly asks for that.
 

@@ -27,18 +27,23 @@ export type CareerStanleyCupHighlightItem = components['schemas']['CareerStanley
 export type CareerStashHighlightItem = components['schemas']['CareerStashHighlightItem'];
 export type CareerRegularGrinderHighlightItem =
   components['schemas']['CareerRegularGrinderHighlightItem'];
+export type CareerTransactionHighlightItem =
+  components['schemas']['CareerTransactionHighlightItem'];
 export type CareerTeamCountHighlightPage = components['schemas']['CareerTeamCountHighlightPage'];
 export type CareerSameTeamHighlightPage = components['schemas']['CareerSameTeamHighlightPage'];
 export type CareerStanleyCupHighlightPage = components['schemas']['CareerStanleyCupHighlightPage'];
 export type CareerStashHighlightPage = components['schemas']['CareerStashHighlightPage'];
 export type CareerRegularGrinderHighlightPage =
   components['schemas']['CareerRegularGrinderHighlightPage'];
+export type CareerTransactionHighlightPage =
+  components['schemas']['CareerTransactionHighlightPage'];
 export type CareerHighlightPage =
   | CareerTeamCountHighlightPage
   | CareerSameTeamHighlightPage
   | CareerStanleyCupHighlightPage
   | CareerStashHighlightPage
-  | CareerRegularGrinderHighlightPage;
+  | CareerRegularGrinderHighlightPage
+  | CareerTransactionHighlightPage;
 
 // Player includes frontend-only augmentation fields not present in the API spec.
 // seasons is made optional to match single-season endpoint usage (spec: CombinedPlayer has required seasons).

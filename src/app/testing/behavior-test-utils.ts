@@ -41,6 +41,9 @@ import sameTeamSeasonsHighlightsPage0FixtureData from '../../../e2e/fixtures/dat
 import sameTeamSeasonsHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-played--skip=10--take=10.json';
 import sameTeamSeasonsOwnedHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-owned--skip=0--take=10.json';
 import sameTeamSeasonsOwnedHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--same-team-seasons-owned--skip=10--take=10.json';
+import mostTradesHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--most-trades--skip=0--take=10.json';
+import mostClaimsHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--most-claims--skip=0--take=10.json';
+import mostDropsHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--most-drops--skip=0--take=10.json';
 import leaderboardTransactionsFixtureData from '../../../e2e/fixtures/data/leaderboard--transactions.json';
 
 export const PLAYER_SLICE_COUNT = 12;
@@ -67,6 +70,12 @@ export const sameTeamSeasonsOwnedHighlightsPage0Fixture =
   sameTeamSeasonsOwnedHighlightsPage0FixtureData as CareerHighlightPage;
 export const sameTeamSeasonsOwnedHighlightsPage1Fixture =
   sameTeamSeasonsOwnedHighlightsPage1FixtureData as CareerHighlightPage;
+export const mostTradesHighlightsPage0Fixture =
+  mostTradesHighlightsPage0FixtureData as CareerHighlightPage;
+export const mostClaimsHighlightsPage0Fixture =
+  mostClaimsHighlightsPage0FixtureData as CareerHighlightPage;
+export const mostDropsHighlightsPage0Fixture =
+  mostDropsHighlightsPage0FixtureData as CareerHighlightPage;
 export const leaderboardTransactionsFixture =
   leaderboardTransactionsFixtureData as TransactionLeaderboardEntry[];
 export const mostStanleyCupsHighlightsPage0Fixture = {
@@ -191,6 +200,9 @@ export type BehaviorApiMockOptions = {
   careerHighlightsMostStanleyCups?: CareerHighlightPage;
   careerHighlightsRegularGrinderWithoutPlayoffs?: CareerHighlightPage;
   careerHighlightsStashKing?: CareerHighlightPage;
+  careerHighlightsMostTrades?: CareerHighlightPage;
+  careerHighlightsMostClaims?: CareerHighlightPage;
+  careerHighlightsMostDrops?: CareerHighlightPage;
   leaderboardRegular?: RegularLeaderboardEntry[];
   leaderboardPlayoffs?: PlayoffLeaderboardEntry[];
   leaderboardTransactions?: TransactionLeaderboardEntry[];
@@ -250,6 +262,12 @@ function getDefaultCareerHighlightsFixture(
         ?? regularGrinderWithoutPlayoffsHighlightsPage0Fixture;
     case 'stash-king':
       return options.careerHighlightsStashKing ?? stashKingHighlightsPage0Fixture;
+    case 'most-trades':
+      return options.careerHighlightsMostTrades ?? mostTradesHighlightsPage0Fixture;
+    case 'most-claims':
+      return options.careerHighlightsMostClaims ?? mostClaimsHighlightsPage0Fixture;
+    case 'most-drops':
+      return options.careerHighlightsMostDrops ?? mostDropsHighlightsPage0Fixture;
     case 'reunion-king':
       throw new Error('Behavior test mock for reunion-king is not configured.');
   }

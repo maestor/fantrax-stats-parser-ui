@@ -1,7 +1,11 @@
 import { Locator } from '@playwright/test';
 
 import { test, expect } from '../fixtures/test-fixture';
-import { TAB_LABELS } from '../config/test-data';
+import {
+  CAREER_HIGHLIGHT_CARD_LABELS,
+  CAREER_HIGHLIGHT_SECTION_LABELS,
+  TAB_LABELS,
+} from '../config/test-data';
 
 test.describe('Career listings', () => {
   test('redirects /career to players, renders the table, switches to highlights, and then to goalie careers', async ({ page }) => {
@@ -73,5 +77,39 @@ test.describe('Career listings', () => {
     const goalieRows = page.locator('.virtual-table-row[data-row-index]');
     await goalieRows.first().waitFor({ state: 'visible', timeout: 10000 });
     expect(await goalieRows.count()).toBeGreaterThan(0);
+  });
+
+  test('switches career highlights to transactions and renders the transaction cards', async ({ page }) => {
+    await page.goto('/career/highlights');
+    await expect(page).toHaveURL(/\/career\/highlights$/);
+
+    const generalSection = page.getByRole('radio', {
+      name: CAREER_HIGHLIGHT_SECTION_LABELS.GENERAL,
+    });
+    const transactionsSection = page.getByRole('radio', {
+      name: CAREER_HIGHLIGHT_SECTION_LABELS.TRANSACTIONS,
+    });
+
+    await expect(generalSection).toHaveAttribute('aria-checked', 'true');
+    await transactionsSection.click();
+    await expect(transactionsSection).toHaveAttribute('aria-checked', 'true');
+
+    const highlightCards = page.locator('app-table-card');
+    await expect(highlightCards).toHaveCount(3);
+    await expect(
+      page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.MOST_TRADES })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.MOST_CLAIMS })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.MOST_DROPS })
+    ).toBeVisible();
+
+    await expect(highlightCards.first().getByRole('table')).toBeVisible();
+    await highlightCards.nth(1).scrollIntoViewIfNeeded();
+    await expect(highlightCards.nth(1).getByRole('table')).toBeVisible();
+    await highlightCards.nth(2).scrollIntoViewIfNeeded();
+    await expect(highlightCards.nth(2).getByRole('table')).toBeVisible();
   });
 });

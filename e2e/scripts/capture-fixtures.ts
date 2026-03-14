@@ -107,6 +107,9 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
     { path: 'career/highlights/same-team-seasons-owned', params: { skip: '0', take: '10' } },
     { path: 'career/highlights/same-team-seasons-owned', params: { skip: '10', take: '10' } },
     { path: 'career/highlights/stash-king', params: { skip: '0', take: '10' } },
+    { path: 'career/highlights/most-trades', params: { skip: '0', take: '10' } },
+    { path: 'career/highlights/most-claims', params: { skip: '0', take: '10' } },
+    { path: 'career/highlights/most-drops', params: { skip: '0', take: '10' } },
   ];
 
   return entries;

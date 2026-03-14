@@ -6,9 +6,21 @@
   width: 100%;
 }
 
+.career-highlights-controls {
+  display: flex;
+  justify-content: center;
+  margin: 24px 24px 0;
+  overflow-x: auto;
+}
+
+.career-highlights-section-switch {
+  flex: 0 0 auto;
+  max-width: 100%;
+}
+
 .career-highlights-grid {
   display: grid;
-  margin: 24px;
+  margin: 20px 24px 24px;
   gap: 20px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
@@ -25,8 +37,12 @@
 }
 
 @media (max-width: 480px) {
+  .career-highlights-controls {
+    margin: 12px 8px 0;
+  }
+
   .career-highlights-grid {
-    margin: 12px 8px;
+    margin: 12px 8px 8px;
     gap: 12px;
   }
 }
