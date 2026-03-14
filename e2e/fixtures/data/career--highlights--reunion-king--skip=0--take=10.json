@@ -1,0 +1,49 @@
+{
+  "type": "reunion-king",
+  "minAllowed": 2,
+  "skip": 0,
+  "take": 10,
+  "total": 2,
+  "items": [
+    {
+      "id": "reunion-1",
+      "name": "Mikael Granlund",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2013-12-18T14:12:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2016-08-10T09:30:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "reunion-2",
+      "name": "Dmitry Orlov",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "2",
+        "name": "Dallas Stars"
+      },
+      "reunions": [
+        {
+          "date": "2015-07-01T12:00:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2018-11-03T18:45:00.000Z",
+          "type": "trade"
+        }
+      ]
+    }
+  ]
+}

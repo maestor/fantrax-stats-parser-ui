@@ -15,6 +15,8 @@ import { TableCardRow } from './table-card.types';
     <app-table-card
       [titleKey]="titleKey"
       [descriptionKey]="descriptionKey"
+      [descriptionRequiresParams]="descriptionRequiresParams"
+      [descriptionParams]="descriptionParams"
       [primaryColumnLabelKey]="primaryColumnLabelKey"
       [valueColumnLabelKey]="valueColumnLabelKey"
       [deferred]="deferred"
@@ -30,6 +32,8 @@ import { TableCardRow } from './table-card.types';
 class TableCardHostComponent {
   titleKey = 'career.highlights.cards.mostTeamsPlayed.title';
   descriptionKey = 'career.highlights.cards.mostTeamsPlayed.description';
+  descriptionRequiresParams = false;
+  descriptionParams: Readonly<Record<string, number | string>> | undefined = undefined;
   primaryColumnLabelKey = 'career.highlights.columns.player';
   valueColumnLabelKey = 'career.highlights.columns.teamCount';
   deferred = false;
@@ -100,5 +104,22 @@ describe('TableCardComponent', () => {
     });
 
     expect(await screen.findByText('💍')).toBeInTheDocument();
+  });
+
+  it('hides a dynamic description until translation params are available', async () => {
+    const view = await setup({
+      descriptionRequiresParams: true,
+    });
+
+    expect(
+      screen.queryByText('career.highlights.cards.mostTeamsPlayed.description'),
+    ).not.toBeInTheDocument();
+
+    view.fixture.componentInstance.descriptionParams = { minAllowed: 4 };
+    view.fixture.detectChanges();
+
+    expect(
+      screen.getByText('career.highlights.cards.mostTeamsPlayed.description'),
+    ).toBeInTheDocument();
   });
 });

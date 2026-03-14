@@ -36,23 +36,23 @@
       "cards": {
         "mostTeamsPlayed": {
           "title": "Eniten seuroja - pelanneet",
-          "description": "Väh. 4 eri seurassa pelanneet."
+          "description": "Väh. {{minAllowed}} eri seurassa pelanneet."
         },
         "mostTeamsOwned": {
           "title": "Eniten edustusseuroja",
-          "description": "Väh. 5 eri seurassa käyneet."
+          "description": "Väh. {{minAllowed}} eri seurassa käyneet."
         },
         "sameTeamSeasonsPlayed": {
           "title": "Eniten pelikausia - sama seura",
-          "description": "Väh. 8 kautta samassa seurassa pelanneet."
+          "description": "Väh. {{minAllowed}} kautta samassa seurassa pelanneet."
         },
         "sameTeamSeasonsOwned": {
           "title": "Eniten edustuskausia - sama seura",
-          "description": "Väh. 10 kautta samassa seurassa käyneet."
+          "description": "Väh. {{minAllowed}} kautta samassa seurassa käyneet."
         },
         "mostStanleyCups": {
           "title": "Eniten Stanley Cup -sormuksia",
-          "description": "Väh. 2 mestaruutta FFHL-uran aikana."
+          "description": "Väh. {{minAllowed}} mestaruutta FFHL-uran aikana."
         },
         "regularGrinderWithoutPlayoffs": {
           "title": "Runkosarjajyrät",
@@ -60,20 +60,28 @@
         },
         "stashKing": {
           "title": "Eniten farmikausia - sama seura",
-          "description": "Väh. 10 kautta joukkueessa pelaamatta."
+          "description": "Väh. {{minAllowed}} kautta joukkueessa pelaamatta."
+        },
+        "reunionKing": {
+          "title": "Kovimmat paluumuuttajat",
+          "description": "Väh. {{minAllowed}} comebackia samaan seuraan."
         },
         "mostTrades": {
           "title": "Eniten kaupatut",
-          "description": "Väh. 4 kaupassa mukana."
+          "description": "Väh. {{minAllowed}} kaupassa mukana."
         },
         "mostClaims": {
           "title": "Eniten nostetut",
-          "description": "Väh. 3 nostoa."
+          "description": "Väh. {{minAllowed}} nostoa."
         },
         "mostDrops": {
           "title": "Eniten pudotetut",
-          "description": "Väh. 3 pudotusta."
+          "description": "Väh. {{minAllowed}} pudotusta."
         }
+      },
+      "reunionTypes": {
+        "trade": "kaupalla",
+        "claim": "vapaista"
       }
     }
   },

@@ -3,9 +3,11 @@
     <h3 mat-card-title>
       {{ titleKey() | translate }}
     </h3>
+    @if (!descriptionRequiresParams() || descriptionParams()) {
     <p mat-card-subtitle>
-      {{ descriptionKey() | translate }}
+      {{ descriptionKey() | translate : descriptionParams() }}
     </p>
+    }
   </mat-card-header>
 
   @if (loading() && !hasRows() && !deferred()) {
@@ -66,7 +68,7 @@
             </td>
             <td class="info-column">
               <button mat-icon-button type="button" [matTooltip]="getDetailsTooltip(row)"
-                matTooltipClass="table-card-tooltip"
+                [matTooltipClass]="getDetailsTooltipClass(row)"
                 [attr.aria-label]="'tableCard.showDetails' | translate : { label: row.detailLabel }">
                 <mat-icon>info_outline</mat-icon>
               </button>

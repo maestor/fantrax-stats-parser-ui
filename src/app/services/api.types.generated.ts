@@ -1011,11 +1011,13 @@ export interface paths {
         /**
          * Career highlights leaderboard
          * @description Returns a paged mixed skater + goalie career highlights leaderboard.
+         *     Each page includes `minAllowed`, the active backend threshold for that highlight type.
          *     `most-teams-played` and `most-teams-owned` return team-count rows.
          *     `same-team-seasons-played` and `same-team-seasons-owned` return one row per top team, so the same person can appear multiple times on tied same-team results.
          *     `most-stanley-cups` returns one row per player/goalie with cup seasons and fantasy teams.
          *     `reunion-king` returns one row per top reunion team, so the same person can appear multiple
-         *     times on tied reunion results, and includes stint ranges for each return.
+         *     times on tied reunion results, and includes reunion transactions with ISO dates plus whether
+         *     the player returned by claim or trade.
          *     `stash-king` returns the top same-team zero-game season counts, similar to
          *     `same-team-seasons-owned` but counting only team seasons where both regular and playoff
          *     games stayed at zero.
@@ -1026,7 +1028,7 @@ export interface paths {
          *     traded the player away.
          *     Minimum cutoffs are 4 teams for `most-teams-played`, 5 teams for `most-teams-owned`,
          *     8 same-team seasons for `same-team-seasons-played`, 10 same-team seasons for
-         *     `same-team-seasons-owned`, 2 cups for `most-stanley-cups`, 2 reunion stints for
+         *     `same-team-seasons-owned`, 2 cups for `most-stanley-cups`, 2 reunions for
          *     `reunion-king`, 10 stash counts for `stash-king`, 60 games for
          *     `regular-grinder-without-playoffs`, 4 trades for `most-trades`, and 3 claims/drops for
          *     `most-claims` / `most-drops`.
@@ -1407,11 +1409,12 @@ export interface components {
             position: string;
             reunionCount: number;
             team: components["schemas"]["CareerHighlightTeam"];
-            stints: components["schemas"]["CareerReunionHighlightStint"][];
+            reunions: components["schemas"]["CareerReunionHighlightReunion"][];
         };
-        CareerReunionHighlightStint: {
-            fromSeason: number;
-            toSeason: number;
+        CareerReunionHighlightReunion: {
+            date: string;
+            /** @enum {string} */
+            type: "claim" | "trade";
         };
         CareerStashHighlightItem: {
             id: string;
@@ -1442,6 +1445,7 @@ export interface components {
         CareerTeamCountHighlightPage: {
             /** @enum {string} */
             type: "most-teams-played" | "most-teams-owned";
+            minAllowed: number;
             skip: number;
             take: number;
             total: number;
@@ -1450,6 +1454,7 @@ export interface components {
         CareerSameTeamHighlightPage: {
             /** @enum {string} */
             type: "same-team-seasons-played" | "same-team-seasons-owned";
+            minAllowed: number;
             skip: number;
             take: number;
             total: number;
@@ -1458,6 +1463,7 @@ export interface components {
         CareerStanleyCupHighlightPage: {
             /** @enum {string} */
             type: "most-stanley-cups";
+            minAllowed: number;
             skip: number;
             take: number;
             total: number;
@@ -1466,6 +1472,7 @@ export interface components {
         CareerReunionHighlightPage: {
             /** @enum {string} */
             type: "reunion-king";
+            minAllowed: number;
             skip: number;
             take: number;
             total: number;
@@ -1474,6 +1481,7 @@ export interface components {
         CareerStashHighlightPage: {
             /** @enum {string} */
             type: "stash-king";
+            minAllowed: number;
             skip: number;
             take: number;
             total: number;
@@ -1482,6 +1490,7 @@ export interface components {
         CareerRegularGrinderHighlightPage: {
             /** @enum {string} */
             type: "regular-grinder-without-playoffs";
+            minAllowed: number;
             skip: number;
             take: number;
             total: number;
@@ -1490,6 +1499,7 @@ export interface components {
         CareerTransactionHighlightPage: {
             /** @enum {string} */
             type: "most-trades" | "most-claims" | "most-drops";
+            minAllowed: number;
             skip: number;
             take: number;
             total: number;

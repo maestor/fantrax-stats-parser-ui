@@ -12,8 +12,21 @@ If documentation includes clearly bad decisions, challenge them and propose bett
 - If currently on `main`, ask user to create a branch before implementing task changes.
 - If considering `git worktree`, always ask explicitly first and explain why worktree would help.
 - In every task, include a user review phase before final verify. After implementation, pause and hand the work to the user for review before running the final `npm run verify` or creating a commit.
-- Do not run the final verification gate and do not commit until the user has explicitly accepted the review phase for that batch. After review is accepted and verify passes, you can commit. After each user-accepted and verified batch, you may commit if useful as a checkpoint. Offer PR notes as a copy-pasteable code block only when the branch is fully implemented and ready for PR; user will handle the rest.
-- Before any commit, `npm run verify` must pass. Targeted tests are not a substitute for the full verification gate.
+- Do not run the final verification gate and do not commit until the user has explicitly accepted the review phase for that batch.
+- Expected batch flow:
+  1. Check workspace/branch state and read the required docs first.
+  2. Implement the change and run only the minimum iterative checks needed while working.
+  3. Pause for user review before final verify.
+  4. If review feedback comes in, iterate on that feedback and return to the review pause when needed.
+  5. After the user explicitly accepts the batch, run `npm run verify` unless the accepted batch is documentation-only or E2E-only and cannot affect the verification result.
+  6. If `verify` fails, fix the issues, rerun the necessary checks, and keep going until `verify` passes.
+  7. After `verify` passes, or immediately for documentation-only or E2E-only batches where verify is intentionally skipped, commit when the user has asked for or approved a commit.
+- After each user-accepted and verified batch, you may commit if useful as a checkpoint.
+- Documentation-only batches may skip `npm run verify` when the touched files are limited to docs/workflow text such as `README.md`, `docs/**`, or `AGENTS.md` and no code, fixtures, configs, or generated artifacts changed.
+- E2E-only batches may skip `npm run verify` when the touched files are limited to `e2e/**` and optional docs/workflow text, no app/runtime/config/generated artifacts changed, and the relevant Playwright coverage for the batch has been run and reported.
+- After a verified commit, if no further implementation work is queued in the task, automatically provide copy-pasteable PR notes in a code block unless the user explicitly says they do not want them.
+- If PR notes are intentionally omitted because the branch is clearly not PR-ready, say that explicitly instead of silently stopping after the commit.
+- Before any batch that can affect the `npm run verify` result, `npm run verify` must pass. Targeted tests are not a substitute for the full verification gate.
 - Commit message prefixes should use capitalized conventional labels.
 - New features must use the prefix `Feature: `.
 - Non-feature commits should use a capitalized prefix such as `Fix:`, `Docs:`, `Chore:`, etc.

@@ -1,12 +1,15 @@
 import { CareerHighlightType } from '@services/api.service';
 import { TableCardRow } from '@shared/table-card/table-card.types';
 
-export type CareerHighlightsUiType = Exclude<CareerHighlightType, 'reunion-king'>;
+export type CareerHighlightsUiType = CareerHighlightType;
 export type CareerHighlightSection = 'general' | 'transactions';
+export type HighlightDescriptionParams = Readonly<Record<string, number | string>>;
 
 export interface CareerHighlightCardState {
   readonly titleKey: string;
   readonly descriptionKey: string;
+  readonly descriptionRequiresParams: boolean;
+  readonly descriptionParams?: HighlightDescriptionParams;
   readonly valueColumnLabelKey: string;
   readonly activated: boolean;
   readonly rows: readonly TableCardRow[];

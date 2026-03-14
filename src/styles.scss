@@ -560,6 +560,16 @@ mat-checkbox .mdc-label {
   white-space: pre-line;
 }
 
+.table-card-tooltip--with-header .mdc-tooltip__surface {
+  line-height: 1.45;
+  text-align: left;
+}
+
+.table-card-tooltip--with-header .mdc-tooltip__surface::first-line {
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+}
+
 // Shared stats-table and virtual-table shell styles. Keeping the DOM-targeting rules
 // here avoids repeating the same Material overrides in multiple component stylesheets.
 app-stats-table,

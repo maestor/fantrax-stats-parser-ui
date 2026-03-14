@@ -13,12 +13,13 @@ import {
   MatButtonToggleChange,
   MatButtonToggleModule,
 } from '@angular/material/button-toggle';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import {
   ApiService,
   CareerHighlightPage,
   CareerRegularGrinderHighlightPage,
+  CareerReunionHighlightPage,
   CareerSameTeamHighlightPage,
   CareerStashHighlightPage,
   CareerStanleyCupHighlightPage,
@@ -31,18 +32,23 @@ import { TableCardRow } from '@shared/table-card/table-card.types';
 import { formatPlayoffYear } from '@shared/utils/season.utils';
 
 import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
+import { formatReunionDetailLines } from './career-highlights.utils';
 import {
   CareerHighlightCardState,
   CareerHighlightCardView,
   CareerHighlightSection,
   CareerHighlightsUiType,
+  HighlightDescriptionParams,
 } from './career-highlights.types';
 
 const PAGE_SIZE = 10;
 
 type HighlightCardConfig = Pick<
   CareerHighlightCardState,
-  'titleKey' | 'descriptionKey' | 'valueColumnLabelKey'
+  | 'titleKey'
+  | 'descriptionKey'
+  | 'descriptionRequiresParams'
+  | 'valueColumnLabelKey'
 > & {
   readonly section: CareerHighlightSection;
   readonly type: CareerHighlightsUiType;
@@ -53,6 +59,7 @@ const MOST_TEAMS_PLAYED_CONFIG: HighlightCardConfig = {
   type: 'most-teams-played',
   titleKey: 'career.highlights.cards.mostTeamsPlayed.title',
   descriptionKey: 'career.highlights.cards.mostTeamsPlayed.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: 'career.highlights.columns.teamCount',
 };
 
@@ -61,6 +68,7 @@ const SAME_TEAM_SEASONS_PLAYED_CONFIG: HighlightCardConfig = {
   type: 'same-team-seasons-played',
   titleKey: 'career.highlights.cards.sameTeamSeasonsPlayed.title',
   descriptionKey: 'career.highlights.cards.sameTeamSeasonsPlayed.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: 'career.highlights.columns.seasonCount',
 };
 
@@ -69,6 +77,7 @@ const MOST_TEAMS_OWNED_CONFIG: HighlightCardConfig = {
   type: 'most-teams-owned',
   titleKey: 'career.highlights.cards.mostTeamsOwned.title',
   descriptionKey: 'career.highlights.cards.mostTeamsOwned.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: 'career.highlights.columns.teamCount',
 };
 
@@ -77,6 +86,7 @@ const MOST_STANLEY_CUPS_CONFIG: HighlightCardConfig = {
   type: 'most-stanley-cups',
   titleKey: 'career.highlights.cards.mostStanleyCups.title',
   descriptionKey: 'career.highlights.cards.mostStanleyCups.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: '💍',
 };
 
@@ -86,6 +96,7 @@ const REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG: HighlightCardConfig = {
   titleKey: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
   descriptionKey:
     'career.highlights.cards.regularGrinderWithoutPlayoffs.description',
+  descriptionRequiresParams: false,
   valueColumnLabelKey: 'career.highlights.columns.games',
 };
 
@@ -94,7 +105,17 @@ const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
   type: 'same-team-seasons-owned',
   titleKey: 'career.highlights.cards.sameTeamSeasonsOwned.title',
   descriptionKey: 'career.highlights.cards.sameTeamSeasonsOwned.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: 'career.highlights.columns.seasonCount',
+};
+
+const REUNION_KING_CONFIG: HighlightCardConfig = {
+  section: 'transactions',
+  type: 'reunion-king',
+  titleKey: 'career.highlights.cards.reunionKing.title',
+  descriptionKey: 'career.highlights.cards.reunionKing.description',
+  descriptionRequiresParams: true,
+  valueColumnLabelKey: '♻️',
 };
 
 const STASH_KING_CONFIG: HighlightCardConfig = {
@@ -102,6 +123,7 @@ const STASH_KING_CONFIG: HighlightCardConfig = {
   type: 'stash-king',
   titleKey: 'career.highlights.cards.stashKing.title',
   descriptionKey: 'career.highlights.cards.stashKing.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: 'career.highlights.columns.seasonCount',
 };
 
@@ -110,6 +132,7 @@ const MOST_TRADES_CONFIG: HighlightCardConfig = {
   type: 'most-trades',
   titleKey: 'career.highlights.cards.mostTrades.title',
   descriptionKey: 'career.highlights.cards.mostTrades.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: '🤝',
 };
 
@@ -118,6 +141,7 @@ const MOST_CLAIMS_CONFIG: HighlightCardConfig = {
   type: 'most-claims',
   titleKey: 'career.highlights.cards.mostClaims.title',
   descriptionKey: 'career.highlights.cards.mostClaims.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: '✅',
 };
 
@@ -126,6 +150,7 @@ const MOST_DROPS_CONFIG: HighlightCardConfig = {
   type: 'most-drops',
   titleKey: 'career.highlights.cards.mostDrops.title',
   descriptionKey: 'career.highlights.cards.mostDrops.description',
+  descriptionRequiresParams: true,
   valueColumnLabelKey: '❌',
 };
 
@@ -140,6 +165,7 @@ const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
   MOST_TRADES_CONFIG,
   MOST_CLAIMS_CONFIG,
   MOST_DROPS_CONFIG,
+  REUNION_KING_CONFIG,
 ];
 
 function createInitialCardState(
@@ -148,6 +174,7 @@ function createInitialCardState(
   return {
     titleKey: config.titleKey,
     descriptionKey: config.descriptionKey,
+    descriptionRequiresParams: config.descriptionRequiresParams,
     valueColumnLabelKey: config.valueColumnLabelKey,
     activated: false,
     rows: [],
@@ -175,6 +202,7 @@ export class CareerHighlightsComponent implements OnInit {
   private readonly apiService = inject(ApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
+  private readonly translate = inject(TranslateService);
 
   readonly selectedSection = signal<CareerHighlightSection>('general');
 
@@ -198,6 +226,7 @@ export class CareerHighlightsComponent implements OnInit {
       'same-team-seasons-owned': signal(
         createInitialCardState(SAME_TEAM_SEASONS_OWNED_CONFIG),
       ),
+      'reunion-king': signal(createInitialCardState(REUNION_KING_CONFIG)),
       'stash-king': signal(createInitialCardState(STASH_KING_CONFIG)),
       'most-trades': signal(createInitialCardState(MOST_TRADES_CONFIG)),
       'most-claims': signal(createInitialCardState(MOST_CLAIMS_CONFIG)),
@@ -287,6 +316,7 @@ export class CareerHighlightsComponent implements OnInit {
           cardSignal.update((current) => ({
             ...current,
             rows: this.normalizeRows(page),
+            descriptionParams: this.descriptionParamsFor(page),
             loading: false,
             apiError: false,
             skip: page.skip,
@@ -339,6 +369,25 @@ export class CareerHighlightsComponent implements OnInit {
       }));
     }
 
+    if (this.isReunionPage(page)) {
+      return page.items.map((item) => ({
+        key: `${item.id}:${item.team.id}`,
+        primaryText: `${item.position} ${item.name}`,
+        value: item.reunionCount,
+        detailHeader: item.team.name,
+        detailLines: formatReunionDetailLines(
+          item.reunions,
+          {
+            claim: this.translate.instant('career.highlights.reunionTypes.claim'),
+            trade: this.translate.instant('career.highlights.reunionTypes.trade'),
+          },
+          this.translate.currentLang || this.translate.getFallbackLang() || 'fi',
+        ),
+        detailLabel: item.name,
+        detailTooltipClass: 'table-card-tooltip--with-header',
+      }));
+    }
+
     if (this.isRegularGrinderPage(page)) {
       return page.items.map((item) => ({
         key: item.id,
@@ -372,6 +421,14 @@ export class CareerHighlightsComponent implements OnInit {
     return [];
   }
 
+  private descriptionParamsFor(
+    page: CareerHighlightPage,
+  ): HighlightDescriptionParams | undefined {
+    return this.isRegularGrinderPage(page)
+      ? undefined
+      : { minAllowed: page.minAllowed };
+  }
+
   private isTeamCountPage(
     page: CareerHighlightPage,
   ): page is CareerTeamCountHighlightPage {
@@ -393,6 +450,12 @@ export class CareerHighlightsComponent implements OnInit {
     page: CareerHighlightPage,
   ): page is CareerStanleyCupHighlightPage {
     return page.type === 'most-stanley-cups';
+  }
+
+  private isReunionPage(
+    page: CareerHighlightPage,
+  ): page is CareerReunionHighlightPage {
+    return page.type === 'reunion-king';
   }
 
   private isRegularGrinderPage(

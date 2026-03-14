@@ -33,6 +33,8 @@
         (appActivateOnViewportVisible)="activateCard(card.type)"
         [titleKey]="card.state.titleKey"
         [descriptionKey]="card.state.descriptionKey"
+        [descriptionRequiresParams]="card.state.descriptionRequiresParams"
+        [descriptionParams]="card.state.descriptionParams"
         primaryColumnLabelKey="career.highlights.columns.player"
         [valueColumnLabelKey]="card.state.valueColumnLabelKey"
         [deferred]="!card.state.activated"

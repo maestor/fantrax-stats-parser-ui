@@ -95,7 +95,7 @@ test.describe('Career listings', () => {
     await expect(transactionsSection).toHaveAttribute('aria-checked', 'true');
 
     const highlightCards = page.locator('app-table-card');
-    await expect(highlightCards).toHaveCount(3);
+    await expect(highlightCards).toHaveCount(4);
     await expect(
       page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.MOST_TRADES })
     ).toBeVisible();
@@ -105,11 +105,16 @@ test.describe('Career listings', () => {
     await expect(
       page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.MOST_DROPS })
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.REUNION_KING })
+    ).toBeVisible();
 
     await expect(highlightCards.first().getByRole('table')).toBeVisible();
     await highlightCards.nth(1).scrollIntoViewIfNeeded();
     await expect(highlightCards.nth(1).getByRole('table')).toBeVisible();
     await highlightCards.nth(2).scrollIntoViewIfNeeded();
     await expect(highlightCards.nth(2).getByRole('table')).toBeVisible();
+    await highlightCards.nth(3).scrollIntoViewIfNeeded();
+    await expect(highlightCards.nth(3).getByRole('table')).toBeVisible();
   });
 });

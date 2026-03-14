@@ -186,6 +186,9 @@ Shared SCSS partials used by multiple shells or route families.
 #### `column.types.ts`
 `Column` and `ColumnIcon` type definitions shared by all table consumers
 
+#### `utils/`
+Reusable shared formatting/conversion helpers such as season and date utilities
+
 ## File Naming Conventions
 
 - **Components**: `component-name.component.ts`

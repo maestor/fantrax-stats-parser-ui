@@ -1,5 +1,6 @@
 {
   "type": "regular-grinder-without-playoffs",
+  "minAllowed": 60,
   "skip": 0,
   "take": 10,
   "total": 2,
