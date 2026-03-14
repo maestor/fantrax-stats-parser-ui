@@ -1,5 +1,6 @@
 {
   "type": "most-teams-played",
+  "minAllowed": 4,
   "skip": 0,
   "take": 10,
   "total": 12,

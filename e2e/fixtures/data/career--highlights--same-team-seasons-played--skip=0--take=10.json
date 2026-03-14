@@ -1,5 +1,6 @@
 {
   "type": "same-team-seasons-played",
+  "minAllowed": 8,
   "skip": 0,
   "take": 10,
   "total": 11,

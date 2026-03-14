@@ -1,5 +1,6 @@
 {
   "type": "same-team-seasons-owned",
+  "minAllowed": 10,
   "skip": 10,
   "take": 10,
   "total": 11,

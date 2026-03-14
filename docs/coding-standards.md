@@ -140,6 +140,31 @@ function calculatePoints(goals, assists) {
 }
 ```
 
+### Date And Time Handling
+
+Handle user-visible dates/times with locale-aware APIs and shared helpers.
+
+- Do not manually build localized date strings by splitting ISO strings or concatenating day/month/year pieces.
+- Prefer shared `Intl.DateTimeFormat`-based helpers under `src/app/shared/utils/` for reusable formatting.
+- Use the active UI language when formatting should follow the app locale:
+  - `translate.currentLang || translate.getFallbackLang()`
+- Choose the timezone intentionally instead of relying on the browser default by accident:
+  - Use a fixed zone such as `Europe/Helsinki` when the product wants a league/app-local clock time.
+  - Use `UTC` when only the calendar date should stay stable across browsers for ISO timestamps/date-times.
+- Validate parsed dates before formatting and return a safe fallback (`null`, hidden field, or original domain value as appropriate) instead of showing `Invalid Date`.
+
+```typescript
+import { formatDateForLocale } from '@shared/utils/date.utils';
+
+const locale = this.translate.currentLang || this.translate.getFallbackLang() || 'fi';
+const label = formatDateForLocale(isoString, locale, {
+  day: 'numeric',
+  month: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+```
+
 ## RxJS Best Practices
 
 ### Observable Subscriptions
@@ -372,6 +397,8 @@ All tests use **Testing Library** (`@testing-library/angular`) with **Vitest**.
 - **Minimize renders**: Group all assertions for a given scenario into one test with one `render()` call. Use comments to separate logical groups. Do not create separate `it()` blocks that each re-render the same component state
 - **Prefer full behavior paths for UI tests**: Render the real feature/shell flow for controls the user can see and interact with
 - **Mock only approved external boundaries in UI tests**: `ApiService`, `ViewportService`, and `PwaUpdateService` are normal mock points; do not mock stateful UI services like `FilterService`, `SettingsService`, or `TeamService` just to isolate a control
+- **Start with behavior coverage for new UI code**: Small UI-only helpers such as formatters, tooltip builders, or one-feature mapping functions should usually be covered through the owning behavior test first
+- **Write standalone helper specs only as an exception**: Reusable domain logic, multiple unrelated consumers, or no realistic behavior/service-layer coverage path are good reasons
 - **Delete impossible-state branches**: If a branch cannot happen in any real usage path, remove it instead of keeping defensive context checks or dead fallback code
 - **Simplify before adding tests**: For behavior-neutral refactors, prefer deleting unreachable logic over adding narrow tests whose only purpose is to preserve coverage for code the UI can never hit
 - **Clean up after refactors**: When a refactor replaces an implementation, verify whether the old path still has consumers and delete it if it does not

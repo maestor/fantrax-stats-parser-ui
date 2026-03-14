@@ -88,6 +88,8 @@ Interpretation rules:
 - **Approved mock boundaries only**: In UI tests, mock only external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService`
 - **Do not mock stateful UI services just to isolate controls**: Avoid mocking services like `FilterService`, `SettingsService`, or `TeamService` when the control is something the user sees and clicks
 - **Minimize renders**: Full-render tests are expensive. Group all assertions for a given scenario into a single test with one `render()` call. Use comments to separate logical assertion groups. Do NOT create separate `it()` blocks that each call `render()` for the same component state
+- **Avoid helper-only specs by default**: For small UI-only helpers such as formatters, tooltip text builders, or one-feature view-model mappers, start by covering them through the owning behavior test instead of adding a separate spec just for coverage
+- **Use dedicated helper specs as an exception, not the baseline**: Good reasons include reusable domain logic, multiple unrelated consumers, or code that cannot be exercised realistically through behavior or service-layer tests
 - **Prefer removing dead logic to covering it**: If a branch cannot be reached through any real user path, delete it instead of adding isolated tests that only exercise internal implementation details
 - **After refactors, remove proven-unused leftovers**: Once the new path is in place, investigate the replaced implementation and delete unused old code instead of preserving it "for safety"
 

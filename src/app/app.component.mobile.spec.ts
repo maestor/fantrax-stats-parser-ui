@@ -314,6 +314,9 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
       screen.getByRole('heading', { name: 'career.highlights.cards.mostDrops.title' })
     ).toBeInTheDocument();
     expect(
+      screen.getByRole('heading', { name: 'career.highlights.cards.reunionKing.title' })
+    ).toBeInTheDocument();
+    expect(
       screen.queryByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
     ).not.toBeInTheDocument();
 

@@ -24,6 +24,7 @@ export type CareerHighlightTeam     = components['schemas']['CareerHighlightTeam
 export type CareerTeamCountHighlightItem = components['schemas']['CareerTeamCountHighlightItem'];
 export type CareerSameTeamHighlightItem = components['schemas']['CareerSameTeamHighlightItem'];
 export type CareerStanleyCupHighlightItem = components['schemas']['CareerStanleyCupHighlightItem'];
+export type CareerReunionHighlightItem = components['schemas']['CareerReunionHighlightItem'];
 export type CareerStashHighlightItem = components['schemas']['CareerStashHighlightItem'];
 export type CareerRegularGrinderHighlightItem =
   components['schemas']['CareerRegularGrinderHighlightItem'];
@@ -32,6 +33,7 @@ export type CareerTransactionHighlightItem =
 export type CareerTeamCountHighlightPage = components['schemas']['CareerTeamCountHighlightPage'];
 export type CareerSameTeamHighlightPage = components['schemas']['CareerSameTeamHighlightPage'];
 export type CareerStanleyCupHighlightPage = components['schemas']['CareerStanleyCupHighlightPage'];
+export type CareerReunionHighlightPage = components['schemas']['CareerReunionHighlightPage'];
 export type CareerStashHighlightPage = components['schemas']['CareerStashHighlightPage'];
 export type CareerRegularGrinderHighlightPage =
   components['schemas']['CareerRegularGrinderHighlightPage'];
@@ -41,6 +43,7 @@ export type CareerHighlightPage =
   | CareerTeamCountHighlightPage
   | CareerSameTeamHighlightPage
   | CareerStanleyCupHighlightPage
+  | CareerReunionHighlightPage
   | CareerStashHighlightPage
   | CareerRegularGrinderHighlightPage
   | CareerTransactionHighlightPage;

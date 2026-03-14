@@ -199,7 +199,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Fetch career rows from the dedicated API endpoints
 - Pass column definitions and formatters into the shared virtualized table
 - Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
-- Normalize paged highlight responses into the shared `TableCardComponent` row shape for the `/career/highlights` route, including the existing general cards plus transaction variants for most trades, claims, and drops
+- Normalize paged highlight responses into the shared `TableCardComponent` row shape for the `/career/highlights` route, including the existing general cards plus transaction variants for most trades, claims, drops, and same-team reunions
 - Keep the centered `Sekalaiset` / `Siirrot` switch accessible while preserving each card's lazy-loading and paging state
 - Activate highlight-card API loads lazily as each card approaches the viewport instead of requesting every card during route startup
 

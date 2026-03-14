@@ -14,6 +14,7 @@ import {
   mostTeamsPlayedHighlightsPage1Fixture,
   provideDisabledMaterialAnimations,
   regularGrinderWithoutPlayoffsHighlightsPage0Fixture,
+  reunionKingHighlightsPage0Fixture,
   stashKingHighlightsPage0Fixture,
   sameTeamSeasonsOwnedHighlightsPage0Fixture,
   sameTeamSeasonsHighlightsPage0Fixture,
@@ -109,7 +110,7 @@ describe('CareerHighlightsComponent', () => {
           case 'most-drops':
             return of(mostDropsHighlightsPage0Fixture);
           case 'reunion-king':
-            throw new Error('reunion-king should not be requested by the UI');
+            return of(reunionKingHighlightsPage0Fixture);
         }
       }
     );
@@ -210,7 +211,7 @@ describe('CareerHighlightsComponent', () => {
     expect(getCareerHighlights).toHaveBeenCalledWith('most-teams-played', 10, 10);
   });
 
-  it('switches to transactions and preserves per-team tooltip lines in API order', async () => {
+  it('switches to transactions, keeps reunion-king last, and preserves tooltip content order', async () => {
     const getCareerHighlights = vi.fn((type: CareerHighlightType) => {
       switch (type) {
         case 'most-teams-played':
@@ -234,7 +235,7 @@ describe('CareerHighlightsComponent', () => {
         case 'most-drops':
           return of(mostDropsHighlightsPage0Fixture);
         case 'reunion-king':
-          throw new Error('reunion-king should not be requested by the UI');
+          return of(reunionKingHighlightsPage0Fixture);
       }
     });
 
@@ -282,10 +283,25 @@ describe('CareerHighlightsComponent', () => {
         name: 'career.highlights.cards.mostDrops.title',
       }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(3);
+    expect(
+      screen.getByRole('heading', {
+        name: 'career.highlights.cards.reunionKing.title',
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(4);
+    expect(
+      screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent?.trim()),
+    ).toEqual([
+      'career.highlights.sectionTitle',
+      'career.highlights.cards.mostTrades.title',
+      'career.highlights.cards.mostClaims.title',
+      'career.highlights.cards.mostDrops.title',
+      'career.highlights.cards.reunionKing.title',
+    ]);
 
-    const transactionObservers = FakeIntersectionObserver.instances.slice(-3);
+    const transactionObservers = FakeIntersectionObserver.instances.slice(-4);
     transactionObservers[0]?.trigger();
+    transactionObservers[3]?.trigger();
 
     const tradesCardTitle = screen.getByRole('heading', {
       name: 'career.highlights.cards.mostTrades.title',
@@ -306,6 +322,23 @@ describe('CareerHighlightsComponent', () => {
       'Dallas Stars 2',
       'Carolina Hurricanes 1',
     ]);
+
+    const reunionState = view.fixture.componentInstance
+      .cards()
+      .find((card) => card.type === 'reunion-king')?.state;
+
+    expect(getCareerHighlights).toHaveBeenCalledWith('reunion-king', 0, 10);
+    expect(reunionState?.descriptionParams).toEqual({ minAllowed: 2 });
+    expect(reunionState?.rows[0]).toMatchObject({
+      primaryText: 'F Mikael Granlund',
+      value: 2,
+      detailHeader: 'Colorado Avalanche',
+      detailLines: [
+        '1. 18.12.2013 career.highlights.reunionTypes.trade',
+        '2. 10.8.2016 career.highlights.reunionTypes.claim',
+      ],
+      detailTooltipClass: 'table-card-tooltip--with-header',
+    });
   });
 
   it('shows an error state for an activated failing card without forcing untouched cards to load', async () => {
@@ -331,10 +364,12 @@ describe('CareerHighlightsComponent', () => {
                           ? stashKingHighlightsPage0Fixture
                           : type === 'most-trades'
                             ? mostTradesHighlightsPage0Fixture
-                            : type === 'most-claims'
+                          : type === 'most-claims'
                               ? mostClaimsHighlightsPage0Fixture
                               : type === 'most-drops'
                                 ? mostDropsHighlightsPage0Fixture
+                                : type === 'reunion-king'
+                                  ? reunionKingHighlightsPage0Fixture
                     : type === 'same-team-seasons-played'
                       ? sameTeamSeasonsHighlightsPage0Fixture
                       : mostTeamsPlayedHighlightsPage0Fixture

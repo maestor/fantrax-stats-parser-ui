@@ -52,6 +52,7 @@ export const CAREER_HIGHLIGHT_CARD_LABELS = {
   MOST_TRADES: 'Eniten kaupatut',
   MOST_CLAIMS: 'Eniten nostetut',
   MOST_DROPS: 'Eniten pudotetut',
+  REUNION_KING: 'Eniten paluita samaan seuraan',
 };
 
 export const NAV_LABELS = {

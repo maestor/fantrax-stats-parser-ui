@@ -1,5 +1,6 @@
 {
   "type": "most-teams-owned",
+  "minAllowed": 5,
   "skip": 10,
   "take": 10,
   "total": 12,

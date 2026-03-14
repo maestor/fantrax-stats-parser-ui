@@ -1,5 +1,6 @@
 {
   "type": "stash-king",
+  "minAllowed": 10,
   "skip": 0,
   "take": 10,
   "total": 2,

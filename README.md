@@ -35,7 +35,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- Searchable and sortable, with no stats-page filters or mobile drawer
 	- Virtualized row rendering keeps long lists responsive
 	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
-	- `/career/highlights` splits compact paged highlight cards into `Sekalaiset` and `Siirrot`, covering the existing general career slices plus transaction leaders for most trades, claims, and drops; each card lazy-loads its dataset as it approaches the viewport
+	- `/career/highlights` splits compact paged highlight cards into `Sekalaiset` and `Siirrot`, covering the existing general career slices plus transaction leaders for most trades, claims, drops, and same-team reunions; each card lazy-loads its dataset as it approaches the viewport
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
@@ -220,6 +220,7 @@ Service-layer note:
 - UI behavior should still be tested through rendered user flows
 - UI tests should keep real app state services in place; only external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService` should normally be mocked
 - Lower-level services such as `ApiService`, `CacheService`, and `PwaUpdateService` may use focused `TestBed` specs when the real HTTP/platform pipeline itself is what needs coverage
+- Small UI-only helpers such as formatters or tooltip/view-model builders should normally stay covered through the owning behavior test; use a dedicated helper spec only when there is no realistic behavior/service-layer coverage path
 
 ## Accessibility
 

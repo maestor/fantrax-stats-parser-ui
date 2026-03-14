@@ -1,5 +1,6 @@
 {
   "type": "most-claims",
+  "minAllowed": 3,
   "skip": 0,
   "take": 10,
   "total": 3,

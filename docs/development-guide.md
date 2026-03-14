@@ -220,6 +220,17 @@ npx ng generate <schematic> <name>
 npx ng help
 ```
 
+### Dates and times
+
+When you add or change user-visible date/time formatting:
+
+- Prefer shared `Intl.DateTimeFormat`-based helpers in `src/app/shared/utils/` over manual string splitting.
+- Match the locale to the active UI language unless the feature intentionally uses a fixed locale.
+- Pick the timezone deliberately:
+  - `Europe/Helsinki` for league/app-local timestamps
+  - `UTC` when an ISO timestamp's calendar date must not drift by browser timezone
+- Validate invalid/missing dates and show a safe fallback instead of leaking `Invalid Date`
+
 ## Project Configuration
 
 ### Backend API Endpoint
