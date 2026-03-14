@@ -7,6 +7,7 @@ import { ViewportService } from '@services/viewport.service';
 import { provideDisabledMaterialAnimations } from '../../testing/behavior-test-utils';
 import { LeaderboardPlayoffsComponent } from '../playoffs/leaderboard-playoffs.component';
 import { LeaderboardRegularComponent } from '../regular/leaderboard-regular.component';
+import { LeaderboardTransfersComponent } from '../transfers/leaderboard-transfers.component';
 
 describe('Leaderboard expansion behavior', () => {
   it('renders regular season expansion with percent formatting and trophy mapping', async () => {
@@ -222,5 +223,82 @@ describe('Leaderboard expansion behavior', () => {
     expect(firstRank).toBe('1');
     expect(secondRank).toBe('');
     expect(thirdRank).toBe('3');
+  });
+
+  it('renders transfers expansion with incremental ranks even when the API marks a tie', async () => {
+    await render(LeaderboardTransfersComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideDisabledMaterialAnimations(),
+        {
+          provide: ViewportService,
+          useValue: {
+            isMobile$: of(false),
+          },
+        },
+        {
+          provide: ApiService,
+          useValue: {
+            getLeaderboardRegular: () => of([]),
+            getLeaderboardPlayoffs: () => of([]),
+            getLeaderboardTransactions: () => of([
+              {
+                teamId: '1',
+                teamName: 'Colorado Avalanche',
+                trades: 18,
+                claims: 42,
+                drops: 39,
+                tieRank: false,
+                seasons: [
+                  { season: 2024, trades: 7, claims: 15, drops: 13 },
+                  { season: 2023, trades: 6, claims: 14, drops: 13 },
+                ],
+              },
+              {
+                teamId: '2',
+                teamName: 'Dallas Stars',
+                trades: 18,
+                claims: 42,
+                drops: 39,
+                tieRank: true,
+                seasons: [
+                  { season: 2024, trades: 8, claims: 16, drops: 15 },
+                ],
+              },
+              {
+                teamId: '3',
+                teamName: 'Edmonton Oilers',
+                trades: 11,
+                claims: 29,
+                drops: 25,
+                tieRank: false,
+                seasons: [
+                  { season: 2024, trades: 5, claims: 12, drops: 10 },
+                ],
+              },
+            ]),
+          },
+        },
+      ],
+    });
+
+    await screen.findByText('Colorado Avalanche');
+
+    const rows = screen.getAllByRole('row').slice(1);
+    expect(rows).toHaveLength(3);
+
+    const [firstRank, secondRank, thirdRank] = rows.map((row) =>
+      within(row).getAllByRole('cell')[0]?.textContent?.trim() ?? ''
+    );
+
+    expect(firstRank).toBe('1');
+    expect(secondRank).toBe('2');
+    expect(thirdRank).toBe('3');
+
+    const team = screen.getByText('Dallas Stars');
+    fireEvent.click(team.closest('tr') as HTMLElement);
+
+    await screen.findByText('2024-25');
+    expect(screen.getByText('🤝 8 | 🟢 16 | 🔴 15')).toBeInTheDocument();
   });
 });

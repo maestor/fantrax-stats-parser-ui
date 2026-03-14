@@ -5,10 +5,17 @@ import { StatsTableComponent, TableRow } from '@shared/stats-table/stats-table.c
 import { Column } from '@shared/column.types';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
 import { derivePositions } from '@shared/utils/position.utils';
-import { RegularLeaderboardEntry, PlayoffLeaderboardEntry } from '@services/api.service';
+import {
+  RegularLeaderboardEntry,
+  PlayoffLeaderboardEntry,
+  TransactionLeaderboardEntry,
+} from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 
-type LeaderboardEntry = RegularLeaderboardEntry | PlayoffLeaderboardEntry;
+type LeaderboardEntry =
+  | RegularLeaderboardEntry
+  | PlayoffLeaderboardEntry
+  | TransactionLeaderboardEntry;
 type LeaderboardRow = LeaderboardEntry & { displayPosition: string };
 
 @Component({
@@ -48,6 +55,7 @@ export class LeaderboardComponent implements OnInit {
   readonly expandToggleAriaLabel = input.required<
     (row: LeaderboardRow, expanded: boolean) => string
   >();
+  readonly blankTieRanks = input(true);
   readonly expandedHeaderLabels = input.required<{
     season: string;
     primary: string;
@@ -77,7 +85,9 @@ export class LeaderboardComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
-          this.data = derivePositions(data);
+          this.data = derivePositions(data, {
+            blankTieRanks: this.blankTieRanks(),
+          });
           this.loading = false;
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },

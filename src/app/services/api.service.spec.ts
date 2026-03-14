@@ -175,6 +175,18 @@ describe('ApiService', () => {
     ]);
   });
 
+  it('requests transactions leaderboard data from the transactions endpoint', async () => {
+    const responsePromise = firstValueFrom(service.getLeaderboardTransactions());
+
+    const request = httpMock.expectOne('http://localhost:3000/leaderboard/transactions');
+    expect(request.request.method).toBe('GET');
+    request.flush([{ teamId: '1', teamName: 'Colorado Avalanche', trades: 3 }]);
+
+    await expect(responsePromise).resolves.toEqual([
+      { teamId: '1', teamName: 'Colorado Avalanche', trades: 3 },
+    ]);
+  });
+
   it('requests career highlights with explicit paging params', async () => {
     const responsePromise = firstValueFrom(
       service.getCareerHighlights('most-teams-played', 10, 10)

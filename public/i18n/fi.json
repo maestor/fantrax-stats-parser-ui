@@ -61,13 +61,17 @@
   "leaderboards": {
     "tabs": {
       "regular": "Runkosarja",
-      "playoffs": "Playoffs"
+      "playoffs": "Playoffs",
+      "transfers": "Siirrot"
     },
     "columns": {
       "position": "#",
       "team": "Joukkue",
       "regularTrophies": "Runkosarjavoitot",
       "championships": "Mestaruudet",
+      "trades": "Treidit",
+      "claims": "Claimit",
+      "drops": "Dropit",
       "points": "Pisteet",
       "wins": "Voitot",
       "ties": "Tasapelit",
@@ -91,6 +95,7 @@
       "season": "Kausi",
       "regularStats": "Tilastot",
       "playoffResult": "Tulos",
+      "transfers": "Siirrot",
       "trophy": "🏆"
     },
     "noSeasonBreakdown": "Ei kausierittelyä saatavilla",
@@ -175,7 +180,7 @@
         "items": [
           "Pelaajatilastot: joukkuekohtaiset kenttäpelaaja- ja maalivahtitilastot, suodattimet, vertailu ja pelaajakortit",
           "Pelaajaurat: kaikkien aikojen urataulukot kenttäpelaajille ja maalivahdeille sekä uranostot",
-          "Maratontaulukot: joukkueiden kaikkien aikojen runkosarja- ja playoff-menestys kausierittelyineen"
+          "Maratontaulukot: joukkueiden kaikkien aikojen runkosarja-, playoff- ja siirtotaulukot kausierittelyineen"
         ]
       },
       {
@@ -214,7 +219,7 @@
       },
       {
         "type": "p",
-        "text": "Maratontaulukot kokoavat joukkueiden kaikkien aikojen runkosarja- ja playoff-menestyksen omille välilehdilleen. Joukkueen riviä avaamalla näet kausierittelyn, jossa näkyvät myös runkosarjavoitot ja mestaruudet."
+        "text": "Maratontaulukot kokoavat joukkueiden kaikkien aikojen runkosarja-, playoff- ja siirtomenestyksen omille välilehdilleen. Joukkueen riviä avaamalla näet kausierittelyn, jossa näkyvät myös runkosarjavoitot, mestaruudet tai siirtotapahtumien määrät."
       },
       {
         "type": "h2",
@@ -313,6 +318,9 @@
     "teamName": "Joukkue",
     "regularTrophies": "Runkosarjavoitot",
     "championships": "Mestaruudet",
+    "trades": "Treidit",
+    "claims": "Claimit",
+    "drops": "Dropit",
     "ties": "Tasapelit",
     "losses": "Häviöt",
     "pointsPercent": "Piste-%",
@@ -361,6 +369,9 @@
     "teamName": "Joukkue",
     "regularTrophies": "RSV",
     "championships": "Mest.",
+    "trades": "Treidit",
+    "claims": "Claimit",
+    "drops": "Dropit",
     "ties": "T",
     "losses": "H",
     "pointsPercent": "P-%",

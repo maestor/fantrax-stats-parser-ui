@@ -1,9 +1,14 @@
-import { PlayoffLeaderboardEntry, RegularLeaderboardEntry } from '@services/api.service';
+import {
+  PlayoffLeaderboardEntry,
+  RegularLeaderboardEntry,
+  TransactionLeaderboardEntry,
+} from '@services/api.service';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
 import { formatSeasonDisplay, formatSeasonShort } from '@shared/utils/season.utils';
 
 type PlayoffSeason = PlayoffLeaderboardEntry['seasons'][number];
 type RegularSeason = RegularLeaderboardEntry['seasons'][number];
+type TransactionSeason = TransactionLeaderboardEntry['seasons'][number];
 type SeasonLabelOptions = { shortSeasonLabel?: boolean };
 
 export const PLAYOFF_ROUND_TRANSLATION_KEY: Record<PlayoffSeason['key'], string> = {
@@ -45,5 +50,18 @@ export function mapPlayoffLeaderboardSeasons(
       seasonLabel: formatSeason(season.season),
       primary: roundLabel(season.key),
       secondary: season.key === 'championship' ? '🏆' : undefined,
+    }));
+}
+
+export function mapTransactionLeaderboardSeasons(
+  seasons: TransactionLeaderboardEntry['seasons'],
+  options: SeasonLabelOptions = {},
+): ExpandedRowViewModel[] {
+  const formatSeason = options.shortSeasonLabel ? formatSeasonShort : formatSeasonDisplay;
+  return [...seasons]
+    .sort((a, b) => b.season - a.season)
+    .map((season: TransactionSeason) => ({
+      seasonLabel: formatSeason(season.season),
+      primary: `🤝 ${season.trades} | 🟢 ${season.claims} | 🔴 ${season.drops}`,
     }));
 }

@@ -1,0 +1,41 @@
+[
+  {
+    "teamId": "1",
+    "teamName": "Colorado Avalanche",
+    "claims": 42,
+    "drops": 39,
+    "trades": 18,
+    "tieRank": false,
+    "seasons": [
+      { "season": 2024, "claims": 15, "drops": 13, "trades": 7 },
+      { "season": 2023, "claims": 14, "drops": 13, "trades": 6 },
+      { "season": 2022, "claims": 13, "drops": 13, "trades": 5 }
+    ]
+  },
+  {
+    "teamId": "2",
+    "teamName": "Dallas Stars",
+    "claims": 42,
+    "drops": 39,
+    "trades": 18,
+    "tieRank": true,
+    "seasons": [
+      { "season": 2024, "claims": 16, "drops": 15, "trades": 8 },
+      { "season": 2023, "claims": 14, "drops": 13, "trades": 6 },
+      { "season": 2022, "claims": 12, "drops": 11, "trades": 4 }
+    ]
+  },
+  {
+    "teamId": "3",
+    "teamName": "Edmonton Oilers",
+    "claims": 29,
+    "drops": 25,
+    "trades": 11,
+    "tieRank": false,
+    "seasons": [
+      { "season": 2024, "claims": 12, "drops": 10, "trades": 5 },
+      { "season": 2023, "claims": 9, "drops": 8, "trades": 4 },
+      { "season": 2022, "claims": 8, "drops": 7, "trades": 2 }
+    ]
+  }
+]
