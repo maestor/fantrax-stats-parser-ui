@@ -2,6 +2,8 @@
  * Shared test constants and configuration
  */
 
+import { fi } from './i18n';
+
 export const DEFAULT_TEAM = 'Colorado Avalanche';
 
 export const MOBILE_VIEWPORT = {
@@ -17,50 +19,50 @@ export const DESKTOP_VIEWPORT = {
 export const WAIT_TIMEOUT = 10000;
 
 export const FILTER_LABELS = {
-  TEAM: 'Joukkue',
-  SEASON: 'Kausivalitsin',
-  START_FROM: 'Alkaen kaudesta',
-  REPORT_TYPE_REGULAR: 'Runkosarja',
-  REPORT_TYPE_PLAYOFFS: 'Playoffs',
-  STATS_PER_GAME: 'Tilastot per ottelu',
-  MIN_GAMES: 'Otteluja pelattu vähintään',
-  POSITION_ALL: 'Kaikki',
-  POSITION_FORWARDS: 'H',
-  POSITION_DEFENSE: 'P',
+  TEAM: fi('team.selector'),
+  SEASON: fi('season.selector'),
+  START_FROM: fi('startFromSeason.selector'),
+  REPORT_TYPE_REGULAR: fi('reportType.regular'),
+  REPORT_TYPE_PLAYOFFS: fi('reportType.playoffs'),
+  STATS_PER_GAME: fi('statsModeToggle'),
+  MIN_GAMES: fi('minGamesSlider.label'),
+  POSITION_ALL: fi('positionFilter.all'),
+  POSITION_FORWARDS: fi('positionFilter.forwards'),
+  POSITION_DEFENSE: fi('positionFilter.defensemen'),
 };
 
 export const TAB_LABELS = {
-  PLAYERS: 'Kenttäpelaajat',
-  GOALIES: 'Maalivahdit',
-  CAREER_PLAYERS: 'Kenttäpelaajat',
-  CAREER_GOALIES: 'Maalivahdit',
-  CAREER_HIGHLIGHTS: 'Nostot',
-  PLAYER_CARD_STATS: 'Tilastot',
-  PLAYER_CARD_BY_SEASON: 'Kausittain',
-  PLAYER_CARD_GRAPHS: 'Graafit',
-  LEADERBOARD_REGULAR: 'Runkosarja',
-  LEADERBOARD_PLAYOFFS: 'Playoffs',
-  LEADERBOARD_TRANSACTIONS: 'Siirrot',
+  PLAYERS: fi('link.playerStats'),
+  GOALIES: fi('link.goalieStats'),
+  CAREER_PLAYERS: fi('career.tabs.players'),
+  CAREER_GOALIES: fi('career.tabs.goalies'),
+  CAREER_HIGHLIGHTS: fi('career.tabs.highlights'),
+  PLAYER_CARD_STATS: fi('playerCard.all'),
+  PLAYER_CARD_BY_SEASON: fi('playerCard.bySeason'),
+  PLAYER_CARD_GRAPHS: fi('playerCard.graphs'),
+  LEADERBOARD_REGULAR: fi('leaderboards.tabs.regular'),
+  LEADERBOARD_PLAYOFFS: fi('leaderboards.tabs.playoffs'),
+  LEADERBOARD_TRANSACTIONS: fi('leaderboards.tabs.transactions'),
 };
 
 export const CAREER_HIGHLIGHT_SECTION_LABELS = {
-  GENERAL: 'Sekalaiset',
-  TRANSACTIONS: 'Siirrot',
+  GENERAL: fi('career.highlights.sections.general'),
+  TRANSACTIONS: fi('career.highlights.sections.transactions'),
 };
 
 export const CAREER_HIGHLIGHT_CARD_LABELS = {
-  MOST_TRADES: 'Eniten kaupatut',
-  MOST_CLAIMS: 'Eniten nostetut',
-  MOST_DROPS: 'Eniten pudotetut',
-  REUNION_KING: 'Eniten paluita samaan seuraan',
+  MOST_TRADES: fi('career.highlights.cards.mostTrades.title'),
+  MOST_CLAIMS: fi('career.highlights.cards.mostClaims.title'),
+  MOST_DROPS: fi('career.highlights.cards.mostDrops.title'),
+  REUNION_KING: fi('career.highlights.cards.reunionKing.title'),
 };
 
 export const NAV_LABELS = {
-  PLAYER_CAREERS: 'Pelaajaurat',
+  PLAYER_CAREERS: fi('nav.playerCareers'),
 };
 
 export const LEADERBOARD_LABELS = {
-  REGULAR: 'Runkosarja',
-  PLAYOFFS: 'Playoffs',
-  TRANSACTIONS: 'Siirrot',
+  REGULAR: fi('leaderboards.tabs.regular'),
+  PLAYOFFS: fi('leaderboards.tabs.playoffs'),
+  TRANSACTIONS: fi('leaderboards.tabs.transactions'),
 };

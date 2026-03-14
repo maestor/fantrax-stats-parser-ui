@@ -220,6 +220,7 @@ Local rule of thumb:
 - Do **not** set `CI=true` for routine local verification
 - Use the CI/fixture mode only when you intentionally want the mocked CI behavior
 - If the backend on `localhost:3000` is not running in a paired session, ask the user to start it instead of swapping local verification over to CI-mode fixtures
+- When Playwright assertions need visible Finnish UI copy, source shared labels from `public/i18n/fi.json` through the E2E config helpers instead of duplicating hard-coded strings in test constants
 
 **Basic commands:**
 
