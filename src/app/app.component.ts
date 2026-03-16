@@ -7,7 +7,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Title } from '@angular/platform-browser';
 import {
   NavigationEnd,
   NavigationStart,
@@ -20,6 +19,7 @@ import { filter, take } from 'rxjs';
 import { FooterComponent } from '@base/footer/footer.component';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { PwaUpdateService } from '@services/pwa-update.service';
+import { SeoService } from '@services/seo.service';
 
 let helpDialogComponentPromise: Promise<
   typeof import('@shared/help-dialog/help-dialog.component')
@@ -112,16 +112,14 @@ export class AppComponent implements OnInit {
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
+  private readonly seoService = inject(SeoService);
 
-  private readonly titleService = inject(Title);
   private readonly translateService = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   ngOnInit(): void {
-    this.translateService.get('pageTitle').subscribe((name) => {
-      this.titleService.setTitle(name);
-    });
+    void this.seoService;
 
     this.isUpdateAvailable$
       .pipe(

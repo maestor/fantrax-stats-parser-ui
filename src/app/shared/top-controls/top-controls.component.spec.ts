@@ -7,6 +7,7 @@ import {
     polyfillJsdom,
     seedLocalStorage,
     slicedPlayers,
+    waitForBehaviorAssertion,
 } from '../../testing/behavior-test-utils';
 
 describe('TopControlsComponent — desktop user flow', { timeout: 60_000 }, () => {
@@ -23,7 +24,9 @@ describe('TopControlsComponent — desktop user flow', { timeout: 60_000 }, () =
         const firstRender = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
         const firstPlayerName = slicedPlayers[0].name;
-        await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(firstRender.fixture, () => {
+            expect(screen.getByText(firstPlayerName)).toBeInTheDocument();
+        });
 
         const controlsToggle = screen.getByRole('button', { name: /topControls\.controls/ });
         expect(controlsToggle).toHaveAttribute('aria-expanded', 'true');
@@ -41,8 +44,10 @@ describe('TopControlsComponent — desktop user flow', { timeout: 60_000 }, () =
         firstRender.fixture.destroy();
         TestBed.resetTestingModule();
 
-        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
-        await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+        const secondRender = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+        await waitForBehaviorAssertion(secondRender.fixture, () => {
+            expect(screen.getByText(firstPlayerName)).toBeInTheDocument();
+        });
 
         expect(
             screen.getByRole('button', { name: /topControls\.controls/ })

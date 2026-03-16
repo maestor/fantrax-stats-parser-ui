@@ -9,6 +9,7 @@ import {
   polyfillJsdom,
   seedLocalStorage,
   slicedPlayers,
+  waitForBehaviorAssertion,
 } from '../../testing/behavior-test-utils';
 
 // Full-render navigation flow re-renders overlays and lazy routes, so coverage runs need more headroom.
@@ -23,11 +24,13 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
   });
 
   it('opens navigation with default view active, navigates to career and leaderboards, opens info dialog, and closes', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
     // Wait for the app to fully load
     const firstPlayerName = slicedPlayers[0].name;
-    await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(firstPlayerName)).toBeInTheDocument();
+    });
 
     // Open the sheet through Material directly so the test covers navigation behavior
     // without depending on the shell button's lazy import timing.

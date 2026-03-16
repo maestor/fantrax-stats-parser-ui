@@ -7,6 +7,7 @@ import {
     polyfillMatchMedia,
     seedLocalStorage,
     slicedPlayers,
+    waitForBehaviorAssertion,
 } from '../../testing/behavior-test-utils';
 import { toSlug } from '@shared/utils/slug.utils';
 
@@ -31,10 +32,13 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
     });
 
     it('opens player card, shows tabs, copies share link, and closes it', async () => {
-        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+        const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
         const firstPlayerName = slicedPlayers[0].name;
-        const firstPlayerCell = await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(firstPlayerName)).toBeInTheDocument();
+        });
+        const firstPlayerCell = screen.getByText(firstPlayerName);
 
         // Open card by clicking a player row in stats table.
         fireEvent.click(firstPlayerCell);
@@ -76,10 +80,13 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
     });
 
     it('updates skater stats when position filter is toggled and keeps table row state in sync during keyboard navigation', async () => {
-        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+        const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
         const targetPlayerName = slicedPlayers[1].name;
-        const targetPlayerCell = await screen.findByText(targetPlayerName, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(targetPlayerName)).toBeInTheDocument();
+        });
+        const targetPlayerCell = screen.getByText(targetPlayerName);
         fireEvent.click(targetPlayerCell);
 
         const closePlayerCardButton = await screen.findByRole('button', { name: 'a11y.closePlayerCard' });
@@ -122,9 +129,12 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
     });
 
     it('supports graphs tab interactions for combined player data', async () => {
-        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+        const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-        const firstPlayerCell = await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+        });
+        const firstPlayerCell = screen.getByText(slicedPlayers[0].name);
         fireEvent.click(firstPlayerCell);
 
         const dialog = await screen.findByRole('dialog');
@@ -182,9 +192,12 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
     });
 
     it('supports touch and wheel navigation while announcing the active player', async () => {
-        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+        const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-        const firstPlayerCell = await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+        });
+        const firstPlayerCell = screen.getByText(slicedPlayers[0].name);
         fireEvent.click(firstPlayerCell);
 
         const dialog = await screen.findByRole('dialog');

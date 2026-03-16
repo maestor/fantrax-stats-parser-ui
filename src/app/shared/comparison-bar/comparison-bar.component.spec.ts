@@ -7,6 +7,7 @@ import {
   seedLocalStorage,
   slicedGoalies,
   slicedPlayers,
+  waitForBehaviorAssertion,
 } from '../../testing/behavior-test-utils';
 import type { Goalie } from '@services/api.service';
 
@@ -32,9 +33,11 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
   });
 
   it('shows selection progression and opens the player comparison dialog', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     const [firstCheckbox, secondCheckbox] = screen.getAllByRole('checkbox');
 
@@ -85,7 +88,7 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
   });
 
   it('clears selection on context switch and supports goalie comparison with extended stats', async () => {
-    await render(
+    const { fixture } = await render(
       AppComponent,
       getBehaviorTestConfig({
         isMobile: false,
@@ -93,7 +96,9 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
       })
     );
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     fireEvent.click(screen.getAllByRole('checkbox')[0]);
     expect(screen.getByRole('status')).toBeInTheDocument();
@@ -119,9 +124,11 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
   });
 
   it('shows stats-only comparison content when stats-per-game is enabled', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
     const statsModeToggle = await screen.findByRole('switch', { name: 'statsModeToggle' });

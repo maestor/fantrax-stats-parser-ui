@@ -46,6 +46,7 @@ npm run start
 ```
 - Runs on http://localhost:4200
 - Auto-reloads on file changes
+- Uses normal live reload instead of HMR because this app contains `@defer` blocks and we want local startup behavior closer to the shipped app
 - Does not open a browser automatically (open the URL manually)
 
 ### Build for Production
@@ -160,6 +161,40 @@ python3 scripts/generate-pwa-icons.py
 ```
 
 Outputs go to `public/icons/`.
+
+### SEO / Share Metadata
+
+The app now has a lightweight metadata layer for search/share basics.
+
+Key files:
+
+- `src/index.html`: crawler-visible fallback title, description, canonical URL, and Open Graph/Twitter tags
+- `src/app/app.routes.ts`: route SEO data (`sectionKey` / `tabKey`)
+- `src/app/services/seo.service.ts`: updates title/canonical/social tags after navigation
+- `src/app/shared/utils/seo.utils.ts`: title builder + active-route SEO helpers
+- `src/app/app.config.server.ts` + `src/app/app.routes.server.ts`: prerender configuration for fixed public routes
+- `src/app/services/server-translate.loader.ts`: server-side translation loader used during prerendering
+- `public/robots.txt`
+- `public/sitemap.xml`
+
+Title rules:
+
+- `/` uses only the site title: `FFHL tilastopalvelu`
+- Fixed public routes use `FFHL tilastopalvelu | SectionName | TabName`
+- Section and tab names come from existing translation keys, so route titles stay in sync with the UI labels
+
+When adding or renaming a public route:
+
+- update the route's SEO data in `src/app/app.routes.ts`
+- update `src/app/app.routes.server.ts` if the route should be prerendered for share crawlers
+- update `public/sitemap.xml` if the route should be crawlable
+- keep `src/index.html` fallback metadata sensible for non-JavaScript crawlers
+
+Prerendering notes:
+
+- `npm run build` now emits static HTML for `/`, `/player-stats`, `/goalie-stats`, `/career/*`, and `/leaderboards/*`
+- dynamic `/player/...` and `/goalie/...` routes intentionally stay client-rendered in this batch
+- backend API data is still fetched in the browser after hydration for these prerendered routes; the prerender output is primarily for metadata/share previews and route shell HTML
 
 ### Watch Mode (Development Build)
 ```bash

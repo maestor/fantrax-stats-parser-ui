@@ -1,5 +1,8 @@
 {
   "pageTitle": "FFHL tilastopalvelu",
+  "seo": {
+    "description": "FFHL-fantasyliigan tilastoja Fantraxista kaivettuna kootusti ja helppokäyttöisesti."
+  },
   "link": {
     "playerStats": "Kenttäpelaajat",
     "goalieStats": "Maalivahdit"

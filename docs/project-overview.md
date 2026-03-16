@@ -19,6 +19,14 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - Requires [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) running
 - API endpoint configurable via environment
 
+### SEO & Sharing
+- `src/index.html` provides the default title, description, canonical URL, and Open Graph/Twitter tags that crawlers see before Angular boots
+- `SeoService` updates the browser title, canonical URL, and social metadata after navigation using route metadata from `src/app/app.routes.ts`
+- Route titles reuse existing translated section/tab labels instead of maintaining separate title strings:
+  - `/` → `FFHL tilastopalvelu`
+  - fixed routes such as `/career/goalies` → `FFHL tilastopalvelu | Pelaajaurat | Maalivahdit`
+- Crawl helpers live in `public/robots.txt` and `public/sitemap.xml`
+
 ### Route Shells
 - **Root shell (`AppComponent`)**: stays lightweight and owns the skip link, footer, route subtitle, global keyboard shortcuts, update snackbar, and help/navigation overlays.
   The footer now loads as a deferred chunk only when route readiness makes it visible, and the overlay services are resolved lazily on interaction.
@@ -119,6 +127,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - **StatsService**: Data transformation and business logic
 - **FilterService**: Table filtering logic
 - **CacheService**: In-memory caching
+- **SeoService**: Route-aware title/canonical/social metadata updates in the browser
 
 ### Routing
 - Route families are split by interaction model:

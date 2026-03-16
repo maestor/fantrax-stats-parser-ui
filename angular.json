@@ -35,7 +35,9 @@
               "src/theme.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "server": "src/main.server.ts",
+            "outputMode": "static",
           },
           "configurations": {
             "production": {
@@ -75,7 +77,8 @@
               "buildTarget": "fantrax-stats-parser-ui:build:production"
             },
             "development": {
-              "buildTarget": "fantrax-stats-parser-ui:build:development"
+              "buildTarget": "fantrax-stats-parser-ui:build:development",
+              "hmr": false
             }
           },
           "defaultConfiguration": "development"
