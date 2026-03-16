@@ -57,8 +57,11 @@ fantrax-stats-parser-ui/
 │   │   │   └── table-columns.ts
 │   │   ├── app.component.ts   # Lightweight root shell
 │   │   ├── app.config.ts
-│   │   └── app.routes.ts
-│   ├── main.ts         # Application bootstrap
+│   │   ├── app.config.server.ts  # Server-only provider overrides for prerendering
+│   │   ├── app.routes.ts
+│   │   └── app.routes.server.ts  # Server render-mode map for prerender/client routes
+│   ├── main.ts         # Browser bootstrap
+│   ├── main.server.ts  # Server bootstrap used for prerendering
 │   └── index.html      # HTML entry point
 ├── angular.json        # Angular workspace configuration
 ├── package.json        # Dependencies and scripts
@@ -133,6 +136,7 @@ Application-wide services:
 - **filter.service.ts** - Reactive UI filter state (season/report/statsPerGame/minGames)
 - **cache.service.ts** - In-memory caching for API responses
 - **seo.service.ts** - Synchronizes title, canonical URL, and Open Graph/Twitter tags with the active route
+- **server-translate.loader.ts** - Server-only translation loader used during prerendering so metadata can be rendered without HTTP translation fetches
 - **team.service.ts** - Selected team state (used by top controls + pages)
 - **comparison.service.ts** - 2-player selection state for comparison feature (auto-clears on filter/team changes)
 - **viewport.service.ts** - Viewport breakpoint detection (mobile vs desktop)
@@ -213,6 +217,7 @@ component-name/
 ## Configuration Files
 
 - **angular.json** - Angular CLI configuration, build options
+- **angular.json** also defines the static prerender build (`outputMode: "static"`) and server bootstrap entry used to generate route HTML
 - **tsconfig.json** - TypeScript compiler options
 - **tsconfig.app.json** - App-specific TypeScript config
 - **tsconfig.spec.json** - Test-specific TypeScript config

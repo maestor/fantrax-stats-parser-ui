@@ -8,6 +8,7 @@ import {
     seedLocalStorage,
     seasonsFixture,
     slicedPlayers,
+    waitForBehaviorAssertion,
 } from '../../../testing/behavior-test-utils';
 import type { Player, Season } from '@services/api.service';
 
@@ -60,7 +61,7 @@ describe('TeamSwitcherComponent — desktop user flow', () => {
                 : of(slicedPlayers as unknown as Player[])
         );
 
-        await render(
+        const { fixture } = await render(
             AppComponent,
             getBehaviorTestConfig({
                 isMobile: false,
@@ -84,7 +85,7 @@ describe('TeamSwitcherComponent — desktop user flow', () => {
         dallasSeasons$.next([{ season: 2015, text: '2015-2016' } as Season]);
         dallasSeasons$.complete();
 
-        await vi.waitFor(() => {
+        await waitForBehaviorAssertion(fixture, () => {
             expect(teamCombobox).toHaveTextContent('Dallas Stars');
             expect(screen.queryByText(slicedPlayers[0].name)).not.toBeInTheDocument();
             expect(getPlayerData).toHaveBeenCalledWith(

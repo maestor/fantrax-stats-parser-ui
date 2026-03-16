@@ -45,7 +45,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- Team can be specified by slug (e.g., `colorado`) or ID (e.g., `1`)
 	- Slugs are generated at runtime from names (e.g., "Jamie Benn" → "jamie-benn")
 	- Copy link button in player card header for easy sharing
-- 🔎 **SEO / Share Basics**: Static fallback metadata in `index.html`, client-updated route titles generated from existing translated section/tab labels, and public `robots.txt` + `sitemap.xml`
+- 🔎 **SEO / Share Basics**: Static fallback metadata in `index.html`, client-updated route titles generated from existing translated section/tab labels, public `robots.txt` + `sitemap.xml`, and prerendered HTML for the fixed public routes so share crawlers can read route-specific tags without JavaScript
 - 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
 - 🌐 **Internationalization**: i18n support with ngx-translate (currently ships with Finnish UI; additional languages can be added under `public/i18n/`)
 - 🎨 **Material Design**: Clean UI with Angular Material components
@@ -111,7 +111,7 @@ After changing Vercel env vars, redeploy so they take effect.
 
 ```bash
 # Development
-npm start                              # Dev server on http://localhost:4200
+npm start                              # Dev server on http://localhost:4200 (live reload, HMR disabled)
 npm run generate:types                 # Regenerate API types from OpenAPI spec
 
 # Tests (Vitest + Testing Library)

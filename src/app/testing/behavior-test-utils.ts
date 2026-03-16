@@ -1,5 +1,5 @@
 import { Provider } from '@angular/core';
-import { DeferBlockBehavior } from '@angular/core/testing';
+import { ComponentFixture, DeferBlockBehavior } from '@angular/core/testing';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -421,4 +421,15 @@ export function seedLocalStorage(): void {
       reportType: 'regular',
     })
   );
+}
+
+export async function waitForBehaviorAssertion<T>(
+  fixture: ComponentFixture<T>,
+  assertion: () => void,
+  timeout = 10_000,
+): Promise<void> {
+  await vi.waitFor(() => {
+    fixture.detectChanges();
+    assertion();
+  }, { timeout });
 }

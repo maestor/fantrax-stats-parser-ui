@@ -86,6 +86,7 @@ class TeamService {
 - Basic error handling
 - Configure API endpoints
 - Re-export API response types from generated OpenAPI types
+- Fail fast during server prerendering so static share HTML does not hang waiting on the backend
 
 ### API Types
 
@@ -162,6 +163,7 @@ private readonly API_URL = environment.apiUrl;
 - Catches HTTP errors
 - Logs to console
 - Returns observables with error states
+- During server prerendering, skips live backend requests immediately and lets route-level callers fall back to their existing loading/error UI
 
 **Usage Example**:
 ```typescript
@@ -195,6 +197,16 @@ export class MyComponent {
 - The root route uses only the site title (`FFHL tilastopalvelu`)
 - Other public routes use the format `FFHL tilastopalvelu | SectionName | TabName`
 - The service updates browser metadata after Angular boots; `src/index.html` still provides the default non-JavaScript fallback metadata for crawlers
+
+### ServerTranslateLoader
+**Location**: `src/app/services/server-translate.loader.ts`
+
+**Purpose**: Provide bundled translations during server prerendering without making HTTP requests for `public/i18n/*.json`
+
+**Responsibilities**:
+- Return the existing Finnish translation object for prerendered routes
+- Keep route titles and meta tags available in prerendered HTML even when the server build has no asset HTTP layer
+- Fall back to Finnish for unknown languages until more server-side language bundles are added
 
 **Key Inputs**:
 ```typescript

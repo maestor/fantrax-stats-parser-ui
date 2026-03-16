@@ -7,6 +7,7 @@ import {
   polyfillMatchMedia,
   seedLocalStorage,
   slicedGoalies,
+  waitForBehaviorAssertion,
 } from '../testing/behavior-test-utils';
 describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () => {
   beforeEach(() => {
@@ -20,7 +21,7 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
   });
 
   it('supports a goalie-only stats flow from page filters to the player card graphs tab', async () => {
-    await render(
+    const { fixture } = await render(
       AppComponent,
       getBehaviorTestConfig({ isMobile: false, goalies: slicedGoalies })
     );
@@ -49,7 +50,7 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
     fireEvent.click(seasonCombobox);
     fireEvent.click(await screen.findByRole('option', { name: '2023-2024' }));
 
-    await vi.waitFor(() => {
+    await waitForBehaviorAssertion(fixture, () => {
       expect(seasonCombobox).toHaveTextContent('2023-2024');
     });
 
@@ -57,7 +58,7 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
     const statsModeToggle = screen.getByRole('switch', { name: 'statsModeToggle' });
     fireEvent.click(statsModeToggle);
 
-    await vi.waitFor(() => {
+    await waitForBehaviorAssertion(fixture, () => {
       expect(statsModeToggle).toHaveAttribute('aria-checked', 'true');
       expect(screen.queryByText('tableColumnShort.score')).not.toBeInTheDocument();
       expect(screen.getByText('tableColumnShort.scoreAdjustedByGames')).toBeInTheDocument();

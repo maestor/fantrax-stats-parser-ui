@@ -1,4 +1,5 @@
-import { Injectable, inject } from "@angular/core";
+import { isPlatformBrowser } from "@angular/common";
+import { Injectable, PLATFORM_ID, inject } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { HttpParams } from "@angular/common/http";
 import { Observable, of, throwError } from "rxjs";
@@ -111,6 +112,7 @@ export type LastModifiedResponse = {
 export class ApiService {
   private http = inject(HttpClient);
   private cacheService = inject(CacheService);
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly API_URL = environment.apiUrl;
 
   private readonly inFlightRequests = new Map<
@@ -239,6 +241,10 @@ export class ApiService {
     cacheKey: string,
     queryParams?: Record<string, string>,
   ): Observable<T> {
+    if (!isPlatformBrowser(this.platformId)) {
+      return throwError(() => new Error("Server prerender skips API requests."));
+    }
+
     const requestKey = this.buildRequestKey(path, queryParams);
     const requestCacheKey = `req:${requestKey}`;
 

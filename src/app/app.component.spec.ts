@@ -15,6 +15,7 @@ import {
   seedLocalStorage,
   slicedPlayers,
   PLAYER_SLICE_COUNT,
+  waitForBehaviorAssertion,
 } from './testing/behavior-test-utils';
 
 // Full-render behavior tests with lazy-loaded routes need more time under coverage load.
@@ -30,11 +31,13 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
   });
 
   it('renders all user-visible elements and supports skip link focus flow', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
     // Wait for lazy-loaded route and async data pipeline to complete
     const firstPlayerName = slicedPlayers[0].name;
-    await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(firstPlayerName)).toBeInTheDocument();
+    });
 
     // -- Page title --
     expect(
@@ -107,9 +110,11 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
   });
 
   it('supports keyboard shortcuts and ignores help shortcut while typing in the search field', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     const searchInput = screen.getByLabelText('table.playerSearch');
 
@@ -122,11 +127,12 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     searchInput.blur();
     fireEvent.keyDown(document, { key: '?' });
 
-    const helpCloseButton = await screen.findByRole(
-      'button',
-      { name: 'helpDialog.close' },
-      { timeout: 5000 }
-    );
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(
+        screen.getByRole('button', { name: 'helpDialog.close' })
+      ).toBeInTheDocument();
+    });
+    const helpCloseButton = screen.getByRole('button', { name: 'helpDialog.close' });
     fireEvent.click(helpCloseButton);
 
     await vi.waitFor(() => {
@@ -137,7 +143,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
   it('shows the update snackbar, reopens it after Escape dismissal, and triggers reload from the snackbar action', async () => {
     const activateAndReload = vi.fn<() => Promise<void>>().mockResolvedValue(undefined);
 
-    await render(
+    const { fixture } = await render(
       AppComponent,
       getBehaviorTestConfig({
         isMobile: false,
@@ -146,7 +152,9 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       })
     );
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     const initialActionText = await screen.findByText('pwa.updateAction');
     const initialActionButton = initialActionText.closest('button');
@@ -172,7 +180,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     const behaviorConfig = getBehaviorTestConfig({ isMobile: false });
     const bottomSheetFactory = vi.fn(() => ({ open: vi.fn() }));
 
-    await render(AppComponent, {
+    const { fixture } = await render(AppComponent, {
       ...behaviorConfig,
       providers: [
         ...behaviorConfig.providers,
@@ -183,7 +191,9 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       ],
     });
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     expect(bottomSheetFactory).not.toHaveBeenCalled();
 
@@ -197,9 +207,11 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
   it('starts with visible defaults when browser storage is empty', async () => {
     localStorage.clear();
 
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     expect(screen.getByRole('button', { name: /topControls\.controls/ })).toHaveAttribute(
       'aria-expanded',
@@ -228,9 +240,11 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       })
     );
 
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
       'reportType.regular'
@@ -250,7 +264,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       } as never,
     },
   ])('renders the empty last-modified placeholder $caseName', async ({ lastModified }) => {
-    await render(
+    const { fixture } = await render(
       AppComponent,
       getBehaviorTestConfig({
         isMobile: false,
@@ -258,7 +272,9 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       })
     );
 
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
+    });
 
     expect(document.querySelector('.last-modified--empty')).not.toBeNull();
     expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();

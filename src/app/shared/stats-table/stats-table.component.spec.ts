@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PLATFORM_ID, Provider } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -29,6 +30,7 @@ import {
       [apiError]="apiError"
       [clickable]="clickable"
       [searchLabelKey]="searchLabelKey"
+      [showPositionColumn]="showPositionColumn"
     />
   `,
 })
@@ -36,10 +38,11 @@ class StatsTableHostComponent {
   apiError = false;
   loading = false;
   clickable = true;
+  showPositionColumn = true;
   defaultSortColumn: 'score' | 'scoreAdjustedByGames' = 'score';
   searchLabelKey = 'table.playerSearch';
 
-  readonly columns: Column[] = [
+  columns: Column[] = [
     { field: 'name', align: 'left', initialSortDirection: 'asc' },
     { field: 'score', align: 'left' },
     { field: 'scoreAdjustedByGames', align: 'left' },
@@ -76,7 +79,10 @@ describe('StatsTableComponent — user behavior', () => {
     vi.useRealTimers();
   });
 
-  async function setup(componentProperties: Partial<StatsTableHostComponent> = {}) {
+  async function setup(
+    componentProperties: Partial<StatsTableHostComponent> = {},
+    providers: Provider[] = [],
+  ) {
     const close$ = new Subject<void>();
     const open = vi.fn(() => ({
       afterClosed: () => close$.asObservable(),
@@ -87,6 +93,7 @@ describe('StatsTableComponent — user behavior', () => {
       providers: [
         provideDisabledMaterialAnimations(),
         { provide: MatDialog, useValue: { open } },
+        ...providers,
       ],
       componentProperties,
     });
@@ -255,6 +262,22 @@ describe('StatsTableComponent — user behavior', () => {
     });
   });
 
+  it('does not start the loading interval during server prerendering', async () => {
+    vi.useFakeTimers();
+    const { statsTable } = await setup(
+      { loading: true, data: [] },
+      [{ provide: PLATFORM_ID, useValue: 'server' }],
+    );
+
+    expect(await screen.findByText('table.loading')).toBeInTheDocument();
+    expect((statsTable as any).loadingIntervalId).toBeUndefined();
+    expect(statsTable.loadingProgress).toBe(0);
+
+    vi.advanceTimersByTime(2_000);
+
+    expect(statsTable.loadingProgress).toBe(0);
+  });
+
   it('clamps the active row after filtering reduces the result set and lets the header move focus back to search', async () => {
     await setup();
 
@@ -305,6 +328,54 @@ describe('StatsTableComponent — user behavior', () => {
 
     await vi.waitFor(() => {
       expect(getFirstRowText()).toContain('Beta Blueliner');
+    });
+  });
+
+  it('redraws the table when the position column is hidden', async () => {
+    const view = await setup();
+
+    await screen.findByText('Alpha Center');
+    expect(screen.getByText('tableColumnShort.position')).toBeInTheDocument();
+    expect(document.querySelectorAll('th[mat-header-cell]').length).toBe(4);
+
+    view.fixture.componentInstance.showPositionColumn = false;
+    view.fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      expect(screen.queryByText('tableColumnShort.position')).not.toBeInTheDocument();
+      expect(document.querySelectorAll('th[mat-header-cell]').length).toBe(3);
+    });
+  });
+
+  it('redraws header and row cells when the visible columns change with the dataset', async () => {
+    const view = await setup();
+
+    await screen.findByText('Alpha Center');
+
+    view.fixture.componentInstance.data = [
+      {
+        name: 'Goalie Alpha',
+        games: 50,
+        scoreAdjustedByGames: 4.5,
+        gaa: '2.10',
+        savePercent: '0.921',
+      },
+    ] as unknown as TableRow[];
+    view.fixture.componentInstance.columns = [
+      { field: 'name', align: 'left', initialSortDirection: 'asc' },
+      { field: 'scoreAdjustedByGames', align: 'left' },
+      { field: 'gaa', align: 'left' },
+      { field: 'savePercent', align: 'left' },
+    ];
+    view.fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      expect(screen.queryByText('tableColumnShort.score')).not.toBeInTheDocument();
+      expect(screen.getByText('tableColumnShort.gaa')).toBeInTheDocument();
+      expect(screen.getByText('tableColumnShort.savePercent')).toBeInTheDocument();
+      expect(screen.getByText('Goalie Alpha')).toBeInTheDocument();
+      expect(screen.getByText('2.10')).toBeInTheDocument();
+      expect(screen.getByText('0.921')).toBeInTheDocument();
     });
   });
 

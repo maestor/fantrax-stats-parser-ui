@@ -65,9 +65,7 @@ export class SeoService {
     const canonicalUrl = this.absoluteUrlFor(normalizeSeoPath(this.router.url));
     const socialImageUrl = this.absoluteUrlFor(DEFAULT_SOCIAL_IMAGE_PATH);
     const title = buildPageTitle(siteTitle, sectionName, tabName);
-    const lang = this.translateService.currentLang
-      || this.translateService.getFallbackLang()
-      || 'fi';
+    const lang = this.translateService.currentLang || 'fi';
 
     this.document.title = title;
     this.document.documentElement.lang = lang;

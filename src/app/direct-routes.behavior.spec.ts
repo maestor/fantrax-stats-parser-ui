@@ -11,6 +11,7 @@ import {
   seedLocalStorage,
   slicedGoalies,
   slicedPlayers,
+  waitForBehaviorAssertion,
 } from './testing/behavior-test-utils';
 import { toSlug } from '@shared/utils/slug.utils';
 import seasonPlayersFixture from '../../e2e/fixtures/data/players--season--regular--2025.json';
@@ -52,7 +53,7 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
   });
 
   it('opens the player direct season route, syncs season state, and copies a season-aware link', async () => {
-    await render(
+    const { fixture } = await render(
       AppComponent,
       getBehaviorTestConfig({
         isMobile: false,
@@ -82,12 +83,12 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'a11y.closePlayerCard' }));
 
-    await vi.waitFor(() => {
+    await waitForBehaviorAssertion(fixture, () => {
       expect(router.url).toBe('/player-stats');
-    }, { timeout: 5000 });
-    expect(
-      screen.getByRole('combobox', { name: /season\.selector/ })
-    ).toHaveTextContent('2025-2026');
+      expect(
+        screen.getByRole('combobox', { name: /season\.selector/ })
+      ).toHaveTextContent('2025-2026');
+    });
   });
 
   it('opens the player direct route on the requested tab and preserves the tab in copied links', async () => {

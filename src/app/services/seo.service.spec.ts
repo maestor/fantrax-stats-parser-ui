@@ -33,7 +33,6 @@ type FakeRouter = {
 
 class FakeTranslateService {
   currentLang = 'fi';
-  private fallbackLang = 'fi';
   private translations: Record<string, string>;
   readonly onLangChange = new Subject<LangChangeEvent>();
 
@@ -48,13 +47,11 @@ class FakeTranslateService {
   get(keys: string[]): Observable<Record<string, string>> {
     return of(
       Object.fromEntries(
-        keys.map((key) => [key, this.translations[key] ?? key]),
+        keys
+          .filter((key) => Object.hasOwn(this.translations, key))
+          .map((key) => [key, this.translations[key]]),
       ),
     );
-  }
-
-  getFallbackLang(): string {
-    return this.fallbackLang;
   }
 }
 
@@ -188,5 +185,24 @@ describe('SeoService', () => {
       `${ENGLISH_SITE_TITLE} | ${ENGLISH_SECTION} | ${ENGLISH_TAB}`,
     );
     expect(getMetaContent(doc, 'meta[name="description"]')).toBe(ENGLISH_DESCRIPTION);
+  });
+
+  it('defaults the document language to fi when ngx-translate has not set one yet', () => {
+    const { doc, router, translate } = configure({
+      root: createRouteSnapshot(
+        { sectionKey: 'nav.playerCareers' },
+        createRouteSnapshot({ tabKey: 'career.tabs.goalies' }),
+      ),
+      url: '/career/goalies',
+    });
+
+    translate.currentLang = '';
+    translate.onLangChange.next({
+      lang: '',
+      translations: {},
+    } as LangChangeEvent);
+    router.events.next(new NavigationEnd(3, '/career/goalies', '/career/goalies'));
+
+    expect(doc.documentElement.lang).toBe('fi');
   });
 });

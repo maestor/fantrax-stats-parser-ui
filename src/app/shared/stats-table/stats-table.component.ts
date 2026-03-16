@@ -5,16 +5,17 @@ import {
   ElementRef,
   effect,
   Injector,
+  PLATFORM_ID,
   inject,
   input,
   ViewChild,
   OnDestroy,
 } from '@angular/core';
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass, isPlatformBrowser } from '@angular/common';
 import { Observable, of } from 'rxjs';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -112,6 +113,7 @@ export type TableRow =
 export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
   private readonly injector = inject(Injector);
+  private readonly platformId = inject(PLATFORM_ID);
   private translate = inject(TranslateService);
 
   readonly dataInput = input.required<TableRow[]>({ alias: 'data' });
@@ -205,6 +207,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private rowKeyMap = new WeakMap<object, string>();
   private expandedRowKeys = new Set<string>();
 
+  @ViewChild(MatTable, { read: MatTable }) table?: MatTable<TableRow>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('searchInput', { read: ElementRef }) searchInput?: ElementRef<HTMLInputElement>;
   @ViewChild('tableRoot', { read: ElementRef }) tableRootRef?: ElementRef<HTMLElement>;
@@ -282,6 +285,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
         if (columns.length > 0) {
           this.dynamicColumns = columns;
           this.displayedFields = this.buildDisplayedFields();
+          this.refreshTableStructure();
         }
         if (this.sort) {
           this.dataSource.sort = this.sort;
@@ -299,10 +303,12 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
       if (columnsChanged && !dataChanged) {
         this.dynamicColumns = columns;
         this.displayedFields = this.buildDisplayedFields();
+        this.refreshTableStructure();
       }
 
       if (showPositionChanged) {
         this.displayedFields = this.buildDisplayedFields();
+        this.refreshTableStructure();
       }
 
       if (this.sort && sortRelevantChange && !dataChanged) {
@@ -328,6 +334,12 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
     this.clearLoadingProgressTimer();
 
     if (!isLoading) {
+      this.loadingProgress = 0;
+      this.loadingBuffer = 0;
+      return;
+    }
+
+    if (!isPlatformBrowser(this.platformId)) {
       this.loadingProgress = 0;
       this.loadingBuffer = 0;
       return;
@@ -366,8 +378,23 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
       this.applyDefaultSort();
     }
 
+    this.refreshTableStructure();
     this.cdr.detectChanges();
     this.ensureActiveRowInRange();
+  }
+
+  private refreshTableStructure(): void {
+    if (!this.table) {
+      return;
+    }
+
+    queueMicrotask(() => {
+      this.table?.renderRows();
+      this.table?.updateStickyColumnStyles();
+      this.table?.updateStickyHeaderRowStyles();
+      this.table?.updateStickyFooterRowStyles();
+      this.cdr.markForCheck();
+    });
   }
 
   private buildDisplayedFields(): string[] {
