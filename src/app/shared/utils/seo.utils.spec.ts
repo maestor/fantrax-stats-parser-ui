@@ -58,4 +58,8 @@ describe('seo.utils', () => {
       tabKey: 'career.tabs.highlights',
     });
   });
+
+  it('returns empty seo data when there is no active route snapshot yet', () => {
+    expect(resolveActiveRouteSeo(undefined)).toEqual({});
+  });
 });
