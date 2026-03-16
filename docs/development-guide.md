@@ -161,6 +161,31 @@ python3 scripts/generate-pwa-icons.py
 
 Outputs go to `public/icons/`.
 
+### SEO / Share Metadata
+
+The app now has a lightweight metadata layer for search/share basics.
+
+Key files:
+
+- `src/index.html`: crawler-visible fallback title, description, canonical URL, and Open Graph/Twitter tags
+- `src/app/app.routes.ts`: route SEO data (`sectionKey` / `tabKey`)
+- `src/app/services/seo.service.ts`: updates title/canonical/social tags after navigation
+- `src/app/shared/utils/seo.utils.ts`: title builder + active-route SEO helpers
+- `public/robots.txt`
+- `public/sitemap.xml`
+
+Title rules:
+
+- `/` uses only the site title: `FFHL tilastopalvelu`
+- Fixed public routes use `FFHL tilastopalvelu | SectionName | TabName`
+- Section and tab names come from existing translation keys, so route titles stay in sync with the UI labels
+
+When adding or renaming a public route:
+
+- update the route's SEO data in `src/app/app.routes.ts`
+- update `public/sitemap.xml` if the route should be crawlable
+- keep `src/index.html` fallback metadata sensible for non-JavaScript crawlers
+
 ### Watch Mode (Development Build)
 ```bash
 npm run watch

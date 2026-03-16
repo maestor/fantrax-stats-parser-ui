@@ -1,8 +1,30 @@
 import { Routes } from '@angular/router';
+import { RouteSeoData } from '@shared/utils/seo.utils';
+
+const careerSeo: RouteSeoData = {
+  sectionKey: 'nav.playerCareers',
+};
+
+const leaderboardsSeo: RouteSeoData = {
+  sectionKey: 'nav.leaderboards',
+};
+
+const playerStatsSeo: RouteSeoData = {
+  sectionKey: 'nav.hockeyPlayerStats',
+  tabKey: 'link.playerStats',
+};
+
+const goalieStatsSeo: RouteSeoData = {
+  sectionKey: 'nav.hockeyPlayerStats',
+  tabKey: 'link.goalieStats',
+};
 
 export const routes: Routes = [
   {
     path: 'leaderboards',
+    data: {
+      seo: leaderboardsSeo,
+    },
     loadComponent: () =>
       import('./leaderboards/leaderboards.component').then(
         (m) => m.LeaderboardsComponent
@@ -15,6 +37,11 @@ export const routes: Routes = [
       },
       {
         path: 'regular',
+        data: {
+          seo: {
+            tabKey: 'leaderboards.tabs.regular',
+          } satisfies RouteSeoData,
+        },
         loadComponent: () =>
           import('./leaderboards/regular/leaderboard-regular.component').then(
             (m) => m.LeaderboardRegularComponent
@@ -22,6 +49,11 @@ export const routes: Routes = [
       },
       {
         path: 'playoffs',
+        data: {
+          seo: {
+            tabKey: 'leaderboards.tabs.playoffs',
+          } satisfies RouteSeoData,
+        },
         loadComponent: () =>
           import('./leaderboards/playoffs/leaderboard-playoffs.component').then(
             (m) => m.LeaderboardPlayoffsComponent
@@ -29,6 +61,11 @@ export const routes: Routes = [
       },
       {
         path: 'transactions',
+        data: {
+          seo: {
+            tabKey: 'leaderboards.tabs.transactions',
+          } satisfies RouteSeoData,
+        },
         loadComponent: () =>
           import('./leaderboards/transactions/leaderboard-transactions.component').then(
             (m) => m.LeaderboardTransactionsComponent
@@ -38,6 +75,9 @@ export const routes: Routes = [
   },
   {
     path: 'career',
+    data: {
+      seo: careerSeo,
+    },
     loadComponent: () => import('./career/career.component').then((m) => m.CareerComponent),
     children: [
       {
@@ -47,6 +87,11 @@ export const routes: Routes = [
       },
       {
         path: 'players',
+        data: {
+          seo: {
+            tabKey: 'career.tabs.players',
+          } satisfies RouteSeoData,
+        },
         loadComponent: () =>
           import('./career/players/career-players.component').then(
             (m) => m.CareerPlayersComponent
@@ -54,6 +99,11 @@ export const routes: Routes = [
       },
       {
         path: 'goalies',
+        data: {
+          seo: {
+            tabKey: 'career.tabs.goalies',
+          } satisfies RouteSeoData,
+        },
         loadComponent: () =>
           import('./career/goalies/career-goalies.component').then(
             (m) => m.CareerGoaliesComponent
@@ -61,6 +111,11 @@ export const routes: Routes = [
       },
       {
         path: 'highlights',
+        data: {
+          seo: {
+            tabKey: 'career.tabs.highlights',
+          } satisfies RouteSeoData,
+        },
         loadComponent: () =>
           import('./career/highlights/career-highlights.component').then(
             (m) => m.CareerHighlightsComponent
@@ -85,6 +140,9 @@ export const routes: Routes = [
       },
       {
         path: 'player-stats',
+        data: {
+          seo: playerStatsSeo,
+        },
         loadComponent: () =>
           import('./player-stats/player-stats.component').then(
             (m) => m.PlayerStatsComponent
@@ -92,6 +150,9 @@ export const routes: Routes = [
       },
       {
         path: 'goalie-stats',
+        data: {
+          seo: goalieStatsSeo,
+        },
         loadComponent: () =>
           import('./goalie-stats/goalie-stats.component').then(
             (m) => m.GoalieStatsComponent
@@ -99,6 +160,9 @@ export const routes: Routes = [
       },
       {
         path: 'player/:teamSlug/:playerSlug/:season',
+        data: {
+          seo: playerStatsSeo,
+        },
         loadComponent: () =>
           import('./player-route/player-route.component').then(
             (m) => m.PlayerRouteComponent
@@ -106,6 +170,9 @@ export const routes: Routes = [
       },
       {
         path: 'player/:teamSlug/:playerSlug',
+        data: {
+          seo: playerStatsSeo,
+        },
         loadComponent: () =>
           import('./player-route/player-route.component').then(
             (m) => m.PlayerRouteComponent
@@ -113,6 +180,9 @@ export const routes: Routes = [
       },
       {
         path: 'goalie/:teamSlug/:goalieSlug/:season',
+        data: {
+          seo: goalieStatsSeo,
+        },
         loadComponent: () =>
           import('./goalie-route/goalie-route.component').then(
             (m) => m.GoalieRouteComponent
@@ -120,6 +190,9 @@ export const routes: Routes = [
       },
       {
         path: 'goalie/:teamSlug/:goalieSlug',
+        data: {
+          seo: goalieStatsSeo,
+        },
         loadComponent: () =>
           import('./goalie-route/goalie-route.component').then(
             (m) => m.GoalieRouteComponent

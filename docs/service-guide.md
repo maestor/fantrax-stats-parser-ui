@@ -180,6 +180,32 @@ export class MyComponent {
 
 ---
 
+### SeoService
+**Location**: `src/app/services/seo.service.ts`
+
+**Purpose**: Keep browser metadata aligned with the active route for basic SEO and share previews
+
+**Responsibilities**:
+- Build page titles from the existing translated section/tab labels defined in route metadata
+- Keep `<title>`, canonical URL, and Open Graph/Twitter tags in sync after navigation
+- Reapply metadata when the active UI language changes
+- Reuse a shared default social image from `public/icons/`
+
+**Notes**:
+- The root route uses only the site title (`FFHL tilastopalvelu`)
+- Other public routes use the format `FFHL tilastopalvelu | SectionName | TabName`
+- The service updates browser metadata after Angular boots; `src/index.html` still provides the default non-JavaScript fallback metadata for crawlers
+
+**Key Inputs**:
+```typescript
+type RouteSeoData = {
+  sectionKey?: string;
+  tabKey?: string;
+};
+```
+
+---
+
 ### StatsService
 **Location**: `src/app/services/stats.service.ts`
 

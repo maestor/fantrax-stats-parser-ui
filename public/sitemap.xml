@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://ffhl-stats.vercel.app/</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/player-stats</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/goalie-stats</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/career/players</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/career/goalies</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/career/highlights</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/leaderboards/regular</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/leaderboards/playoffs</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/leaderboards/transactions</loc>
+  </url>
+</urlset>

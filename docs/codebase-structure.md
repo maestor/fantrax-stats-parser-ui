@@ -10,7 +10,7 @@ fantrax-stats-parser-ui/
 ├── dist/               # Production build output
 ├── e2e/                # Playwright E2E tests
 ├── node_modules/       # Dependencies
-├── public/             # Static assets
+├── public/             # Static assets, manifest, robots.txt, sitemap.xml
 ├── src/                # Source code
 │   ├── app/            # Application code
 │   │   ├── base/       # Base layout components
@@ -33,6 +33,7 @@ fantrax-stats-parser-ui/
 │   │   │   ├── comparison.service.ts
 │   │   │   ├── drawer-context.service.ts
 │   │   │   ├── filter.service.ts
+│   │   │   ├── seo.service.ts
 │   │   │   ├── stats.service.ts
 │   │   │   ├── team.service.ts
 │   │   │   └── viewport.service.ts
@@ -131,6 +132,7 @@ Application-wide services:
 - **stats.service.ts** - Business logic for stats data transformation
 - **filter.service.ts** - Reactive UI filter state (season/report/statsPerGame/minGames)
 - **cache.service.ts** - In-memory caching for API responses
+- **seo.service.ts** - Synchronizes title, canonical URL, and Open Graph/Twitter tags with the active route
 - **team.service.ts** - Selected team state (used by top controls + pages)
 - **comparison.service.ts** - 2-player selection state for comparison feature (auto-clears on filter/team changes)
 - **viewport.service.ts** - Viewport breakpoint detection (mobile vs desktop)
@@ -187,7 +189,7 @@ Shared SCSS partials used by multiple shells or route families.
 `Column` and `ColumnIcon` type definitions shared by all table consumers
 
 #### `utils/`
-Reusable shared formatting/conversion helpers such as season and date utilities
+Reusable shared formatting/conversion helpers such as season, date, slug, and SEO title helpers
 
 ## File Naming Conventions
 
