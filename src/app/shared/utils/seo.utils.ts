@@ -24,7 +24,7 @@ export function buildSeoTranslationKeys(routeSeo: RouteSeoData): string[] {
 }
 
 export function normalizeSeoPath(url: string): string {
-  const normalizedUrl = url.split('?')[0]?.split('#')[0] ?? '/';
+  const normalizedUrl = url.replace(/[?#].*$/, '');
   return normalizedUrl || '/';
 }
 

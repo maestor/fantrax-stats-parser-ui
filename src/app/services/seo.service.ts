@@ -56,12 +56,10 @@ export class SeoService {
   }
 
   private applySeo(routeSeo: RouteSeoData, translations: SeoTranslations): void {
-    const siteTitle = translations['pageTitle'] ?? 'FFHL tilastopalvelu';
-    const description = translations['seo.description'] ?? siteTitle;
-    const sectionName = routeSeo.sectionKey
-      ? (translations[routeSeo.sectionKey] ?? null)
-      : null;
-    const tabName = routeSeo.tabKey ? (translations[routeSeo.tabKey] ?? null) : null;
+    const siteTitle = translations['pageTitle']!;
+    const description = translations['seo.description']!;
+    const sectionName = routeSeo.sectionKey ? translations[routeSeo.sectionKey]! : null;
+    const tabName = routeSeo.tabKey ? translations[routeSeo.tabKey]! : null;
     const canonicalUrl = this.absoluteUrlFor(normalizeSeoPath(this.router.url));
     const socialImageUrl = this.absoluteUrlFor(DEFAULT_SOCIAL_IMAGE_PATH);
     const title = buildPageTitle(siteTitle, sectionName, tabName);

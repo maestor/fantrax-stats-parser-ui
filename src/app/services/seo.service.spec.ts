@@ -6,6 +6,7 @@ import { Observable, Subject, of } from 'rxjs';
 
 import { SeoService } from './seo.service';
 import { RouteSeoData } from '@shared/utils/seo.utils';
+import { environment } from '../../environments/environment';
 
 const SITE_TITLE = 'SITE_TITLE';
 const DEFAULT_DESCRIPTION = 'DEFAULT_DESCRIPTION';
@@ -204,5 +205,28 @@ describe('SeoService', () => {
     router.events.next(new NavigationEnd(3, '/career/goalies', '/career/goalies'));
 
     expect(doc.documentElement.lang).toBe('fi');
+  });
+
+  it('uses the production site url for canonical and social image metadata in production builds', () => {
+    const originalProduction = environment.production;
+    environment.production = true;
+
+    try {
+      const { doc } = configure({
+        url: '/career/goalies?sort=name',
+      });
+
+      expect(doc.head.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
+        'https://ffhl-stats.vercel.app/career/goalies',
+      );
+      expect(getMetaContent(doc, 'meta[property="og:image"]')).toBe(
+        'https://ffhl-stats.vercel.app/icons/icon-512.png',
+      );
+      expect(getMetaContent(doc, 'meta[name="twitter:image"]')).toBe(
+        'https://ffhl-stats.vercel.app/icons/icon-512.png',
+      );
+    } finally {
+      environment.production = originalProduction;
+    }
   });
 });
