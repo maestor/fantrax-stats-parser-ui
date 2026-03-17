@@ -1187,8 +1187,10 @@ export interface paths {
         };
         /**
          * All-time transaction leaderboard
-         * @description Returns each team's total claim, drop, and trade counts with a per-season breakdown.
+         * @description Returns each team's total claim, drop, and trade counts plus distinct skater/goalie
+         *     Fantrax entity totals with a per-season breakdown.
          *     Trade totals count distinct team participations by `season + occurred_at`.
+         *     Player and goalie totals count unique Fantrax entity IDs across roster history.
          */
         get: {
             parameters: {
@@ -1711,6 +1713,10 @@ export interface components {
             drops: number;
             /** @description Count of distinct trade participations by `season + occurred_at`. */
             trades: number;
+            /** @description Count of distinct skater Fantrax entity IDs the team has rostered. */
+            players: number;
+            /** @description Count of distinct goalie Fantrax entity IDs the team has rostered. */
+            goalies: number;
             seasons: components["schemas"]["TransactionLeaderboardSeason"][];
             /** @description True when this entry's record matches the previous entry's record. */
             tieRank: boolean;
@@ -1721,6 +1727,10 @@ export interface components {
             drops: number;
             /** @description Count of distinct trade participations by `season + occurred_at`. */
             trades: number;
+            /** @description Count of distinct skater Fantrax entity IDs the team rostered that season. */
+            players: number;
+            /** @description Count of distinct goalie Fantrax entity IDs the team rostered that season. */
+            goalies: number;
         };
     };
     responses: never;

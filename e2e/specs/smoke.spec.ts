@@ -62,7 +62,9 @@ test.describe('Smoke Tests', () => {
 
   test('global navigation opens career listings and career tabs switch between players and goalies', async ({ page }) => {
     await page.getByRole('button', { name: 'Avaa valikko' }).click();
-    await page.getByRole('button', { name: NAV_LABELS.PLAYER_CAREERS }).click();
+    const navDialog = page.getByRole('dialog').last();
+    await expect(navDialog).toBeVisible();
+    await navDialog.getByRole('button', { name: NAV_LABELS.PLAYER_CAREERS }).click();
 
     await expect(page).toHaveURL(/\/career\/players$/);
     await expect(page.getByLabel('Pelaajahaku')).toBeVisible();

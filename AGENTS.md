@@ -38,6 +38,14 @@ For an approved multi-batch plan, treat all batches as part of the same task unt
 
 If a proposed change would alter user-visible application behavior or semantics, stop and confirm with the user before implementing it. Do not make behavior-changing production edits based only on inference from a plan or coverage goal.
 
-If using Playwright MCP during a task, close the browser after you are done with it and no longer need it. Do not leave Playwright browser sessions open across unrelated steps or future sessions.
+## Playwright Rules
+- For local `npm run e2e` or other local Playwright test runs, prefer running outside the sandbox. In this repo the sandboxed path is not reliable for the Playwright web server / browser flow, while the non-sandbox path works consistently better.
+- For Playwright MCP browser checks, also prefer the non-sandbox path.
+- Use Playwright MCP only when the task includes real theming or styling risk that benefits from browser inspection. Treat the following as theming/styling work:
+  - direct light/dark theme changes
+  - introducing new Angular Material components that need visual verification
+  - custom layout or styling work significant enough that browser rendering should be checked
+- Do not use Playwright MCP for routine non-visual changes that do not meaningfully affect theming/styling, such as pure data wiring, copy-only tweaks, or simple column-order updates.
+- If using Playwright MCP during a task, close the browser after you are done with it and no longer need it. Do not leave Playwright browser sessions open across unrelated steps or future sessions.
 
 For local Playwright E2E runs, the user controls the backend on `localhost:3000`. If it is not running, ask the user to start it instead of switching to CI-mode mocking as a workaround.

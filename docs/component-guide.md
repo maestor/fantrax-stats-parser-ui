@@ -259,14 +259,14 @@ readonly expandedHeaderLabels = input.required<{
 
 **Type**: Smart Component (Container)
 
-**Purpose**: Render the `/leaderboards/transactions` view with all-time trade, claim, and drop totals plus expandable season-by-season transaction summaries.
+**Purpose**: Render the `/leaderboards/transactions` view with all-time roster, trade, claim, and drop totals plus expandable season-by-season transaction summaries.
 
 **Responsibilities**:
 
 - Fetch the transaction leaderboard from `ApiService`
-- Keep the main table column order as position, team, trades, claims, drops
+- Keep the main table column order as position, team, trades, claims, drops, players, goalies
 - Force incremental ranking even when the backend marks a tie
-- Format expanded season rows as emoji-prefixed transaction summaries (`🤝`, `✅`, `❌`)
+- Format expanded season rows as emoji-prefixed transaction and roster summaries (`🤝`, `✅`, `❌`, `🏒`, `🥅`)
 
 ---
 
