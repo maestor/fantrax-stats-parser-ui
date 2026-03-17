@@ -110,6 +110,10 @@ export class SeasonSwitcherComponent {
     { initialValue: { loaded: false, data: [] as Season[] } }
   );
   readonly seasons = computed(() => this.seasonState().data);
+  readonly hasResolvedSeasonOptions = computed(() => this.seasons().length > 0);
+  readonly selectValue = computed<number | 'all' | null>(() =>
+    this.hasResolvedSeasonOptions() ? this.selectedSeason() : null
+  );
   readonly selectedSeasonText = computed<string | undefined>(() => {
     const selectedSeason = this.selectedSeason();
     if (selectedSeason === 'all') {
@@ -124,7 +128,7 @@ export class SeasonSwitcherComponent {
       const seasonState = this.seasonState();
       const selectedSeason = this.selectedSeason();
 
-      if (!seasonState.loaded || selectedSeason === 'all') {
+      if (!seasonState.loaded || seasonState.data.length === 0 || selectedSeason === 'all') {
         return;
       }
 

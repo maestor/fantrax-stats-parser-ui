@@ -20,7 +20,7 @@ If documentation includes clearly bad decisions, challenge them and propose bett
   4. If review feedback comes in, iterate on that feedback and return to the review pause when needed.
   5. After the user explicitly accepts the batch, run `npm run verify` unless the accepted batch is documentation-only or E2E-only and cannot affect the verification result.
   6. If `verify` fails, fix the issues, rerun the necessary checks, and keep going until `verify` passes.
-  7. After `verify` passes, or immediately for documentation-only or E2E-only batches where verify is intentionally skipped, commit when the user has asked for or approved a commit.
+  7. After `verify` passes, or immediately for documentation-only or E2E-only batches where verify is intentionally skipped, commit by default unless the user has explicitly denied committing for that batch or asked to do something else first.
 - After each user-accepted and verified batch, you may commit if useful as a checkpoint.
 - Documentation-only batches may skip `npm run verify` when the touched files are limited to docs/workflow text such as `README.md`, `docs/**`, or `AGENTS.md` and no code, fixtures, configs, or generated artifacts changed.
 - E2E-only batches may skip `npm run verify` when the touched files are limited to `e2e/**` and optional docs/workflow text, no app/runtime/config/generated artifacts changed, and the relevant Playwright coverage for the batch has been run and reported.
