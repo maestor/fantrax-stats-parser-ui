@@ -1,5 +1,22 @@
 @use '../shared/styles/shell-header';
 
+.prerender-mobile-loading {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-shell {
+    display: none;
+  }
+
+  .prerender-mobile-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+  }
+}
+
 .last-modified {
   margin: -6px 8px 12px 8px;
   padding: 0 4px;

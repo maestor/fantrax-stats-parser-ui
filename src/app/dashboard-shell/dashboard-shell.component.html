@@ -113,6 +113,7 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
   } @else if (mobileState.ready) {
+    <div class="desktop-shell">
     <div class="title-row">
       <h1 class="mat-display-1">{{ 'pageTitle' | translate }}</h1>
 
@@ -157,6 +158,10 @@
     <mat-tab-nav-panel #tabPanel>
       <router-outlet />
     </mat-tab-nav-panel>
+    </div>
+    <div class="prerender-mobile-loading" aria-hidden="true">
+      <mat-spinner diameter="48" />
+    </div>
   }
 }
 
