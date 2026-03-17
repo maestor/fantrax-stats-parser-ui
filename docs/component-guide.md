@@ -530,6 +530,7 @@ readonly context = input<'player' | 'goalie'>('player');
 - Loads seasons from `ApiService`
 - Displays seasons in reverse order (newest first)
 - Reads the active filter state through `FilterService` signal APIs
+- Keeps the select unselected until real season options exist, including the prerender fallback case where the server emits an empty list placeholder before the browser request completes
 - Updates the appropriate filter state in `FilterService` when the selection changes
 
 ---

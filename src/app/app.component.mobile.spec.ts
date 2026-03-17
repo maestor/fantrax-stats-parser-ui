@@ -94,7 +94,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     await vi.waitFor(() => {
       expect(screen.getByRole('combobox', { name: /team\.selector/ })).toHaveTextContent('Colorado Avalanche');
       expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toBeInTheDocument();
-      expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent('season.allSeasons');
+      expect(screen.getByRole('combobox', { name: /season\.selector/ })).toBeInTheDocument();
       expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent('reportType.regular');
     });
 
