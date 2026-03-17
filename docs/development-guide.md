@@ -219,6 +219,7 @@ npm run test:watch
 ```bash
 npx playwright test
 ```
+
 - Runs Playwright E2E tests
 - Headless by default
 - Results in `test-results/`
@@ -239,6 +240,26 @@ npx playwright test e2e/specs/leaderboards.spec.ts
 # Headed browser run
 npx playwright test --headed
 ```
+
+### Manual Browser Automation For Agent Work
+
+Use the device-wide `agent-browser` CLI for ad hoc browser inspection tasks that are not Playwright E2E tests.
+
+Recommended flow:
+
+```bash
+agent-browser open http://localhost:4200
+agent-browser wait --load networkidle
+agent-browser snapshot -i
+agent-browser click @e2
+agent-browser close
+```
+
+Notes:
+
+- Prefer `agent-browser` for manual UI/theme inspection that older workflow text may still call "Playwright MCP".
+- Keep Playwright for automated E2E coverage (`npm run e2e`, `npx playwright test`, `npm run perf:audit`).
+- For dark-mode checks, use explicit browser media settings such as `agent-browser --color-scheme dark open http://localhost:4200`.
 
 ### Angular CLI Commands
 ```bash
