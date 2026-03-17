@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/test-fixture';
 import { LEADERBOARD_LABELS } from '../config/test-data';
+import { fi } from '../config/i18n';
 
 test.describe('Leaderboards', () => {
   test('full flow: redirect, regular table with position tie logic, tab switch, playoffs table, and transactions table', async ({ page }) => {
@@ -74,9 +75,35 @@ test.describe('Leaderboards', () => {
     await expect(transactionPositions.nth(1)).toHaveText('2');
     await expect(transactionPositions.nth(2)).toHaveText('3');
 
+    const transactionHeaderTexts = (await page.getByRole('columnheader').allTextContents())
+      .map((text) => text.replace(/\s+/g, ' ').trim());
+    expect(transactionHeaderTexts).toEqual([
+      fi('tableColumnShort.displayPosition'),
+      fi('tableColumnShort.teamName'),
+      `🤝 ${fi('tableColumnShort.trades')}`,
+      `✅ ${fi('tableColumnShort.claims')}`,
+      `❌ ${fi('tableColumnShort.drops')}`,
+      `🏒 ${fi('tableColumnShort.players')}`,
+      `🥅 ${fi('tableColumnShort.goalies')}`,
+    ]);
+
+    const playersHeader = page.getByRole('columnheader').filter({ hasText: '🏒' });
+    const goaliesHeader = page.getByRole('columnheader').filter({ hasText: '🥅' });
+    const tradesHeader = page.getByRole('columnheader').filter({ hasText: '🤝' });
+    const claimsHeader = page.getByRole('columnheader').filter({ hasText: '✅' });
+    const dropsHeader = page.getByRole('columnheader').filter({ hasText: '❌' });
+
+    await expect(playersHeader).toContainText('🏒');
+    await expect(goaliesHeader).toContainText('🥅');
+    await expect(tradesHeader).toContainText('🤝');
+    await expect(claimsHeader).toContainText('✅');
+    await expect(dropsHeader).toContainText('❌');
+
     const transactionRows = page.locator('tr[mat-row]:not(.expanded-detail-row)');
     await transactionRows.nth(1).click();
     await expect(page.locator('.expanded-season-row').first()).toContainText('🤝');
+    await expect(page.locator('.expanded-season-row').first()).toContainText('🏒');
+    await expect(page.locator('.expanded-season-row').first()).toContainText('🥅');
   });
 
   test('direct URL /leaderboards/regular loads without redirect', async ({ page }) => {

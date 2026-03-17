@@ -245,35 +245,41 @@ describe('Leaderboard expansion behavior', () => {
               {
                 teamId: '1',
                 teamName: 'Colorado Avalanche',
+                players: 77,
+                goalies: 10,
                 trades: 18,
                 claims: 42,
                 drops: 39,
                 tieRank: false,
                 seasons: [
-                  { season: 2024, trades: 7, claims: 15, drops: 13 },
-                  { season: 2023, trades: 6, claims: 14, drops: 13 },
+                  { season: 2024, trades: 7, claims: 15, drops: 13, players: 31, goalies: 4 },
+                  { season: 2023, trades: 6, claims: 14, drops: 13, players: 25, goalies: 3 },
                 ],
               },
               {
                 teamId: '2',
                 teamName: 'Dallas Stars',
+                players: 79,
+                goalies: 11,
                 trades: 18,
                 claims: 42,
                 drops: 39,
                 tieRank: true,
                 seasons: [
-                  { season: 2024, trades: 8, claims: 16, drops: 15 },
+                  { season: 2024, trades: 8, claims: 16, drops: 15, players: 33, goalies: 4 },
                 ],
               },
               {
                 teamId: '3',
                 teamName: 'Edmonton Oilers',
+                players: 60,
+                goalies: 8,
                 trades: 11,
                 claims: 29,
                 drops: 25,
                 tieRank: false,
                 seasons: [
-                  { season: 2024, trades: 5, claims: 12, drops: 10 },
+                  { season: 2024, trades: 5, claims: 12, drops: 10, players: 25, goalies: 3 },
                 ],
               },
             ]),
@@ -283,6 +289,18 @@ describe('Leaderboard expansion behavior', () => {
     });
 
     await screen.findByText('Colorado Avalanche');
+    const headerTexts = screen.getAllByRole('columnheader').map((header) =>
+      header.textContent?.replace(/\s+/g, ' ').trim() ?? ''
+    );
+    expect(headerTexts).toEqual([
+      'tableColumnShort.displayPosition',
+      'tableColumnShort.teamName',
+      '🤝 tableColumnShort.trades',
+      '✅ tableColumnShort.claims',
+      '❌ tableColumnShort.drops',
+      '🏒 tableColumnShort.players',
+      '🥅 tableColumnShort.goalies',
+    ]);
 
     const rows = screen.getAllByRole('row').slice(1);
     expect(rows).toHaveLength(3);
@@ -299,6 +317,6 @@ describe('Leaderboard expansion behavior', () => {
     fireEvent.click(team.closest('tr') as HTMLElement);
 
     await screen.findByText('2024-25');
-    expect(screen.getByText('🤝 8 | ✅ 16 | ❌ 15')).toBeInTheDocument();
+    expect(screen.getByText('🤝 8 | ✅ 16 | ❌ 15 | 🏒 33 | 🥅 4')).toBeInTheDocument();
   });
 });

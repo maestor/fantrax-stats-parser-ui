@@ -41,9 +41,11 @@ export class LeaderboardTransactionsComponent {
   readonly columns: Column[] = [
     { field: 'displayPosition', align: 'left', sortable: false },
     { field: 'teamName', align: 'left', initialSortDirection: 'asc' },
-    { field: 'trades' },
-    { field: 'claims' },
-    { field: 'drops' },
+    { field: 'trades', icon: { name: '🤝', type: 'emoji' } },
+    { field: 'claims', icon: { name: '✅', type: 'emoji' } },
+    { field: 'drops', icon: { name: '❌', type: 'emoji' } },
+    { field: 'players', icon: { name: '🏒', type: 'emoji' } },
+    { field: 'goalies', icon: { name: '🥅', type: 'emoji' } },
   ];
 
   readonly rowKey = (row: { teamId: string }) => row.teamId;

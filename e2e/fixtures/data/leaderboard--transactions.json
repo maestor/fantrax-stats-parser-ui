@@ -2,40 +2,46 @@
   {
     "teamId": "1",
     "teamName": "Colorado Avalanche",
+    "players": 77,
+    "goalies": 10,
     "claims": 42,
     "drops": 39,
     "trades": 18,
     "tieRank": false,
     "seasons": [
-      { "season": 2024, "claims": 15, "drops": 13, "trades": 7 },
-      { "season": 2023, "claims": 14, "drops": 13, "trades": 6 },
-      { "season": 2022, "claims": 13, "drops": 13, "trades": 5 }
+      { "season": 2024, "claims": 15, "drops": 13, "trades": 7, "players": 31, "goalies": 4 },
+      { "season": 2023, "claims": 14, "drops": 13, "trades": 6, "players": 25, "goalies": 3 },
+      { "season": 2022, "claims": 13, "drops": 13, "trades": 5, "players": 21, "goalies": 3 }
     ]
   },
   {
     "teamId": "2",
     "teamName": "Dallas Stars",
+    "players": 79,
+    "goalies": 11,
     "claims": 42,
     "drops": 39,
     "trades": 18,
     "tieRank": true,
     "seasons": [
-      { "season": 2024, "claims": 16, "drops": 15, "trades": 8 },
-      { "season": 2023, "claims": 14, "drops": 13, "trades": 6 },
-      { "season": 2022, "claims": 12, "drops": 11, "trades": 4 }
+      { "season": 2024, "claims": 16, "drops": 15, "trades": 8, "players": 33, "goalies": 4 },
+      { "season": 2023, "claims": 14, "drops": 13, "trades": 6, "players": 25, "goalies": 4 },
+      { "season": 2022, "claims": 12, "drops": 11, "trades": 4, "players": 21, "goalies": 3 }
     ]
   },
   {
     "teamId": "3",
     "teamName": "Edmonton Oilers",
+    "players": 60,
+    "goalies": 8,
     "claims": 29,
     "drops": 25,
     "trades": 11,
     "tieRank": false,
     "seasons": [
-      { "season": 2024, "claims": 12, "drops": 10, "trades": 5 },
-      { "season": 2023, "claims": 9, "drops": 8, "trades": 4 },
-      { "season": 2022, "claims": 8, "drops": 7, "trades": 2 }
+      { "season": 2024, "claims": 12, "drops": 10, "trades": 5, "players": 25, "goalies": 3 },
+      { "season": 2023, "claims": 9, "drops": 8, "trades": 4, "players": 20, "goalies": 3 },
+      { "season": 2022, "claims": 8, "drops": 7, "trades": 2, "players": 15, "goalies": 2 }
     ]
   }
 ]

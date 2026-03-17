@@ -27,10 +27,10 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- 🎯 Radar chart view showing 0-100 normalized score breakdown for individual stats, toggleable with line charts
 	- 🏆 Career bests highlighted in By Season tab with tooltip showing stat name (only for players with 2+ seasons)
 	- ⬅️➡️ Navigate between players/goalies without closing the card: keyboard arrows (←/→), touch swipe (mobile), or trackpad two-finger swipe (laptop). Wraps circularly with screen reader announcements. Active row in the stats table stays in sync. Direction-aware slide transition provides visual feedback
-- 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with three ranking tables — regular season (Runkosarja), playoffs, and transactions (Siirrot) — showing all-time team standings and transaction activity with column sorting
+- 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with three ranking tables — regular season (Runkosarja), playoffs, and transactions (Siirrot) — showing all-time team standings, transaction activity, and roster totals with column sorting
 	- Expand/collapse per-team season breakdown by clicking the team row (multiple rows can stay open)
 	- Regular/playoffs keep blank tied ranks, while transactions always show incremental positions
-	- Season details show `🏆` markers for winner/championship seasons (regular + playoffs) and `🤝 | ✅ | ❌` summaries for transactions
+	- Season details show `🏆` markers for winner/championship seasons (regular + playoffs) and `🤝 | ✅ | ❌ | 🏒 | 🥅` summaries for transactions
 - 📚 **Career Listings**: Standalone `/career/players` and `/career/goalies` routes for all-time player and goalie career tables
 	- Searchable and sortable, with no stats-page filters or mobile drawer
 	- Virtualized row rendering keeps long lists responsive
