@@ -1,3 +1,8 @@
+@use '@fontsource/roboto/300' as *;
+@use '@fontsource/roboto/400' as *;
+@use '@fontsource/roboto/500' as *;
+@use 'material-icons/iconfont/filled.css';
+
 /* You can add global styles to this file, and also import other style files */
 // Mobile viewport helpers
 // - 100vh is unreliable on mobile browsers (address bar / bottom bar).
