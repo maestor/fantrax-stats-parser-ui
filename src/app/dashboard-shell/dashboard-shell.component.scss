@@ -1,5 +1,11 @@
 @use '../shared/styles/shell-header';
 
+@media (max-width: 768px) {
+  .desktop-shell {
+    display: none;
+  }
+}
+
 .last-modified {
   margin: -6px 8px 12px 8px;
   padding: 0 4px;
