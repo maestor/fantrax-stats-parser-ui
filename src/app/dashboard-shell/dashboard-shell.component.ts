@@ -3,6 +3,7 @@ import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule, MatTabNavPanel } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -77,6 +78,7 @@ export function buildInitialDashboardMobileState(
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     MatSidenavModule,
     MatTooltipModule,
     NavigationComponent,
