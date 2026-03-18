@@ -1,4 +1,4 @@
-import { Injectable, ElementRef, ChangeDetectorRef, NgZone, inject, OnDestroy } from '@angular/core';
+import { Injectable, ChangeDetectorRef, NgZone, inject, OnDestroy } from '@angular/core';
 import { Player, Goalie } from '@services/api.service';
 import { PlayerCardDialogData } from './player-card.component';
 
@@ -14,7 +14,6 @@ export class PlayerCardNavigationService implements OnDestroy {
   liveRegionMessage = '';
 
   private context: NavigationContext | undefined;
-  private host!: ElementRef<HTMLElement>;
   private cdr!: ChangeDetectorRef;
   private onNavigateCallback?: (player: Player | Goalie, index: number) => void;
 
@@ -27,19 +26,18 @@ export class PlayerCardNavigationService implements OnDestroy {
   private wheelResetTimer: ReturnType<typeof setTimeout> | null = null;
   private wheelCooldownTimer: ReturnType<typeof setTimeout> | null = null;
   private animationTimer: ReturnType<typeof setTimeout> | null = null;
+  private rafId: number | null = null;
   private readonly animationDuration = 125;
   private readonly wheelHandler = (e: WheelEvent) => this.onWheel(e);
 
   init(
     context: NavigationContext | undefined,
-    host: ElementRef<HTMLElement>,
     cdr: ChangeDetectorRef,
     onNavigate: (player: Player | Goalie, index: number) => void,
   ): void {
     this.context = context;
     this.currentIndex = context?.currentIndex ?? 0;
     this.allPlayers = context?.allPlayers ?? [];
-    this.host = host;
     this.cdr = cdr;
     this.onNavigateCallback = onNavigate;
 
@@ -50,6 +48,7 @@ export class PlayerCardNavigationService implements OnDestroy {
 
   ngOnDestroy(): void {
     document.removeEventListener('wheel', this.wheelHandler);
+    if (this.rafId !== null) cancelAnimationFrame(this.rafId);
     if (this.wheelResetTimer) clearTimeout(this.wheelResetTimer);
     if (this.wheelCooldownTimer) clearTimeout(this.wheelCooldownTimer);
     if (this.animationTimer) clearTimeout(this.animationTimer);
@@ -92,6 +91,7 @@ export class PlayerCardNavigationService implements OnDestroy {
 
   navigateToIndex(newIndex: number, direction: 'left' | 'right'): void {
     if (this.animationTimer) { clearTimeout(this.animationTimer); this.animationTimer = null; }
+    if (this.rafId !== null) { cancelAnimationFrame(this.rafId); this.rafId = null; }
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) { this.applyNavigation(newIndex); return; }
@@ -100,14 +100,22 @@ export class PlayerCardNavigationService implements OnDestroy {
     this.cdr.detectChanges();
 
     this.animationTimer = setTimeout(() => {
+      this.animationTimer = null;
       this.applyNavigation(newIndex);
       const enterFrom = direction === 'left' ? 'left' : 'right';
       this.slideClass = `card-content-wrapper slide-in-${enterFrom}`;
       this.cdr.detectChanges();
-      this.host.nativeElement.querySelector('.card-content-wrapper')?.getBoundingClientRect();
-      this.slideClass = 'card-content-wrapper';
-      this.cdr.detectChanges();
-      this.animationTimer = setTimeout(() => { this.animationTimer = null; }, this.animationDuration);
+      // Double rAF: first frame commits the snap; second frame starts the transition back to centre
+      this.rafId = requestAnimationFrame(() => {
+        this.rafId = requestAnimationFrame(() => {
+          this.zone.run(() => {
+            this.rafId = null;
+            this.slideClass = 'card-content-wrapper';
+            this.cdr.detectChanges();
+            this.animationTimer = setTimeout(() => { this.animationTimer = null; }, this.animationDuration);
+          });
+        });
+      });
     }, this.animationDuration);
   }
 

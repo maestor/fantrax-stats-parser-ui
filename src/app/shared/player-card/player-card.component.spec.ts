@@ -1,3 +1,5 @@
+import { ChangeDetectorRef } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 
 import { AppComponent } from '../../app.component';
@@ -10,6 +12,7 @@ import {
     waitForBehaviorAssertion,
 } from '../../testing/behavior-test-utils';
 import { toSlug } from '@shared/utils/slug.utils';
+import { PlayerCardNavigationService } from './player-card-navigation.service';
 
 describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () => {
     const writeTextMock = vi.fn<(_: string) => Promise<void>>();
@@ -189,6 +192,40 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
                 within(dialog).getByRole('button', { name: 'graphs.switchToRadar' })
             ).toBeInTheDocument();
         });
+    });
+
+    it('should not call getBoundingClientRect during card navigation (no forced reflow)', async () => {
+        vi.useFakeTimers();
+        polyfillMatchMedia();
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'card-content-wrapper';
+        document.body.appendChild(wrapper);
+
+        const spy = vi.spyOn(wrapper, 'getBoundingClientRect');
+
+        const service = TestBed.runInInjectionContext(() => new PlayerCardNavigationService());
+        const cdrStub = { detectChanges: vi.fn() } as unknown as ChangeDetectorRef;
+
+        const mockPlayers = [
+            { name: 'Player A' },
+            { name: 'Player B' },
+        ] as never[];
+
+        service.init(
+            { allPlayers: mockPlayers, currentIndex: 0 },
+            cdrStub,
+            vi.fn(),
+        );
+
+        service.navigateToNext();
+        vi.runAllTimers();
+
+        expect(spy).not.toHaveBeenCalled();
+
+        service.ngOnDestroy();
+        document.body.removeChild(wrapper);
+        vi.useRealTimers();
     });
 
     it('supports touch and wheel navigation while announcing the active player', async () => {
