@@ -22,6 +22,7 @@
       "resources": {
         "files": [
           "/assets/**",
+          "/fonts/**",
           "/i18n/**",
           "/icons/**",
           "/*.(png|jpg|jpeg|svg|webp|ico)"
