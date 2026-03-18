@@ -93,6 +93,7 @@ export class VirtualTableComponent implements AfterViewInit {
   private previousData?: TableRow[];
   private previousColumns?: Column[];
   private previousDefaultSortColumn?: string;
+  private resizeRafId: ReturnType<typeof requestAnimationFrame> | null = null;
 
   constructor() {
     effect(() => {
@@ -133,6 +134,10 @@ export class VirtualTableComponent implements AfterViewInit {
       this.previousColumns = columns;
       this.previousDefaultSortColumn = defaultSortColumn;
     });
+
+    this.destroyRef.onDestroy(() => {
+      if (this.resizeRafId !== null) cancelAnimationFrame(this.resizeRafId);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -151,7 +156,11 @@ export class VirtualTableComponent implements AfterViewInit {
   }
 
   onWindowResize(): void {
-    this.syncViewportMetrics();
+    if (this.resizeRafId !== null) cancelAnimationFrame(this.resizeRafId);
+    this.resizeRafId = requestAnimationFrame(() => {
+      this.resizeRafId = null;
+      this.syncViewportMetrics();
+    });
   }
 
   getHeaderIconType(column: Column): ColumnIcon['type'] | null {

@@ -207,7 +207,6 @@ export class PlayerCardComponent implements AfterViewInit {
 
     this.navigationService.init(
       this.navigationContext,
-      this.host,
       this.cdr,
       (player) => {
         this.dataState.set(player);

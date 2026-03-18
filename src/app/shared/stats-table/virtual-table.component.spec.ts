@@ -151,6 +151,22 @@ describe('VirtualTableComponent — user behavior', () => {
     expect(await screen.findByText('table.loading')).toBeInTheDocument();
   });
 
+  it('should defer syncViewportMetrics to rAF on window resize (avoid forced reflow)', async () => {
+    const view = await setup();
+    const table = view.fixture.debugElement.children[0].componentInstance as VirtualTableComponent;
+
+    await screen.findByText('Beta Blueliner');
+
+    const spy = vi.spyOn(table as any, 'syncViewportMetrics');
+    table.onWindowResize();
+    // Must NOT be called synchronously
+    expect(spy).not.toHaveBeenCalled();
+    // Should be called after rAF, exactly once
+    await vi.waitFor(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+  });
+
   it('covers the remaining keyboard and resize paths used by the career table', async () => {
     const view = await setup();
     const table = view.fixture.debugElement.children[0].componentInstance as VirtualTableComponent;
@@ -203,8 +219,10 @@ describe('VirtualTableComponent — user behavior', () => {
     };
     table.onWindowResize();
 
-    expect(table.headerScrollbarOffset).toBe(20);
-    expect(detectChangesSpy).toHaveBeenCalled();
+    await vi.waitFor(() => {
+      expect(table.headerScrollbarOffset).toBe(20);
+      expect(detectChangesSpy).toHaveBeenCalled();
+    });
   });
 
   it('supports name sorting while keeping the running-number column visible', async () => {
