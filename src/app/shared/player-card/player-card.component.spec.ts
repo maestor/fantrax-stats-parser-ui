@@ -196,36 +196,39 @@ describe('PlayerCardComponent — desktop user flow', { timeout: 90_000 }, () =>
 
     it('should not call getBoundingClientRect during card navigation (no forced reflow)', async () => {
         vi.useFakeTimers();
-        polyfillMatchMedia();
+        try {
+            polyfillMatchMedia();
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'card-content-wrapper';
-        document.body.appendChild(wrapper);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'card-content-wrapper';
+            document.body.appendChild(wrapper);
 
-        const spy = vi.spyOn(wrapper, 'getBoundingClientRect');
+            const spy = vi.spyOn(wrapper, 'getBoundingClientRect');
 
-        const service = TestBed.runInInjectionContext(() => new PlayerCardNavigationService());
-        const cdrStub = { detectChanges: vi.fn() } as unknown as ChangeDetectorRef;
+            const service = TestBed.runInInjectionContext(() => new PlayerCardNavigationService());
+            const cdrStub = { detectChanges: vi.fn() } as unknown as ChangeDetectorRef;
 
-        const mockPlayers = [
-            { name: 'Player A' },
-            { name: 'Player B' },
-        ] as never[];
+            const mockPlayers = [
+                { name: 'Player A' },
+                { name: 'Player B' },
+            ] as never[];
 
-        service.init(
-            { allPlayers: mockPlayers, currentIndex: 0 },
-            cdrStub,
-            vi.fn(),
-        );
+            service.init(
+                { allPlayers: mockPlayers, currentIndex: 0 },
+                cdrStub,
+                vi.fn(),
+            );
 
-        service.navigateToNext();
-        vi.runAllTimers();
+            service.navigateToNext();
+            vi.runAllTimers();
 
-        expect(spy).not.toHaveBeenCalled();
+            expect(spy).not.toHaveBeenCalled();
 
-        service.ngOnDestroy();
-        document.body.removeChild(wrapper);
-        vi.useRealTimers();
+            service.ngOnDestroy();
+            document.body.removeChild(wrapper);
+        } finally {
+            vi.useRealTimers();
+        }
     });
 
     it('supports touch and wheel navigation while announcing the active player', async () => {
