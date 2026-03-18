@@ -29,6 +29,16 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "material-icons.woff2",
+                "input": "node_modules/material-icons/iconfont",
+                "output": "fonts"
+              },
+              {
+                "glob": "material-icons.woff",
+                "input": "node_modules/material-icons/iconfont",
+                "output": "fonts"
               }
             ],
             "styles": [
