@@ -20,17 +20,41 @@ function waitForEntryDraftResponse(page: Page) {
 
 async function expectStatisticsContent(page: Page) {
   const cards = page.locator('app-table-card');
+  const firstCard = cards.first();
+  const nextPageButton = firstCard.getByRole('button', {
+    name: fi('tableCard.nextPage'),
+  });
+  const pageSummary = firstCard.locator('.page-summary');
+
   await expect(cards).toHaveCount(10);
   await expect(
-    cards.first().getByRole('heading', {
+    firstCard.getByRole('heading', {
       name: fi('draft.statistics.cards.totalPicks.title'),
       exact: true,
     }),
   ).toBeVisible();
-  await expect(cards.first().locator('button[mat-icon-button]')).toHaveCount(0);
-  await expect(
-    cards.first().getByRole('button', { name: fi('tableCard.nextPage') }),
-  ).toBeEnabled();
+  await expect(firstCard.locator('button[mat-icon-button]')).toHaveCount(0);
+  await expect(pageSummary).toBeVisible();
+  await expect(nextPageButton).toBeVisible();
+
+  const pageSummaryText = (await pageSummary.textContent())?.trim() ?? '';
+  const paginationMatch = pageSummaryText.match(/^(\d+)-(\d+)\s*\/\s*(\d+)$/);
+
+  expect(paginationMatch).not.toBeNull();
+
+  if (paginationMatch) {
+    const [, start, end, total] = paginationMatch;
+
+    expect(Number(start)).toBeGreaterThanOrEqual(1);
+    expect(Number(end)).toBeGreaterThanOrEqual(Number(start));
+    expect(Number(total)).toBeGreaterThanOrEqual(Number(end));
+
+    if (Number(total) > 10) {
+      await expect(nextPageButton).toBeEnabled();
+    } else {
+      await expect(nextPageButton).toBeDisabled();
+    }
+  }
 }
 
 async function expectEntryDraftContent(page: Page) {
@@ -96,9 +120,11 @@ test.describe('Draft pages', () => {
   test('global nav reaches /draft, /draft redirects to entry drafts, and tabs switch between all three views', async ({ page }) => {
     await page.goto('/leaderboards/regular');
 
-    await page.getByRole('button', { name: fi('a11y.openNavMenu') }).click();
+    await page.getByRole('button', { name: fi('a11y.openNavMenu') }).last().click();
+    const navDialog = page.getByRole('dialog').last();
+    await expect(navDialog).toBeVisible();
     const entryDraftResponse = waitForEntryDraftResponse(page);
-    await page.getByRole('button', { name: NAV_LABELS.DRAFTS }).last().click();
+    await navDialog.getByRole('button', { name: NAV_LABELS.DRAFTS }).click();
 
     await expect(page).toHaveURL(/\/draft\/entry-drafts$/);
     await entryDraftResponse;

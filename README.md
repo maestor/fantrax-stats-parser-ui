@@ -195,6 +195,7 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 
 **Local:** Backend API must be running on `localhost:3000` (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
 **CI:** E2E tests run without a backend — API responses are served from JSON fixtures via Playwright's `page.route()` mocking.
+In CI fixture mode, Playwright also blocks service workers so mocked `/api/**` requests cannot be swallowed by the production PWA layer.
 
 Local Playwright runs against `http://localhost:4200`. The Playwright `webServer` starts `npm start` automatically when needed, or reuses an already-running frontend on port `4200`.
 
