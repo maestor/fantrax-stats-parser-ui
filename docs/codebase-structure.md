@@ -104,7 +104,8 @@ Route shell and draft browse child components:
 - Handles `/draft/entry-drafts` and `/draft/opening-draft`
 - Renders tab navigation between the two draft views
 - Lives under the lighter root shell without dashboard-only controls or mobile settings drawer
-- Batch 1 currently provides the route shell plus placeholder child content while later batches add the real draft data presentations
+- `opening-draft/` now renders a real accordion/list UI backed by the `/draft/original` endpoint
+- `entry-drafts/` still carries the placeholder content until the next batch lands
 
 ### `/src/app/shared/table-card/`
 Reusable card-based read-only table presentation:

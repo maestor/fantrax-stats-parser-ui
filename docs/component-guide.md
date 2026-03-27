@@ -218,6 +218,22 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Host the child draft routes under a `mat-tab-nav-panel`
 - Keep draft browsing on the lighter root shell without dashboard controls
 
+### OpeningDraftComponent
+
+**Location**: `src/app/draft/opening-draft/`
+
+**Type**: Smart Browse Component
+
+**Purpose**: Render `/draft/opening-draft` as a team-grouped accordion of opening-draft picks
+
+**Responsibilities**:
+
+- Fetch opening-draft groups from `ApiService.getOpeningDrafts()`
+- Render each team in API order as its own Material expansion panel
+- Show simple per-pick rows for round, pick number, drafted player, and traded-owner suffixes
+- Reuse the browse-route loading, empty, and API-error states
+- Mark footer readiness after the async route data has resolved
+
 ### TableCardComponent
 
 **Location**: `src/app/shared/table-card/`

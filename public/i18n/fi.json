@@ -94,6 +94,12 @@
       "entryDrafts": "Entry draftit",
       "openingDraft": "Avausdrafti"
     },
+    "openingDraft": {
+      "selectionLabel": "Varaus",
+      "roundLabel": "Kierros",
+      "turnLabel": "Vuoro",
+      "originalOwnerLabel": "Alkuperäinen vuoro:"
+    },
     "placeholders": {
       "entryDrafts": "Varaukset-osion perusrunko on nyt paikallaan. Entry draftit -sisältö rakennetaan seuraavassa työerässä.",
       "openingDraft": "Varaukset-osion perusrunko on nyt paikallaan. Avausdrafti-sisältö rakennetaan seuraavassa työerässä."

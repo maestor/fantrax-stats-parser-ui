@@ -93,7 +93,9 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 7. **Draft Pages** (`/draft/entry-drafts`, `/draft/opening-draft`)
    - Dedicated browse-route shell for FFHL draft history
    - Shares the lighter root-shell treatment used by other browse routes
-   - Batch 1 provides the route family, tab navigation, subtitle/SEO integration, and placeholder content while the draft-specific data UIs land in the next batches
+   - Batch 1 provides the route family, tab navigation, subtitle/SEO integration, and browse-shell wiring
+   - Batch 2 renders `/draft/opening-draft` as a Material accordion grouped by drafting team, with simple per-pick rows and a traded-owner suffix when the original pick came from another team
+   - `/draft/entry-drafts` remains the next batch and still uses placeholder content for now
 
 8. **Data Management**
    - Caching service to reduce API calls
