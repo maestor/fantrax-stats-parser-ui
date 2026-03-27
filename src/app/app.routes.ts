@@ -9,6 +9,10 @@ const leaderboardsSeo: RouteSeoData = {
   sectionKey: 'nav.leaderboards',
 };
 
+const draftSeo: RouteSeoData = {
+  sectionKey: 'nav.drafts',
+};
+
 const playerStatsSeo: RouteSeoData = {
   sectionKey: 'nav.hockeyPlayerStats',
   tabKey: 'link.playerStats',
@@ -119,6 +123,44 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./career/highlights/career-highlights.component').then(
             (m) => m.CareerHighlightsComponent
+          ),
+      },
+    ],
+  },
+  {
+    path: 'draft',
+    data: {
+      seo: draftSeo,
+    },
+    loadComponent: () => import('./draft/draft.component').then((m) => m.DraftComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'entry-drafts',
+        pathMatch: 'full',
+      },
+      {
+        path: 'entry-drafts',
+        data: {
+          seo: {
+            tabKey: 'draft.tabs.entryDrafts',
+          } satisfies RouteSeoData,
+        },
+        loadComponent: () =>
+          import('./draft/entry-drafts/entry-drafts.component').then(
+            (m) => m.EntryDraftsComponent
+          ),
+      },
+      {
+        path: 'opening-draft',
+        data: {
+          seo: {
+            tabKey: 'draft.tabs.openingDraft',
+          } satisfies RouteSeoData,
+        },
+        loadComponent: () =>
+          import('./draft/opening-draft/opening-draft.component').then(
+            (m) => m.OpeningDraftComponent
           ),
       },
     ],

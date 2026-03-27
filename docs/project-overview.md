@@ -31,7 +31,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 - **Root shell (`AppComponent`)**: stays lightweight and owns the skip link, footer, route subtitle, global keyboard shortcuts, update snackbar, and help/navigation overlays.
   The footer now loads as a deferred chunk only when route readiness makes it visible, and the overlay services are resolved lazily on interaction.
 - **Dashboard shell (`DashboardShellComponent`)**: lazy-loaded only for the interactive dashboard routes (`/`, `/player-stats`, `/goalie-stats`, and direct player/goalie links). It owns the title row, last-modified metadata, top controls, mobile settings drawer, route tabs, and comparison bar.
-- **Browse routes**: career and leaderboard pages render directly under the root shell so they do not pay for dashboard-only shell code at startup.
+- **Browse routes**: career, draft, and leaderboard pages render directly under the root shell so they do not pay for dashboard-only shell code at startup.
 
 ## Key Features
 
@@ -90,7 +90,12 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - The highlights tab splits compact paged table cards into `Sekalaiset` and `Siirrot`, keeping the existing general slices while adding transaction leaders for most trades, claims, drops, and same-team reunions
    - Highlight cards lazy-load their API data as they enter or near the viewport so the route scales better as more cards are added
 
-7. **Data Management**
+7. **Draft Pages** (`/draft/entry-drafts`, `/draft/opening-draft`)
+   - Dedicated browse-route shell for FFHL draft history
+   - Shares the lighter root-shell treatment used by other browse routes
+   - Batch 1 provides the route family, tab navigation, subtitle/SEO integration, and placeholder content while the draft-specific data UIs land in the next batches
+
+8. **Data Management**
    - Caching service to reduce API calls
    - Filter service for reactive UI filter state
    - Stats service for data transformation
@@ -141,6 +146,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
      - `/career/players` - Player career listing
      - `/career/goalies` - Goalie career listing
      - `/career/highlights` - Compact career highlight cards
+     - `/draft/entry-drafts` - Entry draft browse view
+     - `/draft/opening-draft` - Opening draft browse view
      - `/leaderboards/regular` - Regular season all-time ranking table
      - `/leaderboards/playoffs` - Playoffs all-time ranking table
      - `/leaderboards/transactions` - Transaction leaderboard with roster counts, trades, claims, and drops

@@ -253,6 +253,104 @@ describe('ApiService', () => {
     httpMock.expectNone('http://localhost:3000/career/highlights/same-team-seasons-played');
   });
 
+  it('requests opening draft groups from the original draft endpoint', async () => {
+    const responsePromise = firstValueFrom(service.getOpeningDrafts());
+
+    const request = httpMock.expectOne('http://localhost:3000/draft/original');
+    expect(request.request.method).toBe('GET');
+    request.flush([
+      {
+        team: { id: '1', name: 'Colorado Avalanche' },
+        picks: [],
+      },
+    ]);
+
+    await expect(responsePromise).resolves.toEqual([
+      {
+        team: { id: '1', name: 'Colorado Avalanche' },
+        picks: [],
+      },
+    ]);
+  });
+
+  it('caches entry draft groups without issuing a second http call', async () => {
+    const firstResponse = firstValueFrom(service.getEntryDrafts());
+
+    const request = httpMock.expectOne('http://localhost:3000/draft/entry');
+    request.flush([
+      {
+        team: { id: '1', name: 'Colorado Avalanche' },
+        summary: {
+          highestPick: null,
+          averageDraftPosition: null,
+          amounts: {
+            total: 0,
+            ownPicks: 0,
+            tradedPicks: 0,
+            playersPerDraftAverage: 0,
+          },
+          rounds: {
+            first: 0,
+            second: 0,
+            third: 0,
+            fourth: 0,
+            fifth: 0,
+          },
+        },
+        seasons: [],
+      },
+    ]);
+
+    await expect(firstResponse).resolves.toEqual([
+      {
+        team: { id: '1', name: 'Colorado Avalanche' },
+        summary: {
+          highestPick: null,
+          averageDraftPosition: null,
+          amounts: {
+            total: 0,
+            ownPicks: 0,
+            tradedPicks: 0,
+            playersPerDraftAverage: 0,
+          },
+          rounds: {
+            first: 0,
+            second: 0,
+            third: 0,
+            fourth: 0,
+            fifth: 0,
+          },
+        },
+        seasons: [],
+      },
+    ]);
+
+    await expect(firstValueFrom(service.getEntryDrafts())).resolves.toEqual([
+      {
+        team: { id: '1', name: 'Colorado Avalanche' },
+        summary: {
+          highestPick: null,
+          averageDraftPosition: null,
+          amounts: {
+            total: 0,
+            ownPicks: 0,
+            tradedPicks: 0,
+            playersPerDraftAverage: 0,
+          },
+          rounds: {
+            first: 0,
+            second: 0,
+            third: 0,
+            fourth: 0,
+            fifth: 0,
+          },
+        },
+        seasons: [],
+      },
+    ]);
+    httpMock.expectNone('http://localhost:3000/draft/entry');
+  });
+
   it('transforms http errors into a user-friendly error', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 

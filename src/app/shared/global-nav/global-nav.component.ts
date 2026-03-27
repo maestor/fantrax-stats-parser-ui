@@ -39,6 +39,7 @@ export class GlobalNavComponent {
   readonly navItems: NavItem[] = [
     { icon: 'score', labelKey: 'nav.hockeyPlayerStats', type: 'route', path: '/' },
     { icon: 'assignment_ind', labelKey: 'nav.playerCareers', type: 'route', path: '/career' },
+    { icon: 'assignment_add', labelKey: 'nav.drafts', type: 'route', path: '/draft' },
     { icon: 'emoji_events', labelKey: 'nav.leaderboards', type: 'route', path: '/leaderboards' },
     { icon: 'info', labelKey: 'nav.info', type: 'action' },
   ];
@@ -59,6 +60,9 @@ export class GlobalNavComponent {
     }
     if (item.path === '/career') {
       return url.startsWith('/career');
+    }
+    if (item.path === '/draft') {
+      return url.startsWith('/draft');
     }
     return !!item.path && url.startsWith(item.path);
   }

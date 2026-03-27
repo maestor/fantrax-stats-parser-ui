@@ -23,7 +23,7 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
     localStorage.clear();
   });
 
-  it('opens navigation with default view active, navigates to career and leaderboards, opens info dialog, and closes', async () => {
+  it('opens navigation with the expected order, navigates to career, drafts, and leaderboards, opens info dialog, and closes', async () => {
     const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
     // Wait for the app to fully load
@@ -43,13 +43,26 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
       { timeout: 5000 }
     );
     expect(screen.getByRole('button', { name: /nav\.playerCareers/ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /nav\.drafts/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /nav\.leaderboards/ })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /nav\.info/ })).toBeInTheDocument();
+
+    const navButtonLabels = Array.from(document.querySelectorAll('.global-nav-item')).map(
+      (button) => button.textContent?.replace(/\s+/g, ' ').trim()
+    );
+    expect(navButtonLabels).toEqual([
+      'nav.hockeyPlayerStats',
+      'nav.playerCareers',
+      'nav.drafts',
+      'nav.leaderboards',
+      'nav.info',
+    ]);
 
     // Hockey stats is the active (default) item — verified via active CSS class
     // (aria-current binding does not propagate in jsdom bottom sheet context)
     expect(hockeyBtn).toHaveClass('global-nav-item--active');
     expect(screen.getByRole('button', { name: /nav\.playerCareers/ })).not.toHaveClass('global-nav-item--active');
+    expect(screen.getByRole('button', { name: /nav\.drafts/ })).not.toHaveClass('global-nav-item--active');
     expect(screen.getByRole('button', { name: /nav\.leaderboards/ })).not.toHaveClass('global-nav-item--active');
 
     // -- Navigate to careers --
@@ -73,6 +86,24 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
     expect(careersBtn).toHaveClass('global-nav-item--active');
     expect(screen.getByRole('button', { name: /nav\.hockeyPlayerStats/ })).not.toHaveClass('global-nav-item--active');
 
+    // -- Navigate to drafts --
+    fireEvent.click(screen.getByRole('button', { name: /nav\.drafts/ }));
+
+    await screen.findByRole('heading', { name: 'draft.tabs.entryDrafts' }, { timeout: 5000 });
+    await vi.waitFor(() => {
+      expect(screen.queryByRole('button', { name: /nav\.drafts/ })).not.toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'a11y.openNavMenu' }));
+
+    const draftsBtn = await screen.findByRole(
+      'button',
+      { name: /nav\.drafts/ },
+      { timeout: 5000 }
+    );
+    expect(draftsBtn).toHaveClass('global-nav-item--active');
+    expect(screen.getByRole('button', { name: /nav\.playerCareers/ })).not.toHaveClass('global-nav-item--active');
+
     // -- Navigate to leaderboards --
     fireEvent.click(screen.getByRole('button', { name: /nav\.leaderboards/ }));
 
@@ -94,6 +125,7 @@ describe('GlobalNavComponent — navigation flow', { timeout: 90_000 }, () => {
 
     const hockeyBtn2 = screen.getByRole('button', { name: /nav\.hockeyPlayerStats/ });
     expect(hockeyBtn2).not.toHaveClass('global-nav-item--active');
+    expect(screen.getByRole('button', { name: /nav\.drafts/ })).not.toHaveClass('global-nav-item--active');
 
     // -- Open info/help dialog from nav --
     fireEvent.click(screen.getByRole('button', { name: /nav\.info/ }));

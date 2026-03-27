@@ -324,4 +324,26 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
 
     expect(await screen.findByLabelText('table.playerSearch')).toBeInTheDocument();
   });
+
+  it('hides the settings drawer controls on mobile draft routes and shows draft tabs instead', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
+
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/draft');
+
+    expect(await screen.findByRole('tab', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
+    expect(screen.getByText('draft.placeholders.entryDrafts')).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole('button', { name: 'a11y.openSettingsDrawer' })
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' }));
+
+    expect(await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
+    expect(screen.getByText('draft.placeholders.openingDraft')).toBeInTheDocument();
+  });
 });

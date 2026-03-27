@@ -10,6 +10,7 @@
   "nav": {
     "hockeyPlayerStats": "Pelaajatilastot",
     "playerCareers": "Pelaajaurat",
+    "drafts": "Varaukset",
     "leaderboards": "Maratontaulukot",
     "info": "Tietoa / Ohjeet",
     "openMenu": "Avaa valikko",
@@ -88,6 +89,19 @@
       }
     }
   },
+  "draft": {
+    "tabs": {
+      "entryDrafts": "Entry draftit",
+      "openingDraft": "Avausdrafti"
+    },
+    "placeholders": {
+      "entryDrafts": "Varaukset-osion perusrunko on nyt paikallaan. Entry draftit -sisältö rakennetaan seuraavassa työerässä.",
+      "openingDraft": "Varaukset-osion perusrunko on nyt paikallaan. Avausdrafti-sisältö rakennetaan seuraavassa työerässä."
+    },
+    "loading": "Ladataan varausdataa...",
+    "apiUnavailable": "Varausdata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen.",
+    "noResults": "Varauksia ei löytynyt."
+  },
   "leaderboards": {
     "tabs": {
       "regular": "Runkosarja",
@@ -162,6 +176,7 @@
   },
   "a11y": {
     "skipToTable": "Siirry taulukkoon",
+    "skipToDraftList": "Siirry varauslistaan",
     "openPlayerCard": "Avaa pelaajakortti: {{name}}",
     "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin.",
     "tableNavigationHintReadOnly": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä.",
@@ -210,6 +225,7 @@
         "items": [
           "Pelaajatilastot: joukkuekohtaiset kenttäpelaaja- ja maalivahtitilastot, suodattimet, vertailu ja pelaajakortit",
           "Pelaajaurat: kaikkien aikojen urataulukot kenttäpelaajille ja maalivahdeille sekä uranostot",
+          "Varaukset: entry- ja avausdraftien omat selailunäkymät",
           "Maratontaulukot: joukkueiden kaikkien aikojen runkosarja-, playoff- ja siirtotaulukot kausierittelyineen"
         ]
       },
@@ -242,6 +258,14 @@
       {
         "type": "p",
         "text": "Pelaajaurat-näkymä näyttää koko liigan urayhteenvedot erikseen kenttäpelaajille ja maalivahdeille. Taulukot ovat hakukelpoisia ja lajiteltavia, mutta niissä ei käytetä joukkue- tai kausisuodattimia kuten pelaajatilastoissa. Nostot-välilehdellä näet lisäksi tiiviit kärkilistat uran eri huipuista."
+      },
+      {
+        "type": "h2",
+        "text": "Varaukset"
+      },
+      {
+        "type": "p",
+        "text": "Varaukset-näkymä kokoaa Entry draftit- ja Avausdrafti-välilehdet saman otsikon alle. Tässä vaiheessa osion reitit ja välilehdet ovat jo käytössä, ja varsinainen varaushistoria täydentyy seuraavissa työerissä."
       },
       {
         "type": "h2",

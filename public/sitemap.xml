@@ -19,6 +19,12 @@
     <loc>https://ffhl-stats.vercel.app/career/highlights</loc>
   </url>
   <url>
+    <loc>https://ffhl-stats.vercel.app/draft/entry-drafts</loc>
+  </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/draft/opening-draft</loc>
+  </url>
+  <url>
     <loc>https://ffhl-stats.vercel.app/leaderboards/regular</loc>
   </url>
   <url>

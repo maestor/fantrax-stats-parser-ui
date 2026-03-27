@@ -48,6 +48,17 @@ export type CareerHighlightPage =
   | CareerStashHighlightPage
   | CareerRegularGrinderHighlightPage
   | CareerTransactionHighlightPage;
+export type DraftTeamRef = components['schemas']['DraftTeamRef'];
+export type DraftPick = components['schemas']['DraftPick'];
+export type OpeningDraftPick = components['schemas']['OpeningDraftPick'];
+export type OpeningDraftTeamGroup = components['schemas']['OpeningDraftTeamGroup'];
+export type EntryDraftSeasonGroup = components['schemas']['EntryDraftSeasonGroup'];
+export type EntryDraftHighestPickItem = components['schemas']['EntryDraftHighestPickItem'];
+export type EntryDraftHighestPick = components['schemas']['EntryDraftHighestPick'];
+export type EntryDraftAmountsSummary = components['schemas']['EntryDraftAmountsSummary'];
+export type EntryDraftRoundsSummary = components['schemas']['EntryDraftRoundsSummary'];
+export type EntryDraftTeamSummary = components['schemas']['EntryDraftTeamSummary'];
+export type EntryDraftTeamGroup = components['schemas']['EntryDraftTeamGroup'];
 
 // Player includes frontend-only augmentation fields not present in the API spec.
 // seasons is made optional to match single-season endpoint usage (spec: CombinedPlayer has required seasons).
@@ -232,6 +243,20 @@ export class ApiService {
         skip: String(skip),
         take: String(take),
       },
+    );
+  }
+
+  getOpeningDrafts(): Observable<OpeningDraftTeamGroup[]> {
+    return this.handleRequest<OpeningDraftTeamGroup[]>(
+      'draft/original',
+      'draft-original',
+    );
+  }
+
+  getEntryDrafts(): Observable<EntryDraftTeamGroup[]> {
+    return this.handleRequest<EntryDraftTeamGroup[]>(
+      'draft/entry',
+      'draft-entry',
     );
   }
 

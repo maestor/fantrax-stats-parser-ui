@@ -12,6 +12,8 @@ const SITE_TITLE = 'SITE_TITLE';
 const DEFAULT_DESCRIPTION = 'DEFAULT_DESCRIPTION';
 const CAREER_SECTION = 'CAREER_SECTION';
 const GOALIES_TAB = 'GOALIES_TAB';
+const DRAFT_SECTION = 'DRAFT_SECTION';
+const OPENING_DRAFT_TAB = 'OPENING_DRAFT_TAB';
 const ENGLISH_SITE_TITLE = 'ENGLISH_SITE_TITLE';
 const ENGLISH_DESCRIPTION = 'ENGLISH_DESCRIPTION';
 const ENGLISH_SECTION = 'ENGLISH_SECTION';
@@ -106,6 +108,8 @@ describe('SeoService', () => {
         'seo.description': DEFAULT_DESCRIPTION,
         'nav.playerCareers': CAREER_SECTION,
         'career.tabs.goalies': GOALIES_TAB,
+        'nav.drafts': DRAFT_SECTION,
+        'draft.tabs.openingDraft': OPENING_DRAFT_TAB,
       },
     );
 
@@ -156,6 +160,24 @@ describe('SeoService', () => {
     expect(getMetaContent(doc, 'meta[name="twitter:title"]')).toBe(expectedTitle);
     expect(getMetaContent(doc, 'meta[property="og:url"]')).toBe(
       'http://localhost:4200/career/goalies',
+    );
+  });
+
+  it('builds draft route titles from merged section and tab translation keys', () => {
+    const { doc, router } = configure();
+
+    router.routerState.snapshot.root = createRouteSnapshot(
+      { sectionKey: 'nav.drafts' },
+      createRouteSnapshot({ tabKey: 'draft.tabs.openingDraft' }),
+    );
+    router.url = '/draft/opening-draft';
+    router.events.next(new NavigationEnd(4, '/draft/opening-draft', '/draft/opening-draft'));
+
+    const expectedTitle = `${SITE_TITLE} | ${DRAFT_SECTION} | ${OPENING_DRAFT_TAB}`;
+
+    expect(doc.title).toBe(expectedTitle);
+    expect(getMetaContent(doc, 'meta[property="og:url"]')).toBe(
+      'http://localhost:4200/draft/opening-draft',
     );
   });
 

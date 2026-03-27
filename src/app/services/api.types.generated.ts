@@ -294,6 +294,107 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/draft/entry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Entry draft history grouped by drafted team and season
+         * @description Returns the imported FFHL entry draft history from `entry_draft_picks`.
+         *     Teams are grouped alphabetically by current fantasy-team name.
+         *     Each team's `seasons` array is sorted newest-first, and picks within one season
+         *     are sorted by draft order.
+         *     Team roots also include a `summary` object with highest-pick, average-position,
+         *     pick-count aggregates, and a fixed round breakdown calculated from the grouped data.
+         *     Picks with `draftedPlayer: null` stay in the season pick lists but are excluded from
+         *     all summary calculations.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Entry draft picks grouped by drafted fantasy team and season. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["EntryDraftTeamGroup"][];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/draft/original": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Opening draft history grouped by drafted team
+         * @description Returns the imported FFHL opening draft history from `opening_draft_picks`.
+         *     Teams are grouped alphabetically by current fantasy-team name and each group's
+         *     picks are sorted by draft order.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Opening draft picks grouped by drafted fantasy team. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OpeningDraftTeamGroup"][];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/seasons": {
         parameters: {
             query?: never;
@@ -1245,6 +1346,92 @@ export interface components {
              */
             firstSeason?: number;
         };
+        DraftTeamRef: {
+            /** @example 12 */
+            id: string;
+            /** @example Anaheim Ducks */
+            name: string;
+        };
+        DraftPick: {
+            /** @example 1 */
+            round: number;
+            /** @example 1 */
+            pickNumber: number;
+            /** @example Connor McDavid */
+            draftedPlayer: string | null;
+            originalOwner: components["schemas"]["DraftTeamRef"];
+        };
+        OpeningDraftPick: {
+            /** @example 1 */
+            round: number;
+            /** @example 1 */
+            pickNumber: number;
+            /** @example Sidney Crosby */
+            draftedPlayer: string;
+            originalOwner: components["schemas"]["DraftTeamRef"];
+        };
+        OpeningDraftTeamGroup: {
+            team: components["schemas"]["DraftTeamRef"];
+            picks: components["schemas"]["OpeningDraftPick"][];
+        };
+        EntryDraftSeasonGroup: {
+            /** @example 2025 */
+            season: number;
+            picks: components["schemas"]["DraftPick"][];
+        };
+        EntryDraftHighestPickItem: {
+            /** @example 2025 */
+            season: number;
+            /** @example 1 */
+            round: number;
+            /** @example Connor McDavid */
+            draftedPlayer: string;
+        };
+        EntryDraftHighestPick: {
+            /** @example 15 */
+            pickNumber: number;
+            items: components["schemas"]["EntryDraftHighestPickItem"][];
+        };
+        EntryDraftAmountsSummary: {
+            /** @example 40 */
+            total: number;
+            /** @example 32 */
+            ownPicks: number;
+            /** @example 8 */
+            tradedPicks: number;
+            /**
+             * @description Average drafted players per entry draft season rounded to two decimals.
+             * @example 5.71
+             */
+            playersPerDraftAverage: number;
+        };
+        EntryDraftRoundsSummary: {
+            /** @example 12 */
+            first: number;
+            /** @example 8 */
+            second: number;
+            /** @example 6 */
+            third: number;
+            /** @example 3 */
+            fourth: number;
+            /** @example 1 */
+            fifth: number;
+        };
+        EntryDraftTeamSummary: {
+            highestPick: components["schemas"]["EntryDraftHighestPick"] | null;
+            /**
+             * @description Average overall draft position across drafted players only, rounded to two decimals.
+             * @example 54.23
+             */
+            averageDraftPosition: number | null;
+            amounts: components["schemas"]["EntryDraftAmountsSummary"];
+            rounds: components["schemas"]["EntryDraftRoundsSummary"];
+        };
+        EntryDraftTeamGroup: {
+            team: components["schemas"]["DraftTeamRef"];
+            summary: components["schemas"]["EntryDraftTeamSummary"];
+            seasons: components["schemas"]["EntryDraftSeasonGroup"][];
+        };
         Season: {
             /** @example 2023 */
             season: number;
@@ -1328,9 +1515,9 @@ export interface components {
             reportType: "regular" | "playoffs";
             teamId: string;
             teamName: string;
-            /** @description Omitted when source data only contains a zero placeholder. */
+            /** @description Goals against average formatted with two decimals. Played zero values are returned as `0.00`; omitted only when source data only contains a non-played zero placeholder. */
             gaa?: string;
-            /** @description Omitted when source data only contains a zero placeholder. */
+            /** @description Save percentage formatted with three decimals. Played zero values are returned as `0.000`; omitted only when source data only contains a non-played zero placeholder. */
             savePercent?: string;
         };
         CareerPlayer: {
@@ -1564,9 +1751,9 @@ export interface components {
             wins: number;
             saves: number;
             shutouts: number;
-            /** @description Goals against average. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
+            /** @description Goals against average formatted with two decimals. Played zero values are returned as `0.00`; omitted for `reportType=both` or when source data only contains a non-played zero placeholder. */
             gaa?: string;
-            /** @description Save percentage. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
+            /** @description Save percentage formatted with three decimals. Played zero values are returned as `0.000`; omitted for `reportType=both` or when source data only contains a non-played zero placeholder. */
             savePercent?: string;
             score: number;
             /** @description Stabilized per-game pace score. */
@@ -1628,9 +1815,9 @@ export interface components {
             wins: number;
             saves: number;
             shutouts: number;
-            /** @description Goals against average. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
+            /** @description Goals against average formatted with two decimals. Played zero values are returned as `0.00`; omitted for `reportType=both` or when source data only contains a non-played zero placeholder. */
             gaa?: string;
-            /** @description Save percentage. Omitted for `reportType=both` or when source data only contains a zero placeholder. */
+            /** @description Save percentage formatted with three decimals. Played zero values are returned as `0.000`; omitted for `reportType=both` or when source data only contains a non-played zero placeholder. */
             savePercent?: string;
             score: number;
             /** @description Stabilized per-game pace score. */

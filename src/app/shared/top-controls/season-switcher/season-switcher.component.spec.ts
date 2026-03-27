@@ -23,10 +23,12 @@ describe('SeasonSwitcherComponent — desktop user flow', () => {
     });
 
     it('lets user select a specific season and switch back to all seasons', async () => {
-        await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+        const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
         const firstPlayerName = slicedPlayers[0].name;
-        await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(firstPlayerName)).toBeTruthy();
+        });
 
         const seasonCombobox = screen.getByRole('combobox', { name: /season\.selector/ });
 
@@ -71,7 +73,9 @@ describe('SeasonSwitcherComponent — desktop user flow', () => {
             })
         );
 
-        await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(slicedPlayers[0].name)).toBeTruthy();
+        });
 
         const seasonCombobox = screen.getByRole('combobox', { name: /season\.selector/ });
         expect(seasonCombobox).not.toHaveTextContent('2018');
@@ -98,7 +102,9 @@ describe('SeasonSwitcherComponent — desktop user flow', () => {
             })
         );
 
-        await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(slicedPlayers[0].name)).toBeTruthy();
+        });
 
         const seasonCombobox = screen.getByRole('combobox', { name: /season\.selector/ });
         expect(seasonCombobox).not.toHaveTextContent('season.allSeasons');
@@ -123,15 +129,16 @@ describe('SeasonSwitcherComponent — desktop user flow', () => {
             })
         );
 
-        await render(
+        const { fixture } = await render(
             AppComponent,
             getBehaviorTestConfig({
                 isMobile: false,
                 getSeasons: () => throwError(() => new Error('Server prerender skips API requests.')),
             })
         );
-
-        await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(slicedPlayers[0].name)).toBeTruthy();
+        });
 
         const seasonCombobox = screen.getByRole('combobox', { name: /season\.selector/ });
         expect(seasonCombobox).not.toHaveTextContent('2018');

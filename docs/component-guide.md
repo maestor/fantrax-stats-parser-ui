@@ -203,6 +203,21 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Keep the centered `Sekalaiset` / `Siirrot` switch accessible while preserving each card's lazy-loading and paging state
 - Activate highlight-card API loads lazily as each card approaches the viewport instead of requesting every card during route startup
 
+### DraftComponent
+
+**Location**: `src/app/draft/`
+
+**Type**: Feature Route Shell
+
+**Purpose**: Render the `Varaukset` browse section and tab navigation for `/draft/entry-drafts` and `/draft/opening-draft`
+
+**Responsibilities**:
+
+- Track the active draft tab from the router URL
+- Render browse-style tab navigation under the root shell subtitle
+- Host the child draft routes under a `mat-tab-nav-panel`
+- Keep draft browsing on the lighter root shell without dashboard controls
+
 ### TableCardComponent
 
 **Location**: `src/app/shared/table-card/`

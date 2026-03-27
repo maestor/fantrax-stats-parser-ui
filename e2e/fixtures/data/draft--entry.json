@@ -1,0 +1,153 @@
+[
+  {
+    "team": {
+      "id": "1",
+      "name": "Colorado Avalanche"
+    },
+    "summary": {
+      "highestPick": {
+        "pickNumber": 4,
+        "items": [
+          {
+            "season": 2025,
+            "round": 1,
+            "draftedPlayer": "Matthew Schaefer"
+          }
+        ]
+      },
+      "averageDraftPosition": 17.5,
+      "amounts": {
+        "total": 4,
+        "ownPicks": 3,
+        "tradedPicks": 1,
+        "playersPerDraftAverage": 2
+      },
+      "rounds": {
+        "first": 2,
+        "second": 1,
+        "third": 1,
+        "fourth": 0,
+        "fifth": 0
+      }
+    },
+    "seasons": [
+      {
+        "season": 2025,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 4,
+            "draftedPlayer": "Matthew Schaefer",
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 28,
+            "draftedPlayer": null,
+            "originalOwner": {
+              "id": "29",
+              "name": "Dallas Stars"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2024,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 11,
+            "draftedPlayer": "Tij Iginla",
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 27,
+            "draftedPlayer": "Jesse Pulkkinen",
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "team": {
+      "id": "29",
+      "name": "Dallas Stars"
+    },
+    "summary": {
+      "highestPick": {
+        "pickNumber": 2,
+        "items": [
+          {
+            "season": 2025,
+            "round": 1,
+            "draftedPlayer": "Michael Misa"
+          }
+        ]
+      },
+      "averageDraftPosition": 12.33,
+      "amounts": {
+        "total": 3,
+        "ownPicks": 2,
+        "tradedPicks": 1,
+        "playersPerDraftAverage": 1.5
+      },
+      "rounds": {
+        "first": 1,
+        "second": 1,
+        "third": 1,
+        "fourth": 0,
+        "fifth": 0
+      }
+    },
+    "seasons": [
+      {
+        "season": 2025,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 2,
+            "draftedPlayer": "Michael Misa",
+            "originalOwner": {
+              "id": "29",
+              "name": "Dallas Stars"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 14,
+            "draftedPlayer": "Kashawn Aitcheson",
+            "originalOwner": {
+              "id": "16",
+              "name": "Tampa Bay Lightning"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2024,
+        "picks": [
+          {
+            "round": 3,
+            "pickNumber": 21,
+            "draftedPlayer": "Aron Kiviharju",
+            "originalOwner": {
+              "id": "29",
+              "name": "Dallas Stars"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

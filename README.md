@@ -36,6 +36,8 @@ Live showcase: https://ffhl-stats.vercel.app/
 	- Virtualized row rendering keeps long lists responsive
 	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
 	- `/career/highlights` splits compact paged highlight cards into `Sekalaiset` and `Siirrot`, covering the existing general career slices plus transaction leaders for most trades, claims, drops, and same-team reunions; each card lazy-loads its dataset as it approaches the viewport
+- 📝 **Draft Pages**: Standalone `/draft/entry-drafts` and `/draft/opening-draft` browse routes now live under `Varaukset`
+	- Batch 1 adds the route shell, navigation, SEO, and placeholder views so the section is reachable end-to-end while the draft-specific data UIs land in follow-up batches
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
@@ -54,7 +56,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)
 - 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and collapsible controls
 - 🕒 **Last Updated Indicator**: Shows backend data last-modified timestamp under the title (desktop) and in the settings drawer (mobile)
-- 🏷️ **Route Subtitles**: Career and leaderboard sections show lightweight subtitles under the app title (`Pelaajaurat`, `Maratontaulukot`)
+- 🏷️ **Route Subtitles**: Career, draft, and leaderboard sections show lightweight subtitles under the app title (`Pelaajaurat`, `Varaukset`, `Maratontaulukot`)
 
 More details:
 
