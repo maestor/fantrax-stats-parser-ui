@@ -18,6 +18,21 @@ function waitForEntryDraftResponse(page: Page) {
   );
 }
 
+async function expectStatisticsContent(page: Page) {
+  const cards = page.locator('app-table-card');
+  await expect(cards).toHaveCount(10);
+  await expect(
+    cards.first().getByRole('heading', {
+      name: fi('draft.statistics.cards.totalPicks.title'),
+      exact: true,
+    }),
+  ).toBeVisible();
+  await expect(cards.first().locator('button[mat-icon-button]')).toHaveCount(0);
+  await expect(
+    cards.first().getByRole('button', { name: fi('tableCard.nextPage') }),
+  ).toBeEnabled();
+}
+
 async function expectEntryDraftContent(page: Page) {
   const panels = page.locator('mat-expansion-panel');
   const firstPanel = panels.first();
@@ -78,7 +93,7 @@ async function expectOpeningDraftContent(page: Page) {
 }
 
 test.describe('Draft pages', () => {
-  test('global nav reaches /draft, /draft redirects to entry drafts, and tabs switch between the two views', async ({ page }) => {
+  test('global nav reaches /draft, /draft redirects to entry drafts, and tabs switch between all three views', async ({ page }) => {
     await page.goto('/leaderboards/regular');
 
     await page.getByRole('button', { name: fi('a11y.openNavMenu') }).click();
@@ -90,6 +105,7 @@ test.describe('Draft pages', () => {
     await expect(page.getByRole('heading', { name: 'Varaukset' })).toBeVisible();
 
     const openingDraftTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_OPENING_DRAFT });
+    const statisticsTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_STATISTICS });
 
     await expectEntryDraftContent(page);
 
@@ -100,6 +116,12 @@ test.describe('Draft pages', () => {
     await openingDraftResponse;
     await expect(openingDraftTab).toHaveAttribute('aria-selected', 'true');
     await expectOpeningDraftContent(page);
+
+    await expect(statisticsTab).toBeVisible();
+    await statisticsTab.click();
+    await expect(page).toHaveURL(/\/draft\/statistics$/);
+    await expect(statisticsTab).toHaveAttribute('aria-selected', 'true');
+    await expectStatisticsContent(page);
   });
 
   test('direct URL /draft/entry-drafts loads without redirect', async ({ page }) => {
@@ -116,5 +138,13 @@ test.describe('Draft pages', () => {
     await expect(page).toHaveURL(/\/draft\/opening-draft$/);
     await openingDraftResponse;
     await expectOpeningDraftContent(page);
+  });
+
+  test('direct URL /draft/statistics loads without redirect', async ({ page }) => {
+    const statisticsResponse = waitForEntryDraftResponse(page);
+    await page.goto('/draft/statistics');
+    await expect(page).toHaveURL(/\/draft\/statistics$/);
+    await statisticsResponse;
+    await expectStatisticsContent(page);
   });
 });

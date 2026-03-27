@@ -163,6 +163,18 @@ export const routes: Routes = [
             (m) => m.OpeningDraftComponent
           ),
       },
+      {
+        path: 'statistics',
+        data: {
+          seo: {
+            tabKey: 'draft.tabs.statistics',
+          } satisfies RouteSeoData,
+        },
+        loadComponent: () =>
+          import('./draft/statistics/draft-statistics.component').then(
+            (m) => m.DraftStatisticsComponent
+          ),
+      },
     ],
   },
   {

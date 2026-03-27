@@ -178,7 +178,7 @@ describe('EntryDraftsComponent', () => {
     const summaryValues = Array.from(firstPanelElement.querySelectorAll('.entry-summary-value'))
       .map((element) => element.textContent?.trim())
       .filter((value): value is string => Boolean(value));
-    expect(summaryValues).toEqual(expect.arrayContaining(['82.89', '64', '52', '12', '4.92']));
+    expect(summaryValues).toEqual(expect.arrayContaining(['82,89', '64', '52', '12', '4,92']));
 
     const roundValues = Array.from(firstPanelElement.querySelectorAll('.entry-round-value'))
       .map((element) => element.textContent?.trim())

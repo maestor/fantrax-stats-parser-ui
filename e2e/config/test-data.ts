@@ -39,6 +39,7 @@ export const TAB_LABELS = {
   CAREER_HIGHLIGHTS: fi('career.tabs.highlights'),
   DRAFT_ENTRY_DRAFTS: fi('draft.tabs.entryDrafts'),
   DRAFT_OPENING_DRAFT: fi('draft.tabs.openingDraft'),
+  DRAFT_STATISTICS: fi('draft.tabs.statistics'),
   PLAYER_CARD_STATS: fi('playerCard.all'),
   PLAYER_CARD_BY_SEASON: fi('playerCard.bySeason'),
   PLAYER_CARD_GRAPHS: fi('playerCard.graphs'),

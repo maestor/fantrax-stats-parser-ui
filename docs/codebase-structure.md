@@ -101,11 +101,12 @@ Route shell and smart components for career listings:
 
 ### `/src/app/draft/`
 Route shell and draft browse child components:
-- Handles `/draft/entry-drafts` and `/draft/opening-draft`
-- Renders tab navigation between the two draft views
+- Handles `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics`
+- Renders tab navigation between the three draft views
 - Lives under the lighter root shell without dashboard-only controls or mobile settings drawer
 - `opening-draft/` now renders a real accordion/list UI backed by the `/draft/original` endpoint
 - `entry-drafts/` now renders a real accordion UI backed by `/draft/entry`, combining per-team summary cards with season-by-season pick lists
+- `statistics/` derives 10 card-table rankings from the same `/draft/entry` payload and reuses the shared `table-card/` presentation layer
 
 ### `/src/app/shared/table-card/`
 Reusable card-based read-only table presentation:

@@ -60,7 +60,7 @@
                         {{ 'draft.entryDrafts.playersPerDraftAverageLabel' | translate }}
                       </span>
                       <strong class="entry-summary-value">
-                        {{ group.summary.amounts.playersPerDraftAverage | number: '1.0-2' }}
+                        {{ group.summary.amounts.playersPerDraftAverage | number: '1.0-2' : 'fi' }}
                       </strong>
                     </div>
 
@@ -70,7 +70,7 @@
                       </span>
                       <strong class="entry-summary-value">
                         @if (group.summary.averageDraftPosition !== null) {
-                          {{ group.summary.averageDraftPosition | number: '1.0-2' }}
+                          {{ group.summary.averageDraftPosition | number: '1.0-2' : 'fi' }}
                         } @else {
                           {{ 'draft.entryDrafts.noAverageDraftPosition' | translate }}
                         }

@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom/vitest';
 import 'vitest-canvas-mock';
+import { registerLocaleData } from '@angular/common';
+import localeFi from '@angular/common/locales/fi';
+
+registerLocaleData(localeFi);
 
 // Polyfill ResizeObserver for jsdom (used by Chart.js when canvas context is available)
 if (typeof globalThis.ResizeObserver === 'undefined') {

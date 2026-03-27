@@ -92,7 +92,58 @@
   "draft": {
     "tabs": {
       "entryDrafts": "Entry draftit",
-      "openingDraft": "Avausdrafti"
+      "openingDraft": "Avausdrafti",
+      "statistics": "Tilastot"
+    },
+    "statistics": {
+      "columns": {
+        "team": "Joukkue",
+        "pickCount": "Varaukset",
+        "average": "Keskiarvo",
+        "turn": "Vuoro"
+      },
+      "cards": {
+        "totalPicks": {
+          "title": "Eniten varauksia",
+          "description": "Tehdyt varaukset yhteensä."
+        },
+        "ownPicks": {
+          "title": "Eniten omilla vuoroilla",
+          "description": "Omilla varausvuoroilla tehdyt varaukset."
+        },
+        "tradedPicks": {
+          "title": "Eniten treidatuilla vuoroilla",
+          "description": "Muilta saaduilla vuoroilla tehdyt varaukset."
+        },
+        "playersPerDraft": {
+          "title": "Eniten varauksia per draft",
+          "description": "Keskim. varausmäärä yhtä draftia kohden."
+        },
+        "averagePosition": {
+          "title": "Paras vuorojen keskiarvo",
+          "description": "Paras varattujen vuorojen keskiarvo."
+        },
+        "roundOne": {
+          "title": "Eniten 1. kierroksen varauksia",
+          "description": ""
+        },
+        "roundTwo": {
+          "title": "Eniten 2. kierroksen varauksia",
+          "description": ""
+        },
+        "roundThree": {
+          "title": "Eniten 3. kierroksen varauksia",
+          "description": ""
+        },
+        "roundFour": {
+          "title": "Eniten 4. kierroksen varauksia",
+          "description": ""
+        },
+        "roundFive": {
+          "title": "Eniten 5. kierroksen varauksia",
+          "description": ""
+        }
+      }
     },
     "entryDrafts": {
       "summaryHeading": "Yhteenveto",
@@ -294,7 +345,7 @@
       },
       {
         "type": "p",
-        "text": "Varaukset-näkymä kokoaa Entry draftit- ja Avausdrafti-välilehdet saman otsikon alle. Entry draftit näyttää joukkuekohtaiset yhteenvetotiedot sekä kausittaiset varaushistoriat, ja Avausdrafti listaa koko liigan alkuperäiset varaukset joukkueittain."
+        "text": "Varaukset-näkymä kokoaa Entry draftit-, Avausdrafti- ja Tilastot-välilehdet saman otsikon alle. Entry draftit näyttää joukkuekohtaiset yhteenvetotiedot sekä kausittaiset varaushistoriat, Avausdrafti listaa koko liigan alkuperäiset varaukset joukkueittain, ja Tilastot kokoaa entry-draftien joukkuekohtaiset kärkilistat korteiksi."
       },
       {
         "type": "h2",

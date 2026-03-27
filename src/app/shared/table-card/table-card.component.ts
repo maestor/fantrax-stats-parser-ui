@@ -29,6 +29,7 @@ export class TableCardComponent {
   readonly descriptionParams = input<Readonly<Record<string, number | string>> | undefined>();
   readonly primaryColumnLabelKey = input.required<string>();
   readonly valueColumnLabelKey = input.required<string>();
+  readonly showDetails = input(true);
   readonly deferred = input(false);
   readonly rows = input.required<readonly TableCardRow[]>();
   readonly loading = input(false);
@@ -47,16 +48,22 @@ export class TableCardComponent {
   readonly pageEnd = computed(() => (this.hasRows() ? this.skip() + this.rows().length : 0));
 
   getDetailsTooltip(row: TableCardRow): string {
+    const detailLines = row.detailLines ?? [];
+
     if (!row.detailHeader) {
-      return row.detailLines.join('\n');
+      return detailLines.join('\n');
     }
 
-    return [row.detailHeader, ...row.detailLines].join('\n');
+    return [row.detailHeader, ...detailLines].join('\n');
   }
 
   getDetailsTooltipClass(row: TableCardRow): string[] {
     return ['table-card-tooltip', row.detailTooltipClass].filter(
       (className): className is string => Boolean(className),
     );
+  }
+
+  getDetailsAriaLabel(row: TableCardRow): string {
+    return row.detailLabel ?? row.primaryText;
   }
 }

@@ -90,12 +90,13 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - The highlights tab splits compact paged table cards into `Sekalaiset` and `Siirrot`, keeping the existing general slices while adding transaction leaders for most trades, claims, drops, and same-team reunions
    - Highlight cards lazy-load their API data as they enter or near the viewport so the route scales better as more cards are added
 
-7. **Draft Pages** (`/draft/entry-drafts`, `/draft/opening-draft`)
+7. **Draft Pages** (`/draft/entry-drafts`, `/draft/opening-draft`, `/draft/statistics`)
    - Dedicated browse-route shell for FFHL draft history
    - Shares the lighter root-shell treatment used by other browse routes
    - Batch 1 provides the route family, tab navigation, subtitle/SEO integration, and browse-shell wiring
    - Batch 2 renders `/draft/opening-draft` as a Material accordion grouped by drafting team, with simple per-pick rows and a traded-owner suffix when the original pick came from another team
    - Batch 3 renders `/draft/entry-drafts` as a matching team-grouped accordion, with per-team summary cards, round totals, and season-by-season pick lists that preserve null legacy player rows
+   - `/draft/statistics` reuses the shared card-table UI to rank teams across entry-draft summary metrics with local 10-row paging
 
 8. **Data Management**
    - Caching service to reduce API calls
@@ -150,6 +151,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
      - `/career/highlights` - Compact career highlight cards
      - `/draft/entry-drafts` - Entry draft browse view
      - `/draft/opening-draft` - Opening draft browse view
+     - `/draft/statistics` - Draft statistics card grid
      - `/leaderboards/regular` - Regular season all-time ranking table
      - `/leaderboards/playoffs` - Playoffs all-time ranking table
      - `/leaderboards/transactions` - Transaction leaderboard with roster counts, trades, claims, and drops

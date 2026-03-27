@@ -209,7 +209,7 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 
 **Type**: Feature Route Shell
 
-**Purpose**: Render the `Varaukset` browse section and tab navigation for `/draft/entry-drafts` and `/draft/opening-draft`
+**Purpose**: Render the `Varaukset` browse section and tab navigation for `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics`
 
 **Responsibilities**:
 
@@ -252,18 +252,35 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Reuse the browse-route loading, empty, and API-error states
 - Mark footer readiness after the async route data has resolved
 
+### DraftStatisticsComponent
+
+**Location**: `src/app/draft/statistics/`
+
+**Type**: Smart Browse Component
+
+**Purpose**: Render `/draft/statistics` as a grid of paged ranking cards derived from the existing entry-draft summary payload
+
+**Responsibilities**:
+
+- Fetch entry-draft groups from `ApiService.getEntryDrafts()`
+- Derive 10 ranked team slices from the summary data without introducing a separate backend endpoint
+- Reuse the shared `TableCardComponent` in no-details mode so the visual style matches Career highlights
+- Manage per-card pagination state locally while keeping the cards read-only
+- Reuse the browse-route loading and API-error behavior and mark footer readiness after data resolves
+
 ### TableCardComponent
 
 **Location**: `src/app/shared/table-card/`
 
 **Type**: Shared Presentational Component
 
-**Purpose**: Render compact paged read-only leaderboards or highlight slices inside a Material card using semantic table markup.
+**Purpose**: Render compact paged read-only leaderboards, highlight slices, or other ranking cards inside a Material card using semantic table markup.
 
 **Responsibilities**:
 
 - Show title/description copy, a semantic HTML table, and previous/next paging controls
 - Support a deferred placeholder before a card has been activated by viewport visibility
+- Optionally hide the details/info column when a card only needs primary text and value columns
 - Keep tooltip buttons and pagination controls keyboard accessible
 - Reuse shared loading, empty, and API-error states for compact card views
 

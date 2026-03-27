@@ -30,5 +30,10 @@ describe('DraftComponent', () => {
     events$.next({});
 
     expect(component.activeLink).toBe('/draft/opening-draft');
+
+    router.url = '/draft/statistics?page=2';
+    events$.next({});
+
+    expect(component.activeLink).toBe('/draft/statistics');
   });
 });

@@ -335,6 +335,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
 
     expect(await screen.findByRole('tab', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'draft.tabs.statistics' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
     expect(await screen.findByText(entryDraftsFixture[0].team.name)).toBeInTheDocument();
 
@@ -347,5 +348,10 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
 
     expect(await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
     expect(await screen.findByText(openingDraftsFixture[0].team.name)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.statistics' }));
+
+    expect(await screen.findByRole('heading', { name: 'draft.tabs.statistics' })).toBeInTheDocument();
+    expect(screen.getByText('draft.statistics.cards.totalPicks.title')).toBeInTheDocument();
   });
 });
