@@ -42,18 +42,22 @@ function loadGlobalNavComponent() {
 type RootRouteUiState = {
   isDashboardRoute: boolean;
   currentRouteSubtitleKey: string | null;
-  skipLinkTargetId: 'stats-table' | 'career-table' | 'leaderboard-table';
+  skipLinkTargetId: 'stats-table' | 'career-table' | 'leaderboard-table' | 'draft-list';
+  skipLinkLabelKey: 'a11y.skipToTable' | 'a11y.skipToDraftList';
 };
 
 export function buildRootRouteUiState(url: string): RootRouteUiState {
   const normalizedUrl = url.split('?')[0]?.split('#')[0] ?? '/';
   const isLeaderboardsRoute = normalizedUrl.startsWith('/leaderboards');
   const isCareerRoute = normalizedUrl.startsWith('/career');
+  const isDraftRoute = normalizedUrl.startsWith('/draft');
 
   return {
-    isDashboardRoute: !isLeaderboardsRoute && !isCareerRoute,
+    isDashboardRoute: !isLeaderboardsRoute && !isCareerRoute && !isDraftRoute,
     currentRouteSubtitleKey: isCareerRoute
       ? 'nav.playerCareers'
+      : isDraftRoute
+        ? 'nav.drafts'
       : isLeaderboardsRoute
         ? 'nav.leaderboards'
         : null,
@@ -61,7 +65,10 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
       ? 'leaderboard-table'
       : isCareerRoute
         ? 'career-table'
+        : isDraftRoute
+          ? 'draft-list'
         : 'stats-table',
+    skipLinkLabelKey: isDraftRoute ? 'a11y.skipToDraftList' : 'a11y.skipToTable',
   };
 }
 
@@ -96,6 +103,7 @@ export class AppComponent implements OnInit {
   isDashboardRoute = this.initialRouteUiState.isDashboardRoute;
   currentRouteSubtitleKey: string | null = this.initialRouteUiState.currentRouteSubtitleKey;
   private skipLinkTargetIdState = this.initialRouteUiState.skipLinkTargetId;
+  skipLinkLabelKey = this.initialRouteUiState.skipLinkLabelKey;
 
   get skipLinkTargetId(): string {
     return this.skipLinkTargetIdState;
@@ -196,6 +204,7 @@ export class AppComponent implements OnInit {
     this.isDashboardRoute = nextState.isDashboardRoute;
     this.currentRouteSubtitleKey = nextState.currentRouteSubtitleKey;
     this.skipLinkTargetIdState = nextState.skipLinkTargetId;
+    this.skipLinkLabelKey = nextState.skipLinkLabelKey;
   }
 
   skipToTarget(targetId: string, event: MouseEvent): void {
@@ -205,7 +214,7 @@ export class AppComponent implements OnInit {
     if (!container) return;
 
     const firstRow = container.querySelector(
-      'tr[data-row-index="0"], .virtual-table-row[data-row-index="0"]',
+      'tr[data-row-index="0"], .virtual-table-row[data-row-index="0"], .mat-expansion-panel-header, [data-skip-focus="true"]',
     ) as HTMLElement | null;
 
     if (!firstRow) return;

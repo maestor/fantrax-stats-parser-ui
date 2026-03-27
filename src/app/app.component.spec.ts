@@ -287,6 +287,7 @@ describe('buildRootRouteUiState', () => {
       isDashboardRoute: false,
       currentRouteSubtitleKey: 'nav.playerCareers',
       skipLinkTargetId: 'career-table',
+      skipLinkLabelKey: 'a11y.skipToTable',
     });
   });
 
@@ -295,6 +296,16 @@ describe('buildRootRouteUiState', () => {
       isDashboardRoute: false,
       currentRouteSubtitleKey: 'nav.leaderboards',
       skipLinkTargetId: 'leaderboard-table',
+      skipLinkLabelKey: 'a11y.skipToTable',
+    });
+  });
+
+  it('uses the lighter browse shell for draft routes before navigation settles', () => {
+    expect(buildRootRouteUiState('/draft/opening-draft')).toEqual({
+      isDashboardRoute: false,
+      currentRouteSubtitleKey: 'nav.drafts',
+      skipLinkTargetId: 'draft-list',
+      skipLinkLabelKey: 'a11y.skipToDraftList',
     });
   });
 
@@ -303,6 +314,7 @@ describe('buildRootRouteUiState', () => {
       isDashboardRoute: true,
       currentRouteSubtitleKey: null,
       skipLinkTargetId: 'stats-table',
+      skipLinkLabelKey: 'a11y.skipToTable',
     });
   });
 });

@@ -37,6 +37,9 @@ export const TAB_LABELS = {
   CAREER_PLAYERS: fi('career.tabs.players'),
   CAREER_GOALIES: fi('career.tabs.goalies'),
   CAREER_HIGHLIGHTS: fi('career.tabs.highlights'),
+  DRAFT_ENTRY_DRAFTS: fi('draft.tabs.entryDrafts'),
+  DRAFT_OPENING_DRAFT: fi('draft.tabs.openingDraft'),
+  DRAFT_STATISTICS: fi('draft.tabs.statistics'),
   PLAYER_CARD_STATS: fi('playerCard.all'),
   PLAYER_CARD_BY_SEASON: fi('playerCard.bySeason'),
   PLAYER_CARD_GRAPHS: fi('playerCard.graphs'),
@@ -59,6 +62,7 @@ export const CAREER_HIGHLIGHT_CARD_LABELS = {
 
 export const NAV_LABELS = {
   PLAYER_CAREERS: fi('nav.playerCareers'),
+  DRAFTS: fi('nav.drafts'),
 };
 
 export const LEADERBOARD_LABELS = {

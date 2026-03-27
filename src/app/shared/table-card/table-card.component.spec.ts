@@ -19,6 +19,7 @@ import { TableCardRow } from './table-card.types';
       [descriptionParams]="descriptionParams"
       [primaryColumnLabelKey]="primaryColumnLabelKey"
       [valueColumnLabelKey]="valueColumnLabelKey"
+      [showDetails]="showDetails"
       [deferred]="deferred"
       [rows]="rows"
       [loading]="loading"
@@ -36,6 +37,7 @@ class TableCardHostComponent {
   descriptionParams: Readonly<Record<string, number | string>> | undefined = undefined;
   primaryColumnLabelKey = 'career.highlights.columns.player';
   valueColumnLabelKey = 'career.highlights.columns.teamCount';
+  showDetails = true;
   deferred = false;
   loading = false;
   apiError = false;
@@ -104,6 +106,23 @@ describe('TableCardComponent', () => {
     });
 
     expect(await screen.findByText('💍')).toBeInTheDocument();
+  });
+
+  it('hides the details column when showDetails is false', async () => {
+    await setup({
+      showDetails: false,
+      rows: [
+        {
+          key: 'row-1',
+          primaryText: 'Anaheim Ducks',
+          value: 64,
+        },
+      ],
+    });
+
+    expect(await screen.findByRole('table')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /tableCard\.showDetails/ })).not.toBeInTheDocument();
+    expect(screen.queryByText('tableCard.columns.details')).not.toBeInTheDocument();
   });
 
   it('hides a dynamic description until translation params are available', async () => {

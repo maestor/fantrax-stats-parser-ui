@@ -118,6 +118,15 @@ mat-card-header {
   white-space: nowrap;
 }
 
+.table-card--without-details .value-column {
+  width: 164px;
+}
+
+.table-card--without-details .table-card-table thead tr,
+.table-card--without-details .table-card-table tbody tr {
+  height: 3rem;
+}
+
 .info-column {
   width: 72px;
   text-align: center;
@@ -174,5 +183,14 @@ mat-card-header {
   .value-column,
   .info-column {
     width: 42px;
+  }
+
+  .table-card--without-details .value-column {
+    width: 84px;
+  }
+
+  .table-card--without-details .table-card-table thead tr,
+  .table-card--without-details .table-card-table tbody tr {
+    height: 2.65rem;
   }
 }

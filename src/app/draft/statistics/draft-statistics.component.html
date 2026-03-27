@@ -1,0 +1,26 @@
+<section class="draft-statistics" id="draft-list" aria-labelledby="draft-statistics-heading">
+  <h3 id="draft-statistics-heading" class="sr-only" tabindex="-1" data-skip-focus="true">
+    {{ 'draft.tabs.statistics' | translate }}
+  </h3>
+
+  <div class="draft-statistics-grid">
+    @for (card of cards; track card.id) {
+      <app-table-card
+        class="draft-statistics-card"
+        [titleKey]="card.titleKey"
+        [descriptionKey]="card.descriptionKey"
+        primaryColumnLabelKey="draft.statistics.columns.team"
+        [valueColumnLabelKey]="card.valueColumnLabelKey"
+        [showDetails]="false"
+        [rows]="card.rows"
+        [loading]="loading"
+        [apiError]="apiError"
+        [skip]="card.skip"
+        [take]="pageSize"
+        [total]="card.total"
+        (previousPageRequested)="loadPreviousPage(card.id)"
+        (nextPageRequested)="loadNextPage(card.id)"
+      />
+    }
+  </div>
+</section>

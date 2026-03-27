@@ -1,0 +1,10 @@
+.opening-draft {
+  --draft-pick-list-padding: 0 var(--draft-content-padding-inline) 1.1rem;
+  --draft-expanded-pick-list-padding-top: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .opening-draft {
+    --draft-pick-row-gap: 0.55rem;
+  }
+}

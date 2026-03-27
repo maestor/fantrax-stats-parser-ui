@@ -1,0 +1,188 @@
+<section class="entry-drafts" id="draft-list" aria-labelledby="entry-drafts-heading">
+  <h3 id="entry-drafts-heading" class="sr-only" tabindex="-1" data-skip-focus="true">
+    {{ 'draft.tabs.entryDrafts' | translate }}
+  </h3>
+
+  @if (loading) {
+    <p class="draft-status" role="status" aria-live="polite" tabindex="-1" data-skip-focus="true">
+      {{ 'draft.loading' | translate }}
+    </p>
+  } @else if (apiError) {
+    <p class="draft-status draft-status--error" role="alert" tabindex="-1" data-skip-focus="true">
+      {{ 'draft.apiUnavailable' | translate }}
+    </p>
+  } @else if (groups.length === 0) {
+    <p class="draft-status" tabindex="-1" data-skip-focus="true">
+      {{ 'draft.noResults' | translate }}
+    </p>
+  } @else {
+    <mat-accordion class="draft-accordion" displayMode="flat">
+      @for (group of groups; track group.team.id) {
+        <mat-expansion-panel class="draft-panel">
+          <mat-expansion-panel-header class="draft-panel-header">
+            <mat-panel-title class="draft-panel-title">
+              {{ group.team.name }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="entry-draft-panel-content">
+            <section class="entry-summary" aria-labelledby="entry-summary-heading-{{ group.team.id }}">
+              <h4 class="entry-section-title" id="entry-summary-heading-{{ group.team.id }}">
+                {{ 'draft.entryDrafts.summaryHeading' | translate }}
+              </h4>
+
+              <div class="entry-summary-grid">
+                <article class="entry-summary-card entry-summary-card--wide">
+                  <div class="entry-summary-stats">
+                    <div class="entry-summary-stat">
+                      <span class="entry-summary-label">
+                        {{ 'draft.entryDrafts.totalPicksLabel' | translate }}
+                      </span>
+                      <strong class="entry-summary-value">{{ group.summary.amounts.total }}</strong>
+                    </div>
+
+                    <div class="entry-summary-stat">
+                      <span class="entry-summary-label">
+                        {{ 'draft.entryDrafts.ownPicksLabel' | translate }}
+                      </span>
+                      <strong class="entry-summary-value">{{ group.summary.amounts.ownPicks }}</strong>
+                    </div>
+
+                    <div class="entry-summary-stat">
+                      <span class="entry-summary-label">
+                        {{ 'draft.entryDrafts.tradedPicksLabel' | translate }}
+                      </span>
+                      <strong class="entry-summary-value">{{ group.summary.amounts.tradedPicks }}</strong>
+                    </div>
+
+                    <div class="entry-summary-stat">
+                      <span class="entry-summary-label">
+                        {{ 'draft.entryDrafts.playersPerDraftAverageLabel' | translate }}
+                      </span>
+                      <strong class="entry-summary-value">
+                        {{ group.summary.amounts.playersPerDraftAverage | number: '1.0-2' : 'fi' }}
+                      </strong>
+                    </div>
+
+                    <div class="entry-summary-stat">
+                      <span class="entry-summary-label">
+                        {{ 'draft.entryDrafts.averageDraftPositionLabel' | translate }}
+                      </span>
+                      <strong class="entry-summary-value">
+                        @if (group.summary.averageDraftPosition !== null) {
+                          {{ group.summary.averageDraftPosition | number: '1.0-2' : 'fi' }}
+                        } @else {
+                          {{ 'draft.entryDrafts.noAverageDraftPosition' | translate }}
+                        }
+                      </strong>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="entry-summary-card">
+                  <h5 class="entry-summary-card-title">
+                    {{ 'draft.entryDrafts.roundsHeading' | translate }}
+                  </h5>
+
+                  <div class="entry-rounds-grid">
+                    <div class="entry-round-item">
+                      <span class="entry-round-label">{{ 'draft.entryDrafts.roundOneLabel' | translate }}</span>
+                      <strong class="entry-round-value">{{ group.summary.rounds.first }}</strong>
+                    </div>
+                    <div class="entry-round-item">
+                      <span class="entry-round-label">{{ 'draft.entryDrafts.roundTwoLabel' | translate }}</span>
+                      <strong class="entry-round-value">{{ group.summary.rounds.second }}</strong>
+                    </div>
+                    <div class="entry-round-item">
+                      <span class="entry-round-label">{{ 'draft.entryDrafts.roundThreeLabel' | translate }}</span>
+                      <strong class="entry-round-value">{{ group.summary.rounds.third }}</strong>
+                    </div>
+                    <div class="entry-round-item">
+                      <span class="entry-round-label">{{ 'draft.entryDrafts.roundFourLabel' | translate }}</span>
+                      <strong class="entry-round-value">{{ group.summary.rounds.fourth }}</strong>
+                    </div>
+                    <div class="entry-round-item">
+                      <span class="entry-round-label">{{ 'draft.entryDrafts.roundFiveLabel' | translate }}</span>
+                      <strong class="entry-round-value">{{ group.summary.rounds.fifth }}</strong>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="entry-summary-card">
+                  <h5 class="entry-summary-card-title">
+                    {{ 'draft.entryDrafts.highestPickHeading' | translate }}
+                  </h5>
+
+                  @if (group.summary.highestPick; as highestPick) {
+                    <p class="entry-highlight-value">
+                      {{ 'draft.entryDrafts.turnLabel' | translate }} {{ highestPick.pickNumber }}
+                    </p>
+                    <p class="entry-highlight-summary">
+                      @for (item of highestPick.items; track item.season + '-' + item.draftedPlayer; let isLast = $last) {
+                        <span>{{ item.season }} {{ item.draftedPlayer }}</span>@if (!isLast) {<span>, </span>}
+                      }
+                    </p>
+                  } @else {
+                    <p class="entry-summary-empty">
+                      {{ 'draft.entryDrafts.noHighestPick' | translate }}
+                    </p>
+                  }
+                </article>
+              </div>
+            </section>
+
+            <section class="entry-seasons" aria-labelledby="entry-seasons-heading-{{ group.team.id }}">
+              <h4 class="entry-section-title" id="entry-seasons-heading-{{ group.team.id }}">
+                {{ 'draft.entryDrafts.seasonsHeading' | translate }}
+              </h4>
+
+              @if (group.seasons.length === 0) {
+                <p class="entry-season-empty">{{ 'draft.noResults' | translate }}</p>
+              } @else {
+                <div class="entry-season-list">
+                  @for (season of group.seasons; track season.season) {
+                    <section class="entry-season" aria-labelledby="entry-season-title-{{ group.team.id }}-{{ season.season }}">
+                      <h5 class="entry-season-title" id="entry-season-title-{{ group.team.id }}-{{ season.season }}">
+                        {{ season.season }}
+                      </h5>
+
+                      <mat-list class="draft-pick-list" role="list">
+                        @for (pick of season.picks; track pick.pickNumber; let pickIndex = $index) {
+                          <div class="draft-pick-item" role="listitem">
+                            <div class="draft-pick-row">
+                              <span class="draft-pick-tag">
+                                {{ 'draft.entryDrafts.selectionLabel' | translate }} {{ pickIndex + 1 }}
+                              </span>
+                              <span class="draft-pick-tag">
+                                {{ 'draft.entryDrafts.roundLabel' | translate }} {{ pick.round }}
+                              </span>
+                              <span class="draft-pick-tag">
+                                {{ 'draft.entryDrafts.turnLabel' | translate }} {{ pick.pickNumber }}
+                              </span>
+                              <span
+                                class="draft-pick-player"
+                                [class.draft-pick-player--missing]="pick.draftedPlayer === null"
+                              >
+                                {{ pick.draftedPlayer ?? ('draft.entryDrafts.unknownPlayerLabel' | translate) }}
+                              </span>
+                              @if (isTradedPick(group.team, pick)) {
+                                <span class="draft-pick-origin">
+                                  {{ 'draft.entryDrafts.originalOwnerLabel' | translate }}
+                                  <span class="draft-pick-origin-team">{{ pick.originalOwner.name }}</span>
+                                </span>
+                              }
+                            </div>
+                          </div>
+                        }
+                      </mat-list>
+                    </section>
+                  }
+                </div>
+              }
+            </section>
+          </div>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  }
+</section>

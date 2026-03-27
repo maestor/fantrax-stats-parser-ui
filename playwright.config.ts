@@ -30,6 +30,9 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'http://localhost:4200',
 
+    /* CI uses route-mocked API responses, so service workers must stay out of the way. */
+    serviceWorkers: process.env['CI'] ? 'block' : 'allow',
+
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },

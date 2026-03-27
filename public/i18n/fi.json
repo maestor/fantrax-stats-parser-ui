@@ -10,6 +10,7 @@
   "nav": {
     "hockeyPlayerStats": "Pelaajatilastot",
     "playerCareers": "Pelaajaurat",
+    "drafts": "Varaukset",
     "leaderboards": "Maratontaulukot",
     "info": "Tietoa / Ohjeet",
     "openMenu": "Avaa valikko",
@@ -88,6 +89,99 @@
       }
     }
   },
+  "draft": {
+    "tabs": {
+      "entryDrafts": "Entry draftit",
+      "openingDraft": "Avausdrafti",
+      "statistics": "Tilastot"
+    },
+    "statistics": {
+      "columns": {
+        "team": "Joukkue",
+        "pickCount": "Varaukset",
+        "average": "Keskiarvo",
+        "turn": "Vuoro"
+      },
+      "cards": {
+        "totalPicks": {
+          "title": "Eniten varauksia",
+          "description": "Tehdyt varaukset yhteensä."
+        },
+        "ownPicks": {
+          "title": "Eniten omilla vuoroilla",
+          "description": "Omilla varausvuoroilla tehdyt varaukset."
+        },
+        "tradedPicks": {
+          "title": "Eniten treidatuilla vuoroilla",
+          "description": "Muilta saaduilla vuoroilla tehdyt varaukset."
+        },
+        "playersPerDraft": {
+          "title": "Eniten varauksia per draft",
+          "description": "Keskim. varausmäärä yhtä draftia kohden."
+        },
+        "averagePosition": {
+          "title": "Paras vuorojen keskiarvo",
+          "description": "Paras varattujen vuorojen keskiarvo."
+        },
+        "roundOne": {
+          "title": "Eniten 1. kierroksen varauksia",
+          "description": ""
+        },
+        "roundTwo": {
+          "title": "Eniten 2. kierroksen varauksia",
+          "description": ""
+        },
+        "roundThree": {
+          "title": "Eniten 3. kierroksen varauksia",
+          "description": ""
+        },
+        "roundFour": {
+          "title": "Eniten 4. kierroksen varauksia",
+          "description": ""
+        },
+        "roundFive": {
+          "title": "Eniten 5. kierroksen varauksia",
+          "description": ""
+        }
+      }
+    },
+    "entryDrafts": {
+      "summaryHeading": "Yhteenveto",
+      "averageDraftPositionLabel": "Keskimääräinen vuoro",
+      "noAverageDraftPosition": "Ei tiedossa",
+      "totalPicksLabel": "Varattu pelaajia",
+      "ownPicksLabel": "Omilla vuoroilla",
+      "tradedPicksLabel": "Treidatuilla vuoroilla",
+      "playersPerDraftAverageLabel": "Varausta / draft",
+      "highestPickHeading": "Korkeimmalla varattu",
+      "noHighestPick": "Ei varaustietoa",
+      "roundsHeading": "Varaukset kierroksittain",
+      "roundOneLabel": "1. kierros",
+      "roundTwoLabel": "2. kierros",
+      "roundThreeLabel": "3. kierros",
+      "roundFourLabel": "4. kierros",
+      "roundFiveLabel": "5. kierros",
+      "seasonsHeading": "Varaukset kausittain",
+      "selectionLabel": "Varaus",
+      "roundLabel": "Kierros",
+      "turnLabel": "Vuoro",
+      "originalOwnerLabel": "Alkuperäinen vuoro:",
+      "unknownPlayerLabel": "Ei varattu"
+    },
+    "openingDraft": {
+      "selectionLabel": "Varaus",
+      "roundLabel": "Kierros",
+      "turnLabel": "Vuoro",
+      "originalOwnerLabel": "Alkuperäinen vuoro:"
+    },
+    "placeholders": {
+      "entryDrafts": "Varaukset-osion perusrunko on nyt paikallaan. Entry draftit -sisältö rakennetaan seuraavassa työerässä.",
+      "openingDraft": "Varaukset-osion perusrunko on nyt paikallaan. Avausdrafti-sisältö rakennetaan seuraavassa työerässä."
+    },
+    "loading": "Ladataan varausdataa...",
+    "apiUnavailable": "Varausdata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen.",
+    "noResults": "Varauksia ei löytynyt."
+  },
   "leaderboards": {
     "tabs": {
       "regular": "Runkosarja",
@@ -162,6 +256,7 @@
   },
   "a11y": {
     "skipToTable": "Siirry taulukkoon",
+    "skipToDraftList": "Siirry varauslistaan",
     "openPlayerCard": "Avaa pelaajakortti: {{name}}",
     "tableNavigationHint": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä. Paina Enter tai välilyönti avataksesi pelaajakortin.",
     "tableNavigationHintReadOnly": "Käytä ylös/alas näppäimiä selataksesi taulukkoa. PageUp/PageDown hyppää 10 riviä.",
@@ -210,6 +305,7 @@
         "items": [
           "Pelaajatilastot: joukkuekohtaiset kenttäpelaaja- ja maalivahtitilastot, suodattimet, vertailu ja pelaajakortit",
           "Pelaajaurat: kaikkien aikojen urataulukot kenttäpelaajille ja maalivahdeille sekä uranostot",
+          "Varaukset: entry- ja avausdraftien omat selailunäkymät",
           "Maratontaulukot: joukkueiden kaikkien aikojen runkosarja-, playoff- ja siirtotaulukot kausierittelyineen"
         ]
       },
@@ -242,6 +338,14 @@
       {
         "type": "p",
         "text": "Pelaajaurat-näkymä näyttää koko liigan urayhteenvedot erikseen kenttäpelaajille ja maalivahdeille. Taulukot ovat hakukelpoisia ja lajiteltavia, mutta niissä ei käytetä joukkue- tai kausisuodattimia kuten pelaajatilastoissa. Nostot-välilehdellä näet lisäksi tiiviit kärkilistat uran eri huipuista."
+      },
+      {
+        "type": "h2",
+        "text": "Varaukset"
+      },
+      {
+        "type": "p",
+        "text": "Varaukset-näkymä kokoaa Entry draftit-, Avausdrafti- ja Tilastot-välilehdet saman otsikon alle. Entry draftit näyttää joukkuekohtaiset yhteenvetotiedot sekä kausittaiset varaushistoriat, Avausdrafti listaa koko liigan alkuperäiset varaukset joukkueittain, ja Tilastot kokoaa entry-draftien joukkuekohtaiset kärkilistat korteiksi."
       },
       {
         "type": "h2",

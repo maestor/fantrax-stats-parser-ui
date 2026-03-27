@@ -203,18 +203,84 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Keep the centered `Sekalaiset` / `Siirrot` switch accessible while preserving each card's lazy-loading and paging state
 - Activate highlight-card API loads lazily as each card approaches the viewport instead of requesting every card during route startup
 
+### DraftComponent
+
+**Location**: `src/app/draft/`
+
+**Type**: Feature Route Shell
+
+**Purpose**: Render the `Varaukset` browse section and tab navigation for `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics`
+
+**Responsibilities**:
+
+- Track the active draft tab from the router URL
+- Render browse-style tab navigation under the root shell subtitle
+- Host the child draft routes under a `mat-tab-nav-panel`
+- Keep draft browsing on the lighter root shell without dashboard controls
+
+### OpeningDraftComponent
+
+**Location**: `src/app/draft/opening-draft/`
+
+**Type**: Smart Browse Component
+
+**Purpose**: Render `/draft/opening-draft` as a team-grouped accordion of opening-draft picks
+
+**Responsibilities**:
+
+- Fetch opening-draft groups from `ApiService.getOpeningDrafts()`
+- Render each team in API order as its own Material expansion panel
+- Show simple per-pick rows for round, pick number, drafted player, and traded-owner suffixes
+- Reuse the browse-route loading, empty, and API-error states
+- Mark footer readiness after the async route data has resolved
+
+### EntryDraftsComponent
+
+**Location**: `src/app/draft/entry-drafts/`
+
+**Type**: Smart Browse Component
+
+**Purpose**: Render `/draft/entry-drafts` as a team-grouped accordion with draft summaries and season breakdowns
+
+**Responsibilities**:
+
+- Fetch entry-draft groups from `ApiService.getEntryDrafts()`
+- Render each team in API order as its own Material expansion panel
+- Show per-team summary cards for highest pick, average draft position, own/traded counts, players-per-draft average, and round totals
+- Sort season groups newest-first while preserving the API order of teams
+- Render season-by-season pick rows, including traded-owner suffixes and a visible placeholder for null drafted-player values
+- Reuse the browse-route loading, empty, and API-error states
+- Mark footer readiness after the async route data has resolved
+
+### DraftStatisticsComponent
+
+**Location**: `src/app/draft/statistics/`
+
+**Type**: Smart Browse Component
+
+**Purpose**: Render `/draft/statistics` as a grid of paged ranking cards derived from the existing entry-draft summary payload
+
+**Responsibilities**:
+
+- Fetch entry-draft groups from `ApiService.getEntryDrafts()`
+- Derive 10 ranked team slices from the summary data without introducing a separate backend endpoint
+- Reuse the shared `TableCardComponent` in no-details mode so the visual style matches Career highlights
+- Manage per-card pagination state locally while keeping the cards read-only
+- Reuse the browse-route loading and API-error behavior and mark footer readiness after data resolves
+
 ### TableCardComponent
 
 **Location**: `src/app/shared/table-card/`
 
 **Type**: Shared Presentational Component
 
-**Purpose**: Render compact paged read-only leaderboards or highlight slices inside a Material card using semantic table markup.
+**Purpose**: Render compact paged read-only leaderboards, highlight slices, or other ranking cards inside a Material card using semantic table markup.
 
 **Responsibilities**:
 
 - Show title/description copy, a semantic HTML table, and previous/next paging controls
 - Support a deferred placeholder before a card has been activated by viewport visibility
+- Optionally hide the details/info column when a card only needs primary text and value columns
 - Keep tooltip buttons and pagination controls keyboard accessible
 - Reuse shared loading, empty, and API-error states for compact card views
 

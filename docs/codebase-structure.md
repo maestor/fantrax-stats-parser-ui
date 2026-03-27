@@ -17,6 +17,7 @@ fantrax-stats-parser-ui/
 │   │   │   ├── footer/
 │   │   │   └── navigation/
 │   │   ├── career/            # Career listings feature (shell + players, goalies, and highlights child components)
+│   │   ├── draft/             # Draft browse feature (shell + entry/opening child components)
 │   │   ├── dashboard-shell/   # Lazy route shell for interactive dashboard routes
 │   │   ├── goalie-stats/     # Goalie stats page
 │   │   ├── goalie-route/     # Direct goalie card route handler
@@ -97,6 +98,15 @@ Route shell and smart components for career listings:
 - Splits the highlights route into `Sekalaiset` and `Siirrot` card groups while reusing the same paged-card UI
 - Defers each highlight card's API request until the card nears the viewport
 - Loads under the lighter root shell without dashboard-only controls, comparison bar, or mobile settings drawer
+
+### `/src/app/draft/`
+Route shell and draft browse child components:
+- Handles `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics`
+- Renders tab navigation between the three draft views
+- Lives under the lighter root shell without dashboard-only controls or mobile settings drawer
+- `opening-draft/` now renders a real accordion/list UI backed by the `/draft/original` endpoint
+- `entry-drafts/` now renders a real accordion UI backed by `/draft/entry`, combining per-team summary cards with season-by-season pick lists
+- `statistics/` derives 10 card-table rankings from the same `/draft/entry` payload and reuses the shared `table-card/` presentation layer
 
 ### `/src/app/shared/table-card/`
 Reusable card-based read-only table presentation:

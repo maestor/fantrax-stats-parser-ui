@@ -206,6 +206,7 @@ The Playwright config is defined in `playwright.config.ts` and:
 - Uses `http://localhost:4200` as the base URL
 - Locally: starts (or reuses) the Angular dev server via `npm start`
 - In CI: serves the production build via `npx serve dist/fantrax-stats-parser-ui/browser -s -l 4200`
+- In CI: blocks service workers so mocked `/api/**` traffic always reaches Playwright route handlers instead of the production PWA layer
 - Runs tests against Chromium only
 
 **Recommended local flow:**

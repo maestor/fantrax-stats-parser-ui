@@ -1,3 +1,5 @@
+import { registerLocaleData } from '@angular/common';
+import localeFi from '@angular/common/locales/fi';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 import {
@@ -12,6 +14,8 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
+
+registerLocaleData(localeFi);
 
 export const appConfig: ApplicationConfig = {
   providers: [

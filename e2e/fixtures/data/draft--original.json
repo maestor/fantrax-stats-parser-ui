@@ -1,0 +1,63 @@
+[
+  {
+    "team": {
+      "id": "1",
+      "name": "Colorado Avalanche"
+    },
+    "picks": [
+      {
+        "round": 1,
+        "pickNumber": 1,
+        "draftedPlayer": "Sidney Crosby",
+        "originalOwner": {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      },
+      {
+        "round": 1,
+        "pickNumber": 12,
+        "draftedPlayer": "Corey Perry",
+        "originalOwner": {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      },
+      {
+        "round": 2,
+        "pickNumber": 14,
+        "draftedPlayer": "Carey Price",
+        "originalOwner": {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      }
+    ]
+  },
+  {
+    "team": {
+      "id": "29",
+      "name": "Dallas Stars"
+    },
+    "picks": [
+      {
+        "round": 1,
+        "pickNumber": 4,
+        "draftedPlayer": "Anze Kopitar",
+        "originalOwner": {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      },
+      {
+        "round": 2,
+        "pickNumber": 16,
+        "draftedPlayer": "Tuukka Rask",
+        "originalOwner": {
+          "id": "5",
+          "name": "Edmonton Oilers"
+        }
+      }
+    ]
+  }
+]
