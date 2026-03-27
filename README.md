@@ -39,6 +39,7 @@ Live showcase: https://ffhl-stats.vercel.app/
 - 📝 **Draft Pages**: Standalone `/draft/entry-drafts` and `/draft/opening-draft` browse routes now live under `Varaukset`
 	- Batch 1 adds the route shell, navigation, SEO, and the shared browse scaffolding
 	- Batch 2 turns `/draft/opening-draft` into a team-by-team accordion with simple pick rows, including traded-pick owner suffixes when the original pick belonged to another team
+	- Batch 3 turns `/draft/entry-drafts` into a matching team accordion with compact summary cards, round totals, and season-by-season entry draft history
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
@@ -183,7 +184,7 @@ For planning-heavy changes, save the approved implementation plan locally under 
 E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `smoke.spec.ts` — Core page rendering and navigation
 - `career.spec.ts` — Career players/goalies/highlights tabs, highlight section switching, paging, and route shell behavior
-- `draft.spec.ts` — Draft route redirect/tab behavior plus opening-draft accordion rendering
+- `draft.spec.ts` — Draft route redirect/tab behavior plus entry-draft and opening-draft accordion rendering
 - `leaderboards.spec.ts` — Leaderboards redirect, regular/playoff/transactions tabs, tie-rank vs incremental position logic, and expandable season details
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
 - `team-switching.spec.ts` — Team selector and filter reset behavior

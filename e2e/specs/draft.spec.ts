@@ -11,9 +11,42 @@ function waitForOpeningDraftResponse(page: Page) {
   );
 }
 
+function waitForEntryDraftResponse(page: Page) {
+  return page.waitForResponse(
+    (response) => response.url().includes('/draft/entry') && response.ok(),
+    { timeout: 15000 },
+  );
+}
+
+async function expectEntryDraftContent(page: Page) {
+  const panels = page.locator('mat-expansion-panel');
+  const firstPanel = panels.first();
+  const firstHeader = firstPanel.locator('mat-expansion-panel-header');
+
+  await expect(firstHeader).toBeVisible();
+  await firstHeader.click();
+
+  await expect(firstPanel.locator('.entry-summary-card').first()).toBeVisible();
+  await expect(firstPanel.locator('.entry-season').first()).toBeVisible();
+  await expect(firstPanel.locator('.entry-section-title').first())
+    .toContainText(fi('draft.entryDrafts.summaryHeading'));
+  await expect(firstPanel.locator('.draft-pick-player').first()).toBeVisible();
+
+  expect(await firstHeader.evaluate((el) => getComputedStyle(el).position)).toBe('sticky');
+
+  const panelCount = await panels.count();
+  if (panelCount > 1) {
+    const secondHeader = panels.nth(1).locator('mat-expansion-panel-header');
+    await secondHeader.click();
+    await expect(firstHeader).toHaveAttribute('aria-expanded', 'false');
+    await expect(secondHeader).toHaveAttribute('aria-expanded', 'true');
+  }
+}
+
 async function expectOpeningDraftContent(page: Page) {
   const panels = page.locator('mat-expansion-panel');
-  await expect(panels.first().locator('mat-expansion-panel-header')).toBeVisible();
+  const firstHeader = panels.first().locator('mat-expansion-panel-header');
+  await expect(firstHeader).toBeVisible();
 
   const panelCount = await panels.count();
   let tradedOwnerFound = false;
@@ -24,6 +57,14 @@ async function expectOpeningDraftContent(page: Page) {
     await header.click();
 
     await expect(panel.locator('.draft-pick-player').first()).toBeVisible();
+
+    if (index === 0) {
+      expect(await header.evaluate((el) => getComputedStyle(el).position)).toBe('sticky');
+    }
+    if (index === 1) {
+      await expect(firstHeader).toHaveAttribute('aria-expanded', 'false');
+      await expect(header).toHaveAttribute('aria-expanded', 'true');
+    }
 
     const tradedOwner = panel.locator('.draft-pick-origin').first();
     if (await tradedOwner.count()) {
@@ -41,17 +82,19 @@ test.describe('Draft pages', () => {
     await page.goto('/leaderboards/regular');
 
     await page.getByRole('button', { name: fi('a11y.openNavMenu') }).click();
+    const entryDraftResponse = waitForEntryDraftResponse(page);
     await page.getByRole('button', { name: NAV_LABELS.DRAFTS }).last().click();
 
     await expect(page).toHaveURL(/\/draft\/entry-drafts$/);
+    await entryDraftResponse;
+    await expect(page.getByRole('heading', { name: 'Varaukset' })).toBeVisible();
 
-    const entryDraftsTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_ENTRY_DRAFTS });
     const openingDraftTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_OPENING_DRAFT });
 
-    await expect(entryDraftsTab).toHaveAttribute('aria-selected', 'true');
-    await expect(page.getByText(fi('draft.placeholders.entryDrafts'))).toBeVisible();
+    await expectEntryDraftContent(page);
 
     const openingDraftResponse = waitForOpeningDraftResponse(page);
+    await expect(openingDraftTab).toBeVisible();
     await openingDraftTab.click();
     await expect(page).toHaveURL(/\/draft\/opening-draft$/);
     await openingDraftResponse;
@@ -60,9 +103,11 @@ test.describe('Draft pages', () => {
   });
 
   test('direct URL /draft/entry-drafts loads without redirect', async ({ page }) => {
+    const entryDraftResponse = waitForEntryDraftResponse(page);
     await page.goto('/draft/entry-drafts');
     await expect(page).toHaveURL(/\/draft\/entry-drafts$/);
-    await expect(page.getByText(fi('draft.placeholders.entryDrafts'))).toBeVisible();
+    await entryDraftResponse;
+    await expectEntryDraftContent(page);
   });
 
   test('direct URL /draft/opening-draft loads without redirect', async ({ page }) => {

@@ -95,7 +95,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Shares the lighter root-shell treatment used by other browse routes
    - Batch 1 provides the route family, tab navigation, subtitle/SEO integration, and browse-shell wiring
    - Batch 2 renders `/draft/opening-draft` as a Material accordion grouped by drafting team, with simple per-pick rows and a traded-owner suffix when the original pick came from another team
-   - `/draft/entry-drafts` remains the next batch and still uses placeholder content for now
+   - Batch 3 renders `/draft/entry-drafts` as a matching team-grouped accordion, with per-team summary cards, round totals, and season-by-season pick lists that preserve null legacy player rows
 
 8. **Data Management**
    - Caching service to reduce API calls

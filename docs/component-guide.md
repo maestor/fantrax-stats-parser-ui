@@ -234,6 +234,24 @@ TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
 - Reuse the browse-route loading, empty, and API-error states
 - Mark footer readiness after the async route data has resolved
 
+### EntryDraftsComponent
+
+**Location**: `src/app/draft/entry-drafts/`
+
+**Type**: Smart Browse Component
+
+**Purpose**: Render `/draft/entry-drafts` as a team-grouped accordion with draft summaries and season breakdowns
+
+**Responsibilities**:
+
+- Fetch entry-draft groups from `ApiService.getEntryDrafts()`
+- Render each team in API order as its own Material expansion panel
+- Show per-team summary cards for highest pick, average draft position, own/traded counts, players-per-draft average, and round totals
+- Sort season groups newest-first while preserving the API order of teams
+- Render season-by-season pick rows, including traded-owner suffixes and a visible placeholder for null drafted-player values
+- Reuse the browse-route loading, empty, and API-error states
+- Mark footer readiness after the async route data has resolved
+
 ### TableCardComponent
 
 **Location**: `src/app/shared/table-card/`

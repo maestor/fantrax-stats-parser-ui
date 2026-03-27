@@ -1,16 +1,312 @@
-.draft-placeholder {
+.entry-drafts {
   padding-top: 1rem;
+  --draft-sticky-top: env(safe-area-inset-top, 0px);
 }
 
-.draft-placeholder-card {
-  max-width: 48rem;
-}
-
-h3 {
-  margin: 0 0 0.75rem;
-}
-
-p {
+.draft-status {
   margin: 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
+      var(--mat-sys-surface) 100%
+    );
+  color: var(--mat-sys-on-surface);
+  line-height: 1.6;
+}
+
+.draft-status--error {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mat-sys-error-container) 46%, transparent) 0%,
+      var(--mat-sys-surface) 100%
+    );
+  color: var(--mat-sys-on-surface);
+}
+
+.draft-accordion {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.draft-panel {
+  --mat-expansion-container-background-color: var(--mat-sys-surface-container-low);
+  --mat-expansion-header-text-color: var(--mat-sys-on-surface);
+  --mat-expansion-header-indicator-color: var(--mat-sys-on-surface-variant);
+  --mat-expansion-header-hover-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 6%, var(--mat-sys-surface-container-low));
+  --mat-expansion-header-focus-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container-low));
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-expansion-container-background-color);
+  box-shadow: var(--mat-sys-level1);
+  overflow: hidden;
+}
+
+.draft-panel.mat-expanded {
+  overflow: visible;
+}
+
+.draft-panel-header {
+  padding-inline: 1.25rem;
+}
+
+.draft-panel-header.mat-expanded {
+  position: sticky;
+  top: var(--draft-sticky-top);
+  z-index: 6;
+  border-radius: 1rem 1rem 0 0;
+  background: var(--mat-expansion-container-background-color);
+  box-shadow:
+    0 1px 0 var(--mat-sys-outline-variant),
+    var(--mat-sys-level1);
+}
+
+.draft-panel-title {
+  color: var(--mat-sys-on-surface);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.entry-draft-panel-content {
+  display: grid;
+  gap: 1rem;
+  padding: 0 1.25rem 1.1rem;
+}
+
+.draft-panel.mat-expanded .entry-draft-panel-content {
+  padding-top: 0.9rem;
+}
+
+.entry-section-title {
+  margin: 0 0 0.7rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.entry-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 0.75rem;
+}
+
+.entry-summary-card {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.entry-summary-card--wide {
+  grid-column: 1 / -1;
+}
+
+.entry-summary-card-title {
+  margin: 0 0 0.75rem;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.entry-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 0.65rem;
+}
+
+.entry-summary-stat,
+.entry-round-item {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.85rem;
+  background: var(--mat-sys-surface-container);
+}
+
+.entry-summary-label,
+.entry-round-label {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.entry-summary-value,
+.entry-round-value {
+  color: var(--mat-sys-on-surface);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.entry-highlight-value {
+  margin: 0 0 0.45rem;
+  color: var(--mat-sys-on-surface);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.entry-highlight-summary {
+  margin: 0;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.entry-summary-empty,
+.entry-season-empty {
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
   line-height: 1.5;
+}
+
+.entry-rounds-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(80px, 1fr));
+  gap: 0.4rem;
+}
+
+.entry-season-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.entry-season {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  padding: 0.8rem 1rem 0.2rem;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mat-sys-surface-container) 70%, transparent) 0%,
+      var(--mat-sys-surface-container-lowest) 100%
+    );
+}
+
+.entry-season-title {
+  margin: 0 0 0.15rem;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.draft-pick-list {
+  display: block;
+  padding: 0;
+}
+
+.draft-pick-item {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.draft-pick-item:first-child {
+  border-top: none;
+}
+
+.draft-pick-row {
+  display: grid;
+  grid-template-columns: auto auto auto minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.7rem 0;
+}
+
+.draft-pick-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.draft-pick-player {
+  min-width: 0;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.draft-pick-player--missing {
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 500;
+}
+
+.draft-pick-origin {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-align: right;
+}
+
+.draft-pick-origin-team {
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .draft-pick-row {
+    grid-template-columns: auto auto auto minmax(0, 1fr);
+  }
+
+  .draft-pick-origin {
+    grid-column: 1 / -1;
+    text-align: left;
+    padding-left: 0.1rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .entry-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .entry-rounds-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .draft-panel-header,
+  .entry-draft-panel-content,
+  .draft-status {
+    padding-inline: 1rem;
+  }
+
+  .draft-panel-title {
+    font-size: 0.96rem;
+  }
+
+  .entry-summary-card,
+  .entry-season {
+    padding-inline: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .draft-pick-row {
+    grid-template-columns: auto auto auto;
+  }
+
+  .draft-pick-player,
+  .draft-pick-origin {
+    grid-column: 1 / -1;
+  }
 }

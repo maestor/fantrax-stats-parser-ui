@@ -16,7 +16,7 @@
       {{ 'draft.noResults' | translate }}
     </p>
   } @else {
-    <mat-accordion class="draft-accordion" displayMode="flat" multi>
+    <mat-accordion class="draft-accordion" displayMode="flat">
       @for (group of groups; track group.team.id) {
         <mat-expansion-panel class="draft-panel">
           <mat-expansion-panel-header class="draft-panel-header">

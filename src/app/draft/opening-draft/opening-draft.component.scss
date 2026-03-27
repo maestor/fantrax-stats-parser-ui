@@ -1,5 +1,6 @@
 .opening-draft {
   padding-top: 1rem;
+  --draft-sticky-top: env(safe-area-inset-top, 0px);
 }
 
 .draft-status {
@@ -47,8 +48,23 @@
   overflow: hidden;
 }
 
+.draft-panel.mat-expanded {
+  overflow: visible;
+}
+
 .draft-panel-header {
   padding-inline: 1.25rem;
+}
+
+.draft-panel-header.mat-expanded {
+  position: sticky;
+  top: var(--draft-sticky-top);
+  z-index: 6;
+  border-radius: 1rem 1rem 0 0;
+  background: var(--mat-expansion-container-background-color);
+  box-shadow:
+    0 1px 0 var(--mat-sys-outline-variant),
+    var(--mat-sys-level1);
 }
 
 .draft-panel-title {
@@ -60,6 +76,10 @@
 .draft-pick-list {
   display: block;
   padding: 0 1.25rem 1.1rem;
+}
+
+.draft-panel.mat-expanded .draft-pick-list {
+  padding-top: 0.9rem;
 }
 
 .draft-pick-item {

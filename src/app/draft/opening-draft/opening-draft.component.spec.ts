@@ -98,6 +98,21 @@ describe('OpeningDraftComponent', () => {
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(7);
   });
 
+  it('keeps only one opening-draft panel expanded at a time', async () => {
+    await renderComponent();
+
+    const firstPanelButton = await screen.findByRole('button', { name: 'Colorado Avalanche' });
+    const secondPanelButton = await screen.findByRole('button', { name: 'Dallas Stars' });
+
+    fireEvent.click(firstPanelButton);
+    expect(firstPanelButton).toHaveAttribute('aria-expanded', 'true');
+    expect(secondPanelButton).toHaveAttribute('aria-expanded', 'false');
+
+    fireEvent.click(secondPanelButton);
+    expect(firstPanelButton).toHaveAttribute('aria-expanded', 'false');
+    expect(secondPanelButton).toHaveAttribute('aria-expanded', 'true');
+  });
+
   it('shows an empty state when there are no opening draft picks', async () => {
     const footerVisibilityService = createFooterVisibilityMock();
 

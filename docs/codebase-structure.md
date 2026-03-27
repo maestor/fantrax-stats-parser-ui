@@ -105,7 +105,7 @@ Route shell and draft browse child components:
 - Renders tab navigation between the two draft views
 - Lives under the lighter root shell without dashboard-only controls or mobile settings drawer
 - `opening-draft/` now renders a real accordion/list UI backed by the `/draft/original` endpoint
-- `entry-drafts/` still carries the placeholder content until the next batch lands
+- `entry-drafts/` now renders a real accordion UI backed by `/draft/entry`, combining per-team summary cards with season-by-season pick lists
 
 ### `/src/app/shared/table-card/`
 Reusable card-based read-only table presentation:

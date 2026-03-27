@@ -6,7 +6,9 @@ import { ApiService } from '@services/api.service';
 import { AppComponent } from './app.component';
 import {
   createApiServiceMock,
+  entryDraftsFixture,
   getBehaviorTestConfig,
+  openingDraftsFixture,
   polyfillJsdom,
   slicedGoalies,
   seedLocalStorage,
@@ -334,7 +336,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(await screen.findByRole('tab', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
-    expect(screen.getByText('draft.placeholders.entryDrafts')).toBeInTheDocument();
+    expect(await screen.findByText(entryDraftsFixture[0].team.name)).toBeInTheDocument();
 
     expect(
       screen.queryByRole('button', { name: 'a11y.openSettingsDrawer' })
@@ -344,6 +346,6 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' }));
 
     expect(await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
-    expect(screen.getByText('draft.placeholders.openingDraft')).toBeInTheDocument();
+    expect(await screen.findByText(openingDraftsFixture[0].team.name)).toBeInTheDocument();
   });
 });

@@ -94,6 +94,29 @@
       "entryDrafts": "Entry draftit",
       "openingDraft": "Avausdrafti"
     },
+    "entryDrafts": {
+      "summaryHeading": "Yhteenveto",
+      "averageDraftPositionLabel": "Keskimääräinen vuoro",
+      "noAverageDraftPosition": "Ei tiedossa",
+      "totalPicksLabel": "Varattu pelaajia",
+      "ownPicksLabel": "Omilla vuoroilla",
+      "tradedPicksLabel": "Treidatuilla vuoroilla",
+      "playersPerDraftAverageLabel": "Varausta / draft",
+      "highestPickHeading": "Korkeimmalla varattu",
+      "noHighestPick": "Ei varaustietoa",
+      "roundsHeading": "Varaukset kierroksittain",
+      "roundOneLabel": "1. kierros",
+      "roundTwoLabel": "2. kierros",
+      "roundThreeLabel": "3. kierros",
+      "roundFourLabel": "4. kierros",
+      "roundFiveLabel": "5. kierros",
+      "seasonsHeading": "Varaukset kausittain",
+      "selectionLabel": "Varaus",
+      "roundLabel": "Kierros",
+      "turnLabel": "Vuoro",
+      "originalOwnerLabel": "Alkuperäinen vuoro:",
+      "unknownPlayerLabel": "Ei varattu"
+    },
     "openingDraft": {
       "selectionLabel": "Varaus",
       "roundLabel": "Kierros",
@@ -271,7 +294,7 @@
       },
       {
         "type": "p",
-        "text": "Varaukset-näkymä kokoaa Entry draftit- ja Avausdrafti-välilehdet saman otsikon alle. Tässä vaiheessa osion reitit ja välilehdet ovat jo käytössä, ja varsinainen varaushistoria täydentyy seuraavissa työerissä."
+        "text": "Varaukset-näkymä kokoaa Entry draftit- ja Avausdrafti-välilehdet saman otsikon alle. Entry draftit näyttää joukkuekohtaiset yhteenvetotiedot sekä kausittaiset varaushistoriat, ja Avausdrafti listaa koko liigan alkuperäiset varaukset joukkueittain."
       },
       {
         "type": "h2",
