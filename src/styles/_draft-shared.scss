@@ -1,0 +1,170 @@
+:where(.entry-drafts, .opening-draft) {
+  --draft-content-padding-inline: 1.25rem;
+  --draft-pick-row-gap: 0.65rem;
+  --draft-pick-list-padding: 0;
+  --draft-expanded-pick-list-padding-top: 0;
+  padding-top: 1rem;
+  --draft-sticky-top: env(safe-area-inset-top, 0px);
+}
+
+:where(.entry-drafts, .opening-draft) .draft-status {
+  margin: 0;
+  padding: 1rem var(--draft-content-padding-inline);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
+      var(--mat-sys-surface) 100%
+    );
+  color: var(--mat-sys-on-surface);
+  line-height: 1.6;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-status--error {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mat-sys-error-container) 46%, transparent) 0%,
+      var(--mat-sys-surface) 100%
+    );
+}
+
+:where(.entry-drafts, .opening-draft) .draft-accordion {
+  display: grid;
+  gap: 0.1rem;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-panel {
+  --mat-expansion-container-background-color: var(--mat-sys-surface-container-low);
+  --mat-expansion-header-text-color: var(--mat-sys-on-surface);
+  --mat-expansion-header-indicator-color: var(--mat-sys-on-surface-variant);
+  --mat-expansion-header-hover-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 6%, var(--mat-sys-surface-container-low));
+  --mat-expansion-header-focus-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container-low));
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-expansion-container-background-color);
+  box-shadow: var(--mat-sys-level1);
+  overflow: hidden;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-panel.mat-expanded {
+  overflow: visible;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-panel-header {
+  padding-inline: var(--draft-content-padding-inline);
+}
+
+:where(.entry-drafts, .opening-draft) .draft-panel-header.mat-expanded {
+  position: sticky;
+  top: var(--draft-sticky-top);
+  z-index: 6;
+  border-radius: 1rem 1rem 0 0;
+  background: var(--mat-expansion-container-background-color);
+  box-shadow:
+    0 1px 0 var(--mat-sys-outline-variant),
+    var(--mat-sys-level1);
+}
+
+:where(.entry-drafts, .opening-draft) .draft-panel-title {
+  color: var(--mat-sys-on-surface);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-list {
+  display: block;
+  padding: var(--draft-pick-list-padding);
+}
+
+:where(.entry-drafts, .opening-draft) .draft-panel.mat-expanded .draft-pick-list {
+  padding-top: var(--draft-expanded-pick-list-padding-top);
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-item {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-item:first-child {
+  border-top: none;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-row {
+  display: grid;
+  grid-template-columns: auto auto auto minmax(0, 1fr) auto;
+  gap: var(--draft-pick-row-gap);
+  align-items: center;
+  padding: 0.7rem 0;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-player {
+  min-width: 0;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-origin {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-align: right;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-pick-origin-team {
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  :where(.entry-drafts, .opening-draft) .draft-pick-row {
+    grid-template-columns: auto auto auto minmax(0, 1fr);
+  }
+
+  :where(.entry-drafts, .opening-draft) .draft-pick-origin {
+    grid-column: 1 / -1;
+    text-align: left;
+    padding-left: 0.1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  :where(.entry-drafts, .opening-draft) {
+    --draft-content-padding-inline: 1rem;
+  }
+
+  :where(.entry-drafts, .opening-draft) .draft-panel-title {
+    font-size: 0.96rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :where(.entry-drafts, .opening-draft) .draft-pick-row {
+    grid-template-columns: auto auto auto;
+  }
+
+  :where(.entry-drafts, .opening-draft) .draft-pick-player,
+  :where(.entry-drafts, .opening-draft) .draft-pick-origin {
+    grid-column: 1 / -1;
+  }
+}

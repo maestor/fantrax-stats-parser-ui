@@ -1,6 +1,7 @@
 @use '@fontsource/roboto/300' as *;
 @use '@fontsource/roboto/400' as *;
 @use '@fontsource/roboto/500' as *;
+@use './styles/draft-shared';
 @font-face {
   font-family: "Material Icons";
   font-style: normal;
