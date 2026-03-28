@@ -27,7 +27,11 @@ function createEntryDraftGroup(index: number): EntryDraftTeamGroup {
         tradedPicks: 5,
         playersPerDraftAverage: 6 - index * 0.1,
         playedInLeague: 12 - index,
+        playedInLeaguePercent: Number(((12 - index) / (20 - index)).toFixed(3)),
         playedForDraftingTeam: 6 - Math.floor(index / 2),
+        playedForDraftingTeamPercent: Number(
+          ((6 - Math.floor(index / 2)) / (20 - index)).toFixed(3),
+        ),
       },
       rounds: {
         first: 12 - index,
@@ -88,6 +92,12 @@ describe('DraftStatisticsComponent', () => {
       await screen.findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'draft.statistics.cards.playedInLeague.title' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'draft.statistics.cards.playedInLeaguePercent.title' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'draft.statistics.cards.playedForDraftingTeamPercent.title' }),
+    ).toBeInTheDocument();
     expect(fixture.componentInstance.cards.map((card) => card.id)).toEqual([
       ...DRAFT_STATISTICS_CARD_IDS,
     ]);
@@ -106,6 +116,18 @@ describe('DraftStatisticsComponent', () => {
     const totalPicksQueries = within(totalPicksCard as HTMLElement);
     expect(totalPicksQueries.getByText(totalPicksState!.rows[0].primaryText)).toBeInTheDocument();
     expect(totalPicksQueries.queryByText(totalPicksState!.allRows[10].primaryText)).not.toBeInTheDocument();
+
+    const playedInLeaguePercentCard = screen
+      .getByRole('heading', { name: 'draft.statistics.cards.playedInLeaguePercent.title' })
+      .closest('app-table-card');
+    expect(playedInLeaguePercentCard).not.toBeNull();
+    expect(within(playedInLeaguePercentCard as HTMLElement).getByText('60 %')).toBeInTheDocument();
+
+    const playedForDraftingTeamPercentCard = screen
+      .getByRole('heading', { name: 'draft.statistics.cards.playedForDraftingTeamPercent.title' })
+      .closest('app-table-card');
+    expect(playedForDraftingTeamPercentCard).not.toBeNull();
+    expect(within(playedForDraftingTeamPercentCard as HTMLElement).getByText('30 %')).toBeInTheDocument();
 
     fireEvent.click(totalPicksQueries.getByRole('button', { name: 'tableCard.nextPage' }));
 

@@ -308,8 +308,8 @@ export interface paths {
          *     Each team's `seasons` array is sorted newest-first, and picks within one season
          *     are sorted by draft order.
          *     Team roots also include a `summary` object with highest-pick, average-position,
-         *     pick-count aggregates, played counts, and a fixed round breakdown calculated from
-         *     the grouped data.
+         *     pick-count aggregates, played counts, played percentages, and a fixed round
+         *     breakdown calculated from the grouped data.
          *     Each pick also includes `playedInLeague` and `playedForDraftingTeam` flags based
          *     on whether the linked Fantrax entity has games-played rows in `players` or
          *     `goalies`.
@@ -1424,10 +1424,20 @@ export interface components {
              */
             playedInLeague: number;
             /**
+             * @description Fraction of drafted players who appeared in league games for any fantasy team, rounded to three decimals.
+             * @example 0.7
+             */
+            playedInLeaguePercent: number;
+            /**
              * @description Drafted players with at least one games-played row for the same fantasy team that drafted them.
              * @example 14
              */
             playedForDraftingTeam: number;
+            /**
+             * @description Fraction of drafted players who appeared in league games for the fantasy team that drafted them, rounded to three decimals.
+             * @example 0.35
+             */
+            playedForDraftingTeamPercent: number;
         };
         EntryDraftRoundsSummary: {
             /** @example 12 */

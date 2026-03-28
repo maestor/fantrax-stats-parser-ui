@@ -37,7 +37,9 @@ const entryDraftGroupsFixture: EntryDraftTeamGroup[] = [
         tradedPicks: 12,
         playersPerDraftAverage: 4.92,
         playedInLeague: 2,
+        playedInLeaguePercent: 0.031,
         playedForDraftingTeam: 1,
+        playedForDraftingTeamPercent: 0.016,
       },
       rounds: {
         first: 13,
@@ -103,7 +105,9 @@ const entryDraftGroupsFixture: EntryDraftTeamGroup[] = [
         tradedPicks: 0,
         playersPerDraftAverage: 0,
         playedInLeague: 0,
+        playedInLeaguePercent: 0,
         playedForDraftingTeam: 0,
+        playedForDraftingTeamPercent: 0,
       },
       rounds: {
         first: 0,
@@ -197,9 +201,9 @@ describe('EntryDraftsComponent', () => {
     expect(summaryValues).toEqual(expect.arrayContaining(['82,89', '64', '52', '12', '4,92']));
 
     const playedValues = Array.from(firstPanelElement.querySelectorAll('.entry-played-value'))
-      .map((element) => element.textContent?.trim())
+      .map((element) => element.textContent?.replace(/\s+/g, ' ').trim())
       .filter((value): value is string => Boolean(value));
-    expect(playedValues).toEqual(['2', '1']);
+    expect(playedValues).toEqual(['2 (3,1 %)', '1 (1,6 %)']);
 
     const roundValues = Array.from(firstPanelElement.querySelectorAll('.entry-round-value'))
       .map((element) => element.textContent?.trim())

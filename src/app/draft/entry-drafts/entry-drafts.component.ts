@@ -1,4 +1,4 @@
-import { DecimalPipe, isPlatformBrowser } from '@angular/common';
+import { DecimalPipe, PercentPipe, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -27,7 +27,7 @@ type DraftPickStatus = {
 @Component({
   selector: 'app-entry-drafts',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DecimalPipe, MatExpansionModule, MatListModule, MatTooltipModule, TranslateModule],
+  imports: [DecimalPipe, PercentPipe, MatExpansionModule, MatListModule, MatTooltipModule, TranslateModule],
   templateUrl: './entry-drafts.component.html',
   styleUrl: './entry-drafts.component.scss',
 })

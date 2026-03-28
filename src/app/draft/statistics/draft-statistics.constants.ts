@@ -5,6 +5,8 @@ export const DRAFT_STATISTICS_CARD_IDS = [
   'players-per-draft',
   'average-position',
   'played-in-league',
+  'played-in-league-percent',
+  'played-for-drafting-team-percent',
   'round-1',
   'round-2',
   'round-3',

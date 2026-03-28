@@ -26,6 +26,11 @@ const draftStatisticNumberFormatter = new Intl.NumberFormat('fi-FI', {
   minimumFractionDigits: 0,
   maximumFractionDigits: 2,
 });
+const draftStatisticPercentFormatter = new Intl.NumberFormat('fi-FI', {
+  style: 'percent',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 1,
+});
 
 type SortDirection = 'asc' | 'desc';
 
@@ -101,6 +106,22 @@ const draftStatisticDefinitionsById: Record<
     valueColumnLabelKey: 'draft.statistics.columns.players',
     direction: 'desc',
     valueFor: (group) => group.summary.amounts.playedInLeague,
+  },
+  'played-in-league-percent': {
+    titleKey: 'draft.statistics.cards.playedInLeaguePercent.title',
+    descriptionKey: 'draft.statistics.cards.playedInLeaguePercent.description',
+    valueColumnLabelKey: 'draft.statistics.columns.share',
+    direction: 'desc',
+    valueFor: (group) => group.summary.amounts.playedInLeaguePercent,
+    formatValue: (value) => draftStatisticPercentFormatter.format(value),
+  },
+  'played-for-drafting-team-percent': {
+    titleKey: 'draft.statistics.cards.playedForDraftingTeamPercent.title',
+    descriptionKey: 'draft.statistics.cards.playedForDraftingTeamPercent.description',
+    valueColumnLabelKey: 'draft.statistics.columns.share',
+    direction: 'desc',
+    valueFor: (group) => group.summary.amounts.playedForDraftingTeamPercent,
+    formatValue: (value) => draftStatisticPercentFormatter.format(value),
   },
   'round-1': {
     titleKey: 'draft.statistics.cards.roundOne.title',
