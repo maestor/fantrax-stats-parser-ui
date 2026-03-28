@@ -1,1271 +1,135 @@
 # Component Guide
 
-## Component Overview
+This guide is intentionally project-specific.
 
-This application uses Angular's standalone component architecture. Components are organized into base, feature, and shared directories.
+Use the installed `angular-developer` skill and the official Angular docs for generic component syntax, lifecycle details, signal APIs, routing primitives, and framework-wide best practices.
 
-### Preferred Angular 21 Component Style
+Use this file for the component patterns that are specific to this app: shell boundaries, shared UI responsibilities, and behavior that is easy to regress.
 
-For new component work and low-risk refactors in this repo:
+Before editing a component, read the real implementation and nearby specs first. This guide summarizes durable patterns; it does not try to mirror every current input or internal property.
 
-- Standalone is the default. Omit redundant `standalone: true`.
-- Prefer signal-based component APIs with `input()` and `input.required()`.
-- Use `input.required()` when every real parent usage must provide the value. Do not keep signal inputs optional only as a defensive habit.
-- Prefer `host` metadata for host listeners and host bindings.
-- Add `ChangeDetectionStrategy.OnPush` only when the component is already safe for it.
-- If a component is only ever rendered in one real context, remove inputs and branches for impossible contexts instead of preserving unused flexibility.
+## Shell Structure
 
-Some sections below describe current public inputs for existing components. Those interface listings do not imply `@Input()` is the preferred declaration style for new code.
+### `AppComponent`
 
-## Base Components
+- Lightweight root shell rendered on every route
+- Owns the skip link, footer visibility, route subtitles, global keyboard shortcuts, help/navigation overlays, and PWA update UX
+- Keep dashboard-only UI out of this shell so browse routes stay lighter
 
-### NavigationComponent
+### `DashboardShellComponent`
 
-**Location**: `src/app/base/navigation/`
+- Used only by `/`, `/player-stats`, `/goalie-stats`, and direct player/goalie routes
+- Owns the title row, last-modified metadata, top controls, mobile settings drawer, dashboard tabs, and comparison bar
+- Do not move career, draft, or leaderboard-only UI into this shell unless it is truly dashboard-specific
 
-**Purpose**: Main navigation with tabs for Players and Goalies views
+### Browse Route Shells
 
-**Key Features**:
+- Career, draft, and leaderboard routes render under the root shell without dashboard controls, comparison state, or the heavier dashboard startup cost
+- Preserve that split when adding new browse routes or shared UI
 
-- Material tabs for navigation
-- Active route highlighting
-- Responsive layout
+## Feature Families
 
-**Usage**:
+### Stats Pages
 
-```html
-<app-navigation [tabPanel]="tabPanel"></app-navigation>
-```
+- `player-stats/` and `goalie-stats/` are route-level containers
+- They compose services, filter state, tables, and shared controls
+- Keep page-specific data orchestration here rather than inside shared UI components
 
-**Inputs**:
+### Direct Card Routes
 
-```typescript
-readonly tabPanel = input.required<MatTabNavPanel>();
-```
+- `player-route/` and `goalie-route/` resolve deep links, sync background state, and open the dialog over the dashboard background
+- Preserve season/tab syncing when changing direct-link behavior
 
-**Behavior**:
+### Browse Features
 
-- `tabPanel` is required because every real app-shell usage pairs the nav bar with a Material `mat-tab-nav-panel`
-- Reads the current router URL to keep the active tab highlight in sync
-- Normalizes `/` to `/player-stats` so the default route highlights the player tab
+- `career/`, `draft/`, and `leaderboards/` are browse-oriented surfaces
+- They intentionally avoid dashboard-only controls and comparison behavior
 
----
+## Shared Component Patterns
 
-### FooterComponent
+### Shared Controls May Inject Services Directly
 
-**Location**: `src/app/base/footer/`
+In this repo, shared controls such as team, season, report, and settings controls are allowed to inject project state/services directly.
 
-**Purpose**: Application footer with links and information
+- Do not add extra `@Input()` / `@Output()` plumbing only to satisfy a generic "dumb component" rule
+- Favor the existing service-backed control pattern when the control is tightly coupled to global or per-page state
 
-**Key Features**:
+### Prefer Real Contracts Over Defensive Optionality
 
-- Static footer content
-- External links
-- Copyright/license info
+- Use signal inputs and `input.required()` when the parent always provides the value
+- Remove impossible contexts instead of preserving optional APIs with fake fallback states
+- If a component has only one real usage pattern, simplify it instead of documenting theoretical variants
 
-**Usage**:
+### Preserve Drawer And Inline Parity
 
-```html
-<app-footer></app-footer>
-```
+- `TopControlsComponent` and `SettingsPanelComponent` support a `contentOnly` mode for the mobile settings drawer
+- When editing either component, keep desktop inline behavior and drawer behavior aligned
 
-## Feature Components
+### Keep The Table Components Separate
 
-### PlayerStatsComponent
+- `StatsTableComponent` is the interactive dashboard/leaderboard table
+- `VirtualTableComponent` is the read-only virtualized career table
+- `TableCardComponent` is the compact paged card/table presentation for highlight and draft statistics views
 
-**Location**: `src/app/player-stats/`
+Do not collapse these into a single "universal" table component unless the product behavior truly becomes the same.
 
-**Type**: Smart Component (Container)
+## High-Value Components To Understand
 
-**Purpose**: Main view for player statistics
+### `StatsTableComponent`
 
-**Responsibilities**:
+- Shared interactive table for player/goalie stats and leaderboard tables
+- Carries keyboard navigation, search, sorting, optional comparison selection, optional expandable rows, and player-card opening
+- Changes here usually need behavior tests and accessibility review
 
-- Fetch player data from API
-- Manage player filter state
-- Pass data to child components
+### `VirtualTableComponent`
 
-**Key Dependencies**:
+- Career-only virtualized table
+- Preserve row-focus keyboard behavior, sort behavior, and virtualization assumptions
 
-- `ApiService` - Data fetching (team-aware via `teamId`)
-- `TeamService` - Selected team state (refetch trigger)
-- `SettingsService` - Persisted UI settings (start-from season lower bound)
-- `FilterService` - Filter state
-- `StatsService` - Per-game calculations
+### `TableCardComponent`
 
-**Child Components**:
+- Shared compact read-only card/table used by highlight and draft statistics views
+- Keep loading, empty, error, tooltip, and paging behavior consistent across consumers
 
-- `SettingsPanelComponent` - Per-page settings (filters)
-- `StatsTableComponent` - Data table display
+### `StartFromSeasonSwitcherComponent` And `StartFromSeasonSyncService`
 
-**Data Flow**:
+- The switcher UI is thin
+- Cross-team defaults, season normalization, and persistence live in the sync service
+- If behavior changes, update the UI, service logic, tests, and docs together
 
-```
-API → ApiService → PlayerStatsComponent → StatsTableComponent
-          ↓
-  SettingsPanelComponent
+### `PlayerCardComponent`
 
-TeamService → PlayerStatsComponent (triggers refetch + adds teamId)
-```
+- Complex dialog with tab switching, graphs, deep-link tab selection, navigation context, keyboard/swipe/trackpad navigation, and row-sync back to the table
+- Protect focus return, reduced-motion behavior, and accessibility announcements when editing it
 
----
+### `TopControlsComponent` And `SettingsPanelComponent`
 
-### GoalieStatsComponent
+- Shared between desktop inline rendering and the mobile drawer
+- Preserve context-specific behavior (`player` vs `goalie`) and drawer/inline parity
 
-**Location**: `src/app/goalie-stats/`
+## Project-Specific Constraints
 
-**Type**: Smart Component (Container)
+### Accessibility Is Part Of Component Design
 
-**Purpose**: Main view for goalie statistics
+- Skip links, roving row focus, collapsible content, dialog focus return, and keyboard shortcuts are product requirements, not optional polish
+- See `docs/accessibility.md` when touching navigation, dialogs, tables, or collapsible UI
 
-**Responsibilities**:
+### Dark Mode Is Part Of Component Completion
 
-- Fetch goalie data from API
-- Manage goalie filter state
-- Pass data to child components
+- Any UI/styling change must be checked in both light mode and dark mode before review
+- Shared components are reused broadly, so even small visual changes can have wide impact
 
-**Key Dependencies**:
+### Test The Real User Path
 
-- `ApiService` - Data fetching (team-aware via `teamId`)
-- `TeamService` - Selected team state (refetch trigger)
-- `SettingsService` - Persisted UI settings (start-from season lower bound)
-- `FilterService` - Filter state
-- `StatsService` - Per-game calculations
+- Behavior tests should usually cover component work through rendered user flows
+- Keep project testing preferences from `docs/project-testing.md` above generic Angular testing examples
 
-**Similar structure to PlayerStatsComponent but for goalies**
+## When To Update This Guide
 
----
+Update this file when:
 
-### PlayerRouteComponent
+- shell boundaries change
+- a shared component takes on a new durable responsibility
+- a project-specific component pattern becomes important enough to standardize
 
-**Location**: `src/app/player-route/`
-
-**Type**: Smart Component (Route Handler)
-
-**Purpose**: Handle direct URL navigation to player cards via `/player/:teamSlug/:playerSlug`
-
-**Key Features**:
-
-- Extracts team and player slugs from route parameters
-- Supports optional season as path segment (e.g., `/player/colorado/jamie-benn/2024`)
-- Supports optional `?tab=all|by-season|graphs` query parameter
-- Team lookup by slug (e.g., `colorado`) or ID (e.g., `1`)
-- Sets season in FilterService so season switcher shows correct selection
-- Displays PlayerStatsComponent as background
-- Opens PlayerCardComponent modal automatically
-- Navigates to `/player-stats` on modal close
-
-**Route Patterns**:
-- `/player/:teamSlug/:playerSlug` - Combined stats (all seasons)
-- `/player/:teamSlug/:playerSlug/:season` - Single season stats
-
-**Examples**:
-- `/player/colorado/jamie-benn` - Combined stats
-- `/player/colorado/jamie-benn/2024` - 2024-25 season stats
-- `/player/colorado/jamie-benn/2024?tab=graphs` - Season stats with graphs tab
-
-**Error Handling**:
-- Shows error overlay if team or player not found
-- Provides navigation button to return to stats page
-
----
-
-### GoalieRouteComponent
-
-**Location**: `src/app/goalie-route/`
-
-**Type**: Smart Component (Route Handler)
-
-**Purpose**: Handle direct URL navigation to goalie cards via `/goalie/:teamSlug/:goalieSlug`
-
-**Similar structure to PlayerRouteComponent but for goalies**
-
-**Route Patterns**:
-- `/goalie/:teamSlug/:goalieSlug` - Combined stats
-- `/goalie/:teamSlug/:goalieSlug/:season` - Single season stats
-
----
-
-### CareerPlayersComponent / CareerGoaliesComponent / CareerHighlightsComponent
-
-**Location**: `src/app/career/players/`, `src/app/career/goalies/`, `src/app/career/highlights/`
-
-**Type**: Smart Components (Container)
-
-**Purpose**: Render the read-only career browse views under `/career/players`, `/career/goalies`, and `/career/highlights`
-
-**Responsibilities**:
-
-- Fetch career rows from the dedicated API endpoints
-- Pass column definitions and formatters into the shared virtualized table
-- Keep the player career table sorted by plain `name` while rendering position inline with the displayed player name
-- Normalize paged highlight responses into the shared `TableCardComponent` row shape for the `/career/highlights` route, including the existing general cards plus transaction variants for most trades, claims, drops, and same-team reunions
-- Keep the centered `Sekalaiset` / `Siirrot` switch accessible while preserving each card's lazy-loading and paging state
-- Activate highlight-card API loads lazily as each card approaches the viewport instead of requesting every card during route startup
-
-### DraftComponent
-
-**Location**: `src/app/draft/`
-
-**Type**: Feature Route Shell
-
-**Purpose**: Render the `Varaukset` browse section and tab navigation for `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics`
-
-**Responsibilities**:
-
-- Track the active draft tab from the router URL
-- Render browse-style tab navigation under the root shell subtitle
-- Host the child draft routes under a `mat-tab-nav-panel`
-- Keep draft browsing on the lighter root shell without dashboard controls
-
-### OpeningDraftComponent
-
-**Location**: `src/app/draft/opening-draft/`
-
-**Type**: Smart Browse Component
-
-**Purpose**: Render `/draft/opening-draft` as a team-grouped accordion of opening-draft picks
-
-**Responsibilities**:
-
-- Fetch opening-draft groups from `ApiService.getOpeningDrafts()`
-- Render each team in API order as its own Material expansion panel
-- Show simple per-pick rows for round, pick number, drafted player, and traded-owner suffixes
-- Reuse the browse-route loading, empty, and API-error states
-- Mark footer readiness after the async route data has resolved
-
-### EntryDraftsComponent
-
-**Location**: `src/app/draft/entry-drafts/`
-
-**Type**: Smart Browse Component
-
-**Purpose**: Render `/draft/entry-drafts` as a team-grouped accordion with draft summaries and season breakdowns
-
-**Responsibilities**:
-
-- Fetch entry-draft groups from `ApiService.getEntryDrafts()`
-- Render each team in API order as its own Material expansion panel
-- Show per-team summary cards for highest pick, average draft position, own/traded counts, players-per-draft average, and round totals
-- Sort season groups newest-first while preserving the API order of teams
-- Render season-by-season pick rows, including traded-owner suffixes and a visible placeholder for null drafted-player values
-- Reuse the browse-route loading, empty, and API-error states
-- Mark footer readiness after the async route data has resolved
-
-### DraftStatisticsComponent
-
-**Location**: `src/app/draft/statistics/`
-
-**Type**: Smart Browse Component
-
-**Purpose**: Render `/draft/statistics` as a grid of paged ranking cards derived from the existing entry-draft summary payload
-
-**Responsibilities**:
-
-- Fetch entry-draft groups from `ApiService.getEntryDrafts()`
-- Derive 10 ranked team slices from the summary data without introducing a separate backend endpoint
-- Reuse the shared `TableCardComponent` in no-details mode so the visual style matches Career highlights
-- Manage per-card pagination state locally while keeping the cards read-only
-- Reuse the browse-route loading and API-error behavior and mark footer readiness after data resolves
-
-### TableCardComponent
-
-**Location**: `src/app/shared/table-card/`
-
-**Type**: Shared Presentational Component
-
-**Purpose**: Render compact paged read-only leaderboards, highlight slices, or other ranking cards inside a Material card using semantic table markup.
-
-**Responsibilities**:
-
-- Show title/description copy, a semantic HTML table, and previous/next paging controls
-- Support a deferred placeholder before a card has been activated by viewport visibility
-- Optionally hide the details/info column when a card only needs primary text and value columns
-- Keep tooltip buttons and pagination controls keyboard accessible
-- Reuse shared loading, empty, and API-error states for compact card views
-
-### LeaderboardComponent
-
-**Location**: `src/app/leaderboards/leaderboard/`
-
-**Type**: Feature Wrapper Component
-
-**Purpose**: Reusable leaderboard shell that fetches leaderboard rows and feeds the read-only expandable stats table used by the regular-season, playoffs, and transactions leaderboard views.
-
-**Inputs**:
-
-```typescript
-readonly fetchFn = input.required<() => Observable<LeaderboardEntry[]>>();
-readonly columns = input.required<Column[]>();
-readonly formatCell = input<((column: string, value: number | string | undefined) => string) | undefined>();
-readonly rowKey = input.required<(row: LeaderboardRow, index: number) => string>();
-readonly isRowExpandable = input.required<(row: LeaderboardRow) => boolean>();
-readonly expandedRowsFor = input.required<(row: LeaderboardRow) => ExpandedRowViewModel[]>();
-readonly expandToggleAriaLabel = input.required<
-  (row: LeaderboardRow, expanded: boolean) => string
->();
-readonly blankTieRanks = input(true);
-readonly expandedHeaderLabels = input.required<{
-  season: string;
-  primary: string;
-  secondary?: string;
-}>();
-```
-
-**Behavior**:
-
-- `formatCell` remains optional because only the regular-season leaderboard currently custom-formats percentage columns
-- `blankTieRanks` defaults to `true` so regular/playoff views preserve blank tied positions, while the transactions view can opt into always-numbered ranks
-- All other inputs are required because every concrete leaderboard parent provides them
-- Fetches rows once on init, derives position display values, and forwards expansion callbacks into `StatsTableComponent`
-
-### LeaderboardTransactionsComponent
-
-**Location**: `src/app/leaderboards/transactions/`
-
-**Type**: Smart Component (Container)
-
-**Purpose**: Render the `/leaderboards/transactions` view with all-time roster, trade, claim, and drop totals plus expandable season-by-season transaction summaries.
-
-**Responsibilities**:
-
-- Fetch the transaction leaderboard from `ApiService`
-- Keep the main table column order as position, team, trades, claims, drops, players, goalies
-- Force incremental ranking even when the backend marks a tie
-- Format expanded season rows as emoji-prefixed transaction and roster summaries (`🤝`, `✅`, `❌`, `🏒`, `🥅`)
-
----
-
-## Shared Components
-
-### TeamSwitcherComponent
-
-**Location**: `src/app/shared/top-controls/team-switcher/`
-
-**Type**: Presentational Component (with lightweight side effects)
-
-**Purpose**: Team selector UI shown under the app header
-
-**Behavior**:
-- Loads available teams from the backend (`ApiService.getTeams()`)
-- Disables the selector while loading (and on error)
-- On team change: updates `TeamService`, resets filters, and navigates back to the players route
-
----
-
-### StartFromSeasonSwitcherComponent
-
-**Location**: `src/app/shared/top-controls/start-from-season-switcher/`
-
-**Type**: Presentational Component (with lightweight side effects)
-
-**Purpose**: "Start from season" selector that sets a lower bound for combined stats.
-
-**Behavior**:
-- Loads available seasons via `ApiService.getSeasons('regular', teamId)` (same value format as the Season selector)
-- Persists selection via `SettingsService` (`fantrax.settings` → `startFromSeason`)
-- Defaults to the oldest available season for the selected team and resets to that default when the team changes
-- When selected, combined stats requests include `startFrom` as a query param
-
-### StatsTableComponent
-
-**Location**: `src/app/shared/stats-table/`
-
-**Type**: Presentational Component (Dumb)
-
-**Purpose**: Reusable data table for displaying any tabular data — player/goalie statistics (with search, sorting, comparison checkboxes, and Player Card integration) and leaderboards (read-only, icon column headers, custom cell formatting).
-
-**Inputs**:
-
-```typescript
-readonly dataInput = input.required<any[]>({ alias: 'data' });
-readonly columnsInput = input.required<Column[]>({ alias: 'columns' });
-readonly defaultSortColumnInput = input('score', { alias: 'defaultSortColumn' });
-readonly loadingInput = input(false, { alias: 'loading' });
-readonly apiErrorInput = input(false, { alias: 'apiError' });
-readonly tableIdInput = input('stats-table', { alias: 'tableId' });
-readonly showSearchInput = input(true, { alias: 'showSearch' });
-readonly showPositionColumnInput = input(true, { alias: 'showPositionColumn' });
-readonly positionValueInput = input<((row: any, index: number) => string) | undefined>(
-  undefined,
-  { alias: 'positionValue' },
-);
-readonly clickableInput = input(true, { alias: 'clickable' });
-readonly selectRowInput = input(false, { alias: 'selectRow' });
-readonly isRowSelectedInput = input<((row: any) => boolean) | undefined>(
-  undefined,
-  { alias: 'isRowSelected' },
-);
-readonly canSelectRowInput = input<Observable<boolean>>(of(true), { alias: 'canSelectRow$' });
-readonly onRowSelectInput = input<((row: any) => void) | undefined>(undefined, {
-  alias: 'onRowSelect',
-});
-readonly formatCellInput = input<
-  ((column: string, value: any) => string) | undefined
->(undefined, { alias: 'formatCell' });
-readonly expandableInput = input(false, { alias: 'expandable' });
-readonly rowKeyInput = input<((row: any, index: number) => string) | undefined>(undefined, {
-  alias: 'rowKey',
-});
-readonly isRowExpandableInput = input<((row: any) => boolean) | undefined>(undefined, {
-  alias: 'isRowExpandable',
-});
-readonly expandedRowsForInput = input<
-  ((row: any) => ExpandedRowViewModel[]) | undefined
->(undefined, { alias: 'expandedRowsFor' });
-readonly expandToggleAriaLabelInput = input<
-  ((row: any, expanded: boolean) => string) | undefined
->(undefined, {
-  alias: 'expandToggleAriaLabel',
-});
-```
-
-`ExpandedRowViewModel`:
-
-```typescript
-type ExpandedRowViewModel = {
-  seasonLabel: string;
-  primary: string;
-  secondary?: string;
-  tooltip?: string;
-};
-```
-
-**Outputs**: None — when `clickable` is true, row clicks open `PlayerCardComponent` directly via `MatDialog`, passing a `navigationContext` that enables in-dialog player navigation with active row syncing.
-
-**Features**:
-
-- Angular Material table (`MatTableDataSource`) with `MatSort`-backed sorting (defaulting to the `score` column)
-- Optional search box (`showSearch`) that filters rows via `filterItems()`
-- Column configuration driven by `Column[]` objects from `column.types.ts`; column headers support emoji and Material icons via the `icon` property
-- Optional auto-numbered `position` column (`showPositionColumn`) with optional comparison checkboxes (`selectRow`)
-- Optional expandable detail rows (used by leaderboards season breakdown)
-- Signal-input front with effect-driven synchronization of sorting, loading state, focus reset, and expansion bookkeeping
-- Compact stat headers from `tableColumnShort.*` with tooltips using full labels from `tableColumn.*`
-- Center-aligned numeric/stat headers and cells, with the name column left-aligned for readability
-- Responsive layout with horizontal scrolling on narrow viewports
-
-**Usage** (stats page with search, comparison):
-
-```html
-<app-stats-table [data]="tableData" [columns]="tableColumns"
-  [selectRow]="true" [isRowSelected]="isRowSelected" [onRowSelect]="onRowSelect">
-</app-stats-table>
-```
-
-### VirtualTableComponent
-
-**Location**: `src/app/shared/stats-table/`
-
-**Type**: Presentational Component (read-only virtualized table)
-
-**Purpose**: Lightweight virtual-scroll table for the career player and goalie listings.
-
-**Inputs**:
-
-```typescript
-readonly dataInput = input.required<any[]>({ alias: 'data' });
-readonly columnsInput = input.required<Column[]>({ alias: 'columns' });
-readonly defaultSortColumnInput = input('name', { alias: 'defaultSortColumn' });
-readonly loadingInput = input(false, { alias: 'loading' });
-readonly apiErrorInput = input(false, { alias: 'apiError' });
-readonly searchLabelKeyInput = input('table.playerSearch', { alias: 'searchLabelKey' });
-readonly formatCellInput = input<
-  ((row: any, column: string, value: any) => string) | undefined
->(undefined, { alias: 'formatCell' });
-```
-
-**Features**:
-
-- Read-only career table optimized for large result sets with `CdkVirtualScrollViewport`
-- Signal-input synchronization replaces the former `ngOnChanges` path for data and default-sort updates
-- Keeps the running-number column and search field always on, because those are the only real app contexts
-- Uses `MatSort` for keyboard-accessible sorting and destroy-aware subscription cleanup
-- Maintains row-focus keyboard navigation across filtering, scrolling, and resize updates
-
-**Usage** (leaderboard — read-only, no search, icon headers, custom cell format):
-
-```html
-<app-stats-table [data]="data" [columns]="columns"
-  [showSearch]="false" [showPositionColumn]="false"
-  [clickable]="false" [selectRow]="false"
-  [formatCell]="formatCell" tableId="leaderboard-table">
-</app-stats-table>
-```
-
-**Usage** (leaderboard with expandable season details):
-
-```html
-<app-stats-table [data]="data" [columns]="columns"
-  [showSearch]="false" [showPositionColumn]="false"
-  [clickable]="false" [selectRow]="false"
-  [expandable]="true"
-  [rowKey]="rowKey"
-  [isRowExpandable]="isRowExpandable"
-  [expandedRowsFor]="expandedRowsFor"
-  [expandToggleAriaLabel]="expandToggleAriaLabel">
-</app-stats-table>
-```
-
----
-
-### TopControlsComponent
-
-**Location**: `src/app/shared/top-controls/`
-
-**Type**: Presentational Component
-
-**Purpose**: Renders the "top controls" (team/start-from/season/report) for the active context.
-
-**Inputs**:
-
-```typescript
-readonly context = input<'player' | 'goalie'>('player');
-readonly contentOnly = input(false);
-```
-
-**Notes**:
-
-- Default mode renders a collapsible panel (toggle button + collapsible content).
-- In the mobile settings drawer, it is rendered with `contentOnly=true` to show only the controls (no toggle UI).
-- Reads the persisted expand/collapse preference from `SettingsService.topControlsExpandedSignal`.
-
----
-
-### SettingsPanelComponent
-
-**Location**: `src/app/shared/settings-panel/`
-
-**Type**: Presentational Component
-
-**Purpose**: Expandable settings container for the current context (players or goalies).
-
-**Child Components**:
-
-- PositionFilterToggleComponent (players only)
-- StatsModeToggleComponent
-- MinGamesSliderComponent
-
-**Inputs**:
-
-```typescript
-readonly context = input<'player' | 'goalie'>('player');
-readonly maxGames = input(0);
-readonly contentOnly = input(false);
-```
-
-**Outputs**: None — each child component talks directly to `FilterService`.
-
-**Layout**: Horizontal, responsive layout defined in `settings-panel.component.scss`.
-
-**Mobile / Drawer Behavior**:
-
-- The component is an expandable panel by default.
-- On mobile, the stats pages do not render this panel inline. Instead, the app shell renders it inside a left-side settings drawer using `contentOnly=true`.
-  - `contentOnly=true` renders only the inner controls (no toggle button / no collapse state).
-
-**State Management**:
-
-```typescript
-isExpanded = false; // Controls panel visibility
-
-toggleExpanded(): void {
-  if (this.contentOnly()) return;
-  this.isExpanded = !this.isExpanded;
-}
-```
-
----
-
-### SeasonSwitcherComponent
-
-**Location**: `src/app/shared/top-controls/season-switcher/`
-
-**Type**: Presentational Component
-
-**Purpose**: Dropdown/select for choosing the season, wired to `FilterService`.
-
-**Inputs**:
-
-```typescript
-readonly context = input<'player' | 'goalie'>('player');
-```
-
-**Behavior**:
-
-- Loads seasons from `ApiService`
-- Displays seasons in reverse order (newest first)
-- Reads the active filter state through `FilterService` signal APIs
-- Keeps the select unselected until real season options exist, including the prerender fallback case where the server emits an empty list placeholder before the browser request completes
-- Updates the appropriate filter state in `FilterService` when the selection changes
-
----
-
-### ReportSwitcherComponent
-
-**Location**: `src/app/shared/top-controls/report-switcher/`
-
-**Purpose**: Toggle between regular season and playoffs for the current context.
-The current implementation uses a dropdown/select, not a button-toggle group.
-
-**Inputs**:
-
-```typescript
-readonly context = input<'player' | 'goalie'>('player');
-```
-
-**Behavior**:
-
-- Uses `MatSelect` to let the user pick `regular`, `playoffs`, or `both`
-- Reads the active `reportType` through `FilterService` signal APIs
-- Calls `updatePlayerFilters` / `updateGoalieFilters` when the toggle changes
-
----
-
-### PositionFilterToggleComponent
-
-**Location**: `src/app/shared/settings-panel/position-filter-toggle/`
-
-**Purpose**: 3-way toggle for filtering players by position (All/Forwards/Defensemen)
-
-**Behavior**:
-
-- Only renders for player context (not goalies)
-- Uses `MatButtonToggle` for Kaikki/H/P selection (All/Forwards/Defensemen)
-- Reads `positionFilter` through `FilterService.playerFiltersSignal`
-- Updates `FilterService` with the selected `positionFilter` value
-- When position filter is active (H or P):
-  - Stats table shows only players of that position
-  - Score columns display position-relative values (`scoreByPosition`, `scoreByPositionAdjustedByGames`)
-  - Radar charts use `scoresByPosition` for position-relative comparisons
-
----
-
-### StatsModeToggleComponent
-
-**Location**: `src/app/shared/settings-panel/stats-mode-toggle/`
-
-**Purpose**: Toggle between totals and per-game stats.
-
-**Inputs**:
-
-```typescript
-readonly context = input<'player' | 'goalie'>('player');
-```
-
-**Behavior**:
-
-- Reads the active filter state through `FilterService` signal APIs
-- Uses a `MatSlideToggle` to manipulate the `statsPerGame` flag in `FilterService`
-- Keeps its visual state in sync with the current filter state for the given context
-
----
-
-### MinGamesSliderComponent
-
-**Location**: `src/app/shared/settings-panel/min-games-slider/`
-
-**Purpose**: Slider to filter by minimum games played.
-
-**Inputs**:
-
-```typescript
-readonly context = input<'player' | 'goalie'>('player');
-readonly maxGames = input(0);
-```
-
-**Behavior**:
-
-- Reads the active filter state through `FilterService` signal APIs
-- Uses `MatSlider` to choose `minGames`
-- Constrains the slider range based on `maxGames`
-- Pushes changes into `FilterService` for the active context
-
----
-
-### PlayerCardComponent
-
-**Location**: `src/app/shared/player-card/`
-
-**Type**: Dialog Component
-
-**Purpose**: Display individual player/goalie information with comprehensive statistics
-
-**Data Input**: Injected via `MAT_DIALOG_DATA`
-
-```typescript
-// Supports both formats:
-// 1. Direct player/goalie object (legacy)
-data: Player | Goalie;
-
-// 2. Wrapped format with optional initial tab and navigation context
-data: {
-  player: Player | Goalie;
-  initialTab?: 'all' | 'by-season' | 'graphs';
-  navigationContext?: {
-    allPlayers: (Player | Goalie)[];
-    currentIndex: number;
-    onNavigate?: (newIndex: number) => void;
-  };
-};
-```
-
-**Initial Tab Support**:
-- When `initialTab` is provided, the dialog opens directly to that tab
-- Used by route components to support `?tab=...` query parameter
-- Falls back to tab 0 if the requested tab is not available (e.g., `by-season` when no seasons exist)
-
-**Key Features**:
-
-- **Player Navigation**: Navigate between players without closing the dialog using keyboard arrows, touch swipe, or trackpad gestures (see below)
-- **Position Filter Toggle**: For player cards (not goalies), shows a slide toggle to switch between position-relative (H/P) and all-player rankings. Syncs with global position filter in `FilterService`.
-- **Tab Navigation**: Switches between "All" (combined stats), "By Season" (season breakdown) and "Graphs" (trend lines)
-- **Dynamic Width**: Auto-adjusts dialog width based on active tab (wider for season table and graphs)
-- **Season Sorting**: Displays seasons from newest to oldest (e.g., 2025-26, 2024-25)
-- **Season Formatting**: All season displays use "YYYY-YY" format (e.g., "2025-26")
-- **Sticky Headers**: Table headers remain visible while scrolling through seasons
-- **Responsive Design**: Adapts to mobile and desktop viewports with optimized layouts
-- **Intelligent Column Ordering**: Automatically reorders columns for optimal readability
-- **Copy Link**: Link icon button next to player name copies shareable URL to clipboard
-- **Mobile-Optimized Controls**: Collapsible graph controls on mobile devices
-
-**Player Navigation** (when `navigationContext` is provided):
-
-Navigation wraps circularly (last → first, first → last).
-
-- **Keyboard**: `ArrowLeft` (previous) / `ArrowRight` (next) while dialog is focused
-- **Touch swipe**: Single-finger horizontal swipe on mobile (threshold 50px, max 75px vertical tolerance)
-- **Trackpad swipe**: Two-finger horizontal swipe on laptop trackpads (via `wheel` events with accumulation + cooldown)
-- **Screen reader**: Live region announces player position and name on each navigation (e.g., "Pelaaja 3 / 25: Jamie Benn")
-- **Active row sync**: `onNavigate` callback keeps the stats table's active row in sync; on dialog close, focus returns to the navigated-to row
-- **Browser gesture prevention**: Horizontal wheel events are `preventDefault()`-ed and `overscroll-behavior-x: none` CSS is applied to block macOS trackpad back/forward navigation
-- **Navigation transition**: Direction-aware slide animation (125ms out + 125ms in) with opacity fade provides visual feedback during navigation. Respects `prefers-reduced-motion: reduce` (instant swap). Rapid navigation cancels in-progress animation
-
-**Position Filter Toggle (Players Only)**:
-
-- Appears between the card header and tabs for player cards (hidden for goalies)
-- Label shows "Ranking hyökkääjät" for forwards or "Ranking puolustajat" for defensemen
-- When toggled ON: Displays position-relative scores (`scoreByPosition`, `scoreByPositionAdjustedByGames`, `scoresByPosition`)
-- When toggled OFF: Displays all-player scores (regular `score`, `scoreAdjustedByGames`, `scores`)
-- Affects all views: stats table, season table, radar chart, and line chart
-- Updates global `FilterService.playerFilters$` when changed
-
-**Tabs**:
-
-1. **All (Kaikki)**: Shows combined career statistics in vertical format (360px-800px wide)
-2. **By Season (Kausittain)**: Shows season-by-season breakdown in horizontal table (auto-width, max 95vw)
-3. **Graphs (Graafit)**: Shows a multi-series line chart of per-season stats with toggles
-
-**Column Ordering Logic**:
-
-For **Player Stats**, columns appear in natural order:
-
-- score, season, games, goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks
-
-For **Goalie Stats**, columns are intelligently reordered:
-
-- season, games, wins, saves, **savePercent**, **gaa**, shutouts, goals, assists, points, penalties, ppp, shp
-- Note: `savePercent` and `gaa` are positioned after `saves` for better context
-
-**Season Display**:
-
-- When viewing individual season data (single season selected), the season field:
-  - Appears at the top of the stats list
-  - Is formatted as "YYYY-YY" (e.g., "2025-26" instead of "2025")
-- When viewing combined data with season breakdown tab:
-  - Seasons are sorted newest to oldest
-  - Each season displays in "YYYY-YY" format
-
-**Implementation Details**:
-
-- Uses Material Dialog service with custom panel class
-- Internal player state, selected team, filter snapshot, and graphs inputs are signal-backed so navigation swaps keep derived labels/tabs in sync
-- Tracks active tab index to toggle `season-mode` class for dynamic width
-- `formatSeasonDisplay()` method converts year to "YYYY-YY" format
-- `reorderStatsForDisplay()` method handles:
-  - Moving season to top of list (when present)
-  - Ensuring `score` is treated as a regular stat key alongside the other per-player metrics
-  - Reordering goalie-specific columns (`savePercent`, `gaa`) so they appear immediately after `saves`
-- `setupSeasonData()` method handles season breakdown table column ordering
-- `setupChartData()` + `updateChartData()` build the graphs tab line chart using `ng2-charts` + `chart.js`
-  - X-axis labels use compact `YY-YY` season format (e.g. `12-13`)
-  - X-axis includes empty years between first and last season (gaps rendered as breaks in the lines)
-  - Y-axis always starts at 0 and rounds the upper bound to a clean step (5 ticks)
-- Graph stat toggles:
-  - Players: score, scoreAdjustedByGames (default on), plus games, goals, assists, points, shots, penalties, hits, blocks (toggled on as needed)
-  - Goalies: score, scoreAdjustedByGames (default on), plus games, wins, saves, shutouts (toggled on as needed)
-- Custom scrollbar styling for season table
-- Vertical scrolling with sticky headers (position: sticky, z-index: 10)
-- Mobile-responsive layouts with collapsible controls
-
-**Mobile Responsiveness**:
-
-- **Desktop (>960px)**: Full-width card (360px-800px), all controls visible
-- **Tablet (768px-960px)**: Optimized spacing and table height (85vh - 200px)
-- **Mobile (<768px)**:
-  - Full-width card (100vw)
-  - Collapsible graph controls with toggle button
-  - Reduced font sizes (12px for tables)
-  - Optimized table height (80vh - 200px)
-  - Horizontal scrolling enabled for wide tables
-- **Small Mobile (<480px)**:
-  - Further reduced font sizes (11px for tables)
-  - Minimal padding (6px 2px)
-  - Compact chart height (280px)
-  - Smaller icons and titles
-
-**Graph Controls State Management**:
-
-```typescript
-graphControlsExpanded = true; // Controls visibility on mobile
-
-toggleGraphControls(): void {
-  this.graphControlsExpanded = !this.graphControlsExpanded;
-}
-```
-
-**Scrolling Behavior**:
-
-- **All Stats Tab**: Vertical scrolling with max-height constraints
-- **By Season Tab**: Both vertical and horizontal scrolling enabled
-- **Graphs Tab**: Chart scales to available space, controls collapse on mobile
-
-**Usage**:
-
-```typescript
-// In stats-table.component.ts (with navigation context)
-this.dialog.open(PlayerCardComponent, {
-  data: {
-    player: playerOrGoalieData,
-    navigationContext: {
-      allPlayers: this.dataSource.filteredData,
-      currentIndex: this.dataSource.filteredData.indexOf(playerOrGoalieData),
-      onNavigate: (newIndex) => { /* sync active row */ },
-    },
-  },
-  maxWidth: "95vw",
-  width: "auto",
-  panelClass: "player-card-dialog",
-});
-
-// In route components (with initial tab, no navigation context)
-this.dialog.open(PlayerCardComponent, {
-  data: { player: playerOrGoalieData, initialTab: 'graphs' },
-  maxWidth: "95vw",
-  width: "auto",
-  panelClass: "player-card-dialog",
-});
-```
-
-**Conditional Rendering**:
-
-- If `data.seasons` exists: Shows tab navigation with "All", "By Season" and "Graphs" tabs
-- If no seasons data: Shows simple vertical stats list (individual season view)
-
----
-
-### PlayerCardGraphsComponent
-
-**Location**: `src/app/shared/player-card/player-card-graphs/`
-
-**Type**: Lazy-loaded Child Component (renders within Player Card dialog)
-
-**Purpose**: Displays chart visualizations for player/goalie statistics in the Player Card "Graphs" tab
-
-**Key Features**:
-
-- **Line Charts**: Multi-series seasonal trends with selectable stats (goals, assists, points, etc.)
-- **Radar Charts**: Per-stat score breakdown showing 0-100 normalized fantasy rankings
-- **View Toggle**: Switch between line and radar chart modes
-- **Theme Integration**: Dynamic color resolution from Material theme variables
-- **Lazy Loading**: Component loads only when Graphs tab is clicked (keeps initial bundle small)
-- **Mobile Responsive**: Collapsible controls on mobile (<768px)
-
-**Inputs**:
-
-```typescript
-readonly data = input.required<Player | Goalie>();  // Player or goalie data with optional seasons array
-readonly viewContext = input<'combined' | 'season'>('combined');
-readonly positionFilter = input<PositionFilter>('all');
-readonly closeButtonEl = input<HTMLElement>();
-readonly requestFocusTabHeader = input<() => void>();
-```
-
-**Position Filter Integration**:
-
-When `positionFilter` is not `'all'` (i.e., filtering by position):
-- **Radar Chart**: Uses `scoresByPosition` instead of `scores` for position-relative comparisons
-- **Line Chart**: Uses `scoreByPosition` and `scoreByPositionAdjustedByGames` for score trend lines
-- Charts automatically rebuild when signal inputs change via component effects
-
-**Chart Types**:
-
-1. **Line Chart (Combined View Only)**
-   - Shows trends across multiple seasons
-   - User can select which stats to display via checkboxes
-   - Auto-scaled Y-axis based on data range (0 to max value, rounded to 5 ticks)
-   - X-axis shows season labels in YY-YY format (e.g., "12-13")
-   - Includes gaps for missing seasons (line breaks)
-   - When position filter is active, score values use position-relative equivalents
-   - Available stats:
-     - **Players**: score, scoreAdjustedByGames (default on), games, goals, assists, points, shots, penalties, hits, blocks
-     - **Goalies**: score, scoreAdjustedByGames (default on), games, wins, saves, shutouts
-
-2. **Radar Chart (Both Views)**
-   - Shows normalized scores (0-100) for individual stats
-   - Available for both combined and season views
-   - When position filter is active, uses `scoresByPosition` for position-relative comparisons
-   - Stats shown:
-     - **Players**: goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks (10 stats)
-     - **Goalies (combined)**: wins, saves, shutouts (3 stats)
-     - **Goalies (season)**: wins, saves, shutouts, gaa, savePercent (5 stats)
-   - Filled polygon visualization with customizable colors
-   - 0-100 scale with gridlines at 20, 40, 60, 80
-   - Tooltips show "StatName: Value/100" format
-
-**View Toggle Logic**:
-
-- **Combined data** (multiple seasons): Shows toggle button to switch between line and radar views, defaults to line chart
-- **Season data** (single season or no seasons): Shows only radar chart, no toggle button
-
-**Usage**:
-
-```typescript
-// In player-card.component.html (lazy-loaded with NgComponentOutlet)
-<ng-container *ngComponentOutlet="graphsComponent; inputs: graphsInputs"></ng-container>
-
-// Inputs passed from parent:
-graphsInputs = {
-  data: this.data,
-  viewContext: this.viewContext,
-  closeButtonEl: this.closeButton?.nativeElement,
-  requestFocusTabHeader: () => this.focusActiveTabHeader()
-};
-```
-
-**Chart Configuration**:
-
-- **Line Chart Options**: `lineChartOptions: ChartConfiguration<'line'>['options']`
-  - Responsive, non-aspect-ratio-maintaining
-  - Y-axis starts at 0, scales to clean upper bound
-  - Legend positioned at bottom
-  - Tooltips with theme colors
-
-- **Radar Chart Options**: `radarChartOptions: ChartConfiguration<'radar'>['options']`
-  - Responsive, non-aspect-ratio-maintaining
-  - Radial scale: min 0, max 100, step 20
-  - Grid color derived from theme text color with 0.3 alpha transparency (better dark mode visibility)
-  - Point labels show stat names (translated)
-  - Legend positioned at bottom
-  - Tooltips format: "PlayerName: 75/100"
-
-**Responsive Breakpoints**:
-
-- **Desktop (>768px)**: Chart height 420px, full stat labels, toggle button with icon + text
-- **Tablet (480px-768px)**: Chart height 320px, full stat labels
-- **Mobile (<480px)**: Chart height 280px, abbreviated stat labels, toggle icon only
-
-**Dependencies**:
-
-- Chart.js 4.5.1 (peer dependency, lazy-loaded)
-- ng2-charts 10.0 (Angular wrapper for Chart.js)
-- Angular Material (for toggle button)
-- ngx-translate (for stat labels)
-
-**Theme Integration**:
-
-Uses `resolveCssColorVar()` helper to read CSS variables from Material theme:
-- `--mat-sys-on-surface` for text colors
-- `--mat-sys-surface-container-high` for tooltip backgrounds
-- `--mat-sys-outline-variant` for borders
-- Derived grid color with alpha transparency for dark mode compatibility
-
-**Error Handling**:
-
-- Missing `scores` data: Logs warning, skips radar chart rendering
-- Missing `document.body`: Falls back to default colors
-- Empty computed style: Falls back to provided defaults
-- Non-RGB color format: Falls back to `rgba(128, 128, 128, 0.3)` for grid
-
-**Accessibility**:
-
-- Toggle button has descriptive aria-label that changes based on current view
-- Keyboard accessible (Tab to focus, Space/Enter to activate)
-- Focus management returns to tab header when Escape is pressed (via parent callback)
-- Chart canvas has implicit role="img" (provided by Chart.js)
-
----
-
-### HelpDialogComponent
-
-**Location**: `src/app/shared/help-dialog/`
-
-**Type**: Dialog Component
-
-**Purpose**: Show short instructions for what the application does and how to use it (localized, Finnish-first).
-
-**How it's opened**:
-
-- From the app shell title row in `AppComponent` (info icon next to the title)
-- Keyboard shortcut: `?` (also supports `Shift + /` on layouts where that is how `?` is produced)
-- Related shortcut: `/` focuses the search field (same guards — ignored in form fields and contenteditable)
-
-**Content model (flexible order)**:
-
-- Content is defined in i18n JSON as an ordered list of blocks under `helpDialog`.
-- Blocks are rendered in sequence, so you can freely reorder subtitles, paragraphs and lists by editing `public/i18n/fi.json`.
-
-Supported block types:
-
-- `h2` (subtitle)
-- `h3` (sub-subtitle)
-- `p` (paragraph)
-- `ul` (bullet list)
-
-**Accessibility**:
-
-- The info icon button is icon-only and must have `aria-label`.
-- The dialog provides a close button and keeps interactions keyboard-first.
-
-### ComparisonBarComponent
-
-**Location**: `src/app/shared/comparison-bar/`
-
-**Type**: Presentational Component
-
-**Purpose**: Floating bottom bar that shows the current comparison selection state and a "Compare" button.
-
-**Key Features**:
-
-- Appears when at least one player/goalie is selected for comparison
-- Shows names of selected players (up to 2)
-- "Vertaa" (Compare) button becomes enabled when exactly 2 players are selected
-- "Tyhjennä" (Clear) button to reset the selection
-- Opens `ComparisonDialogComponent` via `MatDialog` when compare is clicked
-
-**Visibility Logic**:
-
-- Hidden when no players are selected
-- Slides up from the bottom when selection starts
-- Auto-hides after the comparison dialog is opened and closed
-
-**Dependencies**:
-
-- `ComparisonService` — selection state
-- `MatDialog` — opens comparison dialog
-
-**Input Contract**:
-
-```typescript
-readonly context = input.required<StatsContext>();
-```
-
-- `context` is required because the app shell always provides the active stats context
-- Changing `context` clears any in-progress comparison selection through an effect-driven reset
-
----
-
-### ComparisonDialogComponent
-
-**Location**: `src/app/shared/comparison-dialog/`
-
-**Type**: Dialog Component
-
-**Purpose**: Side-by-side comparison of two players or goalies with stats and radar chart tabs.
-
-**Data Input**: Injected via `MAT_DIALOG_DATA`
-
-```typescript
-data: {
-  context: StatsContext;
-  playerA: Player | Goalie;
-  playerB: Player | Goalie;
-}
-```
-
-**Key Features**:
-
-- **Dynamic Title**: Position-aware — "Hyökkääjävertailu" (forward comparison), "Puolustajavertailu" (defense), "Pelaajavertailu" (mixed positions), "Maalivahtivertailu" (goalies)
-- **Two Tabs**: "Tilastot" (Stats) and "Graafit" (Graphs/Radar)
-- **Responsive**: Narrow layout (≤480px) adjusts padding and sizing via `BreakpointObserver`
-
-**Child Components**:
-
-- `ComparisonStatsComponent` — Stats tab content
-- `ComparisonRadarComponent` — Graphs tab content
-
----
-
-### ComparisonStatsComponent
-
-**Location**: `src/app/shared/comparison-dialog/comparison-stats/`
-
-**Type**: Presentational Component
-
-**Purpose**: Renders side-by-side stat rows for two players/goalies with visual emphasis on the better value.
-
-**Inputs**:
-
-```typescript
-readonly context = input.required<StatsContext>();
-readonly playerA = input.required<Player | Goalie>();
-readonly playerB = input.required<Player | Goalie>();
-readonly isMobile = input.required<boolean>();
-```
-
-**Key Features**:
-
-- Builds stat rows from `PLAYER_STAT_COLUMNS` or `GOALIE_STAT_COLUMNS` (from `table-columns.ts`)
-- **Bold highlighting**: The better value in each row is bolded
-- **Direction-aware**: Higher is better for most stats; lower is better for GAA
-- Stat labels are translated via `ngx-translate`
-
----
-
-### ComparisonRadarComponent
-
-**Location**: `src/app/shared/comparison-dialog/comparison-radar/`
-
-**Type**: Presentational Component
-
-**Purpose**: Radar chart overlay comparing two players' normalized score breakdowns.
-
-**Inputs**:
-
-```typescript
-readonly context = input.required<StatsContext>();
-readonly playerA = input.required<Player | Goalie>();
-readonly playerB = input.required<Player | Goalie>();
-```
-
-**Key Features**:
-
-- Chart.js radar chart via `ng2-charts`
-- Two overlapping datasets (one per player) with distinct colors
-- **Player stats**: 10 axes (goals, assists, points, plusMinus, penalties, shots, ppp, shp, hits, blocks)
-- **Goalie stats**: 3 axes (wins, saves, shutouts) — uses combined-season score breakdown
-- 0-100 normalized scale with gridlines at 20-step intervals
-- Tooltips show "PlayerName: Value/100"
-- Theme-integrated colors via CSS variable resolution
-
----
-
-## Component Communication Patterns
-
-### Parent to Child (Input)
-
-```typescript
-// Parent
-<app-child [data]="parentData"></app-child>
-
-// Child
-readonly data = input.required<unknown>();
-```
-
-### Child to Parent (Output)
-
-```typescript
-// Child
-readonly valueChange = output<string>();
-
-onValueChange(value: string) {
-  this.valueChange.emit(value);
-}
-
-// Parent
-<app-child (valueChange)="onChildValueChange($event)"></app-child>
-
-onChildValueChange(value: string) {
-  // Handle the change
-}
-```
-
-### Service-based Communication
-
-```typescript
-// Component A
-this.sharedService.updateValue(newValue);
-
-// Component B
-this.sharedService.value$.subscribe((value) => {
-  // React to changes
-});
-```
-
-## Component Lifecycle
-
-Preferred lifecycle patterns in this project:
-
-1. **constructor + `effect()` / `computed()`**: React to signal inputs and internal signal state
-2. **ngAfterViewInit**: View/query-dependent setup such as focus targets or chart sizing
-3. **ngOnDestroy**: Cleanup timers, DOM listeners, and non-RxJS resources
-4. **ngOnInit**: Only when initialization does not fit the signal/effect flow cleanly
-
-```typescript
-export class MyComponent implements AfterViewInit, OnDestroy {
-  readonly dataInput = input.required<Item[]>({ alias: 'data' });
-  readonly selectedId = signal<string | null>(null);
-
-  constructor() {
-    effect(() => {
-      const data = this.dataInput();
-      this.selectedId.set(data[0]?.id ?? null);
-    });
-  }
-
-  ngAfterViewInit(): void {
-    // Handle query-based or DOM-dependent setup
-  }
-
-  ngOnDestroy(): void {
-    // Cleanup timers/listeners
-  }
-}
-```
-
-## Styling Approach
-
-Each component has its own SCSS file:
-
-- Component-scoped styles (Angular's view encapsulation)
-- Use Material theme variables
-- Responsive breakpoints using Angular CDK
-
-```scss
-// component.scss
-:host {
-  display: block;
-  padding: 16px;
-
-  @media (max-width: 768px) {
-    padding: 8px;
-  }
-}
-
-.stats-container {
-  display: flex;
-  gap: 16px;
-}
-```
-
-## Testing Components
-
-All component tests use Testing Library with accessible queries:
-
-```typescript
-import { render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
-
-describe('ComponentName', { timeout: 15_000 }, () => {
-  it('renders expected content', async () => {
-    await render(ComponentName, {
-      imports: [TranslateModule.forRoot()],
-      providers: [
-        { provide: SomeService, useValue: mockService },
-      ],
-    });
-
-    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument();
-  });
-});
-```
+Do not use this file as a full Angular component manual. For exact current APIs, read the component code.

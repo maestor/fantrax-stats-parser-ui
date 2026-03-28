@@ -50,9 +50,6 @@ node_modules/
 # Playwright MCP screenshots
 .playwright-mcp/
 
-# Claude Code local configuration
-.claude/
-
 # Design plans (local only)
 docs/plans/
 

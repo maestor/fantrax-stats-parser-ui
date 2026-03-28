@@ -1,5 +1,9 @@
 # Development Guide
 
+This guide focuses on local setup, commands, and repo-specific operational notes.
+
+Use the installed `angular-developer` skill and official Angular docs for generic framework guidance. Follow `AGENTS.md` and `CLAUDE.md` for the authoritative task workflow, review pause, verify, and commit rules.
+
 ## Prerequisites
 
 1. **Node.js**: Version 24.x
@@ -16,9 +20,8 @@ There isn’t a reliable “reuse one terminal only” switch that can be set fr
 
 - Use Command Palette → “Terminal: Kill All Terminals” (fast cleanup).
 - When you work with Copilot, ask it to “batch commands into one run” so it uses fewer tool calls.
-- By default, Copilot should not create git commits unless you explicitly ask for a commit.
-   - This is **per task**, not “once per chat session”: earlier permission to commit does not carry forward.
-   - If you want a commit, say it explicitly (e.g. “commit this change now”). If you don’t, Copilot should leave changes uncommitted.
+- Copilot or any coding agent should still follow the repo workflow in `AGENTS.md` / `CLAUDE.md` for review, verify, and commit behavior.
+- Do not treat VS Code tool defaults as the repo's source of truth for workflow rules.
 
 If Copilot Chat (or VS Code) shows “Enable shell integration to improve command detection”, ensure both of these settings are enabled:
 
@@ -304,6 +307,13 @@ The API endpoint is configured in the service layer. Check:
 
 ## Development Workflow
 
+### Verification Expectations
+
+- Run `npm run verify` for batches that can affect app code, runtime behavior, config, generated artifacts, or the verification result.
+- Documentation-only batches may skip `npm run verify` when the touched files are limited to workflow/docs text such as `README.md`, `docs/**`, `AGENTS.md`, or `CLAUDE.md` and no code, fixtures, configs, or generated artifacts changed.
+- E2E-only batches may skip `npm run verify` when the touched files are limited to `e2e/**` and optional workflow/docs text, no app/runtime/config/generated artifacts changed, and the relevant Playwright coverage for the batch has been run and reported.
+- When in doubt, follow `AGENTS.md`, `CLAUDE.md`, and `docs/project-requirements.md`.
+
 ### Adding a New Feature
 
 1. **Plan the feature**
@@ -341,7 +351,8 @@ The API endpoint is configured in the service layer. Check:
    npm run verify
    ```
 
-   This ensures tests and the production build pass.
+   This ensures tests and the production build pass for normal code-changing batches.
+   Documentation-only and qualifying E2E-only batches follow the verification exceptions above.
    If `verify` reports a bundle budget warning, investigate it before merging; either optimize the source of the increase or intentionally update the budget with documentation.
 
 ### Fixing a Bug
@@ -436,12 +447,15 @@ Configuration in `.vscode/launch.json`:
 
 ## Git Workflow
 
-1. Create feature branch
-2. Make changes
-3. Commit with descriptive messages
-4. Push and create PR
-5. Address review comments
-6. Merge when approved
+See `AGENTS.md` and `CLAUDE.md` for the authoritative workflow.
+
+That includes:
+
+- branch expectations
+- required user review pause before final verify
+- when `npm run verify` is required
+- docs-only and E2E-only exceptions
+- commit and PR-note expectations
 
 ## Helpful Resources
 

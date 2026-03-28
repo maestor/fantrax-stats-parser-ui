@@ -2,6 +2,10 @@ See `README.md` for project overview and `package.json` for available npm comman
 
 # Project documentation
 - Read accessibility, codebase structure, coding standards, component guide, development guide, project overview, project requirements, project testing, and roadmap docs via `docs/README.md` and its subpages.
+- Use the installed `angular-developer` skill and official Angular docs for generic Angular guidance.
+- Use repo docs for project-specific workflow, architecture, testing, accessibility, routing/shell structure, and deliberate overrides.
+- If repo docs conflict with generic Angular guidance, follow the repo docs for this project.
+- When a local doc drifts into generic Angular tutorial material, trim it back to the repo-specific rule instead of expanding it further.
 
 Update `README.md` and files under `docs/` after every task when needed.
 
