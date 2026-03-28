@@ -1,6 +1,6 @@
-import { Directive, OnInit, OnDestroy, inject } from '@angular/core';
+import { DestroyRef, Directive, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  Subject,
   Observable,
   auditTime,
   catchError,
@@ -10,7 +10,6 @@ import {
   map,
   of,
   switchMap,
-  takeUntil,
 } from 'rxjs';
 import { ApiParams, ApiService, Player, Goalie, ReportType } from '@services/api.service';
 import { FilterService, FilterState, PositionFilter } from '@services/filter.service';
@@ -26,14 +25,14 @@ import { toApiTeamId } from '@shared/utils/api.utils';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 
 @Directive()
-export abstract class StatsBaseComponent<T extends Player | Goalie> implements OnInit, OnDestroy {
+export abstract class StatsBaseComponent<T extends Player | Goalie> implements OnInit {
   protected apiService = inject(ApiService);
   protected filterService = inject(FilterService);
   protected statsService = inject(StatsService);
   protected teamService = inject(TeamService);
   protected settingsService = inject(SettingsService);
   protected drawerContextService = inject(DrawerContextService);
-  protected destroy$ = new Subject<void>();
+  protected destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   readonly isMobile$ = inject(ViewportService).isMobile$;
@@ -142,7 +141,7 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
             catchError(() => of({ data: [] as T[], isError: true as const }))
           );
         }),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: ({ data, isError }) => {
@@ -164,11 +163,6 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
         },
         // Stream should not error due to catchError above.
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private markFooterReady(): void {

@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { computed, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { StatsContext } from '@shared/types/context.types';
 
 export type ControlsContext = StatsContext;
@@ -11,30 +11,32 @@ type DrawerContextState = {
 
 @Injectable({ providedIn: 'root' })
 export class DrawerContextService {
-  private readonly stateSubject = new BehaviorSubject<DrawerContextState>({
+  private readonly state = signal<DrawerContextState>({
     playerMaxGames: 0,
     goalieMaxGames: 0,
   });
 
-  readonly state$ = this.stateSubject.asObservable();
-
-  readonly playerMaxGames$ = this.state$.pipe(map((s) => s.playerMaxGames));
-  readonly goalieMaxGames$ = this.state$.pipe(map((s) => s.goalieMaxGames));
+  readonly stateSignal = this.state.asReadonly();
+  readonly state$ = toObservable(this.stateSignal);
+  readonly playerMaxGamesSignal = computed(() => this.stateSignal().playerMaxGames);
+  readonly goalieMaxGamesSignal = computed(() => this.stateSignal().goalieMaxGames);
+  readonly playerMaxGames$ = toObservable(this.playerMaxGamesSignal);
+  readonly goalieMaxGames$ = toObservable(this.goalieMaxGamesSignal);
 
   setMaxGames(context: ControlsContext, maxGames: number): void {
     const normalized = Number.isFinite(maxGames)
       ? Math.max(0, Math.floor(maxGames))
       : 0;
 
-    const current = this.stateSubject.value;
+    const current = this.stateSignal();
 
     if (context === 'player') {
       if (current.playerMaxGames === normalized) return;
-      this.stateSubject.next({ ...current, playerMaxGames: normalized });
+      this.state.set({ ...current, playerMaxGames: normalized });
       return;
     }
 
     if (current.goalieMaxGames === normalized) return;
-    this.stateSubject.next({ ...current, goalieMaxGames: normalized });
+    this.state.set({ ...current, goalieMaxGames: normalized });
   }
 }

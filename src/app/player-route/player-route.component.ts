@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject, combineLatest, of, switchMap, takeUntil, tap, take } from 'rxjs';
+import { combineLatest, of, switchMap, tap, take } from 'rxjs';
 import { ApiService, Player, Team } from '@services/api.service';
 import { TeamService } from '@services/team.service';
 import { FilterService } from '@services/filter.service';
@@ -64,14 +65,14 @@ import { matchesSlug } from '@shared/utils/slug.utils';
     }
   `],
 })
-export class PlayerRouteComponent implements OnInit, OnDestroy {
+export class PlayerRouteComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private dialog = inject(MatDialog);
   private apiService = inject(ApiService);
   private teamService = inject(TeamService);
   private filterService = inject(FilterService);
-  private destroy$ = new Subject<void>();
 
   error: string | null = null;
   private dialogOpened = false;
@@ -131,14 +132,9 @@ export class PlayerRouteComponent implements OnInit, OnDestroy {
             })
           );
         }),
-        takeUntil(this.destroy$)
+        takeUntilDestroyed(this.destroyRef)
       )
       .subscribe();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private findTeam(teams: Team[], slugOrId: string): Team | undefined {

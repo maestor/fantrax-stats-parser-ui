@@ -1,7 +1,6 @@
-import { DestroyRef, inject, Injectable } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, map, skip } from 'rxjs/operators';
+import { computed, DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { distinctUntilChanged, map, skip } from 'rxjs';
 import { Player, Goalie } from './api.service';
 import { TeamService } from './team.service';
 import { FilterService } from './filter.service';
@@ -21,46 +20,45 @@ export class ComparisonService {
   private readonly settingsService = inject(SettingsService);
   private readonly statsService = inject(StatsService);
 
-  private selectedPlayers = new BehaviorSubject<(Player | Goalie)[]>([]);
+  private readonly selectedPlayersState = signal<(Player | Goalie)[]>([]);
+  readonly selectionSignal = this.selectedPlayersState.asReadonly();
 
-  readonly selection$ = this.selectedPlayers.asObservable();
+  readonly selection$ = toObservable(this.selectionSignal);
+  readonly canSelectMoreSignal = computed(() => this.selectionSignal().length < 2);
+  readonly canSelectMore$ = toObservable(this.canSelectMoreSignal);
 
-  readonly canSelectMore$ = this.selection$.pipe(
-    map((selection) => selection.length < 2),
-  );
+  readonly orderedSelectionSignal = computed<OrderedComparison | null>(() => {
+    const selection = this.selectionSignal();
+    const playerFilters = this.filterService.playerFiltersSignal();
+    const goalieFilters = this.filterService.goalieFiltersSignal();
 
-  readonly orderedSelection$ = combineLatest([
-    this.selection$,
-    this.filterService.playerFilters$,
-    this.filterService.goalieFilters$,
-  ]).pipe(
-    map(([selection, playerFilters, goalieFilters]): OrderedComparison | null => {
-      if (selection.length < 2) {
-        return null;
-      }
-      let [a, b] = selection;
+    if (selection.length < 2) {
+      return null;
+    }
+    let [a, b] = selection;
 
-      // Check if we should use per-game stats
-      const isGoalie = (p: Player | Goalie): p is Goalie => 'wins' in p;
-      const aIsGoalie = isGoalie(a);
-      const bIsGoalie = isGoalie(b);
-      const statsPerGame = aIsGoalie ? goalieFilters.statsPerGame : playerFilters.statsPerGame;
+    // Check if we should use per-game stats
+    const isGoalie = (p: Player | Goalie): p is Goalie => 'wins' in p;
+    const aIsGoalie = isGoalie(a);
+    const bIsGoalie = isGoalie(b);
+    const statsPerGame = aIsGoalie ? goalieFilters.statsPerGame : playerFilters.statsPerGame;
 
-      if (statsPerGame) {
-        // Transform to per-game stats
-        a = aIsGoalie
-          ? this.statsService.getGoalieStatsPerGame([a as Goalie])[0]
-          : this.statsService.getPlayerStatsPerGame([a as Player])[0];
-        b = bIsGoalie
-          ? this.statsService.getGoalieStatsPerGame([b as Goalie])[0]
-          : this.statsService.getPlayerStatsPerGame([b as Player])[0];
-      }
+    if (statsPerGame) {
+      // Transform to per-game stats
+      a = aIsGoalie
+        ? this.statsService.getGoalieStatsPerGame([a as Goalie])[0]
+        : this.statsService.getPlayerStatsPerGame([a as Player])[0];
+      b = bIsGoalie
+        ? this.statsService.getGoalieStatsPerGame([b as Goalie])[0]
+        : this.statsService.getPlayerStatsPerGame([b as Player])[0];
+    }
 
-      return a.score >= b.score
-        ? { playerA: a, playerB: b }
-        : { playerA: b, playerB: a };
-    }),
-  );
+    return a.score >= b.score
+      ? { playerA: a, playerB: b }
+      : { playerA: b, playerB: a };
+  });
+
+  readonly orderedSelection$ = toObservable(this.orderedSelectionSignal);
 
   constructor() {
     // Clear on team change
@@ -95,23 +93,23 @@ export class ComparisonService {
   }
 
   toggle(player: Player | Goalie): void {
-    const current = this.selectedPlayers.value;
+    const current = this.selectionSignal();
     const key = this.playerKey(player);
     const index = current.findIndex((p) => this.playerKey(p) === key);
     if (index >= 0) {
-      this.selectedPlayers.next(current.filter((_, i) => i !== index));
+      this.selectedPlayersState.set(current.filter((_, i) => i !== index));
     } else if (current.length < 2) {
-      this.selectedPlayers.next([...current, player]);
+      this.selectedPlayersState.set([...current, player]);
     }
   }
 
   isSelected(player: Player | Goalie): boolean {
     const key = this.playerKey(player);
-    return this.selectedPlayers.value.some((p) => this.playerKey(p) === key);
+    return this.selectionSignal().some((p) => this.playerKey(p) === key);
   }
 
   clear(): void {
-    this.selectedPlayers.next([]);
+    this.selectedPlayersState.set([]);
   }
 
   private playerKey(player: Player | Goalie): string {

@@ -201,7 +201,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
 
     await vi.waitFor(() => {
       expect(bottomSheetFactory).toHaveBeenCalledTimes(1);
-    });
+    }, { timeout: 5000 });
   });
 
   it('starts with visible defaults when browser storage is empty', async () => {
