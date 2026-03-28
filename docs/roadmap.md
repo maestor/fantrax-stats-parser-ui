@@ -28,18 +28,6 @@ Override the current auto-only system-preference-based theme. Persist choice in 
 
 Persist the user's last sort column and direction per table (players/goalies) in localStorage across sessions.
 
-## Architecture and maintenance
-
-### Low priority
-
-#### Finish Signal-Native UI State Cleanup (~4-8h)
-
-The repo is already mostly signals-first, but a few app-owned UI state services still use `BehaviorSubject` plus `toSignal()` as a compatibility bridge.
-
-- Prioritize `FilterService`, `SettingsService`, `ComparisonService`, and `DrawerContextService`
-- Prefer writable/computed signals for owned state, with observable APIs kept only where async composition or backwards compatibility still needs them
-- Keep this as a behavior-preserving refactor; do not mix it with product changes
-
 ## E2E Testing
 
 ### Test data management

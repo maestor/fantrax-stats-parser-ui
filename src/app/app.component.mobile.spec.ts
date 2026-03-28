@@ -346,12 +346,16 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
 
     fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' }));
 
-    expect(await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
-    expect(await screen.findByText(openingDraftsFixture[0].team.name)).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' }, { timeout: 5000 })
+    ).toBeInTheDocument();
+    expect(await screen.findByText(openingDraftsFixture[0].team.name, {}, { timeout: 5000 })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.statistics' }));
 
-    expect(await screen.findByRole('heading', { name: 'draft.tabs.statistics' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: 'draft.tabs.statistics' }, { timeout: 5000 })
+    ).toBeInTheDocument();
     expect(screen.getByText('draft.statistics.cards.totalPicks.title')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,5 @@
-import { Injectable, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, inject, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportType } from './api.service';
 import { SettingsService } from './settings.service';
 
@@ -20,37 +19,21 @@ export interface FilterState {
 export class FilterService {
   private readonly settingsService = inject(SettingsService);
 
-  private filters = {
-    players: new BehaviorSubject<FilterState>({
-      reportType: this.settingsService.reportType,
-      season: this.settingsService.season,
-      statsPerGame: false,
-      minGames: 0,
-      positionFilter: 'all',
-    }),
-    goalies: new BehaviorSubject<FilterState>({
-      reportType: this.settingsService.reportType,
-      season: this.settingsService.season,
-      statsPerGame: false,
-      minGames: 0,
-      positionFilter: 'all',
-    }),
-  };
+  private readonly playerFiltersState = signal<FilterState>(this.buildInitialFilterState());
+  private readonly goalieFiltersState = signal<FilterState>(this.buildInitialFilterState());
 
-  playerFilters$ = this.filters.players.asObservable();
-  goalieFilters$ = this.filters.goalies.asObservable();
-  readonly playerFiltersSignal = toSignal(this.playerFilters$, { requireSync: true });
-  readonly goalieFiltersSignal = toSignal(this.goalieFilters$, { requireSync: true });
+  readonly playerFiltersSignal = this.playerFiltersState.asReadonly();
+  readonly goalieFiltersSignal = this.goalieFiltersState.asReadonly();
+  readonly playerFilters$ = toObservable(this.playerFiltersSignal);
+  readonly goalieFilters$ = toObservable(this.goalieFiltersSignal);
 
   updatePlayerFilters(change: Partial<FilterState>): void {
-    const current = this.filters.players.value;
-    this.filters.players.next({ ...current, ...change });
+    this.playerFiltersState.update((current) => ({ ...current, ...change }));
     this.syncGlobalFilters('players', change);
   }
 
   updateGoalieFilters(change: Partial<FilterState>): void {
-    const current = this.filters.goalies.value;
-    this.filters.goalies.next({ ...current, ...change });
+    this.goalieFiltersState.update((current) => ({ ...current, ...change }));
     this.syncGlobalFilters('goalies', change);
   }
 
@@ -69,33 +52,40 @@ export class FilterService {
     if (hasSeason) globalChange.season = change.season;
     if (hasReportType) globalChange.reportType = change.reportType;
 
-    const target = source === 'players' ? this.filters.goalies : this.filters.players;
-    const current = target.value;
-    target.next({ ...current, ...globalChange });
+    const targetState = source === 'players' ? this.goalieFiltersState : this.playerFiltersState;
+    targetState.update((current) => ({ ...current, ...globalChange }));
   }
 
   resetPlayerFilters(): void {
-    const current = this.filters.players.value;
-    this.filters.players.next({
+    this.playerFiltersState.update((current) => ({
       ...current,
       statsPerGame: false,
       minGames: 0,
       positionFilter: 'all',
-    });
+    }));
   }
 
   resetGoalieFilters(): void {
-    const current = this.filters.goalies.value;
-    this.filters.goalies.next({
+    this.goalieFiltersState.update((current) => ({
       ...current,
       statsPerGame: false,
       minGames: 0,
-    });
+    }));
   }
 
   resetAll(): void {
     this.updatePlayerFilters({ reportType: 'regular', season: undefined });
     this.resetPlayerFilters();
     this.resetGoalieFilters();
+  }
+
+  private buildInitialFilterState(): FilterState {
+    return {
+      reportType: this.settingsService.reportType,
+      season: this.settingsService.season,
+      statsPerGame: false,
+      minGames: 0,
+      positionFilter: 'all',
+    };
   }
 }

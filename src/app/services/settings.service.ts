@@ -1,6 +1,5 @@
-import { computed, Injectable } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { BehaviorSubject, distinctUntilChanged, map } from 'rxjs';
+import { computed, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { ReportType } from './api.service';
 
 export type AppSettings = {
@@ -20,43 +19,32 @@ export class SettingsService {
   private readonly defaultTeamId = '1';
   private readonly defaultTopControlsExpanded = true;
 
-  private readonly settingsSubject = new BehaviorSubject<AppSettings>(
-    this.loadInitialSettings()
-  );
+  private readonly settingsState = signal<AppSettings>(this.loadInitialSettings());
+  private readonly settingsSignal = this.settingsState.asReadonly();
 
-  private readonly settings$ = this.settingsSubject.asObservable();
-  private readonly settingsSignal = toSignal(this.settings$, { requireSync: true });
-
-  readonly selectedTeamId$ = this.settings$.pipe(
-    map((s) => s.selectedTeamId),
-    distinctUntilChanged()
-  );
   readonly selectedTeamIdSignal = computed(() => this.settingsSignal().selectedTeamId);
+  readonly selectedTeamId$ = toObservable(this.selectedTeamIdSignal);
 
-  readonly startFromSeason$ = this.settings$.pipe(
-    map((s) => this.normalizeOptionalSeason(s.startFromSeason)),
-    distinctUntilChanged()
+  readonly startFromSeasonSignal = computed(() =>
+    this.normalizeOptionalSeason(this.settingsSignal().startFromSeason)
   );
+  readonly startFromSeason$ = toObservable(this.startFromSeasonSignal);
   readonly topControlsExpandedSignal = computed(() => this.settingsSignal().topControlsExpanded);
 
   get selectedTeamId(): string {
-    return this.settingsSubject.value.selectedTeamId;
+    return this.settingsSignal().selectedTeamId;
   }
 
   get startFromSeason(): number | undefined {
-    return this.settingsSubject.value.startFromSeason === null
-      ? undefined
-      : this.settingsSubject.value.startFromSeason;
+    return this.startFromSeasonSignal();
   }
 
   get season(): number | undefined {
-    return this.settingsSubject.value.season === null
-      ? undefined
-      : this.settingsSubject.value.season;
+    return this.normalizeOptionalSeason(this.settingsSignal().season);
   }
 
   get reportType(): ReportType {
-    return this.settingsSubject.value.reportType;
+    return this.settingsSignal().reportType;
   }
 
   setSelectedTeamId(teamId: string): void {
@@ -66,28 +54,28 @@ export class SettingsService {
 
   setStartFromSeason(season: number | undefined): void {
     const normalized = season === undefined ? null : season;
-    if (normalized === this.settingsSubject.value.startFromSeason) return;
+    if (normalized === this.settingsSignal().startFromSeason) return;
     this.updateSettings({ startFromSeason: normalized });
   }
 
   setTopControlsExpanded(expanded: boolean): void {
-    if (expanded === this.settingsSubject.value.topControlsExpanded) return;
+    if (expanded === this.settingsSignal().topControlsExpanded) return;
     this.updateSettings({ topControlsExpanded: expanded });
   }
 
   setSeason(season: number | null): void {
-    if (season === this.settingsSubject.value.season) return;
+    if (season === this.settingsSignal().season) return;
     this.updateSettings({ season });
   }
 
   setReportType(reportType: ReportType): void {
-    if (reportType === this.settingsSubject.value.reportType) return;
+    if (reportType === this.settingsSignal().reportType) return;
     this.updateSettings({ reportType });
   }
 
   private updateSettings(patch: Partial<AppSettings>): void {
-    const next: AppSettings = { ...this.settingsSubject.value, ...patch };
-    this.settingsSubject.next(next);
+    const next: AppSettings = { ...this.settingsSignal(), ...patch };
+    this.settingsState.set(next);
     this.persist(next);
   }
 
