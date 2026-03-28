@@ -19,6 +19,9 @@ import {
   sameTeamSeasonsOwnedHighlightsPage0Fixture,
   sameTeamSeasonsHighlightsPage0Fixture,
 } from '../../testing/behavior-test-utils';
+import {
+  GENERAL_CAREER_HIGHLIGHT_CARD_TYPES,
+} from './career-highlights.constants';
 import { CareerHighlightsComponent } from './career-highlights.component';
 
 class FakeIntersectionObserver {
@@ -164,11 +167,11 @@ describe('CareerHighlightsComponent', () => {
     ).toBeInTheDocument();
 
     await vi.waitFor(() => {
-      expect(FakeIntersectionObserver.instances).toHaveLength(7);
+      expect(FakeIntersectionObserver.instances).toHaveLength(GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length);
     });
 
     expect(getCareerHighlights).not.toHaveBeenCalled();
-    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(7);
+    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length);
 
     FakeIntersectionObserver.instances[0]?.trigger();
     FakeIntersectionObserver.instances[2]?.trigger();
@@ -254,7 +257,7 @@ describe('CareerHighlightsComponent', () => {
     });
 
     await vi.waitFor(() => {
-      expect(FakeIntersectionObserver.instances).toHaveLength(7);
+      expect(FakeIntersectionObserver.instances).toHaveLength(GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length);
     });
 
     fireEvent.click(

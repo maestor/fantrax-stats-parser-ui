@@ -3,6 +3,7 @@ import type { Page } from '@playwright/test';
 import { test, expect } from '../fixtures/test-fixture';
 import { NAV_LABELS, TAB_LABELS } from '../config/test-data';
 import { fi } from '../config/i18n';
+import { DRAFT_STATISTICS_CARD_IDS } from '../../src/app/draft/statistics/draft-statistics.constants';
 
 function waitForOpeningDraftResponse(page: Page) {
   return page.waitForResponse(
@@ -26,7 +27,7 @@ async function expectStatisticsContent(page: Page) {
   });
   const pageSummary = firstCard.locator('.page-summary');
 
-  await expect(cards).toHaveCount(10);
+  await expect(cards).toHaveCount(DRAFT_STATISTICS_CARD_IDS.length);
   await expect(
     firstCard.getByRole('heading', {
       name: fi('draft.statistics.cards.totalPicks.title'),

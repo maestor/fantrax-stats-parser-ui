@@ -100,7 +100,8 @@
         "team": "Joukkue",
         "pickCount": "Varaukset",
         "average": "Keskiarvo",
-        "turn": "Vuoro"
+        "turn": "Vuoro",
+        "players": "Pelaajat"
       },
       "cards": {
         "totalPicks": {
@@ -122,6 +123,10 @@
         "averagePosition": {
           "title": "Paras vuorojen keskiarvo",
           "description": "Paras varattujen vuorojen keskiarvo."
+        },
+        "playedInLeague": {
+          "title": "Eniten pelanneita varauksia",
+          "description": "Varatut pelaajat, joilla on otteluita ylhäällä."
         },
         "roundOne": {
           "title": "Eniten 1. kierroksen varauksia",
@@ -147,12 +152,17 @@
     },
     "entryDrafts": {
       "summaryHeading": "Yhteenveto",
+      "playedHeading": "Pelanneet varaukset",
       "averageDraftPositionLabel": "Keskimääräinen vuoro",
       "noAverageDraftPosition": "Ei tiedossa",
       "totalPicksLabel": "Varattu pelaajia",
       "ownPicksLabel": "Omilla vuoroilla",
       "tradedPicksLabel": "Treidatuilla vuoroilla",
       "playersPerDraftAverageLabel": "Varausta / draft",
+      "playedInLeagueLabel": "Liigassa",
+      "playedForDraftingTeamLabel": "Varaajajoukkueessa",
+      "playedInLeagueTooltip": "Pelannut muualla",
+      "playedForDraftingTeamTooltip": "Pelannut varaajajoukkueessa",
       "highestPickHeading": "Korkeimmalla varattu",
       "noHighestPick": "Ei varaustietoa",
       "roundsHeading": "Varaukset kierroksittain",

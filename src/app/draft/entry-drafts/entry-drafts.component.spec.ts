@@ -36,6 +36,8 @@ const entryDraftGroupsFixture: EntryDraftTeamGroup[] = [
         ownPicks: 52,
         tradedPicks: 12,
         playersPerDraftAverage: 4.92,
+        playedInLeague: 2,
+        playedForDraftingTeam: 1,
       },
       rounds: {
         first: 13,
@@ -53,12 +55,16 @@ const entryDraftGroupsFixture: EntryDraftTeamGroup[] = [
             round: 4,
             pickNumber: 116,
             draftedPlayer: 'Brett Pesce',
+            playedInLeague: true,
+            playedForDraftingTeam: true,
             originalOwner: { id: '6', name: 'Detroit Red Wings' },
           },
           {
             round: 5,
             pickNumber: 129,
             draftedPlayer: null,
+            playedInLeague: false,
+            playedForDraftingTeam: false,
             originalOwner: { id: '4', name: 'Vancouver Canucks' },
           },
         ],
@@ -70,12 +76,16 @@ const entryDraftGroupsFixture: EntryDraftTeamGroup[] = [
             round: 1,
             pickNumber: 22,
             draftedPlayer: 'Cameron Reid',
+            playedInLeague: false,
+            playedForDraftingTeam: false,
             originalOwner: { id: '12', name: 'Anaheim Ducks' },
           },
           {
             round: 1,
             pickNumber: 29,
             draftedPlayer: 'Blake Fiddler',
+            playedInLeague: true,
+            playedForDraftingTeam: false,
             originalOwner: { id: '1', name: 'Colorado Avalanche' },
           },
         ],
@@ -92,6 +102,8 @@ const entryDraftGroupsFixture: EntryDraftTeamGroup[] = [
         ownPicks: 0,
         tradedPicks: 0,
         playersPerDraftAverage: 0,
+        playedInLeague: 0,
+        playedForDraftingTeam: 0,
       },
       rounds: {
         first: 0,
@@ -160,17 +172,21 @@ describe('EntryDraftsComponent', () => {
     const firstPanelQueries = within(firstPanelElement);
 
     expect(firstPanelQueries.getByText('draft.entryDrafts.summaryHeading')).toBeInTheDocument();
+    expect(firstPanelQueries.getByText('draft.entryDrafts.playedHeading')).toBeInTheDocument();
     expect(firstPanelQueries.getByText('draft.entryDrafts.highestPickHeading')).toBeInTheDocument();
     expect(firstPanelQueries.getByText('draft.entryDrafts.roundsHeading')).toBeInTheDocument();
-    expect(firstPanelQueries.getByText('draft.entryDrafts.turnLabel 8')).toBeInTheDocument();
-    expect(firstPanelQueries.getByText('Blake Fiddler')).toBeInTheDocument();
+    expect(firstPanelQueries.getByText(/draft\.entryDrafts\.turnLabel 8:?/)).toBeInTheDocument();
+    expect(firstPanelQueries.getByText(/Blake Fiddler/)).toBeInTheDocument();
     expect(firstPanelQueries.getByText('draft.entryDrafts.unknownPlayerLabel')).toBeInTheDocument();
     expect(firstPanelQueries.getAllByText(/draft\.entryDrafts\.originalOwnerLabel/)).toHaveLength(3);
     expect(firstPanelQueries.getByText('Colorado Avalanche')).toBeInTheDocument();
     expect(firstPanelQueries.getByText('Detroit Red Wings')).toBeInTheDocument();
     expect(firstPanelQueries.getByText('Vancouver Canucks')).toBeInTheDocument();
 
-    const highestPickSummary = firstPanelElement.querySelector('.entry-highlight-summary')?.textContent?.trim();
+    expect(firstPanelQueries.getByText('draft.entryDrafts.playedInLeagueLabel')).toBeInTheDocument();
+    expect(firstPanelQueries.getByText('draft.entryDrafts.playedForDraftingTeamLabel')).toBeInTheDocument();
+
+    const highestPickSummary = firstPanelElement.querySelector('.entry-highlight-text')?.textContent?.trim();
     expect(highestPickSummary).toContain('2015 Ivan Provorov');
     expect(highestPickSummary).toContain('2013 Max Domi');
     expect(highestPickSummary).not.toContain('draft.entryDrafts.roundLabel');
@@ -179,6 +195,11 @@ describe('EntryDraftsComponent', () => {
       .map((element) => element.textContent?.trim())
       .filter((value): value is string => Boolean(value));
     expect(summaryValues).toEqual(expect.arrayContaining(['82,89', '64', '52', '12', '4,92']));
+
+    const playedValues = Array.from(firstPanelElement.querySelectorAll('.entry-played-value'))
+      .map((element) => element.textContent?.trim())
+      .filter((value): value is string => Boolean(value));
+    expect(playedValues).toEqual(['2', '1']);
 
     const roundValues = Array.from(firstPanelElement.querySelectorAll('.entry-round-value'))
       .map((element) => element.textContent?.trim())
@@ -189,6 +210,28 @@ describe('EntryDraftsComponent', () => {
       .map((element) => element.textContent?.trim())
       .filter((value): value is string => Boolean(value));
     expect(seasonTitles).toEqual(['2025', '2013']);
+
+    const statusBadges = Array.from(firstPanelElement.querySelectorAll('.draft-pick-status-badge'))
+      .map((element) => element.textContent?.trim());
+    expect(statusBadges).toEqual(['🟡', '🟢']);
+
+    const pickPlayerTexts = Array.from(firstPanelElement.querySelectorAll('.draft-pick-player'))
+      .map((element) => element.textContent?.replace(/\s+/g, ' ').trim());
+    expect(
+      pickPlayerTexts.some((text) =>
+        text?.includes('Blake Fiddler')
+        && text.includes('🟡')
+        && text.includes('draft.entryDrafts.playedInLeagueTooltip'),
+      ),
+    ).toBe(true);
+    expect(
+      pickPlayerTexts.some((text) =>
+        text?.includes('Brett Pesce')
+        && text.includes('🟢')
+        && text.includes('draft.entryDrafts.playedForDraftingTeamTooltip'),
+      ),
+    ).toBe(true);
+    expect(pickPlayerTexts).toContain('draft.entryDrafts.unknownPlayerLabel');
 
     expect(fixture.componentInstance.loading).toBe(false);
     expect(fixture.componentInstance.apiError).toBe(false);

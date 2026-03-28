@@ -16,23 +16,16 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
 
+import {
+  DRAFT_STATISTICS_CARD_IDS,
+  DraftStatisticsCardId,
+} from './draft-statistics.constants';
+
 const PAGE_SIZE = 10;
 const draftStatisticNumberFormatter = new Intl.NumberFormat('fi-FI', {
   minimumFractionDigits: 0,
   maximumFractionDigits: 2,
 });
-
-type DraftStatisticsCardId =
-  | 'total-picks'
-  | 'own-picks'
-  | 'traded-picks'
-  | 'players-per-draft'
-  | 'average-position'
-  | 'round-1'
-  | 'round-2'
-  | 'round-3'
-  | 'round-4'
-  | 'round-5';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -61,33 +54,32 @@ type DraftStatisticsCard = {
   readonly total: number;
 };
 
-const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = [
-  {
-    id: 'total-picks',
+const draftStatisticDefinitionsById: Record<
+  DraftStatisticsCardId,
+  Omit<DraftStatisticDefinition, 'id'>
+> = {
+  'total-picks': {
     titleKey: 'draft.statistics.cards.totalPicks.title',
     descriptionKey: 'draft.statistics.cards.totalPicks.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.amounts.total,
   },
-  {
-    id: 'own-picks',
+  'own-picks': {
     titleKey: 'draft.statistics.cards.ownPicks.title',
     descriptionKey: 'draft.statistics.cards.ownPicks.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.amounts.ownPicks,
   },
-  {
-    id: 'traded-picks',
+  'traded-picks': {
     titleKey: 'draft.statistics.cards.tradedPicks.title',
     descriptionKey: 'draft.statistics.cards.tradedPicks.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.amounts.tradedPicks,
   },
-  {
-    id: 'players-per-draft',
+  'players-per-draft': {
     titleKey: 'draft.statistics.cards.playersPerDraft.title',
     descriptionKey: 'draft.statistics.cards.playersPerDraft.description',
     valueColumnLabelKey: 'draft.statistics.columns.average',
@@ -95,8 +87,7 @@ const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = [
     valueFor: (group) => group.summary.amounts.playersPerDraftAverage,
     formatValue: (value) => draftStatisticNumberFormatter.format(value),
   },
-  {
-    id: 'average-position',
+  'average-position': {
     titleKey: 'draft.statistics.cards.averagePosition.title',
     descriptionKey: 'draft.statistics.cards.averagePosition.description',
     valueColumnLabelKey: 'draft.statistics.columns.turn',
@@ -104,47 +95,54 @@ const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = [
     valueFor: (group) => group.summary.averageDraftPosition,
     formatValue: (value) => draftStatisticNumberFormatter.format(value),
   },
-  {
-    id: 'round-1',
+  'played-in-league': {
+    titleKey: 'draft.statistics.cards.playedInLeague.title',
+    descriptionKey: 'draft.statistics.cards.playedInLeague.description',
+    valueColumnLabelKey: 'draft.statistics.columns.players',
+    direction: 'desc',
+    valueFor: (group) => group.summary.amounts.playedInLeague,
+  },
+  'round-1': {
     titleKey: 'draft.statistics.cards.roundOne.title',
     descriptionKey: 'draft.statistics.cards.roundOne.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.rounds.first,
   },
-  {
-    id: 'round-2',
+  'round-2': {
     titleKey: 'draft.statistics.cards.roundTwo.title',
     descriptionKey: 'draft.statistics.cards.roundTwo.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.rounds.second,
   },
-  {
-    id: 'round-3',
+  'round-3': {
     titleKey: 'draft.statistics.cards.roundThree.title',
     descriptionKey: 'draft.statistics.cards.roundThree.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.rounds.third,
   },
-  {
-    id: 'round-4',
+  'round-4': {
     titleKey: 'draft.statistics.cards.roundFour.title',
     descriptionKey: 'draft.statistics.cards.roundFour.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.rounds.fourth,
   },
-  {
-    id: 'round-5',
+  'round-5': {
     titleKey: 'draft.statistics.cards.roundFive.title',
     descriptionKey: 'draft.statistics.cards.roundFive.description',
     valueColumnLabelKey: 'draft.statistics.columns.pickCount',
     direction: 'desc',
     valueFor: (group) => group.summary.rounds.fifth,
   },
-] as const;
+};
+
+const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = DRAFT_STATISTICS_CARD_IDS.map((id) => ({
+  id,
+  ...draftStatisticDefinitionsById[id],
+}));
 
 @Component({
   selector: 'app-draft-statistics',
