@@ -1,8 +1,10 @@
-import { CareerHighlightType } from '@services/api.service';
 import { TableCardRow } from '@shared/table-card/table-card.types';
+import type { CareerHighlightsUiType } from './career-highlights.constants';
 
-export type CareerHighlightsUiType = CareerHighlightType;
-export type CareerHighlightSection = 'general' | 'transactions';
+export type {
+  CareerHighlightSection,
+  CareerHighlightsUiType,
+} from './career-highlights.constants';
 export type HighlightDescriptionParams = Readonly<Record<string, number | string>>;
 
 export interface CareerHighlightCardState {

@@ -32,12 +32,15 @@ import { TableCardRow } from '@shared/table-card/table-card.types';
 import { formatPlayoffYear } from '@shared/utils/season.utils';
 
 import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
+import {
+  CAREER_HIGHLIGHT_CARD_TYPES_BY_SECTION,
+  CareerHighlightSection,
+  CareerHighlightsUiType,
+} from './career-highlights.constants';
 import { formatReunionDetailLines } from './career-highlights.utils';
 import {
   CareerHighlightCardState,
   CareerHighlightCardView,
-  CareerHighlightSection,
-  CareerHighlightsUiType,
   HighlightDescriptionParams,
 } from './career-highlights.types';
 
@@ -154,18 +157,23 @@ const MOST_DROPS_CONFIG: HighlightCardConfig = {
   valueColumnLabelKey: '❌',
 };
 
+const highlightCardConfigsByType: Record<CareerHighlightsUiType, HighlightCardConfig> = {
+  'most-stanley-cups': MOST_STANLEY_CUPS_CONFIG,
+  'regular-grinder-without-playoffs': REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG,
+  'most-teams-played': MOST_TEAMS_PLAYED_CONFIG,
+  'most-teams-owned': MOST_TEAMS_OWNED_CONFIG,
+  'same-team-seasons-played': SAME_TEAM_SEASONS_PLAYED_CONFIG,
+  'same-team-seasons-owned': SAME_TEAM_SEASONS_OWNED_CONFIG,
+  'stash-king': STASH_KING_CONFIG,
+  'most-trades': MOST_TRADES_CONFIG,
+  'most-claims': MOST_CLAIMS_CONFIG,
+  'most-drops': MOST_DROPS_CONFIG,
+  'reunion-king': REUNION_KING_CONFIG,
+};
+
 const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
-  MOST_STANLEY_CUPS_CONFIG,
-  REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG,
-  MOST_TEAMS_PLAYED_CONFIG,
-  MOST_TEAMS_OWNED_CONFIG,
-  SAME_TEAM_SEASONS_PLAYED_CONFIG,
-  SAME_TEAM_SEASONS_OWNED_CONFIG,
-  STASH_KING_CONFIG,
-  MOST_TRADES_CONFIG,
-  MOST_CLAIMS_CONFIG,
-  MOST_DROPS_CONFIG,
-  REUNION_KING_CONFIG,
+  ...CAREER_HIGHLIGHT_CARD_TYPES_BY_SECTION.general.map((type) => highlightCardConfigsByType[type]),
+  ...CAREER_HIGHLIGHT_CARD_TYPES_BY_SECTION.transactions.map((type) => highlightCardConfigsByType[type]),
 ];
 
 function createInitialCardState(
