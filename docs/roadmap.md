@@ -40,14 +40,6 @@ The repo is already mostly signals-first, but a few app-owned UI state services 
 - Prefer writable/computed signals for owned state, with observable APIs kept only where async composition or backwards compatibility still needs them
 - Keep this as a behavior-preserving refactor; do not mix it with product changes
 
-#### Remove Remaining Manual Subscription Teardown (~3-5h)
-
-Most new code already uses `takeUntilDestroyed()` or signal-driven flows, but a few older components still keep `Subject<void>` plus `takeUntil()` teardown patterns.
-
-- Prioritize `StatsBaseComponent`, direct card route components, and the career list route containers
-- Simplify teardown where Angular 21 injection-context patterns make the lifecycle wiring smaller and easier to read
-- Treat this as cleanup for maintainability, not as an excuse to churn stable code without a clear benefit
-
 ## E2E Testing
 
 ### Test data management

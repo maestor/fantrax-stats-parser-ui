@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ApiService, CareerPlayerListItem } from '@services/api.service';
 import { TableRow } from '@shared/stats-table/stats-table.component';
@@ -14,9 +14,9 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
   imports: [VirtualTableComponent],
   templateUrl: './career-players.component.html',
 })
-export class CareerPlayersComponent implements OnInit, OnDestroy {
+export class CareerPlayersComponent implements OnInit {
   private readonly apiService = inject(ApiService);
-  private readonly destroy$ = new Subject<void>();
+  private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   readonly columns: Column[] = CAREER_PLAYER_COLUMNS;
@@ -37,7 +37,7 @@ export class CareerPlayersComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.apiService
       .getCareerPlayers()
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
           this.data = data;
@@ -51,11 +51,6 @@ export class CareerPlayersComponent implements OnInit, OnDestroy {
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private formatCellValue(
