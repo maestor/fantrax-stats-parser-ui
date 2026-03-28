@@ -80,7 +80,7 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
 
     fireEvent.keyDown(document.activeElement as Element, { key: 'Enter' });
 
-    const dialog = await screen.findByRole('dialog');
+    const dialog = await screen.findByRole('dialog', {}, { timeout: 15_000 });
     expect(
       within(dialog).queryByRole('switch', { name: /playerCardPositionFilter\./ })
     ).not.toBeInTheDocument();

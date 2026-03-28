@@ -44,10 +44,11 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- `/career/highlights` splits compact paged highlight cards into `Sekalaiset` and `Siirrot`, covering the existing general career slices plus transaction leaders for most trades, claims, drops, and same-team reunions; each card lazy-loads its dataset as it approaches the viewport
 - 📝 **Draft Pages**: Standalone `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics` browse routes now live under `Varaukset`
 	- Batch 1 adds the route shell, navigation, SEO, and the shared browse scaffolding
-	- Batch 2 turns `/draft/opening-draft` into a team-by-team accordion with simple pick rows, including traded-pick owner suffixes when the original pick belonged to another team
-	- Batch 3 turns `/draft/entry-drafts` into a matching team accordion with compact summary cards, played-status totals plus played percentages, highest-pick highlights, and season-by-season entry draft history
-	- Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
-	- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 13 entry-draft summary slices, including separate played-percentage rankings, without a separate draft-only card implementation
+		- Batch 2 turns `/draft/opening-draft` into a team-by-team accordion with simple pick rows, including traded-pick owner suffixes when the original pick belonged to another team
+		- Batch 3 turns `/draft/entry-drafts` into a matching team accordion with compact summary cards, played-status totals plus played percentages, highest-pick highlights, and season-by-season entry draft history
+		- Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
+		- Expanded draft panels auto-align their sticky header to the top of the viewport when opened; `ArrowDown` still explicitly moves from the team header into the panel body, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it, and `Escape` collapses the panel while returning focus to the header
+		- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 13 entry-draft summary slices, including separate played-percentage rankings, without a separate draft-only card implementation
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards

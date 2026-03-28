@@ -63,6 +63,28 @@ Implementation:
 - Career highlights reuse the career skip target (`career-table`) and move focus to the first available card row without adding those rows to normal tab order
 - Draft routes use the `draft-list` skip target and move focus to the first expansion trigger or draft placeholder heading
 
+### Draft panel keyboard navigation
+
+Draft browse pages use long expansion panels, so header focus alone is not enough.
+
+Supported behavior on entry-draft and opening-draft pages:
+
+- Team headers remain the primary tab stops
+- Opening a panel scrolls its header to the top of the viewport, but does not move focus into the content by itself
+- On an expanded team header:
+  - `ArrowDown` moves focus into the expanded content
+  - `Escape` collapses the currently expanded panel
+- Inside expanded content:
+  - `ArrowUp` / `ArrowDown` moves between focus targets within that panel
+  - `Home` / `End` jumps to the first/last focus target in the panel
+  - `PageUp` / `PageDown` jumps farther within long content
+  - `Escape` collapses the panel and returns focus to the team header
+
+Notes:
+
+- Entry drafts use section- and season-level focus targets rather than tabbing through every summary value
+- Opening draft uses roving focus on pick rows so long pick lists stay keyboard-browsable without bloating the page tab order
+
 ### Stats table keyboard navigation
 
 The stats table is designed to be usable without tabbing through every column header.

@@ -20,6 +20,31 @@ describe('OpeningDraftComponent', () => {
     };
   }
 
+  function stubScrollIntoView() {
+    const original = HTMLElement.prototype.scrollIntoView;
+    const scrollIntoView = vi.fn();
+
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+
+    return {
+      scrollIntoView,
+      restore: () => {
+        if (original) {
+          Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+            configurable: true,
+            value: original,
+          });
+          return;
+        }
+
+        delete (HTMLElement.prototype as Partial<typeof HTMLElement.prototype>).scrollIntoView;
+      },
+    };
+  }
+
   async function renderComponent(options?: {
     apiService?: Partial<ApiService>;
     footerVisibilityService?: ReturnType<typeof createFooterVisibilityMock>;
@@ -71,6 +96,200 @@ describe('OpeningDraftComponent', () => {
     expect(fixture.componentInstance.loading).toBe(false);
     expect(fixture.componentInstance.apiError).toBe(false);
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(7);
+  });
+
+  it('moves focus from an expanded header into opening draft picks with keyboard navigation', async () => {
+    const { container } = await renderComponent();
+
+    const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
+    fireEvent.click(header);
+
+    const firstPanel = container.querySelector('mat-expansion-panel');
+    expect(firstPanel).not.toBeNull();
+
+    const pickRows = Array.from((firstPanel as HTMLElement).querySelectorAll<HTMLElement>('.draft-pick-item'));
+    expect(pickRows.length).toBeGreaterThan(1);
+
+    const [firstPick, secondPick] = pickRows;
+    const lastPick = pickRows.at(-1);
+
+    fireEvent.keyDown(header, { key: 'ArrowDown' });
+    expect(firstPick).toHaveFocus();
+
+    fireEvent.keyDown(firstPick, { key: 'ArrowDown' });
+    expect(secondPick).toHaveFocus();
+
+    fireEvent.keyDown(secondPick, { key: 'Home' });
+    expect(firstPick).toHaveFocus();
+
+    if (lastPick) {
+      fireEvent.keyDown(firstPick, { key: 'End' });
+      expect(lastPick).toHaveFocus();
+
+      fireEvent.keyDown(lastPick, { key: 'Escape' });
+      expect(header).toHaveFocus();
+      expect(header).toHaveAttribute('aria-expanded', 'false');
+    }
+  });
+
+  it('supports paging within opening draft picks and collapsing from the expanded header', async () => {
+    const { container, fixture } = await renderComponent();
+
+    const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
+    fireEvent.click(header);
+
+    const firstPanel = container.querySelector('mat-expansion-panel');
+    expect(firstPanel).not.toBeNull();
+
+    const pickRows = Array.from((firstPanel as HTMLElement).querySelectorAll<HTMLElement>('.draft-pick-item'));
+    expect(pickRows.length).toBeGreaterThan(1);
+
+    const [firstPick] = pickRows;
+    const lastPick = pickRows.at(-1);
+    expect(firstPick).toBeDefined();
+    expect(lastPick).toBeDefined();
+
+    fireEvent.keyDown(header, { key: 'ArrowDown' });
+    expect(firstPick).toHaveFocus();
+
+    fireEvent.keyDown(firstPick as HTMLElement, { key: 'PageDown' });
+    expect(lastPick).toHaveFocus();
+
+    fireEvent.keyDown(lastPick as HTMLElement, { key: 'PageUp' });
+    expect(firstPick).toHaveFocus();
+
+    fireEvent.keyDown(firstPick as HTMLElement, { key: 'ArrowUp' });
+    expect(header).toHaveFocus();
+
+    fireEvent.keyDown(header, { key: 'Escape' });
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(header).toHaveAttribute('aria-expanded', 'false');
+      expect(header).toHaveFocus();
+    });
+  });
+
+  it('covers collapsed-header and guard keyboard paths without scrolling', async () => {
+    const { fixture } = await renderComponent();
+    const component = fixture.componentInstance;
+    const header = await screen.findByRole('button', { name: 'Dallas Stars' });
+    const { scrollIntoView, restore } = stubScrollIntoView();
+    const setTimeoutSpy = vi.spyOn(window, 'setTimeout').mockImplementation(((handler: TimerHandler) => {
+      if (typeof handler === 'function') {
+        handler();
+      }
+
+      return 0 as ReturnType<typeof window.setTimeout>;
+    }) as typeof window.setTimeout);
+
+    try {
+      component.onHeaderKeydown({
+        key: 'Enter',
+        currentTarget: header,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent);
+      expect(scrollIntoView).not.toHaveBeenCalled();
+
+      const collapsedEscapeEvent = {
+        key: 'Escape',
+        currentTarget: header,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent;
+      component.onHeaderKeydown(collapsedEscapeEvent);
+      expect(collapsedEscapeEvent.preventDefault).not.toHaveBeenCalled();
+
+      component.onHeaderKeydown({ key: 'Escape', currentTarget: null } as unknown as KeyboardEvent);
+
+      component.onHeaderKeydown({
+        key: 'ArrowDown',
+        currentTarget: header,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent);
+
+      const orphanHeader = document.createElement('button');
+      orphanHeader.setAttribute('aria-expanded', 'true');
+      component.onHeaderKeydown({
+        key: 'ArrowDown',
+        currentTarget: orphanHeader,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent);
+
+      component.onPickKeydown(
+        { key: 'ArrowDown', currentTarget: null } as unknown as KeyboardEvent,
+        { close: vi.fn() } as never,
+      );
+
+      const orphanTarget = document.createElement('div');
+      component.onPickKeydown(
+        {
+          key: 'ArrowDown',
+          currentTarget: orphanTarget,
+          preventDefault: vi.fn(),
+          stopPropagation: vi.fn(),
+        } as unknown as KeyboardEvent,
+        { close: vi.fn() } as never,
+      );
+
+      const panelElement = document.createElement('mat-expansion-panel');
+      const nonFocusTarget = document.createElement('div');
+      panelElement.appendChild(nonFocusTarget);
+      component.onPickKeydown(
+        {
+          key: 'ArrowDown',
+          currentTarget: nonFocusTarget,
+          preventDefault: vi.fn(),
+          stopPropagation: vi.fn(),
+        } as unknown as KeyboardEvent,
+        { close: vi.fn() } as never,
+      );
+    } finally {
+      setTimeoutSpy.mockRestore();
+      restore();
+    }
+  });
+
+  it('scrolls an expanded opening-draft header to the top without moving focus into picks', async () => {
+    const { scrollIntoView, restore } = stubScrollIntoView();
+
+    try {
+      const { fixture } = await renderComponent();
+
+      const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
+      fireEvent.click(header);
+
+      await waitForBehaviorAssertion(fixture, () => {
+        expect(scrollIntoView).toHaveBeenCalledWith({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
+        expect(header).toHaveAttribute('aria-expanded', 'true');
+      });
+    } finally {
+      restore();
+    }
+  });
+
+  it('lets Escape on a header collapse whichever opening-draft panel is currently expanded', async () => {
+    const { fixture } = await renderComponent();
+
+    const coloradoHeader = await screen.findByRole('button', { name: 'Colorado Avalanche' });
+    const dallasHeader = await screen.findByRole('button', { name: 'Dallas Stars' });
+
+    fireEvent.click(coloradoHeader);
+    expect(coloradoHeader).toHaveAttribute('aria-expanded', 'true');
+
+    dallasHeader.focus();
+    fireEvent.keyDown(dallasHeader, { key: 'Escape' });
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(coloradoHeader).toHaveAttribute('aria-expanded', 'false');
+      expect(dallasHeader).toHaveFocus();
+    });
   });
 
   it('shows a loading state until the opening draft response resolves', async () => {

@@ -136,6 +136,24 @@
   font-weight: 600;
 }
 
+:where(.entry-drafts, .opening-draft) .draft-focus-target {
+  scroll-margin-top: calc(var(--draft-sticky-top) + 4.5rem);
+}
+
+:where(.entry-drafts, .opening-draft) .draft-focus-target:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+  outline-offset: 3px;
+}
+
+// Draft pick rows sit edge-to-edge inside their list, so use an inset ring instead of
+// outline-offset to keep the focus indicator aligned with the card boundary.
+:where(.entry-drafts, .opening-draft) .draft-pick-item.draft-focus-target:focus-visible {
+  outline: none;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--mat-sys-primary) 5%, var(--mat-sys-surface-container-low));
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+}
+
 @media (max-width: 900px) {
   :where(.entry-drafts, .opening-draft) .draft-pick-row {
     grid-template-columns: auto auto auto minmax(0, 1fr);

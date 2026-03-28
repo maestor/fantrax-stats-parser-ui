@@ -97,6 +97,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Batch 2 renders `/draft/opening-draft` as a Material accordion grouped by drafting team, with simple per-pick rows and a traded-owner suffix when the original pick came from another team
    - Batch 3 renders `/draft/entry-drafts` as a matching team-grouped accordion, with per-team summary cards, played-status totals plus played percentages, highest-pick highlights, and season-by-season pick lists that preserve null legacy player rows
    - Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
+   - Expanded draft panels auto-align their sticky header to the top of the viewport when opened, while `ArrowDown` still explicitly enters the panel body; once inside, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it and `Escape` collapses the panel while returning focus to the team header
    - `/draft/statistics` reuses the shared card-table UI to rank teams across entry-draft summary metrics, including separate played-percentage rankings, with local 10-row paging
 
 8. **Data Management**

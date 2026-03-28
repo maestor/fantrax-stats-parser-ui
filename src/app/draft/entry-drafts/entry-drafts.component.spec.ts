@@ -129,6 +129,31 @@ describe('EntryDraftsComponent', () => {
     };
   }
 
+  function stubScrollIntoView() {
+    const original = HTMLElement.prototype.scrollIntoView;
+    const scrollIntoView = vi.fn();
+
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: scrollIntoView,
+    });
+
+    return {
+      scrollIntoView,
+      restore: () => {
+        if (original) {
+          Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+            configurable: true,
+            value: original,
+          });
+          return;
+        }
+
+        delete (HTMLElement.prototype as Partial<typeof HTMLElement.prototype>).scrollIntoView;
+      },
+    };
+  }
+
   async function renderComponent(options?: {
     apiService?: Partial<ApiService>;
     footerVisibilityService?: ReturnType<typeof createFooterVisibilityMock>;
@@ -240,6 +265,211 @@ describe('EntryDraftsComponent', () => {
     expect(fixture.componentInstance.loading).toBe(false);
     expect(fixture.componentInstance.apiError).toBe(false);
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(7);
+  });
+
+  it('moves focus from an expanded team header into draft content with keyboard navigation', async () => {
+    const { container } = await renderComponent();
+
+    const header = await screen.findByRole('button', { name: 'Anaheim Ducks' });
+    fireEvent.click(header);
+
+    const firstPanel = container.querySelector('mat-expansion-panel');
+    expect(firstPanel).not.toBeNull();
+
+    const firstPanelElement = firstPanel as HTMLElement;
+    const firstPanelQueries = within(firstPanelElement);
+    const summarySection = firstPanelQueries.getByRole('region', {
+      name: 'draft.entryDrafts.summaryHeading',
+    });
+    const highestPickSection = firstPanelQueries.getByRole('region', {
+      name: 'draft.entryDrafts.highestPickHeading',
+    });
+    const seasonsSection = firstPanelQueries.getByRole('region', {
+      name: 'draft.entryDrafts.seasonsHeading',
+    });
+    const season2025 = firstPanelQueries.getByRole('region', { name: '2025' });
+    const season2013 = firstPanelQueries.getByRole('region', { name: '2013' });
+
+    fireEvent.keyDown(header, { key: 'ArrowDown' });
+    expect(summarySection).toHaveFocus();
+
+    fireEvent.keyDown(summarySection, { key: 'ArrowDown' });
+    expect(highestPickSection).toHaveFocus();
+
+    fireEvent.keyDown(highestPickSection, { key: 'ArrowDown' });
+    expect(seasonsSection).toHaveFocus();
+
+    fireEvent.keyDown(seasonsSection, { key: 'ArrowDown' });
+    expect(season2025).toHaveFocus();
+
+    fireEvent.keyDown(season2025, { key: 'End' });
+    expect(season2013).toHaveFocus();
+
+    fireEvent.keyDown(season2013, { key: 'Home' });
+    expect(summarySection).toHaveFocus();
+
+    fireEvent.keyDown(summarySection, { key: 'Escape' });
+    expect(header).toHaveFocus();
+    expect(header).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('supports paging within draft content and collapsing from the expanded header', async () => {
+    const { container, fixture } = await renderComponent();
+
+    const header = await screen.findByRole('button', { name: 'Anaheim Ducks' });
+    fireEvent.click(header);
+
+    const firstPanel = container.querySelector('mat-expansion-panel');
+    expect(firstPanel).not.toBeNull();
+
+    const firstPanelElement = firstPanel as HTMLElement;
+    const firstPanelQueries = within(firstPanelElement);
+    const summarySection = firstPanelQueries.getByRole('region', {
+      name: 'draft.entryDrafts.summaryHeading',
+    });
+    const season2013 = firstPanelQueries.getByRole('region', { name: '2013' });
+
+    fireEvent.keyDown(header, { key: 'ArrowDown' });
+    expect(summarySection).toHaveFocus();
+
+    fireEvent.keyDown(summarySection, { key: 'PageDown' });
+    expect(season2013).toHaveFocus();
+
+    fireEvent.keyDown(season2013, { key: 'PageUp' });
+    expect(summarySection).toHaveFocus();
+
+    fireEvent.keyDown(summarySection, { key: 'ArrowUp' });
+    expect(header).toHaveFocus();
+
+    fireEvent.keyDown(header, { key: 'Escape' });
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(header).toHaveAttribute('aria-expanded', 'false');
+      expect(header).toHaveFocus();
+    });
+  });
+
+  it('covers collapsed-header and guard keyboard paths without scrolling', async () => {
+    const { fixture } = await renderComponent();
+    const component = fixture.componentInstance;
+    const header = await screen.findByRole('button', { name: 'Boston Bruins' });
+    const { scrollIntoView, restore } = stubScrollIntoView();
+    const setTimeoutSpy = vi.spyOn(window, 'setTimeout').mockImplementation(((handler: TimerHandler) => {
+      if (typeof handler === 'function') {
+        handler();
+      }
+
+      return 0 as ReturnType<typeof window.setTimeout>;
+    }) as typeof window.setTimeout);
+
+    try {
+      component.onHeaderKeydown({
+        key: 'Enter',
+        currentTarget: header,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent);
+      expect(scrollIntoView).not.toHaveBeenCalled();
+
+      const collapsedEscapeEvent = {
+        key: 'Escape',
+        currentTarget: header,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent;
+      component.onHeaderKeydown(collapsedEscapeEvent);
+      expect(collapsedEscapeEvent.preventDefault).not.toHaveBeenCalled();
+
+      component.onHeaderKeydown({ key: 'Escape', currentTarget: null } as unknown as KeyboardEvent);
+
+      component.onHeaderKeydown({
+        key: 'ArrowDown',
+        currentTarget: header,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent);
+
+      const orphanHeader = document.createElement('button');
+      orphanHeader.setAttribute('aria-expanded', 'true');
+      component.onHeaderKeydown({
+        key: 'ArrowDown',
+        currentTarget: orphanHeader,
+        preventDefault: vi.fn(),
+        stopPropagation: vi.fn(),
+      } as unknown as KeyboardEvent);
+
+      component.onContentTargetKeydown(
+        { key: 'ArrowDown', currentTarget: null } as unknown as KeyboardEvent,
+        { close: vi.fn() } as never,
+      );
+
+      const orphanTarget = document.createElement('div');
+      component.onContentTargetKeydown(
+        {
+          key: 'ArrowDown',
+          currentTarget: orphanTarget,
+          preventDefault: vi.fn(),
+          stopPropagation: vi.fn(),
+        } as unknown as KeyboardEvent,
+        { close: vi.fn() } as never,
+      );
+
+      const panelElement = document.createElement('mat-expansion-panel');
+      const nonFocusTarget = document.createElement('div');
+      panelElement.appendChild(nonFocusTarget);
+      component.onContentTargetKeydown(
+        {
+          key: 'ArrowDown',
+          currentTarget: nonFocusTarget,
+          preventDefault: vi.fn(),
+          stopPropagation: vi.fn(),
+        } as unknown as KeyboardEvent,
+        { close: vi.fn() } as never,
+      );
+    } finally {
+      setTimeoutSpy.mockRestore();
+      restore();
+    }
+  });
+
+  it('scrolls an expanded team header to the top without moving focus into content', async () => {
+    const { scrollIntoView, restore } = stubScrollIntoView();
+
+    try {
+      const { fixture } = await renderComponent();
+
+      const header = await screen.findByRole('button', { name: 'Anaheim Ducks' });
+      fireEvent.click(header);
+
+      await waitForBehaviorAssertion(fixture, () => {
+        expect(scrollIntoView).toHaveBeenCalledWith({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
+        expect(header).toHaveAttribute('aria-expanded', 'true');
+      });
+    } finally {
+      restore();
+    }
+  });
+
+  it('lets Escape on a header collapse whichever draft panel is currently expanded', async () => {
+    const { fixture } = await renderComponent();
+
+    const anaheimHeader = await screen.findByRole('button', { name: 'Anaheim Ducks' });
+    const bostonHeader = await screen.findByRole('button', { name: 'Boston Bruins' });
+
+    fireEvent.click(anaheimHeader);
+    expect(anaheimHeader).toHaveAttribute('aria-expanded', 'true');
+
+    bostonHeader.focus();
+    fireEvent.keyDown(bostonHeader, { key: 'Escape' });
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(anaheimHeader).toHaveAttribute('aria-expanded', 'false');
+      expect(bostonHeader).toHaveFocus();
+    });
   });
 
   it('shows a loading state until the entry draft response resolves', async () => {
