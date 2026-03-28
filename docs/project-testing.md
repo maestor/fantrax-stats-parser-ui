@@ -4,6 +4,8 @@
 
 This project uses **Testing Library** (`@testing-library/angular`) with **Vitest** for component/behavior tests, **Istanbul** for coverage reporting, targeted **service-layer tests** for HTTP/cache/platform integrations, and **Playwright** for end-to-end tests. UI tests follow a user-centric, accessible-query approach — testing what the user sees and does, not implementation details.
 
+This repo's testing rules override generic Angular examples when they conflict. In particular, this repo prefers Testing Library for UI behavior coverage and Playwright for E2E coverage; do not import Cypress- or raw-DOM-selector-first testing habits from generic framework references.
+
 ## Test Statistics
 
 - **Total Test Files / Tests**: Run `npm test` to see the current count and status

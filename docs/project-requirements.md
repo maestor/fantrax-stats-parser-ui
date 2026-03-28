@@ -1,445 +1,117 @@
 # Project Requirements & Standards
 
-**Project**: Fantrax Stats Parser UI
-**Last Updated**: March 11, 2026
+This file defines repo-local quality gates and deliberate overrides.
 
----
+Use the installed `angular-developer` skill and official Angular docs for generic Angular guidance. Use this file for the requirements that are specific to this project and its workflow.
 
-## 🎯 Core Requirements
+## Non-Negotiable Requirements
 
 ### Accessibility Is Mandatory
 
-Accessibility is a primary requirement for this project.
-
-- All features must be usable with keyboard only
+- Every feature must be usable with keyboard only
 - Focus must be visible and predictable
-- Hidden/collapsed UI must not receive focus
-- Interactive controls must be properly labeled (visible label or `aria-label`)
+- Hidden or collapsed UI must not receive focus
+- Interactive controls must have meaningful labels
 
-See: `docs/accessibility.md`
+See `docs/accessibility.md`.
 
-### Mandatory Quality Gates
+### Dark Mode Must Not Regress
 
-Before any code can be committed or deployed, ALL of the following must pass:
+- Every UI, styling, layout, color, or surface change must be checked in both light mode and dark mode before review
+- Do not treat dark mode verification as optional polish
 
-**Primary command (recommended)**
+### Tested Changes Are Required
 
-Run the same command CI runs (tests + production build):
+- New or changed behavior must be covered by tests
+- Aim for full coverage of touched logic, including edge and error cases
+- Prefer removing dead logic over writing tests for impossible states
+
+## Quality Gates
+
+### Default Verification Gate
+
+For non-documentation-only batches, run the same command CI enforces:
 
 ```bash
 npm run verify
 ```
 
-#### 1. ✅ Tests Must Pass
+That runs linting, coverage-enabled tests, and the production build.
 
-```bash
-npm test -- --browsers=ChromeHeadlessNoSandbox --watch=false
-```
+### Documentation-Only Batches
 
-- **Requirement**: 100% of tests must pass
-- **Current**: 100% pass rate (200+ tests)
-- **Action on Failure**: Fix the failing test or update it if code changed
-- **Exception**: None (don’t merge flaky tests; fix them)
+Documentation-only batches may skip `npm run verify` when the touched files are limited to docs/workflow text such as:
 
-#### 2. ✅ Build Must Succeed
+- `README.md`
+- `docs/**`
+- `AGENTS.md`
+- `CLAUDE.md`
 
-```bash
-npm run build
-```
+and no code, fixtures, configs, or generated artifacts changed.
 
-- **Requirement**: Build must complete without TypeScript errors
-- **Current budgets**: `initial` warning at `1 MB`, error at `1.5 MB`; `anyComponentStyle` warning at `4 kB`, error at `8 kB`
-- **Action on Failure**: Fix TypeScript errors in output
-- **Action on Warning**: Investigate the source of the bundle/style growth and either optimize it or intentionally update the budget with documentation
+### E2E-Only Batches
 
-#### 3. ✅ Application Must Serve
+E2E-only batches may skip `npm run verify` when the touched files are limited to:
 
-```bash
-npm start
-```
+- `e2e/**`
+- optional docs/workflow text
 
-- **Requirement**: Development server must start without errors
-- **Current**: ✅ Passing
-- **Action on Failure**: Check for missing dependencies or circular imports
+and no app/runtime/config/generated artifacts changed, while the relevant Playwright coverage for the batch has been run and reported.
 
-#### 4. ✅ Coverage Tracking
+### Coverage Thresholds
 
-```bash
-npm run test:coverage
-```
+`npm run verify` enforces minimum coverage of:
 
-- **Scope**: Application implementation under `src/` (test files excluded)
-- **Coverage gate**: `npm run verify` enforces minimum coverage of 93% statements, 85% branches, 94% functions, and 95% lines.
-- **Contribution rule (required)**: every new/changed code path must be covered by tests (aim 100% coverage for the code you touched, including error/edge cases)
-- **Prefer**: Remove unused/dead code rather than writing tests solely to “cover” it
+- 93% statements
+- 85% branches
+- 94% functions
+- 95% lines
 
-#### 5. ✅ Accessibility Must Not Regress
+The gate is configured in `angular.json`.
 
-- **Requirement**: Every change must preserve (or improve) keyboard and screen-reader usability
-- **Minimum checks (manual)**:
-  - Can you reach and operate the feature with `Tab`, arrow keys (where applicable), and `Enter`/`Space`?
-  - Is focus always visible?
-  - Does focus avoid collapsed/hidden areas?
-  - Are labels/announcements meaningful?
-- **Action on Failure**: Fix before merging
+### Bundle Budget Warnings Must Be Reviewed
 
-#### 6. ✅ Dark Mode Must Not Regress
+Budget warnings are not background noise.
 
-- **Requirement**: Every UI, styling, layout, color, or surface change must be checked in both light mode and dark mode before merging
-- **This is mandatory**: do not treat dark mode verification as optional polish or something to check only when a change is "theme related"
-- **Minimum checks (manual)**:
-  - Are text, icons, dividers, and surfaces readable in dark mode?
-  - Do hover, focus, selected, tooltip, dialog, and loading states still have sufficient contrast?
-  - Do new cards/tables/overlays use theme tokens or otherwise render correctly in both schemes?
-- **Action on Failure**: Fix before merging
+When `npm run build` or `npm run verify` reports a bundle/style budget warning:
 
----
+1. Identify what grew
+2. Decide whether the growth is accidental or intentional
+3. Prefer optimization before raising budgets
+4. Update docs if a budget threshold changes intentionally
 
-## 🧪 Testing Standards
+## Repo-Specific Testing Rules
 
-### Test Coverage
+These rules override generic Angular examples when they conflict.
 
-- New/changed logic must be fully tested (aim 100% coverage for the code you touched, including error/edge cases).
-- `npm run verify` must keep overall coverage at or above 93% statements, 85% branches, 94% functions, and 95% lines.
-- Angular's generated `ngDevMode` signal-branch noise no longer distorts the branch baseline, so branch coverage should now be treated as a more reliable regression signal, not as a relaxed workaround area.
-- After refactors, investigate the implementation that was replaced and remove it if it no longer has real consumers.
-- Don’t merge changes that add uncovered new behavior.
+- Behavior/UI tests use Testing Library with accessible queries
+- Focused service/platform tests may use Angular `TestBed` directly
+- E2E uses Playwright, not Cypress
+- UI tests mock only approved external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService`
+- Do not add `data-testid` or `data-cy` attributes just to support routine testing
 
-### Testing Best Practices
+See `docs/project-testing.md` for the full testing workflow.
 
-#### ✅ DO
+## Repo-Specific Workflow Reminders
 
-- Use `@testing-library/angular` for all tests
-- Use accessible queries (`getByRole`, `getByText`, `getByLabelText`)
-- For UI tests, keep real stateful UI services in place and mock only approved external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService`
-- Render translation keys directly with `TranslateModule.forRoot()` instead of loading locale files
-- Test business logic through user-visible behavior, not implementation details
-- Use descriptive test names
-- Test edge cases and error scenarios
-- Keep tests isolated and independent
+- Planning-heavy work should save the approved plan under local gitignored `docs/plans/YYYY-MM-DD-*.md` before implementation starts
+- Follow `AGENTS.md` and `CLAUDE.md` for branch, review, verify, and commit workflow
+- Update docs when behavior, scripts/workflows, or project standards change
 
-#### ❌ DON'T
+## Known Local Exceptions
 
-- Test Angular framework internals (like change detection)
-- Use CSS selectors, class names, or `data-testid` in tests
-- Load real translation files (use `TranslateModule.forRoot()` with translation keys)
-- Do not replace user-facing app state services with mocks in UI tests just to isolate a control path
-- Write tests that depend on execution order
-- Create separate `it()` blocks that each re-render the same component state
+### Node 24 npm Warning
 
-### Test File Structure
-
-```typescript
-import { render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
-
-describe('ComponentName', { timeout: 15_000 }, () => {
-  async function setup() {
-    await render(ComponentName, {
-      imports: [TranslateModule.forRoot()],
-      providers: [
-        { provide: SomeService, useValue: mockService },
-      ],
-    });
-  }
-
-  it('renders expected content', async () => {
-    await setup();
-    expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument();
-  });
-});
-```
-
----
-
-## ⚠️ Known Issues & Exceptions
-
-### npm Warning About Node 24
-
-If you see a warning like:
+If you see:
 
 ```text
 npm WARN npm npm does not support Node.js v24.x
 ```
 
-You can ignore it for this project.
+you can ignore it for this project as long as scripts still succeed. The repo intentionally targets Node 24.x.
 
-- The project is intended to run on **Node.js 24.x** (see `package.json` `engines`).
-- The warning is emitted by npm and does not indicate a project incompatibility.
-- Treat only errors that stop scripts (non-zero exit codes) as blockers.
+### Never Add `"type": "module"` To `package.json`
 
-### Test Infrastructure
+Do not add `"type": "module"` to `package.json`. It breaks the Vercel API proxy in this repo.
 
-Tests run in jsdom (no browser needed). If tests fail unexpectedly:
-
-1. Re-run `npm run verify`
-2. If it still fails, run `npm ci` and retry
-3. If it still fails, treat it as a blocker and fix the root cause (don’t merge)
-
-### Build Warnings (Must Be Reviewed)
-
-- **Bundle size warning**: for example `"bundle initial exceeded maximum budget"`
-  - This is not an automatic blocker, but it is also not something to ignore
-  - Treat it as a required review item during the task
-  - First identify the source of the growth
-  - Prefer optimization before budget changes
-  - Raise the budget only when the increase is understood, justified by shipped functionality, and the new threshold still catches regressions
-
-### ❌ Never Add `"type": "module"` to package.json
-
-**Do not add `"type": "module"` to `package.json`.** This will break the Vercel API proxy and cannot be typed around.
-
-**Background:** This was added once because `eslint.config.js` uses CommonJS syntax and the ESLint CLI warned about it. The warning is harmless — the real fix is to use the `.mjs` extension for config files that trigger it.
-
-**Correct solution when a config file causes a "module type" warning:**
-
-- Rename the config to use `.mjs` (e.g., `eslint.config.js` → `eslint.config.mjs`)
-- The `.mjs` extension explicitly marks it as ESM, silencing the warning without touching `package.json`
-
-**Never do:**
-```diff
-- "type": "module"  // breaks Vercel API proxy
-```
-
-**Do instead:**
-```bash
-mv eslint.config.js eslint.config.mjs   # or whichever config is affected
-```
-
----
-
-## 🔧 TypeScript Standards
-
-### Strict Mode Requirements
-
-```json
-{
-  "strict": true,
-  "noImplicitAny": true,
-  "noImplicitReturns": true,
-  "noUnusedParameters": true,
-  "noUnusedLocals": true
-}
-```
-
-All code must pass these strict TypeScript checks.
-
-### Path Aliases
-
-Use these aliases for imports:
-
-- `@base/*` → `./src/app/base/*`
-- `@services/*` → `./src/app/services/*`
-- `@shared/*` → `./src/app/shared/*`
-
-Example:
-
-```typescript
-import { ApiService } from "@services/api.service";
-import { NavigationComponent } from "@base/navigation/navigation.component";
-```
-
----
-
-## 📁 Project Structure Standards
-
-### Directory Organization
-
-```
-src/app/
-├── base/              # Framework components (nav, footer)
-│   └── [component]/
-│       ├── component.ts
-│       ├── component.html
-│       ├── component.scss
-│       └── component.spec.ts
-├── services/          # Business logic services
-│   └── [service].service.ts
-├── shared/           # Reusable components
-│   └── [component]/
-└── [feature]/        # Feature modules (player-stats, etc.)
-```
-
-### File Naming
-
-- Components: `kebab-case.component.ts`
-- Services: `kebab-case.service.ts`
-- Tests: `kebab-case.spec.ts`
-- Types: `PascalCase`
-
----
-
-## 🚀 Development Workflow
-
-### Before Starting Work
-
-```bash
-git pull origin main
-npm install  # If package.json changed
-npm test     # Ensure clean state
-```
-
-### During Development
-
-```bash
-npm start    # Development server
-npm test     # Run tests in watch mode
-```
-
-### Before Writing Tests
-
-For UI/visual features, ask the user to review the implementation on `localhost:4200` before writing or updating tests. This avoids extra fix-test iteration cycles when the user requests adjustments to the visual result.
-
-### Before Committing
-
-```bash
-npm run verify  # Runs lint, tests with coverage, and production build — single command, don't run these separately
-```
-
-### Commit Message Format
-
-```
-type(scope): subject
-
-body (optional)
-
-footer (optional)
-```
-
-Types: `feat`, `fix`, `test`, `refactor`, `docs`, `style`, `chore`
-
-Example:
-
-```
-feat(player-stats): add per-game stats toggle
-
-- Added MatSlideToggle component
-- Integrated with FilterService
-- Added 15 comprehensive tests
-
-Closes #123
-```
-
----
-
-## 📚 Documentation Requirements
-
-### Code Documentation
-
-- **Services**: JSDoc comments for public methods
-- **Components**: Input/Output descriptions
-- **Complex Logic**: Inline comments explaining "why", not "what"
-
-### Test Documentation
-
-- Test names must clearly describe what is being tested
-- Use `describe` blocks to group related tests
-- Add comments for non-obvious test setup
-
-Example:
-
-```typescript
-describe("getPlayerStatsPerGame", () => {
-  it("should calculate per-game stats for single player", () => {
-    // Test validates division by games and rounding to 2 decimals
-    const result = service.getPlayerStatsPerGame(players);
-    expect(result[0].goals).toBe(1.0); // 82 goals / 82 games
-  });
-});
-```
-
----
-
-## 🔄 Error Recovery Procedures
-
-### When Tests Fail
-
-1. **Identify the failure type**:
-
-   - Flaky test? → Re-run, check known flaky list
-   - New test? → Fix the test
-   - Existing test? → Code change broke it, fix code or update test
-
-2. **Debug process**:
-
-   ```bash
-   # Run specific test file
-   npm test -- --reporter=verbose src/app/path/to/failing-test.spec.ts
-   ```
-
-3. **Fix and verify**:
-   ```bash
-   # After fix, run full suite
-   npm run verify
-   ```
-
-### When Build Fails
-
-1. **Read TypeScript errors carefully**
-2. **Common issues**:
-
-   - Missing import
-   - Type mismatch
-   - Missing dependency in providers array
-   - Circular dependency
-
-3. **Fix process**:
-
-   ```bash
-   # Run build to see all errors
-   npm run build
-
-   # Fix errors one by one
-   # Re-run build until clean
-   ```
-
-### When Serve Fails
-
-1. **Check console output** for error messages
-2. **Common issues**:
-
-   - Port 4200 already in use
-   - Missing dependencies
-   - Circular imports
-   - Translation files missing
-
-3. **Fix process**:
-
-   ```bash
-   # Kill existing process on port 4200
-   lsof -ti:4200 | xargs kill -9
-
-   # Clear node_modules if dependency issues
-   rm -rf node_modules package-lock.json
-   npm install
-
-   # Try again
-   npm start
-   ```
-
----
-
-## 📖 Reference Documentation
-
-- **Testing Guide**: [project-testing.md](./project-testing.md)
-- **Project README**: [README.md](../README.md)
-
----
-
-## ✅ Quality Checklist
-
-Before marking work complete, verify:
-
-- [ ] Build and tests succeed (`npm run verify`)
-- [ ] App serves without errors (`npm start`)
-- [ ] New features have behavior tests (Testing Library)
-- [ ] No TypeScript errors
-- [ ] Code follows project structure
-- [ ] Documentation updated (README, related docs/*.md)
-- [ ] Commit message follows format
-- [ ] New user-facing features have E2E tests (Playwright)
-
----
-
-**Last Verified**: January 23, 2026
-**Status**: All requirements (including coverage gate) passing ✅
+If a config file needs ESM, rename the config file to `.mjs` instead of changing the package type.

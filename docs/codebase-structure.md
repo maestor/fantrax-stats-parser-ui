@@ -1,247 +1,133 @@
 # Codebase Structure
 
-## Directory Layout
+This guide documents the durable structure of the repo.
 
-```
+Generated and transient directories such as `.angular/`, `dist/`, `node_modules/`, and local editor/system files are intentionally omitted.
+
+## Top-Level Layout
+
+```text
 fantrax-stats-parser-ui/
-├── .angular/           # Angular build cache
-├── docs/               # Project documentation
-├── .vscode/            # VSCode configuration
-├── dist/               # Production build output
-├── e2e/                # Playwright E2E tests
-├── node_modules/       # Dependencies
-├── public/             # Static assets, manifest, robots.txt, sitemap.xml
-├── src/                # Source code
-│   ├── app/            # Application code
-│   │   ├── base/       # Base layout components
-│   │   │   ├── footer/
-│   │   │   └── navigation/
-│   │   ├── career/            # Career listings feature (shell + players, goalies, and highlights child components)
-│   │   ├── draft/             # Draft browse feature (shell + entry/opening child components)
-│   │   ├── dashboard-shell/   # Lazy route shell for interactive dashboard routes
-│   │   ├── goalie-stats/     # Goalie stats page
-│   │   ├── goalie-route/     # Direct goalie card route handler
-│   │   ├── leaderboards/     # Leaderboards feature (shell + regular, playoffs, and transactions child components)
-│   │   │   ├── regular/      # Regular season leaderboard table
-│   │   │   ├── playoffs/     # Playoffs leaderboard table
-│   │   │   └── transactions/    # Transactions leaderboard table
-│   │   ├── player-stats/     # Player stats page
-│   │   ├── player-route/     # Direct player card route handler
-│   │   ├── utils/            # Utility functions (slug generation)
-│   │   ├── services/         # Application services
-│   │   │   ├── api.service.ts
-│   │   │   ├── cache.service.ts
-│   │   │   ├── comparison.service.ts
-│   │   │   ├── drawer-context.service.ts
-│   │   │   ├── filter.service.ts
-│   │   │   ├── seo.service.ts
-│   │   │   ├── stats.service.ts
-│   │   │   ├── team.service.ts
-│   │   │   └── viewport.service.ts
-│   │   ├── shared/           # Shared components
-│   │   │   ├── comparison-bar/
-│   │   │   ├── comparison-dialog/
-│   │   │   │   ├── comparison-stats/
-│   │   │   │   └── comparison-radar/
-│   │   │   ├── help-dialog/
-│   │   │   ├── player-card/
-│   │   │   ├── settings-panel/
-│   │   │   │   ├── min-games-slider/
-│   │   │   │   └── stats-mode-toggle/
-│   │   │   ├── stats-table/
-│   │   │   ├── table-card/
-│   │   │   ├── top-controls/
-│   │   │   │   ├── report-switcher/
-│   │   │   │   ├── season-switcher/
-│   │   │   │   └── team-switcher/
-│   │   │   ├── styles/        # Shared shell/header styles
-│   │   │   └── table-columns.ts
-│   │   ├── app.component.ts   # Lightweight root shell
-│   │   ├── app.config.ts
-│   │   ├── app.config.server.ts  # Server-only provider overrides for prerendering
-│   │   ├── app.routes.ts
-│   │   └── app.routes.server.ts  # Server render-mode map for prerender/client routes
-│   ├── main.ts         # Browser bootstrap
-│   ├── main.server.ts  # Server bootstrap used for prerendering
-│   └── index.html      # HTML entry point
+├── api/                # Vercel proxy/serverless API entrypoints
+├── docs/               # Project-specific documentation
+├── e2e/                # Playwright tests, helpers, fixtures, capture scripts
+├── public/             # Static assets, i18n, manifest, robots.txt, sitemap.xml
+├── scripts/            # Local helper scripts such as perf tooling
+├── src/                # Application source
+├── AGENTS.md           # Repo workflow and agent rules
+├── CLAUDE.md           # Claude-facing mirror of repo workflow rules
+├── README.md           # Project overview and contributor entrypoint
 ├── angular.json        # Angular workspace configuration
-├── package.json        # Dependencies and scripts
-├── playwright.config.ts # E2E test configuration
-├── tsconfig.json       # TypeScript configuration
-└── README.md           # Project README
+├── package.json        # Scripts and dependencies
+├── playwright.config.ts
+└── tsconfig*.json
 ```
 
-## Source Code Organization
+## `src/app` Layout
 
-### `/src/app/base/`
-Layout components that appear on all pages:
-- **footer/** - Footer component with links/info
-- **navigation/** - Dashboard route tab navigation
-
-### `/src/app/player-stats/`
-Smart component for player statistics view:
-- Fetches player data from API
-- Manages player-specific state
-- Renders stats table and controls
-
-### `/src/app/goalie-stats/`
-Smart component for goalie statistics view:
-- Fetches goalie data from API
-- Manages goalie-specific state
-- Renders stats table and controls
-
-### `/src/app/career/`
-Route shell and smart components for career listings:
-- Handles `/career/players`, `/career/goalies`, and `/career/highlights`
-- Renders tab navigation between career skaters, goalies, and highlights
-- Uses dedicated backend endpoints and either a virtualized read-only table or compact paged table cards
-- Splits the highlights route into `Sekalaiset` and `Siirrot` card groups while reusing the same paged-card UI
-- Defers each highlight card's API request until the card nears the viewport
-- Loads under the lighter root shell without dashboard-only controls, comparison bar, or mobile settings drawer
-
-### `/src/app/draft/`
-Route shell and draft browse child components:
-- Handles `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics`
-- Renders tab navigation between the three draft views
-- Lives under the lighter root shell without dashboard-only controls or mobile settings drawer
-- `opening-draft/` now renders a real accordion/list UI backed by the `/draft/original` endpoint
-- `entry-drafts/` now renders a real accordion UI backed by `/draft/entry`, combining per-team summary cards with season-by-season pick lists
-- `statistics/` derives 10 card-table rankings from the same `/draft/entry` payload and reuses the shared `table-card/` presentation layer
-
-### `/src/app/shared/table-card/`
-Reusable card-based read-only table presentation:
-- Semantic HTML table inside a Material card container
-- Supports a deferred placeholder before viewport-activated cards fetch their data
-- Server-side paging controls for compact leaderboard/highlight lists
-- Shared loading, empty, and API-error states for paged card views
-
-### `/src/app/dashboard-shell/`
-Lazy route shell for the interactive dashboard experience:
-- Wraps `/`, `/player-stats`, `/goalie-stats`, and direct player/goalie card routes
-- Owns the title row, last-modified metadata, top controls, mobile settings drawer, navigation tabs, and comparison bar
-- Keeps dashboard-only UI out of the lighter root shell used by career and leaderboard browsing routes
-
-### `/src/app/player-route/`
-Route handler for direct player card URLs:
-- Handles `/player/:teamSlug/:playerSlug` and `/player/:teamSlug/:playerSlug/:season` routes
-- Opens player card modal with optional tab selection (`?tab=all|by-season|graphs`)
-- Season in URL sets the season switcher in background
-- Shows player stats page as background
-
-### `/src/app/goalie-route/`
-Route handler for direct goalie card URLs:
-- Handles `/goalie/:teamSlug/:goalieSlug` and `/goalie/:teamSlug/:goalieSlug/:season` routes
-- Opens goalie card modal with optional tab selection
-- Shows goalie stats page as background
-
-### `/src/app/utils/`
-Utility functions:
-- **slug.utils.ts** - URL slug generation from names (e.g., "Jamie Benn" → "jamie-benn")
-
-### `/src/app/services/`
-Application-wide services:
-
-- **api.service.ts** - HTTP client wrapper for backend API
-- **stats.service.ts** - Business logic for stats data transformation
-- **filter.service.ts** - Reactive UI filter state (season/report/statsPerGame/minGames)
-- **cache.service.ts** - In-memory caching for API responses
-- **seo.service.ts** - Synchronizes title, canonical URL, and Open Graph/Twitter tags with the active route
-- **server-translate.loader.ts** - Server-only translation loader used during prerendering so metadata can be rendered without HTTP translation fetches
-- **team.service.ts** - Selected team state (used by top controls + pages)
-- **comparison.service.ts** - 2-player selection state for comparison feature (auto-clears on filter/team changes)
-- **viewport.service.ts** - Viewport breakpoint detection (mobile vs desktop)
-- **drawer-context.service.ts** - Provides per-page context (e.g. max games) to the mobile settings drawer
-
-### `/src/app/shared/`
-Reusable presentational components:
-
-#### `top-controls/`
-Dashboard header control strip shown under the app title:
-- **team-switcher/** - Select team
-- **season-switcher/** - Select season
-- **report-switcher/** - Regular vs playoffs
-
-#### `settings-panel/`
-Expandable per-page settings area:
-- **min-games-slider/** - Minimum games filter
-- **stats-mode-toggle/** - Toggle per-game stats mode
-
-#### `comparison-bar/`
-Floating bottom bar showing comparison selection state (0-2 players). Shows "Vertaa" button when 2 selected.
-
-#### `comparison-dialog/`
-Side-by-side comparison dialog with two tabs:
-- **comparison-stats/** - Stat rows with bold highlighting for better values
-- **comparison-radar/** - Chart.js radar chart overlay comparing normalized scores
-
-#### `help-dialog/`
-Help/instructions dialog opened from the info icon (and `?` shortcut). Global `/` shortcut focuses the search field.
-
-#### `stats-table/`
-Main data table component:
-- Material table with sorting
-- Column configuration
-- Row selection
-- Also contains `VirtualTableComponent`, used by career listings for virtualized rendering with shared table styling
-
-#### `table-card/`
-Compact paged card table component:
-- Semantic HTML table inside a Material card
-- Previous/next controls for server-paged highlight or leaderboard slices
-- Shared tooltip, loading, empty, and API-error presentation for read-only card lists
-
-#### `player-card/`
-Individual player information card display
-
-#### `table-columns.ts`
-Column definitions for stats tables
-
-#### `styles/`
-Shared SCSS partials used by multiple shells or route families.
-
-#### `column.types.ts`
-`Column` and `ColumnIcon` type definitions shared by all table consumers
-
-#### `utils/`
-Reusable shared formatting/conversion helpers such as season, date, slug, and SEO title helpers
-
-## File Naming Conventions
-
-- **Components**: `component-name.component.ts`
-- **Services**: `service-name.service.ts`
-- **Specs**: `*.spec.ts`
-- **Styles**: `*.component.scss`
-- **Templates**: `*.component.html`
-
-## Component Structure
-
-Each component typically includes:
-```
-component-name/
-├── component-name.component.ts      # Component logic
-├── component-name.component.html    # Template
-├── component-name.component.scss    # Styles
-└── component-name.component.spec.ts # Unit tests
+```text
+src/app/
+├── base/               # Root-level layout primitives (navigation, footer)
+├── career/             # Career browse routes
+├── dashboard-shell/    # Lazy shell for interactive dashboard routes
+├── draft/              # Draft browse routes
+├── goalie-route/       # Direct goalie-card deep-link handling
+├── goalie-stats/       # Goalie stats route container
+├── leaderboards/       # Leaderboard browse routes
+├── player-route/       # Direct player-card deep-link handling
+├── player-stats/       # Player stats route container
+├── services/           # Shared state, API, SEO, platform, and persistence services
+├── shared/             # Shared UI building blocks and shared utilities/styles
+├── utils/              # App-level utility helpers
+├── app.component.ts
+├── app.config*.ts
+└── app.routes*.ts
 ```
 
-## Configuration Files
+## Route Families And Shells
 
-- **angular.json** - Angular CLI configuration, build options
-- **angular.json** also defines the static prerender build (`outputMode: "static"`) and server bootstrap entry used to generate route HTML
-- **tsconfig.json** - TypeScript compiler options
-- **tsconfig.app.json** - App-specific TypeScript config
-- **tsconfig.spec.json** - Test-specific TypeScript config
-- **playwright.config.ts** - E2E test configuration
-- **package.json** - Dependencies, scripts, metadata
+### Dashboard Routes
 
-## Asset Organization
+- `/`
+- `/player-stats`
+- `/goalie-stats`
+- direct `/player/...` and `/goalie/...` routes
 
-Static assets (images, fonts, etc.) go in:
-- `/public/` - Publicly accessible assets
-- Component-specific assets co-located with components
+These routes use `DashboardShellComponent` and carry the heavier interactive shell: title row, metadata, controls, mobile drawer, tabs, and comparison bar.
 
-## Test Organization
+### Browse Routes
 
-- **Component/behavior tests**: `*.spec.ts` files using Testing Library (`@testing-library/angular`)
-- **E2E tests**: `/e2e/` directory with Playwright tests
-- **Test utilities**: `/src/app/testing/` (behavior test helpers)
+- `/career/*`
+- `/draft/*`
+- `/leaderboards/*`
+
+These routes render under the lighter root shell and intentionally avoid dashboard-only UI.
+
+## Shared UI Building Blocks
+
+### `src/app/shared/top-controls/`
+
+- team, start-from-season, season, and report controls
+- used in the dashboard shell and reused in drawer mode through `contentOnly`
+
+### `src/app/shared/settings-panel/`
+
+- stats mode, min games, and player-only position filtering
+- reused inline and in the mobile settings drawer
+
+### `src/app/shared/stats-table/`
+
+- `StatsTableComponent` for interactive dashboard/leaderboard tables
+- `VirtualTableComponent` for read-only virtualized career lists
+
+### `src/app/shared/table-card/`
+
+- compact paged card/table presentation for highlight and draft statistics views
+
+### `src/app/shared/player-card/`
+
+- player/goalie dialog, tabbed details, graphs, deep-link support, and in-dialog navigation
+
+## Service Layer
+
+The service layer is broader than just API and filters. Important services include:
+
+- `api.service.ts`
+- `cache.service.ts`
+- `comparison.service.ts`
+- `drawer-context.service.ts`
+- `filter.service.ts`
+- `footer-visibility.service.ts`
+- `pwa-update.service.ts`
+- `seo.service.ts`
+- `server-translate.loader.ts`
+- `settings.service.ts`
+- `stats.service.ts`
+- `team.service.ts`
+- `viewport.service.ts`
+
+For service responsibilities and behavior notes, see `docs/service-guide.md`.
+
+## Tests And Tooling
+
+- App behavior and service specs mostly live next to source under `src/app/**`
+- End-to-end coverage lives under `e2e/`
+- `e2e/page-objects/`, `e2e/helpers/`, `e2e/fixtures/`, and `e2e/scripts/` support the Playwright workflow
+
+## Reading Order For Contributors And Agents
+
+When orienting yourself in the repo, this order is usually fastest:
+
+1. `README.md`
+2. `docs/README.md`
+3. `src/app/app.routes.ts`
+4. `src/app/app.component.ts`
+5. `src/app/dashboard-shell/`
+6. The relevant feature route/container
+7. `docs/project-testing.md` and `docs/accessibility.md` before changing behavior or UI
+
+## Maintenance Rule
+
+Update this file when the durable structure changes.
+
+Do not expand it into a file-by-file inventory or a list of generated folders that contributors do not need for orientation.

@@ -11,7 +11,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 ### Frontend Stack
 - **Framework**: Angular 21 (standalone components)
 - **UI Library**: Angular Material
-- **State Management**: RxJS + Services
+- **State Management**: Signals-first services with RxJS used for async composition and compatibility streams
 - **Internationalization**: ngx-translate
 - **Testing**: Vitest + Testing Library (component), Playwright (E2E)
 

@@ -1,5 +1,9 @@
 # Service Guide
 
+This guide focuses on durable service responsibilities and project-specific data-flow notes.
+
+Use the installed `angular-developer` skill and official Angular docs for generic DI and service-creation guidance. Use the real service code as the source of truth for exact method signatures when examples in this guide become shorthand.
+
 ## Service Overview
 
 Services in this application handle data fetching, business logic, state management, and caching. All services are provided at the root level as singletons.

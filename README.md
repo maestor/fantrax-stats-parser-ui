@@ -2,9 +2,15 @@
 
 ## Purpose
 
-Once made lightweight API to parse my NHL fantasy league team stats and print combined seasons results by player (regular season &amp; playoffs separately) as JSON, [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser). It have been useful but without UI it's quite tricky to use. So here is one simple UI for those stats. Selected Angular framework as a base because I haven't use it in work related stuff since 2016, and thinking this is better for me learning and developing skills than do it with for example something like React or Vue.js which I have working experience in recent years.
+This repo is the UI for [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser), a backend that parses FFHL hockey stats. The app turns that data into browsable player, goalie, career, leaderboard, and draft views, and it also serves as a place to practice modern Angular in a real project.
 
 Live showcase: https://ffhl-stats.vercel.app/
+
+## Contributor Docs
+
+For contributor and agent guidance, start at [docs/README.md](docs/README.md).
+
+The docs in this repo intentionally focus on project-specific architecture, workflow, testing, accessibility, and local exceptions rather than re-teaching generic Angular concepts.
 
 ## Features
 
