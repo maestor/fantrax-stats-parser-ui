@@ -101,7 +101,8 @@
         "pickCount": "Varaukset",
         "average": "Keskiarvo",
         "turn": "Vuoro",
-        "players": "Pelaajat"
+        "players": "Pelaajat",
+        "share": "Osuus"
       },
       "cards": {
         "totalPicks": {
@@ -127,6 +128,14 @@
         "playedInLeague": {
           "title": "Eniten pelanneita varauksia",
           "description": "Varatut pelaajat, joilla on otteluita ylhäällä."
+        },
+        "playedInLeaguePercent": {
+          "title": "Varausprosentti - kaikki joukkueet",
+          "description": "Varattu pelaaja pelannut jossain joukkueessa."
+        },
+        "playedForDraftingTeamPercent": {
+          "title": "Varausprosentti - oma joukkue",
+          "description": "Varattu pelaaja pelannut omassa joukkueessa."
         },
         "roundOne": {
           "title": "Eniten 1. kierroksen varauksia",
@@ -159,10 +168,10 @@
       "ownPicksLabel": "Omilla vuoroilla",
       "tradedPicksLabel": "Treidatuilla vuoroilla",
       "playersPerDraftAverageLabel": "Varausta / draft",
-      "playedInLeagueLabel": "Liigassa",
-      "playedForDraftingTeamLabel": "Varaajajoukkueessa",
+      "playedInLeagueLabel": "Missä tahansa",
+      "playedForDraftingTeamLabel": "Omassa joukkueessa",
       "playedInLeagueTooltip": "Pelannut muualla",
-      "playedForDraftingTeamTooltip": "Pelannut varaajajoukkueessa",
+      "playedForDraftingTeamTooltip": "Pelannut omassa joukkueessa",
       "highestPickHeading": "Korkeimmalla varattu",
       "noHighestPick": "Ei varaustietoa",
       "roundsHeading": "Varaukset kierroksittain",
@@ -183,10 +192,6 @@
       "roundLabel": "Kierros",
       "turnLabel": "Vuoro",
       "originalOwnerLabel": "Alkuperäinen vuoro:"
-    },
-    "placeholders": {
-      "entryDrafts": "Varaukset-osion perusrunko on nyt paikallaan. Entry draftit -sisältö rakennetaan seuraavassa työerässä.",
-      "openingDraft": "Varaukset-osion perusrunko on nyt paikallaan. Avausdrafti-sisältö rakennetaan seuraavassa työerässä."
     },
     "loading": "Ladataan varausdataa...",
     "apiUnavailable": "Varausdata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen.",

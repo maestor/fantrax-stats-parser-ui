@@ -22,7 +22,9 @@
         "tradedPicks": 1,
         "playersPerDraftAverage": 2,
         "playedInLeague": 2,
-        "playedForDraftingTeam": 1
+        "playedInLeaguePercent": 0.5,
+        "playedForDraftingTeam": 1,
+        "playedForDraftingTeamPercent": 0.25
       },
       "rounds": {
         "first": 2,
@@ -112,7 +114,9 @@
         "tradedPicks": 1,
         "playersPerDraftAverage": 1.5,
         "playedInLeague": 2,
-        "playedForDraftingTeam": 1
+        "playedInLeaguePercent": 0.667,
+        "playedForDraftingTeam": 1,
+        "playedForDraftingTeamPercent": 0.333
       },
       "rounds": {
         "first": 1,

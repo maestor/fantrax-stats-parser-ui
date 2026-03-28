@@ -120,6 +120,9 @@
                   </span>
                   <strong class="entry-played-value">
                     {{ group.summary.amounts.playedInLeague }}
+                    <span class="entry-played-percent">
+                      ({{ group.summary.amounts.playedInLeaguePercent | percent: '1.0-1' : 'fi' }})
+                    </span>
                   </strong>
                 </div>
 
@@ -129,6 +132,9 @@
                   </span>
                   <strong class="entry-played-value">
                     {{ group.summary.amounts.playedForDraftingTeam }}
+                    <span class="entry-played-percent">
+                      ({{ group.summary.amounts.playedForDraftingTeamPercent | percent: '1.0-1' : 'fi' }})
+                    </span>
                   </strong>
                 </div>
               </div>

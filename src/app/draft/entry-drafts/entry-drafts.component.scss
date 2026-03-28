@@ -75,6 +75,11 @@
   line-height: 1.2;
 }
 
+.entry-played-percent {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .entry-played-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
