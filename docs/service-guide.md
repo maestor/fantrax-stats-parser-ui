@@ -502,10 +502,10 @@ expect(screen.getByText('Player 1')).toBeInTheDocument();
    - FilterService: Data manipulation only
    - CacheService: Caching only
 
-2. **Observable Patterns**
-   - Use shareReplay for shared data streams
-   - Use BehaviorSubject for state management
-   - Always unsubscribe or use async pipe
+2. **Reactive Patterns**
+   - Prefer writable/computed signals for app-owned UI state, exposing readonly signal APIs where possible
+   - Keep observable APIs for async composition, transport flows, or compatibility with existing consumers
+   - Use `shareReplay` for shared fetch streams and prefer `takeUntilDestroyed()` over manual teardown when you need subscriptions in an injection context
 
 3. **Error Handling**
    - Handle errors at service level

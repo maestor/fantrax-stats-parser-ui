@@ -6,15 +6,6 @@ Planned improvements and future development ideas, roughly ordered by priority.
 
 ### High priority
 
-#### Startup Performance and Rendering Strategy (conditional follow-up only)
-
-Improve startup performance without defaulting to SSR where it is not worth the complexity.
-
-- The dashboard-shell split, the first startup deferrals, and the main-thread cleanup batch are already in place; keep the roadmap focused on whether any data-path cleanup is still necessary rather than repeating completed implementation detail here.
-- Recent build verification reduced the initial estimated transfer budget again and split the footer into its own lazy chunk; preserve those startup wins while validating real-user impact.
-- Treat data-path cleanup as optional follow-up only if later perf checks still show meaningful startup headroom on the homepage.
-- Track implementation detail in the active local `docs/plans/` plan; keep the roadmap high level and remove finished execution detail from here.
-
 #### Favorites / Watchlist (~4-6h)
 
 Star/bookmark players, persisted in localStorage. Add a "Suosikit" filter toggle to quickly view only watched players. No API changes needed.
@@ -36,6 +27,26 @@ Override the current auto-only system-preference-based theme. Persist choice in 
 #### Remember Sort Column (~1-2h)
 
 Persist the user's last sort column and direction per table (players/goalies) in localStorage across sessions.
+
+## Architecture and maintenance
+
+### Low priority
+
+#### Finish Signal-Native UI State Cleanup (~4-8h)
+
+The repo is already mostly signals-first, but a few app-owned UI state services still use `BehaviorSubject` plus `toSignal()` as a compatibility bridge.
+
+- Prioritize `FilterService`, `SettingsService`, `ComparisonService`, and `DrawerContextService`
+- Prefer writable/computed signals for owned state, with observable APIs kept only where async composition or backwards compatibility still needs them
+- Keep this as a behavior-preserving refactor; do not mix it with product changes
+
+#### Remove Remaining Manual Subscription Teardown (~3-5h)
+
+Most new code already uses `takeUntilDestroyed()` or signal-driven flows, but a few older components still keep `Subject<void>` plus `takeUntil()` teardown patterns.
+
+- Prioritize `StatsBaseComponent`, direct card route components, and the career list route containers
+- Simplify teardown where Angular 21 injection-context patterns make the lifecycle wiring smaller and easier to read
+- Treat this as cleanup for maintainability, not as an excuse to churn stable code without a clear benefit
 
 ## E2E Testing
 
