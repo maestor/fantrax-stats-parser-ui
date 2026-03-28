@@ -25,6 +25,8 @@ function createEntryDraftGroup(index: number): EntryDraftTeamGroup {
         ownPicks: 15 - index,
         tradedPicks: 5,
         playersPerDraftAverage: 6 - index * 0.1,
+        playedInLeague: 12 - index,
+        playedForDraftingTeam: 6 - Math.floor(index / 2),
       },
       rounds: {
         first: 12 - index,
@@ -84,7 +86,21 @@ describe('DraftStatisticsComponent', () => {
     expect(
       await screen.findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole('table')).toHaveLength(10);
+    expect(screen.getByRole('heading', { name: 'draft.statistics.cards.playedInLeague.title' })).toBeInTheDocument();
+    expect(fixture.componentInstance.cards.map((card) => card.id)).toEqual([
+      'total-picks',
+      'own-picks',
+      'traded-picks',
+      'players-per-draft',
+      'average-position',
+      'played-in-league',
+      'round-1',
+      'round-2',
+      'round-3',
+      'round-4',
+      'round-5',
+    ]);
+    expect(screen.getAllByRole('table')).toHaveLength(11);
     expect(
       screen.queryByRole('button', { name: /tableCard\.showDetails/ }),
     ).not.toBeInTheDocument();
@@ -122,7 +138,7 @@ describe('DraftStatisticsComponent', () => {
       footerVisibilityService,
     });
 
-    expect(screen.getAllByRole('progressbar')).toHaveLength(10);
+    expect(screen.getAllByRole('progressbar')).toHaveLength(11);
     expect(footerVisibilityService.markReady).not.toHaveBeenCalled();
 
     response$.next(statisticsGroupsFixture);
@@ -130,7 +146,7 @@ describe('DraftStatisticsComponent', () => {
 
     await waitForBehaviorAssertion(fixture, () => {
       expect(fixture.componentInstance.loading).toBe(false);
-      expect(screen.getAllByRole('table')).toHaveLength(10);
+      expect(screen.getAllByRole('table')).toHaveLength(11);
     });
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(9);
   });
@@ -145,7 +161,7 @@ describe('DraftStatisticsComponent', () => {
       footerVisibilityService,
     });
 
-    expect(await screen.findAllByText('tableCard.apiUnavailable')).toHaveLength(10);
+    expect(await screen.findAllByText('tableCard.apiUnavailable')).toHaveLength(11);
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(9);
   });
 
@@ -161,7 +177,7 @@ describe('DraftStatisticsComponent', () => {
       platformId: 'server',
     });
 
-    expect(screen.getAllByRole('progressbar')).toHaveLength(10);
+    expect(screen.getAllByRole('progressbar')).toHaveLength(11);
     expect(fixture.componentInstance.loading).toBe(true);
     expect(fixture.componentInstance.apiError).toBe(false);
     expect(getEntryDrafts).not.toHaveBeenCalled();

@@ -11,15 +11,23 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ApiService, DraftPick, DraftTeamRef, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 
+type DraftPickStatus = {
+  readonly emoji: '🟢' | '🟡';
+  readonly tooltipKey:
+    | 'draft.entryDrafts.playedForDraftingTeamTooltip'
+    | 'draft.entryDrafts.playedInLeagueTooltip';
+};
+
 @Component({
   selector: 'app-entry-drafts',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DecimalPipe, MatExpansionModule, MatListModule, TranslateModule],
+  imports: [DecimalPipe, MatExpansionModule, MatListModule, MatTooltipModule, TranslateModule],
   templateUrl: './entry-drafts.component.html',
   styleUrl: './entry-drafts.component.scss',
 })
@@ -66,6 +74,28 @@ export class EntryDraftsComponent implements OnInit {
 
   isTradedPick(team: DraftTeamRef, pick: DraftPick): boolean {
     return pick.originalOwner.id !== team.id;
+  }
+
+  getPickStatus(pick: DraftPick): DraftPickStatus | null {
+    if (pick.draftedPlayer === null) {
+      return null;
+    }
+
+    if (pick.playedForDraftingTeam) {
+      return {
+        emoji: '🟢',
+        tooltipKey: 'draft.entryDrafts.playedForDraftingTeamTooltip',
+      };
+    }
+
+    if (pick.playedInLeague) {
+      return {
+        emoji: '🟡',
+        tooltipKey: 'draft.entryDrafts.playedInLeagueTooltip',
+      };
+    }
+
+    return null;
   }
 
   private normalizeGroups(groups: EntryDraftTeamGroup[]): EntryDraftTeamGroup[] {

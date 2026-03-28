@@ -308,7 +308,11 @@ export interface paths {
          *     Each team's `seasons` array is sorted newest-first, and picks within one season
          *     are sorted by draft order.
          *     Team roots also include a `summary` object with highest-pick, average-position,
-         *     pick-count aggregates, and a fixed round breakdown calculated from the grouped data.
+         *     pick-count aggregates, played counts, and a fixed round breakdown calculated from
+         *     the grouped data.
+         *     Each pick also includes `playedInLeague` and `playedForDraftingTeam` flags based
+         *     on whether the linked Fantrax entity has games-played rows in `players` or
+         *     `goalies`.
          *     Picks with `draftedPlayer: null` stay in the season pick lists but are excluded from
          *     all summary calculations.
          */
@@ -1359,6 +1363,16 @@ export interface components {
             pickNumber: number;
             /** @example Connor McDavid */
             draftedPlayer: string | null;
+            /**
+             * @description True when the linked Fantrax entity has at least one games-played row in `players` or `goalies` for any fantasy team.
+             * @example true
+             */
+            playedInLeague: boolean;
+            /**
+             * @description True when the linked Fantrax entity has at least one games-played row for the same fantasy team that drafted them.
+             * @example false
+             */
+            playedForDraftingTeam: boolean;
             originalOwner: components["schemas"]["DraftTeamRef"];
         };
         OpeningDraftPick: {
@@ -1404,6 +1418,16 @@ export interface components {
              * @example 5.71
              */
             playersPerDraftAverage: number;
+            /**
+             * @description Drafted players with at least one games-played row in `players` or `goalies` for any fantasy team.
+             * @example 28
+             */
+            playedInLeague: number;
+            /**
+             * @description Drafted players with at least one games-played row for the same fantasy team that drafted them.
+             * @example 14
+             */
+            playedForDraftingTeam: number;
         };
         EntryDraftRoundsSummary: {
             /** @example 12 */

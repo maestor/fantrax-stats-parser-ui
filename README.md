@@ -45,8 +45,9 @@ The docs in this repo intentionally focus on project-specific architecture, work
 - 📝 **Draft Pages**: Standalone `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics` browse routes now live under `Varaukset`
 	- Batch 1 adds the route shell, navigation, SEO, and the shared browse scaffolding
 	- Batch 2 turns `/draft/opening-draft` into a team-by-team accordion with simple pick rows, including traded-pick owner suffixes when the original pick belonged to another team
-	- Batch 3 turns `/draft/entry-drafts` into a matching team accordion with compact summary cards, round totals, and season-by-season entry draft history
-	- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 10 entry-draft summary slices without a separate draft-only card implementation
+	- Batch 3 turns `/draft/entry-drafts` into a matching team accordion with compact summary cards, played-status totals, highest-pick highlights, and season-by-season entry draft history
+	- Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
+	- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 11 entry-draft summary slices without a separate draft-only card implementation
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards

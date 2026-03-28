@@ -28,6 +28,7 @@ type DraftStatisticsCardId =
   | 'traded-picks'
   | 'players-per-draft'
   | 'average-position'
+  | 'played-in-league'
   | 'round-1'
   | 'round-2'
   | 'round-3'
@@ -103,6 +104,14 @@ const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = [
     direction: 'asc',
     valueFor: (group) => group.summary.averageDraftPosition,
     formatValue: (value) => draftStatisticNumberFormatter.format(value),
+  },
+  {
+    id: 'played-in-league',
+    titleKey: 'draft.statistics.cards.playedInLeague.title',
+    descriptionKey: 'draft.statistics.cards.playedInLeague.description',
+    valueColumnLabelKey: 'draft.statistics.columns.players',
+    direction: 'desc',
+    valueFor: (group) => group.summary.amounts.playedInLeague,
   },
   {
     id: 'round-1',

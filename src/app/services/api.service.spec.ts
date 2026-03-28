@@ -288,6 +288,8 @@ describe('ApiService', () => {
             ownPicks: 0,
             tradedPicks: 0,
             playersPerDraftAverage: 0,
+            playedInLeague: 0,
+            playedForDraftingTeam: 0,
           },
           rounds: {
             first: 0,
@@ -312,6 +314,8 @@ describe('ApiService', () => {
             ownPicks: 0,
             tradedPicks: 0,
             playersPerDraftAverage: 0,
+            playedInLeague: 0,
+            playedForDraftingTeam: 0,
           },
           rounds: {
             first: 0,
@@ -336,6 +340,8 @@ describe('ApiService', () => {
             ownPicks: 0,
             tradedPicks: 0,
             playersPerDraftAverage: 0,
+            playedInLeague: 0,
+            playedForDraftingTeam: 0,
           },
           rounds: {
             first: 0,

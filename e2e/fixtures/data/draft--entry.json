@@ -20,7 +20,9 @@
         "total": 4,
         "ownPicks": 3,
         "tradedPicks": 1,
-        "playersPerDraftAverage": 2
+        "playersPerDraftAverage": 2,
+        "playedInLeague": 2,
+        "playedForDraftingTeam": 1
       },
       "rounds": {
         "first": 2,
@@ -38,6 +40,8 @@
             "round": 1,
             "pickNumber": 4,
             "draftedPlayer": "Matthew Schaefer",
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
             "originalOwner": {
               "id": "1",
               "name": "Colorado Avalanche"
@@ -47,6 +51,8 @@
             "round": 2,
             "pickNumber": 28,
             "draftedPlayer": null,
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
             "originalOwner": {
               "id": "29",
               "name": "Dallas Stars"
@@ -61,6 +67,8 @@
             "round": 1,
             "pickNumber": 11,
             "draftedPlayer": "Tij Iginla",
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
             "originalOwner": {
               "id": "1",
               "name": "Colorado Avalanche"
@@ -70,6 +78,8 @@
             "round": 3,
             "pickNumber": 27,
             "draftedPlayer": "Jesse Pulkkinen",
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
             "originalOwner": {
               "id": "1",
               "name": "Colorado Avalanche"
@@ -100,7 +110,9 @@
         "total": 3,
         "ownPicks": 2,
         "tradedPicks": 1,
-        "playersPerDraftAverage": 1.5
+        "playersPerDraftAverage": 1.5,
+        "playedInLeague": 2,
+        "playedForDraftingTeam": 1
       },
       "rounds": {
         "first": 1,
@@ -118,6 +130,8 @@
             "round": 1,
             "pickNumber": 2,
             "draftedPlayer": "Michael Misa",
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
             "originalOwner": {
               "id": "29",
               "name": "Dallas Stars"
@@ -127,6 +141,8 @@
             "round": 2,
             "pickNumber": 14,
             "draftedPlayer": "Kashawn Aitcheson",
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
             "originalOwner": {
               "id": "16",
               "name": "Tampa Bay Lightning"
@@ -141,6 +157,8 @@
             "round": 3,
             "pickNumber": 21,
             "draftedPlayer": "Aron Kiviharju",
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
             "originalOwner": {
               "id": "29",
               "name": "Dallas Stars"

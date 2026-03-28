@@ -95,7 +95,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Shares the lighter root-shell treatment used by other browse routes
    - Batch 1 provides the route family, tab navigation, subtitle/SEO integration, and browse-shell wiring
    - Batch 2 renders `/draft/opening-draft` as a Material accordion grouped by drafting team, with simple per-pick rows and a traded-owner suffix when the original pick came from another team
-   - Batch 3 renders `/draft/entry-drafts` as a matching team-grouped accordion, with per-team summary cards, round totals, and season-by-season pick lists that preserve null legacy player rows
+   - Batch 3 renders `/draft/entry-drafts` as a matching team-grouped accordion, with per-team summary cards, played-status totals, highest-pick highlights, and season-by-season pick lists that preserve null legacy player rows
+   - Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
    - `/draft/statistics` reuses the shared card-table UI to rank teams across entry-draft summary metrics with local 10-row paging
 
 8. **Data Management**
