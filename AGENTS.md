@@ -59,5 +59,6 @@ If a proposed change would alter user-visible application behavior or semantics,
 ## Playwright Rules
 - For local `npm run e2e` or other local Playwright test runs, prefer running outside the sandbox. In this repo the sandboxed path is not reliable for the Playwright web server / browser flow, while the non-sandbox path works consistently better.
 - Keep Playwright focused on automated E2E and perf-audit coverage; do not route ad hoc manual browser inspection through Playwright MCP anymore.
+- If a real `CI=true` Playwright run is needed locally and `http://localhost:4200` is already occupied by the user's frontend session, ask the user to stop that server before continuing. Do not introduce alternate local-only fixture flags as a workaround.
 
 For local Playwright E2E runs, the user controls the backend on `localhost:3000`. If it is not running, ask the user to start it instead of switching to CI-mode mocking as a workaround.

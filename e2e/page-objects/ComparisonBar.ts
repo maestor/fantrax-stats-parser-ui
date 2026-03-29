@@ -8,7 +8,7 @@ export class ComparisonBar {
   constructor(private page: Page) {}
 
   private get bar() {
-    return this.page.locator('[role="status"]');
+    return this.page.locator('.comparison-bar');
   }
 
   /**
@@ -55,5 +55,6 @@ export class ComparisonBar {
    */
   async clickClear(): Promise<void> {
     await this.page.getByRole('button', { name: 'Tyhjennä' }).click();
+    await this.bar.waitFor({ state: 'hidden' });
   }
 }

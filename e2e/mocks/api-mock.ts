@@ -47,11 +47,65 @@ function loadFixture(filename: string): string | null {
   return content;
 }
 
+function loadFixtureJson<T>(filename: string): T | null {
+  const body = loadFixture(filename);
+  return body === null ? null : JSON.parse(body) as T;
+}
+
+function buildCareerHighlightsFallback(url: URL): string | null {
+  const match = url.pathname.match(/^\/(?:api\/)?career\/highlights\/([^/]+)$/);
+  if (!match) {
+    return null;
+  }
+
+  const type = match[1];
+  const skip = Number(url.searchParams.get('skip') ?? '0');
+  const take = Number(url.searchParams.get('take') ?? '0');
+
+  if (!Number.isFinite(skip) || !Number.isFinite(take) || skip !== 0 || take <= 0) {
+    return null;
+  }
+
+  type CareerHighlightsFixture = {
+    readonly items: readonly unknown[];
+    readonly skip: number;
+    readonly take: number;
+    readonly total: number;
+    readonly minAllowed?: number;
+    readonly type: string;
+  };
+
+  const page0 = loadFixtureJson<CareerHighlightsFixture>(
+    `career--highlights--${type}--skip=0--take=10.json`,
+  );
+  if (!page0) {
+    return null;
+  }
+
+  const combinedItems = [...page0.items];
+
+  if (take > combinedItems.length) {
+    const page1 = loadFixtureJson<CareerHighlightsFixture>(
+      `career--highlights--${type}--skip=10--take=10.json`,
+    );
+    if (page1) {
+      combinedItems.push(...page1.items);
+    }
+  }
+
+  return JSON.stringify({
+    ...page0,
+    skip: 0,
+    take,
+    items: combinedItems.slice(0, take),
+  });
+}
+
 /** Route handler that maps requests to fixture files */
 function handleRoute(route: Parameters<Parameters<Page['route']>[1]>[0]): Promise<void> {
   const url = new URL(route.request().url());
   const filename = urlToFixtureName(url);
-  const body = loadFixture(filename);
+  const body = loadFixture(filename) ?? buildCareerHighlightsFallback(url);
 
   if (body === null) {
     return route.fulfill({

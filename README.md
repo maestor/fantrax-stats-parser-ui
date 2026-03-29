@@ -224,6 +224,7 @@ npx playwright test e2e/specs/leaderboards.spec.ts
 Important:
 
 - Do not use `CI=true` for normal local E2E runs. In this repo that switches Playwright into the fixture-backed CI flow, which is meant for CI and explicit offline debugging, not routine local verification against your real backend.
+- If you do need a real local `CI=true` run, make sure `http://localhost:4200` is free first so Playwright can start the CI-mode server instead of colliding with an already running frontend.
 - `npx playwright test --headed` still uses the same `webServer` config. It does not disable server startup by itself; it simply opens the browser UI while Playwright starts or reuses the frontend.
 - If the backend on `localhost:3000` is not running during a paired session, ask the user to start it. Do not silently swap to CI-mode mocking for routine local verification.
 
