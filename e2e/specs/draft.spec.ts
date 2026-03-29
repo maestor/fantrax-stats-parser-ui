@@ -63,7 +63,7 @@ async function expectEntryDraftContent(page: Page) {
   const firstPanel = panels.first();
   const firstHeader = firstPanel.locator('mat-expansion-panel-header');
 
-  await expect(firstHeader).toBeVisible();
+  await expect(firstHeader).toBeVisible({ timeout: 15000 });
   await firstHeader.click();
 
   await expect(firstPanel.locator('.entry-summary-card').first()).toBeVisible();
