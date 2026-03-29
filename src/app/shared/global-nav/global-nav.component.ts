@@ -46,9 +46,8 @@ export class GlobalNavComponent {
 
   constructor() {
     afterNextRender(() => {
-      const el = this.elementRef.nativeElement;
-      const target = (el.querySelector('.global-nav-item--active') ?? el.querySelector('.global-nav-item')) as HTMLElement | null;
-      target?.focus({ focusVisible: true } as FocusOptions);
+      const activeIndex = this.navItems.findIndex((item) => this.isActive(item));
+      this.focusNavItem(activeIndex === -1 ? 0 : activeIndex);
     });
   }
 
@@ -80,5 +79,44 @@ export class GlobalNavComponent {
       });
       // Sheet stays open — user can continue navigating after closing the dialog
     }
+  }
+
+  onItemKeydown(event: KeyboardEvent, index: number): void {
+    const itemCount = this.navItems.length;
+    if (itemCount === 0) {
+      return;
+    }
+
+    let targetIndex: number | null = null;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        targetIndex = (index + 1) % itemCount;
+        break;
+      case 'ArrowUp':
+        targetIndex = (index - 1 + itemCount) % itemCount;
+        break;
+      case 'Home':
+        targetIndex = 0;
+        break;
+      case 'End':
+        targetIndex = itemCount - 1;
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
+    this.focusNavItem(targetIndex);
+  }
+
+  private focusNavItem(index: number): void {
+    const target = this.getNavItems()[index] ?? null;
+    target?.focus({ focusVisible: true } as FocusOptions);
+  }
+
+  private getNavItems(): HTMLElement[] {
+    const host = this.elementRef.nativeElement as HTMLElement;
+    return Array.from(host.querySelectorAll('.global-nav-item'));
   }
 }

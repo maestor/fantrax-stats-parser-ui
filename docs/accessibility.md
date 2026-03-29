@@ -152,6 +152,27 @@ The app provides global keyboard shortcuts (handled in `AppComponent`):
 
 This keeps the shortcuts discoverable without interfering with normal text entry.
 
+### Global navigation bottom sheet
+
+The global navigation opens as a vertical bottom-sheet action list.
+
+Supported keyboard behavior:
+
+- `Tab` still moves through the nav items normally
+- Focus lands on the active route item when the sheet opens, or the first item if no route is active
+- `ArrowDown` moves to the next nav item
+- `ArrowUp` moves to the previous nav item
+- Navigation wraps continuously:
+  - `ArrowUp` on the first item moves focus to the last item
+  - `ArrowDown` on the last item moves focus to the first item
+- `Home` jumps to the first nav item
+- `End` jumps to the last nav item
+
+Notes:
+
+- Route items still activate with the native button keys (`Enter` / `Space`)
+- The info item keeps its existing dialog-opening behavior and focus restoration
+
 ## Development Checklist (Always)
 
 Before you consider a feature “done”:

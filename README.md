@@ -51,6 +51,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 		- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 13 entry-draft summary slices, including separate played-percentage rankings, without a separate draft-only card implementation
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
+	- Supports wrapped `ArrowUp` / `ArrowDown` navigation between menu items in addition to normal `Tab` browsing
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
 	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
 	- Goalies: `/goalie/:teamSlug/:goalieSlug` (e.g., `/goalie/colorado/philipp-grubauer`)

@@ -19,8 +19,7 @@
     <mat-accordion class="draft-accordion" displayMode="flat">
       @for (group of groups; track group.team.id) {
         <mat-expansion-panel class="draft-panel" #panel>
-          <mat-expansion-panel-header class="draft-panel-header" (click)="onHeaderClick($event)"
-            (keydown)="onHeaderKeydown($event)">
+          <mat-expansion-panel-header class="draft-panel-header" draftPanelHeaderNavigation>
             <mat-panel-title class="draft-panel-title">
               {{ group.team.name }}
             </mat-panel-title>
@@ -30,8 +29,7 @@
             [attr.inert]="panel.expanded ? null : ''">
             <mat-list class="draft-pick-list" role="list">
               @for (pick of group.picks; track pick.pickNumber; let pickIndex = $index) {
-                <div class="draft-pick-item draft-focus-target" role="listitem" tabindex="-1"
-                  (keydown)="onPickKeydown($event, panel)" data-draft-focus-target>
+                <div class="draft-pick-item draft-focus-target" role="listitem" tabindex="-1" draftPanelFocusTarget>
                   <div class="draft-pick-row">
                     <span class="draft-pick-tag">
                       {{ 'draft.openingDraft.selectionLabel' | translate }} {{ pickIndex + 1 }}
