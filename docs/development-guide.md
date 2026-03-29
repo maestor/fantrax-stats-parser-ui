@@ -4,6 +4,8 @@ This guide focuses on local setup, commands, and repo-specific operational notes
 
 Use the installed `angular-developer` skill and official Angular docs for generic framework guidance. Follow `AGENTS.md` and `CLAUDE.md` for the authoritative task workflow, review pause, verify, and commit rules.
 
+Explicit user instructions in chat override those repo workflow defaults. Treat the documented workflow as the fallback when the user has not said otherwise.
+
 ## Prerequisites
 
 1. **Node.js**: Version 24.x

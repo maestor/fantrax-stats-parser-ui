@@ -15,11 +15,15 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ApiService, DraftTeamRef, OpeningDraftPick, OpeningDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import {
+  DraftPanelFocusTargetDirective,
+  DraftPanelHeaderNavigationDirective,
+} from '../draft-panel-navigation.directive';
 
 @Component({
   selector: 'app-opening-draft',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatExpansionModule, MatListModule, TranslateModule],
+  imports: [MatExpansionModule, MatListModule, TranslateModule, DraftPanelHeaderNavigationDirective, DraftPanelFocusTargetDirective],
   templateUrl: './opening-draft.component.html',
   styleUrl: './opening-draft.component.scss',
 })

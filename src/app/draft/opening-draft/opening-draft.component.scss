@@ -1,10 +1,24 @@
 .opening-draft {
-  --draft-pick-list-padding: 0 var(--draft-content-padding-inline) 1.1rem;
-  --draft-expanded-pick-list-padding-top: 0.9rem;
+  --draft-pick-list-padding: 0;
+  --draft-expanded-pick-list-padding-top: 0;
+}
+
+.opening-draft-panel-content {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0 1.25rem 1.1rem;
+}
+
+.draft-panel.mat-expanded .opening-draft-panel-content {
+  padding-top: 0.9rem;
 }
 
 @media (max-width: 640px) {
   .opening-draft {
     --draft-pick-row-gap: 0.55rem;
+  }
+
+  .opening-draft-panel-content {
+    padding-inline: 1rem;
   }
 }

@@ -1,10 +1,11 @@
 <mat-action-list class="global-nav-list" [attr.aria-label]="'nav.menuAriaLabel' | translate">
-  @for (item of navItems; track item.labelKey) {
+  @for (item of navItems; track item.labelKey; let itemIndex = $index) {
     <button
       mat-list-item
       class="global-nav-item"
       [class.global-nav-item--active]="isActive(item)"
       (click)="onItemClick(item)"
+      (keydown)="onItemKeydown($event, itemIndex)"
       [attr.aria-current]="isActive(item) ? 'page' : null"
       [attr.aria-haspopup]="item.type === 'action' ? 'dialog' : null"
     >

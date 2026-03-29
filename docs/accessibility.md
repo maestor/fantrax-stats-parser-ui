@@ -63,6 +63,28 @@ Implementation:
 - Career highlights reuse the career skip target (`career-table`) and move focus to the first available card row without adding those rows to normal tab order
 - Draft routes use the `draft-list` skip target and move focus to the first expansion trigger or draft placeholder heading
 
+### Draft panel keyboard navigation
+
+Draft browse pages use long expansion panels, so header focus alone is not enough.
+
+Supported behavior on entry-draft and opening-draft pages:
+
+- Team headers remain the primary tab stops
+- Opening a panel scrolls its header to the top of the viewport, but does not move focus into the content by itself
+- On an expanded team header:
+  - `ArrowDown` moves focus into the expanded content
+  - `Escape` collapses the currently expanded panel
+- Inside expanded content:
+  - `ArrowUp` / `ArrowDown` moves between focus targets within that panel
+  - `Home` / `End` jumps to the first/last focus target in the panel
+  - `PageUp` / `PageDown` jumps farther within long content
+  - `Escape` collapses the panel and returns focus to the team header
+
+Notes:
+
+- Entry drafts use section- and season-level focus targets rather than tabbing through every summary value
+- Opening draft uses roving focus on pick rows so long pick lists stay keyboard-browsable without bloating the page tab order
+
 ### Stats table keyboard navigation
 
 The stats table is designed to be usable without tabbing through every column header.
@@ -129,6 +151,27 @@ The app provides global keyboard shortcuts (handled in `AppComponent`):
   - contenteditable elements
 
 This keeps the shortcuts discoverable without interfering with normal text entry.
+
+### Global navigation bottom sheet
+
+The global navigation opens as a vertical bottom-sheet action list.
+
+Supported keyboard behavior:
+
+- `Tab` still moves through the nav items normally
+- Focus lands on the active route item when the sheet opens, or the first item if no route is active
+- `ArrowDown` moves to the next nav item
+- `ArrowUp` moves to the previous nav item
+- Navigation wraps continuously:
+  - `ArrowUp` on the first item moves focus to the last item
+  - `ArrowDown` on the last item moves focus to the first item
+- `Home` jumps to the first nav item
+- `End` jumps to the last nav item
+
+Notes:
+
+- Route items still activate with the native button keys (`Enter` / `Space`)
+- The info item keeps its existing dialog-opening behavior and focus restoration
 
 ## Development Checklist (Always)
 

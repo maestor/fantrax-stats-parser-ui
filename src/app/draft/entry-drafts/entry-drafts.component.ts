@@ -16,6 +16,10 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ApiService, DraftPick, DraftTeamRef, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import {
+  DraftPanelFocusTargetDirective,
+  DraftPanelHeaderNavigationDirective,
+} from '../draft-panel-navigation.directive';
 
 type DraftPickStatus = {
   readonly emoji: '🟢' | '🟡';
@@ -27,7 +31,16 @@ type DraftPickStatus = {
 @Component({
   selector: 'app-entry-drafts',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DecimalPipe, PercentPipe, MatExpansionModule, MatListModule, MatTooltipModule, TranslateModule],
+  imports: [
+    DecimalPipe,
+    PercentPipe,
+    MatExpansionModule,
+    MatListModule,
+    MatTooltipModule,
+    TranslateModule,
+    DraftPanelHeaderNavigationDirective,
+    DraftPanelFocusTargetDirective,
+  ],
   templateUrl: './entry-drafts.component.html',
   styleUrl: './entry-drafts.component.scss',
 })

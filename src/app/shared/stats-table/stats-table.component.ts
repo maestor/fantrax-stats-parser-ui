@@ -169,7 +169,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private playerCardPrefetchScheduled = false;
   private openingPlayerCard = false;
   private playerCardPrefetchIdleId?: number;
-  private playerCardPrefetchTimerId?: number;
+  private playerCardPrefetchTimerId?: ReturnType<typeof setTimeout>;
 
   loadingProgress = 0;
   loadingBuffer = 0;
