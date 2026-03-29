@@ -34,18 +34,33 @@ test.describe('Career listings', () => {
     await expect(page).toHaveURL(/\/career\/highlights$/);
     await expect(highlightsTab).toHaveAttribute('aria-selected', 'true');
     const highlightCards = page.locator('app-table-card');
+    const highlightsJumpNav = page.getByRole('navigation', {
+      name: fi('career.highlights.jumpNavAriaLabel'),
+    });
     await expect(highlightCards).toHaveCount(CAREER_HIGHLIGHT_CARD_TYPES.length);
     await expect(
-      page.getByRole('button', { name: CAREER_HIGHLIGHT_SECTION_LABELS.ACHIEVEMENTS }),
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.ACHIEVEMENTS,
+        exact: true,
+      }),
     ).toBeVisible();
     await expect(
-      page.getByRole('button', { name: CAREER_HIGHLIGHT_SECTION_LABELS.JOURNEYS }),
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.JOURNEYS,
+        exact: true,
+      }),
     ).toBeVisible();
     await expect(
-      page.getByRole('button', { name: CAREER_HIGHLIGHT_SECTION_LABELS.LONG_STAYS }),
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.LONG_STAYS,
+        exact: true,
+      }),
     ).toBeVisible();
     await expect(
-      page.getByRole('button', { name: CAREER_HIGHLIGHT_SECTION_LABELS.TRANSACTIONS }),
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.TRANSACTIONS,
+        exact: true,
+      }),
     ).toBeVisible();
 
     for (let index = 0; index < CAREER_HIGHLIGHT_CARD_TYPES.length; index += 1) {
@@ -94,8 +109,12 @@ test.describe('Career listings', () => {
     await page.goto('/career/highlights');
     await expect(page).toHaveURL(/\/career\/highlights$/);
 
-    const transactionsSection = page.getByRole('button', {
+    const highlightsJumpNav = page.getByRole('navigation', {
+      name: fi('career.highlights.jumpNavAriaLabel'),
+    });
+    const transactionsSection = highlightsJumpNav.getByRole('button', {
       name: CAREER_HIGHLIGHT_SECTION_LABELS.TRANSACTIONS,
+      exact: true,
     });
 
     await transactionsSection.click();
