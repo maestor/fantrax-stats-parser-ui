@@ -28,6 +28,21 @@ test.describe('Team Switching', () => {
     expect(newData).not.toBe(initialData);
   });
 
+  test('keeps goalie stats active while switching teams', async ({ page }) => {
+    await page.goto('/goalie-stats');
+    await waitForTableData(page);
+
+    const initialData = await getFirstRowText(page);
+    const newTeam = 'Tampa Bay Lightning';
+
+    await selectTeam(page, newTeam);
+
+    await waitForTeamChange(page, newTeam);
+    await expect(page).toHaveURL(/.*\/goalie-stats$/);
+    const newData = await getFirstRowText(page);
+    expect(newData).not.toBe(initialData);
+  });
+
   test('resets filters on team change and does not restore when switching back', async ({ page }) => {
     const settingsDrawer = new SettingsDrawer(page);
 

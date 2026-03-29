@@ -270,7 +270,7 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
 - **team-switching.spec.ts** - Team selector behavior
   - Team selection dropdown
   - Filter reset on team change
-  - URL updates and state persistence
+  - Current-route retention on stats pages and state persistence
 
 - **filters.spec.ts** - Report type, season, and stats filters
   - Report type switching (regular/playoffs)
