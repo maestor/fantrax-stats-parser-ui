@@ -207,7 +207,9 @@ describe('CareerHighlightsComponent', () => {
     expect(await within(sameTeamPlayedCard!).findByText('D Victor Hedman')).toBeInTheDocument();
     expect(getCareerHighlights).toHaveBeenCalledWith('same-team-seasons-played', 0, 10);
 
-    fireEvent.click(within(mostTeamsCard!).getByRole('button', { name: 'tableCard.nextPage' }));
+    fireEvent.click(within(mostTeamsCard!).getByRole('button', {
+      name: /career\.highlights\.cards\.mostTeamsPlayed\.title.*tableCard\.next/,
+    }));
 
     expect(await within(mostTeamsCard!).findByText('F Anthony Duclair')).toBeInTheDocument();
     expect(within(mostTeamsCard!).queryByText('F Jamie Benn')).not.toBeInTheDocument();

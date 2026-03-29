@@ -8,6 +8,7 @@ export type AppSettings = {
   topControlsExpanded: boolean;
   season: number | null;
   reportType: ReportType;
+  draftStatisticsHighlightedTeamId: string | null;
 };
 
 @Injectable({
@@ -47,6 +48,10 @@ export class SettingsService {
     return this.settingsSignal().reportType;
   }
 
+  get draftStatisticsHighlightedTeamId(): string | null {
+    return this.settingsSignal().draftStatisticsHighlightedTeamId;
+  }
+
   setSelectedTeamId(teamId: string): void {
     if (!teamId || teamId === this.selectedTeamId) return;
     this.updateSettings({ selectedTeamId: teamId });
@@ -71,6 +76,11 @@ export class SettingsService {
   setReportType(reportType: ReportType): void {
     if (reportType === this.settingsSignal().reportType) return;
     this.updateSettings({ reportType });
+  }
+
+  setDraftStatisticsHighlightedTeamId(teamId: string | null): void {
+    if (teamId === this.settingsSignal().draftStatisticsHighlightedTeamId) return;
+    this.updateSettings({ draftStatisticsHighlightedTeamId: teamId });
   }
 
   private updateSettings(patch: Partial<AppSettings>): void {
@@ -106,8 +116,20 @@ export class SettingsService {
             : null;
 
         const reportType = this.parseReportType(parsed.reportType);
+        const draftStatisticsHighlightedTeamId =
+          typeof parsed.draftStatisticsHighlightedTeamId === 'string'
+            && parsed.draftStatisticsHighlightedTeamId.trim().length > 0
+            ? parsed.draftStatisticsHighlightedTeamId
+            : null;
 
-        return { selectedTeamId, startFromSeason, topControlsExpanded, season, reportType };
+        return {
+          selectedTeamId,
+          startFromSeason,
+          topControlsExpanded,
+          season,
+          reportType,
+          draftStatisticsHighlightedTeamId,
+        };
       }
     } catch {
       // ignore parse errors
@@ -119,6 +141,7 @@ export class SettingsService {
       topControlsExpanded: this.defaultTopControlsExpanded,
       season: null,
       reportType: 'regular',
+      draftStatisticsHighlightedTeamId: null,
     };
     this.persist(defaults);
     return defaults;

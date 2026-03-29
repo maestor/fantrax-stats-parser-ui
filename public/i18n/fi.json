@@ -96,6 +96,12 @@
       "statistics": "Tilastot"
     },
     "statistics": {
+      "intro": "Korosta halutessasi joukkueesi. Tieto tallentuu selaimen muistiin.",
+      "jumpNavAriaLabel": "Draftitilastojen osiot",
+      "highlightTeam": {
+        "label": "Korosta joukkue",
+        "clear": "Ei korostusta"
+      },
       "columns": {
         "team": "Joukkue",
         "pickCount": "Varaukset",
@@ -103,6 +109,20 @@
         "turn": "Vuoro",
         "players": "Pelaajat",
         "share": "Osuus"
+      },
+      "sections": {
+        "pickVolume": {
+          "title": "Varausmäärät",
+          "description": "Varausten käytön tilastot."
+        },
+        "outcomes": {
+          "title": "Osumat",
+          "description": "Varausten onnistumisten tilastot."
+        },
+        "rounds": {
+          "title": "Kierrokset",
+          "description": "Varausmäärät kierroksittain."
+        }
       },
       "cards": {
         "totalPicks": {

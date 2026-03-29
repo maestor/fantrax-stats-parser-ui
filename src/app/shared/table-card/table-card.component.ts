@@ -8,6 +8,8 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { TableCardRow } from './table-card.types';
 
+let nextTableCardInstanceId = 0;
+
 @Component({
   selector: 'app-table-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,6 +25,8 @@ import { TableCardRow } from './table-card.types';
   styleUrl: './table-card.component.scss',
 })
 export class TableCardComponent {
+  private readonly instanceId = `table-card-${nextTableCardInstanceId += 1}`;
+
   readonly titleKey = input.required<string>();
   readonly descriptionKey = input.required<string>();
   readonly descriptionRequiresParams = input(false);
@@ -46,6 +50,18 @@ export class TableCardComponent {
   readonly hasNextPage = computed(() => this.skip() + this.rows().length < this.total());
   readonly pageStart = computed(() => (this.hasRows() ? this.skip() + 1 : 0));
   readonly pageEnd = computed(() => (this.hasRows() ? this.skip() + this.rows().length : 0));
+  readonly hasDescription = computed(
+    () => !this.descriptionRequiresParams() || Boolean(this.descriptionParams()),
+  );
+  readonly titleId = `${this.instanceId}-title`;
+  readonly descriptionId = `${this.instanceId}-description`;
+  readonly previousButtonTextId = `${this.instanceId}-previous-text`;
+  readonly nextButtonTextId = `${this.instanceId}-next-text`;
+  readonly tableAriaLabelledBy = computed(() => (
+    this.hasDescription() ? `${this.titleId} ${this.descriptionId}` : this.titleId
+  ));
+  readonly previousButtonAriaLabelledBy = `${this.titleId} ${this.previousButtonTextId}`;
+  readonly nextButtonAriaLabelledBy = `${this.titleId} ${this.nextButtonTextId}`;
 
   getDetailsTooltip(row: TableCardRow): string {
     const detailLines = row.detailLines ?? [];

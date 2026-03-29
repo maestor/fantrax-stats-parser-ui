@@ -4,11 +4,11 @@
   [class.table-card--without-details]="!showDetails()"
 >
   <mat-card-header>
-    <h3 mat-card-title>
+    <h3 [id]="titleId" mat-card-title>
       {{ titleKey() | translate }}
     </h3>
-    @if (!descriptionRequiresParams() || descriptionParams()) {
-    <p mat-card-subtitle>
+    @if (hasDescription()) {
+    <p [id]="descriptionId" mat-card-subtitle>
       {{ descriptionKey() | translate : descriptionParams() }}
     </p>
     }
@@ -43,7 +43,7 @@
     }
 
     <div class="table-shell">
-      <table class="table-card-table">
+      <table class="table-card-table" [attr.aria-labelledby]="tableAriaLabelledBy()">
         <thead>
           <tr>
             <th scope="col" class="name-column">
@@ -65,7 +65,11 @@
 
         <tbody>
           @for (row of rows(); track row.key; let rowIndex = $index) {
-          <tr [attr.data-row-index]="rowIndex" tabindex="-1">
+          <tr
+            [attr.data-row-index]="rowIndex"
+            tabindex="-1"
+            [class.table-card-row--emphasized]="row.emphasized"
+          >
             <td class="primary-cell">
               {{ row.primaryText }}
             </td>
@@ -92,9 +96,12 @@
   @if (!deferred()) {
   <mat-card-actions class="card-actions">
     <button mat-stroked-button type="button" (click)="previousPageRequested.emit()"
-      [disabled]="loading() || !hasPreviousPage()" [attr.aria-label]="'tableCard.previousPage' | translate">
-      <mat-icon>chevron_left</mat-icon>
-      {{ 'tableCard.previous' | translate }}
+      [disabled]="loading() || !hasPreviousPage()"
+      [attr.aria-labelledby]="previousButtonAriaLabelledBy">
+      <mat-icon aria-hidden="true">chevron_left</mat-icon>
+      <span [id]="previousButtonTextId">
+        {{ 'tableCard.previous' | translate }}
+      </span>
     </button>
 
     <div class="page-summary" aria-live="polite">
@@ -110,9 +117,11 @@
     </div>
 
     <button mat-stroked-button type="button" (click)="nextPageRequested.emit()" [disabled]="loading() || !hasNextPage()"
-      [attr.aria-label]="'tableCard.nextPage' | translate">
-      {{ 'tableCard.next' | translate }}
-      <mat-icon>chevron_right</mat-icon>
+      [attr.aria-labelledby]="nextButtonAriaLabelledBy">
+      <span [id]="nextButtonTextId">
+        {{ 'tableCard.next' | translate }}
+      </span>
+      <mat-icon aria-hidden="true">chevron_right</mat-icon>
     </button>
   </mat-card-actions>
   }

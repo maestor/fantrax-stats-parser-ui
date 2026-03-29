@@ -23,7 +23,7 @@ async function expectStatisticsContent(page: Page) {
   const cards = page.locator('app-table-card');
   const firstCard = cards.first();
   const nextPageButton = firstCard.getByRole('button', {
-    name: fi('tableCard.nextPage'),
+    name: new RegExp(`${fi('draft.statistics.cards.totalPicks.title')}.*${fi('tableCard.next')}`),
   });
   const pageSummary = firstCard.locator('.page-summary');
 

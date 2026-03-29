@@ -49,6 +49,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 		- Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
 		- Expanded draft panels auto-align their sticky header to the top of the viewport when opened; `ArrowDown` still explicitly moves from the team header into the panel body, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it, and `Escape` collapses the panel while returning focus to the header
 		- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 13 entry-draft summary slices, including separate played-percentage rankings, without a separate draft-only card implementation
+		- Draft statistics cards are grouped under `Varausmäärät`, `Osumat`, and `Kierrokset`, with a sticky jump bar plus an optional team highlight control that jumps each card to the selected team's ranking page and emphasizes that row
 - 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 	- Supports wrapped `ArrowUp` / `ArrowDown` navigation between menu items in addition to normal `Tab` browsing

@@ -115,6 +115,14 @@ Notes:
 
 On mobile, top controls + settings are shown inside a left-side settings drawer (opened via the settings icon in the app header). The drawer content is rendered in a non-collapsible "content-only" mode.
 
+### Standalone card tables
+
+Browse surfaces such as career highlights and draft statistics use standalone card-contained tables.
+
+- Each table must expose an accessible name derived from the card heading
+- Include the card subtitle in the table labeling when it adds meaning
+- Repeated pager controls must include the card title in their accessible name so screen reader users can distinguish which card they belong to
+
 ### Player Card navigation
 
 The player card supports navigating between players without closing the dialog:
