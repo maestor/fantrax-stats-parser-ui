@@ -111,6 +111,10 @@ mat-card-header {
   font-weight: 700;
 }
 
+.table-card-table tbody tr.table-card-row--emphasized .primary-rank {
+  color: inherit;
+}
+
 .table-card-table tbody tr:focus {
   outline: 2px solid var(--mat-sys-primary);
   outline-offset: -2px;
@@ -122,6 +126,24 @@ mat-card-header {
   font-weight: normal;
 }
 
+.primary-cell-content {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.primary-rank {
+  flex: 0 0 auto;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.primary-text {
+  min-width: 0;
+}
+
 .name-column {
   text-align: left;
 }
@@ -130,6 +152,25 @@ mat-card-header {
   width: 92px;
   text-align: center;
   white-space: nowrap;
+}
+
+.table-card-column-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  border-radius: 999px;
+}
+
+.table-card-column-label--focusable {
+  padding: 0.1rem 0.3rem;
+}
+
+.table-card-column-label--focusable:hover,
+.table-card-column-label--focusable:focus-visible {
+  background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+  color: var(--mat-sys-on-surface);
+  outline: none;
 }
 
 .table-card--without-details .value-column {
@@ -193,6 +234,9 @@ mat-card-header {
 }
 
 @media (max-width: 480px) {
+  .table-card-table td {
+    padding-inline: 0.3rem;
+  }
 
   .value-column,
   .info-column {

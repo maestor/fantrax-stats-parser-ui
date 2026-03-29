@@ -1,0 +1,32 @@
+<nav
+  class="section-jump-nav"
+  [class.section-jump-nav--can-scroll-start]="canScrollStart()"
+  [class.section-jump-nav--can-scroll-end]="canScrollEnd()"
+  [attr.aria-label]="ariaLabelKey() | translate"
+  [attr.aria-describedby]="hasOverflow() ? instructionsId : null"
+>
+  <span
+    [id]="instructionsId"
+    class="sr-only"
+  >
+    {{ scrollHintKey() | translate }}
+  </span>
+
+  <div
+    #scrollContainer
+    class="section-jump-nav-scroll"
+    (scroll)="onScroll()"
+  >
+    @for (item of items(); track item.id) {
+      <button
+        class="section-jump-nav-link"
+        [class.section-jump-nav-link--active]="item.id === activeItemId()"
+        [attr.data-nav-item-id]="item.id"
+        type="button"
+        (click)="onItemClick(item.id)"
+      >
+        {{ item.labelKey | translate }}
+      </button>
+    }
+  </div>
+</nav>

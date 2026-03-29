@@ -7,46 +7,53 @@
     {{ 'career.highlights.sectionTitle' | translate }}
   </h3>
 
-  <div class="career-highlights-controls">
-    <mat-button-toggle-group
-      class="career-highlights-section-switch"
-      [value]="selectedSection()"
-      (change)="onSectionChange($event)"
-      [attr.aria-label]="
-        'career.highlights.sectionSwitcher.ariaLabel' | translate
-      "
-    >
-      <mat-button-toggle value="general">
-        {{ 'career.highlights.sections.general' | translate }}
-      </mat-button-toggle>
-      <mat-button-toggle value="transactions">
-        {{ 'career.highlights.sections.transactions' | translate }}
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
+  <app-section-jump-nav
+    class="career-highlights-jump-nav"
+    [items]="jumpNavItems"
+    ariaLabelKey="career.highlights.jumpNavAriaLabel"
+    (itemSelected)="scrollToSection($event)"
+  />
 
-  <div class="career-highlights-grid">
-    @for (card of cards(); track card.type) {
-      <app-table-card
-        class="career-highlights-card"
-        appActivateOnViewport
-        (appActivateOnViewportVisible)="activateCard(card.type)"
-        [titleKey]="card.state.titleKey"
-        [descriptionKey]="card.state.descriptionKey"
-        [descriptionRequiresParams]="card.state.descriptionRequiresParams"
-        [descriptionParams]="card.state.descriptionParams"
-        primaryColumnLabelKey="career.highlights.columns.player"
-        [valueColumnLabelKey]="card.state.valueColumnLabelKey"
-        [deferred]="!card.state.activated"
-        [rows]="card.state.rows"
-        [loading]="card.state.loading"
-        [apiError]="card.state.apiError"
-        [skip]="card.state.skip"
-        [take]="card.state.take"
-        [total]="card.state.total"
-        (previousPageRequested)="loadPreviousPage(card.type)"
-        (nextPageRequested)="loadNextPage(card.type)"
-      />
-    }
-  </div>
+  @for (section of sections(); track section.id) {
+    <section
+      class="career-highlights-section"
+      [attr.id]="section.anchorId"
+      [attr.aria-labelledby]="section.headingId"
+    >
+      <header class="career-highlights-section-header">
+        <h4 class="career-highlights-section-title" [id]="section.headingId">
+          {{ section.titleKey | translate }}
+        </h4>
+        <p class="career-highlights-section-description">
+          {{ section.descriptionKey | translate }}
+        </p>
+      </header>
+
+      <div class="career-highlights-grid">
+        @for (card of section.cards; track card.type) {
+          <app-table-card
+            class="career-highlights-card"
+            appActivateOnViewport
+            (appActivateOnViewportVisible)="activateCard(card.type)"
+            [titleKey]="card.state.titleKey"
+            [descriptionKey]="card.state.descriptionKey"
+            [descriptionRequiresParams]="card.state.descriptionRequiresParams"
+            [descriptionParams]="card.state.descriptionParams"
+            primaryColumnLabelKey="career.highlights.columns.player"
+            [valueColumnLabelKey]="card.state.valueColumnLabelKey"
+            [valueColumnTooltipKey]="card.state.valueColumnTooltipKey"
+            [deferred]="!card.state.activated"
+            [rows]="card.state.rows"
+            [loading]="card.state.loading"
+            [apiError]="card.state.apiError"
+            [skip]="card.state.skip"
+            [take]="card.state.take"
+            [total]="card.state.total"
+            (previousPageRequested)="loadPreviousPage(card.type)"
+            (nextPageRequested)="loadNextPage(card.type)"
+          />
+        }
+      </div>
+    </section>
+  }
 </section>

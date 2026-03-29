@@ -1,18 +1,16 @@
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  WritableSignal,
   OnInit,
+  PLATFORM_ID,
+  WritableSignal,
   computed,
   inject,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  MatButtonToggleChange,
-  MatButtonToggleModule,
-} from '@angular/material/button-toggle';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import {
@@ -27,20 +25,22 @@ import {
   CareerTransactionHighlightPage,
 } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { SectionJumpNavComponent } from '@shared/section-jump-nav/section-jump-nav.component';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
+import { deriveTiedRanks, formatTiedRankLabel } from '@shared/utils/rank.utils';
 import { formatPlayoffYear } from '@shared/utils/season.utils';
 
 import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
 import {
-  CAREER_HIGHLIGHT_CARD_TYPES_BY_SECTION,
-  CareerHighlightSection,
+  CAREER_HIGHLIGHT_SECTIONS,
+  CareerHighlightSectionId,
   CareerHighlightsUiType,
 } from './career-highlights.constants';
 import { formatReunionDetailLines } from './career-highlights.utils';
 import {
   CareerHighlightCardState,
-  CareerHighlightCardView,
+  CareerHighlightSectionView,
   HighlightDescriptionParams,
 } from './career-highlights.types';
 
@@ -52,13 +52,20 @@ type HighlightCardConfig = Pick<
   | 'descriptionKey'
   | 'descriptionRequiresParams'
   | 'valueColumnLabelKey'
+  | 'valueColumnTooltipKey'
 > & {
-  readonly section: CareerHighlightSection;
+  readonly sectionId: CareerHighlightSectionId;
   readonly type: CareerHighlightsUiType;
 };
 
+const careerHighlightSectionDefinitions = CAREER_HIGHLIGHT_SECTIONS.map((section) => ({
+  ...section,
+  anchorId: `career-highlights-section-${section.id}`,
+  headingId: `career-highlights-section-${section.id}-heading`,
+}));
+
 const MOST_TEAMS_PLAYED_CONFIG: HighlightCardConfig = {
-  section: 'general',
+  sectionId: 'journeys',
   type: 'most-teams-played',
   titleKey: 'career.highlights.cards.mostTeamsPlayed.title',
   descriptionKey: 'career.highlights.cards.mostTeamsPlayed.description',
@@ -67,7 +74,7 @@ const MOST_TEAMS_PLAYED_CONFIG: HighlightCardConfig = {
 };
 
 const SAME_TEAM_SEASONS_PLAYED_CONFIG: HighlightCardConfig = {
-  section: 'general',
+  sectionId: 'long-stays',
   type: 'same-team-seasons-played',
   titleKey: 'career.highlights.cards.sameTeamSeasonsPlayed.title',
   descriptionKey: 'career.highlights.cards.sameTeamSeasonsPlayed.description',
@@ -76,7 +83,7 @@ const SAME_TEAM_SEASONS_PLAYED_CONFIG: HighlightCardConfig = {
 };
 
 const MOST_TEAMS_OWNED_CONFIG: HighlightCardConfig = {
-  section: 'general',
+  sectionId: 'journeys',
   type: 'most-teams-owned',
   titleKey: 'career.highlights.cards.mostTeamsOwned.title',
   descriptionKey: 'career.highlights.cards.mostTeamsOwned.description',
@@ -85,16 +92,17 @@ const MOST_TEAMS_OWNED_CONFIG: HighlightCardConfig = {
 };
 
 const MOST_STANLEY_CUPS_CONFIG: HighlightCardConfig = {
-  section: 'general',
+  sectionId: 'achievements',
   type: 'most-stanley-cups',
   titleKey: 'career.highlights.cards.mostStanleyCups.title',
   descriptionKey: 'career.highlights.cards.mostStanleyCups.description',
   descriptionRequiresParams: true,
   valueColumnLabelKey: '💍',
+  valueColumnTooltipKey: 'career.highlights.columnHelp.cups',
 };
 
 const REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG: HighlightCardConfig = {
-  section: 'general',
+  sectionId: 'achievements',
   type: 'regular-grinder-without-playoffs',
   titleKey: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
   descriptionKey:
@@ -104,7 +112,7 @@ const REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG: HighlightCardConfig = {
 };
 
 const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
-  section: 'general',
+  sectionId: 'long-stays',
   type: 'same-team-seasons-owned',
   titleKey: 'career.highlights.cards.sameTeamSeasonsOwned.title',
   descriptionKey: 'career.highlights.cards.sameTeamSeasonsOwned.description',
@@ -113,16 +121,17 @@ const SAME_TEAM_SEASONS_OWNED_CONFIG: HighlightCardConfig = {
 };
 
 const REUNION_KING_CONFIG: HighlightCardConfig = {
-  section: 'transactions',
+  sectionId: 'transactions',
   type: 'reunion-king',
   titleKey: 'career.highlights.cards.reunionKing.title',
   descriptionKey: 'career.highlights.cards.reunionKing.description',
   descriptionRequiresParams: true,
   valueColumnLabelKey: '♻️',
+  valueColumnTooltipKey: 'career.highlights.columnHelp.reunions',
 };
 
 const STASH_KING_CONFIG: HighlightCardConfig = {
-  section: 'general',
+  sectionId: 'long-stays',
   type: 'stash-king',
   titleKey: 'career.highlights.cards.stashKing.title',
   descriptionKey: 'career.highlights.cards.stashKing.description',
@@ -131,50 +140,34 @@ const STASH_KING_CONFIG: HighlightCardConfig = {
 };
 
 const MOST_TRADES_CONFIG: HighlightCardConfig = {
-  section: 'transactions',
+  sectionId: 'transactions',
   type: 'most-trades',
   titleKey: 'career.highlights.cards.mostTrades.title',
   descriptionKey: 'career.highlights.cards.mostTrades.description',
   descriptionRequiresParams: true,
   valueColumnLabelKey: '🤝',
+  valueColumnTooltipKey: 'career.highlights.columnHelp.trades',
 };
 
 const MOST_CLAIMS_CONFIG: HighlightCardConfig = {
-  section: 'transactions',
+  sectionId: 'transactions',
   type: 'most-claims',
   titleKey: 'career.highlights.cards.mostClaims.title',
   descriptionKey: 'career.highlights.cards.mostClaims.description',
   descriptionRequiresParams: true,
   valueColumnLabelKey: '✅',
+  valueColumnTooltipKey: 'career.highlights.columnHelp.claims',
 };
 
 const MOST_DROPS_CONFIG: HighlightCardConfig = {
-  section: 'transactions',
+  sectionId: 'transactions',
   type: 'most-drops',
   titleKey: 'career.highlights.cards.mostDrops.title',
   descriptionKey: 'career.highlights.cards.mostDrops.description',
   descriptionRequiresParams: true,
   valueColumnLabelKey: '❌',
+  valueColumnTooltipKey: 'career.highlights.columnHelp.drops',
 };
-
-const highlightCardConfigsByType: Record<CareerHighlightsUiType, HighlightCardConfig> = {
-  'most-stanley-cups': MOST_STANLEY_CUPS_CONFIG,
-  'regular-grinder-without-playoffs': REGULAR_GRINDER_WITHOUT_PLAYOFFS_CONFIG,
-  'most-teams-played': MOST_TEAMS_PLAYED_CONFIG,
-  'most-teams-owned': MOST_TEAMS_OWNED_CONFIG,
-  'same-team-seasons-played': SAME_TEAM_SEASONS_PLAYED_CONFIG,
-  'same-team-seasons-owned': SAME_TEAM_SEASONS_OWNED_CONFIG,
-  'stash-king': STASH_KING_CONFIG,
-  'most-trades': MOST_TRADES_CONFIG,
-  'most-claims': MOST_CLAIMS_CONFIG,
-  'most-drops': MOST_DROPS_CONFIG,
-  'reunion-king': REUNION_KING_CONFIG,
-};
-
-const HIGHLIGHT_CARD_CONFIGS: readonly HighlightCardConfig[] = [
-  ...CAREER_HIGHLIGHT_CARD_TYPES_BY_SECTION.general.map((type) => highlightCardConfigsByType[type]),
-  ...CAREER_HIGHLIGHT_CARD_TYPES_BY_SECTION.transactions.map((type) => highlightCardConfigsByType[type]),
-];
 
 function createInitialCardState(
   config: HighlightCardConfig,
@@ -184,6 +177,7 @@ function createInitialCardState(
     descriptionKey: config.descriptionKey,
     descriptionRequiresParams: config.descriptionRequiresParams,
     valueColumnLabelKey: config.valueColumnLabelKey,
+    valueColumnTooltipKey: config.valueColumnTooltipKey,
     activated: false,
     rows: [],
     loading: false,
@@ -199,7 +193,7 @@ function createInitialCardState(
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ActivateOnViewportDirective,
-    MatButtonToggleModule,
+    SectionJumpNavComponent,
     TableCardComponent,
     TranslateModule,
   ],
@@ -207,12 +201,18 @@ function createInitialCardState(
   styleUrl: './career-highlights.component.scss',
 })
 export class CareerHighlightsComponent implements OnInit {
+  private readonly document = inject(DOCUMENT);
   private readonly apiService = inject(ApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
+  private readonly platformId = inject(PLATFORM_ID);
   private readonly translate = inject(TranslateService);
 
-  readonly selectedSection = signal<CareerHighlightSection>('general');
+  readonly sectionLinks = careerHighlightSectionDefinitions;
+  readonly jumpNavItems = careerHighlightSectionDefinitions.map((section) => ({
+    id: section.anchorId,
+    labelKey: section.titleKey,
+  }));
 
   private readonly cardSignals: Record<
     CareerHighlightsUiType,
@@ -241,13 +241,14 @@ export class CareerHighlightsComponent implements OnInit {
       'most-drops': signal(createInitialCardState(MOST_DROPS_CONFIG)),
     };
 
-  readonly cards = computed<readonly CareerHighlightCardView[]>(() =>
-    HIGHLIGHT_CARD_CONFIGS
-      .filter((config) => config.section === this.selectedSection())
-      .map((config) => ({
-        type: config.type,
-        state: this.cardSignals[config.type](),
+  readonly sections = computed<readonly CareerHighlightSectionView[]>(() =>
+    careerHighlightSectionDefinitions.map((section) => ({
+      ...section,
+      cards: section.cardTypes.map((type) => ({
+        type,
+        state: this.cardSignals[type](),
       })),
+    })),
   );
 
   private footerVisibilityCycle = 0;
@@ -257,8 +258,27 @@ export class CareerHighlightsComponent implements OnInit {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
   }
 
-  onSectionChange(event: MatButtonToggleChange): void {
-    this.selectedSection.set(event.value as CareerHighlightSection);
+  scrollToSection(anchorId: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    const sectionElement = this.document.getElementById(anchorId);
+    if (!sectionElement) {
+      return;
+    }
+
+    const location = this.document.defaultView?.location;
+    if (location) {
+      const nextUrl = `${location.pathname}${location.search}#${anchorId}`;
+      this.document.defaultView?.history.replaceState(null, '', nextUrl);
+    }
+
+    sectionElement.scrollIntoView({
+      block: 'start',
+      inline: 'nearest',
+      behavior: 'smooth',
+    });
   }
 
   loadPreviousPage(type: CareerHighlightsUiType): void {
@@ -309,6 +329,8 @@ export class CareerHighlightsComponent implements OnInit {
     initialLoad = false,
   ): void {
     const cardSignal = this.getCardSignal(type);
+    const pageSize = cardSignal().take;
+    const requestTake = targetSkip + pageSize + 1;
 
     cardSignal.update((current) => ({
       ...current,
@@ -317,18 +339,18 @@ export class CareerHighlightsComponent implements OnInit {
     }));
 
     this.apiService
-      .getCareerHighlights(type, targetSkip, cardSignal().take)
+      .getCareerHighlights(type, 0, requestTake)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (page) => {
           cardSignal.update((current) => ({
             ...current,
-            rows: this.normalizeRows(page),
+            rows: this.normalizeRows(page, targetSkip, pageSize),
             descriptionParams: this.descriptionParamsFor(page),
             loading: false,
             apiError: false,
-            skip: page.skip,
-            take: page.take,
+            skip: targetSkip,
+            take: pageSize,
             total: page.total,
           }));
           this.markInitialLoadReady(initialLoad);
@@ -344,11 +366,20 @@ export class CareerHighlightsComponent implements OnInit {
       });
   }
 
-  private normalizeRows(page: CareerHighlightPage): TableCardRow[] {
+  private normalizeRows(
+    page: CareerHighlightPage,
+    visibleSkip: number,
+    visibleTake: number,
+  ): TableCardRow[] {
     if (this.isTeamCountPage(page)) {
-      return page.items.map((item) => ({
+      return this.sliceVisibleRows(
+        deriveTiedRanks(page.items, (left, right) => left.teamCount === right.teamCount),
+        visibleSkip,
+        visibleTake,
+      ).map((item) => ({
         key: `${item.id}:${item.teams.map((team) => team.id).join(',')}`,
-        primaryText: `${item.position} ${item.name}`,
+        rank: this.buildRankLabel(item.displayRank, item.tieRank),
+        primaryText: this.buildPrimaryText(item.name, item.position),
         value: item.teamCount,
         detailLines: item.teams.map((team) => team.name),
         detailLabel: item.name,
@@ -356,9 +387,14 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isSameTeamPage(page)) {
-      return page.items.map((item) => ({
+      return this.sliceVisibleRows(
+        deriveTiedRanks(page.items, (left, right) => left.seasonCount === right.seasonCount),
+        visibleSkip,
+        visibleTake,
+      ).map((item) => ({
         key: `${item.id}:${item.team.id}`,
-        primaryText: `${item.position} ${item.name}`,
+        rank: this.buildRankLabel(item.displayRank, item.tieRank),
+        primaryText: this.buildPrimaryText(item.name, item.position),
         value: item.seasonCount,
         detailLines: [item.team.name],
         detailLabel: item.name,
@@ -366,9 +402,14 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isStanleyCupPage(page)) {
-      return page.items.map((item) => ({
+      return this.sliceVisibleRows(
+        deriveTiedRanks(page.items, (left, right) => left.cupCount === right.cupCount),
+        visibleSkip,
+        visibleTake,
+      ).map((item) => ({
         key: item.id,
-        primaryText: `${item.position} ${item.name}`,
+        rank: this.buildRankLabel(item.displayRank, item.tieRank),
+        primaryText: this.buildPrimaryText(item.name, item.position),
         value: item.cupCount,
         detailLines: item.cups.map(
           (cup) => `${formatPlayoffYear(cup.season)} ${cup.team.name}`,
@@ -378,9 +419,14 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isReunionPage(page)) {
-      return page.items.map((item) => ({
+      return this.sliceVisibleRows(
+        deriveTiedRanks(page.items, (left, right) => left.reunionCount === right.reunionCount),
+        visibleSkip,
+        visibleTake,
+      ).map((item) => ({
         key: `${item.id}:${item.team.id}`,
-        primaryText: `${item.position} ${item.name}`,
+        rank: this.buildRankLabel(item.displayRank, item.tieRank),
+        primaryText: this.buildPrimaryText(item.name, item.position),
         value: item.reunionCount,
         detailHeader: item.team.name,
         detailLines: formatReunionDetailLines(
@@ -397,9 +443,14 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isRegularGrinderPage(page)) {
-      return page.items.map((item) => ({
+      return this.sliceVisibleRows(
+        deriveTiedRanks(page.items, (left, right) => left.regularGames === right.regularGames),
+        visibleSkip,
+        visibleTake,
+      ).map((item) => ({
         key: item.id,
-        primaryText: `${item.position} ${item.name}`,
+        rank: this.buildRankLabel(item.displayRank, item.tieRank),
+        primaryText: this.buildPrimaryText(item.name, item.position),
         value: item.regularGames,
         detailLines: item.teams.map((team) => team.name),
         detailLabel: item.name,
@@ -407,9 +458,14 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isStashPage(page)) {
-      return page.items.map((item) => ({
+      return this.sliceVisibleRows(
+        deriveTiedRanks(page.items, (left, right) => left.seasonCount === right.seasonCount),
+        visibleSkip,
+        visibleTake,
+      ).map((item) => ({
         key: `${item.id}:${item.team.id}`,
-        primaryText: `${item.position} ${item.name}`,
+        rank: this.buildRankLabel(item.displayRank, item.tieRank),
+        primaryText: this.buildPrimaryText(item.name, item.position),
         value: item.seasonCount,
         detailLines: [item.team.name],
         detailLabel: item.name,
@@ -417,9 +473,17 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isTransactionPage(page)) {
-      return page.items.map((item) => ({
+      return this.sliceVisibleRows(
+        deriveTiedRanks(
+          page.items,
+          (left, right) => left.transactionCount === right.transactionCount,
+        ),
+        visibleSkip,
+        visibleTake,
+      ).map((item) => ({
         key: `${page.type}:${item.id}`,
-        primaryText: `${item.position} ${item.name}`,
+        rank: this.buildRankLabel(item.displayRank, item.tieRank),
+        primaryText: this.buildPrimaryText(item.name, item.position),
         value: item.transactionCount,
         detailLines: item.teams.map((team) => `${team.name} ${team.count}`),
         detailLabel: item.name,
@@ -427,6 +491,28 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     return [];
+  }
+
+  private sliceVisibleRows<T>(
+    rows: readonly T[],
+    visibleSkip: number,
+    visibleTake: number,
+  ): readonly T[] {
+    return rows.slice(visibleSkip, visibleSkip + visibleTake);
+  }
+
+  private buildPrimaryText(name: string, position: string): string {
+    return `${position} ${name}`;
+  }
+
+  private buildRankLabel(rank: number, tieRank: boolean): TableCardRow['rank'] {
+    return {
+      text: formatTiedRankLabel(rank, tieRank),
+      ariaLabel: this.translate.instant(
+        tieRank ? 'tableCard.tiedRankAriaLabel' : 'tableCard.rankAriaLabel',
+        { rank },
+      ),
+    };
   }
 
   private descriptionParamsFor(

@@ -49,8 +49,26 @@
             <th scope="col" class="name-column">
               {{ primaryColumnLabelKey() | translate }}
             </th>
-            <th scope="col" class="value-column">
+            <th
+              scope="col"
+              class="value-column"
+              [attr.aria-label]="
+                hasValueColumnHelp() ? (valueColumnAssistiveLabelKey() | translate) : null
+              "
+            >
+              @if (hasValueColumnHelp()) {
+              <span
+                class="table-card-column-label"
+                [class.table-card-column-label--focusable]="valueColumnTooltipEnabled()"
+                [matTooltip]="valueColumnTooltipKey() ? (valueColumnTooltipKey() | translate) : ''"
+                [matTooltipDisabled]="!valueColumnTooltipEnabled()"
+                [attr.tabindex]="valueColumnTooltipEnabled() ? '0' : null"
+              >
+                {{ valueColumnLabelKey() | translate }}
+              </span>
+              } @else {
               {{ valueColumnLabelKey() | translate }}
+              }
             </th>
             @if (showDetails()) {
             <th scope="col" class="info-column">
@@ -71,7 +89,21 @@
             [class.table-card-row--emphasized]="row.emphasized"
           >
             <td class="primary-cell">
-              {{ row.primaryText }}
+              <div class="primary-cell-content">
+                @if (row.rank; as rank) {
+                <span class="primary-rank">
+                  @if (rank.ariaLabel) {
+                  <span class="sr-only">{{ rank.ariaLabel }}</span>
+                  <span aria-hidden="true">{{ rank.text }}</span>
+                  } @else {
+                  {{ rank.text }}
+                  }
+                </span>
+                }
+                <span class="primary-text">
+                  {{ row.primaryText }}
+                </span>
+              </div>
             </td>
             <td class="value-column">
               {{ row.value }}

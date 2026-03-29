@@ -222,6 +222,7 @@ Local rule of thumb:
 - Prefer normal local mode against the live backend
 - Do **not** set `CI=true` for routine local verification
 - Use the CI/fixture mode only when you intentionally want the mocked CI behavior
+- If you need a real local `CI=true` run and `http://localhost:4200` is already occupied by a manually started frontend, stop that server first so Playwright can start the CI-mode web server itself
 - If the backend on `localhost:3000` is not running in a paired session, ask the user to start it instead of swapping local verification over to CI-mode fixtures
 - When Playwright assertions need visible Finnish UI copy, source shared labels from `public/i18n/fi.json` through the E2E config helpers instead of duplicating hard-coded strings in test constants
 
@@ -286,7 +287,7 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
 - **career.spec.ts** - Career listings and highlights
   - Career route shell and global-navigation entry
   - Player/goalie/highlights tab switching
-  - Highlights section switching between `Sekalaiset` and `Siirrot`
+  - Highlights grouped-section jump navigation and card paging
   - Search and sort behavior in the virtualized career table
   - Server-paged highlight card behavior
   - Route-specific shell behavior (no stats controls/drawer)
@@ -483,6 +484,7 @@ Re-capture fixtures when:
 
 1. **New E2E tests** need API endpoints or parameter combinations not yet captured — add matching entries to `buildFixtureList()` in `e2e/scripts/capture-fixtures.ts`, then re-run
 2. **New season starts** (regular or playoffs) — the capture script resolves season indices dynamically, so a re-run picks up the new data automatically
+3. **Existing UI behavior changes which request variant the test uses** — for example different pagination windows, `skip`/`take` values, tabs, report types, or filters. If a touched flow can change the request shape in CI fixture mode, update either the captured fixture list or the route-mock compatibility logic and verify the affected Playwright coverage in CI mode before considering the change done
 
 ```bash
 # Requires backend running on localhost:3000
@@ -490,6 +492,13 @@ npm run e2e:capture-fixtures
 ```
 
 This fetches the API responses the E2E tests depend on and saves them as JSON files in `e2e/fixtures/data/`. Commit the updated fixtures alongside your changes.
+
+CI fixture hygiene checklist:
+
+1. If a feature changes the request URL or query params used by an existing E2E path, assume fixture coverage may need attention even if no new test file was added
+2. Check `e2e/scripts/capture-fixtures.ts` and `e2e/mocks/api-mock.ts` together: the capture script defines what gets stored, while the route mock defines how runtime requests are matched back to fixtures
+3. Prefer capturing the exact new request combination when practical; use compatibility/fallback logic only when the UI legitimately aggregates data from already captured fixture pages
+4. Before closing the batch, run the relevant Playwright coverage in real CI mode when possible so fixture mismatches surface locally instead of first failing in GitHub Actions
 
 ## Writing New Tests
 

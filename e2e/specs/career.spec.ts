@@ -8,8 +8,7 @@ import {
   TAB_LABELS,
 } from '../config/test-data';
 import {
-  GENERAL_CAREER_HIGHLIGHT_CARD_TYPES,
-  TRANSACTION_CAREER_HIGHLIGHT_CARD_TYPES,
+  CAREER_HIGHLIGHT_CARD_TYPES,
 } from '../../src/app/career/highlights/career-highlights.constants';
 
 test.describe('Career listings', () => {
@@ -35,8 +34,36 @@ test.describe('Career listings', () => {
     await expect(page).toHaveURL(/\/career\/highlights$/);
     await expect(highlightsTab).toHaveAttribute('aria-selected', 'true');
     const highlightCards = page.locator('app-table-card');
-    await expect(highlightCards).toHaveCount(GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length);
-    for (let index = 0; index < GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length; index += 1) {
+    const highlightsJumpNav = page.getByRole('navigation', {
+      name: fi('career.highlights.jumpNavAriaLabel'),
+    });
+    await expect(highlightCards).toHaveCount(CAREER_HIGHLIGHT_CARD_TYPES.length);
+    await expect(
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.ACHIEVEMENTS,
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.JOURNEYS,
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.LONG_STAYS,
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(
+      highlightsJumpNav.getByRole('button', {
+        name: CAREER_HIGHLIGHT_SECTION_LABELS.TRANSACTIONS,
+        exact: true,
+      }),
+    ).toBeVisible();
+
+    for (let index = 0; index < CAREER_HIGHLIGHT_CARD_TYPES.length; index += 1) {
       const card = highlightCards.nth(index);
       await card.scrollIntoViewIfNeeded();
       await expect(card.getByRole('table')).toBeVisible();
@@ -78,23 +105,26 @@ test.describe('Career listings', () => {
     expect(await goalieRows.count()).toBeGreaterThan(0);
   });
 
-  test('switches career highlights to transactions and renders the transaction cards', async ({ page }) => {
+  test('scrolls career highlights to the transactions section and keeps all grouped sections available', async ({ page }) => {
     await page.goto('/career/highlights');
     await expect(page).toHaveURL(/\/career\/highlights$/);
 
-    const generalSection = page.getByRole('radio', {
-      name: CAREER_HIGHLIGHT_SECTION_LABELS.GENERAL,
+    const highlightsJumpNav = page.getByRole('navigation', {
+      name: fi('career.highlights.jumpNavAriaLabel'),
     });
-    const transactionsSection = page.getByRole('radio', {
+    const transactionsSection = highlightsJumpNav.getByRole('button', {
       name: CAREER_HIGHLIGHT_SECTION_LABELS.TRANSACTIONS,
+      exact: true,
     });
 
-    await expect(generalSection).toHaveAttribute('aria-checked', 'true');
     await transactionsSection.click();
-    await expect(transactionsSection).toHaveAttribute('aria-checked', 'true');
+    await expect(page).toHaveURL(/\/career\/highlights#career-highlights-section-transactions$/);
 
     const highlightCards = page.locator('app-table-card');
-    await expect(highlightCards).toHaveCount(TRANSACTION_CAREER_HIGHLIGHT_CARD_TYPES.length);
+    await expect(highlightCards).toHaveCount(CAREER_HIGHLIGHT_CARD_TYPES.length);
+    await expect(
+      page.getByRole('heading', { level: 4, name: CAREER_HIGHLIGHT_SECTION_LABELS.TRANSACTIONS }),
+    ).toBeVisible();
     await expect(
       page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.MOST_TRADES })
     ).toBeVisible();
@@ -107,11 +137,14 @@ test.describe('Career listings', () => {
     await expect(
       page.getByRole('heading', { name: CAREER_HIGHLIGHT_CARD_LABELS.REUNION_KING })
     ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: fi('career.highlights.cards.mostTeamsPlayed.title') }),
+    ).toBeVisible();
 
-    for (let index = 0; index < TRANSACTION_CAREER_HIGHLIGHT_CARD_TYPES.length; index += 1) {
-      const card = highlightCards.nth(index);
-      await card.scrollIntoViewIfNeeded();
-      await expect(card.getByRole('table')).toBeVisible();
-    }
+    const transactionsCard = page.getByRole('heading', {
+      name: CAREER_HIGHLIGHT_CARD_LABELS.MOST_TRADES,
+    }).locator('xpath=ancestor::app-table-card[1]');
+    await transactionsCard.scrollIntoViewIfNeeded();
+    await expect(transactionsCard.getByRole('table')).toBeVisible();
   });
 });

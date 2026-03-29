@@ -33,49 +33,7 @@
 }
 
 .draft-statistics-jump-nav {
-  position: sticky;
-  top: 8px;
-  z-index: 3;
-  display: flex;
-  gap: 10px;
-  margin: 16px 24px 0;
-  padding: 8px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  border: 1px solid color-mix(in srgb, var(--mat-sys-outline) 65%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--mat-sys-surface) 88%, transparent);
-  backdrop-filter: blur(14px);
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.draft-statistics-jump-nav::-webkit-scrollbar {
-  display: none;
-}
-
-.draft-statistics-jump-link {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.55rem 1rem;
-  border-radius: 999px;
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.92rem;
-  font-weight: 600;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.draft-statistics-jump-link:hover,
-.draft-statistics-jump-link:focus-visible {
-  background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
-  color: var(--mat-sys-on-surface);
-  outline: none;
+  --section-jump-nav-margin: 16px 24px 0;
 }
 
 .draft-statistics-section {
@@ -133,8 +91,8 @@
   }
 
   .draft-statistics-jump-nav {
-    margin: 12px 8px 0;
-    top: 6px;
+    --section-jump-nav-margin: 12px 8px 0;
+    --section-jump-nav-sticky-top: 6px;
   }
 
   .draft-statistics-section {

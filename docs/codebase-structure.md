@@ -84,6 +84,10 @@ These routes render under the lighter root shell and intentionally avoid dashboa
 
 - compact paged card/table presentation for highlight and draft statistics views
 
+### `src/app/shared/section-jump-nav/`
+
+- shared sticky browse-route pill navigation with overflow cues for horizontally scrollable section jump bars
+
 ### `src/app/shared/player-card/`
 
 - player/goalie dialog, tabbed details, graphs, deep-link support, and in-dialog navigation

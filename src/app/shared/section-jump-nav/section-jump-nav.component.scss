@@ -1,0 +1,98 @@
+:host {
+  --section-jump-nav-margin: 16px 24px 0;
+  --section-jump-nav-sticky-top: 8px;
+  --section-jump-nav-z-index: 3;
+  --section-jump-nav-surface: color-mix(in srgb, var(--mat-sys-surface) 88%, transparent);
+  --section-jump-nav-fade-width: 3rem;
+
+  position: sticky;
+  top: var(--section-jump-nav-sticky-top);
+  z-index: var(--section-jump-nav-z-index);
+  display: block;
+  margin: var(--section-jump-nav-margin);
+}
+
+.section-jump-nav {
+  position: relative;
+  border: 1px solid color-mix(in srgb, var(--mat-sys-outline) 65%, transparent);
+  border-radius: 999px;
+  background: var(--section-jump-nav-surface);
+  backdrop-filter: blur(14px);
+}
+
+.section-jump-nav::before,
+.section-jump-nav::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  width: var(--section-jump-nav-fade-width);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease-out;
+}
+
+.section-jump-nav::before {
+  left: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--section-jump-nav-surface) 15%,
+    color-mix(in srgb, var(--mat-sys-surface) 0%, transparent) 100%
+  );
+}
+
+.section-jump-nav::after {
+  right: 1px;
+  background: linear-gradient(
+    270deg,
+    var(--section-jump-nav-surface) 15%,
+    color-mix(in srgb, var(--mat-sys-surface) 0%, transparent) 100%
+  );
+}
+
+.section-jump-nav--can-scroll-start::before,
+.section-jump-nav--can-scroll-end::after {
+  opacity: 1;
+}
+
+.section-jump-nav-scroll {
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  touch-action: pan-x;
+}
+
+.section-jump-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.section-jump-nav-link {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mat-sys-on-surface-variant);
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.section-jump-nav-link:hover,
+.section-jump-nav-link:focus-visible,
+.section-jump-nav-link--active {
+  background: color-mix(in srgb, var(--mat-sys-primary) 12%, transparent);
+  color: var(--mat-sys-on-surface);
+  outline: none;
+}

@@ -231,6 +231,7 @@ npx playwright test
 - Requires the backend API on `http://localhost:3000`
 - Playwright starts `npm start` automatically when needed, or reuses an existing frontend on `http://localhost:4200`
 - Do not use `CI=true` for routine local runs; that switches to the repo's fixture-backed CI flow instead of using your live local backend
+- If you need to reproduce real CI fixture mode locally with `CI=true`, free up `http://localhost:4200` first so Playwright can start the CI-mode web server instead of reusing your dev session
 - If the backend is not running during a collaborative session, ask the user to start it before trying fallback approaches
 
 Useful local variants:

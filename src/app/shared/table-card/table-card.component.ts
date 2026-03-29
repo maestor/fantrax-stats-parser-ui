@@ -33,6 +33,8 @@ export class TableCardComponent {
   readonly descriptionParams = input<Readonly<Record<string, number | string>> | undefined>();
   readonly primaryColumnLabelKey = input.required<string>();
   readonly valueColumnLabelKey = input.required<string>();
+  readonly valueColumnTooltipKey = input<string | undefined>();
+  readonly valueColumnAriaLabelKey = input<string | undefined>();
   readonly showDetails = input(true);
   readonly deferred = input(false);
   readonly rows = input.required<readonly TableCardRow[]>();
@@ -52,6 +54,15 @@ export class TableCardComponent {
   readonly pageEnd = computed(() => (this.hasRows() ? this.skip() + this.rows().length : 0));
   readonly hasDescription = computed(
     () => !this.descriptionRequiresParams() || Boolean(this.descriptionParams()),
+  );
+  readonly valueColumnAssistiveLabelKey = computed(
+    () => this.valueColumnAriaLabelKey() ?? this.valueColumnTooltipKey(),
+  );
+  readonly hasValueColumnHelp = computed(
+    () => Boolean(this.valueColumnAssistiveLabelKey()),
+  );
+  readonly valueColumnTooltipEnabled = computed(
+    () => Boolean(this.valueColumnTooltipKey()),
   );
   readonly titleId = `${this.instanceId}-title`;
   readonly descriptionId = `${this.instanceId}-description`;
