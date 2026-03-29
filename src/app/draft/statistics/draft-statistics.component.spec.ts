@@ -48,6 +48,10 @@ function createEntryDraftGroup(index: number): EntryDraftTeamGroup {
 const statisticsGroupsFixture = Array.from({ length: 12 }, (_, index) => createEntryDraftGroup(index));
 
 describe('DraftStatisticsComponent', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   function createFooterVisibilityMock() {
     return {
       currentCycle: vi.fn(() => 9),
@@ -83,11 +87,20 @@ describe('DraftStatisticsComponent', () => {
     });
   }
 
-  it('renders all draft statistics cards and paginates the ranked teams', async () => {
+  it('renders grouped draft statistics cards and paginates the ranked teams', async () => {
     const footerVisibilityService = createFooterVisibilityMock();
 
     const { fixture } = await renderComponent({ footerVisibilityService });
 
+    expect(
+      await screen.findByRole('heading', { name: 'draft.statistics.sections.pickVolume.title' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'draft.statistics.sections.outcomes.title' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'draft.statistics.sections.rounds.title' }),
+    ).toBeInTheDocument();
     expect(
       await screen.findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' }),
     ).toBeInTheDocument();
@@ -98,6 +111,8 @@ describe('DraftStatisticsComponent', () => {
     expect(
       screen.getByRole('heading', { name: 'draft.statistics.cards.playedForDraftingTeamPercent.title' }),
     ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'draft.statistics.sections.pickVolume.title' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: 'draft.statistics.highlightTeam.label' })).toBeInTheDocument();
     expect(fixture.componentInstance.cards.map((card) => card.id)).toEqual([
       ...DRAFT_STATISTICS_CARD_IDS,
     ]);
@@ -115,7 +130,8 @@ describe('DraftStatisticsComponent', () => {
 
     const totalPicksQueries = within(totalPicksCard as HTMLElement);
     expect(totalPicksQueries.getByText(totalPicksState!.rows[0].primaryText)).toBeInTheDocument();
-    expect(totalPicksQueries.queryByText(totalPicksState!.allRows[10].primaryText)).not.toBeInTheDocument();
+    expect(totalPicksQueries.getByText('1. Team 1')).toBeInTheDocument();
+    expect(totalPicksQueries.queryByText('11. Team 11')).not.toBeInTheDocument();
 
     const playedInLeaguePercentCard = screen
       .getByRole('heading', { name: 'draft.statistics.cards.playedInLeaguePercent.title' })
@@ -129,15 +145,92 @@ describe('DraftStatisticsComponent', () => {
     expect(playedForDraftingTeamPercentCard).not.toBeNull();
     expect(within(playedForDraftingTeamPercentCard as HTMLElement).getByText('30 %')).toBeInTheDocument();
 
-    fireEvent.click(totalPicksQueries.getByRole('button', { name: 'tableCard.nextPage' }));
+    fireEvent.click(totalPicksQueries.getByRole('button', {
+      name: /draft\.statistics\.cards\.totalPicks\.title.*tableCard\.next/,
+    }));
 
     await waitForBehaviorAssertion(fixture, () => {
       const pagedCard = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
       expect(pagedCard?.skip).toBe(10);
-      expect(totalPicksQueries.getByText(totalPicksState!.allRows[10].primaryText)).toBeInTheDocument();
+      expect(totalPicksQueries.getByText('11. Team 11')).toBeInTheDocument();
     });
 
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(9);
+  });
+
+  it('highlights a selected team and jumps cards to the matching ranking page', async () => {
+    const { fixture } = await renderComponent();
+
+    fireEvent.click(screen.getByRole('combobox', { name: 'draft.statistics.highlightTeam.label' }));
+    fireEvent.click(await screen.findByRole('option', { name: 'Team 12' }));
+
+    const totalPicksCard = screen.getByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' })
+      .closest('app-table-card');
+    expect(totalPicksCard).not.toBeNull();
+
+    await waitForBehaviorAssertion(fixture, () => {
+      const cardState = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
+      expect(fixture.componentInstance.highlightedTeamId).toBe('12');
+      expect(cardState?.skip).toBe(10);
+      expect(cardState?.rows.some((row) => row.primaryText === '12. Team 12' && row.emphasized)).toBe(true);
+      expect(within(totalPicksCard as HTMLElement).getByText('12. Team 12').closest('tr')).toHaveClass('table-card-row--emphasized');
+    });
+
+    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
+      draftStatisticsHighlightedTeamId: '12',
+    });
+  });
+
+  it('restores the highlighted team from persisted settings', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '1',
+      startFromSeason: null,
+      topControlsExpanded: true,
+      season: null,
+      reportType: 'regular',
+      draftStatisticsHighlightedTeamId: '12',
+    }));
+
+    const { fixture } = await renderComponent();
+    const totalPicksCard = await screen.findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' })
+      .then((heading) => heading.closest('app-table-card'));
+
+    expect(totalPicksCard).not.toBeNull();
+
+    await waitForBehaviorAssertion(fixture, () => {
+      const cardState = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
+      expect(screen.getByRole('combobox', { name: 'draft.statistics.highlightTeam.label' })).toHaveTextContent('Team 12');
+      expect(cardState?.skip).toBe(10);
+      expect(within(totalPicksCard as HTMLElement).getByText('12. Team 12').closest('tr')).toHaveClass('table-card-row--emphasized');
+    });
+  });
+
+  it('keeps section jumps on the current route and scrolls to the target section', async () => {
+    const { fixture } = await renderComponent();
+    const outcomesSection = fixture.nativeElement.querySelector('#draft-statistics-section-outcomes') as HTMLElement | null;
+
+    expect(outcomesSection).not.toBeNull();
+
+    const scrollIntoView = vi.fn();
+    Object.defineProperty(outcomesSection, 'scrollIntoView', {
+      value: scrollIntoView,
+      configurable: true,
+    });
+
+    const replaceStateSpy = vi.spyOn(window.history, 'replaceState');
+
+    fireEvent.click(screen.getByRole('button', { name: 'draft.statistics.sections.outcomes.title' }));
+
+    expect(replaceStateSpy).toHaveBeenCalledWith(
+      null,
+      '',
+      `${window.location.pathname}${window.location.search}#draft-statistics-section-outcomes`,
+    );
+    expect(scrollIntoView).toHaveBeenCalledWith({
+      block: 'start',
+      inline: 'nearest',
+      behavior: 'smooth',
+    });
   });
 
   it('shows a loading state until the statistics response resolves', async () => {

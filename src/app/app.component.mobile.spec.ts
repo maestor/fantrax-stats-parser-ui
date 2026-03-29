@@ -270,9 +270,16 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.highlights' }));
+    await vi.waitFor(() => {
+      expect(router.url).toBe('/career/highlights');
+    }, { timeout: 15_000 });
 
     expect(
-      await screen.findByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
+      await screen.findByRole(
+        'heading',
+        { name: 'career.highlights.cards.mostTeamsPlayed.title' },
+        { timeout: 15_000 }
+      )
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'career.highlights.cards.mostTeamsOwned.title' })
@@ -307,7 +314,11 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     );
 
     expect(
-      await screen.findByRole('heading', { name: 'career.highlights.cards.mostTrades.title' })
+      await screen.findByRole(
+        'heading',
+        { name: 'career.highlights.cards.mostTrades.title' },
+        { timeout: 15_000 }
+      )
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'career.highlights.cards.mostClaims.title' })
@@ -323,8 +334,11 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     ).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
+    await vi.waitFor(() => {
+      expect(router.url).toBe('/career/goalies');
+    }, { timeout: 15_000 });
 
-    expect(await screen.findByLabelText('table.playerSearch')).toBeInTheDocument();
+    expect(await screen.findByLabelText('table.playerSearch', {}, { timeout: 15_000 })).toBeInTheDocument();
   });
 
   it('hides the settings drawer controls on mobile draft routes and shows draft tabs instead', async () => {

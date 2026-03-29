@@ -1,6 +1,7 @@
 import { Locator } from '@playwright/test';
 
 import { test, expect } from '../fixtures/test-fixture';
+import { fi } from '../config/i18n';
 import {
   CAREER_HIGHLIGHT_CARD_LABELS,
   CAREER_HIGHLIGHT_SECTION_LABELS,
@@ -41,7 +42,9 @@ test.describe('Career listings', () => {
       await expect(card.getByRole('table')).toBeVisible();
     }
 
-    const nextPageButtons = page.getByRole('button', { name: 'Näytä seuraavat rivit' });
+    const nextPageButtons = page.getByRole('button', {
+      name: new RegExp(fi('tableCard.next')),
+    });
     let pagedCard: Locator | null = null;
     let pagedCardFirstRow: Locator | null = null;
 

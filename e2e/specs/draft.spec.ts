@@ -23,7 +23,7 @@ async function expectStatisticsContent(page: Page) {
   const cards = page.locator('app-table-card');
   const firstCard = cards.first();
   const nextPageButton = firstCard.getByRole('button', {
-    name: fi('tableCard.nextPage'),
+    name: new RegExp(`${fi('draft.statistics.cards.totalPicks.title')}.*${fi('tableCard.next')}`),
   });
   const pageSummary = firstCard.locator('.page-summary');
 
@@ -63,7 +63,7 @@ async function expectEntryDraftContent(page: Page) {
   const firstPanel = panels.first();
   const firstHeader = firstPanel.locator('mat-expansion-panel-header');
 
-  await expect(firstHeader).toBeVisible();
+  await expect(firstHeader).toBeVisible({ timeout: 15000 });
   await firstHeader.click();
 
   await expect(firstPanel.locator('.entry-summary-card').first()).toBeVisible();

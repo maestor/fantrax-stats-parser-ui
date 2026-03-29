@@ -3,24 +3,77 @@
     {{ 'draft.tabs.statistics' | translate }}
   </h3>
 
-  <div class="draft-statistics-grid">
-    @for (card of cards; track card.id) {
-      <app-table-card
-        class="draft-statistics-card"
-        [titleKey]="card.titleKey"
-        [descriptionKey]="card.descriptionKey"
-        primaryColumnLabelKey="draft.statistics.columns.team"
-        [valueColumnLabelKey]="card.valueColumnLabelKey"
-        [showDetails]="false"
-        [rows]="card.rows"
-        [loading]="loading"
-        [apiError]="apiError"
-        [skip]="card.skip"
-        [take]="pageSize"
-        [total]="card.total"
-        (previousPageRequested)="loadPreviousPage(card.id)"
-        (nextPageRequested)="loadNextPage(card.id)"
-      />
-    }
+  <div class="draft-statistics-toolbar">
+    <p class="draft-statistics-intro">
+      {{ 'draft.statistics.intro' | translate }}
+    </p>
+
+    <mat-form-field class="draft-statistics-highlight-field" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>{{ 'draft.statistics.highlightTeam.label' | translate }}</mat-label>
+      <mat-select
+        [value]="highlightedTeamId"
+        [disabled]="loading || apiError || teams.length === 0"
+        (selectionChange)="onHighlightedTeamChange($event)"
+      >
+        <mat-option [value]="null">
+          {{ 'draft.statistics.highlightTeam.clear' | translate }}
+        </mat-option>
+        @for (team of teams; track team.id) {
+          <mat-option [value]="team.id">
+            {{ team.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
   </div>
+
+  <nav class="draft-statistics-jump-nav" [attr.aria-label]="'draft.statistics.jumpNavAriaLabel' | translate">
+    @for (section of sectionLinks; track section.id) {
+      <button
+        class="draft-statistics-jump-link"
+        type="button"
+        (click)="scrollToSection(section.anchorId)"
+      >
+        {{ section.titleKey | translate }}
+      </button>
+    }
+  </nav>
+
+  @for (section of sections; track section.id) {
+    <section
+      class="draft-statistics-section"
+      [attr.id]="section.anchorId"
+      [attr.aria-labelledby]="section.headingId"
+    >
+      <header class="draft-statistics-section-header">
+        <h4 class="draft-statistics-section-title" [id]="section.headingId">
+          {{ section.titleKey | translate }}
+        </h4>
+        <p class="draft-statistics-section-description">
+          {{ section.descriptionKey | translate }}
+        </p>
+      </header>
+
+      <div class="draft-statistics-grid">
+        @for (card of section.cards; track card.id) {
+          <app-table-card
+            class="draft-statistics-card"
+            [titleKey]="card.titleKey"
+            [descriptionKey]="card.descriptionKey"
+            primaryColumnLabelKey="draft.statistics.columns.team"
+            [valueColumnLabelKey]="card.valueColumnLabelKey"
+            [showDetails]="false"
+            [rows]="card.rows"
+            [loading]="loading"
+            [apiError]="apiError"
+            [skip]="card.skip"
+            [take]="pageSize"
+            [total]="card.total"
+            (previousPageRequested)="loadPreviousPage(card.id)"
+            (nextPageRequested)="loadNextPage(card.id)"
+          />
+        }
+      </div>
+    </section>
+  }
 </section>

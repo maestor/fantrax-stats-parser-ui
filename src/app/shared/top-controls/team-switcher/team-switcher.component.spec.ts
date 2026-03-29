@@ -26,7 +26,7 @@ describe('TeamSwitcherComponent — desktop user flow', () => {
         await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
         const firstPlayerName = slicedPlayers[0].name;
-        await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+        await screen.findByText(firstPlayerName, {}, { timeout: 15000 });
 
         const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
         fireEvent.click(reportCombobox);

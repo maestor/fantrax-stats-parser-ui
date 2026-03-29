@@ -70,12 +70,24 @@ describe('TableCardComponent', () => {
     expect(
       await screen.findByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
     ).toBeInTheDocument();
-    expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(
+      screen.getByRole('table', {
+        name: /career\.highlights\.cards\.mostTeamsPlayed\.title.*career\.highlights\.cards\.mostTeamsPlayed\.description/,
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByText('F Jamie Benn')).toBeInTheDocument();
     expect(screen.getByText('5')).toBeInTheDocument();
     expect(screen.getByText('tableCard.paginationSummary')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'tableCard.previousPage' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'tableCard.nextPage' })).toBeEnabled();
+    expect(
+      screen.getByRole('button', {
+        name: /career\.highlights\.cards\.mostTeamsPlayed\.title.*tableCard\.previous/,
+      }),
+    ).toBeDisabled();
+    expect(
+      screen.getByRole('button', {
+        name: /career\.highlights\.cards\.mostTeamsPlayed\.title.*tableCard\.next/,
+      }),
+    ).toBeEnabled();
   });
 
   it('shows an empty-state message when there are no rows and the card is not loading', async () => {

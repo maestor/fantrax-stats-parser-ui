@@ -90,6 +90,7 @@ Do not collapse these into a single "universal" table component unless the produ
 
 - Shared compact read-only card/table used by highlight and draft statistics views
 - Keep loading, empty, error, tooltip, and paging behavior consistent across consumers
+- Preserve its semantic table labeling and optional row emphasis hooks when extending browse-oriented ranking views
 
 ### `StartFromSeasonSwitcherComponent` And `StartFromSeasonSyncService`
 

@@ -64,7 +64,7 @@ mat-card-header {
 
 .table-shell {
   min-height: 440px;
-  overflow-x: none;
+  overflow-x: clip;
 }
 
 .table-card-table {
@@ -95,6 +95,20 @@ mat-card-header {
 
 .table-card-table tbody tr:last-child td {
   border-bottom: 0;
+}
+
+.table-card-table tbody tr.table-card-row--emphasized td {
+  background: color-mix(in srgb, var(--mat-sys-primary-container) 72%, transparent);
+}
+
+.table-card-table tbody tr.table-card-row--emphasized td:first-child {
+  box-shadow: inset 3px 0 0 var(--mat-sys-primary);
+}
+
+.table-card-table tbody tr.table-card-row--emphasized .primary-cell,
+.table-card-table tbody tr.table-card-row--emphasized .value-column {
+  color: var(--mat-sys-on-primary-container);
+  font-weight: 700;
 }
 
 .table-card-table tbody tr:focus {

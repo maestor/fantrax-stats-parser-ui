@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,16 +9,21 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ApiService, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { SettingsService } from '@services/settings.service';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
 
 import {
   DRAFT_STATISTICS_CARD_IDS,
   DraftStatisticsCardId,
+  DRAFT_STATISTICS_SECTIONS,
+  DraftStatisticsSectionId,
 } from './draft-statistics.constants';
 
 const PAGE_SIZE = 10;
@@ -44,7 +49,11 @@ type DraftStatisticDefinition = {
   readonly formatValue?: (value: number) => number | string;
 };
 
-type RankedTableCardRow = TableCardRow & {
+type DraftStatisticSourceRow = {
+  readonly key: string;
+  readonly teamId: string;
+  readonly teamName: string;
+  readonly value: number | string;
   readonly rawValue: number;
 };
 
@@ -53,11 +62,31 @@ type DraftStatisticsCard = {
   readonly titleKey: string;
   readonly descriptionKey: string;
   readonly valueColumnLabelKey: string;
-  readonly allRows: readonly RankedTableCardRow[];
+  readonly allRows: readonly DraftStatisticSourceRow[];
   readonly rows: readonly TableCardRow[];
   readonly skip: number;
   readonly total: number;
 };
+
+type DraftStatisticsSection = {
+  readonly id: DraftStatisticsSectionId;
+  readonly titleKey: string;
+  readonly descriptionKey: string;
+  readonly anchorId: string;
+  readonly headingId: string;
+  readonly cards: readonly DraftStatisticsCard[];
+};
+
+type DraftStatisticsTeamOption = {
+  readonly id: string;
+  readonly name: string;
+};
+
+const draftStatisticsSectionDefinitions = DRAFT_STATISTICS_SECTIONS.map((section) => ({
+  ...section,
+  anchorId: `draft-statistics-section-${section.id}`,
+  headingId: `draft-statistics-section-${section.id}-heading`,
+}));
 
 const draftStatisticDefinitionsById: Record<
   DraftStatisticsCardId,
@@ -168,28 +197,43 @@ const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = DRAFT_STA
 @Component({
   selector: 'app-draft-statistics',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TableCardComponent, TranslateModule],
+  imports: [
+    MatFormFieldModule,
+    MatSelectModule,
+    TableCardComponent,
+    TranslateModule,
+  ],
   templateUrl: './draft-statistics.component.html',
   styleUrl: './draft-statistics.component.scss',
 })
 export class DraftStatisticsComponent implements OnInit {
+  private readonly document = inject(DOCUMENT);
   private readonly apiService = inject(ApiService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
+  private readonly settingsService = inject(SettingsService);
   private readonly platformId = inject(PLATFORM_ID);
 
   readonly pageSize = PAGE_SIZE;
+  readonly sectionLinks = draftStatisticsSectionDefinitions;
 
-  cards: DraftStatisticsCard[] = this.createInitialCards();
+  sections: DraftStatisticsSection[] = this.createInitialSections();
+  teams: DraftStatisticsTeamOption[] = [];
   loading = true;
   apiError = false;
+  highlightedTeamId: string | null = null;
   private footerVisibilityCycle = 0;
+
+  get cards(): DraftStatisticsCard[] {
+    return this.sections.flatMap((section) => [...section.cards]);
+  }
 
   ngOnInit(): void {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
     this.loading = true;
     this.apiError = false;
+    this.highlightedTeamId = this.settingsService.draftStatisticsHighlightedTeamId;
 
     if (!isPlatformBrowser(this.platformId)) {
       this.footerVisibilityService.markReady(this.footerVisibilityCycle);
@@ -200,19 +244,73 @@ export class DraftStatisticsComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (groups) => {
-          this.cards = this.buildCards(groups);
+          this.teams = this.buildTeamOptions(groups);
+          if (this.highlightedTeamId !== null && !this.teams.some((team) => team.id === this.highlightedTeamId)) {
+            this.highlightedTeamId = null;
+            this.settingsService.setDraftStatisticsHighlightedTeamId(null);
+          }
+          this.sections = this.buildSections(groups);
           this.loading = false;
           this.changeDetectorRef.markForCheck();
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
         error: () => {
-          this.cards = this.createInitialCards();
+          this.sections = this.createInitialSections();
+          this.teams = [];
+          this.highlightedTeamId = null;
           this.apiError = true;
           this.loading = false;
           this.changeDetectorRef.markForCheck();
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
       });
+  }
+
+  onHighlightedTeamChange(event: MatSelectChange): void {
+    const selectedTeamId = typeof event.value === 'string' && event.value.length > 0
+      ? event.value
+      : null;
+
+    this.highlightedTeamId = selectedTeamId;
+    this.settingsService.setDraftStatisticsHighlightedTeamId(selectedTeamId);
+    this.sections = this.sections.map((section) => ({
+      ...section,
+      cards: section.cards.map((card) => {
+        const nextSkip = selectedTeamId === null
+          ? 0
+          : this.getTeamPageSkip(card.allRows, selectedTeamId);
+
+        return {
+          ...card,
+          skip: nextSkip,
+          rows: this.buildVisibleRows(card.allRows, nextSkip),
+        };
+      }),
+    }));
+    this.changeDetectorRef.markForCheck();
+  }
+
+  scrollToSection(anchorId: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    const sectionElement = this.document.getElementById(anchorId);
+    if (!sectionElement) {
+      return;
+    }
+
+    const location = this.document.defaultView?.location;
+    if (location) {
+      const nextUrl = `${location.pathname}${location.search}#${anchorId}`;
+      this.document.defaultView?.history.replaceState(null, '', nextUrl);
+    }
+
+    sectionElement.scrollIntoView({
+      block: 'start',
+      inline: 'nearest',
+      behavior: 'smooth',
+    });
   }
 
   loadPreviousPage(cardId: DraftStatisticsCardId): void {
@@ -223,9 +321,18 @@ export class DraftStatisticsComponent implements OnInit {
     this.updateCardPage(cardId, PAGE_SIZE);
   }
 
-  private createInitialCards(): DraftStatisticsCard[] {
-    return draftStatisticDefinitions.map((definition) => ({
-      id: definition.id,
+  private createInitialSections(): DraftStatisticsSection[] {
+    return draftStatisticsSectionDefinitions.map((section) => ({
+      ...section,
+      cards: section.cardIds.map((cardId) => this.createInitialCard(cardId)),
+    }));
+  }
+
+  private createInitialCard(cardId: DraftStatisticsCardId): DraftStatisticsCard {
+    const definition = draftStatisticDefinitionsById[cardId];
+
+    return {
+      id: cardId,
       titleKey: definition.titleKey,
       descriptionKey: definition.descriptionKey,
       valueColumnLabelKey: definition.valueColumnLabelKey,
@@ -233,33 +340,60 @@ export class DraftStatisticsComponent implements OnInit {
       rows: [],
       skip: 0,
       total: 0,
+    };
+  }
+
+  private buildSections(groups: EntryDraftTeamGroup[]): DraftStatisticsSection[] {
+    const cardsById = Object.fromEntries(
+      draftStatisticDefinitions.map((definition) => [
+        definition.id,
+        this.buildCard(groups, definition),
+      ]),
+    ) as Record<DraftStatisticsCardId, DraftStatisticsCard>;
+
+    return draftStatisticsSectionDefinitions.map((section) => ({
+      ...section,
+      cards: section.cardIds.map((cardId) => cardsById[cardId]),
     }));
   }
 
-  private buildCards(groups: EntryDraftTeamGroup[]): DraftStatisticsCard[] {
-    return draftStatisticDefinitions.map((definition) => {
-      const allRows = groups
-        .map((group) => this.buildRow(group, definition))
-        .filter((row): row is RankedTableCardRow => row !== null)
-        .sort((left, right) => this.compareRows(left, right, definition.direction));
+  private buildCard(
+    groups: EntryDraftTeamGroup[],
+    definition: DraftStatisticDefinition,
+  ): DraftStatisticsCard {
+    const allRows = groups
+      .map((group) => this.buildSourceRow(group, definition))
+      .filter((row): row is DraftStatisticSourceRow => row !== null)
+      .sort((left, right) => this.compareRows(left, right, definition.direction));
+    const initialSkip = this.highlightedTeamId === null
+      ? 0
+      : this.getTeamPageSkip(allRows, this.highlightedTeamId);
 
-      return {
-        id: definition.id,
-        titleKey: definition.titleKey,
-        descriptionKey: definition.descriptionKey,
-        valueColumnLabelKey: definition.valueColumnLabelKey,
-        allRows,
-        rows: allRows.slice(0, PAGE_SIZE),
-        skip: 0,
-        total: allRows.length,
-      };
-    });
+    return {
+      id: definition.id,
+      titleKey: definition.titleKey,
+      descriptionKey: definition.descriptionKey,
+      valueColumnLabelKey: definition.valueColumnLabelKey,
+      allRows,
+      rows: this.buildVisibleRows(allRows, initialSkip),
+      skip: initialSkip,
+      total: allRows.length,
+    };
   }
 
-  private buildRow(
+  private buildTeamOptions(groups: EntryDraftTeamGroup[]): DraftStatisticsTeamOption[] {
+    return groups
+      .map((group) => ({
+        id: group.team.id,
+        name: group.team.name,
+      }))
+      .sort((left, right) => left.name.localeCompare(right.name, 'fi'));
+  }
+
+  private buildSourceRow(
     group: EntryDraftTeamGroup,
     definition: DraftStatisticDefinition,
-  ): RankedTableCardRow | null {
+  ): DraftStatisticSourceRow | null {
     const rawValue = definition.valueFor(group);
 
     if (rawValue === null) {
@@ -268,15 +402,30 @@ export class DraftStatisticsComponent implements OnInit {
 
     return {
       key: `${definition.id}:${group.team.id}`,
-      primaryText: group.team.name,
+      teamId: group.team.id,
+      teamName: group.team.name,
       value: definition.formatValue ? definition.formatValue(rawValue) : rawValue,
       rawValue,
     };
   }
 
+  private buildVisibleRows(
+    allRows: readonly DraftStatisticSourceRow[],
+    skip: number,
+  ): TableCardRow[] {
+    return allRows
+      .slice(skip, skip + PAGE_SIZE)
+      .map((row, index) => ({
+        key: row.key,
+        primaryText: `${skip + index + 1}. ${row.teamName}`,
+        value: row.value,
+        emphasized: row.teamId === this.highlightedTeamId,
+      }));
+  }
+
   private compareRows(
-    left: RankedTableCardRow,
-    right: RankedTableCardRow,
+    left: DraftStatisticSourceRow,
+    right: DraftStatisticSourceRow,
     direction: SortDirection,
   ): number {
     const valueDifference = direction === 'asc'
@@ -287,26 +436,42 @@ export class DraftStatisticsComponent implements OnInit {
       return valueDifference;
     }
 
-    return left.primaryText.localeCompare(right.primaryText, 'fi');
+    return left.teamName.localeCompare(right.teamName, 'fi');
+  }
+
+  private getTeamPageSkip(
+    allRows: readonly DraftStatisticSourceRow[],
+    teamId: string,
+  ): number {
+    const teamIndex = allRows.findIndex((row) => row.teamId === teamId);
+
+    if (teamIndex < 0) {
+      return 0;
+    }
+
+    return Math.floor(teamIndex / PAGE_SIZE) * PAGE_SIZE;
   }
 
   private updateCardPage(cardId: DraftStatisticsCardId, offset: number): void {
-    this.cards = this.cards.map((card) => {
-      if (card.id !== cardId) {
-        return card;
-      }
+    this.sections = this.sections.map((section) => ({
+      ...section,
+      cards: section.cards.map((card) => {
+        if (card.id !== cardId) {
+          return card;
+        }
 
-      const maxSkip = card.total <= PAGE_SIZE
-        ? 0
-        : Math.floor((card.total - 1) / PAGE_SIZE) * PAGE_SIZE;
-      const nextSkip = Math.min(Math.max(card.skip + offset, 0), maxSkip);
+        const maxSkip = card.total <= PAGE_SIZE
+          ? 0
+          : Math.floor((card.total - 1) / PAGE_SIZE) * PAGE_SIZE;
+        const nextSkip = Math.min(Math.max(card.skip + offset, 0), maxSkip);
 
-      return {
-        ...card,
-        skip: nextSkip,
-        rows: card.allRows.slice(nextSkip, nextSkip + PAGE_SIZE),
-      };
-    });
+        return {
+          ...card,
+          skip: nextSkip,
+          rows: this.buildVisibleRows(card.allRows, nextSkip),
+        };
+      }),
+    }));
     this.changeDetectorRef.markForCheck();
   }
 }

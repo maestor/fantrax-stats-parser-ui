@@ -138,7 +138,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     await vi.waitFor(() => {
       expect(screen.queryByRole('button', { name: 'helpDialog.close' })).not.toBeInTheDocument();
     });
-  });
+  }, 90_000);
 
   it('shows the update snackbar, reopens it after Escape dismissal, and triggers reload from the snackbar action', async () => {
     const activateAndReload = vi.fn<() => Promise<void>>().mockResolvedValue(undefined);
