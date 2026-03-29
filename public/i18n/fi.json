@@ -96,7 +96,7 @@
       "statistics": "Tilastot"
     },
     "statistics": {
-      "intro": "Korosta halutessasi joukkueesi. Tieto tallentuu selaimen muistiin.",
+      "intro": "Korosta halutessasi joukkue (tallentuu selaimeen).",
       "jumpNavAriaLabel": "Draftitilastojen osiot",
       "highlightTeam": {
         "label": "Korosta joukkue",
