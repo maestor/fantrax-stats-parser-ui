@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -111,9 +111,7 @@ export class SeasonSwitcherComponent {
   );
   readonly seasons = computed(() => this.seasonState().data);
   readonly hasResolvedSeasonOptions = computed(() => this.seasons().length > 0);
-  readonly selectValue = computed<number | 'all' | null>(() =>
-    this.hasResolvedSeasonOptions() ? this.selectedSeason() : null
-  );
+  readonly selectValue = signal<number | 'all' | null>(null);
   readonly selectedSeasonText = computed<string | undefined>(() => {
     const selectedSeason = this.selectedSeason();
     if (selectedSeason === 'all') {
@@ -124,6 +122,25 @@ export class SeasonSwitcherComponent {
   });
 
   constructor() {
+    effect(() => {
+      const hasResolvedSeasonOptions = this.hasResolvedSeasonOptions();
+      const selectedSeason = this.selectedSeason();
+      const currentSelectValue = untracked(() => this.selectValue());
+
+      if (!hasResolvedSeasonOptions) {
+        if (currentSelectValue !== null) {
+          this.selectValue.set(null);
+        }
+        return;
+      }
+
+      if (currentSelectValue !== selectedSeason) {
+        queueMicrotask(() => {
+          this.selectValue.set(selectedSeason);
+        });
+      }
+    });
+
     effect(() => {
       const seasonState = this.seasonState();
       const selectedSeason = this.selectedSeason();
@@ -146,6 +163,7 @@ export class SeasonSwitcherComponent {
     const value =
       event.value === 'all' ? 'all' : this.normalizeSelectedSeason(event.value);
 
+    this.selectValue.set(value);
     this.updateSeason(value === 'all' ? undefined : value);
   }
 

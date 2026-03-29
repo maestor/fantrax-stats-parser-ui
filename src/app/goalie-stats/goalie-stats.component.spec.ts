@@ -3,6 +3,7 @@ import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { AppComponent } from '../app.component';
 import {
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   polyfillMatchMedia,
   seedLocalStorage,
@@ -35,6 +36,7 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
 
     const goalieName = slicedGoalies[0].name;
     await screen.findByText(goalieName, {}, { timeout: 5000 });
+    await openDashboardSettingsDrawer();
 
     expect(screen.queryByText('positionFilter.label')).not.toBeInTheDocument();
 
@@ -53,8 +55,6 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
     await waitForBehaviorAssertion(fixture, () => {
       expect(seasonCombobox).toHaveTextContent('2023-2024');
     });
-
-    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
     const statsModeToggle = screen.getByRole('switch', { name: 'statsModeToggle' });
     fireEvent.click(statsModeToggle);
 

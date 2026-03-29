@@ -3,7 +3,6 @@ import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core'
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule, MatTabNavPanel } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -18,7 +17,6 @@ import {
   map,
   of,
   shareReplay,
-  startWith,
 } from 'rxjs';
 
 import { AppComponent } from '../app.component';
@@ -29,7 +27,6 @@ import {
   DrawerContextService,
 } from '../services/drawer-context.service';
 import { TeamService } from '../services/team.service';
-import { ViewportService } from '../services/viewport.service';
 import { ComparisonBarComponent } from '../shared/comparison-bar/comparison-bar.component';
 import { SettingsPanelComponent } from '../shared/settings-panel/settings-panel.component';
 import { StartFromSeasonSyncService } from '../shared/top-controls/start-from-season-switcher/start-from-season-sync.service';
@@ -37,11 +34,6 @@ import { TopControlsComponent } from '../shared/top-controls/top-controls.compon
 
 type DashboardRouteUiState = {
   controlsContext: ControlsContext;
-};
-
-type MobileState = {
-  ready: boolean;
-  isMobile: boolean;
 };
 
 export function buildDashboardRouteUiState(url: string): DashboardRouteUiState {
@@ -52,18 +44,6 @@ export function buildDashboardRouteUiState(url: string): DashboardRouteUiState {
       : 'player';
 
   return { controlsContext };
-}
-
-export function buildInitialDashboardMobileState(
-  defaultView: Pick<Window, 'matchMedia'> | null | undefined,
-): MobileState {
-  return {
-    ready: true,
-    isMobile:
-      typeof defaultView?.matchMedia === 'function'
-        ? defaultView.matchMedia('(max-width: 768px)').matches
-        : false,
-  };
 }
 
 @Component({
@@ -78,7 +58,6 @@ export function buildInitialDashboardMobileState(
     MatTabsModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule,
     MatSidenavModule,
     MatTooltipModule,
     NavigationComponent,
@@ -99,24 +78,12 @@ export class DashboardShellComponent implements OnInit {
   private readonly initialRouteUiState = buildDashboardRouteUiState(
     `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`,
   );
-  private readonly initialMobileState = buildInitialDashboardMobileState(
-    this.document.defaultView,
-  );
 
   controlsContext: ControlsContext = this.initialRouteUiState.controlsContext;
   private readonly controlsContextSubject = new BehaviorSubject<ControlsContext>(
     this.controlsContext,
   );
   readonly controlsContext$ = this.controlsContextSubject.asObservable();
-
-  readonly mobileState$ = inject(ViewportService).isMobile$.pipe(
-    map((isMobile) => ({ ready: true, isMobile })),
-    startWith(this.initialMobileState),
-    distinctUntilChanged(
-      (a, b) => a.ready === b.ready && a.isMobile === b.isMobile,
-    ),
-    shareReplay({ bufferSize: 1, refCount: true }),
-  );
 
   private readonly teamService = inject(TeamService);
   private readonly apiService = inject(ApiService);
@@ -169,6 +136,7 @@ export class DashboardShellComponent implements OnInit {
 
   hasInitializedSettingsDrawerContent = false;
   isSettingsDrawerOpen = false;
+  isSettingsDrawerSurfaceVisible = false;
 
   ngOnInit(): void {
     void this.startFromSeasonSync;
@@ -196,6 +164,9 @@ export class DashboardShellComponent implements OnInit {
 
   toggleSettingsDrawer(): void {
     this.hasInitializedSettingsDrawerContent = true;
+    if (!(this.settingsDrawer?.opened ?? this.isSettingsDrawerOpen)) {
+      this.isSettingsDrawerSurfaceVisible = true;
+    }
     void this.settingsDrawer?.toggle();
   }
 
@@ -203,8 +174,13 @@ export class DashboardShellComponent implements OnInit {
     void this.settingsDrawer?.close();
   }
 
+  onSettingsDrawerOpenedStart(): void {
+    this.isSettingsDrawerSurfaceVisible = true;
+  }
+
   onSettingsDrawerOpenedChange(opened: boolean): void {
     this.isSettingsDrawerOpen = opened;
+    this.isSettingsDrawerSurfaceVisible = opened;
     if (opened) {
       this.hasInitializedSettingsDrawerContent = true;
     }

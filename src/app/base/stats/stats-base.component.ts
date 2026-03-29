@@ -17,7 +17,6 @@ import { StatsService } from '@services/stats.service';
 import { TeamService } from '@services/team.service';
 import { SettingsService } from '@services/settings.service';
 import { DrawerContextService } from '@services/drawer-context.service';
-import { ViewportService } from '@services/viewport.service';
 import { TableRow } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { ComparisonService } from '@services/comparison.service';
@@ -35,7 +34,6 @@ export abstract class StatsBaseComponent<T extends Player | Goalie> implements O
   protected destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
-  readonly isMobile$ = inject(ViewportService).isMobile$;
   readonly comparisonService = inject(ComparisonService);
   readonly canSelectRow$ = this.comparisonService.canSelectMore$;
 

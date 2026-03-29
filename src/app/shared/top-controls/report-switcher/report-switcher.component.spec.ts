@@ -2,6 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/angular';
 import { AppComponent } from '../../../app.component';
 import {
     getBehaviorTestConfig,
+    openDashboardSettingsDrawer,
     polyfillJsdom,
     seedLocalStorage,
     slicedPlayers,
@@ -22,6 +23,7 @@ describe('ReportSwitcherComponent — desktop user flow', () => {
 
         const firstPlayerName = slicedPlayers[0].name;
         await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
+        await openDashboardSettingsDrawer();
 
         const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
 

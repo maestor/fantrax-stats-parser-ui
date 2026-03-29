@@ -1,8 +1,9 @@
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 
-import { PlayerStatsComponent } from '../../../player-stats/player-stats.component';
+import { AppComponent } from '../../../app.component';
 import {
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   seedLocalStorage,
   slicedPlayers,
@@ -19,14 +20,14 @@ describe('StatsModeToggleComponent — player stats user flow', { timeout: 60_00
   });
 
   it('switches the player table from score totals to per-game score columns', async () => {
-    const { fixture } = await render(PlayerStatsComponent, getBehaviorTestConfig({ isMobile: false }));
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
 
     const firstPlayerCell = await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
     const firstPlayerRow = firstPlayerCell.closest('tr');
 
     expect(firstPlayerRow).not.toBeNull();
 
-    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
+    await openDashboardSettingsDrawer();
 
     const statsModeToggle = await screen.findByRole('switch', { name: 'statsModeToggle' });
     expect(within(firstPlayerRow as HTMLElement).getByText('100')).toBeInTheDocument();

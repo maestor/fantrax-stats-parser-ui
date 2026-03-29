@@ -4,6 +4,7 @@ import { Subject, of } from 'rxjs';
 import { AppComponent } from '../../../app.component';
 import {
     getBehaviorTestConfig,
+    openDashboardSettingsDrawer,
     polyfillJsdom,
     seedLocalStorage,
     seasonsFixture,
@@ -27,6 +28,7 @@ describe('TeamSwitcherComponent — desktop user flow', () => {
 
         const firstPlayerName = slicedPlayers[0].name;
         await screen.findByText(firstPlayerName, {}, { timeout: 15000 });
+        await openDashboardSettingsDrawer();
 
         const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
         fireEvent.click(reportCombobox);
@@ -72,6 +74,7 @@ describe('TeamSwitcherComponent — desktop user flow', () => {
         );
 
         await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+        await openDashboardSettingsDrawer();
 
         const teamCombobox = screen.getByRole('combobox', { name: /team\.selector/ });
         fireEvent.click(teamCombobox);

@@ -53,7 +53,7 @@ src/app/
 - `/goalie-stats`
 - direct `/player/...` and `/goalie/...` routes
 
-These routes use `DashboardShellComponent` and carry the heavier interactive shell: title row, metadata, controls, mobile drawer, tabs, and comparison bar.
+These routes use `DashboardShellComponent` and carry the heavier interactive shell: title row, subtitle, shared controls drawer, tabs, and comparison bar.
 
 ### Browse Routes
 
@@ -68,12 +68,12 @@ These routes render under the lighter root shell and intentionally avoid dashboa
 ### `src/app/shared/top-controls/`
 
 - team, start-from-season, season, and report controls
-- used in the dashboard shell and reused in drawer mode through `contentOnly`
+- rendered inside the shared dashboard settings drawer
 
 ### `src/app/shared/settings-panel/`
 
 - stats mode, min games, and player-only position filtering
-- reused inline and in the mobile settings drawer
+- rendered inside the shared dashboard settings drawer
 
 ### `src/app/shared/stats-table/`
 

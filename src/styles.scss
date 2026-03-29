@@ -35,6 +35,7 @@
 // - Prefer 100dvh when supported.
 :root {
   --app-height: 100vh;
+  --app-content-max-width: 1170px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
 }
@@ -443,7 +444,7 @@ mat-checkbox .mdc-label {
 
 .content {
   margin: 12px auto;
-  max-width: 1170px;
+  max-width: var(--app-content-max-width);
 }
 
 .center {

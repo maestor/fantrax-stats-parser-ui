@@ -1,8 +1,9 @@
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 
-import { PlayerStatsComponent } from '../../../player-stats/player-stats.component';
+import { AppComponent } from '../../../app.component';
 import {
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   seedLocalStorage,
   slicedPlayers,
@@ -34,7 +35,7 @@ describe('MinGamesSliderComponent — player stats user flow', { timeout: 60_000
 
   it('filters the player table when the minimum games threshold increases', async () => {
     const { fixture } = await render(
-      PlayerStatsComponent,
+      AppComponent,
       getBehaviorTestConfig({
         isMobile: false,
         players: [highGamesPlayer, lowGamesPlayer],
@@ -45,7 +46,7 @@ describe('MinGamesSliderComponent — player stats user flow', { timeout: 60_000
     await screen.findByText(highGamesPlayer.name, {}, { timeout: 5000 });
     expect(within(playerTable).getByText(lowGamesPlayer.name)).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
+    await openDashboardSettingsDrawer();
 
     const minGamesSlider = await screen.findByRole('slider', {
       name: 'minGamesSlider.ariaLabel',

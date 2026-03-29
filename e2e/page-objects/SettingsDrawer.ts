@@ -8,13 +8,13 @@ import {
 } from '../helpers/filters';
 
 /**
- * Page object for mobile settings drawer
+ * Page object for the shared dashboard settings drawer
  */
 export class SettingsDrawer {
   constructor(private page: Page) {}
 
   /**
-   * Open settings drawer (mobile)
+   * Open the dashboard settings drawer
    */
   async open(): Promise<void> {
     const settingsButton = this.page.getByLabel('Avaa asetuspaneeli');
@@ -35,6 +35,17 @@ export class SettingsDrawer {
     const isCurrentlyOpen = await this.isOpen();
     if (!isCurrentlyOpen) {
       return;
+    }
+    const overlayBackdrop = this.page.locator(
+      '.cdk-overlay-backdrop.cdk-overlay-backdrop-showing',
+    );
+    if (await overlayBackdrop.count()) {
+      await this.page.keyboard.press('Escape');
+      await overlayBackdrop.waitFor({ state: 'hidden', timeout: 5_000 }).catch(() => {});
+      if (!(await this.isOpen())) {
+        await this.page.waitForTimeout(300);
+        return;
+      }
     }
     // The close button inside the drawer
     const closeButton = this.page.getByLabel('Sulje asetuspaneeli').first();

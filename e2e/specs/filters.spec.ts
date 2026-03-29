@@ -12,6 +12,7 @@ import {
   getColumnValues,
 } from '../helpers/table';
 import { switchToPlayersTab, switchToGoaliesTab } from '../helpers/navigation';
+import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 
 test.describe('Filters', () => {
   test.beforeEach(async ({ page }) => {
@@ -21,11 +22,14 @@ test.describe('Filters', () => {
 
   test.describe('Individual Filters', () => {
     test('season selector and start-from season filter data', async ({ page }) => {
+      const settingsDrawer = new SettingsDrawer(page);
+
       // Select "Kaikki kaudet" (all seasons)
       await selectSeason(page, 'Kaikki kaudet');
       const allSeasonsData = await getRowCount(page);
 
       // Select a specific season — should have fewer rows
+      await settingsDrawer.open();
       const seasonSelector = page.getByRole('combobox', {
         name: 'Kausivalitsin',
       });
@@ -34,7 +38,6 @@ test.describe('Filters', () => {
       const firstSeasonText = await options.nth(1).textContent();
       await options.nth(1).click();
       await waitForTableData(page);
-
       const singleSeasonData = await getRowCount(page);
       expect(allSeasonsData).toBeGreaterThanOrEqual(singleSeasonData);
 
@@ -42,16 +45,23 @@ test.describe('Filters', () => {
         await expect(seasonSelector).toContainText(firstSeasonText);
       }
 
+      await settingsDrawer.close();
+
       // Switch back to all seasons and test start-from filter
       await selectSeason(page, 'Kaikki kaudet');
       const allSeasonsCount = await getRowCount(page);
 
-      const startFromSelector = page.getByRole('combobox', {
-        name: 'Alkaen kaudesta',
-      });
+      await settingsDrawer.open();
+      const startFromSelector = page.getByRole('combobox', { name: 'Alkaen kaudesta' });
       await startFromSelector.click();
-      await page.getByRole('option').nth(5).click();
+      const startFromOptions = page.getByRole('option');
+      const startFromOption = startFromOptions.nth(5);
+      const startFromSeason = await startFromOption.textContent();
+
+      expect(startFromSeason).toBeTruthy();
+      await startFromOption.click();
       await waitForTableData(page);
+      await settingsDrawer.close();
 
       const filteredCount = await getRowCount(page);
       expect(filteredCount).toBeLessThanOrEqual(allSeasonsCount);
@@ -120,13 +130,17 @@ test.describe('Filters', () => {
     });
 
     test('season + position + report type combinations', async ({ page }) => {
+      const settingsDrawer = new SettingsDrawer(page);
+
       // Single season + position filter
+      await settingsDrawer.open();
       const seasonSelector = page.getByRole('combobox', {
         name: 'Kausivalitsin',
       });
       await seasonSelector.click();
       await page.getByRole('option').nth(1).click();
       await waitForTableData(page);
+      await settingsDrawer.close();
 
       await selectPosition(page, 'forwards');
       let count = await getRowCount(page);
@@ -150,24 +164,33 @@ test.describe('Filters', () => {
 
   test.describe('Filter Isolation', () => {
     test('player and goalie filters are independent', async ({ page }) => {
+      const settingsDrawer = new SettingsDrawer(page);
+
       await switchToPlayersTab(page);
       await toggleStatsPerGame(page);
       await setMinGames(page, 20);
 
+      await settingsDrawer.open();
       const playerStatsToggle = page.getByLabel('Tilastot per ottelu');
       await expect(playerStatsToggle).toBeChecked();
+      await settingsDrawer.close();
 
       await switchToGoaliesTab(page);
       await waitForTableData(page);
 
+      await settingsDrawer.open();
       const goalieStatsToggle = page.getByLabel('Tilastot per ottelu');
       await expect(goalieStatsToggle).not.toBeChecked();
+      await settingsDrawer.close();
 
       await toggleStatsPerGame(page);
+      await settingsDrawer.open();
       await expect(goalieStatsToggle).toBeChecked();
+      await settingsDrawer.close();
 
       await switchToPlayersTab(page);
       await waitForTableData(page);
+      await settingsDrawer.open();
       await expect(playerStatsToggle).toBeChecked();
     });
   });

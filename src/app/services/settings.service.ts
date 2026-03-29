@@ -5,7 +5,6 @@ import { ReportType } from './api.service';
 export type AppSettings = {
   selectedTeamId: string;
   startFromSeason: number | null;
-  topControlsExpanded: boolean;
   season: number | null;
   reportType: ReportType;
   draftStatisticsHighlightedTeamId: string | null;
@@ -18,7 +17,6 @@ export class SettingsService {
   private readonly storageKey = 'fantrax.settings';
 
   private readonly defaultTeamId = '1';
-  private readonly defaultTopControlsExpanded = true;
 
   private readonly settingsState = signal<AppSettings>(this.loadInitialSettings());
   private readonly settingsSignal = this.settingsState.asReadonly();
@@ -30,7 +28,6 @@ export class SettingsService {
     this.normalizeOptionalSeason(this.settingsSignal().startFromSeason)
   );
   readonly startFromSeason$ = toObservable(this.startFromSeasonSignal);
-  readonly topControlsExpandedSignal = computed(() => this.settingsSignal().topControlsExpanded);
 
   get selectedTeamId(): string {
     return this.settingsSignal().selectedTeamId;
@@ -61,11 +58,6 @@ export class SettingsService {
     const normalized = season === undefined ? null : season;
     if (normalized === this.settingsSignal().startFromSeason) return;
     this.updateSettings({ startFromSeason: normalized });
-  }
-
-  setTopControlsExpanded(expanded: boolean): void {
-    if (expanded === this.settingsSignal().topControlsExpanded) return;
-    this.updateSettings({ topControlsExpanded: expanded });
   }
 
   setSeason(season: number | null): void {
@@ -105,11 +97,6 @@ export class SettingsService {
             ? parsed.startFromSeason
             : null;
 
-        const topControlsExpanded =
-          typeof parsed.topControlsExpanded === 'boolean'
-            ? parsed.topControlsExpanded
-            : this.defaultTopControlsExpanded;
-
         const season =
           typeof parsed.season === 'number' && Number.isFinite(parsed.season)
             ? parsed.season
@@ -125,7 +112,6 @@ export class SettingsService {
         return {
           selectedTeamId,
           startFromSeason,
-          topControlsExpanded,
           season,
           reportType,
           draftStatisticsHighlightedTeamId,
@@ -138,7 +124,6 @@ export class SettingsService {
     const defaults: AppSettings = {
       selectedTeamId: this.defaultTeamId,
       startFromSeason: null,
-      topControlsExpanded: this.defaultTopControlsExpanded,
       season: null,
       reportType: 'regular',
       draftStatisticsHighlightedTeamId: null,

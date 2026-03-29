@@ -1,111 +1,13 @@
-.top-controls-panel {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	margin: 12px 0 8px;
-}
-
-.top-controls-toggle {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	width: 100%;
-	padding: 10px 16px;
-	background-color: var(--mat-sys-surface-container);
-	border: 1px solid var(--mat-sys-outline-variant);
-	color: var(--mat-sys-on-surface);
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 14px;
-	font-weight: 500;
-	text-align: left;
-	transition: background-color 0.2s;
-
-	&:hover {
-		background-color: var(--mat-sys-surface-container-high);
-	}
-
-	span {
-		display: inline-flex;
-		align-items: center;
-	}
-
-	.toggle-icon {
-		margin-left: auto;
-		font-size: 12px;
-	}
-}
-
-.top-controls-content {
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	box-sizing: border-box;
-	overflow: hidden;
-	padding: 0 16px;
-	transition: max-height 0.3s ease-out, padding-top 0.3s ease-out;
-
-	&:not(.expanded) {
-		max-height: 0;
-		padding-top: 0;
-		padding-bottom: 0;
-		min-height: 0;
-		pointer-events: none;
-	}
-
-	&.expanded {
-		max-height: 300px;
-		padding-top: 12px;
-		padding-bottom: 0;
-		transition: max-height 0.35s ease-in, padding-top 0.35s ease-in;
-	}
-}
-
 .top-controls {
 	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
 	width: 100%;
-	justify-content: center;
-	align-items: center;
-	flex-wrap: wrap;
-	gap: 12px 16px;
+	gap: 10px;
 }
 
 .top-controls .top-control {
 	display: block;
 	width: 100%;
 	min-width: 0;
-}
-
-// Small mobile: stack controls for readability
-@media (max-width: 480px) {
-	.top-controls {
-		flex-direction: column;
-		flex-wrap: nowrap;
-		gap: 10px;
-	}
-}
-
-// Tablet-ish widths: force a clean 2x2 layout for the header (non-mobile) controls.
-// This keeps the mobile settings drawer (contentOnly=true) unchanged.
-@media (max-width: 960px) and (min-width: 481px) {
-	.top-controls-panel .top-controls {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		justify-items: stretch;
-		align-items: center;
-	}
-
-	.top-controls-panel .top-controls .top-control {
-		width: 100%;
-		justify-content: center;
-	}
-}
-
-@media (min-width: 961px) {
-	.top-controls-panel .top-controls {
-		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		justify-items: stretch;
-		align-items: start;
-	}
 }

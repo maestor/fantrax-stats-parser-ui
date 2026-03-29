@@ -1,5 +1,9 @@
 import { Page, expect } from '@playwright/test';
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 /**
  * Wait for filter updates to complete
  */
@@ -15,16 +19,10 @@ export async function waitForTeamChange(
   page: Page,
   expectedTeam: string
 ): Promise<void> {
-  // Wait for mobile team name display or visible combobox to show the expected team
-  // On mobile, the combobox may be inside a closed drawer, so check .mobile-team-name first
-  const mobileTeamName = page.locator('.mobile-team-name');
-  const isMobile = (await mobileTeamName.count()) > 0;
-
-  if (isMobile) {
-    await expect(mobileTeamName).toHaveText(expectedTeam, { timeout: 10000 });
-  } else {
-    await page
-      .getByRole('combobox', { name: 'Joukkue' })
-      .waitFor({ state: 'visible', timeout: 10000 });
-  }
+  await expect(
+    page.getByRole('heading', {
+      level: 2,
+      name: new RegExp(`^Pelaajatilastot: ${escapeRegExp(expectedTeam)}$`),
+    }),
+  ).toBeVisible({ timeout: 10000 });
 }

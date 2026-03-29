@@ -1,14 +1,18 @@
 import { test, expect } from '../fixtures/test-fixture';
 import { PlayerCardDialog } from '../page-objects/PlayerCardDialog';
 import { StatsTable } from '../page-objects/StatsTable';
+import { SettingsDrawer } from '../page-objects/SettingsDrawer';
+import { selectSeason } from '../helpers/filters';
 
 test.describe('Player Card', () => {
   let playerCard: PlayerCardDialog;
+  let settingsDrawer: SettingsDrawer;
   let statsTable: StatsTable;
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     playerCard = new PlayerCardDialog(page);
+    settingsDrawer = new SettingsDrawer(page);
     statsTable = new StatsTable(page);
     await statsTable.verifyDataLoaded();
   });
@@ -31,11 +35,7 @@ test.describe('Player Card', () => {
 
   test('tabs: all seasons shows 3 tabs, single season shows 2 tabs without by-season', async ({ page }) => {
     // All seasons: 3 tabs with full navigation
-    const seasonSelector = page.getByRole('combobox', {
-      name: 'Kausivalitsin',
-    });
-    await seasonSelector.click();
-    await page.getByRole('option', { name: 'Kaikki kaudet' }).click();
+    await selectSeason(page, 'Kaikki kaudet');
 
     await playerCard.open('Jamie Benn');
     const tabs = await playerCard.getAvailableTabs();
@@ -65,8 +65,13 @@ test.describe('Player Card', () => {
     await playerCard.close();
 
     // Single season: 2 tabs, no by-season, no line graphs
+    await settingsDrawer.open();
+    const seasonSelector = page.getByRole('combobox', {
+      name: 'Kausivalitsin',
+    });
     await seasonSelector.click();
     await page.getByRole('option').nth(1).click();
+    await settingsDrawer.close();
 
     await playerCard.open('Jamie Benn');
     const singleTabs = await playerCard.getAvailableTabs();
@@ -82,11 +87,7 @@ test.describe('Player Card', () => {
     await page.setViewportSize({ width: 1280, height: 720 });
 
     // Ensure all seasons for line graphs
-    const seasonSelector = page.getByRole('combobox', {
-      name: 'Kausivalitsin',
-    });
-    await seasonSelector.click();
-    await page.getByRole('option', { name: 'Kaikki kaudet' }).click();
+    await selectSeason(page, 'Kaikki kaudet');
 
     await playerCard.open('Jamie Benn');
     await playerCard.switchToTab('graphs');
@@ -133,11 +134,7 @@ test.describe('Player Card', () => {
   });
 
   test('compare toggle state persists across tabs', async ({ page }) => {
-    const seasonSelector = page.getByRole('combobox', {
-      name: 'Kausivalitsin',
-    });
-    await seasonSelector.click();
-    await page.getByRole('option', { name: 'Kaikki kaudet' }).click();
+    await selectSeason(page, 'Kaikki kaudet');
 
     await playerCard.open('Jamie Benn');
 

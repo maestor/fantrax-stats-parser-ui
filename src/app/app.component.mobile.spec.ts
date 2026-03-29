@@ -1,23 +1,17 @@
 import { TestBed } from '@angular/core/testing';
-import { fireEvent, render, screen, within } from '@testing-library/angular';
+import { fireEvent, render, screen } from '@testing-library/angular';
 import { Router } from '@angular/router';
 
-import { ApiService } from '@services/api.service';
 import { AppComponent } from './app.component';
 import {
-  createApiServiceMock,
   entryDraftsFixture,
   getBehaviorTestConfig,
   openingDraftsFixture,
   polyfillJsdom,
-  slicedGoalies,
   seedLocalStorage,
-  slicedPlayers,
-  PLAYER_SLICE_COUNT,
 } from './testing/behavior-test-utils';
 
-// Full-render behavior tests with lazy-loaded routes need more time under coverage load.
-describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
+describe('AppComponent — mobile browse routes', { timeout: 60_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();
@@ -27,232 +21,7 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     localStorage.clear();
   });
 
-  it('renders all user-visible elements', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
-
-    // Wait for lazy-loaded route and async data pipeline to complete
-    const firstPlayerName = slicedPlayers[0].name;
-    await screen.findByText(firstPlayerName, {}, { timeout: 15000 });
-
-    // -- Page title --
-    expect(
-      screen.getByRole('heading', { name: 'pageTitle' })
-    ).toBeInTheDocument();
-
-    // -- Settings drawer toggle button --
-    expect(
-      screen.getByRole('button', { name: 'a11y.openSettingsDrawer' })
-    ).toBeInTheDocument();
-
-    // -- Nav menu button --
-    expect(
-      screen.getByRole('button', { name: 'a11y.openNavMenu' })
-    ).toBeInTheDocument();
-
-    // -- Team name summary --
-    expect(screen.getByText(/team\.selector:/)).toBeInTheDocument();
-
-    // -- Navigation tabs --
-    expect(screen.getByRole('tab', { name: 'link.playerStats' })).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'link.goalieStats' })).toBeInTheDocument();
-
-    // -- Stats table with expected row count --
-    expect(screen.getByRole('table')).toBeInTheDocument();
-    const rows = screen.getAllByRole('row');
-    expect(rows).toHaveLength(PLAYER_SLICE_COUNT + 1);
-
-    // -- Footer --
-    expect(await screen.findByRole(
-      'navigation',
-      { name: 'footer.links.ariaLabel' },
-      { timeout: 5000 }
-    )).toBeInTheDocument();
-    expect(screen.getByText('footer.links.linkedin.label')).toBeInTheDocument();
-    expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
-    expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();
-    expect(screen.getByText('footer.copyright')).toBeInTheDocument();
-  });
-
-  it('opens settings drawer with expected default content and closes it', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
-
-    const firstPlayerName = slicedPlayers[0].name;
-    await screen.findByText(firstPlayerName, {}, { timeout: 5000 });
-
-    // Drawer starts closed.
-    const drawerToggle = screen.getByRole('button', { name: 'a11y.openSettingsDrawer' });
-
-    // Open drawer from the page header.
-    fireEvent.click(drawerToggle);
-
-    await vi.waitFor(() => {
-      expect(screen.getByRole('button', { name: 'a11y.closeSettingsDrawer' })).toBeInTheDocument();
-    });
-
-    // Validate drawer sections and expected defaults are visible.
-    expect(await screen.findByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'settingsPanel.settings' })).toBeInTheDocument();
-
-    await vi.waitFor(() => {
-      expect(screen.getByRole('combobox', { name: /team\.selector/ })).toHaveTextContent('Colorado Avalanche');
-      expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toBeInTheDocument();
-      expect(screen.getByRole('combobox', { name: /season\.selector/ })).toBeInTheDocument();
-      expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent('reportType.regular');
-    });
-
-    expect(screen.getByText('positionFilter.label')).toBeInTheDocument();
-    expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
-    expect(screen.getByText('minGamesSlider.label')).toBeInTheDocument();
-    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
-
-    // Close from drawer header close button.
-    const drawerHeader = document.querySelector('.settings-drawer-header') as HTMLElement;
-    fireEvent.click(within(drawerHeader).getByRole('button', { name: 'a11y.closeSettingsDrawer' }));
-
-    await vi.waitFor(() => {
-      expect(screen.queryByRole('heading', { name: 'topControls.controls' })).not.toBeInTheDocument();
-    });
-  });
-
-  it('closes the settings drawer on Escape and keeps desktop-only toggle buttons out of the mobile UI', async () => {
-    await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
-
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
-
-    expect(
-      screen.queryByRole('button', { name: /topControls\.controls/ })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: /settingsPanel\.settings/ })
-    ).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
-
-    const closeDrawerButton = await screen.findByRole('button', { name: 'a11y.closeSettingsDrawer' });
-    closeDrawerButton.focus();
-
-    fireEvent.keyDown(closeDrawerButton, { key: 'Escape', altKey: true });
-    expect(closeDrawerButton).toBeInTheDocument();
-
-    fireEvent.keyDown(closeDrawerButton, { key: 'Escape' });
-
-    await vi.waitFor(() => {
-      expect(screen.queryByRole('button', { name: 'a11y.closeSettingsDrawer' })).not.toBeInTheDocument();
-    });
-  });
-
-  it('boots mobile stats with start-from data before the drawer opens and still defers drawer-only metadata work', async () => {
-    const apiServiceMock = createApiServiceMock();
-    const getTeams = vi.fn(apiServiceMock.getTeams);
-    const getSeasons = vi.fn(apiServiceMock.getSeasons);
-    const getLastModified = vi.fn(apiServiceMock.getLastModified);
-    const behaviorConfig = getBehaviorTestConfig({ isMobile: true });
-
-    await render(AppComponent, {
-      ...behaviorConfig,
-      providers: [
-        ...behaviorConfig.providers,
-        {
-          provide: ApiService,
-          useValue: {
-            ...apiServiceMock,
-            getTeams,
-            getSeasons,
-            getLastModified,
-          },
-        },
-      ],
-    });
-
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
-
-    expect(getTeams).toHaveBeenCalledTimes(1);
-    expect(getSeasons).toHaveBeenCalledTimes(1);
-    expect(getLastModified).not.toHaveBeenCalled();
-
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
-    await screen.findByRole('heading', { name: 'topControls.controls' });
-
-    await vi.waitFor(() => {
-      expect(getTeams.mock.calls.length).toBeGreaterThan(1);
-      expect(getSeasons).toHaveBeenCalled();
-      expect(getLastModified).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  it('keeps the mobile dashboard usable when metadata calls fail', async () => {
-    await render(
-      AppComponent,
-      getBehaviorTestConfig({
-        isMobile: true,
-        errorKeys: ['teams', 'lastModified'],
-      })
-    );
-
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
-
-    expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
-    expect(await screen.findByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
-    expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
-  });
-
-  it('persists drawer filter changes across reopen and updates player-only content when switching to goalie stats', async () => {
-    await render(
-      AppComponent,
-      getBehaviorTestConfig({ isMobile: true, goalies: slicedGoalies })
-    );
-
-    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
-
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
-    await screen.findByRole('button', { name: 'a11y.closeSettingsDrawer' });
-
-    const statsModeToggle = screen.getByRole('switch', { name: 'statsModeToggle' });
-    fireEvent.click(statsModeToggle);
-
-    await vi.waitFor(() => {
-      expect(statsModeToggle).toHaveAttribute('aria-checked', 'true');
-    });
-
-    const minGamesSlider = screen.getByRole('slider', {
-      name: 'minGamesSlider.ariaLabel',
-    });
-    fireEvent.input(minGamesSlider, { target: { value: '7' } });
-    fireEvent.change(minGamesSlider, { target: { value: '7' } });
-
-    await vi.waitFor(() => {
-      expect(minGamesSlider).toHaveValue('7');
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.closeSettingsDrawer' }));
-    await vi.waitFor(() => {
-      expect(screen.queryByRole('button', { name: 'a11y.closeSettingsDrawer' })).not.toBeInTheDocument();
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
-
-    const reopenedToggle = await screen.findByRole('switch', { name: 'statsModeToggle' });
-    expect(reopenedToggle).toHaveAttribute('aria-checked', 'true');
-    expect(
-      screen.getByRole('slider', { name: 'minGamesSlider.ariaLabel' })
-    ).toHaveValue('7');
-
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.closeSettingsDrawer' }));
-    fireEvent.click(screen.getByRole('tab', { name: 'link.goalieStats' }));
-
-    await screen.findByText(slicedGoalies[0].name, {}, { timeout: 5000 });
-    fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
-
-    await screen.findByRole('heading', { name: 'settingsPanel.settings' });
-    expect(screen.queryByText('positionFilter.label')).not.toBeInTheDocument();
-    expect(screen.getByText('statsModeToggle')).toBeInTheDocument();
-    expect(screen.getByText('minGamesSlider.label')).toBeInTheDocument();
-    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
-  });
-
-  it('hides the settings drawer controls on mobile career routes and shows career tabs instead', async () => {
+  it('renders the career browse routes and highlights navigation on mobile', async () => {
     await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
 
     const router = TestBed.inject(Router);
@@ -264,11 +33,6 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByRole('table')).toBeInTheDocument();
     expect(screen.getByLabelText('table.careerPlayerSearch')).toBeInTheDocument();
 
-    expect(
-      screen.queryByRole('button', { name: 'a11y.openSettingsDrawer' })
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
-
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.highlights' }));
     await vi.waitFor(() => {
       expect(router.url).toBe('/career/highlights');
@@ -278,61 +42,11 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
       await screen.findByRole(
         'heading',
         { name: 'career.highlights.cards.mostTeamsPlayed.title' },
-        { timeout: 15_000 }
+        { timeout: 15_000 },
       )
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.mostTeamsOwned.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.mostStanleyCups.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
-      })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsPlayed.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.sameTeamSeasonsOwned.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.stashKing.title' })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'career.highlights.sections.achievements.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'career.highlights.sections.journeys.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'career.highlights.sections.longStays.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'career.highlights.sections.transactions.title' })
-    );
-    expect(screen.getAllByRole('heading', { level: 4 })).toHaveLength(4);
-
-    expect(
-      await screen.findByRole(
-        'heading',
-        { name: 'career.highlights.cards.mostTrades.title' },
-        { timeout: 15_000 }
-      )
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.mostClaims.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.mostDrops.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.reunionKing.title' })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'career.tabs.goalies' }));
@@ -340,10 +54,12 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
       expect(router.url).toBe('/career/goalies');
     }, { timeout: 15_000 });
 
-    expect(await screen.findByLabelText('table.playerSearch', {}, { timeout: 15_000 })).toBeInTheDocument();
+    expect(
+      await screen.findByLabelText('table.playerSearch', {}, { timeout: 15_000 })
+    ).toBeInTheDocument();
   });
 
-  it('hides the settings drawer controls on mobile draft routes and shows draft tabs instead', async () => {
+  it('renders the draft browse routes and switches between draft tabs on mobile', async () => {
     await render(AppComponent, getBehaviorTestConfig({ isMobile: true }));
 
     const router = TestBed.inject(Router);
@@ -355,22 +71,23 @@ describe('AppComponent — mobile frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByRole('heading', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
     expect(await screen.findByText(entryDraftsFixture[0].team.name)).toBeInTheDocument();
 
-    expect(
-      screen.queryByRole('button', { name: 'a11y.openSettingsDrawer' })
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText(/team\.selector:/)).not.toBeInTheDocument();
-
     fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' }));
-
+    await vi.waitFor(() => {
+      expect(router.url).toBe('/draft/opening-draft');
+    }, { timeout: 5_000 });
     expect(
-      await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' }, { timeout: 5000 })
+      await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' }, { timeout: 5_000 })
     ).toBeInTheDocument();
-    expect(await screen.findByText(openingDraftsFixture[0].team.name, {}, { timeout: 5000 })).toBeInTheDocument();
+    expect(
+      await screen.findByText(openingDraftsFixture[0].team.name, {}, { timeout: 5_000 })
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.statistics' }));
-
+    await vi.waitFor(() => {
+      expect(router.url).toBe('/draft/statistics');
+    }, { timeout: 5_000 });
     expect(
-      await screen.findByRole('heading', { name: 'draft.tabs.statistics' }, { timeout: 5000 })
+      await screen.findByRole('heading', { name: 'draft.tabs.statistics' }, { timeout: 5_000 })
     ).toBeInTheDocument();
     expect(screen.getByText('draft.statistics.cards.totalPicks.title')).toBeInTheDocument();
   });

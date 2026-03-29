@@ -1,6 +1,30 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { FILTER_LABELS } from '../config/test-data';
 import { waitForFilterUpdate } from './wait';
+import { SettingsDrawer } from '../page-objects/SettingsDrawer';
+
+async function withVisibleControl(
+  page: Page,
+  control: Locator,
+  action: () => Promise<void>,
+): Promise<void> {
+  const drawer = new SettingsDrawer(page);
+  const wasOpen = await drawer.isOpen();
+
+  if (!wasOpen) {
+    await drawer.open();
+  }
+
+  try {
+    await control.waitFor({ state: 'visible', timeout: 5_000 });
+    await control.scrollIntoViewIfNeeded();
+    await action();
+  } finally {
+    if (!wasOpen) {
+      await drawer.close();
+    }
+  }
+}
 
 /**
  * Select a team from the dropdown
@@ -9,9 +33,11 @@ export async function selectTeam(page: Page, teamName: string): Promise<void> {
   const teamSelector = page.getByRole('combobox', {
     name: FILTER_LABELS.TEAM,
   });
-  await teamSelector.click();
-  await page.getByRole('option', { name: teamName }).click();
-  await waitForFilterUpdate(page);
+  await withVisibleControl(page, teamSelector, async () => {
+    await teamSelector.click();
+    await page.getByRole('option', { name: teamName }).click();
+    await waitForFilterUpdate(page);
+  });
 }
 
 /**
@@ -24,9 +50,11 @@ export async function selectSeason(
   const seasonSelector = page.getByRole('combobox', {
     name: FILTER_LABELS.SEASON,
   });
-  await seasonSelector.click();
-  await page.getByRole('option', { name: season }).click();
-  await waitForFilterUpdate(page);
+  await withVisibleControl(page, seasonSelector, async () => {
+    await seasonSelector.click();
+    await page.getByRole('option', { name: season }).click();
+    await waitForFilterUpdate(page);
+  });
 }
 
 /**
@@ -39,21 +67,22 @@ export async function selectStartFromSeason(
   const startFromSelector = page.getByRole('combobox', {
     name: FILTER_LABELS.START_FROM,
   });
-  await startFromSelector.click();
-  await page.getByRole('option', { name: season }).click();
-  await waitForFilterUpdate(page);
+  await withVisibleControl(page, startFromSelector, async () => {
+    await startFromSelector.click();
+    await page.getByRole('option', { name: season }).click();
+    await waitForFilterUpdate(page);
+  });
 }
 
 /**
  * Toggle stats per game switch
  */
 export async function toggleStatsPerGame(page: Page): Promise<void> {
-  // Dispatch click on the switch button (search field overlaps in desktop layout)
-  const switchButton = page.locator(
-    'mat-slide-toggle button[role="switch"]'
-  );
-  await switchButton.dispatchEvent('click');
-  await waitForFilterUpdate(page);
+  const switchButton = page.locator('mat-slide-toggle button[role="switch"]');
+  await withVisibleControl(page, switchButton, async () => {
+    await switchButton.dispatchEvent('click');
+    await waitForFilterUpdate(page);
+  });
 }
 
 /**
@@ -64,8 +93,10 @@ export async function setMinGames(
   value: number
 ): Promise<void> {
   const sliderInput = page.locator('#min-games-slider input[type="range"]');
-  await sliderInput.fill(String(value));
-  await waitForFilterUpdate(page);
+  await withVisibleControl(page, sliderInput, async () => {
+    await sliderInput.fill(String(value));
+    await waitForFilterUpdate(page);
+  });
 }
 
 /**
@@ -87,12 +118,12 @@ export async function selectPosition(
       buttonName = FILTER_LABELS.POSITION_DEFENSE;
       break;
   }
-  // Angular Material mat-button-toggle-group (force to avoid search field overlap)
-  await page
-    .locator('mat-button-toggle')
-    .filter({ hasText: buttonName })
-    .click({ force: true });
-  await waitForFilterUpdate(page);
+  const toggle = page.getByRole('radio', { name: buttonName });
+
+  await withVisibleControl(page, toggle, async () => {
+    await toggle.click();
+    await waitForFilterUpdate(page);
+  });
 }
 
 /**
@@ -109,7 +140,9 @@ export async function switchReportType(
   const reportTypeSelector = page.getByRole('combobox', {
     name: 'Raportti',
   });
-  await reportTypeSelector.click();
-  await page.getByRole('option', { name: label }).click();
-  await waitForFilterUpdate(page);
+  await withVisibleControl(page, reportTypeSelector, async () => {
+    await reportTypeSelector.click();
+    await page.getByRole('option', { name: label }).click();
+    await waitForFilterUpdate(page);
+  });
 }

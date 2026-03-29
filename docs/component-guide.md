@@ -19,7 +19,7 @@ Before editing a component, read the real implementation and nearby specs first.
 ### `DashboardShellComponent`
 
 - Used only by `/`, `/player-stats`, `/goalie-stats`, and direct player/goalie routes
-- Owns the title row, last-modified metadata, top controls, mobile settings drawer, dashboard tabs, and comparison bar
+- Owns the title row, route subtitle, shared settings drawer, dashboard tabs, and comparison bar
 - Do not move career, draft, or leaderboard-only UI into this shell unless it is truly dashboard-specific
 
 ### Browse Route Shells
@@ -60,10 +60,10 @@ In this repo, shared controls such as team, season, report, and settings control
 - Remove impossible contexts instead of preserving optional APIs with fake fallback states
 - If a component has only one real usage pattern, simplify it instead of documenting theoretical variants
 
-### Preserve Drawer And Inline Parity
+### Preserve Drawer Grouping
 
-- `TopControlsComponent` and `SettingsPanelComponent` support a `contentOnly` mode for the mobile settings drawer
-- When editing either component, keep desktop inline behavior and drawer behavior aligned
+- `TopControlsComponent` and `SettingsPanelComponent` are grouped under the shared dashboard settings drawer
+- When editing either component, keep the drawer sections aligned across player and goalie contexts
 
 ### Keep The Table Components Separate
 
@@ -111,8 +111,8 @@ Do not collapse these into a single "universal" table component unless the produ
 
 ### `TopControlsComponent` And `SettingsPanelComponent`
 
-- Shared between desktop inline rendering and the mobile drawer
-- Preserve context-specific behavior (`player` vs `goalie`) and drawer/inline parity
+- Shared dashboard drawer content used by both player and goalie stats routes
+- Preserve context-specific behavior (`player` vs `goalie`) and the shared drawer grouping/order
 
 ## Project-Specific Constraints
 

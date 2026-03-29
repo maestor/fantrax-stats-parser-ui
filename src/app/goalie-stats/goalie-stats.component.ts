@@ -1,9 +1,7 @@
-import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiParams, Goalie } from '@services/api.service';
 import { FilterState } from '@services/filter.service';
-import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent, TableRow } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { GOALIE_COLUMNS, GOALIE_SEASON_COLUMNS } from '@shared/table-columns';
@@ -11,7 +9,7 @@ import { StatsBaseComponent } from '@base/stats/stats-base.component';
 
 @Component({
   selector: 'app-goalie-stats',
-  imports: [AsyncPipe, SettingsPanelComponent, StatsTableComponent],
+  imports: [StatsTableComponent],
   templateUrl: './goalie-stats.component.html',
   styleUrl: './goalie-stats.component.scss',
 })

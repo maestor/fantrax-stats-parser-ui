@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/test-fixture';
 import { DEFAULT_TEAM, NAV_LABELS, TAB_LABELS } from '../config/test-data';
+import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 
 test.describe('Smoke Tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -7,14 +8,17 @@ test.describe('Smoke Tests', () => {
   });
 
   test('page loads with correct title, heading, nav tabs, and controls', async ({ page }) => {
+    const settingsDrawer = new SettingsDrawer(page);
+
     // Title and heading
     await expect(page).toHaveTitle(/FFHL tilastopalvelu/);
     await expect(
       page.getByRole('heading', { name: /FFHL tilastopalvelu/ })
     ).toBeVisible();
     await expect(
-      page.getByRole('combobox', { name: 'Joukkue' })
-    ).toContainText(DEFAULT_TEAM);
+      page.getByRole('heading', { name: `Pelaajatilastot: ${DEFAULT_TEAM}` })
+    ).toBeVisible();
+    await expect(page.getByLabel('Avaa asetuspaneeli')).toBeVisible();
 
     // Navigation tabs
     await expect(page.getByRole('tablist')).toBeVisible();
@@ -25,13 +29,18 @@ test.describe('Smoke Tests', () => {
       page.getByRole('tab', { name: TAB_LABELS.GOALIES })
     ).toBeVisible();
 
-    // Top controls
+    // Drawer controls
+    await settingsDrawer.open();
+    await expect(
+      page.getByRole('combobox', { name: 'Joukkue' })
+    ).toContainText(DEFAULT_TEAM);
     await expect(
       page.getByRole('combobox', { name: 'Kausivalitsin' })
     ).toBeVisible();
     await expect(
       page.getByRole('combobox', { name: 'Raportti' })
     ).toBeVisible();
+    await settingsDrawer.close();
   });
 
   test('table renders with data and / key focuses search', async ({ page }) => {
