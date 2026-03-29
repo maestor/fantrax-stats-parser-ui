@@ -2,6 +2,11 @@ See @README for project overview and @package.json for available npm commands fo
 
 Keep this file aligned with `AGENTS.md`; if wording diverges, treat `AGENTS.md` as the canonical repo workflow description.
 
+# User Overrides
+- Explicit user instructions in chat override the repo workflow defaults in this file and related docs.
+- If the user tells you to skip, delay, or reorder a normal repo step such as review pause, `npm run verify`, or commit timing, follow the user's instruction.
+- Treat repo workflow rules as defaults for cases where the user has not said otherwise.
+
 # Project documentation
 - Read accessibility, codebase structure, coding standards, component guide, development guide, project overview, project requirements, project testing, and roadmap docs via @docs/README.md and its subpages.
 - Use the installed `angular-developer` skill and official Angular docs for generic Angular guidance.
@@ -14,6 +19,7 @@ Update @README and @docs/* after every task when needed.
 If documentation includes clearly bad decisions, challenge them and propose better alternatives. User decides whether to apply changes.
 
 ## Git Workflow Rules
+- Explicit user instructions in chat override every repo workflow rule below.
 - Default workflow is a user-created branch (not `main`).
 - If currently on `main`, ask user to create a branch before implementing task changes.
 - If considering `git worktree`, always ask explicitly first and explain why worktree would help.

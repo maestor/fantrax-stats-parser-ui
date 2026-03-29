@@ -174,13 +174,7 @@ describe('OpeningDraftComponent', () => {
     const component = fixture.componentInstance;
     const header = await screen.findByRole('button', { name: 'Dallas Stars' });
     const { scrollIntoView, restore } = stubScrollIntoView();
-    const setTimeoutSpy = vi.spyOn(window, 'setTimeout').mockImplementation(((handler: TimerHandler) => {
-      if (typeof handler === 'function') {
-        handler();
-      }
-
-      return 0 as ReturnType<typeof window.setTimeout>;
-    }) as typeof window.setTimeout);
+    vi.useFakeTimers();
 
     try {
       component.onHeaderKeydown({
@@ -189,6 +183,7 @@ describe('OpeningDraftComponent', () => {
         preventDefault: vi.fn(),
         stopPropagation: vi.fn(),
       } as unknown as KeyboardEvent);
+      vi.runAllTimers();
       expect(scrollIntoView).not.toHaveBeenCalled();
 
       const collapsedEscapeEvent = {
@@ -247,7 +242,7 @@ describe('OpeningDraftComponent', () => {
         { close: vi.fn() } as never,
       );
     } finally {
-      setTimeoutSpy.mockRestore();
+      vi.useRealTimers();
       restore();
     }
   });
