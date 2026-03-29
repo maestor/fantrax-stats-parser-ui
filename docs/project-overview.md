@@ -87,7 +87,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Searchable and sortable without the stats-page controls/drawer/comparison bar
    - Player position is rendered inline with player name while sorting still uses the underlying plain `name`
    - Uses a virtualized table implementation to keep large result sets responsive
-   - The highlights tab splits compact paged table cards into `Sekalaiset` and `Siirrot`, keeping the existing general slices while adding transaction leaders for most trades, claims, drops, and same-team reunions
+   - The highlights tab groups compact paged table cards into sticky-jump sections (`Urateot`, `Seurapolut`, `Pitkät pestit`, `Siirrot`) while keeping transaction leaders for most trades, claims, drops, and same-team reunions
+   - Highlight rows show tied ranks inline before player position when multiple players share the same value
    - Highlight cards lazy-load their API data as they enter or near the viewport so the route scales better as more cards are added
 
 7. **Draft Pages** (`/draft/entry-drafts`, `/draft/opening-draft`, `/draft/statistics`)

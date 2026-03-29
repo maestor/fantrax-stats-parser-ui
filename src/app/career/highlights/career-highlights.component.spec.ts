@@ -20,7 +20,8 @@ import {
   sameTeamSeasonsHighlightsPage0Fixture,
 } from '../../testing/behavior-test-utils';
 import {
-  GENERAL_CAREER_HIGHLIGHT_CARD_TYPES,
+  CAREER_HIGHLIGHT_CARD_TYPES,
+  CAREER_HIGHLIGHT_SECTIONS,
 } from './career-highlights.constants';
 import { CareerHighlightsComponent } from './career-highlights.component';
 
@@ -71,6 +72,16 @@ class FakeIntersectionObserver {
   }
 }
 
+const mostTeamsPlayedHighlightsFullFixture = {
+  ...mostTeamsPlayedHighlightsPage0Fixture,
+  skip: 0,
+  take: 21,
+  items: [
+    ...mostTeamsPlayedHighlightsPage0Fixture.items,
+    ...mostTeamsPlayedHighlightsPage1Fixture.items,
+  ],
+};
+
 describe('CareerHighlightsComponent', () => {
   beforeEach(() => {
     FakeIntersectionObserver.instances = [];
@@ -84,15 +95,15 @@ describe('CareerHighlightsComponent', () => {
     vi.unstubAllGlobals();
   });
 
-  it('loads only activated cards first and fetches additional cards when they approach the viewport', async () => {
+  it('renders grouped sections, lazy-loads cards on viewport entry, and applies tied ranks across paged career rows', async () => {
     const getCareerHighlights = vi.fn(
-      (type: CareerHighlightType, skip = 0) => {
+      (type: CareerHighlightType, _skip = 0, take = 10) => {
         switch (type) {
           case 'most-teams-played':
             return of(
-              skip >= 10
-                ? mostTeamsPlayedHighlightsPage1Fixture
-                : mostTeamsPlayedHighlightsPage0Fixture
+              take > 11
+                ? mostTeamsPlayedHighlightsFullFixture
+                : mostTeamsPlayedHighlightsPage0Fixture,
             );
           case 'most-teams-owned':
             return of(mostTeamsOwnedHighlightsPage0Fixture);
@@ -115,7 +126,7 @@ describe('CareerHighlightsComponent', () => {
           case 'reunion-king':
             return of(reunionKingHighlightsPage0Fixture);
         }
-      }
+      },
     );
 
     await render(CareerHighlightsComponent, {
@@ -133,79 +144,54 @@ describe('CareerHighlightsComponent', () => {
     });
 
     expect(
-      await screen.findByRole('heading', { name: 'career.highlights.cards.mostTeamsPlayed.title' })
+      await screen.findByRole('button', {
+        name: 'career.highlights.sections.achievements.title',
+      }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.mostTeamsOwned.title',
-      })
+      screen.getByRole('button', {
+        name: 'career.highlights.sections.journeys.title',
+      }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.mostStanleyCups.title',
-      })
+      screen.getByRole('button', {
+        name: 'career.highlights.sections.longStays.title',
+      }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.regularGrinderWithoutPlayoffs.title',
-      })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.sameTeamSeasonsPlayed.title',
-      })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.sameTeamSeasonsOwned.title',
-      })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.stashKing.title',
-      })
+      screen.getByRole('button', {
+        name: 'career.highlights.sections.transactions.title',
+      }),
     ).toBeInTheDocument();
 
     await vi.waitFor(() => {
-      expect(FakeIntersectionObserver.instances).toHaveLength(GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length);
+      expect(FakeIntersectionObserver.instances).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length);
     });
 
     expect(getCareerHighlights).not.toHaveBeenCalled();
-    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length);
+    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(
+      CAREER_HIGHLIGHT_CARD_TYPES.length,
+    );
 
     FakeIntersectionObserver.instances[0]?.trigger();
-    FakeIntersectionObserver.instances[2]?.trigger();
+    FakeIntersectionObserver.instances[9]?.trigger();
 
-    const mostTeamsCardTitle = screen.getByRole('heading', {
+    const mostTeamsCard = screen.getByRole('heading', {
       name: 'career.highlights.cards.mostTeamsPlayed.title',
-    });
-    const stanleyCupCardTitle = screen.getByRole('heading', {
+    }).closest('mat-card') as HTMLElement | null;
+    const stanleyCupCard = screen.getByRole('heading', {
       name: 'career.highlights.cards.mostStanleyCups.title',
-    });
-    const mostTeamsCard = mostTeamsCardTitle.closest('mat-card') as HTMLElement | null;
-    const stanleyCupCard = stanleyCupCardTitle.closest('mat-card') as HTMLElement | null;
+    }).closest('mat-card') as HTMLElement | null;
 
     expect(mostTeamsCard).not.toBeNull();
     expect(stanleyCupCard).not.toBeNull();
     expect(await within(mostTeamsCard!).findByText('F Jamie Benn')).toBeInTheDocument();
+    expect(within(mostTeamsCard!).getAllByText('T1.')).toHaveLength(2);
     expect(await within(stanleyCupCard!).findByText('F Patrick Maroon')).toBeInTheDocument();
-    expect(getCareerHighlights).toHaveBeenCalledTimes(2);
-    expect(getCareerHighlights).toHaveBeenNthCalledWith(1, 'most-stanley-cups', 0, 10);
-    expect(getCareerHighlights).toHaveBeenNthCalledWith(2, 'most-teams-played', 0, 10);
-    expect(within(stanleyCupCard!).getByText('💍')).toBeInTheDocument();
-    expect(within(stanleyCupCard!).getByText('3')).toBeInTheDocument();
-    expect(within(stanleyCupCard!).queryByText('D Victor Hedman')).not.toBeInTheDocument();
+    expect(within(stanleyCupCard!).getByLabelText('career.highlights.columnHelp.cups')).toBeInTheDocument();
 
-    FakeIntersectionObserver.instances[4]?.trigger();
-
-    const sameTeamPlayedCardTitle = screen.getByRole('heading', {
-      name: 'career.highlights.cards.sameTeamSeasonsPlayed.title',
-    });
-    const sameTeamPlayedCard = sameTeamPlayedCardTitle.closest('mat-card') as HTMLElement | null;
-
-    expect(sameTeamPlayedCard).not.toBeNull();
-    expect(await within(sameTeamPlayedCard!).findByText('D Victor Hedman')).toBeInTheDocument();
-    expect(getCareerHighlights).toHaveBeenCalledWith('same-team-seasons-played', 0, 10);
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(1, 'most-stanley-cups', 0, 11);
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(2, 'most-teams-played', 0, 11);
 
     fireEvent.click(within(mostTeamsCard!).getByRole('button', {
       name: /career\.highlights\.cards\.mostTeamsPlayed\.title.*tableCard\.next/,
@@ -213,10 +199,11 @@ describe('CareerHighlightsComponent', () => {
 
     expect(await within(mostTeamsCard!).findByText('F Anthony Duclair')).toBeInTheDocument();
     expect(within(mostTeamsCard!).queryByText('F Jamie Benn')).not.toBeInTheDocument();
-    expect(getCareerHighlights).toHaveBeenCalledWith('most-teams-played', 10, 10);
+    expect(within(mostTeamsCard!).getAllByText('T7.')).toHaveLength(2);
+    expect(getCareerHighlights).toHaveBeenLastCalledWith('most-teams-played', 0, 21);
   });
 
-  it('switches to transactions, keeps reunion-king last, and preserves tooltip content order', async () => {
+  it('keeps all grouped sections visible, scrolls jump navigation to the target section, and preserves transaction tooltip ordering', async () => {
     const getCareerHighlights = vi.fn((type: CareerHighlightType) => {
       switch (type) {
         case 'most-teams-played':
@@ -259,80 +246,66 @@ describe('CareerHighlightsComponent', () => {
     });
 
     await vi.waitFor(() => {
-      expect(FakeIntersectionObserver.instances).toHaveLength(GENERAL_CAREER_HIGHLIGHT_CARD_TYPES.length);
+      expect(FakeIntersectionObserver.instances).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length);
     });
 
-    fireEvent.click(
-      screen.getByRole('radio', {
-        name: 'career.highlights.sections.transactions',
-      }),
+    expect(
+      screen.getAllByRole('heading', { level: 4 }).map((heading) => heading.textContent?.trim()),
+    ).toEqual(CAREER_HIGHLIGHT_SECTIONS.map((section) => section.titleKey));
+
+    const transactionsSection = view.fixture.nativeElement.querySelector(
+      '#career-highlights-section-transactions',
+    ) as HTMLElement | null;
+
+    expect(transactionsSection).not.toBeNull();
+
+    const scrollIntoView = vi.fn();
+    Object.defineProperty(transactionsSection, 'scrollIntoView', {
+      value: scrollIntoView,
+      configurable: true,
+    });
+
+    const replaceStateSpy = vi.spyOn(window.history, 'replaceState');
+
+    fireEvent.click(screen.getByRole('button', {
+      name: 'career.highlights.sections.transactions.title',
+    }));
+
+    expect(replaceStateSpy).toHaveBeenCalledWith(
+      null,
+      '',
+      `${window.location.pathname}${window.location.search}#career-highlights-section-transactions`,
     );
-
-    expect(
-      screen.queryByRole('heading', {
-        name: 'career.highlights.cards.mostTeamsPlayed.title',
-      }),
-    ).not.toBeInTheDocument();
-    expect(
-      await screen.findByRole('heading', {
-        name: 'career.highlights.cards.mostTrades.title',
-      }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.mostClaims.title',
-      }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.mostDrops.title',
-      }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', {
-        name: 'career.highlights.cards.reunionKing.title',
-      }),
-    ).toBeInTheDocument();
-    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(4);
-    expect(
-      screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent?.trim()),
-    ).toEqual([
-      'career.highlights.sectionTitle',
-      'career.highlights.cards.mostTrades.title',
-      'career.highlights.cards.mostClaims.title',
-      'career.highlights.cards.mostDrops.title',
-      'career.highlights.cards.reunionKing.title',
-    ]);
-
-    const transactionObservers = FakeIntersectionObserver.instances.slice(-4);
-    transactionObservers[0]?.trigger();
-    transactionObservers[3]?.trigger();
-
-    const tradesCardTitle = screen.getByRole('heading', {
-      name: 'career.highlights.cards.mostTrades.title',
+    expect(scrollIntoView).toHaveBeenCalledWith({
+      block: 'start',
+      inline: 'nearest',
+      behavior: 'smooth',
     });
-    const tradesCard = tradesCardTitle.closest('mat-card') as HTMLElement | null;
+
+    FakeIntersectionObserver.instances[2]?.trigger();
+    FakeIntersectionObserver.instances[5]?.trigger();
+
+    const tradesCard = screen.getByRole('heading', {
+      name: 'career.highlights.cards.mostTrades.title',
+    }).closest('mat-card') as HTMLElement | null;
 
     expect(tradesCard).not.toBeNull();
     expect(await within(tradesCard!).findByText('F Mike Hoffman')).toBeInTheDocument();
     expect(within(tradesCard!).getByText('6')).toBeInTheDocument();
-    expect(getCareerHighlights).toHaveBeenCalledWith('most-trades', 0, 10);
+    expect(getCareerHighlights).toHaveBeenCalledWith('most-trades', 0, 11);
+    expect(getCareerHighlights).toHaveBeenCalledWith('reunion-king', 0, 11);
 
-    const tradesState = view.fixture.componentInstance
-      .cards()
-      .find((card) => card.type === 'most-trades')?.state;
+    const transactionSection = view.fixture.componentInstance.sections().find(
+      (section) => section.id === 'transactions',
+    );
+    const tradesState = transactionSection?.cards.find((card) => card.type === 'most-trades')?.state;
+    const reunionState = transactionSection?.cards.find((card) => card.type === 'reunion-king')?.state;
 
     expect(tradesState?.rows[0]?.detailLines).toEqual([
       'Colorado Avalanche 3',
       'Dallas Stars 2',
       'Carolina Hurricanes 1',
     ]);
-
-    const reunionState = view.fixture.componentInstance
-      .cards()
-      .find((card) => card.type === 'reunion-king')?.state;
-
-    expect(getCareerHighlights).toHaveBeenCalledWith('reunion-king', 0, 10);
     expect(reunionState?.descriptionParams).toEqual({ minAllowed: 2 });
     expect(reunionState?.rows[0]).toMatchObject({
       primaryText: 'F Mikael Granlund',
@@ -369,15 +342,15 @@ describe('CareerHighlightsComponent', () => {
                           ? stashKingHighlightsPage0Fixture
                           : type === 'most-trades'
                             ? mostTradesHighlightsPage0Fixture
-                          : type === 'most-claims'
+                            : type === 'most-claims'
                               ? mostClaimsHighlightsPage0Fixture
                               : type === 'most-drops'
                                 ? mostDropsHighlightsPage0Fixture
                                 : type === 'reunion-king'
                                   ? reunionKingHighlightsPage0Fixture
-                    : type === 'same-team-seasons-played'
-                      ? sameTeamSeasonsHighlightsPage0Fixture
-                      : mostTeamsPlayedHighlightsPage0Fixture
+                                  : type === 'same-team-seasons-played'
+                                    ? sameTeamSeasonsHighlightsPage0Fixture
+                                    : mostTeamsPlayedHighlightsPage0Fixture,
                 ),
           },
         },
@@ -385,25 +358,21 @@ describe('CareerHighlightsComponent', () => {
     });
 
     await vi.waitFor(() => {
-      expect(FakeIntersectionObserver.instances).toHaveLength(7);
+      expect(FakeIntersectionObserver.instances).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length);
     });
 
-    FakeIntersectionObserver.instances[2]?.trigger();
-    FakeIntersectionObserver.instances[5]?.trigger();
+    FakeIntersectionObserver.instances[7]?.trigger();
+    FakeIntersectionObserver.instances[9]?.trigger();
 
-    const mostTeamsPlayedCardTitle = await screen.findByRole('heading', {
+    const mostTeamsPlayedCard = await screen.findByRole('heading', {
       name: 'career.highlights.cards.mostTeamsPlayed.title',
-    });
-    const mostTeamsOwnedCardTitle = screen.getByRole('heading', {
+    }).then((heading) => heading.closest('mat-card')) as HTMLElement | null;
+    const mostTeamsOwnedCard = screen.getByRole('heading', {
       name: 'career.highlights.cards.mostTeamsOwned.title',
-    });
-    const sameTeamOwnedCardTitle = screen.getByRole('heading', {
+    }).closest('mat-card') as HTMLElement | null;
+    const sameTeamOwnedCard = screen.getByRole('heading', {
       name: 'career.highlights.cards.sameTeamSeasonsOwned.title',
-    });
-
-    const mostTeamsPlayedCard = mostTeamsPlayedCardTitle.closest('mat-card') as HTMLElement | null;
-    const mostTeamsOwnedCard = mostTeamsOwnedCardTitle.closest('mat-card') as HTMLElement | null;
-    const sameTeamOwnedCard = sameTeamOwnedCardTitle.closest('mat-card') as HTMLElement | null;
+    }).closest('mat-card') as HTMLElement | null;
 
     expect(mostTeamsPlayedCard).not.toBeNull();
     expect(mostTeamsOwnedCard).not.toBeNull();

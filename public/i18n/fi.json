@@ -24,18 +24,37 @@
     },
     "highlights": {
       "sectionTitle": "Uranostot",
-      "sectionSwitcher": {
-        "ariaLabel": "Nostoryhmä"
-      },
+      "jumpNavAriaLabel": "Uranostojen osiot",
       "sections": {
-        "general": "Sekalaiset",
-        "transactions": "Siirrot"
+        "achievements": {
+          "title": "Ura",
+          "description": "Saavutusia uran varrelta."
+        },
+        "journeys": {
+          "title": "Kiertolaiset",
+          "description": "Eniten eri seuroissa viihtyneet pelaajat."
+        },
+        "longStays": {
+          "title": "Seuraikonit",
+          "description": "Samaan seuraan jämähtäneet pelaajat."
+        },
+        "transactions": {
+          "title": "Siirrot",
+          "description": "Eniten liikkuneet pelaajat."
+        }
       },
       "columns": {
         "player": "Pelaaja",
         "teamCount": "Seurat",
         "seasonCount": "Kaudet",
         "games": "Ott."
+      },
+      "columnHelp": {
+        "cups": "Stanley Cup -sormukset",
+        "reunions": "Paluut samaan seuraan",
+        "trades": "Kaupat",
+        "claims": "Nostot",
+        "drops": "Pudotukset"
       },
       "cards": {
         "mostTeamsPlayed": {
@@ -280,6 +299,8 @@
       "details": "Lisätiedot"
     },
     "showDetails": "Näytä lisätiedot: {{label}}",
+    "rankAriaLabel": "{{rank}}. sija",
+    "tiedRankAriaLabel": "Tasajaettu {{rank}}. sija",
     "loadWhenVisible": "Kortin data ladataan, kun se tulee näkyviin.",
     "apiUnavailable": "Korttidata ei ole saatavilla juuri nyt. Yritä hetken päästä uudelleen.",
     "noResults": "Ei tuloksia.",
@@ -288,6 +309,9 @@
     "previousPage": "Näytä edelliset rivit",
     "nextPage": "Näytä seuraavat rivit",
     "paginationSummary": "{{start}}-{{end}} / {{total}}"
+  },
+  "sectionJumpNav": {
+    "horizontalScrollHint": "Vieritä sivusuunnassa nähdäksesi kaikki osiot."
   },
   "a11y": {
     "skipToTable": "Siirry taulukkoon",

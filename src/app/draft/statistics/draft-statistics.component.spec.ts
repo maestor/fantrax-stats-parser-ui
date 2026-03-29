@@ -13,6 +13,8 @@ import { DRAFT_STATISTICS_CARD_IDS } from './draft-statistics.constants';
 import { DraftStatisticsComponent } from './draft-statistics.component';
 
 function createEntryDraftGroup(index: number): EntryDraftTeamGroup {
+  const totalPicksByIndex = [20, 19, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10];
+
   return {
     team: {
       id: `${index + 1}`,
@@ -22,15 +24,15 @@ function createEntryDraftGroup(index: number): EntryDraftTeamGroup {
       highestPick: null,
       averageDraftPosition: index + 1,
       amounts: {
-        total: 20 - index,
+        total: totalPicksByIndex[index],
         ownPicks: 15 - index,
         tradedPicks: 5,
         playersPerDraftAverage: 6 - index * 0.1,
         playedInLeague: 12 - index,
-        playedInLeaguePercent: Number(((12 - index) / (20 - index)).toFixed(3)),
+        playedInLeaguePercent: Number(((12 - index) / totalPicksByIndex[index]).toFixed(3)),
         playedForDraftingTeam: 6 - Math.floor(index / 2),
         playedForDraftingTeamPercent: Number(
-          ((6 - Math.floor(index / 2)) / (20 - index)).toFixed(3),
+          ((6 - Math.floor(index / 2)) / totalPicksByIndex[index]).toFixed(3),
         ),
       },
       rounds: {
@@ -130,8 +132,9 @@ describe('DraftStatisticsComponent', () => {
 
     const totalPicksQueries = within(totalPicksCard as HTMLElement);
     expect(totalPicksQueries.getByText(totalPicksState!.rows[0].primaryText)).toBeInTheDocument();
-    expect(totalPicksQueries.getByText('1. Team 1')).toBeInTheDocument();
-    expect(totalPicksQueries.queryByText('11. Team 11')).not.toBeInTheDocument();
+    expect(totalPicksQueries.getByText('1.')).toBeInTheDocument();
+    expect(totalPicksQueries.getAllByText('T2.')).toHaveLength(2);
+    expect(totalPicksQueries.queryByText('Team 11')).not.toBeInTheDocument();
 
     const playedInLeaguePercentCard = screen
       .getByRole('heading', { name: 'draft.statistics.cards.playedInLeaguePercent.title' })
@@ -152,7 +155,8 @@ describe('DraftStatisticsComponent', () => {
     await waitForBehaviorAssertion(fixture, () => {
       const pagedCard = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
       expect(pagedCard?.skip).toBe(10);
-      expect(totalPicksQueries.getByText('11. Team 11')).toBeInTheDocument();
+      expect(totalPicksQueries.getByText('11.')).toBeInTheDocument();
+      expect(totalPicksQueries.getByText('Team 11')).toBeInTheDocument();
     });
 
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(9);
@@ -170,10 +174,12 @@ describe('DraftStatisticsComponent', () => {
 
     await waitForBehaviorAssertion(fixture, () => {
       const cardState = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
+      const highlightedRow = within(totalPicksCard as HTMLElement).getByText('Team 12').closest('tr');
       expect(fixture.componentInstance.highlightedTeamId).toBe('12');
       expect(cardState?.skip).toBe(10);
-      expect(cardState?.rows.some((row) => row.primaryText === '12. Team 12' && row.emphasized)).toBe(true);
-      expect(within(totalPicksCard as HTMLElement).getByText('12. Team 12').closest('tr')).toHaveClass('table-card-row--emphasized');
+      expect(cardState?.rows.some((row) => row.primaryText === 'Team 12' && row.rank?.text === '12.' && row.emphasized)).toBe(true);
+      expect(highlightedRow).toHaveClass('table-card-row--emphasized');
+      expect(within(highlightedRow as HTMLElement).getByText('12.')).toBeInTheDocument();
     });
 
     expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
@@ -199,9 +205,11 @@ describe('DraftStatisticsComponent', () => {
 
     await waitForBehaviorAssertion(fixture, () => {
       const cardState = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
+      const highlightedRow = within(totalPicksCard as HTMLElement).getByText('Team 12').closest('tr');
       expect(screen.getByRole('combobox', { name: 'draft.statistics.highlightTeam.label' })).toHaveTextContent('Team 12');
       expect(cardState?.skip).toBe(10);
-      expect(within(totalPicksCard as HTMLElement).getByText('12. Team 12').closest('tr')).toHaveClass('table-card-row--emphasized');
+      expect(highlightedRow).toHaveClass('table-card-row--emphasized');
+      expect(within(highlightedRow as HTMLElement).getByText('12.')).toBeInTheDocument();
     });
   });
 

@@ -41,7 +41,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- Searchable and sortable, with no stats-page filters or mobile drawer
 	- Virtualized row rendering keeps long lists responsive
 	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
-	- `/career/highlights` splits compact paged highlight cards into `Sekalaiset` and `Siirrot`, covering the existing general career slices plus transaction leaders for most trades, claims, drops, and same-team reunions; each card lazy-loads its dataset as it approaches the viewport
+	- `/career/highlights` groups compact paged highlight cards under sticky jump sections (`Urateot`, `Seurapolut`, `Pitkät pestit`, `Siirrot`), keeps card datasets lazy-loaded as they approach the viewport, and shows tied ranks inline before player position when values are shared
 - 📝 **Draft Pages**: Standalone `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics` browse routes now live under `Varaukset`
 	- Batch 1 adds the route shell, navigation, SEO, and the shared browse scaffolding
 		- Batch 2 turns `/draft/opening-draft` into a team-by-team accordion with simple pick rows, including traded-pick owner suffixes when the original pick belonged to another team
@@ -194,7 +194,7 @@ For planning-heavy changes, save the approved implementation plan locally under 
 
 E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `smoke.spec.ts` — Core page rendering and navigation
-- `career.spec.ts` — Career players/goalies/highlights tabs, highlight section switching, paging, and route shell behavior
+- `career.spec.ts` — Career players/goalies/highlights tabs, grouped highlight section navigation, paging, and route shell behavior
 - `draft.spec.ts` — Draft route redirect/tab behavior plus entry-draft and opening-draft accordion rendering
 - `leaderboards.spec.ts` — Leaderboards redirect, regular/playoff/transactions tabs, tie-rank vs incremental position logic, and expandable season details
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)

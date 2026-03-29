@@ -49,8 +49,10 @@ export const TAB_LABELS = {
 };
 
 export const CAREER_HIGHLIGHT_SECTION_LABELS = {
-  GENERAL: fi('career.highlights.sections.general'),
-  TRANSACTIONS: fi('career.highlights.sections.transactions'),
+  ACHIEVEMENTS: fi('career.highlights.sections.achievements.title'),
+  JOURNEYS: fi('career.highlights.sections.journeys.title'),
+  LONG_STAYS: fi('career.highlights.sections.longStays.title'),
+  TRANSACTIONS: fi('career.highlights.sections.transactions.title'),
 };
 
 export const CAREER_HIGHLIGHT_CARD_LABELS = {

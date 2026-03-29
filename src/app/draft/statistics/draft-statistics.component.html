@@ -27,17 +27,12 @@
     </mat-form-field>
   </div>
 
-  <nav class="draft-statistics-jump-nav" [attr.aria-label]="'draft.statistics.jumpNavAriaLabel' | translate">
-    @for (section of sectionLinks; track section.id) {
-      <button
-        class="draft-statistics-jump-link"
-        type="button"
-        (click)="scrollToSection(section.anchorId)"
-      >
-        {{ section.titleKey | translate }}
-      </button>
-    }
-  </nav>
+  <app-section-jump-nav
+    class="draft-statistics-jump-nav"
+    [items]="jumpNavItems"
+    ariaLabelKey="draft.statistics.jumpNavAriaLabel"
+    (itemSelected)="scrollToSection($event)"
+  />
 
   @for (section of sections; track section.id) {
     <section

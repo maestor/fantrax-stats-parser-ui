@@ -11,13 +11,15 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ApiService, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { SettingsService } from '@services/settings.service';
+import { SectionJumpNavComponent } from '@shared/section-jump-nav/section-jump-nav.component';
 import { TableCardComponent } from '@shared/table-card/table-card.component';
 import { TableCardRow } from '@shared/table-card/table-card.types';
+import { deriveTiedRanks, formatTiedRankLabel } from '@shared/utils/rank.utils';
 
 import {
   DRAFT_STATISTICS_CARD_IDS,
@@ -55,6 +57,8 @@ type DraftStatisticSourceRow = {
   readonly teamName: string;
   readonly value: number | string;
   readonly rawValue: number;
+  readonly displayRank: number;
+  readonly tieRank: boolean;
 };
 
 type DraftStatisticsCard = {
@@ -200,6 +204,7 @@ const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = DRAFT_STA
   imports: [
     MatFormFieldModule,
     MatSelectModule,
+    SectionJumpNavComponent,
     TableCardComponent,
     TranslateModule,
   ],
@@ -214,9 +219,14 @@ export class DraftStatisticsComponent implements OnInit {
   private readonly footerVisibilityService = inject(FooterVisibilityService);
   private readonly settingsService = inject(SettingsService);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly translate = inject(TranslateService);
 
   readonly pageSize = PAGE_SIZE;
   readonly sectionLinks = draftStatisticsSectionDefinitions;
+  readonly jumpNavItems = draftStatisticsSectionDefinitions.map((section) => ({
+    id: section.anchorId,
+    labelKey: section.titleKey,
+  }));
 
   sections: DraftStatisticsSection[] = this.createInitialSections();
   teams: DraftStatisticsTeamOption[] = [];
@@ -361,10 +371,13 @@ export class DraftStatisticsComponent implements OnInit {
     groups: EntryDraftTeamGroup[],
     definition: DraftStatisticDefinition,
   ): DraftStatisticsCard {
-    const allRows = groups
+    const allRows = deriveTiedRanks(
+      groups
       .map((group) => this.buildSourceRow(group, definition))
       .filter((row): row is DraftStatisticSourceRow => row !== null)
-      .sort((left, right) => this.compareRows(left, right, definition.direction));
+      .sort((left, right) => this.compareRows(left, right, definition.direction)),
+      (left, right) => left.rawValue === right.rawValue,
+    );
     const initialSkip = this.highlightedTeamId === null
       ? 0
       : this.getTeamPageSkip(allRows, this.highlightedTeamId);
@@ -406,6 +419,8 @@ export class DraftStatisticsComponent implements OnInit {
       teamName: group.team.name,
       value: definition.formatValue ? definition.formatValue(rawValue) : rawValue,
       rawValue,
+      displayRank: 0,
+      tieRank: false,
     };
   }
 
@@ -415,9 +430,10 @@ export class DraftStatisticsComponent implements OnInit {
   ): TableCardRow[] {
     return allRows
       .slice(skip, skip + PAGE_SIZE)
-      .map((row, index) => ({
+      .map((row) => ({
         key: row.key,
-        primaryText: `${skip + index + 1}. ${row.teamName}`,
+        rank: this.buildRankLabel(row.displayRank, row.tieRank),
+        primaryText: row.teamName,
         value: row.value,
         emphasized: row.teamId === this.highlightedTeamId,
       }));
@@ -473,5 +489,15 @@ export class DraftStatisticsComponent implements OnInit {
       }),
     }));
     this.changeDetectorRef.markForCheck();
+  }
+
+  private buildRankLabel(rank: number, tieRank: boolean): TableCardRow['rank'] {
+    return {
+      text: formatTiedRankLabel(rank, tieRank),
+      ariaLabel: this.translate.instant(
+        tieRank ? 'tableCard.tiedRankAriaLabel' : 'tableCard.rankAriaLabel',
+        { rank },
+      ),
+    };
   }
 }

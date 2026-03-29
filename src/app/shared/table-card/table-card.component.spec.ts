@@ -19,6 +19,7 @@ import { TableCardRow } from './table-card.types';
       [descriptionParams]="descriptionParams"
       [primaryColumnLabelKey]="primaryColumnLabelKey"
       [valueColumnLabelKey]="valueColumnLabelKey"
+      [valueColumnTooltipKey]="valueColumnTooltipKey"
       [showDetails]="showDetails"
       [deferred]="deferred"
       [rows]="rows"
@@ -37,6 +38,7 @@ class TableCardHostComponent {
   descriptionParams: Readonly<Record<string, number | string>> | undefined = undefined;
   primaryColumnLabelKey = 'career.highlights.columns.player';
   valueColumnLabelKey = 'career.highlights.columns.teamCount';
+  valueColumnTooltipKey: string | undefined = undefined;
   showDetails = true;
   deferred = false;
   loading = false;
@@ -88,6 +90,30 @@ describe('TableCardComponent', () => {
         name: /career\.highlights\.cards\.mostTeamsPlayed\.title.*tableCard\.next/,
       }),
     ).toBeEnabled();
+  });
+
+  it('renders tied-rank prefixes and accessible emoji value headers when configured', async () => {
+    await setup({
+      valueColumnLabelKey: '💍',
+      valueColumnTooltipKey: 'career.highlights.columnHelp.cups',
+      rows: [
+        {
+          key: 'row-1',
+          rank: {
+            text: 'T2.',
+            ariaLabel: 'tableCard.tiedRankAriaLabel',
+          },
+          primaryText: 'F Jamie Benn',
+          value: 3,
+          detailLines: ['Colorado Avalanche'],
+          detailLabel: 'Jamie Benn',
+        },
+      ],
+    });
+
+    expect(await screen.findAllByText('T2.')).toHaveLength(1);
+    expect(screen.getByText('F Jamie Benn')).toBeInTheDocument();
+    expect(screen.getByLabelText('career.highlights.columnHelp.cups')).toBeInTheDocument();
   });
 
   it('shows an empty-state message when there are no rows and the card is not loading', async () => {

@@ -89,8 +89,14 @@ Do not collapse these into a single "universal" table component unless the produ
 ### `TableCardComponent`
 
 - Shared compact read-only card/table used by highlight and draft statistics views
-- Keep loading, empty, error, tooltip, and paging behavior consistent across consumers
-- Preserve its semantic table labeling and optional row emphasis hooks when extending browse-oriented ranking views
+- Keep loading, empty, error, tooltip, tied-rank prefix, and paging behavior consistent across consumers
+- Preserve its semantic table labeling, optional row emphasis hooks, and accessible emoji-header help when extending browse-oriented ranking views
+
+### `SectionJumpNavComponent`
+
+- Shared sticky pill navigation used by browse-route section jump bars
+- Keep overflow-fade hints, screen-reader scroll guidance, and item-click behavior consistent across consumers
+- Prefer feeding it route-specific section metadata plus a click handler instead of re-implementing horizontal-scroll cue logic in each page
 
 ### `StartFromSeasonSwitcherComponent` And `StartFromSeasonSyncService`
 
