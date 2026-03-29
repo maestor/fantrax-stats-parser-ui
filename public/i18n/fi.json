@@ -625,8 +625,11 @@
     "filters": "Asetukset",
     "graphControls": "Näytettävät tilastot"
   },
+  "settingsDrawer": {
+    "teamSettings": "Asetukset"
+  },
   "settingsPanel": {
-    "settings": "Asetukset"
+    "settings": "Tilastosuodattimet"
   },
   "positionFilter": {
     "label": "Pelipaikka",
@@ -645,7 +648,7 @@
     "defensemen": "Vertaa puolustajiin"
   },
   "topControls": {
-    "controls": "Tarkasteltavat tilastot"
+    "controls": "Tilastorajaukset"
   },
   "footer": {
     "copyright": "Copyright © Kalle Haavisto 2025->",

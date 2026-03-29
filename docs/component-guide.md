@@ -62,8 +62,8 @@ In this repo, shared controls such as team, season, report, and settings control
 
 ### Preserve Drawer Grouping
 
-- `TopControlsComponent` and `SettingsPanelComponent` are grouped under the shared dashboard settings drawer
-- When editing either component, keep the drawer sections aligned across player and goalie contexts
+- `TeamSwitcherComponent`, `TopControlsComponent`, and `SettingsPanelComponent` are grouped under the shared dashboard settings drawer
+- Keep the team section, stats-range section, and stats-filter section aligned across player and goalie contexts
 
 ### Keep The Table Components Separate
 
@@ -109,9 +109,12 @@ Do not collapse these into a single "universal" table component unless the produ
 - Complex dialog with tab switching, graphs, deep-link tab selection, navigation context, keyboard/swipe/trackpad navigation, and row-sync back to the table
 - Protect focus return, reduced-motion behavior, and accessibility announcements when editing it
 
-### `TopControlsComponent` And `SettingsPanelComponent`
+### `TeamSwitcherComponent`, `TopControlsComponent`, And `SettingsPanelComponent`
 
 - Shared dashboard drawer content used by both player and goalie stats routes
+- `TeamSwitcherComponent` owns only the selected-team control
+- `TopControlsComponent` owns the stats-range controls (`start from`, `season`, `report`)
+- `SettingsPanelComponent` owns per-context stat filters such as stats-per-game, minimum games, and skater position
 - Preserve context-specific behavior (`player` vs `goalie`) and the shared drawer grouping/order
 
 ## Project-Specific Constraints

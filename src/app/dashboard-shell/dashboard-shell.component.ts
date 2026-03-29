@@ -30,6 +30,7 @@ import { TeamService } from '../services/team.service';
 import { ComparisonBarComponent } from '../shared/comparison-bar/comparison-bar.component';
 import { SettingsPanelComponent } from '../shared/settings-panel/settings-panel.component';
 import { StartFromSeasonSyncService } from '../shared/top-controls/start-from-season-switcher/start-from-season-sync.service';
+import { TeamSwitcherComponent } from '../shared/top-controls/team-switcher/team-switcher.component';
 import { TopControlsComponent } from '../shared/top-controls/top-controls.component';
 
 type DashboardRouteUiState = {
@@ -61,6 +62,7 @@ export function buildDashboardRouteUiState(url: string): DashboardRouteUiState {
     MatSidenavModule,
     MatTooltipModule,
     NavigationComponent,
+    TeamSwitcherComponent,
     TopControlsComponent,
     SettingsPanelComponent,
     ComparisonBarComponent,

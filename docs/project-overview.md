@@ -58,14 +58,15 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - **Responsive Design**: Adapts to viewport size (max 95vw)
 
 4. **Control Panel**
-    The controls are split into two areas:
+    The drawer groups controls into three areas:
 
-    - **Top controls (header)**
+    - **Settings**
        - Team selector
+    - **Stats ranges**
        - Start-from-season selector (lower bound for combined stats)
        - Season selector
        - Report type selector (regular/playoffs)
-    - **Settings panel (per page)**
+    - **Stats filters (per page)**
        - Stats per game toggle
        - Minimum games slider
 
@@ -112,7 +113,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 1. User opens app at http://localhost:4200
 2. App loads default view (player stats, combined season view) for the default team (configured team id, e.g. `"1"`)
 3. User can:
-   - Change team from the team selector under the header (selection is persisted)
+   - Change team from the settings drawer team selector (selection is persisted)
    - Switch between players and goalies tabs
    - Select different seasons
    - Toggle between regular season and playoffs

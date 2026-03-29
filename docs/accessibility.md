@@ -109,7 +109,7 @@ Notes:
 
 ### Collapsible controls
 
-- Dashboard top controls, settings, and last-updated metadata are shown inside a left-side settings drawer opened from the app-header settings button on all stats-page viewports.
+- Dashboard team settings, stats ranges, stats filters, and last-updated metadata are shown inside a left-side settings drawer opened from the app-header settings button on all stats-page viewports.
 - When the drawer is closed, its content must not be tabbable.
 - `Escape` closes the drawer and returns focus to the page-level flow.
 

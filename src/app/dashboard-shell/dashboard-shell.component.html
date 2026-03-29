@@ -25,6 +25,13 @@
       </div>
 
       @if (hasInitializedSettingsDrawerContent) {
+        <div class="settings-drawer-section settings-drawer-section--team-settings">
+          <h3 class="settings-drawer-section-title">
+            {{ 'settingsDrawer.teamSettings' | translate }}
+          </h3>
+          <app-team-switcher />
+        </div>
+
         <div class="settings-drawer-section settings-drawer-section--top-controls">
           <h3 class="settings-drawer-section-title">
             {{ 'topControls.controls' | translate }}

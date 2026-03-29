@@ -16,7 +16,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 
 - 📊 **Player Statistics**: View and analyze player performance across seasons
 - 🥅 **Goalie Statistics**: Dedicated view for goalie-specific metrics
-- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`) via the header controls. Selection is remembered across reloads, and changing team resets filters
+- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`) from the dashboard settings drawer. Selection is remembered across reloads, and changing team resets filters
 - ⏳ **Start From Season**: Lower bound for combined stats (defaults to the team's oldest season; affects seasons list + combined stats endpoints via `startFrom`)
 - 🔄 **Report Switching**: Toggle between regular season and playoffs
 - 📅 **Season Selection**: Filter data by specific seasons or view combined stats
