@@ -61,7 +61,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     await openDashboardSettingsDrawer();
 
     // -- Drawer sections and controls --
-    expect(await screen.findByRole('heading', { name: 'settingsDrawer.teamSettings' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'settingsDrawer.settings' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'settingsPanel.settings' })).toBeInTheDocument();
 
@@ -298,7 +298,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(getLastModified).not.toHaveBeenCalled();
 
     await openDashboardSettingsDrawer();
-    await screen.findByRole('heading', { name: 'settingsDrawer.teamSettings' });
+    await screen.findByRole('heading', { name: 'settingsDrawer.settings' });
 
     await vi.waitFor(() => {
       expect(getTeams.mock.calls.length).toBeGreaterThan(1);
@@ -324,7 +324,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(screen.queryByRole('heading', { name: /nav\.hockeyPlayerStats:/ })).not.toBeInTheDocument();
 
     await openDashboardSettingsDrawer();
-    expect(await screen.findByRole('heading', { name: 'settingsDrawer.teamSettings' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'settingsDrawer.settings' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
     expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
   });

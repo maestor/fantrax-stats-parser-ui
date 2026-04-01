@@ -55,9 +55,9 @@
 .settings-drawer-header {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   padding: 4px;
 }
 
@@ -74,6 +74,13 @@
 
 .settings-drawer-section--settings {
   margin-top: 4px;
+}
+
+.settings-drawer-settings-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  padding-left: 16px;
 }
 
 .settings-drawer-section-title {

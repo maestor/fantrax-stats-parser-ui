@@ -626,7 +626,7 @@
     "graphControls": "Näytettävät tilastot"
   },
   "settingsDrawer": {
-    "teamSettings": "Asetukset"
+    "settings": "Asetukset"
   },
   "settingsPanel": {
     "settings": "Tilastosuodattimet"
