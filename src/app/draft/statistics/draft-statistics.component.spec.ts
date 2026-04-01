@@ -191,7 +191,6 @@ describe('DraftStatisticsComponent', () => {
     localStorage.setItem('fantrax.settings', JSON.stringify({
       selectedTeamId: '1',
       startFromSeason: null,
-      topControlsExpanded: true,
       season: null,
       reportType: 'regular',
       draftStatisticsHighlightedTeamId: '12',

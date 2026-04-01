@@ -30,7 +30,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 ### Route Shells
 - **Root shell (`AppComponent`)**: stays lightweight and owns the skip link, footer, route subtitle, global keyboard shortcuts, update snackbar, and help/navigation overlays.
   The footer now loads as a deferred chunk only when route readiness makes it visible, and the overlay services are resolved lazily on interaction.
-- **Dashboard shell (`DashboardShellComponent`)**: lazy-loaded only for the interactive dashboard routes (`/`, `/player-stats`, `/goalie-stats`, and direct player/goalie links). It owns the title row, last-modified metadata, top controls, mobile settings drawer, route tabs, and comparison bar.
+- **Dashboard shell (`DashboardShellComponent`)**: lazy-loaded only for the interactive dashboard routes (`/`, `/player-stats`, `/goalie-stats`, and direct player/goalie links). It owns the title row, the team-aware stats subtitle, shared settings drawer content, route tabs, and comparison bar.
 - **Browse routes**: career, draft, and leaderboard pages render directly under the root shell so they do not pay for dashboard-only shell code at startup.
 
 ## Key Features
@@ -58,19 +58,20 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - **Responsive Design**: Adapts to viewport size (max 95vw)
 
 4. **Control Panel**
-    The controls are split into two areas:
+    The drawer groups controls into three areas:
 
-    - **Top controls (header)**
+    - **Settings**
        - Team selector
+    - **Stats ranges**
        - Start-from-season selector (lower bound for combined stats)
        - Season selector
        - Report type selector (regular/playoffs)
-    - **Settings panel (per page)**
+    - **Stats filters (per page)**
        - Stats per game toggle
        - Minimum games slider
 
-    On **mobile**, these controls are accessed via a left-side **settings drawer** (opened from the settings icon next to the title). Desktop layout remains unchanged.
-    The mobile drawer initializes its control content on first open so closed dashboard pages avoid that hidden startup work.
+    On **all dashboard viewports**, these controls are accessed via a left-side **settings drawer** (opened from the settings icon next to the title). The drawer also includes the backend last-modified timestamp.
+    The drawer initializes its control content on first open so closed dashboard pages avoid that hidden startup work.
     These controls are part of the lazy dashboard shell and are intentionally absent from the lighter career and leaderboard browsing routes.
 
 5. **Team Leaderboards** (`/leaderboards`)
@@ -112,7 +113,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 1. User opens app at http://localhost:4200
 2. App loads default view (player stats, combined season view) for the default team (configured team id, e.g. `"1"`)
 3. User can:
-   - Change team from the team selector under the header (selection is persisted)
+   - Change team from the settings drawer team selector (selection is persisted)
    - Switch between players and goalies tabs
    - Select different seasons
    - Toggle between regular season and playoffs

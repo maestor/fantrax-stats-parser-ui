@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import {
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   polyfillMatchMedia,
   seedLocalStorage,
@@ -85,6 +86,11 @@ describe('Direct routes — desktop user behavior', { timeout: 60_000 }, () => {
 
     await waitForBehaviorAssertion(fixture, () => {
       expect(router.url).toBe('/player-stats');
+    });
+
+    await openDashboardSettingsDrawer();
+
+    await waitForBehaviorAssertion(fixture, () => {
       expect(
         screen.getByRole('combobox', { name: /season\.selector/ })
       ).toHaveTextContent('2025-2026');

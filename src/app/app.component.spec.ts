@@ -3,13 +3,14 @@ import { TestBed } from '@angular/core/testing';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { ApiService } from '@services/api.service';
 import { AppComponent, buildRootRouteUiState } from './app.component';
+import { buildDashboardRouteUiState } from './dashboard-shell/dashboard-shell.component';
 import {
-  buildDashboardRouteUiState,
-  buildInitialDashboardMobileState,
-} from './dashboard-shell/dashboard-shell.component';
-import {
+  closeDashboardSettingsDrawer,
+  createApiServiceMock,
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   polyfillMatchMedia,
   seedLocalStorage,
@@ -43,29 +44,45 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(
       screen.getByRole('heading', { name: 'pageTitle' })
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /nav\.hockeyPlayerStats/ })
+    ).toBeInTheDocument();
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(
+        screen.getByRole('heading', { name: 'nav.hockeyPlayerStats: Colorado Avalanche' })
+      ).toBeInTheDocument();
+    });
 
-    // -- Last modified --
-    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
+    // -- Shared dashboard settings drawer button --
+    expect(
+      screen.getByRole('button', { name: 'a11y.openSettingsDrawer' })
+    ).toBeInTheDocument();
 
-    // -- Top controls: toggle button (expanded by default) --
-    const controlsToggle = screen.getByRole('button', { name: /topControls\.controls/ });
-    expect(controlsToggle).toHaveAttribute('aria-expanded', 'true');
+    await openDashboardSettingsDrawer();
 
-    // -- Top controls: four dropdowns with default values --
+    // -- Drawer sections and controls --
+    expect(await screen.findByRole('heading', { name: 'settingsDrawer.teamSettings' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'settingsPanel.settings' })).toBeInTheDocument();
+
     const teamCombobox = screen.getByRole('combobox', { name: /team\.selector/ });
     expect(teamCombobox).toBeInTheDocument();
-    expect(screen.getByText('Colorado Avalanche')).toBeInTheDocument();
 
-    const seasonCombobox = screen.getByRole('combobox', { name: /season\.selector/ });
-    expect(seasonCombobox).toBeInTheDocument();
-    expect(screen.getByText('season.allSeasons')).toBeInTheDocument();
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent(
+        'season.allSeasons'
+      );
+      expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
+        'reportType.regular'
+      );
+      expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toHaveTextContent(
+        '2012-2013'
+      );
+    });
 
-    const reportCombobox = screen.getByRole('combobox', { name: /reportType\.selector/ });
-    expect(reportCombobox).toBeInTheDocument();
-    expect(screen.getByText('reportType.regular')).toBeInTheDocument();
+    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
 
-    const startFromCombobox = screen.getByRole('combobox', { name: /startFromSeason\.selector/ });
-    expect(startFromCombobox).toBeInTheDocument();
+    await closeDashboardSettingsDrawer(fixture);
 
     // -- Navigation tabs --
     expect(screen.getByRole('tab', { name: 'link.playerStats' })).toBeInTheDocument();
@@ -75,10 +92,6 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(
       screen.getByRole('button', { name: 'a11y.openNavMenu' })
     ).toBeInTheDocument();
-
-    // -- Settings panel toggle (collapsed by default) --
-    const settingsToggle = screen.getByRole('button', { name: /settingsPanel\.settings/ });
-    expect(settingsToggle).toHaveAttribute('aria-expanded', 'false');
 
     // -- Stats table with expected row count --
     expect(screen.getByRole('table')).toBeInTheDocument();
@@ -213,19 +226,19 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
     });
 
-    expect(screen.getByRole('button', { name: /topControls\.controls/ })).toHaveAttribute(
-      'aria-expanded',
-      'true'
-    );
-    expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toHaveTextContent(
-      '2012-2013'
-    );
-    expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent(
-      'season.allSeasons'
-    );
-    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
-      'reportType.regular'
-    );
+    await openDashboardSettingsDrawer();
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByRole('combobox', { name: /startFromSeason\.selector/ })).toHaveTextContent(
+        '2012-2013'
+      );
+      expect(screen.getByRole('combobox', { name: /season\.selector/ })).toHaveTextContent(
+        'season.allSeasons'
+      );
+      expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
+        'reportType.regular'
+      );
+    });
+    await closeDashboardSettingsDrawer(fixture);
   });
 
   it('falls back to regular report type when persisted storage contains an invalid report type', async () => {
@@ -234,7 +247,6 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       JSON.stringify({
         selectedTeamId: '1',
         startFromSeason: 2012,
-        topControlsExpanded: true,
         season: null,
         reportType: 'invalid-report-type',
       })
@@ -246,10 +258,75 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
     });
 
-    expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
-      'reportType.regular'
-    );
+    await openDashboardSettingsDrawer();
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByRole('combobox', { name: /reportType\.selector/ })).toHaveTextContent(
+        'reportType.regular'
+      );
+    });
+    await closeDashboardSettingsDrawer(fixture);
     expect(screen.getByRole('table')).toBeInTheDocument();
+  });
+
+  it('boots stats with start-from data before the drawer opens and still defers drawer-only metadata work', async () => {
+    const apiServiceMock = createApiServiceMock();
+    const getTeams = vi.fn(apiServiceMock.getTeams);
+    const getSeasons = vi.fn(apiServiceMock.getSeasons);
+    const getLastModified = vi.fn(apiServiceMock.getLastModified);
+    const behaviorConfig = getBehaviorTestConfig({ isMobile: false });
+
+    await render(AppComponent, {
+      ...behaviorConfig,
+      providers: [
+        ...behaviorConfig.providers,
+        {
+          provide: ApiService,
+          useValue: {
+            ...apiServiceMock,
+            getTeams,
+            getSeasons,
+            getLastModified,
+          },
+        },
+      ],
+    });
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(getTeams).toHaveBeenCalledTimes(1);
+    expect(getSeasons).toHaveBeenCalledTimes(1);
+    expect(getLastModified).not.toHaveBeenCalled();
+
+    await openDashboardSettingsDrawer();
+    await screen.findByRole('heading', { name: 'settingsDrawer.teamSettings' });
+
+    await vi.waitFor(() => {
+      expect(getTeams.mock.calls.length).toBeGreaterThan(1);
+      expect(getSeasons).toHaveBeenCalled();
+      expect(getLastModified).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('keeps the dashboard usable when metadata calls fail', async () => {
+    await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        errorKeys: ['teams', 'lastModified'],
+      })
+    );
+
+    await screen.findByText(slicedPlayers[0].name, {}, { timeout: 5000 });
+
+    expect(
+      screen.getByRole('heading', { name: 'nav.hockeyPlayerStats' })
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: /nav\.hockeyPlayerStats:/ })).not.toBeInTheDocument();
+
+    await openDashboardSettingsDrawer();
+    expect(await screen.findByRole('heading', { name: 'settingsDrawer.teamSettings' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'topControls.controls' })).toBeInTheDocument();
+    expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
   });
 
   it.each([
@@ -263,7 +340,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
         lastModified: 'not-a-real-date',
       } as never,
     },
-  ])('renders the empty last-modified placeholder $caseName', async ({ lastModified }) => {
+  ])('omits the drawer last-modified text $caseName', async ({ lastModified }) => {
     const { fixture } = await render(
       AppComponent,
       getBehaviorTestConfig({
@@ -276,7 +353,8 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
       expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
     });
 
-    expect(document.querySelector('.last-modified--empty')).not.toBeNull();
+    await openDashboardSettingsDrawer();
+    expect(document.querySelector('.settings-drawer-last-modified')).toBeNull();
     expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
   });
 });
@@ -312,7 +390,7 @@ describe('buildRootRouteUiState', () => {
   it('keeps dashboard routes on the heavier shell', () => {
     expect(buildRootRouteUiState('/goalie-stats')).toEqual({
       isDashboardRoute: true,
-      currentRouteSubtitleKey: null,
+      currentRouteSubtitleKey: 'nav.hockeyPlayerStats',
       skipLinkTargetId: 'stats-table',
       skipLinkLabelKey: 'a11y.skipToTable',
     });
@@ -335,37 +413,6 @@ describe('buildDashboardRouteUiState', () => {
     });
     expect(buildDashboardRouteUiState('/player/colorado/jamie-benn')).toEqual({
       controlsContext: 'player',
-    });
-  });
-});
-
-describe('buildInitialDashboardMobileState', () => {
-  it('seeds desktop state synchronously from matchMedia', () => {
-    expect(
-      buildInitialDashboardMobileState({
-        matchMedia: () => ({ matches: false }) as MediaQueryList,
-      })
-    ).toEqual({
-      ready: true,
-      isMobile: false,
-    });
-  });
-
-  it('seeds mobile state synchronously from matchMedia', () => {
-    expect(
-      buildInitialDashboardMobileState({
-        matchMedia: () => ({ matches: true }) as MediaQueryList,
-      })
-    ).toEqual({
-      ready: true,
-      isMobile: true,
-    });
-  });
-
-  it('falls back to desktop when matchMedia is unavailable', () => {
-    expect(buildInitialDashboardMobileState(undefined)).toEqual({
-      ready: true,
-      isMobile: false,
     });
   });
 });

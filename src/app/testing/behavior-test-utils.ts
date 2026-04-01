@@ -1,11 +1,14 @@
 import { Provider } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior } from '@angular/core/testing';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, throwError } from 'rxjs';
 
 import { routes } from '../app.routes';
+import { DashboardShellComponent } from '../dashboard-shell/dashboard-shell.component';
 import {
   ApiParams,
   ApiService,
@@ -436,11 +439,38 @@ export function seedLocalStorage(): void {
     JSON.stringify({
       selectedTeamId: '1',
       startFromSeason: 2012,
-      topControlsExpanded: true,
       season: null,
       reportType: 'regular',
     })
   );
+}
+
+export async function openDashboardSettingsDrawer(timeout = 5_000): Promise<void> {
+  screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }).click();
+  await screen.findByRole(
+    'button',
+    { name: 'a11y.closeSettingsDrawer' },
+    { timeout },
+  );
+}
+
+export async function closeDashboardSettingsDrawer<T>(
+  fixture: ComponentFixture<T>,
+  timeout = 5_000,
+): Promise<void> {
+  const dashboardShell = fixture.debugElement.query(
+    By.directive(DashboardShellComponent),
+  )?.componentInstance as DashboardShellComponent | undefined;
+
+  expect(dashboardShell).toBeDefined();
+
+  dashboardShell?.closeSettingsDrawer();
+  fixture.detectChanges();
+
+  await vi.waitFor(() => {
+    fixture.detectChanges();
+    expect(dashboardShell?.isSettingsDrawerOpen).toBe(false);
+  }, { timeout });
 }
 
 export async function waitForBehaviorAssertion<T>(

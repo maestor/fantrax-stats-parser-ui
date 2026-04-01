@@ -260,6 +260,7 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
   - Initial page load and UI elements
   - Tab navigation (player/goalie stats)
   - Basic table interactions
+  - Shared dashboard drawer availability and team-aware stats subtitle
 
 - **player-card.spec.ts** - Player detail dialog
   - Opening player cards from table
@@ -269,7 +270,7 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
 - **team-switching.spec.ts** - Team selector behavior
   - Team selection dropdown
   - Filter reset on team change
-  - URL updates and state persistence
+  - Current-route retention on stats pages and state persistence
 
 - **filters.spec.ts** - Report type, season, and stats filters
   - Report type switching (regular/playoffs)
@@ -280,9 +281,10 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
   - Filter isolation between player/goalie views
 
 - **mobile.spec.ts** - Mobile-responsive UI
-  - Settings drawer on mobile viewports
-  - Collapsible controls
-  - Touch interactions
+  - Mobile-only player-card graph controls
+  - Accordion and overlay interactions on narrow viewports
+
+- Shared dashboard drawer flows now live in the generic dashboard suites (`smoke.spec.ts`, `filters.spec.ts`, `team-switching.spec.ts`, and the app-level behavior specs), so `mobile.spec.ts` stays focused on mobile-only behavior.
 
 - **career.spec.ts** - Career listings and highlights
   - Career route shell and global-navigation entry

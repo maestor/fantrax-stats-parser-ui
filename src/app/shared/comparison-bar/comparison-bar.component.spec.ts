@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/angular';
 import { AppComponent } from '../../app.component';
 import {
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   seedLocalStorage,
   slicedGoalies,
@@ -130,7 +131,7 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
       expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
+    await openDashboardSettingsDrawer();
     const statsModeToggle = await screen.findByRole('switch', { name: 'statsModeToggle' });
     fireEvent.click(statsModeToggle);
 

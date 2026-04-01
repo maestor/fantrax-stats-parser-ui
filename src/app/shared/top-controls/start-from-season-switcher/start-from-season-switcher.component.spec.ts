@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { AppComponent } from '../../../app.component';
 import {
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   seedLocalStorage,
   slicedPlayers,
@@ -40,6 +41,7 @@ describe('StartFromSeasonSwitcherComponent — desktop user flow', () => {
 
     const initialPlayerName = slicedPlayers[0].name;
     await screen.findByText(initialPlayerName, {}, { timeout: 5000 });
+    await openDashboardSettingsDrawer();
 
     const startFromCombobox = screen.getByRole('combobox', {
       name: /startFromSeason\.selector/,

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,7 +20,6 @@ export class TeamSwitcherComponent {
   private readonly apiService = inject(ApiService);
   private readonly teamService = inject(TeamService);
   private readonly filterService = inject(FilterService);
-  private readonly router = inject(Router);
   private readonly teamsState = toSignal(
     this.apiService.getTeams().pipe(
       map((teams) => ({
@@ -68,6 +66,5 @@ export class TeamSwitcherComponent {
 
     this.teamService.setTeamId(teamId);
     this.filterService.resetAll();
-    this.router.navigate(['/player-stats']);
   }
 }

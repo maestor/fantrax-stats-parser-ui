@@ -109,11 +109,9 @@ Notes:
 
 ### Collapsible controls
 
-- On desktop, top controls and the per-page settings panel are collapsible.
-- When collapsed, their content must not be focusable:
-  - `inert` + `aria-hidden` is applied on the content container
-
-On mobile, top controls + settings are shown inside a left-side settings drawer (opened via the settings icon in the app header). The drawer content is rendered in a non-collapsible "content-only" mode.
+- Dashboard team settings, stats ranges, stats filters, and last-updated metadata are shown inside a left-side settings drawer opened from the app-header settings button on all stats-page viewports.
+- When the drawer is closed, its content must not be tabbable.
+- `Escape` closes the drawer and returns focus to the page-level flow.
 
 ### Standalone card tables
 

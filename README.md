@@ -16,7 +16,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 
 - 📊 **Player Statistics**: View and analyze player performance across seasons
 - 🥅 **Goalie Statistics**: Dedicated view for goalie-specific metrics
-- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`) via the header controls. Selection is remembered across reloads, and changing team resets filters
+- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`) from the dashboard settings drawer. Selection is remembered across reloads, and changing team resets filters
 - ⏳ **Start From Season**: Lower bound for combined stats (defaults to the team's oldest season; affects seasons list + combined stats endpoints via `startFrom`)
 - 🔄 **Report Switching**: Toggle between regular season and playoffs
 - 📅 **Season Selection**: Filter data by specific seasons or view combined stats
@@ -38,7 +38,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- Regular/playoffs keep blank tied ranks, while transactions always show incremental positions
 	- Season details show `🏆` markers for winner/championship seasons (regular + playoffs) and `🤝 | ✅ | ❌ | 🏒 | 🥅` summaries for transactions
 - 📚 **Career Listings**: Standalone `/career/players` and `/career/goalies` routes for all-time player and goalie career tables
-	- Searchable and sortable, with no stats-page filters or mobile drawer
+	- Searchable and sortable, with no stats-page filters or dashboard drawer
 	- Virtualized row rendering keeps long lists responsive
 	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
 	- `/career/highlights` groups compact paged highlight cards under sticky jump sections (`Urateot`, `Seurapolut`, `Pitkät pestit`, `Siirrot`), keeps card datasets lazy-loaded as they approach the viewport, and shows tied ranks inline before player position when values are shared
@@ -50,7 +50,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 		- Expanded draft panels auto-align their sticky header to the top of the viewport when opened; `ArrowDown` still explicitly moves from the team header into the panel body, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it, and `Escape` collapses the panel while returning focus to the header
 		- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 13 entry-draft summary slices, including separate played-percentage rankings, without a separate draft-only card implementation
 		- Draft statistics cards are grouped under `Varausmäärät`, `Osumat`, and `Kierrokset`, with a sticky jump bar plus an optional team highlight control that jumps each card to the selected team's ranking page and emphasizes that row
-- 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (controls, settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
+- 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (shared settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 	- Supports wrapped `ArrowUp` / `ArrowDown` navigation between menu items in addition to normal `Tab` browsing
 - 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
@@ -67,9 +67,9 @@ The docs in this repo intentionally focus on project-specific architecture, work
 - 🌓 **Automatic Dark Mode**: Follows device/browser `prefers-color-scheme` (no manual toggle)
   - Every UI/styling change must be verified in both light mode and dark mode before review or merge
 - 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)
-- 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and collapsible controls
-- 🕒 **Last Updated Indicator**: Shows backend data last-modified timestamp under the title (desktop) and in the settings drawer (mobile)
-- 🏷️ **Route Subtitles**: Career, draft, and leaderboard sections show lightweight subtitles under the app title (`Pelaajaurat`, `Varaukset`, `Maratontaulukot`)
+- 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and a shared dashboard settings drawer
+- 🕒 **Last Updated Indicator**: Shows the backend data last-modified timestamp inside the dashboard settings drawer
+- 🏷️ **Route Subtitles**: Stats, career, draft, and leaderboard sections show lightweight subtitles under the app title; dashboard stats append the active team name when available (`Pelaajatilastot: Colorado Avalanche`, `Pelaajaurat`, `Varaukset`, `Maratontaulukot`)
 
 More details:
 
@@ -201,7 +201,7 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `team-switching.spec.ts` — Team selector and filter reset behavior
 - `filters.spec.ts` — Report type, season, position, stats-per-game, and min games filters
 - `player-comparison.spec.ts` — Player comparison selection, dialog, stats and radar tabs
-- `mobile.spec.ts` — Mobile-responsive UI, settings drawer, and mobile player card
+- `mobile.spec.ts` — Mobile-specific player-card graph and accordion flow
 
 **Local:** Backend API must be running on `localhost:3000` (see [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser)).
 **CI:** E2E tests run without a backend — API responses are served from JSON fixtures via Playwright's `page.route()` mocking.
@@ -325,12 +325,12 @@ This project was originally generated using [Angular CLI](https://github.com/ang
 The application is fully responsive with optimized layouts for all screen sizes:
 
 - **Desktop (>960px)**: Full horizontal layout with all controls visible
-- **Tablet (768px-960px)**: Wrapped controls with optimized spacing
-- **Mobile (<768px)**: Collapsible filter panels and graph controls for better space utilization
+- **Tablet (768px-960px)**: Drawer-based dashboard controls with optimized spacing and touch targets
+- **Mobile (<768px)**: Drawer-based dashboard controls and collapsible graph controls for better space utilization
 - **Small Mobile (<480px)**: Stacked layouts with adjusted font sizes and padding
 
 **Key mobile features:**
-- Control panel filters have a collapsible toggle button on all screen sizes (collapsed by default)
+- Dashboard stats filters and metadata live in a shared settings drawer on every stats-page viewport
 - Table headers remain sticky during vertical scrolling while maintaining horizontal scroll capability
 - Player card graph controls collapse into a toggle button on mobile (<768px)
 - Horizontal scrolling enabled for wide tables (bySeason view)

@@ -95,6 +95,10 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
     // ── Goalies — combined (for goalie tab tests) ────────────────────
     { path: 'goalies/combined/regular', params: { startFrom: oldest } },
 
+    // Secondary teams — goalies combined
+    { path: 'goalies/combined/regular', params: { startFrom: oldest, teamId: TAMPA_BAY } },
+    { path: 'goalies/combined/regular', params: { startFrom: oldest, teamId: DALLAS } },
+
     // ── Career highlights ─────────────────────────────────────────────
     { path: 'career/highlights/most-teams-played', params: { skip: '0', take: '10' } },
     { path: 'career/highlights/most-teams-played', params: { skip: '10', take: '10' } },

@@ -1,9 +1,7 @@
-import { AsyncPipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiParams, Player } from '@services/api.service';
 import { FilterState } from '@services/filter.service';
-import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
 import { StatsTableComponent, TableRow } from '@shared/stats-table/stats-table.component';
 import { Column } from '@shared/column.types';
 import { PLAYER_COLUMNS } from '@shared/table-columns';
@@ -11,7 +9,7 @@ import { StatsBaseComponent } from '@base/stats/stats-base.component';
 
 @Component({
   selector: 'app-player-stats',
-  imports: [AsyncPipe, StatsTableComponent, SettingsPanelComponent],
+  imports: [StatsTableComponent],
   templateUrl: './player-stats.component.html',
   styleUrl: './player-stats.component.scss',
 })

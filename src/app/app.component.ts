@@ -60,7 +60,7 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
         ? 'nav.drafts'
       : isLeaderboardsRoute
         ? 'nav.leaderboards'
-        : null,
+        : 'nav.hockeyPlayerStats',
     skipLinkTargetId: isLeaderboardsRoute
       ? 'leaderboard-table'
       : isCareerRoute

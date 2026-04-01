@@ -17,7 +17,7 @@ Services in this application handle data fetching, business logic, state managem
 
 **Responsibilities**:
 - Store user settings in a single `localStorage` key: `fantrax.settings`
-- Provide the currently used reactive settings reads for team id, start-from season, and top-controls expand/collapse state
+- Provide the currently used reactive settings reads for team id, start-from season, season/report filters, and draft statistics highlighting
 - Validate all fields on load; invalid or missing fields fall back to defaults
 
 **Notes**:
@@ -33,7 +33,6 @@ class SettingsService {
   readonly selectedTeamId$: Observable<string>;
   readonly selectedTeamIdSignal: Signal<string>;
   readonly startFromSeason$: Observable<number | undefined>;
-  readonly topControlsExpandedSignal: Signal<boolean>;
 
   get selectedTeamId(): string;
   get startFromSeason(): number | undefined;
@@ -42,7 +41,6 @@ class SettingsService {
 
   setSelectedTeamId(teamId: string): void;
   setStartFromSeason(season: number | undefined): void;
-  setTopControlsExpanded(expanded: boolean): void;
   setSeason(season: number | null): void;
   setReportType(reportType: ReportType): void;
 }
@@ -53,7 +51,6 @@ class SettingsService {
 export type AppSettings = {
   selectedTeamId: string;
   startFromSeason: number | null;
-  topControlsExpanded: boolean;
   season: number | null;
   reportType: ReportType;
 };

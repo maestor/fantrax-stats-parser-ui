@@ -1,8 +1,9 @@
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 
-import { PlayerStatsComponent } from '../../../player-stats/player-stats.component';
+import { AppComponent } from '../../../app.component';
 import {
   getBehaviorTestConfig,
+  openDashboardSettingsDrawer,
   polyfillJsdom,
   seedLocalStorage,
   slicedPlayers,
@@ -24,7 +25,7 @@ describe('PositionFilterToggleComponent — player stats user flow', { timeout: 
 
   it('filters the player table by selected position from the default all-players state', async () => {
     const { fixture } = await render(
-      PlayerStatsComponent,
+      AppComponent,
       getBehaviorTestConfig({
         isMobile: false,
         players: [forwardPlayer, defensemanPlayer] as unknown as Player[],
@@ -34,7 +35,7 @@ describe('PositionFilterToggleComponent — player stats user flow', { timeout: 
     const playerTable = await screen.findByRole('table');
     await screen.findByText(forwardPlayer.name, {}, { timeout: 5000 });
 
-    fireEvent.click(screen.getByRole('button', { name: /settingsPanel\.settings/ }));
+    await openDashboardSettingsDrawer();
 
     const allToggle = screen.getByRole('radio', { name: 'positionFilter.all' });
     const defenseToggle = screen.getByRole('radio', { name: 'positionFilter.defensemen' });
