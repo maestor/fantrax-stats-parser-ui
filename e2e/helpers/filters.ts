@@ -138,7 +138,7 @@ export async function switchReportType(
       ? FILTER_LABELS.REPORT_TYPE_REGULAR
       : FILTER_LABELS.REPORT_TYPE_PLAYOFFS;
   const reportTypeSelector = page.getByRole('combobox', {
-    name: 'Raportti',
+    name: FILTER_LABELS.REPORT_TYPE,
   });
   await withVisibleControl(page, reportTypeSelector, async () => {
     await reportTypeSelector.click();

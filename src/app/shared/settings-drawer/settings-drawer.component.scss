@@ -1,0 +1,64 @@
+:host {
+  display: block;
+  height: 100%;
+  background: inherit;
+}
+
+.settings-drawer-surface {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 16px;
+  background: inherit;
+  box-sizing: border-box;
+}
+
+.settings-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+  padding: 4px;
+}
+
+.settings-drawer-header button[mat-icon-button],
+.settings-drawer-header .mat-mdc-icon-button {
+  color: var(--mat-sys-on-surface);
+}
+
+.settings-drawer-section {
+  margin-top: 0;
+  padding: 16px 0;
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.settings-drawer-section--settings {
+  margin-top: 4px;
+}
+
+.settings-drawer-settings-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0;
+  padding-left: 16px;
+}
+
+.settings-drawer-section-title {
+  margin: 0 0 14px 0;
+  padding: 0 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.settings-drawer-last-modified {
+  padding: 0 16px;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+:host ::ng-deep app-settings-panel .control-panel-content {
+  gap: 16px;
+}

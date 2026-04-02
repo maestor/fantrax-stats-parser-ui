@@ -22,7 +22,7 @@ Services in this application handle data fetching, business logic, state managem
 
 **Notes**:
 - `startFromSeason` defaults to the oldest available season for the selected team
-- When the selected team changes, `startFromSeason` resets to that team's oldest season
+- When the selected team changes, `startFromSeason` clears immediately; stats routes resolve it back to that team's oldest available season when stats mode becomes active
 - Storage failures are ignored (privacy mode, quota, etc.)
 - `season` defaults to `null` (all seasons); `reportType` defaults to `'regular'`
 - Settings are validated field-by-field on load; invalid or missing fields fall back to defaults

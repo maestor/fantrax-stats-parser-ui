@@ -1,14 +1,13 @@
 import { Provider } from '@angular/core';
 import { ComponentFixture, DeferBlockBehavior } from '@angular/core/testing';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
-import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { screen } from '@testing-library/angular';
+import { fireEvent, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { Observable, of, throwError } from 'rxjs';
 
+import { AppComponent } from '../app.component';
 import { routes } from '../app.routes';
-import { DashboardShellComponent } from '../dashboard-shell/dashboard-shell.component';
 import {
   ApiParams,
   ApiService,
@@ -446,30 +445,24 @@ export function seedLocalStorage(): void {
 }
 
 export async function openDashboardSettingsDrawer(timeout = 5_000): Promise<void> {
-  screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }).click();
-  await screen.findByRole(
-    'button',
-    { name: 'a11y.closeSettingsDrawer' },
-    { timeout },
-  );
+  fireEvent.click(screen.getByRole('button', { name: 'a11y.openSettingsDrawer' }));
+  await screen.findByRole('heading', { name: 'settingsDrawer.settings' }, { timeout });
 }
 
 export async function closeDashboardSettingsDrawer<T>(
   fixture: ComponentFixture<T>,
   timeout = 5_000,
 ): Promise<void> {
-  const dashboardShell = fixture.debugElement.query(
-    By.directive(DashboardShellComponent),
-  )?.componentInstance as DashboardShellComponent | undefined;
+  const appComponent = fixture.componentInstance as AppComponent | undefined;
 
-  expect(dashboardShell).toBeDefined();
+  expect(appComponent).toBeDefined();
 
-  dashboardShell?.closeSettingsDrawer();
+  appComponent?.closeSettingsDrawer();
   fixture.detectChanges();
 
   await vi.waitFor(() => {
     fixture.detectChanges();
-    expect(dashboardShell?.isSettingsDrawerOpen).toBe(false);
+    expect(appComponent?.isSettingsDrawerOpen).toBe(false);
   }, { timeout });
 }
 

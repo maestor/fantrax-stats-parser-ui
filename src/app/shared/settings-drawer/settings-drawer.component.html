@@ -1,0 +1,42 @@
+<div class="settings-drawer-surface">
+  <div class="settings-drawer-header">
+    <h3 class="settings-drawer-settings-title">
+      {{ 'settingsDrawer.settings' | translate }}
+    </h3>
+    <button
+      mat-icon-button
+      type="button"
+      (click)="closeRequested.emit()"
+      [attr.aria-label]="'a11y.closeSettingsDrawer' | translate"
+      [matTooltip]="'a11y.closeSettingsDrawer' | translate"
+    >
+      <mat-icon fontIcon="close" />
+    </button>
+  </div>
+
+  <div class="settings-drawer-section settings-drawer-section--team-settings">
+    <app-team-switcher />
+  </div>
+
+  @if (resolvedStatsContext(); as context) {
+    <div class="settings-drawer-section settings-drawer-section--top-controls">
+      <h3 class="settings-drawer-section-title">
+        {{ 'topControls.controls' | translate }}
+      </h3>
+      <app-top-controls [context]="context" />
+    </div>
+
+    <div class="settings-drawer-section settings-drawer-section--settings">
+      <h3 class="settings-drawer-section-title">
+        {{ 'settingsPanel.settings' | translate }}
+      </h3>
+      <app-settings-panel [context]="context" [maxGames]="drawerMaxGames()" />
+    </div>
+  }
+
+  @if (lastModifiedText(); as lastModifiedText) {
+    <div class="settings-drawer-last-modified">
+      {{ 'lastModified.label' | translate }}: {{ lastModifiedText }}
+    </div>
+  }
+</div>

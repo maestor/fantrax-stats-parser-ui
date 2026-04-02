@@ -22,6 +22,7 @@ export const FILTER_LABELS = {
   TEAM: fi('team.selector'),
   SEASON: fi('season.selector'),
   START_FROM: fi('startFromSeason.selector'),
+  REPORT_TYPE: fi('reportType.selector'),
   REPORT_TYPE_REGULAR: fi('reportType.regular'),
   REPORT_TYPE_PLAYOFFS: fi('reportType.playoffs'),
   STATS_PER_GAME: fi('statsModeToggle'),
@@ -29,6 +30,22 @@ export const FILTER_LABELS = {
   POSITION_ALL: fi('positionFilter.all'),
   POSITION_FORWARDS: fi('positionFilter.forwards'),
   POSITION_DEFENSE: fi('positionFilter.defensemen'),
+};
+
+export const A11Y_LABELS = {
+  OPEN_SETTINGS_DRAWER: fi('a11y.openSettingsDrawer'),
+  CLOSE_SETTINGS_DRAWER: fi('a11y.closeSettingsDrawer'),
+  OPEN_NAV_MENU: fi('a11y.openNavMenu'),
+};
+
+export const SEARCH_LABELS = {
+  PLAYER: fi('table.playerSearch'),
+  CAREER_PLAYER: fi('table.careerPlayerSearch'),
+};
+
+export const ROUTE_LABELS = {
+  PLAYER_STATS: fi('nav.hockeyPlayerStats'),
+  PLAYER_CAREERS: fi('nav.playerCareers'),
 };
 
 export const TAB_LABELS = {
