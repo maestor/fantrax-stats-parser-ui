@@ -4,9 +4,10 @@
   </h3>
 
   @if (loading) {
-    <p class="draft-status" role="status" aria-live="polite" tabindex="-1" data-skip-focus="true">
-      {{ 'draft.loading' | translate }}
-    </p>
+    <div class="draft-status draft-status--loading" role="status" aria-live="polite" tabindex="-1" data-skip-focus="true">
+      <span>{{ 'draft.loading' | translate }}</span>
+      <mat-progress-bar class="loading-bar" mode="buffer" [value]="5" [bufferValue]="25" />
+    </div>
   } @else if (apiError) {
     <p class="draft-status draft-status--error" role="alert" tabindex="-1" data-skip-focus="true">
       {{ 'draft.apiUnavailable' | translate }}

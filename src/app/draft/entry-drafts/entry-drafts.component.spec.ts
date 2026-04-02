@@ -462,6 +462,7 @@ describe('EntryDraftsComponent', () => {
     });
 
     expect(screen.getByText('draft.loading')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
     expect(footerVisibilityService.markReady).not.toHaveBeenCalled();
 
     response$.next(entryDraftGroupsFixture);
@@ -477,6 +478,7 @@ describe('EntryDraftsComponent', () => {
         entryDraftGroupsFixture[1],
       ]);
       expect(screen.getByText('Anaheim Ducks')).toBeInTheDocument();
+      expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(7);
   });
@@ -537,6 +539,7 @@ describe('EntryDraftsComponent', () => {
     });
 
     expect(screen.getByText('draft.loading')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
     expect(screen.queryByText('draft.apiUnavailable')).not.toBeInTheDocument();
     expect(fixture.componentInstance.loading).toBe(true);
     expect(fixture.componentInstance.apiError).toBe(false);

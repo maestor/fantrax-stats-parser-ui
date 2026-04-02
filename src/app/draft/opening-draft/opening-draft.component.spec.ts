@@ -302,6 +302,7 @@ describe('OpeningDraftComponent', () => {
     });
 
     expect(screen.getByText('draft.loading')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
     expect(footerVisibilityService.markReady).not.toHaveBeenCalled();
 
     response$.next(openingDraftsFixture);
@@ -311,6 +312,7 @@ describe('OpeningDraftComponent', () => {
       expect(fixture.componentInstance.loading).toBe(false);
       expect(fixture.componentInstance.groups).toEqual(openingDraftsFixture);
       expect(screen.getByText('Colorado Avalanche')).toBeInTheDocument();
+      expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(7);
   });
@@ -373,6 +375,7 @@ describe('OpeningDraftComponent', () => {
     });
 
     expect(screen.getByText('draft.loading')).toBeInTheDocument();
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
     expect(screen.queryByText('draft.apiUnavailable')).not.toBeInTheDocument();
     expect(fixture.componentInstance.loading).toBe(true);
     expect(fixture.componentInstance.apiError).toBe(false);

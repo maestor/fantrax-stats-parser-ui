@@ -14,6 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { ApiService, DraftTeamRef, OpeningDraftPick, OpeningDraftTeamGroup } from '@services/api.service';
@@ -28,7 +29,14 @@ import { scheduleDraftTeamHeaderAlignment } from '../draft-keyboard-navigation.u
 @Component({
   selector: 'app-opening-draft',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatExpansionModule, MatListModule, TranslateModule, DraftPanelHeaderNavigationDirective, DraftPanelFocusTargetDirective],
+  imports: [
+    MatExpansionModule,
+    MatListModule,
+    MatProgressBarModule,
+    TranslateModule,
+    DraftPanelHeaderNavigationDirective,
+    DraftPanelFocusTargetDirective,
+  ],
   templateUrl: './opening-draft.component.html',
   styleUrl: './opening-draft.component.scss',
 })
