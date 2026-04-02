@@ -44,6 +44,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- Team-by-team draft history and summary views
 	- Played-status markers show whether drafted players reached the drafting team or elsewhere in the league
 	- Draft statistics cards are grouped into sectioned rankings with jump navigation
+	- The shared team setting opens or highlights the selected team by default across draft views, with a draft-only drawer toggle to disable that behavior
 - ⚙️ **Shared Settings Drawer**: The same settings entry point is available across stats, career, draft, and leaderboard routes
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 	- Keyboard navigation is supported inside the menu
@@ -214,6 +215,7 @@ Important:
 - If you do need a real local `CI=true` run, make sure `http://localhost:4200` is free first so Playwright can start the CI-mode server instead of colliding with an already running frontend.
 - `npx playwright test --headed` still uses the same `webServer` config. It does not disable server startup by itself; it simply opens the browser UI while Playwright starts or reuses the frontend.
 - If the backend on `localhost:3000` is not running during a paired session, ask the user to start it. Do not silently swap to CI-mode mocking for routine local verification.
+- When a Playwright selector needs visible Finnish UI copy, use `fi('...')` from `e2e/config/i18n.ts` or shared labels from `e2e/config/test-data.ts` instead of hard-coding Finnish strings in specs.
 
 ### Test Coverage Summary
 

@@ -7,7 +7,7 @@ export type AppSettings = {
   startFromSeason: number | null;
   season: number | null;
   reportType: ReportType;
-  draftStatisticsHighlightedTeamId: string | null;
+  disableDraftSelectedTeamHighlight: boolean;
 };
 
 @Injectable({
@@ -45,8 +45,12 @@ export class SettingsService {
     return this.settingsSignal().reportType;
   }
 
-  get draftStatisticsHighlightedTeamId(): string | null {
-    return this.settingsSignal().draftStatisticsHighlightedTeamId;
+  readonly disableDraftSelectedTeamHighlightSignal = computed(
+    () => this.settingsSignal().disableDraftSelectedTeamHighlight,
+  );
+
+  get disableDraftSelectedTeamHighlight(): boolean {
+    return this.disableDraftSelectedTeamHighlightSignal();
   }
 
   setSelectedTeamId(teamId: string): void {
@@ -70,9 +74,9 @@ export class SettingsService {
     this.updateSettings({ reportType });
   }
 
-  setDraftStatisticsHighlightedTeamId(teamId: string | null): void {
-    if (teamId === this.settingsSignal().draftStatisticsHighlightedTeamId) return;
-    this.updateSettings({ draftStatisticsHighlightedTeamId: teamId });
+  setDisableDraftSelectedTeamHighlight(disabled: boolean): void {
+    if (disabled === this.settingsSignal().disableDraftSelectedTeamHighlight) return;
+    this.updateSettings({ disableDraftSelectedTeamHighlight: disabled });
   }
 
   private updateSettings(patch: Partial<AppSettings>): void {
@@ -103,18 +107,17 @@ export class SettingsService {
             : null;
 
         const reportType = this.parseReportType(parsed.reportType);
-        const draftStatisticsHighlightedTeamId =
-          typeof parsed.draftStatisticsHighlightedTeamId === 'string'
-            && parsed.draftStatisticsHighlightedTeamId.trim().length > 0
-            ? parsed.draftStatisticsHighlightedTeamId
-            : null;
+        const disableDraftSelectedTeamHighlight =
+          typeof parsed.disableDraftSelectedTeamHighlight === 'boolean'
+            ? parsed.disableDraftSelectedTeamHighlight
+            : false;
 
         return {
           selectedTeamId,
           startFromSeason,
           season,
           reportType,
-          draftStatisticsHighlightedTeamId,
+          disableDraftSelectedTeamHighlight,
         };
       }
     } catch {
@@ -126,7 +129,7 @@ export class SettingsService {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      draftStatisticsHighlightedTeamId: null,
+      disableDraftSelectedTeamHighlight: false,
     };
     this.persist(defaults);
     return defaults;

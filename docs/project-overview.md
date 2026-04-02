@@ -62,6 +62,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 
     - **Base settings**
        - Team selector
+       - Draft routes only: toggle for disabling selected-team highlight/open-by-default behavior
        - Last updated timestamp
     - **Stats ranges**
        - Start-from-season selector (lower bound for combined stats)
@@ -102,6 +103,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
    - Expanded draft panels auto-align their sticky header to the top of the viewport when opened, while `ArrowDown` still explicitly enters the panel body; once inside, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it and `Escape` collapses the panel while returning focus to the team header
    - `/draft/statistics` reuses the shared card-table UI to rank teams across entry-draft summary metrics, including separate played-percentage rankings, with local 10-row paging
+   - By default, all three draft views follow the shared selected-team setting: entry/opening draft expand that team automatically and draft statistics emphasizes it plus jumps each card to the matching page
+   - Draft routes expose a drawer-only toggle that disables that selected-team emphasis/auto-open behavior without affecting the actual shared team selection
 
 8. **Data Management**
    - Caching service to reduce API calls

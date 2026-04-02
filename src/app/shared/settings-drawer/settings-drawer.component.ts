@@ -11,6 +11,7 @@ import { DrawerContextService } from '@services/drawer-context.service';
 import { SettingsDrawerMode } from '@shared/utils/settings-drawer.utils';
 import { StatsContext } from '@shared/types/context.types';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
+import { DraftTeamHighlightToggleComponent } from '@shared/settings-drawer/draft-team-highlight-toggle/draft-team-highlight-toggle.component';
 import { TeamSwitcherComponent } from '@shared/top-controls/team-switcher/team-switcher.component';
 import { TopControlsComponent } from '@shared/top-controls/top-controls.component';
 
@@ -22,6 +23,7 @@ import { TopControlsComponent } from '@shared/top-controls/top-controls.componen
     MatIconModule,
     MatTooltipModule,
     TranslateModule,
+    DraftTeamHighlightToggleComponent,
     TeamSwitcherComponent,
     TopControlsComponent,
     SettingsPanelComponent,
@@ -52,6 +54,8 @@ export class SettingsDrawerComponent {
 
     return this.statsContext() ?? 'player';
   });
+
+  readonly showDraftTeamHighlightToggle = computed(() => this.mode() === 'draft');
 
   readonly drawerMaxGames = computed(() => {
     const context = this.resolvedStatsContext();

@@ -6,11 +6,11 @@ import {
   DestroyRef,
   OnInit,
   PLATFORM_ID,
+  effect,
   inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { ApiService, EntryDraftTeamGroup } from '@services/api.service';
@@ -79,11 +79,6 @@ type DraftStatisticsSection = {
   readonly anchorId: string;
   readonly headingId: string;
   readonly cards: readonly DraftStatisticsCard[];
-};
-
-type DraftStatisticsTeamOption = {
-  readonly id: string;
-  readonly name: string;
 };
 
 const draftStatisticsSectionDefinitions = DRAFT_STATISTICS_SECTIONS.map((section) => ({
@@ -201,13 +196,7 @@ const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = DRAFT_STA
 @Component({
   selector: 'app-draft-statistics',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    SectionJumpNavComponent,
-    TableCardComponent,
-    TranslateModule,
-  ],
+  imports: [SectionJumpNavComponent, TableCardComponent, TranslateModule],
   templateUrl: './draft-statistics.component.html',
   styleUrl: './draft-statistics.component.scss',
 })
@@ -220,6 +209,10 @@ export class DraftStatisticsComponent implements OnInit {
   private readonly settingsService = inject(SettingsService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly translate = inject(TranslateService);
+  private readonly draftGroups = signal<EntryDraftTeamGroup[]>([]);
+  private readonly selectedTeamId = this.settingsService.selectedTeamIdSignal;
+  private readonly disableDraftSelectedTeamHighlight =
+    this.settingsService.disableDraftSelectedTeamHighlightSignal;
 
   readonly pageSize = PAGE_SIZE;
   readonly sectionLinks = draftStatisticsSectionDefinitions;
@@ -229,11 +222,29 @@ export class DraftStatisticsComponent implements OnInit {
   }));
 
   sections: DraftStatisticsSection[] = this.createInitialSections();
-  teams: DraftStatisticsTeamOption[] = [];
   loading = true;
   apiError = false;
   highlightedTeamId: string | null = null;
   private footerVisibilityCycle = 0;
+
+  constructor() {
+    effect(() => {
+      const groups = this.draftGroups();
+      const selectedTeamId = this.selectedTeamId();
+      const disableDraftSelectedTeamHighlight = this.disableDraftSelectedTeamHighlight();
+      const highlightedTeamId = this.getEffectiveHighlightedTeamId(
+        groups,
+        selectedTeamId,
+        disableDraftSelectedTeamHighlight,
+      );
+
+      this.highlightedTeamId = highlightedTeamId;
+      this.sections = groups.length === 0
+        ? this.createInitialSections()
+        : this.buildSections(groups, highlightedTeamId);
+      this.changeDetectorRef.markForCheck();
+    });
+  }
 
   get cards(): DraftStatisticsCard[] {
     return this.sections.flatMap((section) => [...section.cards]);
@@ -243,7 +254,6 @@ export class DraftStatisticsComponent implements OnInit {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
     this.loading = true;
     this.apiError = false;
-    this.highlightedTeamId = this.settingsService.draftStatisticsHighlightedTeamId;
 
     if (!isPlatformBrowser(this.platformId)) {
       this.footerVisibilityService.markReady(this.footerVisibilityCycle);
@@ -254,50 +264,19 @@ export class DraftStatisticsComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (groups) => {
-          this.teams = this.buildTeamOptions(groups);
-          if (this.highlightedTeamId !== null && !this.teams.some((team) => team.id === this.highlightedTeamId)) {
-            this.highlightedTeamId = null;
-            this.settingsService.setDraftStatisticsHighlightedTeamId(null);
-          }
-          this.sections = this.buildSections(groups);
+          this.draftGroups.set(groups);
           this.loading = false;
           this.changeDetectorRef.markForCheck();
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
         error: () => {
-          this.sections = this.createInitialSections();
-          this.teams = [];
-          this.highlightedTeamId = null;
+          this.draftGroups.set([]);
           this.apiError = true;
           this.loading = false;
           this.changeDetectorRef.markForCheck();
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
       });
-  }
-
-  onHighlightedTeamChange(event: MatSelectChange): void {
-    const selectedTeamId = typeof event.value === 'string' && event.value.length > 0
-      ? event.value
-      : null;
-
-    this.highlightedTeamId = selectedTeamId;
-    this.settingsService.setDraftStatisticsHighlightedTeamId(selectedTeamId);
-    this.sections = this.sections.map((section) => ({
-      ...section,
-      cards: section.cards.map((card) => {
-        const nextSkip = selectedTeamId === null
-          ? 0
-          : this.getTeamPageSkip(card.allRows, selectedTeamId);
-
-        return {
-          ...card,
-          skip: nextSkip,
-          rows: this.buildVisibleRows(card.allRows, nextSkip),
-        };
-      }),
-    }));
-    this.changeDetectorRef.markForCheck();
   }
 
   scrollToSection(anchorId: string): void {
@@ -353,11 +332,14 @@ export class DraftStatisticsComponent implements OnInit {
     };
   }
 
-  private buildSections(groups: EntryDraftTeamGroup[]): DraftStatisticsSection[] {
+  private buildSections(
+    groups: EntryDraftTeamGroup[],
+    highlightedTeamId: string | null,
+  ): DraftStatisticsSection[] {
     const cardsById = Object.fromEntries(
       draftStatisticDefinitions.map((definition) => [
         definition.id,
-        this.buildCard(groups, definition),
+        this.buildCard(groups, definition, highlightedTeamId),
       ]),
     ) as Record<DraftStatisticsCardId, DraftStatisticsCard>;
 
@@ -370,6 +352,7 @@ export class DraftStatisticsComponent implements OnInit {
   private buildCard(
     groups: EntryDraftTeamGroup[],
     definition: DraftStatisticDefinition,
+    highlightedTeamId: string | null,
   ): DraftStatisticsCard {
     const allRows = deriveTiedRanks(
       groups
@@ -378,9 +361,9 @@ export class DraftStatisticsComponent implements OnInit {
       .sort((left, right) => this.compareRows(left, right, definition.direction)),
       (left, right) => left.rawValue === right.rawValue,
     );
-    const initialSkip = this.highlightedTeamId === null
+    const initialSkip = highlightedTeamId === null
       ? 0
-      : this.getTeamPageSkip(allRows, this.highlightedTeamId);
+      : this.getTeamPageSkip(allRows, highlightedTeamId);
 
     return {
       id: definition.id,
@@ -388,19 +371,10 @@ export class DraftStatisticsComponent implements OnInit {
       descriptionKey: definition.descriptionKey,
       valueColumnLabelKey: definition.valueColumnLabelKey,
       allRows,
-      rows: this.buildVisibleRows(allRows, initialSkip),
+      rows: this.buildVisibleRows(allRows, initialSkip, highlightedTeamId),
       skip: initialSkip,
       total: allRows.length,
     };
-  }
-
-  private buildTeamOptions(groups: EntryDraftTeamGroup[]): DraftStatisticsTeamOption[] {
-    return groups
-      .map((group) => ({
-        id: group.team.id,
-        name: group.team.name,
-      }))
-      .sort((left, right) => left.name.localeCompare(right.name, 'fi'));
   }
 
   private buildSourceRow(
@@ -427,6 +401,7 @@ export class DraftStatisticsComponent implements OnInit {
   private buildVisibleRows(
     allRows: readonly DraftStatisticSourceRow[],
     skip: number,
+    highlightedTeamId: string | null,
   ): TableCardRow[] {
     return allRows
       .slice(skip, skip + PAGE_SIZE)
@@ -435,7 +410,7 @@ export class DraftStatisticsComponent implements OnInit {
         rank: this.buildRankLabel(row.displayRank, row.tieRank),
         primaryText: row.teamName,
         value: row.value,
-        emphasized: row.teamId === this.highlightedTeamId,
+        emphasized: row.teamId === highlightedTeamId,
       }));
   }
 
@@ -484,11 +459,23 @@ export class DraftStatisticsComponent implements OnInit {
         return {
           ...card,
           skip: nextSkip,
-          rows: this.buildVisibleRows(card.allRows, nextSkip),
+          rows: this.buildVisibleRows(card.allRows, nextSkip, this.highlightedTeamId),
         };
       }),
     }));
     this.changeDetectorRef.markForCheck();
+  }
+
+  private getEffectiveHighlightedTeamId(
+    groups: readonly EntryDraftTeamGroup[],
+    selectedTeamId: string,
+    disableDraftSelectedTeamHighlight: boolean,
+  ): string | null {
+    if (disableDraftSelectedTeamHighlight) {
+      return null;
+    }
+
+    return groups.some((group) => group.team.id === selectedTeamId) ? selectedTeamId : null;
   }
 
   private buildRankLabel(rank: number, tieRank: boolean): TableCardRow['rank'] {

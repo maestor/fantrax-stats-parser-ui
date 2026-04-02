@@ -32,6 +32,10 @@ export const FILTER_LABELS = {
   POSITION_DEFENSE: fi('positionFilter.defensemen'),
 };
 
+export const FILTER_VALUES = {
+  ALL_SEASONS: fi('season.allSeasons'),
+};
+
 export const A11Y_LABELS = {
   OPEN_SETTINGS_DRAWER: fi('a11y.openSettingsDrawer'),
   CLOSE_SETTINGS_DRAWER: fi('a11y.closeSettingsDrawer'),

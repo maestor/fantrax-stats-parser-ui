@@ -18,6 +18,12 @@
     <app-team-switcher />
   </div>
 
+  @if (showDraftTeamHighlightToggle()) {
+    <div class="settings-drawer-section settings-drawer-section--draft-settings">
+      <app-draft-team-highlight-toggle />
+    </div>
+  }
+
   @if (resolvedStatsContext(); as context) {
     <div class="settings-drawer-section settings-drawer-section--top-controls">
       <h3 class="settings-drawer-section-title">

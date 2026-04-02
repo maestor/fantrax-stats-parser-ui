@@ -1,0 +1,8 @@
+<mat-slide-toggle
+  class="draft-team-highlight-toggle"
+  labelPosition="before"
+  [checked]="disabled()"
+  (change)="onToggleChange($event)"
+>
+  {{ 'draft.settings.disableSelectedTeamHighlight' | translate }}
+</mat-slide-toggle>

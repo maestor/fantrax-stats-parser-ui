@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 import { test, expect } from '../fixtures/test-fixture';
 import { NAV_LABELS, TAB_LABELS } from '../config/test-data';
@@ -58,13 +58,23 @@ async function expectStatisticsContent(page: Page) {
   }
 }
 
+async function ensurePanelExpanded(panel: Locator): Promise<Locator> {
+  const header = panel.locator('mat-expansion-panel-header');
+
+  await expect(header).toBeVisible({ timeout: 15000 });
+
+  if ((await header.getAttribute('aria-expanded')) !== 'true') {
+    await header.click();
+  }
+
+  await expect(header).toHaveAttribute('aria-expanded', 'true');
+  return header;
+}
+
 async function expectEntryDraftContent(page: Page) {
   const panels = page.locator('mat-expansion-panel');
   const firstPanel = panels.first();
-  const firstHeader = firstPanel.locator('mat-expansion-panel-header');
-
-  await expect(firstHeader).toBeVisible({ timeout: 15000 });
-  await firstHeader.click();
+  const firstHeader = await ensurePanelExpanded(firstPanel);
 
   await expect(firstPanel.locator('.entry-summary-card').first()).toBeVisible();
   await expect(firstPanel.locator('.entry-season').first()).toBeVisible();
@@ -77,7 +87,7 @@ async function expectEntryDraftContent(page: Page) {
   const panelCount = await panels.count();
   if (panelCount > 1) {
     const secondHeader = panels.nth(1).locator('mat-expansion-panel-header');
-    await secondHeader.click();
+    await ensurePanelExpanded(panels.nth(1));
     await expect(firstHeader).toHaveAttribute('aria-expanded', 'false');
     await expect(secondHeader).toHaveAttribute('aria-expanded', 'true');
   }
@@ -93,8 +103,7 @@ async function expectOpeningDraftContent(page: Page) {
 
   for (let index = 0; index < Math.min(panelCount, 6); index += 1) {
     const panel = panels.nth(index);
-    const header = panel.locator('mat-expansion-panel-header');
-    await header.click();
+    const header = await ensurePanelExpanded(panel);
 
     await expect(panel.locator('.draft-pick-player').first()).toBeVisible();
 
@@ -129,7 +138,9 @@ test.describe('Draft pages', () => {
 
     await expect(page).toHaveURL(/\/draft\/entry-drafts$/);
     await entryDraftResponse;
-    await expect(page.getByRole('heading', { name: 'Varaukset' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: fi('nav.drafts'), level: 2, exact: true }),
+    ).toBeVisible();
 
     const openingDraftTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_OPENING_DRAFT });
     const statisticsTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_STATISTICS });

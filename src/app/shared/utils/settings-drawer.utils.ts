@@ -1,6 +1,6 @@
 import { StatsContext } from '@shared/types/context.types';
 
-export type SettingsDrawerMode = 'default' | 'stats';
+export type SettingsDrawerMode = 'default' | 'draft' | 'stats';
 
 export type SettingsDrawerRouteConfig = {
   mode: SettingsDrawerMode;
@@ -29,6 +29,10 @@ export function buildSettingsDrawerRouteConfig(url: string): SettingsDrawerRoute
       mode: 'stats',
       statsContext: 'player',
     };
+  }
+
+  if (normalizedUrl.startsWith('/draft')) {
+    return { mode: 'draft' };
   }
 
   return { mode: 'default' };

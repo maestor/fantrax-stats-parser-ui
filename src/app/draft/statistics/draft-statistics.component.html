@@ -3,30 +3,6 @@
     {{ 'draft.tabs.statistics' | translate }}
   </h3>
 
-  <div class="draft-statistics-toolbar">
-    <p class="draft-statistics-intro">
-      {{ 'draft.statistics.intro' | translate }}
-    </p>
-
-    <mat-form-field class="draft-statistics-highlight-field" appearance="outline" subscriptSizing="dynamic">
-      <mat-label>{{ 'draft.statistics.highlightTeam.label' | translate }}</mat-label>
-      <mat-select
-        [value]="highlightedTeamId"
-        [disabled]="loading || apiError || teams.length === 0"
-        (selectionChange)="onHighlightedTeamChange($event)"
-      >
-        <mat-option [value]="null">
-          {{ 'draft.statistics.highlightTeam.clear' | translate }}
-        </mat-option>
-        @for (team of teams; track team.id) {
-          <mat-option [value]="team.id">
-            {{ team.name }}
-          </mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  </div>
-
   <app-section-jump-nav
     class="draft-statistics-jump-nav"
     [items]="jumpNavItems"

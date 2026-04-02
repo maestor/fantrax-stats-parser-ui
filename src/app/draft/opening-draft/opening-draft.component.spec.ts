@@ -13,6 +13,20 @@ import {
 } from '../../testing/behavior-test-utils';
 
 describe('OpeningDraftComponent', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  function seedCollapsedDrawerState() {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '99',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: true,
+    }));
+  }
+
   function createFooterVisibilityMock() {
     return {
       currentCycle: vi.fn(() => 7),
@@ -73,7 +87,68 @@ describe('OpeningDraftComponent', () => {
     });
   }
 
+  it('opens the shared selected team by default when draft highlighting is enabled', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '1',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: false,
+    }));
+
+    await renderComponent();
+
+    expect(await screen.findByRole('button', { name: 'Colorado Avalanche' })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: 'Dallas Stars' })).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('scrolls the auto-opened shared selected team header to the top without moving focus into picks', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '1',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: false,
+    }));
+
+    const { scrollIntoView, restore } = stubScrollIntoView();
+
+    try {
+      const { fixture } = await renderComponent();
+      const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
+
+      await waitForBehaviorAssertion(fixture, () => {
+        expect(scrollIntoView).toHaveBeenCalledWith({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
+        expect(header).toHaveAttribute('aria-expanded', 'true');
+        expect(header).not.toHaveFocus();
+      });
+    } finally {
+      restore();
+    }
+  });
+
+  it('skips the default selected-team expansion when draft highlighting is disabled', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '1',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: true,
+    }));
+
+    await renderComponent();
+
+    expect(await screen.findByRole('button', { name: 'Colorado Avalanche' })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('button', { name: 'Dallas Stars' })).toHaveAttribute('aria-expanded', 'false');
+  });
+
   it('renders opening draft teams in API order and shows traded-pick details inside expanded panels', async () => {
+    seedCollapsedDrawerState();
+
     const footerVisibilityService = createFooterVisibilityMock();
     const { fixture } = await renderComponent({ footerVisibilityService });
 
@@ -99,6 +174,8 @@ describe('OpeningDraftComponent', () => {
   });
 
   it('moves focus from an expanded header into opening draft picks with keyboard navigation', async () => {
+    seedCollapsedDrawerState();
+
     const { container } = await renderComponent();
 
     const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
@@ -133,6 +210,8 @@ describe('OpeningDraftComponent', () => {
   });
 
   it('supports paging within opening draft picks and collapsing from the expanded header', async () => {
+    seedCollapsedDrawerState();
+
     const { container, fixture } = await renderComponent();
 
     const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
@@ -170,6 +249,8 @@ describe('OpeningDraftComponent', () => {
   });
 
   it('scrolls an expanded opening-draft header to the top without moving focus into picks', async () => {
+    seedCollapsedDrawerState();
+
     const { scrollIntoView, restore } = stubScrollIntoView();
 
     try {
@@ -192,6 +273,8 @@ describe('OpeningDraftComponent', () => {
   });
 
   it('lets Escape on a header collapse whichever opening-draft panel is currently expanded', async () => {
+    seedCollapsedDrawerState();
+
     const { fixture } = await renderComponent();
 
     const coloradoHeader = await screen.findByRole('button', { name: 'Colorado Avalanche' });
@@ -235,6 +318,8 @@ describe('OpeningDraftComponent', () => {
   });
 
   it('keeps only one opening-draft panel expanded at a time', async () => {
+    seedCollapsedDrawerState();
+
     await renderComponent();
 
     const firstPanelButton = await screen.findByRole('button', { name: 'Colorado Avalanche' });

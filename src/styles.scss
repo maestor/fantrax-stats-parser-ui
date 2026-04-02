@@ -331,6 +331,17 @@ button[mat-icon-button]:focus-visible,
   color: inherit !important;
 }
 
+// Slide toggles: use shared spacing between the switch control and label text
+// instead of per-component label padding overrides.
+.mat-mdc-slide-toggle .mat-internal-form-field {
+  gap: 12px;
+}
+
+.mat-mdc-slide-toggle .mat-internal-form-field > label {
+  margin: 0;
+  padding: 0;
+}
+
 @media (prefers-color-scheme: dark) {
 
   // Slides toggles (points per game): ensure readable + modern dark styling.

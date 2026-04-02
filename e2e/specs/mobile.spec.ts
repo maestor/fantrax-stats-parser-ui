@@ -1,7 +1,7 @@
 import { test, expect } from '../fixtures/test-fixture';
 import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 import { PlayerCardDialog } from '../page-objects/PlayerCardDialog';
-import { MOBILE_VIEWPORT } from '../config/test-data';
+import { FILTER_VALUES, MOBILE_VIEWPORT } from '../config/test-data';
 import { waitForTableData } from '../helpers/table';
 
 test.describe('Mobile', () => {
@@ -18,7 +18,7 @@ test.describe('Mobile', () => {
   test('player card graphs and accordion work on mobile', async ({ page }) => {
     // Select all seasons for line graphs
     await settingsDrawer.open();
-    await settingsDrawer.selectSeason('Kaikki kaudet');
+    await settingsDrawer.selectSeason(FILTER_VALUES.ALL_SEASONS);
     await settingsDrawer.close();
 
     // Open player card and go to graphs tab
