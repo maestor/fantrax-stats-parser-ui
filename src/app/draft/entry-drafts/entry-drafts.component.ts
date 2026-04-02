@@ -14,6 +14,7 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -41,6 +42,7 @@ type DraftPickStatus = {
     PercentPipe,
     MatExpansionModule,
     MatListModule,
+    MatProgressBarModule,
     MatTooltipModule,
     TranslateModule,
     DraftPanelHeaderNavigationDirective,

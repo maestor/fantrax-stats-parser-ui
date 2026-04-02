@@ -374,6 +374,29 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
   });
 
+  it('keeps the shell overflow visible so browse-route sticky navigation can follow page scroll', async () => {
+    const { container, fixture } = await render(
+      AppComponent,
+      getBehaviorTestConfig({ isMobile: false }),
+    );
+    const router = TestBed.inject(Router);
+
+    await router.navigateByUrl('/career/highlights');
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(
+        screen.getByRole('navigation', { name: 'career.highlights.jumpNavAriaLabel' }),
+      ).toBeInTheDocument();
+    });
+
+    const shell = container.querySelector('mat-sidenav-container');
+    const shellContent = container.querySelector('mat-sidenav-content');
+
+    expect(shell).not.toBeNull();
+    expect(shellContent).not.toBeNull();
+    expect(getComputedStyle(shell as Element).overflow).toBe('visible');
+    expect(getComputedStyle(shellContent as Element).overflow).toBe('visible');
+  });
+
   it.each([
     '/draft/statistics',
     '/leaderboards/regular',

@@ -27,6 +27,17 @@
       var(--mat-sys-surface) 100%);
 }
 
+:where(.entry-drafts, .opening-draft) .draft-status--loading {
+  display: grid;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 0;
+}
+
+:where(.entry-drafts, .opening-draft) .loading-bar {
+  width: 100%;
+}
+
 :where(.entry-drafts, .opening-draft) .draft-accordion {
   display: grid;
   gap: 0.1rem;

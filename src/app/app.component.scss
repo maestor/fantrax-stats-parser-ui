@@ -5,8 +5,15 @@
   --settings-drawer-panel-width: min(380px, 92vw);
   position: relative;
   width: 100%;
+  overflow: visible;
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
+
+  // Let browse-route sticky UI follow the page scroll instead of getting trapped
+  // inside the non-scrolling Material drawer wrappers.
+  ::ng-deep .mat-drawer-content {
+    overflow: visible;
+  }
 
   ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
     position: fixed;
