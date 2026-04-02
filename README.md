@@ -45,6 +45,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- Team-by-team draft history and summary views
 	- Played-status markers show whether drafted players reached the drafting team or elsewhere in the league
 	- Draft statistics cards are grouped into sectioned rankings with jump navigation
+	- The full draft team listing now scrolls inside a bounded route-level window so the draft tabs stay reachable; when a selected team auto-opens on route entry, it aligns to the top of that list
 	- The shared team setting opens or highlights the selected team by default across draft views, and the shared settings drawer toggle can disable that behavior on both draft and leaderboard routes
 - ⚙️ **Shared Settings Drawer**: The same settings entry point is available across stats, career, draft, and leaderboard routes
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)

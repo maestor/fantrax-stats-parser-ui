@@ -70,8 +70,9 @@ Draft browse pages use long expansion panels, so header focus alone is not enoug
 Supported behavior on entry-draft and opening-draft pages:
 
 - Team headers remain the primary tab stops
-- Manually opening a panel scrolls its header to the top of the viewport, but does not move focus into the content by itself
-- The initial auto-opened selected team does not trigger that scroll jump on route entry
+- The full team accordion scrolls inside a bounded route-level region so the draft tab navigation stays reachable while browsing deep lists
+- The initial auto-opened selected team aligns its header to the top of the visible draft list on route entry
+- Manually opening a panel scrolls its header to the top of the visible draft list, but does not move focus into the content by itself
 - On an expanded team header:
   - `ArrowDown` moves focus into the expanded content
   - `Escape` collapses the currently expanded panel
@@ -83,6 +84,8 @@ Supported behavior on entry-draft and opening-draft pages:
 
 Notes:
 
+- Keyboard movement relies on focusing the next target and letting the nearest draft scroll region follow with `scrollIntoView()`
+- Team-header alignment now usually resolves inside the bounded accordion scroller instead of the whole page
 - Entry drafts use section- and season-level focus targets rather than tabbing through every summary value
 - Opening draft uses roving focus on pick rows so long pick lists stay keyboard-browsable without bloating the page tab order
 

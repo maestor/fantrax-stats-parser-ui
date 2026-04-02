@@ -16,50 +16,52 @@
       {{ 'draft.noResults' | translate }}
     </p>
   } @else {
-    <mat-accordion class="draft-accordion" displayMode="flat">
-      @for (group of groups; track group.team.id) {
-        <mat-expansion-panel
-          class="draft-panel"
-          #panel
-          [attr.data-team-id]="group.team.id"
-          [expanded]="expandedTeamId === group.team.id"
-          (expandedChange)="onPanelExpandedChange(group.team.id, $event)"
-        >
-          <mat-expansion-panel-header class="draft-panel-header" draftPanelHeaderNavigation>
-            <mat-panel-title class="draft-panel-title">
-              {{ group.team.name }}
-            </mat-panel-title>
-          </mat-expansion-panel-header>
+    <div class="draft-accordion-scroll-window">
+      <mat-accordion class="draft-accordion" displayMode="flat">
+        @for (group of groups; track group.team.id) {
+          <mat-expansion-panel
+            class="draft-panel"
+            #panel
+            [attr.data-team-id]="group.team.id"
+            [expanded]="expandedTeamId === group.team.id"
+            (expandedChange)="onPanelExpandedChange(group.team.id, $event)"
+          >
+            <mat-expansion-panel-header class="draft-panel-header" draftPanelHeaderNavigation>
+              <mat-panel-title class="draft-panel-title">
+                {{ group.team.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
 
-          <div class="opening-draft-panel-content" [attr.aria-hidden]="panel.expanded ? null : 'true'"
-            [attr.inert]="panel.expanded ? null : ''">
-            <mat-list class="draft-pick-list" role="list">
-              @for (pick of group.picks; track pick.pickNumber; let pickIndex = $index) {
-                <div class="draft-pick-item draft-focus-target" role="listitem" tabindex="-1" draftPanelFocusTarget>
-                  <div class="draft-pick-row">
-                    <span class="draft-pick-tag">
-                      {{ 'draft.openingDraft.selectionLabel' | translate }} {{ pickIndex + 1 }}
-                    </span>
-                    <span class="draft-pick-tag">
-                      {{ 'draft.openingDraft.roundLabel' | translate }} {{ pick.round }}
-                    </span>
-                    <span class="draft-pick-tag">
-                      {{ 'draft.openingDraft.turnLabel' | translate }} {{ pick.pickNumber }}
-                    </span>
-                    <span class="draft-pick-player">{{ pick.draftedPlayer }}</span>
-                    @if (isTradedPick(group.team, pick)) {
-                      <span class="draft-pick-origin">
-                        {{ 'draft.openingDraft.originalOwnerLabel' | translate }}
-                        <span class="draft-pick-origin-team">{{ pick.originalOwner.name }}</span>
+            <div class="opening-draft-panel-content" [attr.aria-hidden]="panel.expanded ? null : 'true'"
+              [attr.inert]="panel.expanded ? null : ''">
+              <mat-list class="draft-pick-list" role="list">
+                @for (pick of group.picks; track pick.pickNumber; let pickIndex = $index) {
+                  <div class="draft-pick-item draft-focus-target" role="listitem" tabindex="-1" draftPanelFocusTarget>
+                    <div class="draft-pick-row">
+                      <span class="draft-pick-tag">
+                        {{ 'draft.openingDraft.selectionLabel' | translate }} {{ pickIndex + 1 }}
                       </span>
-                    }
+                      <span class="draft-pick-tag">
+                        {{ 'draft.openingDraft.roundLabel' | translate }} {{ pick.round }}
+                      </span>
+                      <span class="draft-pick-tag">
+                        {{ 'draft.openingDraft.turnLabel' | translate }} {{ pick.pickNumber }}
+                      </span>
+                      <span class="draft-pick-player">{{ pick.draftedPlayer }}</span>
+                      @if (isTradedPick(group.team, pick)) {
+                        <span class="draft-pick-origin">
+                          {{ 'draft.openingDraft.originalOwnerLabel' | translate }}
+                          <span class="draft-pick-origin-team">{{ pick.originalOwner.name }}</span>
+                        </span>
+                      }
+                    </div>
                   </div>
-                </div>
-              }
-            </mat-list>
-          </div>
-        </mat-expansion-panel>
-      }
-    </mat-accordion>
+                }
+              </mat-list>
+            </div>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </div>
   }
 </section>

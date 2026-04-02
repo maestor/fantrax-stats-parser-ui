@@ -16,28 +16,29 @@
     {{ 'draft.noResults' | translate }}
   </p>
   } @else {
-  <mat-accordion class="draft-accordion" displayMode="flat">
-    @for (group of groups; track group.team.id) {
-    <mat-expansion-panel
-      class="draft-panel"
-      #panel
-      [attr.data-team-id]="group.team.id"
-      [expanded]="expandedTeamId === group.team.id"
-      (expandedChange)="onPanelExpandedChange(group.team.id, $event)"
-    >
-      <mat-expansion-panel-header class="draft-panel-header" draftPanelHeaderNavigation>
-        <mat-panel-title class="draft-panel-title">
-          {{ group.team.name }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
+  <div class="draft-accordion-scroll-window">
+    <mat-accordion class="draft-accordion" displayMode="flat">
+      @for (group of groups; track group.team.id) {
+      <mat-expansion-panel
+        class="draft-panel"
+        #panel
+        [attr.data-team-id]="group.team.id"
+        [expanded]="expandedTeamId === group.team.id"
+        (expandedChange)="onPanelExpandedChange(group.team.id, $event)"
+      >
+        <mat-expansion-panel-header class="draft-panel-header" draftPanelHeaderNavigation>
+          <mat-panel-title class="draft-panel-title">
+            {{ group.team.name }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
 
-      <div class="entry-draft-panel-content" [attr.aria-hidden]="panel.expanded ? null : 'true'"
-        [attr.inert]="panel.expanded ? null : ''">
-        <section class="entry-summary draft-focus-target" aria-labelledby="entry-summary-heading-{{ group.team.id }}"
-          tabindex="-1" draftPanelFocusTarget>
-          <h4 class="entry-section-title" id="entry-summary-heading-{{ group.team.id }}">
-            {{ 'draft.entryDrafts.summaryHeading' | translate }}
-          </h4>
+        <div class="entry-draft-panel-content" [attr.aria-hidden]="panel.expanded ? null : 'true'"
+          [attr.inert]="panel.expanded ? null : ''">
+          <section class="entry-summary draft-focus-target" aria-labelledby="entry-summary-heading-{{ group.team.id }}"
+            tabindex="-1" draftPanelFocusTarget>
+            <h4 class="entry-section-title" id="entry-summary-heading-{{ group.team.id }}">
+              {{ 'draft.entryDrafts.summaryHeading' | translate }}
+            </h4>
 
           <div class="entry-summary-grid">
             <article class="entry-summary-card entry-summary-card--wide">
@@ -171,67 +172,68 @@
             </p>
             }
           </section>
-        </section>
+          </section>
 
-        <section class="entry-seasons draft-focus-target" aria-labelledby="entry-seasons-heading-{{ group.team.id }}"
-          tabindex="-1" draftPanelFocusTarget>
-          <h4 class="entry-section-title" id="entry-seasons-heading-{{ group.team.id }}">
-            {{ 'draft.entryDrafts.seasonsHeading' | translate }}
-          </h4>
+          <section class="entry-seasons draft-focus-target" aria-labelledby="entry-seasons-heading-{{ group.team.id }}"
+            tabindex="-1" draftPanelFocusTarget>
+            <h4 class="entry-section-title" id="entry-seasons-heading-{{ group.team.id }}">
+              {{ 'draft.entryDrafts.seasonsHeading' | translate }}
+            </h4>
 
-          @if (group.seasons.length === 0) {
-          <p class="entry-season-empty">{{ 'draft.noResults' | translate }}</p>
-          } @else {
-          <div class="entry-season-list">
-            @for (season of group.seasons; track season.season) {
-            <section class="entry-season draft-focus-target"
-              aria-labelledby="entry-season-title-{{ group.team.id }}-{{ season.season }}" tabindex="-1"
-              draftPanelFocusTarget>
-              <h5 class="entry-season-title" id="entry-season-title-{{ group.team.id }}-{{ season.season }}">
-                {{ season.season }}
-              </h5>
+            @if (group.seasons.length === 0) {
+            <p class="entry-season-empty">{{ 'draft.noResults' | translate }}</p>
+            } @else {
+            <div class="entry-season-list">
+              @for (season of group.seasons; track season.season) {
+              <section class="entry-season draft-focus-target"
+                aria-labelledby="entry-season-title-{{ group.team.id }}-{{ season.season }}" tabindex="-1"
+                draftPanelFocusTarget>
+                <h5 class="entry-season-title" id="entry-season-title-{{ group.team.id }}-{{ season.season }}">
+                  {{ season.season }}
+                </h5>
 
-              <mat-list class="draft-pick-list" role="list">
-                @for (pick of season.picks; track pick.pickNumber; let pickIndex = $index) {
-                <div class="draft-pick-item" role="listitem">
-                  <div class="draft-pick-row">
-                    <span class="draft-pick-tag">
-                      {{ 'draft.entryDrafts.selectionLabel' | translate }} {{ pickIndex + 1 }}
-                    </span>
-                    <span class="draft-pick-tag">
-                      {{ 'draft.entryDrafts.roundLabel' | translate }} {{ pick.round }}
-                    </span>
-                    <span class="draft-pick-tag">
-                      {{ 'draft.entryDrafts.turnLabel' | translate }} {{ pick.pickNumber }}
-                    </span>
-                    <span class="draft-pick-player" [class.draft-pick-player--missing]="pick.draftedPlayer === null">
-                      <span>{{ pick.draftedPlayer ?? ('draft.entryDrafts.unknownPlayerLabel' | translate) }}</span>
-                      @if (getPickStatus(pick); as pickStatus) {
-                      <span class="draft-pick-status-badge" [matTooltip]="pickStatus.tooltipKey | translate"
-                        aria-hidden="true">
-                        {{ pickStatus.emoji }}
+                <mat-list class="draft-pick-list" role="list">
+                  @for (pick of season.picks; track pick.pickNumber; let pickIndex = $index) {
+                  <div class="draft-pick-item" role="listitem">
+                    <div class="draft-pick-row">
+                      <span class="draft-pick-tag">
+                        {{ 'draft.entryDrafts.selectionLabel' | translate }} {{ pickIndex + 1 }}
                       </span>
-                      <span class="sr-only">{{ pickStatus.tooltipKey | translate }}</span>
+                      <span class="draft-pick-tag">
+                        {{ 'draft.entryDrafts.roundLabel' | translate }} {{ pick.round }}
+                      </span>
+                      <span class="draft-pick-tag">
+                        {{ 'draft.entryDrafts.turnLabel' | translate }} {{ pick.pickNumber }}
+                      </span>
+                      <span class="draft-pick-player" [class.draft-pick-player--missing]="pick.draftedPlayer === null">
+                        <span>{{ pick.draftedPlayer ?? ('draft.entryDrafts.unknownPlayerLabel' | translate) }}</span>
+                        @if (getPickStatus(pick); as pickStatus) {
+                        <span class="draft-pick-status-badge" [matTooltip]="pickStatus.tooltipKey | translate"
+                          aria-hidden="true">
+                          {{ pickStatus.emoji }}
+                        </span>
+                        <span class="sr-only">{{ pickStatus.tooltipKey | translate }}</span>
+                        }
+                      </span>
+                      @if (isTradedPick(group.team, pick)) {
+                      <span class="draft-pick-origin">
+                        {{ 'draft.entryDrafts.originalOwnerLabel' | translate }}
+                        <span class="draft-pick-origin-team">{{ pick.originalOwner.name }}</span>
+                      </span>
                       }
-                    </span>
-                    @if (isTradedPick(group.team, pick)) {
-                    <span class="draft-pick-origin">
-                      {{ 'draft.entryDrafts.originalOwnerLabel' | translate }}
-                      <span class="draft-pick-origin-team">{{ pick.originalOwner.name }}</span>
-                    </span>
-                    }
+                    </div>
                   </div>
-                </div>
-                }
-              </mat-list>
-            </section>
+                  }
+                </mat-list>
+              </section>
+              }
+            </div>
             }
-          </div>
-          }
-        </section>
-      </div>
-    </mat-expansion-panel>
-    }
-  </mat-accordion>
+          </section>
+        </div>
+      </mat-expansion-panel>
+      }
+    </mat-accordion>
+  </div>
   }
 </section>

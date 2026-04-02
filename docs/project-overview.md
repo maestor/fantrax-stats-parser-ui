@@ -102,7 +102,9 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Batch 2 renders `/draft/opening-draft` as a Material accordion grouped by drafting team, with simple per-pick rows and a traded-owner suffix when the original pick came from another team
    - Batch 3 renders `/draft/entry-drafts` as a matching team-grouped accordion, with per-team summary cards, played-status totals plus played percentages, highest-pick highlights, and season-by-season pick lists that preserve null legacy player rows
    - Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
-   - Manually opened draft panels auto-align their sticky header to the top of the viewport, while `ArrowDown` still explicitly enters the panel body; once inside, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it and `Escape` collapses the panel while returning focus to the team header
+   - The full draft accordion list sits inside a bounded route-level scroll window so the draft tabs stay reachable while browsing teams
+   - When the shared selected team auto-opens on route entry, that team header aligns to the top of the visible draft list; manually opened draft panels use the same header alignment, while `ArrowDown` still explicitly enters the panel body
+   - Once inside expanded content, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it and `Escape` collapses the panel while returning focus to the team header
    - `/draft/statistics` reuses the shared card-table UI to rank teams across entry-draft summary metrics, including separate played-percentage rankings, with local 10-row paging
    - By default, all three draft views follow the shared selected-team setting: entry/opening draft expand that team automatically and draft statistics emphasizes it plus jumps each card to the matching page
    - Draft routes share the same selected-team highlight toggle used on leaderboards; disabling it removes the default selected-team emphasis/auto-open behavior without affecting the actual shared team selection
