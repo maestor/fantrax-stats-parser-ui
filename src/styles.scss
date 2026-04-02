@@ -2,13 +2,14 @@
 @use '@fontsource/roboto/400' as *;
 @use '@fontsource/roboto/500' as *;
 @use './styles/draft-shared';
+
 @font-face {
   font-family: "Material Icons";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url("/fonts/material-icons.woff2") format("woff2"),
-       url("/fonts/material-icons.woff") format("woff");
+    url("/fonts/material-icons.woff") format("woff");
 }
 
 .material-icons {
@@ -343,7 +344,7 @@ button[mat-icon-button]:focus-visible,
   gap: 12px;
 }
 
-.mat-mdc-slide-toggle .mat-internal-form-field > label {
+.mat-mdc-slide-toggle .mat-internal-form-field>label {
   margin: 0;
   padding: 0;
 }
@@ -460,7 +461,7 @@ mat-checkbox .mdc-label {
 }
 
 .content {
-  margin: 12px auto;
+  margin: 0 auto;
   max-width: var(--app-content-max-width);
 }
 
@@ -734,7 +735,7 @@ app-stats-table {
     overflow-x: auto;
     overflow-y: auto;
     width: 100%;
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 120px);
   }
 
   .mat-mdc-table {
@@ -813,6 +814,7 @@ app-stats-table {
 }
 
 app-virtual-table {
+
   .mat-mdc-form-field,
   .search-field {
     width: 100%;
@@ -889,7 +891,7 @@ app-virtual-table {
   }
 
   .virtual-viewport {
-    height: calc(100vh - 252px);
+    height: calc(100vh - 200px);
     width: 100%;
     background: var(--mat-sys-surface);
     scrollbar-gutter: stable;

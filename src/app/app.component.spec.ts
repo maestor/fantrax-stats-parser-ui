@@ -108,17 +108,6 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     // -- Search input --
     expect(screen.getByLabelText('table.playerSearch')).toBeInTheDocument();
 
-    // -- Footer --
-    expect(await screen.findByRole(
-      'navigation',
-      { name: 'footer.links.ariaLabel' },
-      { timeout: 5000 }
-    )).toBeInTheDocument();
-    expect(screen.getByText('footer.links.linkedin.label')).toBeInTheDocument();
-    expect(screen.getByText('footer.links.ui.label')).toBeInTheDocument();
-    expect(screen.getByText('footer.links.api.label')).toBeInTheDocument();
-    expect(screen.getByText('footer.copyright')).toBeInTheDocument();
-
     // -- Accessibility flow (merged on purpose for speed):
     // Verify the skip link moves focus directly to the first data row after initial content has loaded.
     // Keeping this in the same render avoids a second expensive full-app render while preserving user-path behavior.

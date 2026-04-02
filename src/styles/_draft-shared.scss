@@ -3,7 +3,7 @@
   --draft-pick-row-gap: 0.65rem;
   --draft-pick-list-padding: 0;
   --draft-expanded-pick-list-padding-top: 0;
-  padding-top: 1rem;
+  --draft-accordion-scroll-max-height: calc(var(--app-height) - 170px);
   --draft-sticky-top: env(safe-area-inset-top, 0px);
 }
 
@@ -13,27 +13,32 @@
   border: 1px solid var(--mat-sys-outline-variant);
   border-radius: 1rem;
   background:
-    linear-gradient(
-      180deg,
+    linear-gradient(180deg,
       color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
-      var(--mat-sys-surface) 100%
-    );
+      var(--mat-sys-surface) 100%);
   color: var(--mat-sys-on-surface);
   line-height: 1.6;
 }
 
 :where(.entry-drafts, .opening-draft) .draft-status--error {
   background:
-    linear-gradient(
-      180deg,
+    linear-gradient(180deg,
       color-mix(in srgb, var(--mat-sys-error-container) 46%, transparent) 0%,
-      var(--mat-sys-surface) 100%
-    );
+      var(--mat-sys-surface) 100%);
 }
 
 :where(.entry-drafts, .opening-draft) .draft-accordion {
   display: grid;
   gap: 0.1rem;
+}
+
+:where(.entry-drafts, .opening-draft) .draft-accordion-scroll-window {
+  max-height: var(--draft-accordion-scroll-max-height);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-bottom: calc(8px + var(--safe-bottom));
+  -webkit-overflow-scrolling: touch;
 }
 
 :where(.entry-drafts, .opening-draft) .draft-panel {
@@ -169,6 +174,7 @@
 @media (max-width: 640px) {
   :where(.entry-drafts, .opening-draft) {
     --draft-content-padding-inline: 1rem;
+    --draft-accordion-scroll-max-height: calc(var(--app-height) - 140px);
   }
 
   :where(.entry-drafts, .opening-draft) .draft-panel-title {

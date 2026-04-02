@@ -1,5 +1,6 @@
 export const DRAFT_FOCUS_TARGET_SELECTOR = '.draft-focus-target';
 export const DRAFT_FOCUS_PAGE_STEP = 5;
+export const DRAFT_LIST_SCROLL_CONTAINER_SELECTOR = '.draft-accordion-scroll-window';
 
 export function getDraftPanelHeader(panel: ParentNode): HTMLElement | null {
   return panel.querySelector<HTMLElement>('.mat-expansion-panel-header');
@@ -24,13 +25,29 @@ export function focusDraftElement(element: HTMLElement | null | undefined): bool
   return true;
 }
 
-export function scrollDraftElementToTop(element: HTMLElement | null | undefined): boolean {
+export function scrollDraftElementToTop(
+  element: HTMLElement | null | undefined,
+  behavior: ScrollBehavior = 'smooth',
+): boolean {
   if (!element) {
     return false;
   }
 
+  const scrollContainer = element.closest<HTMLElement>(DRAFT_LIST_SCROLL_CONTAINER_SELECTOR);
+  if (scrollContainer && typeof scrollContainer.scrollTo === 'function') {
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    const nextTop = scrollContainer.scrollTop + (elementRect.top - containerRect.top);
+
+    scrollContainer.scrollTo({
+      top: Math.max(nextTop, 0),
+      behavior,
+    });
+    return true;
+  }
+
   if (typeof element.scrollIntoView === 'function') {
-    element.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'smooth' });
+    element.scrollIntoView({ block: 'start', inline: 'nearest', behavior });
   }
 
   return true;
@@ -45,10 +62,40 @@ export function getExpandedDraftHeaderForEscape(currentHeader: HTMLElement): HTM
   return accordion?.querySelector('.mat-expansion-panel-header[aria-expanded="true"]') as HTMLElement | null;
 }
 
-export function scheduleDraftHeaderAlignment(header: HTMLElement): void {
+export function getDraftPanelHeaderByTeamId(panelRoot: ParentNode, teamId: string): HTMLElement | null {
+  const escapedTeamId = teamId.replaceAll('"', '\\"');
+  return panelRoot.querySelector<HTMLElement>(
+    `[data-team-id="${escapedTeamId}"] .mat-expansion-panel-header`,
+  );
+}
+
+export function scheduleDraftHeaderAlignment(
+  header: HTMLElement,
+  behavior: ScrollBehavior = 'smooth',
+): void {
   const alignHeader = () => {
     if (header.getAttribute('aria-expanded') === 'true') {
-      scrollDraftElementToTop(header);
+      scrollDraftElementToTop(header, behavior);
+    }
+  };
+
+  window.setTimeout(alignHeader, 0);
+  window.setTimeout(alignHeader, 250);
+}
+
+export function scheduleDraftTeamHeaderAlignment(
+  panelRoot: ParentNode | null | undefined,
+  teamId: string,
+  behavior: ScrollBehavior = 'auto',
+): void {
+  if (!panelRoot || !teamId) {
+    return;
+  }
+
+  const alignHeader = () => {
+    const header = getDraftPanelHeaderByTeamId(panelRoot, teamId);
+    if (header?.getAttribute('aria-expanded') === 'true') {
+      scrollDraftElementToTop(header, behavior);
     }
   };
 

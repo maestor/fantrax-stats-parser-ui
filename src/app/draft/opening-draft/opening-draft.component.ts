@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
+  ElementRef,
   OnInit,
   PLATFORM_ID,
   effect,
@@ -22,6 +23,7 @@ import {
   DraftPanelFocusTargetDirective,
   DraftPanelHeaderNavigationDirective,
 } from '../draft-panel-navigation.directive';
+import { scheduleDraftTeamHeaderAlignment } from '../draft-keyboard-navigation.utils';
 
 @Component({
   selector: 'app-opening-draft',
@@ -34,6 +36,7 @@ export class OpeningDraftComponent implements OnInit {
   private readonly apiService = inject(ApiService);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly settingsService = inject(SettingsService);
@@ -47,6 +50,7 @@ export class OpeningDraftComponent implements OnInit {
   apiError = false;
   expandedTeamId: string | null = null;
   private footerVisibilityCycle = 0;
+  private lastAutoAlignedTeamId: string | null = null;
 
   constructor() {
     effect(() => {
@@ -56,6 +60,18 @@ export class OpeningDraftComponent implements OnInit {
         this.disableSelectedTeamHighlight(),
       );
       this.expandedTeamId = nextExpandedTeamId;
+
+      if (!isPlatformBrowser(this.platformId)) {
+        this.changeDetectorRef.markForCheck();
+        return;
+      }
+
+      if (!nextExpandedTeamId) {
+        this.lastAutoAlignedTeamId = null;
+      } else if (nextExpandedTeamId !== this.lastAutoAlignedTeamId) {
+        scheduleDraftTeamHeaderAlignment(this.elementRef.nativeElement, nextExpandedTeamId, 'auto');
+        this.lastAutoAlignedTeamId = nextExpandedTeamId;
+      }
 
       this.changeDetectorRef.markForCheck();
     });

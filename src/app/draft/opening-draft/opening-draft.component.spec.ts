@@ -34,27 +34,27 @@ describe('OpeningDraftComponent', () => {
     };
   }
 
-  function stubScrollIntoView() {
-    const original = HTMLElement.prototype.scrollIntoView;
-    const scrollIntoView = vi.fn();
+  function stubScrollTo() {
+    const original = HTMLElement.prototype.scrollTo;
+    const scrollTo = vi.fn();
 
-    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
       configurable: true,
-      value: scrollIntoView,
+      value: scrollTo,
     });
 
     return {
-      scrollIntoView,
+      scrollTo,
       restore: () => {
         if (original) {
-          Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+          Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
             configurable: true,
             value: original,
           });
           return;
         }
 
-        delete (HTMLElement.prototype as Partial<typeof HTMLElement.prototype>).scrollIntoView;
+        delete (HTMLElement.prototype as Partial<typeof HTMLElement.prototype>).scrollTo;
       },
     };
   }
@@ -102,7 +102,7 @@ describe('OpeningDraftComponent', () => {
     expect(screen.getByRole('button', { name: 'Dallas Stars' })).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('does not scroll the auto-opened shared selected team header on initial render', async () => {
+  it('scrolls the auto-opened shared selected team header to the top of the draft list on initial render', async () => {
     localStorage.setItem('fantrax.settings', JSON.stringify({
       selectedTeamId: '1',
       startFromSeason: null,
@@ -111,14 +111,17 @@ describe('OpeningDraftComponent', () => {
       disableSelectedTeamHighlight: false,
     }));
 
-    const { scrollIntoView, restore } = stubScrollIntoView();
+    const { scrollTo, restore } = stubScrollTo();
 
     try {
       const { fixture } = await renderComponent();
       const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
 
       await waitForBehaviorAssertion(fixture, () => {
-        expect(scrollIntoView).not.toHaveBeenCalled();
+        expect(scrollTo).toHaveBeenCalledWith({
+          behavior: 'auto',
+          top: expect.any(Number),
+        });
         expect(header).toHaveAttribute('aria-expanded', 'true');
         expect(header).not.toHaveFocus();
       });
@@ -247,7 +250,7 @@ describe('OpeningDraftComponent', () => {
   it('scrolls an expanded opening-draft header to the top without moving focus into picks', async () => {
     seedCollapsedDrawerState();
 
-    const { scrollIntoView, restore } = stubScrollIntoView();
+    const { scrollTo, restore } = stubScrollTo();
 
     try {
       const { fixture } = await renderComponent();
@@ -256,10 +259,9 @@ describe('OpeningDraftComponent', () => {
       fireEvent.click(header);
 
       await waitForBehaviorAssertion(fixture, () => {
-        expect(scrollIntoView).toHaveBeenCalledWith({
+        expect(scrollTo).toHaveBeenCalledWith({
           behavior: 'smooth',
-          block: 'start',
-          inline: 'nearest',
+          top: expect.any(Number),
         });
         expect(header).toHaveAttribute('aria-expanded', 'true');
       });
