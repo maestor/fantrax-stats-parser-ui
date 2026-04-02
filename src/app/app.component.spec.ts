@@ -385,6 +385,37 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
   });
 
+  it('shows the draft-only team highlight toggle in the drawer on draft routes', async () => {
+    const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const router = TestBed.inject(Router);
+
+    await router.navigateByUrl('/draft/statistics');
+
+    expect(
+      await screen.findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' }, { timeout: 15_000 }),
+    ).toBeInTheDocument();
+
+    await openDashboardSettingsDrawer();
+
+    const disableHighlightToggle = await screen.findByRole('switch', {
+      name: 'draft.settings.disableSelectedTeamHighlight',
+    });
+
+    expect(screen.getByRole('combobox', { name: /team\.selector/ })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'topControls.controls' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'settingsPanel.settings' })).not.toBeInTheDocument();
+    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
+
+    fireEvent.click(disableHighlightToggle);
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(disableHighlightToggle).toHaveAttribute('aria-checked', 'true');
+      expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
+        disableDraftSelectedTeamHighlight: true,
+      });
+    });
+  });
+
   it('persists browse-route team changes without calling stats or seasons endpoints until stats mode becomes active again', async () => {
     localStorage.setItem(
       'fantrax.settings',
@@ -554,6 +585,15 @@ describe('buildSettingsDrawerRouteConfig', () => {
     expect(buildSettingsDrawerRouteConfig('/player/colorado/jamie-benn')).toEqual({
       mode: 'stats',
       statsContext: 'player',
+    });
+  });
+
+  it('uses draft mode for draft browse routes', () => {
+    expect(buildSettingsDrawerRouteConfig('/draft/entry-drafts')).toEqual({
+      mode: 'draft',
+    });
+    expect(buildSettingsDrawerRouteConfig('/draft/statistics')).toEqual({
+      mode: 'draft',
     });
   });
 

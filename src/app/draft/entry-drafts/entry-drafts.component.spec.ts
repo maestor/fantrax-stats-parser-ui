@@ -122,6 +122,10 @@ const entryDraftGroupsFixture: EntryDraftTeamGroup[] = [
 ];
 
 describe('EntryDraftsComponent', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   function createFooterVisibilityMock() {
     return {
       currentCycle: vi.fn(() => 7),
@@ -181,6 +185,65 @@ describe('EntryDraftsComponent', () => {
       ],
     });
   }
+
+  it('opens the shared selected team by default when draft highlighting is enabled', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '12',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: false,
+    }));
+
+    await renderComponent();
+
+    expect(await screen.findByRole('button', { name: 'Anaheim Ducks' })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: 'Boston Bruins' })).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('scrolls the auto-opened shared selected team header to the top without moving focus into content', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '12',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: false,
+    }));
+
+    const { scrollIntoView, restore } = stubScrollIntoView();
+
+    try {
+      const { fixture } = await renderComponent();
+      const header = await screen.findByRole('button', { name: 'Anaheim Ducks' });
+
+      await waitForBehaviorAssertion(fixture, () => {
+        expect(scrollIntoView).toHaveBeenCalledWith({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest',
+        });
+        expect(header).toHaveAttribute('aria-expanded', 'true');
+        expect(header).not.toHaveFocus();
+      });
+    } finally {
+      restore();
+    }
+  });
+
+  it('skips the default selected-team expansion when draft highlighting is disabled', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '12',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: true,
+    }));
+
+    await renderComponent();
+
+    expect(await screen.findByRole('button', { name: 'Anaheim Ducks' })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('button', { name: 'Boston Bruins' })).toHaveAttribute('aria-expanded', 'false');
+  });
 
   it('renders entry draft summaries in API order and sorts seasons newest-first', async () => {
     const footerVisibilityService = createFooterVisibilityMock();

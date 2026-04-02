@@ -129,7 +129,9 @@ test.describe('Draft pages', () => {
 
     await expect(page).toHaveURL(/\/draft\/entry-drafts$/);
     await entryDraftResponse;
-    await expect(page.getByRole('heading', { name: 'Varaukset' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: fi('nav.drafts'), level: 2, exact: true }),
+    ).toBeVisible();
 
     const openingDraftTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_OPENING_DRAFT });
     const statisticsTab = page.getByRole('tab', { name: TAB_LABELS.DRAFT_STATISTICS });

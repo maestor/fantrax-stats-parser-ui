@@ -13,7 +13,6 @@ import { StatsContext } from '@shared/types/context.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MatSlideToggleModule, TranslateModule],
   templateUrl: './stats-mode-toggle.component.html',
-  styleUrl: './stats-mode-toggle.component.scss',
 })
 export class StatsModeToggleComponent {
   readonly context = input.required<StatsContext>();

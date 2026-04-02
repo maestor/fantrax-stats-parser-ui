@@ -224,7 +224,9 @@ Local rule of thumb:
 - Use the CI/fixture mode only when you intentionally want the mocked CI behavior
 - If you need a real local `CI=true` run and `http://localhost:4200` is already occupied by a manually started frontend, stop that server first so Playwright can start the CI-mode web server itself
 - If the backend on `localhost:3000` is not running in a paired session, ask the user to start it instead of swapping local verification over to CI-mode fixtures
-- When Playwright assertions need visible Finnish UI copy, source shared labels from `public/i18n/fi.json` through the E2E config helpers instead of duplicating hard-coded strings in test constants
+- When Playwright assertions need visible Finnish UI copy, source shared labels from `public/i18n/fi.json` through `e2e/config/i18n.ts` or shared constants in `e2e/config/test-data.ts`
+- Do **not** hard-code Finnish literals directly in Playwright specs for headings, tabs, buttons, drawer labels, or other user-facing UI text; use `fi('...')` or shared test-data exports instead so tests stay aligned with translations
+- For short shared words that appear inside longer labels, combine the translation helper with stricter selectors such as `exact: true`, a role level, or a narrower container instead of falling back to hard-coded localized text
 
 **Basic commands:**
 

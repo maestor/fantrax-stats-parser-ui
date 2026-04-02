@@ -6,6 +6,7 @@ import {
   toggleStatsPerGame,
   setMinGames,
 } from '../helpers/filters';
+import { FILTER_LABELS, FILTER_VALUES } from '../config/test-data';
 import {
   waitForTableData,
   getRowCount,
@@ -24,15 +25,13 @@ test.describe('Filters', () => {
     test('season selector and start-from season filter data', async ({ page }) => {
       const settingsDrawer = new SettingsDrawer(page);
 
-      // Select "Kaikki kaudet" (all seasons)
-      await selectSeason(page, 'Kaikki kaudet');
+      // Select all seasons
+      await selectSeason(page, FILTER_VALUES.ALL_SEASONS);
       const allSeasonsData = await getRowCount(page);
 
       // Select a specific season — should have fewer rows
       await settingsDrawer.open();
-      const seasonSelector = page.getByRole('combobox', {
-        name: 'Kausivalitsin',
-      });
+      const seasonSelector = settingsDrawer.combobox(FILTER_LABELS.SEASON);
       await seasonSelector.click();
       const options = page.getByRole('option');
       const firstSeasonText = await options.nth(1).textContent();
@@ -48,11 +47,11 @@ test.describe('Filters', () => {
       await settingsDrawer.close();
 
       // Switch back to all seasons and test start-from filter
-      await selectSeason(page, 'Kaikki kaudet');
+      await selectSeason(page, FILTER_VALUES.ALL_SEASONS);
       const allSeasonsCount = await getRowCount(page);
 
       await settingsDrawer.open();
-      const startFromSelector = page.getByRole('combobox', { name: 'Alkaen kaudesta' });
+      const startFromSelector = settingsDrawer.combobox(FILTER_LABELS.START_FROM);
       await startFromSelector.click();
       const startFromOptions = page.getByRole('option');
       const startFromOption = startFromOptions.nth(5);
@@ -116,7 +115,7 @@ test.describe('Filters', () => {
 
   test.describe('Filter Combinations', () => {
     test('all seasons + stats per game + min games combination', async ({ page }) => {
-      await selectSeason(page, 'Kaikki kaudet');
+      await selectSeason(page, FILTER_VALUES.ALL_SEASONS);
       await toggleStatsPerGame(page);
       await setMinGames(page, 50);
 
@@ -134,9 +133,7 @@ test.describe('Filters', () => {
 
       // Single season + position filter
       await settingsDrawer.open();
-      const seasonSelector = page.getByRole('combobox', {
-        name: 'Kausivalitsin',
-      });
+      const seasonSelector = settingsDrawer.combobox(FILTER_LABELS.SEASON);
       await seasonSelector.click();
       await page.getByRole('option').nth(1).click();
       await waitForTableData(page);
@@ -171,27 +168,27 @@ test.describe('Filters', () => {
       await setMinGames(page, 20);
 
       await settingsDrawer.open();
-      const playerStatsToggle = page.getByLabel('Tilastot per ottelu');
-      await expect(playerStatsToggle).toBeChecked();
+      const playerStatsToggle = settingsDrawer.switch(FILTER_LABELS.STATS_PER_GAME);
+      await expect(playerStatsToggle).toHaveAttribute('aria-checked', 'true');
       await settingsDrawer.close();
 
       await switchToGoaliesTab(page);
       await waitForTableData(page);
 
       await settingsDrawer.open();
-      const goalieStatsToggle = page.getByLabel('Tilastot per ottelu');
-      await expect(goalieStatsToggle).not.toBeChecked();
+      const goalieStatsToggle = settingsDrawer.switch(FILTER_LABELS.STATS_PER_GAME);
+      await expect(goalieStatsToggle).toHaveAttribute('aria-checked', 'false');
       await settingsDrawer.close();
 
       await toggleStatsPerGame(page);
       await settingsDrawer.open();
-      await expect(goalieStatsToggle).toBeChecked();
+      await expect(goalieStatsToggle).toHaveAttribute('aria-checked', 'true');
       await settingsDrawer.close();
 
       await switchToPlayersTab(page);
       await waitForTableData(page);
       await settingsDrawer.open();
-      await expect(playerStatsToggle).toBeChecked();
+      await expect(playerStatsToggle).toHaveAttribute('aria-checked', 'true');
     });
   });
 });

@@ -114,13 +114,11 @@
       "openingDraft": "Avausdrafti",
       "statistics": "Tilastot"
     },
+    "settings": {
+      "disableSelectedTeamHighlight": "Poista valitun joukkueen korostus"
+    },
     "statistics": {
-      "intro": "Korosta halutessasi joukkue (tallentuu selaimeen).",
       "jumpNavAriaLabel": "Draftitilastojen osiot",
-      "highlightTeam": {
-        "label": "Korosta joukkue",
-        "clear": "Ei korostusta"
-      },
       "columns": {
         "team": "Joukkue",
         "pickCount": "Varaukset",

@@ -5,8 +5,8 @@ import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 
 async function withVisibleControl(
   page: Page,
-  control: Locator,
-  action: () => Promise<void>,
+  resolveControl: (drawer: SettingsDrawer) => Locator,
+  action: (control: Locator) => Promise<void>,
 ): Promise<void> {
   const drawer = new SettingsDrawer(page);
   const wasOpen = await drawer.isOpen();
@@ -15,10 +15,12 @@ async function withVisibleControl(
     await drawer.open();
   }
 
+  const control = resolveControl(drawer);
+
   try {
     await control.waitFor({ state: 'visible', timeout: 5_000 });
     await control.scrollIntoViewIfNeeded();
-    await action();
+    await action(control);
   } finally {
     if (!wasOpen) {
       await drawer.close();
@@ -30,10 +32,7 @@ async function withVisibleControl(
  * Select a team from the dropdown
  */
 export async function selectTeam(page: Page, teamName: string): Promise<void> {
-  const teamSelector = page.getByRole('combobox', {
-    name: FILTER_LABELS.TEAM,
-  });
-  await withVisibleControl(page, teamSelector, async () => {
+  await withVisibleControl(page, (drawer) => drawer.combobox(FILTER_LABELS.TEAM), async (teamSelector) => {
     await teamSelector.click();
     await page.getByRole('option', { name: teamName }).click();
     await waitForFilterUpdate(page);
@@ -47,10 +46,7 @@ export async function selectSeason(
   page: Page,
   season: string
 ): Promise<void> {
-  const seasonSelector = page.getByRole('combobox', {
-    name: FILTER_LABELS.SEASON,
-  });
-  await withVisibleControl(page, seasonSelector, async () => {
+  await withVisibleControl(page, (drawer) => drawer.combobox(FILTER_LABELS.SEASON), async (seasonSelector) => {
     await seasonSelector.click();
     await page.getByRole('option', { name: season }).click();
     await waitForFilterUpdate(page);
@@ -64,10 +60,7 @@ export async function selectStartFromSeason(
   page: Page,
   season: string
 ): Promise<void> {
-  const startFromSelector = page.getByRole('combobox', {
-    name: FILTER_LABELS.START_FROM,
-  });
-  await withVisibleControl(page, startFromSelector, async () => {
+  await withVisibleControl(page, (drawer) => drawer.combobox(FILTER_LABELS.START_FROM), async (startFromSelector) => {
     await startFromSelector.click();
     await page.getByRole('option', { name: season }).click();
     await waitForFilterUpdate(page);
@@ -78,9 +71,8 @@ export async function selectStartFromSeason(
  * Toggle stats per game switch
  */
 export async function toggleStatsPerGame(page: Page): Promise<void> {
-  const switchButton = page.locator('mat-slide-toggle button[role="switch"]');
-  await withVisibleControl(page, switchButton, async () => {
-    await switchButton.dispatchEvent('click');
+  await withVisibleControl(page, (drawer) => drawer.switch(FILTER_LABELS.STATS_PER_GAME), async (switchButton) => {
+    await switchButton.click();
     await waitForFilterUpdate(page);
   });
 }
@@ -92,8 +84,7 @@ export async function setMinGames(
   page: Page,
   value: number
 ): Promise<void> {
-  const sliderInput = page.locator('#min-games-slider input[type="range"]');
-  await withVisibleControl(page, sliderInput, async () => {
+  await withVisibleControl(page, (drawer) => drawer.locator('#min-games-slider input[type="range"]'), async (sliderInput) => {
     await sliderInput.fill(String(value));
     await waitForFilterUpdate(page);
   });
@@ -118,9 +109,7 @@ export async function selectPosition(
       buttonName = FILTER_LABELS.POSITION_DEFENSE;
       break;
   }
-  const toggle = page.getByRole('radio', { name: buttonName });
-
-  await withVisibleControl(page, toggle, async () => {
+  await withVisibleControl(page, (drawer) => drawer.radio(buttonName), async (toggle) => {
     await toggle.click();
     await waitForFilterUpdate(page);
   });
@@ -137,10 +126,7 @@ export async function switchReportType(
     type === 'regular'
       ? FILTER_LABELS.REPORT_TYPE_REGULAR
       : FILTER_LABELS.REPORT_TYPE_PLAYOFFS;
-  const reportTypeSelector = page.getByRole('combobox', {
-    name: FILTER_LABELS.REPORT_TYPE,
-  });
-  await withVisibleControl(page, reportTypeSelector, async () => {
+  await withVisibleControl(page, (drawer) => drawer.combobox(FILTER_LABELS.REPORT_TYPE), async (reportTypeSelector) => {
     await reportTypeSelector.click();
     await page.getByRole('option', { name: label }).click();
     await waitForFilterUpdate(page);

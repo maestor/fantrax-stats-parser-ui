@@ -4,9 +4,14 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
+  ElementRef,
   OnInit,
   PLATFORM_ID,
+  afterNextRender,
+  effect,
   inject,
+  Injector,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -16,10 +21,12 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { ApiService, DraftPick, DraftTeamRef, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { SettingsService } from '@services/settings.service';
 import {
   DraftPanelFocusTargetDirective,
   DraftPanelHeaderNavigationDirective,
 } from '../draft-panel-navigation.directive';
+import { scheduleDraftHeaderAlignment } from '../draft-keyboard-navigation.utils';
 
 type DraftPickStatus = {
   readonly emoji: '🟢' | '🟡';
@@ -50,11 +57,37 @@ export class EntryDraftsComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly settingsService = inject(SettingsService);
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+  private readonly injector = inject(Injector);
+  private readonly groupsState = signal<EntryDraftTeamGroup[]>([]);
+  private readonly selectedTeamId = this.settingsService.selectedTeamIdSignal;
+  private readonly disableDraftSelectedTeamHighlight =
+    this.settingsService.disableDraftSelectedTeamHighlightSignal;
 
   groups: EntryDraftTeamGroup[] = [];
   loading = true;
   apiError = false;
+  expandedTeamId: string | null = null;
   private footerVisibilityCycle = 0;
+
+  constructor() {
+    effect(() => {
+      const nextExpandedTeamId = this.getDefaultExpandedTeamId(
+        this.groupsState(),
+        this.selectedTeamId(),
+        this.disableDraftSelectedTeamHighlight(),
+      );
+      const expandedTeamChanged = nextExpandedTeamId !== this.expandedTeamId;
+      this.expandedTeamId = nextExpandedTeamId;
+
+      if (expandedTeamChanged && nextExpandedTeamId !== null) {
+        this.scheduleExpandedHeaderAlignment(nextExpandedTeamId);
+      }
+
+      this.changeDetectorRef.markForCheck();
+    });
+  }
 
   ngOnInit(): void {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
@@ -70,13 +103,17 @@ export class EntryDraftsComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (groups) => {
-          this.groups = this.normalizeGroups(groups);
+          const normalizedGroups = this.normalizeGroups(groups);
+          this.groups = normalizedGroups;
+          this.groupsState.set(normalizedGroups);
           this.loading = false;
           this.changeDetectorRef.markForCheck();
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
         error: () => {
           this.groups = [];
+          this.groupsState.set([]);
+          this.expandedTeamId = null;
           this.apiError = true;
           this.loading = false;
           this.changeDetectorRef.markForCheck();
@@ -111,6 +148,18 @@ export class EntryDraftsComponent implements OnInit {
     return null;
   }
 
+  onPanelExpandedChange(teamId: string, expanded: boolean): void {
+    if (expanded) {
+      this.expandedTeamId = teamId;
+      this.scheduleExpandedHeaderAlignment(teamId);
+      return;
+    }
+
+    if (this.expandedTeamId === teamId) {
+      this.expandedTeamId = null;
+    }
+  }
+
   private normalizeGroups(groups: EntryDraftTeamGroup[]): EntryDraftTeamGroup[] {
     return groups.map((group) => ({
       ...group,
@@ -121,5 +170,40 @@ export class EntryDraftsComponent implements OnInit {
           picks: [...season.picks].sort((left, right) => left.pickNumber - right.pickNumber),
         })),
     }));
+  }
+
+  private getDefaultExpandedTeamId(
+    groups: readonly EntryDraftTeamGroup[],
+    selectedTeamId: string,
+    disableDraftSelectedTeamHighlight: boolean,
+  ): string | null {
+    if (disableDraftSelectedTeamHighlight) {
+      return null;
+    }
+
+    return groups.some((group) => group.team.id === selectedTeamId) ? selectedTeamId : null;
+  }
+
+  private scheduleExpandedHeaderAlignment(teamId: string): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    afterNextRender(() => {
+      const header = this.getPanelHeader(teamId);
+      if (!header) {
+        return;
+      }
+
+      scheduleDraftHeaderAlignment(header);
+    }, { injector: this.injector });
+  }
+
+  private getPanelHeader(teamId: string): HTMLElement | null {
+    const hostElement = this.elementRef.nativeElement as HTMLElement;
+    const panels = Array.from(hostElement.querySelectorAll('mat-expansion-panel')) as HTMLElement[];
+    const panel = panels.find((candidate) => candidate.dataset['teamId'] === teamId);
+
+    return (panel?.querySelector('.mat-expansion-panel-header') as HTMLElement | null) ?? null;
   }
 }

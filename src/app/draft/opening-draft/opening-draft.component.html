@@ -18,7 +18,13 @@
   } @else {
     <mat-accordion class="draft-accordion" displayMode="flat">
       @for (group of groups; track group.team.id) {
-        <mat-expansion-panel class="draft-panel" #panel>
+        <mat-expansion-panel
+          class="draft-panel"
+          #panel
+          [attr.data-team-id]="group.team.id"
+          [expanded]="expandedTeamId === group.team.id"
+          (expandedChange)="onPanelExpandedChange(group.team.id, $event)"
+        >
           <mat-expansion-panel-header class="draft-panel-header" draftPanelHeaderNavigation>
             <mat-panel-title class="draft-panel-title">
               {{ group.team.name }}

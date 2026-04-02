@@ -3,6 +3,7 @@ import { PlayerCardDialog } from '../page-objects/PlayerCardDialog';
 import { StatsTable } from '../page-objects/StatsTable';
 import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 import { selectSeason } from '../helpers/filters';
+import { FILTER_LABELS, FILTER_VALUES } from '../config/test-data';
 
 test.describe('Player Card', () => {
   let playerCard: PlayerCardDialog;
@@ -35,7 +36,7 @@ test.describe('Player Card', () => {
 
   test('tabs: all seasons shows 3 tabs, single season shows 2 tabs without by-season', async ({ page }) => {
     // All seasons: 3 tabs with full navigation
-    await selectSeason(page, 'Kaikki kaudet');
+    await selectSeason(page, FILTER_VALUES.ALL_SEASONS);
 
     await playerCard.open('Jamie Benn');
     const tabs = await playerCard.getAvailableTabs();
@@ -66,9 +67,7 @@ test.describe('Player Card', () => {
 
     // Single season: 2 tabs, no by-season, no line graphs
     await settingsDrawer.open();
-    const seasonSelector = page.getByRole('combobox', {
-      name: 'Kausivalitsin',
-    });
+    const seasonSelector = settingsDrawer.combobox(FILTER_LABELS.SEASON);
     await seasonSelector.click();
     await page.getByRole('option').nth(1).click();
     await settingsDrawer.close();
@@ -87,7 +86,7 @@ test.describe('Player Card', () => {
     await page.setViewportSize({ width: 1280, height: 720 });
 
     // Ensure all seasons for line graphs
-    await selectSeason(page, 'Kaikki kaudet');
+    await selectSeason(page, FILTER_VALUES.ALL_SEASONS);
 
     await playerCard.open('Jamie Benn');
     await playerCard.switchToTab('graphs');
@@ -134,7 +133,7 @@ test.describe('Player Card', () => {
   });
 
   test('compare toggle state persists across tabs', async ({ page }) => {
-    await selectSeason(page, 'Kaikki kaudet');
+    await selectSeason(page, FILTER_VALUES.ALL_SEASONS);
 
     await playerCard.open('Jamie Benn');
 

@@ -1,10 +1,12 @@
 import { PLATFORM_ID } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { Subject, of, throwError } from 'rxjs';
 
 import { ApiService, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { SettingsService } from '@services/settings.service';
 import {
   provideDisabledMaterialAnimations,
   waitForBehaviorAssertion,
@@ -114,7 +116,6 @@ describe('DraftStatisticsComponent', () => {
       screen.getByRole('heading', { name: 'draft.statistics.cards.playedForDraftingTeamPercent.title' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'draft.statistics.sections.pickVolume.title' })).toBeInTheDocument();
-    expect(screen.getByRole('combobox', { name: 'draft.statistics.highlightTeam.label' })).toBeInTheDocument();
     expect(fixture.componentInstance.cards.map((card) => card.id)).toEqual([
       ...DRAFT_STATISTICS_CARD_IDS,
     ]);
@@ -162,12 +163,16 @@ describe('DraftStatisticsComponent', () => {
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(9);
   });
 
-  it('highlights a selected team and jumps cards to the matching ranking page', async () => {
+  it('uses the persisted shared selected team for highlight and paging on initial render', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '12',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableDraftSelectedTeamHighlight: false,
+    }));
+
     const { fixture } = await renderComponent();
-
-    fireEvent.click(screen.getByRole('combobox', { name: 'draft.statistics.highlightTeam.label' }));
-    fireEvent.click(await screen.findByRole('option', { name: 'Team 12' }));
-
     const totalPicksCard = screen.getByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' })
       .closest('app-table-card');
     expect(totalPicksCard).not.toBeNull();
@@ -181,34 +186,50 @@ describe('DraftStatisticsComponent', () => {
       expect(highlightedRow).toHaveClass('table-card-row--emphasized');
       expect(within(highlightedRow as HTMLElement).getByText('12.')).toBeInTheDocument();
     });
-
-    expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
-      draftStatisticsHighlightedTeamId: '12',
-    });
   });
 
-  it('restores the highlighted team from persisted settings', async () => {
+  it('reacts to shared team-setting changes and disables highlighting when the draft toggle is enabled', async () => {
     localStorage.setItem('fantrax.settings', JSON.stringify({
       selectedTeamId: '1',
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      draftStatisticsHighlightedTeamId: '12',
+      disableDraftSelectedTeamHighlight: false,
     }));
 
     const { fixture } = await renderComponent();
-    const totalPicksCard = await screen.findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' })
+    const settingsService = TestBed.inject(SettingsService);
+    const totalPicksCard = await screen
+      .findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' })
       .then((heading) => heading.closest('app-table-card'));
 
     expect(totalPicksCard).not.toBeNull();
 
+    settingsService.setSelectedTeamId('12');
+
     await waitForBehaviorAssertion(fixture, () => {
       const cardState = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
       const highlightedRow = within(totalPicksCard as HTMLElement).getByText('Team 12').closest('tr');
-      expect(screen.getByRole('combobox', { name: 'draft.statistics.highlightTeam.label' })).toHaveTextContent('Team 12');
+      expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
+        selectedTeamId: '12',
+      });
+      expect(fixture.componentInstance.highlightedTeamId).toBe('12');
       expect(cardState?.skip).toBe(10);
       expect(highlightedRow).toHaveClass('table-card-row--emphasized');
       expect(within(highlightedRow as HTMLElement).getByText('12.')).toBeInTheDocument();
+    });
+
+    settingsService.setDisableDraftSelectedTeamHighlight(true);
+
+    await waitForBehaviorAssertion(fixture, () => {
+      const cardState = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
+      expect(fixture.componentInstance.highlightedTeamId).toBeNull();
+      expect(cardState?.skip).toBe(0);
+      expect(cardState?.rows.every((row) => !row.emphasized)).toBe(true);
+      expect(within(totalPicksCard as HTMLElement).queryByText('Team 12')).not.toBeInTheDocument();
+      expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
+        disableDraftSelectedTeamHighlight: true,
+      });
     });
   });
 
