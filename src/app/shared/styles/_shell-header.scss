@@ -6,6 +6,8 @@
 }
 
 .title-row h1 {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
   text-align: center;
 }
 
@@ -36,8 +38,8 @@
     grid-template-columns: auto 1fr auto;
     align-items: center;
     justify-content: initial;
-    margin: 0 6px;
-    padding: 8px 0 6px 0;
+    margin: 0 8px;
+    padding: 6px 0;
   }
 
   .title-row-actions {
@@ -51,5 +53,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+}
+
+@media(max-width: 480px) {
+  .title-row {
+    margin: 0 6px;
   }
 }
