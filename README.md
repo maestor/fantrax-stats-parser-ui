@@ -36,6 +36,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 - 🏆 **All-Time Leaderboards**: Browse all-time team rankings for regular season, playoffs, and transactions
 	- Expand team rows to see season-by-season breakdowns
 	- Ties, trophies, and transaction summaries are presented clearly in the standings
+	- The shared selected team receives keyboard focus by default unless selected-team highlighting is disabled from the settings drawer
 - 📚 **Career Listings**: Browse all-time player and goalie career tables plus career highlights
 	- Search and sort the main career tables
 	- Long lists stay responsive
@@ -44,7 +45,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- Team-by-team draft history and summary views
 	- Played-status markers show whether drafted players reached the drafting team or elsewhere in the league
 	- Draft statistics cards are grouped into sectioned rankings with jump navigation
-	- The shared team setting opens or highlights the selected team by default across draft views, with a draft-only drawer toggle to disable that behavior
+	- The shared team setting opens or highlights the selected team by default across draft views, and the shared settings drawer toggle can disable that behavior on both draft and leaderboard routes
 - ⚙️ **Shared Settings Drawer**: The same settings entry point is available across stats, career, draft, and leaderboard routes
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
 	- Keyboard navigation is supported inside the menu

@@ -17,7 +17,7 @@ Services in this application handle data fetching, business logic, state managem
 
 **Responsibilities**:
 - Store user settings in a single `localStorage` key: `fantrax.settings`
-- Provide the currently used reactive settings reads for team id, start-from season, season/report filters, and the draft-only "disable selected-team highlight" toggle
+- Provide the currently used reactive settings reads for team id, start-from season, season/report filters, and the shared "disable selected-team highlight" toggle
 - Validate all fields on load; invalid or missing fields fall back to defaults
 
 **Notes**:
@@ -25,7 +25,7 @@ Services in this application handle data fetching, business logic, state managem
 - When the selected team changes, `startFromSeason` clears immediately; stats routes resolve it back to that team's oldest available season when stats mode becomes active
 - Storage failures are ignored (privacy mode, quota, etc.)
 - `season` defaults to `null` (all seasons); `reportType` defaults to `'regular'`
-- `disableDraftSelectedTeamHighlight` defaults to `false`; when enabled, draft views stop auto-opening/highlighting the selected team
+- `disableSelectedTeamHighlight` defaults to `false`; when enabled, draft views stop auto-opening/highlighting the selected team and leaderboard views stop auto-focusing it
 - Settings are validated field-by-field on load; invalid or missing fields fall back to defaults
 
 **Key API**:
@@ -34,19 +34,19 @@ class SettingsService {
   readonly selectedTeamId$: Observable<string>;
   readonly selectedTeamIdSignal: Signal<string>;
   readonly startFromSeason$: Observable<number | undefined>;
-  readonly disableDraftSelectedTeamHighlightSignal: Signal<boolean>;
+  readonly disableSelectedTeamHighlightSignal: Signal<boolean>;
 
   get selectedTeamId(): string;
   get startFromSeason(): number | undefined;
   get season(): number | undefined;
   get reportType(): ReportType;
-  get disableDraftSelectedTeamHighlight(): boolean;
+  get disableSelectedTeamHighlight(): boolean;
 
   setSelectedTeamId(teamId: string): void;
   setStartFromSeason(season: number | undefined): void;
   setSeason(season: number | null): void;
   setReportType(reportType: ReportType): void;
-  setDisableDraftSelectedTeamHighlight(disabled: boolean): void;
+  setDisableSelectedTeamHighlight(disabled: boolean): void;
 }
 ```
 
@@ -57,7 +57,7 @@ export type AppSettings = {
   startFromSeason: number | null;
   season: number | null;
   reportType: ReportType;
-  disableDraftSelectedTeamHighlight: boolean;
+  disableSelectedTeamHighlight: boolean;
 };
 ```
 

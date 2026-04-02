@@ -687,6 +687,15 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
     return index === this.activeRowIndex ? 0 : -1;
   }
 
+  getRenderedRowKey(row: TableRow, index: number): string {
+    return this.resolveRowKey(row, index);
+  }
+
+  getRowNavigationIndex(row: TableRow, index: number): number {
+    const dataIndex = this.dataSource.data.indexOf(row);
+    return dataIndex >= 0 ? dataIndex : index;
+  }
+
   onRowKeydown(event: KeyboardEvent, row: TableRow, index: number): void {
     switch (event.key) {
       case ' ': {
@@ -748,9 +757,33 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
     return this.translate.instant(translateKey, { name });
   }
 
+  focusRowByKey(rowKey: string): boolean {
+    const dataRowIndex = this.dataSource.data.findIndex(
+      (row, index) => this.resolveRowKey(row, index) === rowKey,
+    );
+    if (dataRowIndex < 0) {
+      return false;
+    }
+
+    this.activeRowIndex = dataRowIndex;
+    this.cdr.detectChanges();
+
+    const renderedRowIndex = this.findRenderedRowIndexByKey(rowKey);
+    this.focusRow(renderedRowIndex >= 0 ? renderedRowIndex : this.activeRowIndex);
+    return true;
+  }
+
   private getRowLabel(row: TableRow): string {
     const rowWithLabel = row as { name?: string; teamName?: string };
     return rowWithLabel.name ?? rowWithLabel.teamName ?? '';
+  }
+
+  private findRenderedRowIndexByKey(rowKey: string): number {
+    const rows = Array.from(
+      this.tableRootRef?.nativeElement.querySelectorAll<HTMLElement>('[data-row-index]') ?? [],
+    );
+
+    return rows.findIndex((row) => row.dataset['rowKey'] === rowKey);
   }
 
   private rebuildRowKeyMap(): void {
@@ -806,12 +839,16 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
     const clampedIndex = Math.max(0, Math.min(index, rows.length - 1));
     this.activeRowIndex = clampedIndex;
+    this.cdr.detectChanges();
 
-    const el = rows.find(r => Number(r.dataset['rowIndex']) === clampedIndex);
+    const refreshedRows = Array.from(tableEl.querySelectorAll<HTMLElement>('[data-row-index]'));
+    const el = refreshedRows.find(r => Number(r.dataset['rowIndex']) === clampedIndex);
     if (!el) return;
 
     el.focus();
-    el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    if (typeof el.scrollIntoView === 'function') {
+      el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
   }
 
   /** Scroll a row into view without stealing focus (used by dialog navigation callback). */

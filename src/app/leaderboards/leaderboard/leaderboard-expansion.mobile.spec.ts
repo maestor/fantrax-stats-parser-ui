@@ -8,6 +8,16 @@ import { provideDisabledMaterialAnimations } from '../../testing/behavior-test-u
 import { LeaderboardRegularComponent } from '../regular/leaderboard-regular.component';
 
 describe('Leaderboard expansion behavior on mobile', () => {
+  beforeEach(() => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '99',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableSelectedTeamHighlight: true,
+    }));
+  });
+
   it('uses short season labels', async () => {
     await render(LeaderboardRegularComponent, {
       imports: [TranslateModule.forRoot()],

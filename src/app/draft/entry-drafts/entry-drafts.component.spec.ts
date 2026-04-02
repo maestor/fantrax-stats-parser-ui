@@ -192,7 +192,7 @@ describe('EntryDraftsComponent', () => {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: false,
+      disableSelectedTeamHighlight: false,
     }));
 
     await renderComponent();
@@ -201,13 +201,13 @@ describe('EntryDraftsComponent', () => {
     expect(screen.getByRole('button', { name: 'Boston Bruins' })).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('scrolls the auto-opened shared selected team header to the top without moving focus into content', async () => {
+  it('does not scroll the auto-opened shared selected team header on initial render', async () => {
     localStorage.setItem('fantrax.settings', JSON.stringify({
       selectedTeamId: '12',
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: false,
+      disableSelectedTeamHighlight: false,
     }));
 
     const { scrollIntoView, restore } = stubScrollIntoView();
@@ -217,11 +217,7 @@ describe('EntryDraftsComponent', () => {
       const header = await screen.findByRole('button', { name: 'Anaheim Ducks' });
 
       await waitForBehaviorAssertion(fixture, () => {
-        expect(scrollIntoView).toHaveBeenCalledWith({
-          behavior: 'smooth',
-          block: 'start',
-          inline: 'nearest',
-        });
+        expect(scrollIntoView).not.toHaveBeenCalled();
         expect(header).toHaveAttribute('aria-expanded', 'true');
         expect(header).not.toHaveFocus();
       });
@@ -236,7 +232,7 @@ describe('EntryDraftsComponent', () => {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: true,
+      disableSelectedTeamHighlight: true,
     }));
 
     await renderComponent();

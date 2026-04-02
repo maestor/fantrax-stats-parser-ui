@@ -385,15 +385,17 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
   });
 
-  it('shows the draft-only team highlight toggle in the drawer on draft routes', async () => {
+  it.each([
+    '/draft/statistics',
+    '/leaderboards/regular',
+  ])('shows the shared team highlight toggle in the drawer on %s', async (route) => {
     const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
     const router = TestBed.inject(Router);
 
-    await router.navigateByUrl('/draft/statistics');
-
-    expect(
-      await screen.findByRole('heading', { name: 'draft.statistics.cards.totalPicks.title' }, { timeout: 15_000 }),
-    ).toBeInTheDocument();
+    await router.navigateByUrl(route);
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(router.url).toBe(route);
+    });
 
     await openDashboardSettingsDrawer();
 
@@ -411,8 +413,85 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     await waitForBehaviorAssertion(fixture, () => {
       expect(disableHighlightToggle).toHaveAttribute('aria-checked', 'true');
       expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
-        disableDraftSelectedTeamHighlight: true,
+        disableSelectedTeamHighlight: true,
       });
+    });
+  });
+
+  it('restores leaderboard row focus after closing the settings drawer', async () => {
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        selectedTeamId: '2',
+        startFromSeason: null,
+        season: null,
+        reportType: 'regular',
+        disableSelectedTeamHighlight: false,
+      })
+    );
+
+    const { fixture } = await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        leaderboardRegular: [
+          {
+            teamId: '1',
+            teamName: 'Colorado Avalanche',
+            regularTrophies: 2,
+            points: 1000,
+            wins: 500,
+            losses: 200,
+            ties: 50,
+            pointsPercent: 0.7,
+            winPercent: 0.65,
+            divWins: 0,
+            divLosses: 0,
+            divTies: 0,
+            divWinPercent: 0.5,
+            tieRank: false,
+            seasons: [],
+          },
+          {
+            teamId: '2',
+            teamName: 'Dallas Stars',
+            regularTrophies: 1,
+            points: 950,
+            wins: 480,
+            losses: 210,
+            ties: 45,
+            pointsPercent: 0.68,
+            winPercent: 0.62,
+            divWins: 0,
+            divLosses: 0,
+            divTies: 0,
+            divWinPercent: 0.5,
+            tieRank: false,
+            seasons: [],
+          },
+        ],
+      }),
+    );
+    const router = TestBed.inject(Router);
+
+    await router.navigateByUrl('/leaderboards/regular');
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(router.url).toBe('/leaderboards/regular');
+    });
+
+    const dallasRow = (await screen.findByText('Dallas Stars')).closest('tr');
+    expect(dallasRow).not.toBeNull();
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(dallasRow).toHaveAttribute('tabindex', '0');
+      expect(dallasRow).toHaveClass('a11y-active');
+    });
+
+    await openDashboardSettingsDrawer();
+    await closeDashboardSettingsDrawer(fixture);
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(dallasRow).toHaveFocus();
     });
   });
 
@@ -588,24 +667,28 @@ describe('buildSettingsDrawerRouteConfig', () => {
     });
   });
 
-  it('uses draft mode for draft browse routes', () => {
+  it('uses team mode for draft and leaderboard browse routes', () => {
     expect(buildSettingsDrawerRouteConfig('/draft/entry-drafts')).toEqual({
-      mode: 'draft',
+      mode: 'team',
     });
     expect(buildSettingsDrawerRouteConfig('/draft/statistics')).toEqual({
-      mode: 'draft',
+      mode: 'team',
+    });
+    expect(buildSettingsDrawerRouteConfig('/leaderboards/regular')).toEqual({
+      mode: 'team',
     });
   });
 
-  it('defaults all non-stats routes to the base drawer mode, including unknown future routes', () => {
+  it('uses default mode for browse routes without stats controls', () => {
     expect(buildSettingsDrawerRouteConfig('/career/players')).toEqual({
       mode: 'default',
     });
-    expect(buildSettingsDrawerRouteConfig('/leaderboards/regular')).toEqual({
-      mode: 'default',
-    });
+  });
+
+  it('falls back to the root stats drawer config for redirected unknown routes', () => {
     expect(buildSettingsDrawerRouteConfig('/future-route')).toEqual({
-      mode: 'default',
+      mode: 'stats',
+      statsContext: 'player',
     });
   });
 });

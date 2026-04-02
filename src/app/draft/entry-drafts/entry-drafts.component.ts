@@ -4,13 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
-  ElementRef,
   OnInit,
   PLATFORM_ID,
-  afterNextRender,
   effect,
   inject,
-  Injector,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -26,7 +23,6 @@ import {
   DraftPanelFocusTargetDirective,
   DraftPanelHeaderNavigationDirective,
 } from '../draft-panel-navigation.directive';
-import { scheduleDraftHeaderAlignment } from '../draft-keyboard-navigation.utils';
 
 type DraftPickStatus = {
   readonly emoji: '🟢' | '🟡';
@@ -58,12 +54,10 @@ export class EntryDraftsComponent implements OnInit {
   private readonly footerVisibilityService = inject(FooterVisibilityService);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly settingsService = inject(SettingsService);
-  private readonly elementRef = inject(ElementRef<HTMLElement>);
-  private readonly injector = inject(Injector);
   private readonly groupsState = signal<EntryDraftTeamGroup[]>([]);
   private readonly selectedTeamId = this.settingsService.selectedTeamIdSignal;
-  private readonly disableDraftSelectedTeamHighlight =
-    this.settingsService.disableDraftSelectedTeamHighlightSignal;
+  private readonly disableSelectedTeamHighlight =
+    this.settingsService.disableSelectedTeamHighlightSignal;
 
   groups: EntryDraftTeamGroup[] = [];
   loading = true;
@@ -76,14 +70,9 @@ export class EntryDraftsComponent implements OnInit {
       const nextExpandedTeamId = this.getDefaultExpandedTeamId(
         this.groupsState(),
         this.selectedTeamId(),
-        this.disableDraftSelectedTeamHighlight(),
+        this.disableSelectedTeamHighlight(),
       );
-      const expandedTeamChanged = nextExpandedTeamId !== this.expandedTeamId;
       this.expandedTeamId = nextExpandedTeamId;
-
-      if (expandedTeamChanged && nextExpandedTeamId !== null) {
-        this.scheduleExpandedHeaderAlignment(nextExpandedTeamId);
-      }
 
       this.changeDetectorRef.markForCheck();
     });
@@ -151,7 +140,6 @@ export class EntryDraftsComponent implements OnInit {
   onPanelExpandedChange(teamId: string, expanded: boolean): void {
     if (expanded) {
       this.expandedTeamId = teamId;
-      this.scheduleExpandedHeaderAlignment(teamId);
       return;
     }
 
@@ -175,35 +163,12 @@ export class EntryDraftsComponent implements OnInit {
   private getDefaultExpandedTeamId(
     groups: readonly EntryDraftTeamGroup[],
     selectedTeamId: string,
-    disableDraftSelectedTeamHighlight: boolean,
+    disableSelectedTeamHighlight: boolean,
   ): string | null {
-    if (disableDraftSelectedTeamHighlight) {
+    if (disableSelectedTeamHighlight) {
       return null;
     }
 
     return groups.some((group) => group.team.id === selectedTeamId) ? selectedTeamId : null;
-  }
-
-  private scheduleExpandedHeaderAlignment(teamId: string): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
-    afterNextRender(() => {
-      const header = this.getPanelHeader(teamId);
-      if (!header) {
-        return;
-      }
-
-      scheduleDraftHeaderAlignment(header);
-    }, { injector: this.injector });
-  }
-
-  private getPanelHeader(teamId: string): HTMLElement | null {
-    const hostElement = this.elementRef.nativeElement as HTMLElement;
-    const panels = Array.from(hostElement.querySelectorAll('mat-expansion-panel')) as HTMLElement[];
-    const panel = panels.find((candidate) => candidate.dataset['teamId'] === teamId);
-
-    return (panel?.querySelector('.mat-expansion-panel-header') as HTMLElement | null) ?? null;
   }
 }

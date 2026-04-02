@@ -151,6 +151,12 @@ body {
   color: var(--mat-sys-on-surface) !important;
 }
 
+.mat-mdc-option .mdc-list-item__primary-text,
+.mat-mdc-menu-item .mdc-list-item__primary-text,
+.mat-mdc-autocomplete-panel .mat-mdc-option .mdc-list-item__primary-text {
+  color: inherit !important;
+}
+
 .mat-mdc-option:hover:not(.mdc-list-item--disabled),
 .mat-mdc-menu-item:hover:not(.mat-mdc-menu-item-disabled) {
   background-color: var(--mat-sys-surface-container-highest) !important;
