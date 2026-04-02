@@ -227,6 +227,7 @@ Local rule of thumb:
 - When Playwright assertions need visible Finnish UI copy, source shared labels from `public/i18n/fi.json` through `e2e/config/i18n.ts` or shared constants in `e2e/config/test-data.ts`
 - Do **not** hard-code Finnish literals directly in Playwright specs for headings, tabs, buttons, drawer labels, or other user-facing UI text; use `fi('...')` or shared test-data exports instead so tests stay aligned with translations
 - For short shared words that appear inside longer labels, combine the translation helper with stricter selectors such as `exact: true`, a role level, or a narrower container instead of falling back to hard-coded localized text
+- When a route can auto-open accordions or panels from persisted/shared settings, do **not** assume a collapsed starting state in Playwright. CI starts from the app defaults, so draft list views already open the default selected team unless the test explicitly changes that setting first
 
 **Basic commands:**
 
