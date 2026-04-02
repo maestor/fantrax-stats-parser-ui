@@ -3,10 +3,14 @@ import { Locator } from '@playwright/test';
 import { test, expect } from '../fixtures/test-fixture';
 import { fi } from '../config/i18n';
 import {
+  A11Y_LABELS,
   CAREER_HIGHLIGHT_CARD_LABELS,
   CAREER_HIGHLIGHT_SECTION_LABELS,
+  FILTER_LABELS,
+  SEARCH_LABELS,
   TAB_LABELS,
 } from '../config/test-data';
+import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 import {
   CAREER_HIGHLIGHT_CARD_TYPES,
 } from '../../src/app/career/highlights/career-highlights.constants';
@@ -16,16 +20,22 @@ test.describe('Career listings', () => {
     await page.goto('/career');
     await expect(page).toHaveURL(/\/career\/players$/);
 
+    const settingsDrawer = new SettingsDrawer(page);
     const playerTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_PLAYERS });
     await expect(playerTab).toHaveAttribute('aria-selected', 'true');
-    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
-    await expect(page.getByRole('combobox', { name: 'Joukkue' })).toHaveCount(0);
+    await expect(page.getByLabel(A11Y_LABELS.OPEN_SETTINGS_DRAWER)).toBeVisible();
+    await expect(page.getByLabel(SEARCH_LABELS.CAREER_PLAYER)).toBeVisible();
+
+    await settingsDrawer.open();
+    await expect(page.getByRole('combobox', { name: FILTER_LABELS.TEAM })).toBeVisible();
+    await expect(page.getByRole('combobox', { name: FILTER_LABELS.SEASON })).toHaveCount(0);
+    await settingsDrawer.close();
 
     const playerRows = page.locator('.virtual-table-row[data-row-index]');
     await playerRows.first().waitFor({ state: 'visible', timeout: 10000 });
     expect(await playerRows.count()).toBeGreaterThan(0);
 
-    await page.getByLabel('Pelaajahaku').fill('Jamie');
+    await page.getByLabel(SEARCH_LABELS.CAREER_PLAYER).fill('Jamie');
     await expect(page.getByText('Jamie Benn')).toBeVisible();
 
     const highlightsTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_HIGHLIGHTS });
@@ -98,7 +108,7 @@ test.describe('Career listings', () => {
 
     await expect(page).toHaveURL(/\/career\/goalies$/);
     await expect(goalieTab).toHaveAttribute('aria-selected', 'true');
-    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
+    await expect(page.getByLabel(SEARCH_LABELS.CAREER_PLAYER)).toBeVisible();
 
     const goalieRows = page.locator('.virtual-table-row[data-row-index]');
     await goalieRows.first().waitFor({ state: 'visible', timeout: 10000 });

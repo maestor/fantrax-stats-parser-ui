@@ -1,5 +1,13 @@
 import { test, expect } from '../fixtures/test-fixture';
-import { DEFAULT_TEAM, NAV_LABELS, TAB_LABELS } from '../config/test-data';
+import {
+  A11Y_LABELS,
+  DEFAULT_TEAM,
+  FILTER_LABELS,
+  NAV_LABELS,
+  ROUTE_LABELS,
+  SEARCH_LABELS,
+  TAB_LABELS,
+} from '../config/test-data';
 import { SettingsDrawer } from '../page-objects/SettingsDrawer';
 
 test.describe('Smoke Tests', () => {
@@ -16,9 +24,9 @@ test.describe('Smoke Tests', () => {
       page.getByRole('heading', { name: /FFHL tilastopalvelu/ })
     ).toBeVisible();
     await expect(
-      page.getByRole('heading', { name: `Pelaajatilastot: ${DEFAULT_TEAM}` })
+      page.getByRole('heading', { name: `${ROUTE_LABELS.PLAYER_STATS}: ${DEFAULT_TEAM}` })
     ).toBeVisible();
-    await expect(page.getByLabel('Avaa asetuspaneeli')).toBeVisible();
+    await expect(page.getByLabel(A11Y_LABELS.OPEN_SETTINGS_DRAWER)).toBeVisible();
 
     // Navigation tabs
     await expect(page.getByRole('tablist')).toBeVisible();
@@ -32,19 +40,19 @@ test.describe('Smoke Tests', () => {
     // Drawer controls
     await settingsDrawer.open();
     await expect(
-      page.getByRole('combobox', { name: 'Joukkue' })
+      page.getByRole('combobox', { name: FILTER_LABELS.TEAM })
     ).toContainText(DEFAULT_TEAM);
     await expect(
-      page.getByRole('combobox', { name: 'Kausivalitsin' })
+      page.getByRole('combobox', { name: FILTER_LABELS.SEASON })
     ).toBeVisible();
     await expect(
-      page.getByRole('combobox', { name: 'Raportti' })
+      page.getByRole('combobox', { name: FILTER_LABELS.REPORT_TYPE })
     ).toBeVisible();
     await settingsDrawer.close();
   });
 
   test('table renders with data and / key focuses search', async ({ page }) => {
-    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
+    await expect(page.getByLabel(SEARCH_LABELS.PLAYER)).toBeVisible();
     await expect(page.getByRole('table')).toBeVisible();
 
     const rows = page.locator('tr[mat-row]');
@@ -54,7 +62,7 @@ test.describe('Smoke Tests', () => {
 
     // Press / to focus search field
     await page.keyboard.press('/');
-    const searchInput = page.getByLabel('Pelaajahaku');
+    const searchInput = page.getByLabel(SEARCH_LABELS.PLAYER);
     await expect(searchInput).toBeFocused();
   });
 
@@ -70,19 +78,26 @@ test.describe('Smoke Tests', () => {
   });
 
   test('global navigation opens career listings and career tabs switch between players and goalies', async ({ page }) => {
-    await page.getByRole('button', { name: 'Avaa valikko' }).click();
+    const settingsDrawer = new SettingsDrawer(page);
+
+    await page.getByRole('button', { name: A11Y_LABELS.OPEN_NAV_MENU }).click();
     const navDialog = page.getByRole('dialog').last();
     await expect(navDialog).toBeVisible();
     await navDialog.getByRole('button', { name: NAV_LABELS.PLAYER_CAREERS }).click();
 
     await expect(page).toHaveURL(/\/career\/players$/);
-    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
-    await expect(page.getByRole('combobox', { name: 'Joukkue' })).toHaveCount(0);
+    await expect(page.getByLabel(A11Y_LABELS.OPEN_SETTINGS_DRAWER)).toBeVisible();
+    await expect(page.getByLabel(SEARCH_LABELS.CAREER_PLAYER)).toBeVisible();
+
+    await settingsDrawer.open();
+    await expect(page.getByRole('combobox', { name: FILTER_LABELS.TEAM })).toBeVisible();
+    await expect(page.getByRole('combobox', { name: FILTER_LABELS.SEASON })).toHaveCount(0);
+    await settingsDrawer.close();
 
     const goalieCareerTab = page.getByRole('tab', { name: TAB_LABELS.CAREER_GOALIES });
     await goalieCareerTab.click();
 
     await expect(page).toHaveURL(/\/career\/goalies$/);
-    await expect(page.getByLabel('Pelaajahaku')).toBeVisible();
+    await expect(page.getByLabel(SEARCH_LABELS.CAREER_PLAYER)).toBeVisible();
   });
 });

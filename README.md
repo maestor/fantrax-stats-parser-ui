@@ -16,60 +16,47 @@ The docs in this repo intentionally focus on project-specific architecture, work
 
 - 📊 **Player Statistics**: View and analyze player performance across seasons
 - 🥅 **Goalie Statistics**: Dedicated view for goalie-specific metrics
-- 🏒 **Team Selector**: Choose a team (defaults to Colorado, id `1`) from the dashboard settings drawer. Selection is remembered across reloads, and changing team resets filters
-- ⏳ **Start From Season**: Lower bound for combined stats (defaults to the team's oldest season; affects seasons list + combined stats endpoints via `startFrom`)
+- 🏒 **Team Selector**: Choose a team from the shared settings drawer on every route. Your selection is remembered across reloads and used when you return to stats views
+- ⏳ **Start From Season**: Set the lower bound for combined stats
 - 🔄 **Report Switching**: Toggle between regular season and playoffs
 - 📅 **Season Selection**: Filter data by specific seasons or view combined stats
 - 📈 **Stats Per Game**: Calculate and display per-game averages
 - 🎯 **Minimum Games Filter**: Filter players/goalies by minimum games played
-- 🏒 **Position Filter**: Filter players by position (Forwards/Defensemen) with position-relative scoring comparisons
-- ⚖️ **Player Comparison**: Select two players/goalies from the table to compare side-by-side in a dialog with stats and radar chart tabs
+- 🏒 **Position Filter**: Filter skaters by position with position-aware scoring comparisons
+- ⚖️ **Player Comparison**: Compare two players or goalies side by side in a dialog
 - 🔍 **Search & Sort**: Interactive table with search and column sorting
 - 📌 **Sticky Headers**: Table headers remain visible while scrolling with full horizontal scroll support
-- 🧮 **Score Ranking**: Default sort by a composite `score` column to surface highest-impact players and goalies first
-- 🏷️ **Compact Headers**: Short stat abbreviations in the table header with tooltips showing full localized labels
-- 📇 **Player Card**: Dialog with per-player / per-goalie details, including combined career stats, season-by-season breakdown, and a graphs tab in separate tabs, using the same stat keys (including `score`) as the main tables
-	- 📉 Graphs tab shows per-season line charts for key stats (games, goals, assists, points, shots, penalties, hits, blocks for skaters; games, wins, saves, shutouts for goalies) with selectable series and sensible axis scaling
-	- 🎯 Radar chart view showing 0-100 normalized score breakdown for individual stats, toggleable with line charts
-	- 🏆 Career bests highlighted in By Season tab with tooltip showing stat name (only for players with 2+ seasons)
-	- ⬅️➡️ Navigate between players/goalies without closing the card: keyboard arrows (←/→), touch swipe (mobile), or trackpad two-finger swipe (laptop). Wraps circularly with screen reader announcements. Active row in the stats table stays in sync. Direction-aware slide transition provides visual feedback
-- 🏆 **All-Time Leaderboards**: Standalone `/leaderboards` route with three ranking tables — regular season (Runkosarja), playoffs, and transactions (Siirrot) — showing all-time team standings, transaction activity, and roster totals with column sorting
-	- Expand/collapse per-team season breakdown by clicking the team row (multiple rows can stay open)
-	- Regular/playoffs keep blank tied ranks, while transactions always show incremental positions
-	- Season details show `🏆` markers for winner/championship seasons (regular + playoffs) and `🤝 | ✅ | ❌ | 🏒 | 🥅` summaries for transactions
-- 📚 **Career Listings**: Standalone `/career/players` and `/career/goalies` routes for all-time player and goalie career tables
-	- Searchable and sortable, with no stats-page filters or dashboard drawer
-	- Virtualized row rendering keeps long lists responsive
-	- Player rows show position inline with name (for example `D Travis Hamonic`) while still sorting alphabetically by player name
-	- `/career/highlights` groups compact paged highlight cards under sticky jump sections (`Urateot`, `Seurapolut`, `Pitkät pestit`, `Siirrot`), keeps card datasets lazy-loaded as they approach the viewport, and shows tied ranks inline before player position when values are shared
-- 📝 **Draft Pages**: Standalone `/draft/entry-drafts`, `/draft/opening-draft`, and `/draft/statistics` browse routes now live under `Varaukset`
-	- Batch 1 adds the route shell, navigation, SEO, and the shared browse scaffolding
-		- Batch 2 turns `/draft/opening-draft` into a team-by-team accordion with simple pick rows, including traded-pick owner suffixes when the original pick belonged to another team
-		- Batch 3 turns `/draft/entry-drafts` into a matching team accordion with compact summary cards, played-status totals plus played percentages, highest-pick highlights, and season-by-season entry draft history
-		- Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
-		- Expanded draft panels auto-align their sticky header to the top of the viewport when opened; `ArrowDown` still explicitly moves from the team header into the panel body, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it, and `Escape` collapses the panel while returning focus to the header
-		- `Tilastot` reuses the shared paged `TableCardComponent` to rank teams across 13 entry-draft summary slices, including separate played-percentage rankings, without a separate draft-only card implementation
-		- Draft statistics cards are grouped under `Varausmäärät`, `Osumat`, and `Kierrokset`, with a sticky jump bar plus an optional team highlight control that jumps each card to the selected team's ranking page and emphasizes that row
-- 🚦 **Split Route Shells**: Interactive dashboard routes lazy-load their heavier shell (shared settings drawer, comparison bar, tabs), while career and leaderboard browsing routes stay on a lighter root shell
+- 🧮 **Score Ranking**: Composite score sorting helps surface the most impactful players and goalies
+- 🏷️ **Compact Headers**: Short stat labels with tooltips for the full names
+- 📇 **Player Card**: Open a detailed card for any player or goalie with combined career stats, season breakdowns, and charts
+	- 📉 Graphs tab includes per-season charts for key stats
+	- 🎯 Radar view shows score breakdowns at a glance
+	- 🏆 Career best seasons are highlighted in the season breakdown
+	- ⬅️➡️ Move between players or goalies without closing the card
+- 🏆 **All-Time Leaderboards**: Browse all-time team rankings for regular season, playoffs, and transactions
+	- Expand team rows to see season-by-season breakdowns
+	- Ties, trophies, and transaction summaries are presented clearly in the standings
+- 📚 **Career Listings**: Browse all-time player and goalie career tables plus career highlights
+	- Search and sort the main career tables
+	- Long lists stay responsive
+	- Career highlights are grouped into compact jumpable sections
+- 📝 **Draft Pages**: Browse entry drafts, opening drafts, and draft statistics under `Varaukset`
+	- Team-by-team draft history and summary views
+	- Played-status markers show whether drafted players reached the drafting team or elsewhere in the league
+	- Draft statistics cards are grouped into sectioned rankings with jump navigation
+- ⚙️ **Shared Settings Drawer**: The same settings entry point is available across stats, career, draft, and leaderboard routes
 - 🗂️ **Global Navigation**: Bottom sheet menu for switching between views (hockey stats, player careers, leaderboards, info/help)
-	- Supports wrapped `ArrowUp` / `ArrowDown` navigation between menu items in addition to normal `Tab` browsing
-- 🔗 **Direct Player Links**: Shareable URLs for player/goalie cards
-	- Players: `/player/:teamSlug/:playerSlug` (e.g., `/player/colorado/jamie-benn`)
-	- Goalies: `/goalie/:teamSlug/:goalieSlug` (e.g., `/goalie/colorado/philipp-grubauer`)
-	- Optional tab: `?tab=all|by-season|graphs` to open directly to a specific tab
-	- Team can be specified by slug (e.g., `colorado`) or ID (e.g., `1`)
-	- Slugs are generated at runtime from names (e.g., "Jamie Benn" → "jamie-benn")
-	- Copy link button in player card header for easy sharing
-- 🔎 **SEO / Share Basics**: Static fallback metadata in `index.html`, client-updated route titles generated from existing translated section/tab labels, public `robots.txt` + `sitemap.xml`, and prerendered HTML for the fixed public routes so share crawlers can read route-specific tags without JavaScript
-- 💾 **Smart Caching**: Automatic data caching with 5-minute TTL
-- 🌐 **Internationalization**: i18n support with ngx-translate (currently ships with Finnish UI; additional languages can be added under `public/i18n/`)
+	- Keyboard navigation is supported inside the menu
+- 🔗 **Direct Player Links**: Share player and goalie cards with direct links, including selected tabs
+- 🔎 **SEO / Share Basics**: Public pages include route-aware titles and share metadata
+- 💾 **Smart Caching**: Reduces repeated API calls
+- 🌐 **Internationalization**: Finnish UI with room for additional languages
 - 🎨 **Material Design**: Clean UI with Angular Material components
 - 🌓 **Automatic Dark Mode**: Follows device/browser `prefers-color-scheme` (no manual toggle)
-  - Every UI/styling change must be verified in both light mode and dark mode before review or merge
 - 📦 **Installable PWA**: Installable on desktop/mobile; app shell is cached for offline-friendly reloads (live stats still require the backend)
-- 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and a shared dashboard settings drawer
-- 🕒 **Last Updated Indicator**: Shows the backend data last-modified timestamp inside the dashboard settings drawer
-- 🏷️ **Route Subtitles**: Stats, career, draft, and leaderboard sections show lightweight subtitles under the app title; dashboard stats append the active team name when available (`Pelaajatilastot: Colorado Avalanche`, `Pelaajaurat`, `Varaukset`, `Maratontaulukot`)
+- 📱 **Mobile Responsive**: Optimized for all screen sizes with adaptive layouts and a shared settings drawer
+- 🕒 **Last Updated Indicator**: Shows the backend data last-modified timestamp inside the shared settings drawer on every route
+- 🏷️ **Route Subtitles**: Lightweight subtitles help show which section you are in across stats, career, draft, and leaderboard views
 
 More details:
 
@@ -325,12 +312,12 @@ This project was originally generated using [Angular CLI](https://github.com/ang
 The application is fully responsive with optimized layouts for all screen sizes:
 
 - **Desktop (>960px)**: Full horizontal layout with all controls visible
-- **Tablet (768px-960px)**: Drawer-based dashboard controls with optimized spacing and touch targets
-- **Mobile (<768px)**: Drawer-based dashboard controls and collapsible graph controls for better space utilization
+- **Tablet (768px-960px)**: Shared settings drawer with optimized spacing and touch targets
+- **Mobile (<768px)**: Shared settings drawer plus collapsible graph controls for better space utilization
 - **Small Mobile (<480px)**: Stacked layouts with adjusted font sizes and padding
 
 **Key mobile features:**
-- Dashboard stats filters and metadata live in a shared settings drawer on every stats-page viewport
+- Base settings and metadata live in a shared settings drawer on every route, with stats-only sections added on player/goalie routes
 - Table headers remain sticky during vertical scrolling while maintaining horizontal scroll capability
 - Player card graph controls collapse into a toggle button on mobile (<768px)
 - Horizontal scrolling enabled for wide tables (bySeason view)

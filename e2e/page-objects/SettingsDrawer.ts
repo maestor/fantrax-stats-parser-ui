@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+import { A11Y_LABELS } from '../config/test-data';
 import {
   selectTeam as helperSelectTeam,
   selectSeason as helperSelectSeason,
@@ -8,20 +9,20 @@ import {
 } from '../helpers/filters';
 
 /**
- * Page object for the shared dashboard settings drawer
+ * Page object for the shared settings drawer
  */
 export class SettingsDrawer {
   constructor(private page: Page) {}
 
   /**
-   * Open the dashboard settings drawer
+   * Open the shared settings drawer
    */
   async open(): Promise<void> {
-    const settingsButton = this.page.getByLabel('Avaa asetuspaneeli');
+    const settingsButton = this.page.getByLabel(A11Y_LABELS.OPEN_SETTINGS_DRAWER);
     await settingsButton.click();
-    // Wait for drawer open animation to complete (not just start)
+    // Wait for the drawer to be visibly open before interacting with its contents.
     await this.page
-      .locator('mat-sidenav.mat-drawer-opened:not(.mat-drawer-animating)')
+      .locator('mat-sidenav.mat-drawer-opened')
       .waitFor({ state: 'visible', timeout: 5000 });
   }
 
@@ -48,7 +49,7 @@ export class SettingsDrawer {
       }
     }
     // The close button inside the drawer
-    const closeButton = this.page.getByLabel('Sulje asetuspaneeli').first();
+    const closeButton = this.page.getByLabel(A11Y_LABELS.CLOSE_SETTINGS_DRAWER).first();
     await closeButton.click({ timeout: 5000 });
     // Wait for drawer close animation to complete
     await this.page
@@ -62,9 +63,9 @@ export class SettingsDrawer {
    * Close via Escape key
    */
   async closeViaEscape(): Promise<void> {
-    // Ensure open animation is complete before pressing Escape
+    // Ensure the drawer is visibly open before pressing Escape.
     await this.page
-      .locator('mat-sidenav.mat-drawer-opened:not(.mat-drawer-animating)')
+      .locator('mat-sidenav.mat-drawer-opened')
       .waitFor({ state: 'visible', timeout: 5000 });
     await this.page.keyboard.press('Escape');
     // Wait for drawer close animation to complete

@@ -1,12 +1,17 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router } from '@angular/router';
 import {
+  EMPTY,
   auditTime,
   catchError,
+  combineLatest,
   distinctUntilChanged,
+  filter,
   map,
   of,
   scan,
+  startWith,
   switchMap,
 } from 'rxjs';
 
@@ -15,12 +20,14 @@ import { SettingsService } from '@services/settings.service';
 import { TeamService } from '@services/team.service';
 import { toApiTeamId } from '@shared/utils/api.utils';
 import { toSeasonNumber } from '@shared/utils/season.utils';
+import { buildSettingsDrawerRouteConfig } from '@shared/utils/settings-drawer.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StartFromSeasonSyncService {
   private readonly apiService = inject(ApiService);
+  private readonly router = inject(Router);
   private readonly teamService = inject(TeamService);
   private readonly settingsService = inject(SettingsService);
 
@@ -48,26 +55,41 @@ export class StartFromSeasonSyncService {
         this.selectedStartFrom.set(season);
       });
 
-    this.teamService.selectedTeamId$
+    const isStatsRoute$ = this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      map((event) => this.isStatsRoute(event.urlAfterRedirects)),
+      startWith(this.isStatsRoute(this.router.url)),
+      distinctUntilChanged(),
+    );
+
+    const selectedTeamState$ = this.teamService.selectedTeamId$
       .pipe(
         auditTime(0),
         map((teamId) => toApiTeamId(teamId)),
         distinctUntilChanged(),
         scan(
           (state, teamId) => ({
-            prevTeamId: state.teamId,
             teamId,
             initialized: true,
             teamChanged: state.initialized && state.teamId !== teamId,
           }),
           {
-            prevTeamId: undefined as string | undefined,
             teamId: undefined as string | undefined,
             initialized: false,
             teamChanged: false,
           }
-        ),
-        switchMap(({ teamId, teamChanged }) => {
+        )
+      );
+
+    combineLatest([selectedTeamState$, isStatsRoute$])
+      .pipe(
+        switchMap(([{ teamId, teamChanged }, isStatsRoute]) => {
+          if (!isStatsRoute) {
+            return EMPTY;
+          }
+
+          this.seasons.set([]);
+
           const seasons$ = teamId
             ? this.apiService.getSeasons('regular', teamId)
             : this.apiService.getSeasons('regular');
@@ -119,5 +141,9 @@ export class StartFromSeasonSyncService {
       if (aSeason === undefined || bSeason === undefined) return 0;
       return aSeason - bSeason;
     });
+  }
+
+  private isStatsRoute(url: string): boolean {
+    return buildSettingsDrawerRouteConfig(url).mode === 'stats';
   }
 }

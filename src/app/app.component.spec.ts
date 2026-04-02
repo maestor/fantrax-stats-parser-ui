@@ -2,10 +2,13 @@ import { fireEvent, render, screen } from '@testing-library/angular';
 import { TestBed } from '@angular/core/testing';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
 
-import { ApiService } from '@services/api.service';
+import { ApiService, Goalie, Player, Season } from '@services/api.service';
 import { AppComponent, buildRootRouteUiState } from './app.component';
 import { buildDashboardRouteUiState } from './dashboard-shell/dashboard-shell.component';
+import { buildSettingsDrawerRouteConfig } from './shared/utils/settings-drawer.utils';
 import {
   closeDashboardSettingsDrawer,
   createApiServiceMock,
@@ -13,7 +16,9 @@ import {
   openDashboardSettingsDrawer,
   polyfillJsdom,
   polyfillMatchMedia,
+  seasonsFixture,
   seedLocalStorage,
+  slicedGoalies,
   slicedPlayers,
   PLAYER_SLICE_COUNT,
   waitForBehaviorAssertion,
@@ -29,6 +34,7 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
 
   afterEach(() => {
     localStorage.clear();
+    window.history.replaceState(null, '', '/');
   });
 
   it('renders all user-visible elements and supports skip link focus flow', async () => {
@@ -357,6 +363,124 @@ describe('AppComponent — desktop frontpage', { timeout: 60_000 }, () => {
     expect(document.querySelector('.settings-drawer-last-modified')).toBeNull();
     expect(screen.queryByText(/lastModified\.label/)).not.toBeInTheDocument();
   });
+
+  it('shows the root settings button and only base drawer sections on browse routes', async () => {
+    await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/career/players');
+
+    expect(
+      await screen.findByLabelText('table.careerPlayerSearch', {}, { timeout: 15_000 })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'a11y.openSettingsDrawer' })
+    ).toBeInTheDocument();
+
+    await openDashboardSettingsDrawer();
+
+    expect(await screen.findByRole('heading', { name: 'settingsDrawer.settings' })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /team\.selector/ })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'topControls.controls' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'settingsPanel.settings' })).not.toBeInTheDocument();
+    expect(screen.getByText(/lastModified\.label/)).toBeInTheDocument();
+  });
+
+  it('persists browse-route team changes without calling stats or seasons endpoints until stats mode becomes active again', async () => {
+    localStorage.setItem(
+      'fantrax.settings',
+      JSON.stringify({
+        selectedTeamId: '1',
+        startFromSeason: 2012,
+        season: 2024,
+        reportType: 'playoffs',
+      })
+    );
+
+    const dallasPlayers = [
+      { ...slicedPlayers[0], id: 'dallas-demo-player', name: 'Dallas Demo Player' },
+    ] as unknown as Player[];
+    const getPlayerData = vi.fn((params: { teamId?: string }) =>
+      params.teamId === '29'
+        ? of(dallasPlayers)
+        : of(slicedPlayers as unknown as Player[])
+    );
+    const getGoalieData = vi.fn((params: { teamId?: string }) =>
+      params.teamId === '29'
+        ? of(slicedGoalies as unknown as Goalie[])
+        : of(slicedGoalies as unknown as Goalie[])
+    );
+    const getSeasons = vi.fn((_reportType?: string, teamId?: string) =>
+      teamId === '29'
+        ? of([{ season: 2015, text: '2015-2016' } as Season])
+        : of(seasonsFixture)
+    );
+
+    const { fixture } = await render(
+      AppComponent,
+      getBehaviorTestConfig({
+        isMobile: false,
+        getPlayerData,
+        getGoalieData,
+        getSeasons,
+      })
+    );
+
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/career/players');
+
+    expect(
+      await screen.findByLabelText('table.careerPlayerSearch', {}, { timeout: 15_000 })
+    ).toBeInTheDocument();
+
+    getPlayerData.mockClear();
+    getGoalieData.mockClear();
+    getSeasons.mockClear();
+
+    await openDashboardSettingsDrawer();
+
+    const teamCombobox = screen.getByRole('combobox', { name: /team\.selector/ });
+    fireEvent.click(teamCombobox);
+    fireEvent.click(await screen.findByRole('option', { name: 'Dallas Stars' }));
+
+    await vi.waitFor(() => {
+      expect(router.url).toBe('/career/players');
+      expect(teamCombobox).toHaveTextContent('Dallas Stars');
+      expect(getPlayerData).not.toHaveBeenCalled();
+      expect(getGoalieData).not.toHaveBeenCalled();
+      expect(getSeasons).not.toHaveBeenCalled();
+      expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
+        selectedTeamId: '29',
+        startFromSeason: null,
+        season: null,
+        reportType: 'regular',
+      });
+    });
+
+    await router.navigateByUrl('/player-stats');
+
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(router.url).toBe('/player-stats');
+      expect(
+        getSeasons.mock.calls.some(
+          ([reportType, teamId]) => reportType === 'regular' && teamId === '29'
+        )
+      ).toBe(true);
+      expect(getPlayerData).toHaveBeenCalledWith(
+        expect.objectContaining({ teamId: '29', startFrom: 2015 })
+      );
+    });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
+        selectedTeamId: '29',
+        startFromSeason: 2015,
+        season: null,
+        reportType: 'regular',
+      });
+    });
+    await waitForBehaviorAssertion(fixture, () => {
+      expect(screen.getByText('Dallas Demo Player')).toBeInTheDocument();
+    });
+  });
 });
 
 describe('buildRootRouteUiState', () => {
@@ -413,6 +537,35 @@ describe('buildDashboardRouteUiState', () => {
     });
     expect(buildDashboardRouteUiState('/player/colorado/jamie-benn')).toEqual({
       controlsContext: 'player',
+    });
+  });
+});
+
+describe('buildSettingsDrawerRouteConfig', () => {
+  it('uses stats mode with the right stats context for stats routes', () => {
+    expect(buildSettingsDrawerRouteConfig('/')).toEqual({
+      mode: 'stats',
+      statsContext: 'player',
+    });
+    expect(buildSettingsDrawerRouteConfig('/goalie-stats')).toEqual({
+      mode: 'stats',
+      statsContext: 'goalie',
+    });
+    expect(buildSettingsDrawerRouteConfig('/player/colorado/jamie-benn')).toEqual({
+      mode: 'stats',
+      statsContext: 'player',
+    });
+  });
+
+  it('defaults all non-stats routes to the base drawer mode, including unknown future routes', () => {
+    expect(buildSettingsDrawerRouteConfig('/career/players')).toEqual({
+      mode: 'default',
+    });
+    expect(buildSettingsDrawerRouteConfig('/leaderboards/regular')).toEqual({
+      mode: 'default',
+    });
+    expect(buildSettingsDrawerRouteConfig('/future-route')).toEqual({
+      mode: 'default',
     });
   });
 });

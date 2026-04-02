@@ -1,10 +1,11 @@
 import { AsyncPipe, DOCUMENT } from '@angular/common';
-import { Component, DestroyRef, Injector, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, Injector, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {
@@ -14,12 +15,30 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { filter, take } from 'rxjs';
+import {
+  catchError,
+  combineLatest,
+  defer,
+  distinctUntilChanged,
+  filter,
+  map,
+  of,
+  shareReplay,
+  take,
+} from 'rxjs';
 
 import { FooterComponent } from '@base/footer/footer.component';
+import { ApiService, Team } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { PwaUpdateService } from '@services/pwa-update.service';
 import { SeoService } from '@services/seo.service';
+import { TeamService } from '@services/team.service';
+import { SettingsDrawerComponent } from '@shared/settings-drawer/settings-drawer.component';
+import {
+  buildSettingsDrawerRouteConfig,
+  SettingsDrawerRouteConfig,
+} from '@shared/utils/settings-drawer.utils';
+import { StartFromSeasonSyncService } from '@shared/top-controls/start-from-season-switcher/start-from-season-sync.service';
 
 let helpDialogComponentPromise: Promise<
   typeof import('@shared/help-dialog/help-dialog.component')
@@ -84,17 +103,24 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
+    MatSidenavModule,
     MatSnackBarModule,
     MatTooltipModule,
     MatBottomSheetModule,
     FooterComponent,
+    SettingsDrawerComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
+  @ViewChild('settingsDrawer') settingsDrawer?: MatSidenav;
+
   private readonly document = inject(DOCUMENT);
   private readonly initialRouteUiState = buildRootRouteUiState(
+    `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`,
+  );
+  private readonly initialSettingsDrawerRouteConfig = buildSettingsDrawerRouteConfig(
     `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`,
   );
 
@@ -104,6 +130,25 @@ export class AppComponent implements OnInit {
   currentRouteSubtitleKey: string | null = this.initialRouteUiState.currentRouteSubtitleKey;
   private skipLinkTargetIdState = this.initialRouteUiState.skipLinkTargetId;
   skipLinkLabelKey = this.initialRouteUiState.skipLinkLabelKey;
+  settingsDrawerRouteConfig: SettingsDrawerRouteConfig = this.initialSettingsDrawerRouteConfig;
+
+  private readonly teamService = inject(TeamService);
+  private readonly apiService = inject(ApiService);
+  readonly selectedTeamId$ = this.teamService.selectedTeamId$;
+  private readonly teams$ = defer(() => this.apiService.getTeams()).pipe(
+    catchError(() => of([] as Team[])),
+    shareReplay({ bufferSize: 1, refCount: true }),
+  );
+  readonly selectedTeamName$ = combineLatest([
+    this.selectedTeamId$,
+    this.teams$,
+  ]).pipe(
+    map(([teamId, teams]) => {
+      const team = teams.find((candidate) => candidate.id === teamId);
+      return team?.presentName ?? null;
+    }),
+    distinctUntilChanged(),
+  );
 
   get skipLinkTargetId(): string {
     return this.skipLinkTargetIdState;
@@ -126,8 +171,13 @@ export class AppComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
+  hasInitializedSettingsDrawerContent = false;
+  isSettingsDrawerOpen = false;
+  isSettingsDrawerSurfaceVisible = false;
+
   ngOnInit(): void {
     void this.seoService;
+    this.ensureSettingsDrawerDependencies();
 
     this.isUpdateAvailable$
       .pipe(
@@ -152,6 +202,7 @@ export class AppComponent implements OnInit {
         }
 
         this.updateRouteUiState(event.urlAfterRedirects);
+        this.settingsDrawer?.close();
       });
   }
 
@@ -205,6 +256,8 @@ export class AppComponent implements OnInit {
     this.currentRouteSubtitleKey = nextState.currentRouteSubtitleKey;
     this.skipLinkTargetIdState = nextState.skipLinkTargetId;
     this.skipLinkLabelKey = nextState.skipLinkLabelKey;
+    this.settingsDrawerRouteConfig = buildSettingsDrawerRouteConfig(url);
+    this.ensureSettingsDrawerDependencies();
   }
 
   skipToTarget(targetId: string, event: MouseEvent): void {
@@ -227,6 +280,12 @@ export class AppComponent implements OnInit {
 
   onDocumentKeydown(event: KeyboardEvent): void {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
+
+    if (event.key === 'Escape' && (this.settingsDrawer?.opened ?? this.isSettingsDrawerOpen)) {
+      event.preventDefault();
+      this.settingsDrawer?.close();
+      return;
+    }
 
     const target = event.target as HTMLElement | null;
     if (target?.isContentEditable) return;
@@ -272,7 +331,42 @@ export class AppComponent implements OnInit {
     this.injector.get(MatBottomSheet).open(GlobalNavComponent, { autoFocus: false });
   }
 
+  toggleSettingsDrawer(): void {
+    this.hasInitializedSettingsDrawerContent = true;
+
+    if (!(this.settingsDrawer?.opened ?? this.isSettingsDrawerOpen)) {
+      this.isSettingsDrawerSurfaceVisible = true;
+    }
+
+    void this.settingsDrawer?.toggle();
+  }
+
+  closeSettingsDrawer(): void {
+    void this.settingsDrawer?.close();
+  }
+
+  onSettingsDrawerOpenedStart(): void {
+    this.isSettingsDrawerSurfaceVisible = true;
+  }
+
+  onSettingsDrawerOpenedChange(opened: boolean): void {
+    this.isSettingsDrawerOpen = opened;
+    this.isSettingsDrawerSurfaceVisible = opened;
+
+    if (opened) {
+      this.hasInitializedSettingsDrawerContent = true;
+    }
+  }
+
   activateUpdateAndReload(): void {
     void this.pwaUpdateService.activateAndReload();
+  }
+
+  private ensureSettingsDrawerDependencies(): void {
+    if (this.settingsDrawerRouteConfig.mode !== 'stats') {
+      return;
+    }
+
+    void this.injector.get(StartFromSeasonSyncService);
   }
 }

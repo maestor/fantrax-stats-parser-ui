@@ -13,18 +13,18 @@ Before editing a component, read the real implementation and nearby specs first.
 ### `AppComponent`
 
 - Lightweight root shell rendered on every route
-- Owns the skip link, footer visibility, route subtitles, global keyboard shortcuts, help/navigation overlays, and PWA update UX
-- Keep dashboard-only UI out of this shell so browse routes stay lighter
+- Owns the skip link, shared title row, shared settings drawer entry point, footer visibility, route subtitles, global keyboard shortcuts, help/navigation overlays, and PWA update UX
+- Keep stats-only tabs/comparison UI out of this shell so browse routes stay lighter by default
 
 ### `DashboardShellComponent`
 
 - Used only by `/`, `/player-stats`, `/goalie-stats`, and direct player/goalie routes
-- Owns the title row, route subtitle, shared settings drawer, dashboard tabs, and comparison bar
-- Do not move career, draft, or leaderboard-only UI into this shell unless it is truly dashboard-specific
+- Owns dashboard tabs and the comparison bar on top of the shared root-shell header/drawer
+- Do not move career, draft, or leaderboard-only UI into this shell unless it is truly stats-specific
 
 ### Browse Route Shells
 
-- Career, draft, and leaderboard routes render under the root shell without dashboard controls, comparison state, or the heavier dashboard startup cost
+- Career, draft, and leaderboard routes render under the root shell without stats tabs, comparison state, or the heavier dashboard startup cost
 - Preserve that split when adding new browse routes or shared UI
 
 ## Feature Families
@@ -62,7 +62,8 @@ In this repo, shared controls such as team, season, report, and settings control
 
 ### Preserve Drawer Grouping
 
-- `TeamSwitcherComponent`, `TopControlsComponent`, and `SettingsPanelComponent` are grouped under the shared dashboard settings drawer
+- The shared drawer always shows the base section (`TeamSwitcherComponent` plus last-updated metadata)
+- `TopControlsComponent` and `SettingsPanelComponent` are stats-mode extensions rendered only when a route opts into stats drawer mode
 - Keep the team section, stats-range section, and stats-filter section aligned across player and goalie contexts
 
 ### Keep The Table Components Separate
@@ -102,6 +103,7 @@ Do not collapse these into a single "universal" table component unless the produ
 
 - The switcher UI is thin
 - Cross-team defaults, season normalization, and persistence live in the sync service
+- The sync service should only perform seasons lookups while stats mode is active; browse-route team changes should defer that work until the next stats visit
 - If behavior changes, update the UI, service logic, tests, and docs together
 
 ### `PlayerCardComponent`
@@ -111,8 +113,8 @@ Do not collapse these into a single "universal" table component unless the produ
 
 ### `TeamSwitcherComponent`, `TopControlsComponent`, And `SettingsPanelComponent`
 
-- Shared dashboard drawer content used by both player and goalie stats routes
-- `TeamSwitcherComponent` owns only the selected-team control
+- Shared drawer content building blocks
+- `TeamSwitcherComponent` owns only the selected-team control and is part of the base drawer content on every route
 - `TopControlsComponent` owns the stats-range controls (`start from`, `season`, `report`)
 - `SettingsPanelComponent` owns per-context stat filters such as stats-per-game, minimum games, and skater position
 - Preserve context-specific behavior (`player` vs `goalie`) and the shared drawer grouping/order
