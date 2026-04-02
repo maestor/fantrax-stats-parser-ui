@@ -70,7 +70,8 @@ Draft browse pages use long expansion panels, so header focus alone is not enoug
 Supported behavior on entry-draft and opening-draft pages:
 
 - Team headers remain the primary tab stops
-- Opening a panel scrolls its header to the top of the viewport, but does not move focus into the content by itself
+- Manually opening a panel scrolls its header to the top of the viewport, but does not move focus into the content by itself
+- The initial auto-opened selected team does not trigger that scroll jump on route entry
 - On an expanded team header:
   - `ArrowDown` moves focus into the expanded content
   - `Escape` collapses the currently expanded panel
@@ -106,6 +107,7 @@ Notes:
 
 - Rows expose a single tab stop using roving `tabindex`.
 - The table provides screen-reader-only instructions via `aria-describedby`.
+- Leaderboard routes reuse this table behavior and, when selected-team highlighting is enabled, auto-focus the shared selected team's row after the data loads without auto-expanding it.
 
 ### Collapsible controls
 

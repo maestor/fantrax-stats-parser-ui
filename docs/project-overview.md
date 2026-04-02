@@ -62,7 +62,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 
     - **Base settings**
        - Team selector
-       - Draft routes only: toggle for disabling selected-team highlight/open-by-default behavior
+       - Draft and leaderboard routes: toggle for disabling selected-team highlight/open-by-default behavior
        - Last updated timestamp
     - **Stats ranges**
        - Start-from-season selector (lower bound for combined stats)
@@ -84,6 +84,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Column sorting via `mat-sort`; regular/playoff position ties stay blank after the first tied team, while transactions always show incremental positions
    - Expandable season breakdown rows per team (regular, playoffs, and transactions) by clicking a team row, with multiple expanded rows allowed
    - Season breakdown rows can show trophy markers for winner/championship seasons or emoji-prefixed transaction and roster counts per season
+   - When selected-team highlighting is enabled, the shared selected team is focused by default on every leaderboard tab without auto-expanding its season breakdown row
 
 6. **Career Listings & Highlights** (`/career/players`, `/career/goalies`, `/career/highlights`)
    - Dedicated all-time career tables for players and goalies
@@ -101,10 +102,10 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - Batch 2 renders `/draft/opening-draft` as a Material accordion grouped by drafting team, with simple per-pick rows and a traded-owner suffix when the original pick came from another team
    - Batch 3 renders `/draft/entry-drafts` as a matching team-grouped accordion, with per-team summary cards, played-status totals plus played percentages, highest-pick highlights, and season-by-season pick lists that preserve null legacy player rows
    - Entry-draft pick rows add `🟢` / `🟡` played-status markers to show whether a drafted player reached the drafting team or played elsewhere in the league
-   - Expanded draft panels auto-align their sticky header to the top of the viewport when opened, while `ArrowDown` still explicitly enters the panel body; once inside, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it and `Escape` collapses the panel while returning focus to the team header
+   - Manually opened draft panels auto-align their sticky header to the top of the viewport, while `ArrowDown` still explicitly enters the panel body; once inside, `ArrowUp` / `ArrowDown` / `Home` / `End` / `PageUp` / `PageDown` browse within it and `Escape` collapses the panel while returning focus to the team header
    - `/draft/statistics` reuses the shared card-table UI to rank teams across entry-draft summary metrics, including separate played-percentage rankings, with local 10-row paging
    - By default, all three draft views follow the shared selected-team setting: entry/opening draft expand that team automatically and draft statistics emphasizes it plus jumps each card to the matching page
-   - Draft routes expose a drawer-only toggle that disables that selected-team emphasis/auto-open behavior without affecting the actual shared team selection
+   - Draft routes share the same selected-team highlight toggle used on leaderboards; disabling it removes the default selected-team emphasis/auto-open behavior without affecting the actual shared team selection
 
 8. **Data Management**
    - Caching service to reduce API calls

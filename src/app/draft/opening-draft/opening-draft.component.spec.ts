@@ -23,7 +23,7 @@ describe('OpeningDraftComponent', () => {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: true,
+      disableSelectedTeamHighlight: true,
     }));
   }
 
@@ -93,7 +93,7 @@ describe('OpeningDraftComponent', () => {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: false,
+      disableSelectedTeamHighlight: false,
     }));
 
     await renderComponent();
@@ -102,13 +102,13 @@ describe('OpeningDraftComponent', () => {
     expect(screen.getByRole('button', { name: 'Dallas Stars' })).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('scrolls the auto-opened shared selected team header to the top without moving focus into picks', async () => {
+  it('does not scroll the auto-opened shared selected team header on initial render', async () => {
     localStorage.setItem('fantrax.settings', JSON.stringify({
       selectedTeamId: '1',
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: false,
+      disableSelectedTeamHighlight: false,
     }));
 
     const { scrollIntoView, restore } = stubScrollIntoView();
@@ -118,11 +118,7 @@ describe('OpeningDraftComponent', () => {
       const header = await screen.findByRole('button', { name: 'Colorado Avalanche' });
 
       await waitForBehaviorAssertion(fixture, () => {
-        expect(scrollIntoView).toHaveBeenCalledWith({
-          behavior: 'smooth',
-          block: 'start',
-          inline: 'nearest',
-        });
+        expect(scrollIntoView).not.toHaveBeenCalled();
         expect(header).toHaveAttribute('aria-expanded', 'true');
         expect(header).not.toHaveFocus();
       });
@@ -137,7 +133,7 @@ describe('OpeningDraftComponent', () => {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: true,
+      disableSelectedTeamHighlight: true,
     }));
 
     await renderComponent();

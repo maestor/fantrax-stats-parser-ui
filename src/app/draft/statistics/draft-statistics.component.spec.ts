@@ -169,7 +169,7 @@ describe('DraftStatisticsComponent', () => {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: false,
+      disableSelectedTeamHighlight: false,
     }));
 
     const { fixture } = await renderComponent();
@@ -194,7 +194,7 @@ describe('DraftStatisticsComponent', () => {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: false,
+      disableSelectedTeamHighlight: false,
     }));
 
     const { fixture } = await renderComponent();
@@ -219,7 +219,7 @@ describe('DraftStatisticsComponent', () => {
       expect(within(highlightedRow as HTMLElement).getByText('12.')).toBeInTheDocument();
     });
 
-    settingsService.setDisableDraftSelectedTeamHighlight(true);
+    settingsService.setDisableSelectedTeamHighlight(true);
 
     await waitForBehaviorAssertion(fixture, () => {
       const cardState = fixture.componentInstance.cards.find((card) => card.id === 'total-picks');
@@ -228,7 +228,7 @@ describe('DraftStatisticsComponent', () => {
       expect(cardState?.rows.every((row) => !row.emphasized)).toBe(true);
       expect(within(totalPicksCard as HTMLElement).queryByText('Team 12')).not.toBeInTheDocument();
       expect(JSON.parse(localStorage.getItem('fantrax.settings') ?? '{}')).toMatchObject({
-        disableDraftSelectedTeamHighlight: true,
+        disableSelectedTeamHighlight: true,
       });
     });
   });

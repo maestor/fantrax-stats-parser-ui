@@ -63,7 +63,7 @@ In this repo, shared controls such as team, season, report, and settings control
 ### Preserve Drawer Grouping
 
 - The shared drawer always shows the base section (`TeamSwitcherComponent` plus last-updated metadata)
-- Draft routes render `DraftTeamHighlightToggleComponent` in its own drawer section after the team selector so draft mode keeps the same section styling conventions as stats mode
+- Draft and leaderboard routes render `SelectedTeamHighlightToggleComponent` in its own drawer section after the team selector so team mode keeps the same section styling conventions as stats mode
 - `TopControlsComponent` and `SettingsPanelComponent` are stats-mode extensions rendered only when a route opts into stats drawer mode
 - Keep the team section, stats-range section, and stats-filter section aligned across player and goalie contexts
 - When adding a new logical drawer block, wrap it in a top-level `.settings-drawer-section` inside [`src/app/shared/settings-drawer/settings-drawer.component.html`](/Users/maestor/Projects/fantrax-stats-parser-ui/src/app/shared/settings-drawer/settings-drawer.component.html) instead of faking section spacing or divider lines inside the child component

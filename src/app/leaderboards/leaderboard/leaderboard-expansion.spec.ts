@@ -10,6 +10,16 @@ import { LeaderboardRegularComponent } from '../regular/leaderboard-regular.comp
 import { LeaderboardTransactionsComponent } from '../transactions/leaderboard-transactions.component';
 
 describe('Leaderboard expansion behavior', () => {
+  beforeEach(() => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '99',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableSelectedTeamHighlight: true,
+    }));
+  });
+
   it('renders regular season expansion with percent formatting and trophy mapping', async () => {
     await render(LeaderboardRegularComponent, {
       imports: [TranslateModule.forRoot()],
@@ -318,5 +328,95 @@ describe('Leaderboard expansion behavior', () => {
 
     await screen.findByText('2024-25');
     expect(screen.getByText('🤝 8 | ✅ 16 | ❌ 15 | 🏒 33 | 🥅 4')).toBeInTheDocument();
+  });
+
+  it('focuses the shared selected team without auto-expanding it when team highlighting is enabled', async () => {
+    localStorage.setItem('fantrax.settings', JSON.stringify({
+      selectedTeamId: '2',
+      startFromSeason: null,
+      season: null,
+      reportType: 'regular',
+      disableSelectedTeamHighlight: false,
+    }));
+
+    await render(LeaderboardRegularComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideDisabledMaterialAnimations(),
+        {
+          provide: ViewportService,
+          useValue: {
+            isMobile$: of(false),
+          },
+        },
+        {
+          provide: ApiService,
+          useValue: {
+            getLeaderboardRegular: () => of([
+              {
+                teamId: '1',
+                teamName: 'Colorado Avalanche',
+                regularTrophies: 2,
+                points: 1000,
+                wins: 500,
+                losses: 200,
+                ties: 50,
+                pointsPercent: 0.7,
+                winPercent: 0.65,
+                divWins: 0,
+                divLosses: 0,
+                divTies: 0,
+                divWinPercent: 0.5,
+                tieRank: false,
+                seasons: [],
+              },
+              {
+                teamId: '2',
+                teamName: 'Dallas Stars',
+                regularTrophies: 1,
+                points: 950,
+                wins: 480,
+                losses: 210,
+                ties: 45,
+                pointsPercent: 0.68,
+                winPercent: 0.62,
+                divWins: 0,
+                divLosses: 0,
+                divTies: 0,
+                divWinPercent: 0.5,
+                tieRank: false,
+                seasons: [
+                  {
+                    season: 2024,
+                    regularTrophy: false,
+                    points: 500,
+                    wins: 250,
+                    losses: 100,
+                    ties: 20,
+                    pointsPercent: 0.7,
+                    winPercent: 0.68,
+                    divWins: 0,
+                    divLosses: 0,
+                    divTies: 0,
+                    divWinPercent: 0.5,
+                  },
+                ],
+              },
+            ]),
+            getLeaderboardPlayoffs: () => of([]),
+          },
+        },
+      ],
+    });
+
+    await vi.waitFor(() => {
+      const dallasRow = screen.getByText('Dallas Stars').closest('tr');
+
+      expect(dallasRow).not.toBeNull();
+      expect(dallasRow).toHaveAttribute('aria-expanded', 'false');
+      expect(dallasRow).toHaveAttribute('tabindex', '0');
+      expect(dallasRow).toHaveClass('a11y-active');
+    });
+    expect(screen.queryByText('2024-25')).toBeNull();
   });
 });

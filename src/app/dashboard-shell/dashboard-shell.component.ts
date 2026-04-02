@@ -7,17 +7,18 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { NavigationComponent } from '../base/navigation/navigation.component';
 import { ComparisonBarComponent } from '../shared/comparison-bar/comparison-bar.component';
 import { StatsContext } from '../shared/types/context.types';
-import { buildSettingsDrawerRouteConfig } from '../shared/utils/settings-drawer.utils';
+import {
+  getDashboardControlsContext,
+  resolveRootRouteGroup,
+} from '../shared/utils/settings-drawer.utils';
 
 type DashboardRouteUiState = {
   controlsContext: StatsContext;
 };
 
 export function buildDashboardRouteUiState(url: string): DashboardRouteUiState {
-  const routeConfig = buildSettingsDrawerRouteConfig(url);
-
   return {
-    controlsContext: routeConfig.statsContext ?? 'player',
+    controlsContext: getDashboardControlsContext(resolveRootRouteGroup(url)),
   };
 }
 

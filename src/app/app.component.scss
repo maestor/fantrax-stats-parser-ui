@@ -1,6 +1,8 @@
 @use './shared/styles/shell-header';
 
 .app-shell {
+  --app-shell-side-gutter-width: max(0px, calc((100vw - var(--app-content-max-width)) / 2));
+  --settings-drawer-panel-width: min(380px, 92vw);
   position: relative;
   width: 100%;
   background: var(--mat-sys-surface);
@@ -12,12 +14,17 @@
   }
 
   ::ng-deep .mat-drawer.settings-drawer {
+    width: calc(var(--app-shell-side-gutter-width) + var(--settings-drawer-panel-width));
     height: var(--app-height);
     max-height: var(--app-height);
     background: var(--mat-sys-surface);
+    z-index: 5;
   }
 
   ::ng-deep .mat-drawer-inner-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
     height: 100%;
     background: inherit;
   }
@@ -29,14 +36,13 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: max(0px, calc((100vw - var(--app-content-max-width)) / 2));
+  width: var(--app-shell-side-gutter-width);
   background: var(--mat-sys-surface);
   pointer-events: none;
   z-index: 4;
 }
 
 .settings-drawer {
-  width: min(380px, 92vw);
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   border-right: 1px solid var(--mat-sys-outline-variant);

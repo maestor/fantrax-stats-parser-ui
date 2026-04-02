@@ -1,5 +1,5 @@
 import { AsyncPipe, DOCUMENT } from '@angular/common';
-import { Component, DestroyRef, Injector, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, DestroyRef, ElementRef, Injector, OnInit, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,7 +35,9 @@ import { SeoService } from '@services/seo.service';
 import { TeamService } from '@services/team.service';
 import { SettingsDrawerComponent } from '@shared/settings-drawer/settings-drawer.component';
 import {
-  buildSettingsDrawerRouteConfig,
+  getSettingsDrawerRouteConfig,
+  resolveRootRouteGroup,
+  RootRouteGroup,
   SettingsDrawerRouteConfig,
 } from '@shared/utils/settings-drawer.utils';
 import { StartFromSeasonSyncService } from '@shared/top-controls/start-from-season-switcher/start-from-season-sync.service';
@@ -65,30 +67,45 @@ type RootRouteUiState = {
   skipLinkLabelKey: 'a11y.skipToTable' | 'a11y.skipToDraftList';
 };
 
-export function buildRootRouteUiState(url: string): RootRouteUiState {
-  const normalizedUrl = url.split('?')[0]?.split('#')[0] ?? '/';
-  const isLeaderboardsRoute = normalizedUrl.startsWith('/leaderboards');
-  const isCareerRoute = normalizedUrl.startsWith('/career');
-  const isDraftRoute = normalizedUrl.startsWith('/draft');
+const rootRouteUiStateByGroup: Record<RootRouteGroup, RootRouteUiState> = {
+  'player-stats': {
+    isDashboardRoute: true,
+    currentRouteSubtitleKey: 'nav.hockeyPlayerStats',
+    skipLinkTargetId: 'stats-table',
+    skipLinkLabelKey: 'a11y.skipToTable',
+  },
+  'goalie-stats': {
+    isDashboardRoute: true,
+    currentRouteSubtitleKey: 'nav.hockeyPlayerStats',
+    skipLinkTargetId: 'stats-table',
+    skipLinkLabelKey: 'a11y.skipToTable',
+  },
+  leaderboards: {
+    isDashboardRoute: false,
+    currentRouteSubtitleKey: 'nav.leaderboards',
+    skipLinkTargetId: 'leaderboard-table',
+    skipLinkLabelKey: 'a11y.skipToTable',
+  },
+  career: {
+    isDashboardRoute: false,
+    currentRouteSubtitleKey: 'nav.playerCareers',
+    skipLinkTargetId: 'career-table',
+    skipLinkLabelKey: 'a11y.skipToTable',
+  },
+  draft: {
+    isDashboardRoute: false,
+    currentRouteSubtitleKey: 'nav.drafts',
+    skipLinkTargetId: 'draft-list',
+    skipLinkLabelKey: 'a11y.skipToDraftList',
+  },
+};
 
-  return {
-    isDashboardRoute: !isLeaderboardsRoute && !isCareerRoute && !isDraftRoute,
-    currentRouteSubtitleKey: isCareerRoute
-      ? 'nav.playerCareers'
-      : isDraftRoute
-        ? 'nav.drafts'
-      : isLeaderboardsRoute
-        ? 'nav.leaderboards'
-        : 'nav.hockeyPlayerStats',
-    skipLinkTargetId: isLeaderboardsRoute
-      ? 'leaderboard-table'
-      : isCareerRoute
-        ? 'career-table'
-        : isDraftRoute
-          ? 'draft-list'
-        : 'stats-table',
-    skipLinkLabelKey: isDraftRoute ? 'a11y.skipToDraftList' : 'a11y.skipToTable',
-  };
+function getRootRouteUiState(routeGroup: RootRouteGroup): RootRouteUiState {
+  return rootRouteUiStateByGroup[routeGroup];
+}
+
+export function buildRootRouteUiState(url: string): RootRouteUiState {
+  return getRootRouteUiState(resolveRootRouteGroup(url));
 }
 
 @Component({
@@ -115,13 +132,16 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
 })
 export class AppComponent implements OnInit {
   @ViewChild('settingsDrawer') settingsDrawer?: MatSidenav;
+  @ViewChild('settingsDrawerToggleButton', { read: ElementRef })
+  settingsDrawerToggleButton?: ElementRef<HTMLButtonElement>;
 
   private readonly document = inject(DOCUMENT);
-  private readonly initialRouteUiState = buildRootRouteUiState(
-    `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`,
-  );
-  private readonly initialSettingsDrawerRouteConfig = buildSettingsDrawerRouteConfig(
-    `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`,
+  private readonly initialUrl =
+    `${this.document.location.pathname}${this.document.location.search}${this.document.location.hash}`;
+  private readonly initialRouteGroup = resolveRootRouteGroup(this.initialUrl);
+  private readonly initialRouteUiState = getRootRouteUiState(this.initialRouteGroup);
+  private readonly initialSettingsDrawerRouteConfig = getSettingsDrawerRouteConfig(
+    this.initialRouteGroup,
   );
 
   readonly isFooterVisible = inject(FooterVisibilityService).footerVisible;
@@ -250,13 +270,14 @@ export class AppComponent implements OnInit {
   }
 
   private updateRouteUiState(url: string): void {
-    const nextState = buildRootRouteUiState(url);
+    const routeGroup = resolveRootRouteGroup(url);
+    const nextState = getRootRouteUiState(routeGroup);
 
     this.isDashboardRoute = nextState.isDashboardRoute;
     this.currentRouteSubtitleKey = nextState.currentRouteSubtitleKey;
     this.skipLinkTargetIdState = nextState.skipLinkTargetId;
     this.skipLinkLabelKey = nextState.skipLinkLabelKey;
-    this.settingsDrawerRouteConfig = buildSettingsDrawerRouteConfig(url);
+    this.settingsDrawerRouteConfig = getSettingsDrawerRouteConfig(routeGroup);
     this.ensureSettingsDrawerDependencies();
   }
 
@@ -355,7 +376,10 @@ export class AppComponent implements OnInit {
 
     if (opened) {
       this.hasInitializedSettingsDrawerContent = true;
+      return;
     }
+
+    queueMicrotask(() => this.restoreFocusAfterSettingsDrawerClose());
   }
 
   activateUpdateAndReload(): void {
@@ -368,5 +392,20 @@ export class AppComponent implements OnInit {
     }
 
     void this.injector.get(StartFromSeasonSyncService);
+  }
+
+  private restoreFocusAfterSettingsDrawerClose(): void {
+    if (this.skipLinkTargetIdState === 'leaderboard-table') {
+      const activeLeaderboardRow = this.document.querySelector<HTMLElement>(
+        '#leaderboard-table tr.a11y-active[data-row-index]',
+      );
+
+      if (activeLeaderboardRow) {
+        activeLeaderboardRow.focus({ preventScroll: true });
+        return;
+      }
+    }
+
+    this.settingsDrawerToggleButton?.nativeElement.focus({ preventScroll: true });
   }
 }

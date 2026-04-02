@@ -7,7 +7,7 @@ export type AppSettings = {
   startFromSeason: number | null;
   season: number | null;
   reportType: ReportType;
-  disableDraftSelectedTeamHighlight: boolean;
+  disableSelectedTeamHighlight: boolean;
 };
 
 @Injectable({
@@ -45,12 +45,12 @@ export class SettingsService {
     return this.settingsSignal().reportType;
   }
 
-  readonly disableDraftSelectedTeamHighlightSignal = computed(
-    () => this.settingsSignal().disableDraftSelectedTeamHighlight,
+  readonly disableSelectedTeamHighlightSignal = computed(
+    () => this.settingsSignal().disableSelectedTeamHighlight,
   );
 
-  get disableDraftSelectedTeamHighlight(): boolean {
-    return this.disableDraftSelectedTeamHighlightSignal();
+  get disableSelectedTeamHighlight(): boolean {
+    return this.disableSelectedTeamHighlightSignal();
   }
 
   setSelectedTeamId(teamId: string): void {
@@ -74,9 +74,9 @@ export class SettingsService {
     this.updateSettings({ reportType });
   }
 
-  setDisableDraftSelectedTeamHighlight(disabled: boolean): void {
-    if (disabled === this.settingsSignal().disableDraftSelectedTeamHighlight) return;
-    this.updateSettings({ disableDraftSelectedTeamHighlight: disabled });
+  setDisableSelectedTeamHighlight(disabled: boolean): void {
+    if (disabled === this.settingsSignal().disableSelectedTeamHighlight) return;
+    this.updateSettings({ disableSelectedTeamHighlight: disabled });
   }
 
   private updateSettings(patch: Partial<AppSettings>): void {
@@ -107,18 +107,21 @@ export class SettingsService {
             : null;
 
         const reportType = this.parseReportType(parsed.reportType);
-        const disableDraftSelectedTeamHighlight =
-          typeof parsed.disableDraftSelectedTeamHighlight === 'boolean'
-            ? parsed.disableDraftSelectedTeamHighlight
+        const disableSelectedTeamHighlight =
+          typeof parsed.disableSelectedTeamHighlight === 'boolean'
+            ? parsed.disableSelectedTeamHighlight
             : false;
 
-        return {
+        const normalizedSettings: AppSettings = {
           selectedTeamId,
           startFromSeason,
           season,
           reportType,
-          disableDraftSelectedTeamHighlight,
+          disableSelectedTeamHighlight,
         };
+
+        this.persist(normalizedSettings);
+        return normalizedSettings;
       }
     } catch {
       // ignore parse errors
@@ -129,7 +132,7 @@ export class SettingsService {
       startFromSeason: null,
       season: null,
       reportType: 'regular',
-      disableDraftSelectedTeamHighlight: false,
+      disableSelectedTeamHighlight: false,
     };
     this.persist(defaults);
     return defaults;

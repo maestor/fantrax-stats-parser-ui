@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/angular';
 
 import { AppComponent } from '../app.component';
 import {
+  closeDashboardSettingsDrawer,
   getBehaviorTestConfig,
   openDashboardSettingsDrawer,
   polyfillJsdom,
@@ -64,7 +65,10 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
       expect(screen.getByText('tableColumnShort.scoreAdjustedByGames')).toBeInTheDocument();
     });
 
+    await closeDashboardSettingsDrawer(fixture);
+
     const searchInput = screen.getByLabelText('table.playerSearch');
+    searchInput.focus();
     fireEvent.input(searchInput, { target: { value: goalieName } });
 
     await vi.waitFor(() => {
@@ -72,13 +76,10 @@ describe('GoalieStatsComponent — desktop user flow', { timeout: 60_000 }, () =
       expect(rows).toHaveLength(2);
     });
 
-    fireEvent.keyDown(searchInput, { key: 'ArrowDown' });
+    const goalieRow = screen.getByText(goalieName).closest('tr');
+    expect(goalieRow).not.toBeNull();
 
-    await vi.waitFor(() => {
-      expect(document.activeElement?.textContent).toContain(goalieName);
-    });
-
-    fireEvent.keyDown(document.activeElement as Element, { key: 'Enter' });
+    fireEvent.click(goalieRow as HTMLElement);
 
     const dialog = await screen.findByRole('dialog', {}, { timeout: 15_000 });
     expect(

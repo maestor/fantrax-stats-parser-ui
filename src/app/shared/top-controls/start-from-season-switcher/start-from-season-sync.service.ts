@@ -20,7 +20,7 @@ import { SettingsService } from '@services/settings.service';
 import { TeamService } from '@services/team.service';
 import { toApiTeamId } from '@shared/utils/api.utils';
 import { toSeasonNumber } from '@shared/utils/season.utils';
-import { buildSettingsDrawerRouteConfig } from '@shared/utils/settings-drawer.utils';
+import { getSettingsDrawerRouteConfig, resolveRootRouteGroup } from '@shared/utils/settings-drawer.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -144,6 +144,6 @@ export class StartFromSeasonSyncService {
   }
 
   private isStatsRoute(url: string): boolean {
-    return buildSettingsDrawerRouteConfig(url).mode === 'stats';
+    return getSettingsDrawerRouteConfig(resolveRootRouteGroup(url)).mode === 'stats';
   }
 }

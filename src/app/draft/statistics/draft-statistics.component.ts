@@ -211,8 +211,8 @@ export class DraftStatisticsComponent implements OnInit {
   private readonly translate = inject(TranslateService);
   private readonly draftGroups = signal<EntryDraftTeamGroup[]>([]);
   private readonly selectedTeamId = this.settingsService.selectedTeamIdSignal;
-  private readonly disableDraftSelectedTeamHighlight =
-    this.settingsService.disableDraftSelectedTeamHighlightSignal;
+  private readonly disableSelectedTeamHighlight =
+    this.settingsService.disableSelectedTeamHighlightSignal;
 
   readonly pageSize = PAGE_SIZE;
   readonly sectionLinks = draftStatisticsSectionDefinitions;
@@ -231,11 +231,11 @@ export class DraftStatisticsComponent implements OnInit {
     effect(() => {
       const groups = this.draftGroups();
       const selectedTeamId = this.selectedTeamId();
-      const disableDraftSelectedTeamHighlight = this.disableDraftSelectedTeamHighlight();
+      const disableSelectedTeamHighlight = this.disableSelectedTeamHighlight();
       const highlightedTeamId = this.getEffectiveHighlightedTeamId(
         groups,
         selectedTeamId,
-        disableDraftSelectedTeamHighlight,
+        disableSelectedTeamHighlight,
       );
 
       this.highlightedTeamId = highlightedTeamId;
@@ -469,9 +469,9 @@ export class DraftStatisticsComponent implements OnInit {
   private getEffectiveHighlightedTeamId(
     groups: readonly EntryDraftTeamGroup[],
     selectedTeamId: string,
-    disableDraftSelectedTeamHighlight: boolean,
+    disableSelectedTeamHighlight: boolean,
   ): string | null {
-    if (disableDraftSelectedTeamHighlight) {
+    if (disableSelectedTeamHighlight) {
       return null;
     }
 

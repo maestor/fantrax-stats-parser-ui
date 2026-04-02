@@ -1,4 +1,15 @@
-import { Component, DestroyRef, OnInit, inject, input } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  Injector,
+  OnInit,
+  afterNextRender,
+  effect,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
 import { StatsTableComponent, TableRow } from '@shared/stats-table/stats-table.component';
@@ -11,6 +22,7 @@ import {
   TransactionLeaderboardEntry,
 } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { SettingsService } from '@services/settings.service';
 
 type LeaderboardEntry =
   | RegularLeaderboardEntry
@@ -44,6 +56,7 @@ type LeaderboardRow = LeaderboardEntry & { displayPosition: string };
   `,
 })
 export class LeaderboardComponent implements OnInit {
+  private readonly statsTable = viewChild(StatsTableComponent);
   readonly fetchFn = input.required<() => Observable<LeaderboardEntry[]>>();
   readonly columns = input.required<Column[]>();
   readonly formatCell = input<
@@ -61,8 +74,13 @@ export class LeaderboardComponent implements OnInit {
     primary: string;
     secondary?: string;
   }>();
-  private destroyRef = inject(DestroyRef);
-  private footerVisibilityService = inject(FooterVisibilityService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly footerVisibilityService = inject(FooterVisibilityService);
+  private readonly injector = inject(Injector);
+  private readonly settingsService = inject(SettingsService);
+  private readonly leaderboardRowsState = signal<LeaderboardRow[]>([]);
+  private readonly selectedTeamId = this.settingsService.selectedTeamIdSignal;
+  private readonly disableSelectedTeamHighlight = this.settingsService.disableSelectedTeamHighlightSignal;
 
   readonly rowKeyForTable = (row: TableRow, index: number): string =>
     this.rowKey()(row as LeaderboardRow, index);
@@ -78,6 +96,28 @@ export class LeaderboardComponent implements OnInit {
   apiError = false;
   private footerVisibilityCycle = 0;
 
+  constructor() {
+    effect(() => {
+      const statsTable = this.statsTable();
+      const rows = this.leaderboardRowsState();
+      const selectedTeamId = this.selectedTeamId();
+      const disableSelectedTeamHighlight = this.disableSelectedTeamHighlight();
+
+      if (!statsTable) {
+        return;
+      }
+
+      const nextFocusedRowKey = !disableSelectedTeamHighlight
+        && rows.some((row) => row.teamId === selectedTeamId)
+        ? selectedTeamId
+        : null;
+
+      afterNextRender(() => {
+        this.focusSelectedTeamRow(statsTable, nextFocusedRowKey);
+      }, { injector: this.injector });
+    });
+  }
+
   ngOnInit(): void {
     this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
     this.loading = true;
@@ -88,14 +128,28 @@ export class LeaderboardComponent implements OnInit {
           this.data = derivePositions(data, {
             blankTieRanks: this.blankTieRanks(),
           });
+          this.leaderboardRowsState.set(this.data);
           this.loading = false;
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
         error: () => {
+          this.data = [];
+          this.leaderboardRowsState.set([]);
           this.apiError = true;
           this.loading = false;
           this.footerVisibilityService.markReady(this.footerVisibilityCycle);
         },
       });
+  }
+
+  private focusSelectedTeamRow(
+    statsTable: StatsTableComponent,
+    nextFocusedRowKey: string | null,
+  ): void {
+    if (nextFocusedRowKey === null) {
+      return;
+    }
+
+    statsTable.focusRowByKey(nextFocusedRowKey);
   }
 }

@@ -18,9 +18,9 @@
     <app-team-switcher />
   </div>
 
-  @if (showDraftTeamHighlightToggle()) {
-    <div class="settings-drawer-section settings-drawer-section--draft-settings">
-      <app-draft-team-highlight-toggle />
+  @if (showTeamHighlightToggle()) {
+    <div class="settings-drawer-section settings-drawer-section--selected-team-highlight">
+      <app-selected-team-highlight-toggle />
     </div>
   }
 

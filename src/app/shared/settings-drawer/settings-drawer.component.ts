@@ -10,8 +10,9 @@ import { ApiService } from '@services/api.service';
 import { DrawerContextService } from '@services/drawer-context.service';
 import { SettingsDrawerMode } from '@shared/utils/settings-drawer.utils';
 import { StatsContext } from '@shared/types/context.types';
+import { formatDateForLocale } from '@shared/utils/date.utils';
 import { SettingsPanelComponent } from '@shared/settings-panel/settings-panel.component';
-import { DraftTeamHighlightToggleComponent } from '@shared/settings-drawer/draft-team-highlight-toggle/draft-team-highlight-toggle.component';
+import { SelectedTeamHighlightToggleComponent } from '@shared/settings-drawer/selected-team-highlight-toggle/selected-team-highlight-toggle.component';
 import { TeamSwitcherComponent } from '@shared/top-controls/team-switcher/team-switcher.component';
 import { TopControlsComponent } from '@shared/top-controls/top-controls.component';
 
@@ -23,7 +24,7 @@ import { TopControlsComponent } from '@shared/top-controls/top-controls.componen
     MatIconModule,
     MatTooltipModule,
     TranslateModule,
-    DraftTeamHighlightToggleComponent,
+    SelectedTeamHighlightToggleComponent,
     TeamSwitcherComponent,
     TopControlsComponent,
     SettingsPanelComponent,
@@ -38,24 +39,10 @@ export class SettingsDrawerComponent {
 
   private readonly apiService = inject(ApiService);
   private readonly drawerContextService = inject(DrawerContextService);
-  private readonly fiLastModifiedFormatter = new Intl.DateTimeFormat('fi-FI', {
-    timeZone: 'Europe/Helsinki',
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 
-  readonly resolvedStatsContext = computed(() => {
-    if (this.mode() !== 'stats') {
-      return undefined;
-    }
+  readonly resolvedStatsContext = computed(() => this.statsContext());
 
-    return this.statsContext() ?? 'player';
-  });
-
-  readonly showDraftTeamHighlightToggle = computed(() => this.mode() === 'draft');
+  readonly showTeamHighlightToggle = computed(() => this.mode() === 'team');
 
   readonly drawerMaxGames = computed(() => {
     const context = this.resolvedStatsContext();
@@ -76,9 +63,13 @@ export class SettingsDrawerComponent {
   private formatLastModified(iso: string | undefined): string | null {
     if (!iso) return null;
 
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return null;
-
-    return this.fiLastModifiedFormatter.format(date);
+    return formatDateForLocale(iso, 'fi-FI', {
+      timeZone: 'Europe/Helsinki',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   }
 }

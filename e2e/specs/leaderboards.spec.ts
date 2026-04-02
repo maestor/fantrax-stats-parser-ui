@@ -1,6 +1,16 @@
+import type { Locator } from '@playwright/test';
+
 import { test, expect } from '../fixtures/test-fixture';
 import { LEADERBOARD_LABELS } from '../config/test-data';
 import { fi } from '../config/i18n';
+
+async function ensureLeaderboardRowExpanded(row: Locator) {
+  if ((await row.getAttribute('aria-expanded')) !== 'true') {
+    await row.click();
+  }
+
+  await expect(row).toHaveAttribute('aria-expanded', 'true');
+}
 
 test.describe('Leaderboards', () => {
   test('full flow: redirect, regular table with position tie logic, tab switch, playoffs table, and transactions table', async ({ page }) => {
@@ -30,7 +40,7 @@ test.describe('Leaderboards', () => {
 
     // regular table: expandable season details (multiple open rows)
     const regularRows = page.locator('tr[mat-row]:not(.expanded-detail-row)');
-    await regularRows.nth(0).click();
+    await ensureLeaderboardRowExpanded(regularRows.nth(0));
     await expect(page.locator('.expanded-season-row').first()).toBeVisible();
 
     await regularRows.nth(1).click();
@@ -49,7 +59,7 @@ test.describe('Leaderboards', () => {
 
     // playoffs table: season details include trophy marker only for championship seasons
     const playoffRows = page.locator('tr[mat-row]:not(.expanded-detail-row)');
-    await playoffRows.nth(0).click();
+    await ensureLeaderboardRowExpanded(playoffRows.nth(0));
 
     const playoffSeasonRows = page.locator('.expanded-season-row');
     await expect(playoffSeasonRows.first()).toBeVisible();
@@ -100,7 +110,7 @@ test.describe('Leaderboards', () => {
     await expect(dropsHeader).toContainText('❌');
 
     const transactionRows = page.locator('tr[mat-row]:not(.expanded-detail-row)');
-    await transactionRows.nth(1).click();
+    await ensureLeaderboardRowExpanded(transactionRows.nth(1));
     await expect(page.locator('.expanded-season-row').first()).toContainText('🤝');
     await expect(page.locator('.expanded-season-row').first()).toContainText('🏒');
     await expect(page.locator('.expanded-season-row').first()).toContainText('🥅');

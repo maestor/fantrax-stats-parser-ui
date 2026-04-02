@@ -80,7 +80,7 @@ They still inherit the root-shell settings button plus the base drawer sections.
 
 - shared drawer content used by the root shell across every route
 - always renders the base sections and appends mode-specific sections from one centralized extension point
-- draft routes add a separate drawer section for the selected-team-highlight toggle after the shared team switcher section
+- draft and leaderboard routes add a separate drawer section for the selected-team-highlight toggle after the shared team switcher section
 - new drawer groups should be added here as sibling `.settings-drawer-section` wrappers so spacing, borders, and future drawer-wide styling changes stay centralized
 
 ### `src/app/shared/stats-table/`
