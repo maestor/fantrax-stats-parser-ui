@@ -91,10 +91,18 @@ describe('LeaderboardFinalsComponent', () => {
     expect(headers[0]).toHaveAttribute('aria-expanded', 'true');
     expect((await screen.findAllByText('leaderboards.finals.summaryTitle')).length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.ratesTitle').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('leaderboards.finals.factorsTitle').length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.summary.loser').length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.summary.playedGames').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('leaderboards.finals.factors.offence').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('leaderboards.finals.factors.physical').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('leaderboards.finals.factors.goalies').length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.skaterTotalsTitle').length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.goalieTotalsTitle').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('CAR').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('EDM').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('57,0').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('43,0').length).toBeGreaterThan(0);
     expect(screen.getAllByText('tableColumnShort.goals').length).toBeGreaterThan(0);
     expect(screen.getAllByText('tableColumnShort.saves').length).toBeGreaterThan(0);
     expect(screen.getAllByTitle('tableColumn.goals').length).toBeGreaterThan(0);
@@ -103,6 +111,10 @@ describe('LeaderboardFinalsComponent', () => {
     expect(screen.getAllByText('2.18').length).toBeGreaterThan(0);
     expect(screen.getAllByText(/\(\+6,0\)/).length).toBeGreaterThan(0);
     expect(screen.getAllByText('(+6,0)')[0]).toHaveClass('leaderboard-finals-rate-delta-inline--positive');
+    expect(screen.getAllByText('57,0')[0].closest('.leaderboard-finals-factor-side'))
+      .toHaveClass('leaderboard-finals-factor-side--winner');
+    expect(screen.getAllByText('43,0')[0].closest('.leaderboard-finals-factor-side'))
+      .not.toHaveClass('leaderboard-finals-factor-side--winner');
   });
 
   it('shows the API error state and marks the footer ready when the finals request fails', async () => {
@@ -187,6 +199,12 @@ describe('LeaderboardFinalsComponent', () => {
     expect(component.getRateDeltaTone(entry)).toBe('positive');
     expect(component.getRateDeltaTone(negativeDeltaEntry)).toBe('negative');
     expect(component.getRateDeltaTone(neutralDeltaEntry)).toBe('neutral');
+    expect(component.getFactorKeys()).toEqual(['offence', 'physical', 'goalies']);
+    expect(component.getFactorValue(entry, 'home', 'offence')).toBe('57,0');
+    expect(component.getFactorValue(entry, 'away', 'goalies')).toBe('52,0');
+    expect(component.factorLeads(entry, 'home', 'offence')).toBe(true);
+    expect(component.factorLeads(entry, 'away', 'offence')).toBe(false);
+    expect(component.factorLeads(entry, 'away', 'goalies')).toBe(true);
     expect(component.getCategoryValue(savePercentCategory, 'home')).toBe('0.925');
     expect(component.getCategoryValue(gaaCategory, 'home')).toBe('2.18');
     expect(component.getCategoryValue(nullCategory, 'away')).toBe('—');
@@ -221,6 +239,7 @@ function createFinalsEntry(options: {
         skaters: 20,
         goalies: 8,
       },
+      teamAbbr: 'CAR',
       totals: {
         goals: 24,
         assists: 41,
@@ -253,6 +272,7 @@ function createFinalsEntry(options: {
         skaters: 18,
         goalies: 8,
       },
+      teamAbbr: 'EDM',
       totals: {
         goals: 22,
         assists: 36,
@@ -300,6 +320,18 @@ function createFinalsEntry(options: {
     rates: {
       winRate: 0.5,
       deservedToWinRate: 0.56,
+    },
+    factors: {
+      homeTeam: {
+        offence: 0.57,
+        physical: 0.54,
+        goalies: 0.48,
+      },
+      awayTeam: {
+        offence: 0.43,
+        physical: 0.46,
+        goalies: 0.52,
+      },
     },
   };
 }

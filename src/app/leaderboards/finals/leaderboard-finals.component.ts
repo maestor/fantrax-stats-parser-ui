@@ -51,6 +51,10 @@ const GOALIE_CATEGORY_KEYS: FinalsLeaderboardCategory['statKey'][] = [
   'savePercent',
 ];
 
+type FinalsFactorKey = 'offence' | 'physical' | 'goalies';
+
+const FACTOR_KEYS: FinalsFactorKey[] = ['offence', 'physical', 'goalies'];
+
 @Component({
   selector: 'app-leaderboard-finals',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -182,6 +186,26 @@ export class LeaderboardFinalsComponent implements OnInit {
     return entry.categories.filter((category) => GOALIE_CATEGORY_KEYS.includes(category.statKey));
   }
 
+  getFactorKeys(): FinalsFactorKey[] {
+    return FACTOR_KEYS;
+  }
+
+  getFactorValue(entry: FinalsLeaderboardEntry, side: 'away' | 'home', factorKey: FinalsFactorKey): string {
+    const factorSet = side === 'home' ? entry.factors.homeTeam : entry.factors.awayTeam;
+    return this.formatFactorValue(factorSet[factorKey]);
+  }
+
+  factorLeads(entry: FinalsLeaderboardEntry, side: 'away' | 'home', factorKey: FinalsFactorKey): boolean {
+    const homeValue = entry.factors.homeTeam[factorKey];
+    const awayValue = entry.factors.awayTeam[factorKey];
+
+    if (homeValue === awayValue) {
+      return false;
+    }
+
+    return side === 'home' ? homeValue > awayValue : awayValue > homeValue;
+  }
+
   getCategoryValue(category: FinalsLeaderboardCategory, side: 'away' | 'home'): string {
     const value = side === 'away' ? category.awayValue : category.homeValue;
     return this.formatFinalsValue(category.statKey, value);
@@ -212,6 +236,10 @@ export class LeaderboardFinalsComponent implements OnInit {
 
   private normalizeRateValue(value: number): number {
     return Math.abs(value) > 1 ? value : value * 100;
+  }
+
+  private formatFactorValue(value: number): string {
+    return this.normalizeRateValue(value).toFixed(1).replace('.', ',');
   }
 
   private getRateDeltaValue(entry: FinalsLeaderboardEntry): number {

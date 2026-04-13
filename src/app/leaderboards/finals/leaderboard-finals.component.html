@@ -201,6 +201,47 @@
 
             <section class="leaderboard-finals-section">
               <h4 class="leaderboard-finals-section-title">
+                {{ 'leaderboards.finals.factorsTitle' | translate }}
+              </h4>
+
+              <div class="leaderboard-finals-factors-grid">
+                @for (factorKey of getFactorKeys(); track factorKey) {
+                  <article class="leaderboard-finals-rate-card leaderboard-finals-factor-card draft-focus-target" tabindex="-1"
+                    draftPanelFocusTarget>
+                    <span class="leaderboard-finals-summary-label">
+                      {{ ('leaderboards.finals.factors.' + factorKey) | translate }}
+                    </span>
+
+                    <strong class="leaderboard-finals-factor-line">
+                      <span class="leaderboard-finals-factor-side"
+                        [class.leaderboard-finals-factor-side--winner]="factorLeads(entry, 'home', factorKey)">
+                        <span class="leaderboard-finals-factor-abbr">
+                          {{ entry.homeTeam.teamAbbr }}
+                        </span>
+                        <span class="leaderboard-finals-factor-value">
+                          {{ getFactorValue(entry, 'home', factorKey) }}
+                        </span>
+                      </span>
+
+                      <span class="leaderboard-finals-factor-separator" aria-hidden="true">-</span>
+
+                      <span class="leaderboard-finals-factor-side"
+                        [class.leaderboard-finals-factor-side--winner]="factorLeads(entry, 'away', factorKey)">
+                        <span class="leaderboard-finals-factor-value">
+                          {{ getFactorValue(entry, 'away', factorKey) }}
+                        </span>
+                        <span class="leaderboard-finals-factor-abbr">
+                          {{ entry.awayTeam.teamAbbr }}
+                        </span>
+                      </span>
+                    </strong>
+                  </article>
+                }
+              </div>
+            </section>
+
+            <section class="leaderboard-finals-section">
+              <h4 class="leaderboard-finals-section-title">
                 {{ 'leaderboards.finals.categoriesTitle' | translate }}
               </h4>
 

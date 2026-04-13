@@ -1,3 +1,5 @@
+@use '../../../styles/surface-patterns';
+
 :host {
   display: block;
 }
@@ -8,8 +10,7 @@
 
 .table-card {
   height: 100%;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 20px;
+  @include surface-patterns.rounded-surface-card(null, null, 20px);
   background:
     linear-gradient(180deg,
       color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
