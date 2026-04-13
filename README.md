@@ -37,6 +37,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- Expand team rows to see season-by-season breakdowns
 	- Ties, trophies, and transaction summaries are presented clearly in the standings
 	- The shared selected team receives keyboard focus by default unless selected-team highlighting is disabled from the settings drawer
+	- Finals view presents season-by-season championship matchups as expandable cards with category and totals breakdowns
 - 📚 **Career Listings**: Browse all-time player and goalie career tables plus career highlights
 	- Search and sort the main career tables
 	- Long lists stay responsive
@@ -186,7 +187,7 @@ E2E tests are organized into feature-based specs under `e2e/specs/`:
 - `smoke.spec.ts` — Core page rendering and navigation
 - `career.spec.ts` — Career players/goalies/highlights tabs, grouped highlight section navigation, paging, and route shell behavior
 - `draft.spec.ts` — Draft route redirect/tab behavior plus entry-draft and opening-draft accordion rendering
-- `leaderboards.spec.ts` — Leaderboards redirect, regular/playoff/transactions tabs, tie-rank vs incremental position logic, and expandable season details
+- `leaderboards.spec.ts` — Leaderboards redirect, regular/playoff/transactions/finals tabs, tie-rank vs incremental position logic, expandable season details, and finals matchup cards
 - `player-card.spec.ts` — Player card dialog (open/close, tabs, graphs, direct URLs)
 - `team-switching.spec.ts` — Team selector and filter reset behavior
 - `filters.spec.ts` — Report type, season, position, stats-per-game, and min games filters

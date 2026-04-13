@@ -80,7 +80,8 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
    - All-time regular season ranking table: position, wins, points, win percentage, regular season titles
    - All-time playoffs ranking table: position, championships, finals, conference finals, round results, appearances
    - All-time transactions ranking table: position, team, trades, claims, drops, rostered skaters, rostered goalies
-   - Tab navigation between Runkosarja, Playoffs, and Siirrot views (default route: Runkosarja)
+   - Finals view shows one championship matchup per season as an expandable browse card with winner context, actual-vs-deserved win-rate comparison, category results, and team totals
+   - Tab navigation between Runkosarja, Playoffs, Siirrot, and Finaalit views (default route: Runkosarja)
    - Column sorting via `mat-sort`; regular/playoff position ties stay blank after the first tied team, while transactions always show incremental positions
    - Expandable season breakdown rows per team (regular, playoffs, and transactions) by clicking a team row, with multiple expanded rows allowed
    - Season breakdown rows can show trophy markers for winner/championship seasons or emoji-prefixed transaction and roster counts per season
@@ -166,6 +167,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
      - `/leaderboards/regular` - Regular season all-time ranking table
      - `/leaderboards/playoffs` - Playoffs all-time ranking table
      - `/leaderboards/transactions` - Transaction leaderboard with roster counts, trades, claims, and drops
+     - `/leaderboards/finals` - Season-by-season finals matchup cards with category and totals breakdowns
 
 ## Data Flow
 

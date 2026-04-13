@@ -16,6 +16,11 @@ export type Team                    = components['schemas']['Team'];
 export type RegularLeaderboardEntry = components['schemas']['RegularLeaderboardEntry'];
 export type PlayoffLeaderboardEntry = components['schemas']['PlayoffLeaderboardEntry'];
 export type TransactionLeaderboardEntry = components['schemas']['TransactionLeaderboardEntry'];
+export type FinalsLeaderboardEntry = components['schemas']['FinalsLeaderboardEntry'];
+export type FinalsLeaderboardTeam = components['schemas']['FinalsLeaderboardTeam'];
+export type FinalsLeaderboardCategory = components['schemas']['FinalsLeaderboardCategory'];
+export type FinalsLeaderboardRates = components['schemas']['FinalsLeaderboardRates'];
+export type FinalsStatKey = components['schemas']['FinalsStatKey'];
 export type CareerPlayerListItem    = components['schemas']['CareerPlayerListItem'];
 export type CareerGoalieListItem    = components['schemas']['CareerGoalieListItem'];
 export type CareerPlayer            = components['schemas']['CareerPlayer'];
@@ -165,6 +170,14 @@ export class ApiService {
     return this.handleRequest<TransactionLeaderboardEntry[]>(
       "leaderboard/transactions",
       "leaderboard-transactions",
+    );
+  }
+
+  // Fetching finals leaderboard data
+  getLeaderboardFinals(): Observable<FinalsLeaderboardEntry[]> {
+    return this.handleRequest<FinalsLeaderboardEntry[]>(
+      'leaderboard/finals',
+      'leaderboard-finals',
     );
   }
 

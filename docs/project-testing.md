@@ -297,7 +297,7 @@ E2E tests are organized into feature-based spec files under `e2e/specs/`:
   - Server-paged highlight card behavior
   - Route-specific shell behavior (no stats controls/drawer)
 
-- **leaderboards.spec.ts** - Leaderboard routes and expandable team breakdowns
+- **leaderboards.spec.ts** - Leaderboard routes, expandable team breakdowns, and finals matchup cards
   - Redirect from `/leaderboards` to the default regular-season tab
   - Regular/playoff/transactions tab switching
   - Tie-rank handling for regular/playoffs and incremental ranks for transactions

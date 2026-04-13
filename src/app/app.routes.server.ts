@@ -62,6 +62,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    path: 'leaderboards/finals',
+    renderMode: RenderMode.Prerender,
+  },
+  {
     path: 'player/:teamSlug/:playerSlug/:season',
     renderMode: RenderMode.Client,
   },

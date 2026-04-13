@@ -31,6 +31,12 @@ describe('LeaderboardsComponent', () => {
 
     component.ngOnInit();
 
+    expect(component.tabs.map((tab) => tab.path)).toEqual([
+      '/leaderboards/regular',
+      '/leaderboards/playoffs',
+      '/leaderboards/transactions',
+      '/leaderboards/finals',
+    ]);
     expect(component.activeLink).toBe('/leaderboards/regular');
 
     router.url = '/leaderboards/transactions?bar=1';

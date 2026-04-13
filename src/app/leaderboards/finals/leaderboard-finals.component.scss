@@ -1,0 +1,413 @@
+.leaderboard-finals {
+  --finals-content-padding-inline: 1.25rem;
+}
+
+.leaderboard-finals-accordion {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.leaderboard-finals-panel {
+  --mat-expansion-container-background-color: var(--mat-sys-surface-container-low);
+  --mat-expansion-header-text-color: var(--mat-sys-on-surface);
+  --mat-expansion-header-indicator-color: var(--mat-sys-on-surface-variant);
+  --mat-expansion-header-hover-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 6%, var(--mat-sys-surface-container-low));
+  --mat-expansion-header-focus-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container-low));
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-expansion-container-background-color);
+  box-shadow: var(--mat-sys-level1);
+  overflow: hidden;
+}
+
+.leaderboard-finals-header {
+  padding-inline: var(--finals-content-padding-inline);
+  height: auto;
+  min-height: 56px;
+  padding-block: 0.3rem;
+}
+
+.leaderboard-finals-matchup-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  width: 100%;
+  padding-inline-end: 0.85rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.leaderboard-finals-season {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.leaderboard-finals-divider {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.leaderboard-finals-matchup-core {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.leaderboard-finals-team-name {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.leaderboard-finals-team-name--winner {
+  color: var(--mat-sys-primary);
+}
+
+.leaderboard-finals-score {
+  font-size: 1.02rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.leaderboard-finals-selected-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: auto;
+  margin-inline-end: 0.85rem;
+  padding: 0.16rem 0.55rem;
+  border-radius: 999px;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.76rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.leaderboard-finals-content {
+  display: grid;
+  gap: 1rem;
+  padding: 0 1.25rem 1.1rem;
+}
+
+.leaderboard-finals-panel.mat-expanded .leaderboard-finals-content {
+  padding-top: 0.9rem;
+}
+
+.leaderboard-finals-section {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.leaderboard-finals-section-title {
+  margin: 0;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.leaderboard-finals-subsection-title {
+  margin: 0 0 0.15rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.leaderboard-finals-summary-grid,
+.leaderboard-finals-rates-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.leaderboard-finals-summary-grid {
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+}
+
+.leaderboard-finals-rates-grid {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.leaderboard-finals-summary-card,
+.leaderboard-finals-rate-card {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+  background: var(--mat-sys-surface-container-lowest);
+}
+
+.leaderboard-finals-summary-card,
+.leaderboard-finals-rate-card {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.leaderboard-finals-summary-label {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.leaderboard-finals-summary-label--with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: fit-content;
+}
+
+.leaderboard-finals-summary-value,
+.leaderboard-finals-rate-value {
+  color: var(--mat-sys-on-surface);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.leaderboard-finals-summary-trophy {
+  margin-inline-end: 0.35rem;
+}
+
+.leaderboard-finals-summary-meta {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.leaderboard-finals-summary-meta-label {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.leaderboard-finals-summary-meta-label--with-icon {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.leaderboard-finals-summary-meta-value {
+  color: var(--mat-sys-on-surface);
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.leaderboard-finals-summary-games {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.45rem;
+  align-items: center;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.leaderboard-finals-summary-game-part {
+  display: inline-flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.leaderboard-finals-comparison-card {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-sys-surface-container-lowest);
+  overflow: hidden;
+}
+
+.leaderboard-finals-comparison-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem 0.7rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container);
+}
+
+.leaderboard-finals-comparison-heading {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.leaderboard-finals-comparison-heading--home {
+  text-align: left;
+}
+
+.leaderboard-finals-comparison-heading--away {
+  text-align: right;
+}
+
+.leaderboard-finals-comparison-group {
+  padding: 0.95rem 1rem;
+}
+
+.leaderboard-finals-comparison-group+.leaderboard-finals-comparison-group {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.leaderboard-finals-comparison-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.9rem;
+  font-size: var(--mat-sys-body-medium-size, 14px);
+  overflow: hidden;
+}
+
+.leaderboard-finals-comparison-row:last-child {
+  border-bottom: 0;
+}
+
+.leaderboard-finals-comparison-value,
+.leaderboard-finals-comparison-label {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.leaderboard-finals-comparison-value {
+  color: var(--mat-sys-on-surface);
+  font-weight: 600;
+}
+
+.leaderboard-finals-comparison-value--home {
+  justify-content: flex-end;
+  padding-right: 24px;
+}
+
+.leaderboard-finals-comparison-label {
+  justify-content: center;
+  min-width: 160px;
+  padding: 0 10px;
+  background: color-mix(in srgb, var(--mat-sys-surface-container) 92%, transparent);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.leaderboard-finals-comparison-value--away {
+  justify-content: flex-start;
+  padding-left: 24px;
+}
+
+.leaderboard-finals-comparison-value--winner {
+  color: var(--mat-sys-primary);
+  font-weight: 800;
+}
+
+.leaderboard-finals-rate-delta-inline {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .leaderboard-finals-matchup-line {
+    gap: 0;
+    padding-block: 0.2rem;
+  }
+
+  .leaderboard-finals-divider {
+    display: none;
+  }
+
+  .leaderboard-finals-matchup-core {
+    flex-basis: 100%;
+    gap: 0.2rem;
+  }
+
+  .leaderboard-finals-selected-badge {
+    display: none;
+  }
+
+  .leaderboard-finals-team-name {
+    font-size: 0.75rem;
+  }
+
+  .leaderboard-finals-score {
+    font-size: 0.88rem;
+  }
+
+  .leaderboard-finals-header {
+    padding-block: 0.45rem;
+  }
+
+  .leaderboard-finals-comparison-header {
+    display: none;
+  }
+
+  .leaderboard-finals-comparison-label {
+    min-width: 0;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 640px) {
+  .leaderboard-finals {
+    --finals-content-padding-inline: 1rem;
+  }
+
+  .leaderboard-finals-content {
+    padding-inline: 1rem;
+  }
+
+  .leaderboard-finals-summary-card,
+  .leaderboard-finals-rate-card,
+  .leaderboard-finals-comparison-card {
+    padding-inline: 0.9rem;
+  }
+
+  .leaderboard-finals-comparison-group {
+    padding-inline: 0;
+  }
+
+  .leaderboard-finals-comparison-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'label label'
+      'home away';
+    gap: 0.2rem 0.75rem;
+    padding: 0.75rem 0;
+  }
+
+  .leaderboard-finals-comparison-value,
+  .leaderboard-finals-comparison-label {
+    min-height: 0;
+  }
+
+  .leaderboard-finals-comparison-label {
+    grid-area: label;
+    justify-content: center;
+    margin-bottom: 0.2rem;
+    border-radius: 0.8rem;
+    padding-block: 0.45rem;
+  }
+
+  .leaderboard-finals-comparison-value--home {
+    grid-area: home;
+    justify-content: flex-start;
+    padding-right: 0;
+  }
+
+  .leaderboard-finals-comparison-value--away {
+    grid-area: away;
+    justify-content: flex-end;
+    padding-left: 0;
+  }
+
+}

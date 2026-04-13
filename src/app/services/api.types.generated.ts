@@ -1332,6 +1332,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/leaderboard/finals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Finals matchup leaderboard
+         * @description Returns one finals matchup summary per imported season, including away/home team details,
+         *     category results, and a `rates` object with both the actual win share and a modeled
+         *     deserved-to-win percentage.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Finals matchup summaries. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["FinalsLeaderboardEntry"][];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1952,6 +2000,65 @@ export interface components {
             players: number;
             /** @description Count of distinct goalie Fantrax entity IDs the team rostered that season. */
             goalies: number;
+        };
+        FinalsLeaderboardEntry: {
+            season: number;
+            wonOnHomeTiebreak: boolean;
+            winnerTeamId: string;
+            winnerTeamName: string;
+            awayTeam: components["schemas"]["FinalsLeaderboardTeam"];
+            homeTeam: components["schemas"]["FinalsLeaderboardTeam"];
+            categories: components["schemas"]["FinalsLeaderboardCategory"][];
+            rates: components["schemas"]["FinalsLeaderboardRates"];
+        };
+        FinalsLeaderboardTeam: {
+            teamId: string;
+            teamName: string;
+            score: components["schemas"]["FinalsLeaderboardScore"];
+            playedGames: components["schemas"]["FinalsLeaderboardPlayedGames"];
+            totals: components["schemas"]["FinalsLeaderboardTeamTotals"];
+        };
+        FinalsLeaderboardScore: {
+            matchPoints: number;
+            categoriesWon: number;
+            categoriesLost: number;
+            categoriesTied: number;
+        };
+        FinalsLeaderboardPlayedGames: {
+            total: number;
+            skaters: number;
+            goalies: number;
+        };
+        FinalsLeaderboardTeamTotals: {
+            goals: number;
+            assists: number;
+            points: number;
+            plusMinus: number;
+            penalties: number;
+            shots: number;
+            ppp: number;
+            shp: number;
+            hits: number;
+            blocks: number;
+            wins: number;
+            saves: number;
+            shutouts: number;
+            gaa: number | null;
+            savePercent: number | null;
+        };
+        /** @enum {string} */
+        FinalsStatKey: "goals" | "assists" | "points" | "plusMinus" | "penalties" | "shots" | "ppp" | "shp" | "hits" | "blocks" | "wins" | "saves" | "shutouts" | "gaa" | "savePercent";
+        FinalsLeaderboardCategory: {
+            statKey: components["schemas"]["FinalsStatKey"];
+            awayValue: number | null;
+            homeValue: number | null;
+            winnerTeamId: string | null;
+        };
+        FinalsLeaderboardRates: {
+            /** @description The actual finals scoreboard share for the champion, equivalent to raw match-points share. */
+            winRate: number;
+            /** @description A weighted, games-adjusted finals strength model that downweights plusMinus, SHP, and shutouts. */
+            deservedToWinRate: number;
         };
     };
     responses: never;

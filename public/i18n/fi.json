@@ -238,7 +238,8 @@
     "tabs": {
       "regular": "Runkosarja",
       "playoffs": "Playoffs",
-      "transactions": "Siirrot"
+      "transactions": "Siirrot",
+      "finals": "Finaalit"
     },
     "columns": {
       "position": "#",
@@ -273,6 +274,29 @@
       "playoffResult": "Tulos",
       "transactions": "Siirrot",
       "trophy": "🏆"
+    },
+    "finals": {
+      "noResults": "Finaalitietoja ei löytynyt.",
+      "selectedTeamBadge": "Valittu joukkue mukana",
+      "summaryTitle": "Yhteenveto",
+      "ratesTitle": "Voittomarginaali",
+      "categoriesTitle": "Kategoriayhteenveto",
+      "skaterTotalsTitle": "Kenttäpelaajat",
+      "goalieTotalsTitle": "Maalivahdit",
+      "summary": {
+        "winner": "Voittaja",
+        "loser": "Häviäjä",
+        "categoryRecord": "Kategoriat",
+        "recordTooltip": "Voitot-Häviöt-Tasapelit",
+        "recordAria": "{{value}}. Voitot-Häviöt-Tasapelit.",
+        "playedGames": "Finaalissa pelatut ottelut",
+        "playedGamesAria": "Finaalissa pelatut ottelut: yhteensä {{total}}, kenttäpelaajat {{skaters}}, maalivahdit {{goalies}}."
+      },
+      "rates": {
+        "actual": "Toteutunut osuus",
+        "deserved": "Laskennallinen osuus",
+        "deltaTooltip": "Laskennallinen osuus yrittää kuvata sitä kuinka tiukka finaali on todellisuudessa ollut.\n\nEron ollessa positiivinen kertoo se siitä, että voittaja olisi ansainnut suuremmankin voiton.\n\nEron ollessa negatiivinen, ottelu oli tasaisempi miltä lopullinen tulos näyttää.\n\nLaskennallisen osuuden ollessa alle 50%, voitto on ansaittu osittain tuurilla."
+      }
     },
     "noSeasonBreakdown": "Ei kausierittelyä saatavilla",
     "loading": "Ladataan taulukkoa...",
