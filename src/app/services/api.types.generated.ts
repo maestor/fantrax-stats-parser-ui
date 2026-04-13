@@ -1342,8 +1342,9 @@ export interface paths {
         /**
          * Finals matchup leaderboard
          * @description Returns one finals matchup summary per imported season, including away/home team details,
-         *     category results, and a `rates` object with both the actual win share and a modeled
-         *     deserved-to-win percentage.
+         *     category results, a `rates` object with both the actual win share and a modeled
+         *     deserved-to-win percentage, plus `factors` that split matchup influence into offence,
+         *     physical play, and goaltending.
          */
         get: {
             parameters: {
@@ -1391,6 +1392,8 @@ export interface components {
             name: string;
             /** @example Colorado Avalanche */
             presentName: string;
+            /** @example COL */
+            teamAbbr: string;
             nameAliases?: string[];
             /**
              * @description First season year (YYYY) for expansion/relocated teams.
@@ -2010,10 +2013,12 @@ export interface components {
             homeTeam: components["schemas"]["FinalsLeaderboardTeam"];
             categories: components["schemas"]["FinalsLeaderboardCategory"][];
             rates: components["schemas"]["FinalsLeaderboardRates"];
+            factors: components["schemas"]["FinalsLeaderboardFactors"];
         };
         FinalsLeaderboardTeam: {
             teamId: string;
             teamName: string;
+            teamAbbr: string;
             score: components["schemas"]["FinalsLeaderboardScore"];
             playedGames: components["schemas"]["FinalsLeaderboardPlayedGames"];
             totals: components["schemas"]["FinalsLeaderboardTeamTotals"];
@@ -2041,13 +2046,13 @@ export interface components {
             hits: number;
             blocks: number;
             wins: number;
-            saves: number;
-            shutouts: number;
             gaa: number | null;
+            saves: number;
             savePercent: number | null;
+            shutouts: number;
         };
         /** @enum {string} */
-        FinalsStatKey: "goals" | "assists" | "points" | "plusMinus" | "penalties" | "shots" | "ppp" | "shp" | "hits" | "blocks" | "wins" | "saves" | "shutouts" | "gaa" | "savePercent";
+        FinalsStatKey: "goals" | "assists" | "points" | "plusMinus" | "penalties" | "shots" | "ppp" | "shp" | "hits" | "blocks" | "wins" | "gaa" | "saves" | "savePercent" | "shutouts";
         FinalsLeaderboardCategory: {
             statKey: components["schemas"]["FinalsStatKey"];
             awayValue: number | null;
@@ -2055,10 +2060,22 @@ export interface components {
             winnerTeamId: string | null;
         };
         FinalsLeaderboardRates: {
-            /** @description The actual finals scoreboard share for the champion, equivalent to raw match-points share. */
+            /** @description The actual finals scoreboard share for the champion as a fraction between 0 and 1, rounded to three decimals. Example: `0.567` means `56.7%`. */
             winRate: number;
-            /** @description A weighted, games-adjusted finals strength model that downweights plusMinus, SHP, and shutouts. */
+            /** @description A weighted, games-adjusted finals strength model returned as a fraction between 0 and 1, rounded to three decimals. */
             deservedToWinRate: number;
+        };
+        FinalsLeaderboardFactors: {
+            awayTeam: components["schemas"]["FinalsLeaderboardFactorSet"];
+            homeTeam: components["schemas"]["FinalsLeaderboardFactorSet"];
+        };
+        FinalsLeaderboardFactorSet: {
+            /** @description Share of combined offensive category production (`goals`, `assists`, `shots`, `ppp`, `shp`) as a fraction between 0 and 1, rounded to three decimals. */
+            offence: number;
+            /** @description Share of combined physical category production (`hits`, `blocks`, `penalties`) as a fraction between 0 and 1, rounded to three decimals. */
+            physical: number;
+            /** @description Hybrid goalie matchup share returned as a fraction between 0 and 1, rounded to three decimals. Blends count-stat volume (`wins`, `saves`, `shutouts`) with goalie-rate efficiency (`gaa`, `savePercent`). */
+            goalies: number;
         };
     };
     responses: never;

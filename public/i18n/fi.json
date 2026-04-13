@@ -280,6 +280,7 @@
       "selectedTeamBadge": "Valittu joukkue mukana",
       "summaryTitle": "Yhteenveto",
       "ratesTitle": "Voittomarginaali",
+      "factorsTitle": "Voimasuhteet",
       "categoriesTitle": "Kategoriayhteenveto",
       "skaterTotalsTitle": "Kenttäpelaajat",
       "goalieTotalsTitle": "Maalivahdit",
@@ -296,6 +297,11 @@
         "actual": "Toteutunut osuus",
         "deserved": "Laskennallinen osuus",
         "deltaTooltip": "Laskennallinen osuus yrittää kuvata sitä kuinka tiukka finaali on todellisuudessa ollut.\n\nEron ollessa positiivinen kertoo se siitä, että voittaja olisi ansainnut suuremmankin voiton.\n\nEron ollessa negatiivinen, ottelu oli tasaisempi miltä lopullinen tulos näyttää.\n\nLaskennallisen osuuden ollessa alle 50%, voitto on ansaittu osittain tuurilla."
+      },
+      "factors": {
+        "offence": "Hyökkäys",
+        "physical": "Fyysisyys",
+        "goalies": "Maalivahdit"
       }
     },
     "noSeasonBreakdown": "Ei kausierittelyä saatavilla",

@@ -128,7 +128,8 @@
 }
 
 .leaderboard-finals-summary-grid,
-.leaderboard-finals-rates-grid {
+.leaderboard-finals-rates-grid,
+.leaderboard-finals-factors-grid {
   display: grid;
   gap: var(--finals-section-gap);
 }
@@ -139,6 +140,10 @@
 
 .leaderboard-finals-rates-grid {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.leaderboard-finals-factors-grid {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .leaderboard-finals-summary-card,
@@ -225,6 +230,44 @@
   color: var(--leaderboard-finals-delta-negative);
 }
 
+.leaderboard-finals-factor-card {
+  gap: 0.45rem;
+}
+
+.leaderboard-finals-factor-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
+  color: var(--mat-sys-on-surface);
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.leaderboard-finals-factor-side {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.leaderboard-finals-factor-side--winner {
+  color: var(--mat-sys-primary);
+}
+
+.leaderboard-finals-factor-abbr {
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.leaderboard-finals-factor-value {
+  font-weight: 800;
+}
+
+.leaderboard-finals-factor-separator {
+  color: var(--mat-sys-on-surface-variant);
+}
+
 @media (max-width: 720px) {
   .leaderboard-finals-matchup-line {
     gap: 0;
@@ -265,6 +308,10 @@
 
   .leaderboard-finals-header {
     padding-block: 0.45rem;
+  }
+
+  .leaderboard-finals-factor-line {
+    font-size: 0.95rem;
   }
 }
 
