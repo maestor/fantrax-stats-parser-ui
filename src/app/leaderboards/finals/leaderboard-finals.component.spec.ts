@@ -95,8 +95,11 @@ describe('LeaderboardFinalsComponent', () => {
     expect(screen.getAllByText('leaderboards.finals.summary.playedGames').length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.skaterTotalsTitle').length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.goalieTotalsTitle').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('tableColumn.goals').length).toBeGreaterThan(0);
-    expect(screen.getAllByText('tableColumn.saves').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('tableColumnShort.goals').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('tableColumnShort.saves').length).toBeGreaterThan(0);
+    expect(screen.getAllByTitle('tableColumn.goals').length).toBeGreaterThan(0);
+    expect(screen.getAllByTitle('tableColumn.saves').length).toBeGreaterThan(0);
+    expect(screen.getAllByTitle('tableColumn.goals')[0]).toHaveAttribute('aria-label', 'tableColumn.goals');
     expect(screen.getAllByText('2.18').length).toBeGreaterThan(0);
     expect(screen.getAllByText(/\(\+6,0\)/).length).toBeGreaterThan(0);
     expect(screen.getAllByText('(+6,0)')[0]).toHaveClass('leaderboard-finals-rate-delta-inline--positive');

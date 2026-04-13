@@ -664,9 +664,120 @@ mat-checkbox .mdc-label {
   box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
 }
 
-.leaderboard-finals .leaderboard-finals-comparison-row.draft-focus-target:focus-visible .leaderboard-finals-comparison-label {
+.leaderboard-finals .leaderboard-finals-comparison-tile.draft-focus-target:focus-visible .leaderboard-finals-comparison-label {
   background: color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container));
   color: var(--mat-sys-on-surface);
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-card {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-sys-surface-container-lowest);
+  overflow: hidden;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem 0.7rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container);
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-heading {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-heading--winner {
+  color: var(--mat-sys-primary);
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-heading--home {
+  text-align: left;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-heading--away {
+  text-align: right;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-body {
+  display: grid;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-group {
+  display: grid;
+  gap: 0;
+  padding: 0.95rem 1rem;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-group + .leaderboard-finals-comparison-group {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-team-band {
+  display: none;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-grid {
+  display: grid;
+  gap: 0;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  font-size: var(--mat-sys-body-medium-size, 14px);
+  overflow: hidden;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-grid .leaderboard-finals-comparison-tile:last-child {
+  border-bottom: 0;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-value,
+.leaderboard-finals .leaderboard-finals-comparison-label {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-value {
+  color: var(--mat-sys-on-surface);
+  font-weight: 600;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-value--home {
+  justify-content: flex-end;
+  padding-inline: 0.85rem 1rem;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-label {
+  justify-content: center;
+  min-width: 5rem;
+  padding: 0 0.7rem;
+  background: var(--finals-comparison-label-bg);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-value--away {
+  justify-content: flex-start;
+  padding-inline: 1rem 0.85rem;
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-value--winner {
+  color: var(--mat-sys-primary);
+  font-weight: 800;
 }
 
 .leaderboard-finals .leaderboard-finals-status {
@@ -699,6 +810,110 @@ mat-checkbox .mdc-label {
 
 .leaderboard-finals .loading-bar {
   width: 100%;
+}
+
+@media (min-width: 960px) {
+  .leaderboard-finals .leaderboard-finals-comparison-header {
+    display: none;
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-body {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-group {
+    padding: 0;
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-group + .leaderboard-finals-comparison-group {
+    border-top: 0;
+    border-left: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals .leaderboard-finals-subsection-title {
+    padding: 0.75rem 0.75rem 0.55rem;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    background: color-mix(in srgb, var(--mat-sys-surface-container) 85%, transparent);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-team-band {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 2.25rem;
+    padding-inline-start: 2rem;
+    color: var(--mat-sys-on-surface);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    background: color-mix(in srgb, var(--mat-sys-surface-container-high) 92%, transparent);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-team-band--winner {
+    color: var(--mat-sys-primary);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-team-band--home {
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-team-band--away {
+    border-top: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-team-band--placeholder {
+    color: transparent;
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-grid {
+    grid-template-columns: repeat(var(--finals-category-count, 1), minmax(0, 1fr));
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-tile {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(3, minmax(0, auto));
+    border-bottom: 0;
+    border-right: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-grid .leaderboard-finals-comparison-tile:last-child {
+    border-right: 0;
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-value,
+  .leaderboard-finals .leaderboard-finals-comparison-label {
+    justify-content: center;
+    min-height: 42px;
+    padding-inline: 0.35rem;
+    text-align: center;
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-value--home,
+  .leaderboard-finals .leaderboard-finals-comparison-value--away {
+    padding-block: 0.55rem 0.45rem;
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-label {
+    min-width: 0;
+    padding-block: 0.4rem;
+    border-block: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-value--away {
+    padding-block: 0.45rem 0.55rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard-finals .leaderboard-finals-comparison-group {
+    padding-inline: 0;
+  }
+
+  .leaderboard-finals .leaderboard-finals-comparison-value--home,
+  .leaderboard-finals .leaderboard-finals-comparison-value--away {
+    padding-inline: 0.7rem;
+  }
 }
 
 // Shared stats-table and virtual-table shell styles. Keeping the DOM-targeting rules
