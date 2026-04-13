@@ -190,6 +190,7 @@ body {
 
 // Tabs: avoid black-on-black by explicitly mapping to system tokens.
 .mat-mdc-tab-header {
+  --mat-tab-pagination-icon-color: var(--mat-sys-on-surface-variant);
   background-color: var(--mat-sys-surface-container);
   border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
@@ -202,6 +203,24 @@ body {
 .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
 .mat-mdc-tab-header .mdc-tab--active .mdc-tab__text-label {
   color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-tab-header-pagination {
+  color: var(--mat-sys-on-surface-variant);
+  opacity: 1;
+}
+
+.mat-mdc-tab-header-pagination-chevron {
+  border-color: var(--mat-tab-pagination-icon-color);
+  opacity: 1;
+}
+
+.mat-mdc-tab-header-pagination-disabled {
+  opacity: 0.38;
+}
+
+.mat-mdc-tab-header-pagination-disabled .mat-mdc-tab-header-pagination-chevron {
+  opacity: 0.38;
 }
 
 // Focus rings: some MDC focus indicators are too subtle in dark mode.

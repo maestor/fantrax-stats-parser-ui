@@ -322,17 +322,28 @@
     padding-block: 0.2rem;
   }
 
+  .leaderboard-finals-season {
+    order: 1;
+  }
+
   .leaderboard-finals-divider {
     display: none;
   }
 
   .leaderboard-finals-matchup-core {
+    order: 3;
     flex-basis: 100%;
     gap: 0.2rem;
   }
 
   .leaderboard-finals-selected-badge {
-    display: none;
+    order: 2;
+    display: inline-flex;
+    margin-inline-start: 0.35rem;
+    margin-inline-end: 0;
+    padding: 0.1rem 0.42rem;
+    font-size: 0.64rem;
+    line-height: 1.2;
   }
 
   .leaderboard-finals-team-name {
