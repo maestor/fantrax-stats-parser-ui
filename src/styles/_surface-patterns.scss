@@ -1,0 +1,44 @@
+@mixin outlined-panel-shell(
+  $background: var(--mat-expansion-container-background-color),
+  $radius: 1rem
+) {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius;
+  background: $background;
+  box-shadow: var(--mat-sys-level1);
+  overflow: hidden;
+}
+
+@mixin rounded-surface-card(
+  $padding: null,
+  $background: var(--mat-sys-surface-container-lowest),
+  $radius: 1rem
+) {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $radius;
+  background: $background;
+
+  @if $padding != null {
+    padding: $padding;
+  }
+}
+
+@mixin status-surface($padding) {
+  margin: 0;
+  padding: $padding;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
+      var(--mat-sys-surface) 100%);
+  color: var(--mat-sys-on-surface);
+  line-height: 1.6;
+}
+
+@mixin status-surface-error {
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--mat-sys-error-container) 46%, transparent) 0%,
+      var(--mat-sys-surface) 100%);
+}

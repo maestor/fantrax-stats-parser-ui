@@ -1,3 +1,5 @@
+@use './surface-patterns';
+
 :where(.entry-drafts, .opening-draft) {
   --draft-content-padding-inline: 1.25rem;
   --draft-pick-row-gap: 0.65rem;
@@ -8,23 +10,11 @@
 }
 
 :where(.entry-drafts, .opening-draft) .draft-status {
-  margin: 0;
-  padding: 1rem var(--draft-content-padding-inline);
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 1rem;
-  background:
-    linear-gradient(180deg,
-      color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
-      var(--mat-sys-surface) 100%);
-  color: var(--mat-sys-on-surface);
-  line-height: 1.6;
+  @include surface-patterns.status-surface(1rem var(--draft-content-padding-inline));
 }
 
 :where(.entry-drafts, .opening-draft) .draft-status--error {
-  background:
-    linear-gradient(180deg,
-      color-mix(in srgb, var(--mat-sys-error-container) 46%, transparent) 0%,
-      var(--mat-sys-surface) 100%);
+  @include surface-patterns.status-surface-error;
 }
 
 :where(.entry-drafts, .opening-draft) .draft-status--loading {
@@ -60,11 +50,7 @@
     color-mix(in srgb, var(--mat-sys-primary) 6%, var(--mat-sys-surface-container-low));
   --mat-expansion-header-focus-state-layer-color:
     color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container-low));
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 1rem;
-  background: var(--mat-expansion-container-background-color);
-  box-shadow: var(--mat-sys-level1);
-  overflow: hidden;
+  @include surface-patterns.outlined-panel-shell;
 }
 
 :where(.entry-drafts, .opening-draft) .draft-panel.mat-expanded {
