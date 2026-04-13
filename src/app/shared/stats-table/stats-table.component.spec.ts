@@ -357,8 +357,8 @@ describe('StatsTableComponent — user behavior', () => {
         name: 'Goalie Alpha',
         games: 50,
         scoreAdjustedByGames: 4.5,
-        gaa: '2.10',
-        savePercent: '0.921',
+        gaa: 2.1,
+        savePercent: 0.921,
       },
     ] as unknown as TableRow[];
     view.fixture.componentInstance.columns = [

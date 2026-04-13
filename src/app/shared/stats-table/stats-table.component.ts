@@ -26,6 +26,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { Column, ColumnIcon } from '@shared/column.types';
+import { formatStatDisplayValue } from '@shared/utils/stat-value-format.utils';
 import {
   Player,
   Goalie,
@@ -457,6 +458,10 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
   getCellValue(row: TableRow, field: string): number | string | undefined {
     return (row as Record<string, unknown>)[field] as number | string | undefined;
+  }
+
+  formatDefaultCellValue(column: string, value: number | string | undefined): string {
+    return formatStatDisplayValue(column, value);
   }
 
   isExpandControlColumn(column: Column): boolean {

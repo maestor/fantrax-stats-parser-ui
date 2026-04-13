@@ -188,7 +188,10 @@
                   </span>
                   <strong class="leaderboard-finals-rate-value">
                     {{ formatPercent(entry.rates.deservedToWinRate) }}
-                    <span class="leaderboard-finals-rate-delta-inline">
+                    <span
+                      class="leaderboard-finals-rate-delta-inline"
+                      [class.leaderboard-finals-rate-delta-inline--positive]="getRateDeltaTone(entry) === 'positive'"
+                      [class.leaderboard-finals-rate-delta-inline--negative]="getRateDeltaTone(entry) === 'negative'">
                       ({{ formatRateDeltaCompact(entry) }})
                     </span>
                   </strong>
