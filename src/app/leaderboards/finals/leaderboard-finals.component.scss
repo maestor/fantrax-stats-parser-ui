@@ -1,5 +1,7 @@
 .leaderboard-finals {
   --finals-content-padding-inline: 1.25rem;
+  --leaderboard-finals-delta-positive: light-dark(#1f6f2a, #8fe39a);
+  --leaderboard-finals-delta-negative: var(--mat-sys-error);
 }
 
 .leaderboard-finals-accordion {
@@ -314,6 +316,14 @@
   font-size: 0.95rem;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.leaderboard-finals-rate-delta-inline--positive {
+  color: var(--leaderboard-finals-delta-positive);
+}
+
+.leaderboard-finals-rate-delta-inline--negative {
+  color: var(--leaderboard-finals-delta-negative);
 }
 
 @media (max-width: 720px) {

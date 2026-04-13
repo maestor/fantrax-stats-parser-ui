@@ -24,6 +24,7 @@ import {
 } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { SettingsService } from '@services/settings.service';
+import { formatStatDisplayValue } from '@shared/utils/stat-value-format.utils';
 import {
   DraftPanelFocusTargetDirective,
   DraftPanelHeaderNavigationDirective,
@@ -128,19 +129,29 @@ export class LeaderboardFinalsComponent implements OnInit {
   }
 
   formatRateDelta(entry: FinalsLeaderboardEntry): string {
-    const delta =
-      this.normalizeRateValue(entry.rates.deservedToWinRate)
-      - this.normalizeRateValue(entry.rates.winRate);
+    const delta = this.getRateDeltaValue(entry);
     const sign = delta > 0 ? '+' : '';
     return `${sign}${delta.toFixed(1).replace('.', ',')} %-yks.`;
   }
 
   formatRateDeltaCompact(entry: FinalsLeaderboardEntry): string {
-    const delta =
-      this.normalizeRateValue(entry.rates.deservedToWinRate)
-      - this.normalizeRateValue(entry.rates.winRate);
+    const delta = this.getRateDeltaValue(entry);
     const sign = delta > 0 ? '+' : '';
     return `${sign}${delta.toFixed(1).replace('.', ',')}`;
+  }
+
+  getRateDeltaTone(entry: FinalsLeaderboardEntry): 'negative' | 'neutral' | 'positive' {
+    const delta = this.getRateDeltaValue(entry);
+
+    if (delta > 0) {
+      return 'positive';
+    }
+
+    if (delta < 0) {
+      return 'negative';
+    }
+
+    return 'neutral';
   }
 
   formatScore(team: FinalsLeaderboardTeam): string {
@@ -185,12 +196,8 @@ export class LeaderboardFinalsComponent implements OnInit {
       return '—';
     }
 
-    if (statKey === 'savePercent') {
-      return this.formatNumber(value, 3);
-    }
-
-    if (statKey === 'gaa') {
-      return this.formatNumber(value, 2);
+    if (statKey === 'savePercent' || statKey === 'gaa') {
+      return formatStatDisplayValue(statKey, value);
     }
 
     return this.formatNumber(value, Number.isInteger(value) ? 0 : 1);
@@ -205,5 +212,10 @@ export class LeaderboardFinalsComponent implements OnInit {
 
   private normalizeRateValue(value: number): number {
     return Math.abs(value) > 1 ? value : value * 100;
+  }
+
+  private getRateDeltaValue(entry: FinalsLeaderboardEntry): number {
+    return this.normalizeRateValue(entry.rates.deservedToWinRate)
+      - this.normalizeRateValue(entry.rates.winRate);
   }
 }

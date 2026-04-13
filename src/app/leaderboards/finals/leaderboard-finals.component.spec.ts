@@ -97,7 +97,9 @@ describe('LeaderboardFinalsComponent', () => {
     expect(screen.getAllByText('leaderboards.finals.goalieTotalsTitle').length).toBeGreaterThan(0);
     expect(screen.getAllByText('tableColumn.goals').length).toBeGreaterThan(0);
     expect(screen.getAllByText('tableColumn.saves').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('2.18').length).toBeGreaterThan(0);
     expect(screen.getAllByText(/\(\+6,0\)/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText('(+6,0)')[0]).toHaveClass('leaderboard-finals-rate-delta-inline--positive');
   });
 
   it('shows the API error state and marks the footer ready when the finals request fails', async () => {
@@ -167,13 +169,23 @@ describe('LeaderboardFinalsComponent', () => {
         deservedToWinRate: 60,
       },
     };
+    const neutralDeltaEntry: FinalsLeaderboardEntry = {
+      ...entry,
+      rates: {
+        winRate: 62,
+        deservedToWinRate: 62,
+      },
+    };
 
     expect(component.hasSelectedFinalist(entry)).toBe(false);
     expect(component.formatPercent(0.673)).toBe('67,3 %');
     expect(component.formatRateDelta(entry)).toBe('+6,0 %-yks.');
     expect(component.formatRateDeltaCompact(negativeDeltaEntry)).toBe('-7,3');
-    expect(component.getCategoryValue(savePercentCategory, 'home')).toBe('0,925');
-    expect(component.getCategoryValue(gaaCategory, 'home')).toBe('2,18');
+    expect(component.getRateDeltaTone(entry)).toBe('positive');
+    expect(component.getRateDeltaTone(negativeDeltaEntry)).toBe('negative');
+    expect(component.getRateDeltaTone(neutralDeltaEntry)).toBe('neutral');
+    expect(component.getCategoryValue(savePercentCategory, 'home')).toBe('0.925');
+    expect(component.getCategoryValue(gaaCategory, 'home')).toBe('2.18');
     expect(component.getCategoryValue(nullCategory, 'away')).toBe('—');
   });
 });

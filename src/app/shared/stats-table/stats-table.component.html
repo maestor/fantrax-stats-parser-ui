@@ -94,7 +94,7 @@
             [ngClass]="getCellClass(column)">
             {{ formatCell
                 ? formatCell(column.field, getCellValue(element, column.field))
-                : (getCellValue(element, column.field) ?? "-") }}
+                : formatDefaultCellValue(column.field, getCellValue(element, column.field)) }}
           </td>
         </ng-container>
       }

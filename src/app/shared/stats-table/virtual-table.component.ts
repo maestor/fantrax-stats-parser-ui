@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { Column, ColumnIcon } from '@shared/column.types';
+import { formatStatDisplayValue } from '@shared/utils/stat-value-format.utils';
 import { TableRow } from './stats-table.component';
 
 const ROW_NUMBER_COLUMN = '__rowNumber';
@@ -184,7 +185,7 @@ export class VirtualTableComponent implements AfterViewInit {
 
   formatValue(row: TableRow, field: string): string {
     const value = this.getCellValue(row, field);
-    return this.formatCell ? this.formatCell(row, field, value) : String(value ?? '-');
+    return this.formatCell ? this.formatCell(row, field, value) : formatStatDisplayValue(field, value);
   }
 
   filterItems(event: Event): void {
