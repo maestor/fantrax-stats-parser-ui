@@ -299,9 +299,9 @@
         "deltaTooltip": "Laskennallinen osuus yrittää kuvata sitä kuinka tiukka finaali on todellisuudessa ollut.\n\nEron ollessa positiivinen kertoo se siitä, että voittaja olisi ansainnut suuremmankin voiton.\n\nEron ollessa negatiivinen, ottelu oli tasaisempi miltä lopullinen tulos näyttää.\n\nLaskennallisen osuuden ollessa alle 50%, voitto on ansaittu osittain tuurilla."
       },
       "factors": {
-        "offence": "Hyökkäys",
-        "physical": "Fyysisyys",
-        "goalies": "Maalivahdit"
+        "offence": "Tuloksenteko (40%)",
+        "physical": "Fyysinen preesens (20%)",
+        "goalies": "Torjuntatyöskentely (33%)"
       }
     },
     "noSeasonBreakdown": "Ei kausierittelyä saatavilla",
