@@ -190,6 +190,7 @@ body {
 
 // Tabs: avoid black-on-black by explicitly mapping to system tokens.
 .mat-mdc-tab-header {
+  --mat-tab-pagination-icon-color: var(--mat-sys-on-surface-variant);
   background-color: var(--mat-sys-surface-container);
   border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
@@ -202,6 +203,24 @@ body {
 .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label,
 .mat-mdc-tab-header .mdc-tab--active .mdc-tab__text-label {
   color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-tab-header-pagination {
+  color: var(--mat-sys-on-surface-variant);
+  opacity: 1;
+}
+
+.mat-mdc-tab-header-pagination-chevron {
+  border-color: var(--mat-tab-pagination-icon-color);
+  opacity: 1;
+}
+
+.mat-mdc-tab-header-pagination-disabled {
+  opacity: 0.38;
+}
+
+.mat-mdc-tab-header-pagination-disabled .mat-mdc-tab-header-pagination-chevron {
+  opacity: 0.38;
 }
 
 // Focus rings: some MDC focus indicators are too subtle in dark mode.
@@ -618,6 +637,68 @@ mat-checkbox .mdc-label {
 .table-card-tooltip--with-header .mdc-tooltip__surface::first-line {
   font-weight: 700;
   color: var(--mat-sys-on-surface);
+}
+
+.leaderboard-finals .leaderboard-finals-inline-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--mat-sys-on-surface-variant);
+  cursor: pointer;
+}
+
+.leaderboard-finals .leaderboard-finals-inline-help mat-icon {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.leaderboard-finals .draft-focus-target:focus-visible {
+  outline: none;
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, var(--mat-sys-primary) 5%, var(--mat-sys-surface-container-low));
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+}
+
+.leaderboard-finals .leaderboard-finals-comparison-row.draft-focus-target:focus-visible .leaderboard-finals-comparison-label {
+  background: color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container));
+  color: var(--mat-sys-on-surface);
+}
+
+.leaderboard-finals .leaderboard-finals-status {
+  margin: 0;
+  padding: 1rem var(--finals-content-padding-inline);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--mat-sys-surface-container) 88%, transparent) 0%,
+      var(--mat-sys-surface) 100%);
+  color: var(--mat-sys-on-surface);
+  line-height: 1.6;
+}
+
+.leaderboard-finals .leaderboard-finals-status--error {
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--mat-sys-error-container) 46%, transparent) 0%,
+      var(--mat-sys-surface) 100%);
+  color: var(--mat-sys-error);
+}
+
+.leaderboard-finals .leaderboard-finals-status--loading {
+  display: grid;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 0;
+}
+
+.leaderboard-finals .loading-bar {
+  width: 100%;
 }
 
 // Shared stats-table and virtual-table shell styles. Keeping the DOM-targeting rules

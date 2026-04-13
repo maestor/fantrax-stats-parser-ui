@@ -75,6 +75,18 @@ export const routes: Routes = [
             (m) => m.LeaderboardTransactionsComponent
           ),
       },
+      {
+        path: 'finals',
+        data: {
+          seo: {
+            tabKey: 'leaderboards.tabs.finals',
+          } satisfies RouteSeoData,
+        },
+        loadComponent: () =>
+          import('./leaderboards/finals/leaderboard-finals.component').then(
+            (m) => m.LeaderboardFinalsComponent
+          ),
+      },
     ],
   },
   {

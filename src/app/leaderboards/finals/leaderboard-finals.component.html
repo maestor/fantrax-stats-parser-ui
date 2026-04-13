@@ -1,0 +1,268 @@
+<section class="leaderboard-finals" id="leaderboard-table" aria-labelledby="leaderboard-finals-heading">
+  <h3 id="leaderboard-finals-heading" class="sr-only" tabindex="-1" data-skip-focus="true">
+    {{ 'leaderboards.tabs.finals' | translate }}
+  </h3>
+
+  @if (loading) {
+    <div class="leaderboard-finals-status leaderboard-finals-status--loading" role="status" aria-live="polite"
+      tabindex="-1" data-skip-focus="true">
+      <span>{{ 'leaderboards.loading' | translate }}</span>
+      <mat-progress-bar class="loading-bar" mode="buffer" [value]="5" [bufferValue]="25" />
+    </div>
+  } @else if (apiError) {
+    <p class="leaderboard-finals-status leaderboard-finals-status--error" role="alert" tabindex="-1"
+      data-skip-focus="true">
+      {{ 'leaderboards.apiUnavailable' | translate }}
+    </p>
+  } @else if (finals().length === 0) {
+    <p class="leaderboard-finals-status" role="status" tabindex="-1" data-skip-focus="true">
+      {{ 'leaderboards.finals.noResults' | translate }}
+    </p>
+  } @else {
+    <mat-accordion class="leaderboard-finals-accordion" displayMode="flat" multi>
+      @for (entry of finals(); track entry.season) {
+        <mat-expansion-panel class="draft-panel leaderboard-finals-panel" #panel>
+          <mat-expansion-panel-header class="draft-panel-header leaderboard-finals-header" draftPanelHeaderNavigation>
+            <div class="leaderboard-finals-matchup-line">
+              <span class="leaderboard-finals-season">
+                {{ entry.season }}-{{ (entry.season + 1).toString().slice(-2) }}
+              </span>
+
+              <span class="leaderboard-finals-divider" aria-hidden="true">•</span>
+
+              <div class="leaderboard-finals-matchup-core">
+                <span class="leaderboard-finals-team-name"
+                  [class.leaderboard-finals-team-name--winner]="isWinner(entry, entry.homeTeam.teamId)">
+                  {{ entry.homeTeam.teamName }}
+                </span>
+
+                <span class="leaderboard-finals-score">
+                  {{ formatScore(entry.homeTeam) }} - {{ formatScore(entry.awayTeam) }}
+                </span>
+
+                <span class="leaderboard-finals-team-name"
+                  [class.leaderboard-finals-team-name--winner]="isWinner(entry, entry.awayTeam.teamId)">
+                  {{ entry.awayTeam.teamName }}
+                </span>
+              </div>
+
+              @if (hasSelectedFinalist(entry)) {
+                <span class="leaderboard-finals-selected-badge">
+                  {{ 'leaderboards.finals.selectedTeamBadge' | translate }}
+                </span>
+              }
+            </div>
+          </mat-expansion-panel-header>
+
+          <div class="leaderboard-finals-content" [attr.aria-hidden]="panel.expanded ? null : 'true'"
+            [attr.inert]="panel.expanded ? null : ''">
+            <section class="leaderboard-finals-section">
+              <h4 class="leaderboard-finals-section-title">
+                {{ 'leaderboards.finals.summaryTitle' | translate }}
+              </h4>
+
+              <div class="leaderboard-finals-summary-grid">
+                <article class="leaderboard-finals-summary-card draft-focus-target" tabindex="-1" draftPanelFocusTarget>
+                  <span class="leaderboard-finals-summary-label">
+                    {{ 'leaderboards.finals.summary.winner' | translate }}
+                  </span>
+                  <span class="leaderboard-finals-summary-value">
+                    <span class="leaderboard-finals-summary-trophy" aria-hidden="true">🏆</span>
+                    {{ getWinnerTeam(entry).teamName }}
+                  </span>
+
+                  <div class="leaderboard-finals-summary-meta">
+                    <span class="leaderboard-finals-summary-meta-label leaderboard-finals-summary-meta-label--with-icon">
+                      <span>{{ 'leaderboards.finals.summary.categoryRecord' | translate }}</span>
+                      <button type="button" class="leaderboard-finals-inline-help"
+                        [matTooltip]="'leaderboards.finals.summary.recordTooltip' | translate"
+                        [attr.aria-label]="'leaderboards.finals.summary.recordTooltip' | translate">
+                        <mat-icon fontIcon="info" />
+                      </button>
+                    </span>
+                    <span class="leaderboard-finals-summary-meta-value"
+                      [attr.aria-label]="'leaderboards.finals.summary.recordAria' | translate : { value: formatCategoryRecord(getWinnerTeam(entry)) }">
+                      {{ formatCategoryRecord(getWinnerTeam(entry)) }}
+                    </span>
+                  </div>
+
+                  <div class="leaderboard-finals-summary-meta">
+                    <span class="leaderboard-finals-summary-meta-label">
+                      {{ 'leaderboards.finals.summary.playedGames' | translate }}
+                    </span>
+                    <span class="leaderboard-finals-summary-games"
+                      [attr.aria-label]="'leaderboards.finals.summary.playedGamesAria' | translate : { total: getWinnerTeam(entry).playedGames.total, skaters: getWinnerTeam(entry).playedGames.skaters, goalies: getWinnerTeam(entry).playedGames.goalies }"
+                      [attr.title]="'leaderboards.finals.summary.playedGamesAria' | translate : { total: getWinnerTeam(entry).playedGames.total, skaters: getWinnerTeam(entry).playedGames.skaters, goalies: getWinnerTeam(entry).playedGames.goalies }">
+                      <span class="leaderboard-finals-summary-game-part">
+                        <span aria-hidden="true">👥</span>
+                        <span>{{ getWinnerTeam(entry).playedGames.total }}</span>
+                      </span>
+                      <span class="leaderboard-finals-divider" aria-hidden="true">•</span>
+                      <span class="leaderboard-finals-summary-game-part">
+                        <span aria-hidden="true">🏒</span>
+                        <span>{{ getWinnerTeam(entry).playedGames.skaters }}</span>
+                      </span>
+                      <span class="leaderboard-finals-divider" aria-hidden="true">•</span>
+                      <span class="leaderboard-finals-summary-game-part">
+                        <span aria-hidden="true">🥅</span>
+                        <span>{{ getWinnerTeam(entry).playedGames.goalies }}</span>
+                      </span>
+                    </span>
+                  </div>
+                </article>
+
+                <article class="leaderboard-finals-summary-card draft-focus-target" tabindex="-1" draftPanelFocusTarget>
+                  <span class="leaderboard-finals-summary-label">
+                    {{ 'leaderboards.finals.summary.loser' | translate }}
+                  </span>
+                  <span class="leaderboard-finals-summary-value">
+                    {{ getLoserTeam(entry).teamName }}
+                  </span>
+
+                  <div class="leaderboard-finals-summary-meta">
+                    <span class="leaderboard-finals-summary-meta-label leaderboard-finals-summary-meta-label--with-icon">
+                      <span>{{ 'leaderboards.finals.summary.categoryRecord' | translate }}</span>
+                      <button type="button" class="leaderboard-finals-inline-help"
+                        [matTooltip]="'leaderboards.finals.summary.recordTooltip' | translate"
+                        [attr.aria-label]="'leaderboards.finals.summary.recordTooltip' | translate">
+                        <mat-icon fontIcon="info" />
+                      </button>
+                    </span>
+                    <span class="leaderboard-finals-summary-meta-value"
+                      [attr.aria-label]="'leaderboards.finals.summary.recordAria' | translate : { value: formatCategoryRecord(getLoserTeam(entry)) }">
+                      {{ formatCategoryRecord(getLoserTeam(entry)) }}
+                    </span>
+                  </div>
+
+                  <div class="leaderboard-finals-summary-meta">
+                    <span class="leaderboard-finals-summary-meta-label">
+                      {{ 'leaderboards.finals.summary.playedGames' | translate }}
+                    </span>
+                    <span class="leaderboard-finals-summary-games"
+                      [attr.aria-label]="'leaderboards.finals.summary.playedGamesAria' | translate : { total: getLoserTeam(entry).playedGames.total, skaters: getLoserTeam(entry).playedGames.skaters, goalies: getLoserTeam(entry).playedGames.goalies }"
+                      [attr.title]="'leaderboards.finals.summary.playedGamesAria' | translate : { total: getLoserTeam(entry).playedGames.total, skaters: getLoserTeam(entry).playedGames.skaters, goalies: getLoserTeam(entry).playedGames.goalies }">
+                      <span class="leaderboard-finals-summary-game-part">
+                        <span aria-hidden="true">👥</span>
+                        <span>{{ getLoserTeam(entry).playedGames.total }}</span>
+                      </span>
+                      <span class="leaderboard-finals-divider" aria-hidden="true">•</span>
+                      <span class="leaderboard-finals-summary-game-part">
+                        <span aria-hidden="true">🏒</span>
+                        <span>{{ getLoserTeam(entry).playedGames.skaters }}</span>
+                      </span>
+                      <span class="leaderboard-finals-divider" aria-hidden="true">•</span>
+                      <span class="leaderboard-finals-summary-game-part">
+                        <span aria-hidden="true">🥅</span>
+                        <span>{{ getLoserTeam(entry).playedGames.goalies }}</span>
+                      </span>
+                    </span>
+                  </div>
+                </article>
+              </div>
+            </section>
+
+            <section class="leaderboard-finals-section">
+              <h4 class="leaderboard-finals-section-title">
+                {{ 'leaderboards.finals.ratesTitle' | translate }}
+              </h4>
+
+              <div class="leaderboard-finals-rates-grid">
+                <article class="leaderboard-finals-rate-card draft-focus-target" tabindex="-1" draftPanelFocusTarget>
+                  <span class="leaderboard-finals-summary-label">
+                    {{ 'leaderboards.finals.rates.actual' | translate }}
+                  </span>
+                  <strong class="leaderboard-finals-rate-value">
+                    {{ formatPercent(entry.rates.winRate) }}
+                  </strong>
+                </article>
+
+                <article class="leaderboard-finals-rate-card draft-focus-target" tabindex="-1" draftPanelFocusTarget>
+                  <span class="leaderboard-finals-summary-label leaderboard-finals-summary-label--with-icon">
+                    <span>{{ 'leaderboards.finals.rates.deserved' | translate }}</span>
+                    <button type="button" class="leaderboard-finals-inline-help"
+                      [matTooltip]="'leaderboards.finals.rates.deltaTooltip' | translate"
+                      matTooltipClass="table-card-tooltip"
+                      [attr.aria-label]="'leaderboards.finals.rates.deltaTooltip' | translate">
+                      <mat-icon fontIcon="info" />
+                    </button>
+                  </span>
+                  <strong class="leaderboard-finals-rate-value">
+                    {{ formatPercent(entry.rates.deservedToWinRate) }}
+                    <span class="leaderboard-finals-rate-delta-inline">
+                      ({{ formatRateDeltaCompact(entry) }})
+                    </span>
+                  </strong>
+                </article>
+              </div>
+            </section>
+
+            <section class="leaderboard-finals-section">
+              <h4 class="leaderboard-finals-section-title">
+                {{ 'leaderboards.finals.categoriesTitle' | translate }}
+              </h4>
+
+              <div class="leaderboard-finals-comparison-card">
+                <div class="leaderboard-finals-comparison-header" aria-hidden="true">
+                  <span class="leaderboard-finals-comparison-heading leaderboard-finals-comparison-heading--home">
+                    {{ entry.homeTeam.teamName }}
+                  </span>
+                  <span class="leaderboard-finals-comparison-heading leaderboard-finals-comparison-heading--away">
+                    {{ entry.awayTeam.teamName }}
+                  </span>
+                </div>
+
+                <div class="leaderboard-finals-comparison-group">
+                  <h5 class="leaderboard-finals-subsection-title">
+                    {{ 'leaderboards.finals.skaterTotalsTitle' | translate }}
+                  </h5>
+
+                  @for (category of getSkaterCategories(entry); track category.statKey) {
+                    <div class="leaderboard-finals-comparison-row draft-focus-target" tabindex="-1" draftPanelFocusTarget>
+                      <span
+                        class="leaderboard-finals-comparison-value leaderboard-finals-comparison-value--home"
+                        [class.leaderboard-finals-comparison-value--winner]="categoryWonBy(category, entry.homeTeam.teamId)">
+                        {{ getCategoryValue(category, 'home') }}
+                      </span>
+                      <span class="leaderboard-finals-comparison-label">
+                        {{ ('tableColumn.' + category.statKey) | translate }}
+                      </span>
+                      <span
+                        class="leaderboard-finals-comparison-value leaderboard-finals-comparison-value--away"
+                        [class.leaderboard-finals-comparison-value--winner]="categoryWonBy(category, entry.awayTeam.teamId)">
+                        {{ getCategoryValue(category, 'away') }}
+                      </span>
+                    </div>
+                  }
+                </div>
+
+                <div class="leaderboard-finals-comparison-group">
+                  <h5 class="leaderboard-finals-subsection-title">
+                    {{ 'leaderboards.finals.goalieTotalsTitle' | translate }}
+                  </h5>
+
+                  @for (category of getGoalieCategories(entry); track category.statKey) {
+                    <div class="leaderboard-finals-comparison-row draft-focus-target" tabindex="-1" draftPanelFocusTarget>
+                      <span
+                        class="leaderboard-finals-comparison-value leaderboard-finals-comparison-value--home"
+                        [class.leaderboard-finals-comparison-value--winner]="categoryWonBy(category, entry.homeTeam.teamId)">
+                        {{ getCategoryValue(category, 'home') }}
+                      </span>
+                      <span class="leaderboard-finals-comparison-label">
+                        {{ ('tableColumn.' + category.statKey) | translate }}
+                      </span>
+                      <span
+                        class="leaderboard-finals-comparison-value leaderboard-finals-comparison-value--away"
+                        [class.leaderboard-finals-comparison-value--winner]="categoryWonBy(category, entry.awayTeam.teamId)">
+                        {{ getCategoryValue(category, 'away') }}
+                      </span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </section>
+          </div>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  }
+</section>

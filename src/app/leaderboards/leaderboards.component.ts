@@ -21,6 +21,7 @@ export class LeaderboardsComponent implements OnInit {
     { label: 'leaderboards.tabs.regular', path: '/leaderboards/regular' },
     { label: 'leaderboards.tabs.playoffs', path: '/leaderboards/playoffs' },
     { label: 'leaderboards.tabs.transactions', path: '/leaderboards/transactions' },
+    { label: 'leaderboards.tabs.finals', path: '/leaderboards/finals' },
   ];
 
   ngOnInit(): void {
