@@ -37,7 +37,7 @@ The docs in this repo intentionally focus on project-specific architecture, work
 	- Expand team rows to see season-by-season breakdowns
 	- Ties, trophies, and transaction summaries are presented clearly in the standings
 	- The shared selected team receives keyboard focus by default unless selected-team highlighting is disabled from the settings drawer
-	- Finals view presents season-by-season championship matchups as expandable cards with category and totals breakdowns
+	- Finals view presents season-by-season championship matchups as expandable cards with responsive category breakdowns and compact stat labels
 - 📚 **Career Listings**: Browse all-time player and goalie career tables plus career highlights
 	- Search and sort the main career tables
 	- Long lists stay responsive
