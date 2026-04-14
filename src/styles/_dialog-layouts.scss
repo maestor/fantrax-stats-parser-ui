@@ -1,4 +1,31 @@
+:where(.player-card-dialog, .comparison-dialog-panel, .help-dialog) {
+  --dialog-container-width: auto;
+  --dialog-container-max-height: calc(var(--app-height) - 16px);
+  --dialog-surface-width: auto;
+  --dialog-surface-max-width: 95vw;
+  --dialog-surface-max-height: var(--dialog-container-max-height);
+  --dialog-surface-overflow: auto;
+  --dialog-surface-overscroll-x: auto;
+
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+    width: var(--dialog-container-width) !important;
+    max-height: var(--dialog-container-max-height) !important;
+
+    .mdc-dialog__surface {
+      width: var(--dialog-surface-width) !important;
+      max-width: var(--dialog-surface-max-width) !important;
+      max-height: var(--dialog-surface-max-height) !important;
+      overflow: var(--dialog-surface-overflow);
+      overscroll-behavior-x: var(--dialog-surface-overscroll-x);
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}
+
 .help-dialog {
+  --dialog-surface-width: min(720px, 95vw);
+
   button[mat-icon-button],
   .mat-mdc-icon-button {
     color: var(--mat-sys-on-surface) !important;
@@ -18,36 +45,12 @@
   .mat-mdc-dialog-actions a {
     color: var(--mat-sys-primary) !important;
   }
-
-  .mat-mdc-dialog-container {
-    max-width: 95vw !important;
-    width: auto !important;
-    max-height: calc(var(--app-height) - 16px) !important;
-
-    .mdc-dialog__surface {
-      width: min(720px, 95vw) !important;
-      max-width: 95vw !important;
-      max-height: calc(var(--app-height) - 16px) !important;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .mat-mdc-dialog-container {
-      max-width: 95vw !important;
-      max-height: calc(var(--app-height) - 8px) !important;
-
-      .mdc-dialog__surface {
-        width: 95vw !important;
-        max-height: calc(var(--app-height) - 8px) !important;
-      }
-    }
-  }
 }
 
 // Player card graphs: checkbox labels and boxes need contrast in dark mode.
 .player-card-dialog {
+  --dialog-surface-overscroll-x: none;
+
   button[mat-icon-button],
   .mat-mdc-icon-button {
     color: var(--mat-sys-on-surface) !important;
@@ -72,70 +75,38 @@
 
   // Prevent macOS trackpad back/forward gesture while dialog is open
   overscroll-behavior-x: none;
-
-  .mat-mdc-dialog-container {
-    max-width: 95vw !important;
-    width: auto !important;
-    max-height: calc(var(--app-height) - 16px) !important;
-
-    .mdc-dialog__surface {
-      max-width: 95vw !important;
-      width: auto !important;
-      max-height: calc(var(--app-height) - 16px) !important;
-      overflow: auto;
-      overscroll-behavior-x: none;
-      -webkit-overflow-scrolling: touch;
-    }
-  }
-
-  // Mobile: ensure consistent 95vw width and remove padding
-  @media (max-width: 768px) {
-    .mat-mdc-dialog-container {
-      max-width: 95vw !important;
-      width: 95vw !important;
-      padding: 0 !important;
-      max-height: calc(var(--app-height) - 8px) !important;
-
-      .mdc-dialog__surface {
-        max-width: 95vw !important;
-        width: 95vw !important;
-        padding: 0 !important;
-        max-height: calc(var(--app-height) - 8px) !important;
-      }
-    }
-  }
 }
 
 .comparison-dialog-panel {
-  .mat-mdc-dialog-container {
-    max-width: 95vw !important;
-    width: auto !important;
-    max-height: calc(var(--app-height) - 16px) !important;
+  --dialog-mobile-container-max-height: calc(var(--app-height) - 12px);
+  --dialog-mobile-surface-overflow: hidden;
+}
 
-    .mdc-dialog__surface {
+@media (max-width: 768px) {
+  :where(.player-card-dialog, .comparison-dialog-panel, .help-dialog) {
+    .mat-mdc-dialog-container {
       max-width: 95vw !important;
-      width: auto !important;
-      max-height: calc(var(--app-height) - 16px) !important;
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
+      max-height: var(--dialog-mobile-container-max-height, calc(var(--app-height) - 8px)) !important;
+
+      .mdc-dialog__surface {
+        max-height: var(--dialog-mobile-surface-max-height, var(--dialog-mobile-container-max-height, calc(var(--app-height) - 8px))) !important;
+        overflow: var(--dialog-mobile-surface-overflow, var(--dialog-surface-overflow));
+      }
     }
   }
 
-  // Mobile: match player card sizing (full width with margins)
-  @media (max-width: 768px) {
-    .mat-mdc-dialog-container {
-      max-width: 95vw !important;
+  .player-card-dialog .mat-mdc-dialog-container,
+  .comparison-dialog-panel .mat-mdc-dialog-container {
+    width: 95vw !important;
+    padding: 0 !important;
+
+    .mdc-dialog__surface {
       width: 95vw !important;
       padding: 0 !important;
-      max-height: calc(var(--app-height) - 12px) !important;
-
-      .mdc-dialog__surface {
-        max-width: 95vw !important;
-        width: 95vw !important;
-        padding: 0 !important;
-        max-height: calc(var(--app-height) - 12px) !important;
-        overflow: hidden;
-      }
     }
+  }
+
+  .help-dialog .mat-mdc-dialog-container .mdc-dialog__surface {
+    width: 95vw !important;
   }
 }

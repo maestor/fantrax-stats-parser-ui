@@ -1,0 +1,45 @@
+@mixin responsive-dialog-surface(
+  $base-padding: null,
+  $base-width: null,
+  $base-min-width: 600px,
+  $base-max-width: 960px,
+  $tablet-max-width: 90vw,
+  $mobile-width: 100%,
+  $mobile-small-padding: null
+) {
+  min-width: $base-min-width;
+  max-width: $base-max-width;
+
+  @if $base-width != null {
+    width: $base-width;
+  }
+
+  @if $base-padding != null {
+    padding: $base-padding;
+  }
+
+  @media (max-width: 960px) {
+    max-width: $tablet-max-width;
+  }
+
+  @media (max-width: 768px) {
+    min-width: $mobile-width;
+    max-width: $mobile-width;
+
+    @if $base-width != null {
+      width: $mobile-width;
+    }
+  }
+
+  @media (max-width: 480px) {
+    min-width: $mobile-width;
+
+    @if $base-width != null {
+      width: $mobile-width;
+    }
+
+    @if $mobile-small-padding != null {
+      padding: $mobile-small-padding;
+    }
+  }
+}

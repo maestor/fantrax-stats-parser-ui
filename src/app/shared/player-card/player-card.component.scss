@@ -1,8 +1,7 @@
+@use '../styles/dialog-surface' as dialog;
+
 .player-card {
-  padding: 8px 0 0 0;
-  min-width: 600px;
-  max-width: 960px;
-  width: 100%;
+  @include dialog.responsive-dialog-surface(8px 0 0 0, 100%, 600px, 960px, 90vw, 100%, 4px 0 0 0);
   background-color: var(--mat-sys-surface-container-high);
   color: var(--mat-sys-on-surface);
 
@@ -210,12 +209,8 @@ mat-tab-group {
 
 // Tablet landscape and medium screens (≤960px)
 @media (max-width: 960px) {
-  .player-card {
-    max-width: 90vw;
-
-    &.season-mode {
-      max-width: 95vw;
-    }
+  .player-card.season-mode {
+    max-width: 95vw;
   }
 
   .all-stats-tab,
@@ -226,15 +221,10 @@ mat-tab-group {
 
 // Tablet portrait and small screens (≤768px)
 @media (max-width: 768px) {
-  .player-card {
+  .player-card.season-mode {
     min-width: 100%;
     max-width: 100%;
-
-    &.season-mode {
-      min-width: 100%;
-      max-width: 100%;
-      width: 100%;
-    }
+    width: 100%;
   }
 
   .all-stats-tab,
@@ -258,11 +248,6 @@ mat-tab-group {
 
 // Small mobile (≤480px)
 @media (max-width: 480px) {
-  .player-card {
-    min-width: 100%;
-    padding: 4px 0 0 0;
-  }
-
   .all-stats-tab,
   .season-table-container {
     max-height: calc(var(--app-height) - 200px);
