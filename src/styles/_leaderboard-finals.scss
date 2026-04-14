@@ -81,6 +81,10 @@
   line-height: 1.35;
 }
 
+.leaderboard-finals-team-name--abbr {
+  display: none;
+}
+
 .leaderboard-finals-team-name--winner {
   color: var(--mat-sys-primary);
 }
@@ -584,7 +588,7 @@
   }
 
   .leaderboard-finals-team-name {
-    font-size: 0.75rem;
+    font-size: 0.88rem;
   }
 
   .leaderboard-finals-score {
@@ -603,6 +607,14 @@
 @media (max-width: 480px) {
   .leaderboard-finals {
     --finals-content-padding-inline: 1rem;
+  }
+
+  .leaderboard-finals-team-name--full {
+    display: none;
+  }
+
+  .leaderboard-finals-team-name--abbr {
+    display: inline;
   }
 
   .leaderboard-finals-content {

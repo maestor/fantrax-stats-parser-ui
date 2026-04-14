@@ -1,5 +1,5 @@
 import { PLATFORM_ID } from '@angular/core';
-import { fireEvent, render, screen } from '@testing-library/angular';
+import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { Observable, of, throwError } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
@@ -81,14 +81,28 @@ describe('LeaderboardFinalsComponent', () => {
     });
 
     const headers = screen.getAllByRole('button');
-    expect(headers[0]).toHaveTextContent('2025-26');
-    expect(headers[0]).toHaveTextContent('Carolina Hurricanes');
-    expect(headers[0]).toHaveAttribute('aria-expanded', 'false');
+    const newestHeader = headers[0];
+
+    expect(newestHeader).toHaveTextContent('2025-26');
+    expect(newestHeader).toHaveTextContent('Carolina Hurricanes');
+    expect(newestHeader).toHaveAttribute('aria-expanded', 'false');
     expect(screen.getByText('leaderboards.finals.selectedTeamBadge')).toBeInTheDocument();
+    expect(within(newestHeader).getByText('Carolina Hurricanes', { selector: '.leaderboard-finals-team-name--full' }))
+      .toBeInTheDocument();
+    expect(within(newestHeader).getByText('Edmonton Oilers', { selector: '.leaderboard-finals-team-name--full' }))
+      .toBeInTheDocument();
+    expect(within(newestHeader).getByText('CAR', { selector: '.leaderboard-finals-team-name--abbr' }))
+      .toHaveAttribute('aria-label', 'Carolina Hurricanes');
+    expect(within(newestHeader).getByText('CAR', { selector: '.leaderboard-finals-team-name--abbr' }))
+      .toHaveAttribute('title', 'Carolina Hurricanes');
+    expect(within(newestHeader).getByText('EDM', { selector: '.leaderboard-finals-team-name--abbr' }))
+      .toHaveAttribute('aria-label', 'Edmonton Oilers');
+    expect(within(newestHeader).getByText('EDM', { selector: '.leaderboard-finals-team-name--abbr' }))
+      .toHaveAttribute('title', 'Edmonton Oilers');
 
-    fireEvent.click(headers[0]);
+    fireEvent.click(newestHeader);
 
-    expect(headers[0]).toHaveAttribute('aria-expanded', 'true');
+    expect(newestHeader).toHaveAttribute('aria-expanded', 'true');
     expect((await screen.findAllByText('leaderboards.finals.summaryTitle')).length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.ratesTitle').length).toBeGreaterThan(0);
     expect(screen.getAllByText('leaderboards.finals.factorsTitle').length).toBeGreaterThan(0);
@@ -101,6 +115,10 @@ describe('LeaderboardFinalsComponent', () => {
     expect(screen.getAllByText('leaderboards.finals.goalieTotalsTitle').length).toBeGreaterThan(0);
     expect(screen.getAllByText('CAR').length).toBeGreaterThan(0);
     expect(screen.getAllByText('EDM').length).toBeGreaterThan(0);
+    expect(screen.getAllByTitle('Carolina Hurricanes')
+      .filter((element) => element.textContent?.trim() === 'CAR').length).toBeGreaterThan(1);
+    expect(screen.getAllByTitle('Edmonton Oilers')
+      .filter((element) => element.textContent?.trim() === 'EDM').length).toBeGreaterThan(1);
     expect(screen.getAllByText('57,0').length).toBeGreaterThan(0);
     expect(screen.getAllByText('43,0').length).toBeGreaterThan(0);
     expect(screen.getAllByText('tableColumnShort.goals').length).toBeGreaterThan(0);
