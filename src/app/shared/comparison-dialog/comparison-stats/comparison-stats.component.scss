@@ -1,3 +1,5 @@
+@use '../../../../styles/surface-patterns';
+
 .comparison-stats {
   padding: 8px 0;
   max-height: calc(var(--app-height, 100vh));
@@ -81,21 +83,5 @@
 
 // Scrollbar styling
 .comparison-stats {
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: var(--app-scrollbar-track);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: var(--app-scrollbar-thumb);
-    border-radius: 4px;
-
-    &:hover {
-      background: var(--app-scrollbar-thumb-hover);
-    }
-  }
+  @include surface-patterns.themed-scrollbars;
 }

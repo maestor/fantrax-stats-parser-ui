@@ -1,3 +1,5 @@
+@use './surface-patterns';
+
 // Shared stats-table and virtual-table shell styles. Keeping the DOM-targeting rules
 // here avoids repeating the same Material overrides in multiple component stylesheets.
 app-stats-table,
@@ -349,29 +351,7 @@ app-player-card {
   .season-table-container {
     width: 100%;
     overflow-x: auto;
-  }
-
-  .all-stats-container::-webkit-scrollbar,
-  .season-table-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  .all-stats-container::-webkit-scrollbar-track,
-  .season-table-container::-webkit-scrollbar-track {
-    background: var(--app-scrollbar-track);
-    border-radius: 4px;
-  }
-
-  .all-stats-container::-webkit-scrollbar-thumb,
-  .season-table-container::-webkit-scrollbar-thumb {
-    background: var(--app-scrollbar-thumb);
-    border-radius: 4px;
-  }
-
-  .all-stats-container::-webkit-scrollbar-thumb:hover,
-  .season-table-container::-webkit-scrollbar-thumb:hover {
-    background: var(--app-scrollbar-thumb-hover);
+    @include surface-patterns.themed-scrollbars;
   }
 
   @media (max-width: 768px) {

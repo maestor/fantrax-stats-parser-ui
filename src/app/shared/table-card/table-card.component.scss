@@ -87,11 +87,7 @@ mat-card-header {
 
 .table-card-table th {
   background: var(--mat-sys-surface-container);
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  @include surface-patterns.eyebrow-label(0.78rem, $letter-spacing: 0.04em);
 }
 
 .table-card-table tbody tr:last-child td {

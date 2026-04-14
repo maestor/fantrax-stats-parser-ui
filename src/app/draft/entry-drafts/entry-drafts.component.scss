@@ -11,12 +11,7 @@
 }
 
 .entry-section-title {
-  margin: 0 0 0.7rem;
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  @include surface-patterns.eyebrow-label(0.78rem, $margin: 0 0 0.7rem);
 }
 
 .entry-summary-grid {
@@ -49,29 +44,19 @@
 .entry-summary-stat,
 .entry-round-item,
 .entry-played-item {
-  display: grid;
-  gap: 0.2rem;
-  padding: 0.6rem 0.7rem;
-  border-radius: 0.85rem;
-  background: var(--mat-sys-surface-container);
+  @include surface-patterns.compact-stat-tile;
 }
 
 .entry-summary-label,
 .entry-round-label,
 .entry-played-label {
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.74rem;
-  font-weight: 600;
-  line-height: 1.35;
+  @include surface-patterns.compact-stat-label;
 }
 
 .entry-summary-value,
 .entry-round-value,
 .entry-played-value {
-  color: var(--mat-sys-on-surface);
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.2;
+  @include surface-patterns.compact-stat-value;
 }
 
 .entry-played-percent {
@@ -109,12 +94,7 @@
 }
 
 .entry-highlight-label {
-  margin: 0;
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  @include surface-patterns.eyebrow-label(0.76rem, $margin: 0);
 }
 
 .entry-highlight-text {

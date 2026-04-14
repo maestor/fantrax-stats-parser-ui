@@ -168,6 +168,11 @@ Prefer the existing mixins for:
 - outlined panels
 - rounded surface cards
 - status/error surfaces
+- inset focusable surface rows
+- pill badges
+- compact stat tiles and stat labels/values
+- themed scrollbars
+- eyebrow / section-label text
 
 ### Reuse shared shells before inventing new ones
 
