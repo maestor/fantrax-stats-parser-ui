@@ -1,0 +1,141 @@
+.help-dialog {
+  button[mat-icon-button],
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  .mdc-dialog__title,
+  .mdc-dialog__content,
+  .mat-mdc-dialog-title,
+  .mat-mdc-dialog-content {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  // Dialog action (e.g. "Sulje") should use a readable accent in dark mode.
+  .mat-mdc-dialog-actions .mat-mdc-button,
+  .mat-mdc-dialog-actions .mat-mdc-unelevated-button,
+  .mat-mdc-dialog-actions .mat-mdc-outlined-button,
+  .mat-mdc-dialog-actions a {
+    color: var(--mat-sys-primary) !important;
+  }
+
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+    width: auto !important;
+    max-height: calc(var(--app-height) - 16px) !important;
+
+    .mdc-dialog__surface {
+      width: min(720px, 95vw) !important;
+      max-width: 95vw !important;
+      max-height: calc(var(--app-height) - 16px) !important;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .mat-mdc-dialog-container {
+      max-width: 95vw !important;
+      max-height: calc(var(--app-height) - 8px) !important;
+
+      .mdc-dialog__surface {
+        width: 95vw !important;
+        max-height: calc(var(--app-height) - 8px) !important;
+      }
+    }
+  }
+}
+
+// Player card graphs: checkbox labels and boxes need contrast in dark mode.
+.player-card-dialog {
+  button[mat-icon-button],
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  .mat-mdc-checkbox .mdc-form-field > label {
+    color: var(--mat-sys-on-surface) !important;
+  }
+
+  .mat-mdc-checkbox .mdc-checkbox__background {
+    border-color: var(--mat-sys-outline) !important;
+  }
+
+  .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: var(--mat-sys-primary) !important;
+    border-color: var(--mat-sys-primary) !important;
+  }
+
+  .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__checkmark-path {
+    stroke: var(--mat-sys-on-primary) !important;
+  }
+
+  // Prevent macOS trackpad back/forward gesture while dialog is open
+  overscroll-behavior-x: none;
+
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+    width: auto !important;
+    max-height: calc(var(--app-height) - 16px) !important;
+
+    .mdc-dialog__surface {
+      max-width: 95vw !important;
+      width: auto !important;
+      max-height: calc(var(--app-height) - 16px) !important;
+      overflow: auto;
+      overscroll-behavior-x: none;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  // Mobile: ensure consistent 95vw width and remove padding
+  @media (max-width: 768px) {
+    .mat-mdc-dialog-container {
+      max-width: 95vw !important;
+      width: 95vw !important;
+      padding: 0 !important;
+      max-height: calc(var(--app-height) - 8px) !important;
+
+      .mdc-dialog__surface {
+        max-width: 95vw !important;
+        width: 95vw !important;
+        padding: 0 !important;
+        max-height: calc(var(--app-height) - 8px) !important;
+      }
+    }
+  }
+}
+
+.comparison-dialog-panel {
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+    width: auto !important;
+    max-height: calc(var(--app-height) - 16px) !important;
+
+    .mdc-dialog__surface {
+      max-width: 95vw !important;
+      width: auto !important;
+      max-height: calc(var(--app-height) - 16px) !important;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  // Mobile: match player card sizing (full width with margins)
+  @media (max-width: 768px) {
+    .mat-mdc-dialog-container {
+      max-width: 95vw !important;
+      width: 95vw !important;
+      padding: 0 !important;
+      max-height: calc(var(--app-height) - 12px) !important;
+
+      .mdc-dialog__surface {
+        max-width: 95vw !important;
+        width: 95vw !important;
+        padding: 0 !important;
+        max-height: calc(var(--app-height) - 12px) !important;
+        overflow: hidden;
+      }
+    }
+  }
+}

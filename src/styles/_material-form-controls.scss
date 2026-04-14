@@ -1,0 +1,19 @@
+// Form fields (selects + search): prevent light containers in dark mode.
+.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background-color: var(--mat-sys-surface-container-high) !important;
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-form-field .mdc-floating-label {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-input-element,
+.mat-mdc-form-field .mat-mdc-select-min-line,
+.mat-mdc-form-field .mat-mdc-select-value-text {
+  color: var(--mat-sys-on-surface) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-select-arrow {
+  color: var(--mat-sys-on-surface-variant) !important;
+}
