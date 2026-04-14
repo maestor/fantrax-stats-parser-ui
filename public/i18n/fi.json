@@ -294,8 +294,8 @@
         "playedGamesAria": "Finaalissa pelatut ottelut: yhteensä {{total}}, kenttäpelaajat {{skaters}}, maalivahdit {{goalies}}."
       },
       "rates": {
-        "actual": "Toteutunut osuus",
-        "deserved": "Laskennallinen osuus",
+        "actual": "Toteutunut",
+        "deserved": "Laskennallinen",
         "deltaTooltip": "Laskennallinen osuus yrittää kuvata sitä kuinka tiukka finaali on todellisuudessa ollut.\n\nEron ollessa positiivinen kertoo se siitä, että voittaja olisi ansainnut suuremmankin voiton.\n\nEron ollessa negatiivinen, ottelu oli tasaisempi miltä lopullinen tulos näyttää.\n\nLaskennallisen osuuden ollessa alle 50%, voitto on ansaittu osittain tuurilla."
       },
       "factors": {
@@ -448,10 +448,7 @@
       },
       {
         "type": "ul",
-        "items": [
-          "/ - kohdista hakukenttä",
-          "? - avaa tämä ohje"
-        ]
+        "items": ["/ - kohdista hakukenttä", "? - avaa tämä ohje"]
       },
       {
         "type": "h2",

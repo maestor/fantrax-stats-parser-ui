@@ -1,10 +1,14 @@
-@use './surface-patterns';
+@use "./surface-patterns";
 
 .leaderboard-finals {
   --finals-content-padding-inline: 1.25rem;
   --finals-section-gap: 0.75rem;
   --finals-card-padding: 0.95rem 1rem;
-  --finals-comparison-label-bg: color-mix(in srgb, var(--mat-sys-surface-container) 94%, transparent);
+  --finals-comparison-label-bg: color-mix(
+    in srgb,
+    var(--mat-sys-surface-container) 94%,
+    transparent
+  );
   --leaderboard-finals-delta-positive: light-dark(#1f6f2a, #8fe39a);
   --leaderboard-finals-delta-negative: var(--mat-sys-error);
 }
@@ -15,13 +19,21 @@
 }
 
 .leaderboard-finals-panel {
-  --mat-expansion-container-background-color: var(--mat-sys-surface-container-low);
+  --mat-expansion-container-background-color: var(
+    --mat-sys-surface-container-low
+  );
   --mat-expansion-header-text-color: var(--mat-sys-on-surface);
   --mat-expansion-header-indicator-color: var(--mat-sys-on-surface-variant);
-  --mat-expansion-header-hover-state-layer-color:
-    color-mix(in srgb, var(--mat-sys-primary) 6%, var(--mat-sys-surface-container-low));
-  --mat-expansion-header-focus-state-layer-color:
-    color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container-low));
+  --mat-expansion-header-hover-state-layer-color: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 6%,
+    var(--mat-sys-surface-container-low)
+  );
+  --mat-expansion-header-focus-state-layer-color: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 10%,
+    var(--mat-sys-surface-container-low)
+  );
   @include surface-patterns.outlined-panel-shell;
 }
 
@@ -67,6 +79,10 @@
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.35;
+}
+
+.leaderboard-finals-team-name--abbr {
+  display: none;
 }
 
 .leaderboard-finals-team-name--winner {
@@ -137,7 +153,7 @@
 }
 
 .leaderboard-finals-rates-grid {
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 }
 
 .leaderboard-finals-factors-grid {
@@ -284,12 +300,23 @@
 .leaderboard-finals .draft-focus-target:focus-visible {
   outline: none;
   border-radius: 0.9rem;
-  background: color-mix(in srgb, var(--mat-sys-primary) 5%, var(--mat-sys-surface-container-low));
-  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 5%,
+    var(--mat-sys-surface-container-low)
+  );
+  box-shadow: inset 0 0 0 2px
+    color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
 }
 
-.leaderboard-finals .leaderboard-finals-comparison-tile.draft-focus-target:focus-visible .leaderboard-finals-comparison-label {
-  background: color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container));
+.leaderboard-finals
+  .leaderboard-finals-comparison-tile.draft-focus-target:focus-visible
+  .leaderboard-finals-comparison-label {
+  background: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 10%,
+    var(--mat-sys-surface-container)
+  );
   color: var(--mat-sys-on-surface);
 }
 
@@ -359,7 +386,8 @@
   overflow: hidden;
 }
 
-.leaderboard-finals-comparison-grid .leaderboard-finals-comparison-tile:last-child {
+.leaderboard-finals-comparison-grid
+  .leaderboard-finals-comparison-tile:last-child {
   border-bottom: 0;
 }
 
@@ -403,7 +431,9 @@
 }
 
 .leaderboard-finals-status {
-  @include surface-patterns.status-surface(1rem var(--finals-content-padding-inline));
+  @include surface-patterns.status-surface(
+    1rem var(--finals-content-padding-inline)
+  );
 }
 
 .leaderboard-finals-status--error {
@@ -443,7 +473,11 @@
   .leaderboard-finals-subsection-title {
     padding: 0.75rem 0.75rem 0.55rem;
     border-bottom: 1px solid var(--mat-sys-outline-variant);
-    background: color-mix(in srgb, var(--mat-sys-surface-container) 85%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--mat-sys-surface-container) 85%,
+      transparent
+    );
   }
 
   .leaderboard-finals-comparison-team-band {
@@ -457,7 +491,11 @@
     font-weight: 700;
     line-height: 1.2;
     text-align: left;
-    background: color-mix(in srgb, var(--mat-sys-surface-container-high) 92%, transparent);
+    background: color-mix(
+      in srgb,
+      var(--mat-sys-surface-container-high) 92%,
+      transparent
+    );
   }
 
   .leaderboard-finals-comparison-team-band--winner {
@@ -477,7 +515,10 @@
   }
 
   .leaderboard-finals-comparison-grid {
-    grid-template-columns: repeat(var(--finals-category-count, 1), minmax(0, 1fr));
+    grid-template-columns: repeat(
+      var(--finals-category-count, 1),
+      minmax(0, 1fr)
+    );
   }
 
   .leaderboard-finals-comparison-tile {
@@ -487,7 +528,8 @@
     border-right: 1px solid var(--mat-sys-outline-variant);
   }
 
-  .leaderboard-finals-comparison-grid .leaderboard-finals-comparison-tile:last-child {
+  .leaderboard-finals-comparison-grid
+    .leaderboard-finals-comparison-tile:last-child {
     border-right: 0;
   }
 
@@ -546,7 +588,7 @@
   }
 
   .leaderboard-finals-team-name {
-    font-size: 0.75rem;
+    font-size: 0.88rem;
   }
 
   .leaderboard-finals-score {
@@ -565,6 +607,14 @@
 @media (max-width: 480px) {
   .leaderboard-finals {
     --finals-content-padding-inline: 1rem;
+  }
+
+  .leaderboard-finals-team-name--full {
+    display: none;
+  }
+
+  .leaderboard-finals-team-name--abbr {
+    display: inline;
   }
 
   .leaderboard-finals-content {

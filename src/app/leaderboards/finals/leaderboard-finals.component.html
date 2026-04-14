@@ -31,18 +31,34 @@
               <span class="leaderboard-finals-divider" aria-hidden="true">•</span>
 
               <div class="leaderboard-finals-matchup-core">
-                <span class="leaderboard-finals-team-name"
+                <span
+                  class="leaderboard-finals-team-name leaderboard-finals-team-name--full"
                   [class.leaderboard-finals-team-name--winner]="isWinner(entry, entry.homeTeam.teamId)">
                   {{ entry.homeTeam.teamName }}
+                </span>
+                <span
+                  class="leaderboard-finals-team-name leaderboard-finals-team-name--abbr"
+                  [class.leaderboard-finals-team-name--winner]="isWinner(entry, entry.homeTeam.teamId)"
+                  [attr.aria-label]="entry.homeTeam.teamName"
+                  [attr.title]="entry.homeTeam.teamName">
+                  {{ entry.homeTeam.teamAbbr }}
                 </span>
 
                 <span class="leaderboard-finals-score">
                   {{ formatScore(entry.homeTeam) }} - {{ formatScore(entry.awayTeam) }}
                 </span>
 
-                <span class="leaderboard-finals-team-name"
+                <span
+                  class="leaderboard-finals-team-name leaderboard-finals-team-name--full"
                   [class.leaderboard-finals-team-name--winner]="isWinner(entry, entry.awayTeam.teamId)">
                   {{ entry.awayTeam.teamName }}
+                </span>
+                <span
+                  class="leaderboard-finals-team-name leaderboard-finals-team-name--abbr"
+                  [class.leaderboard-finals-team-name--winner]="isWinner(entry, entry.awayTeam.teamId)"
+                  [attr.aria-label]="entry.awayTeam.teamName"
+                  [attr.title]="entry.awayTeam.teamName">
+                  {{ entry.awayTeam.teamAbbr }}
                 </span>
               </div>
 
@@ -215,7 +231,10 @@
                     <strong class="leaderboard-finals-factor-line">
                       <span class="leaderboard-finals-factor-side"
                         [class.leaderboard-finals-factor-side--winner]="factorLeads(entry, 'home', factorKey)">
-                        <span class="leaderboard-finals-factor-abbr">
+                        <span
+                          class="leaderboard-finals-factor-abbr"
+                          [attr.aria-label]="entry.homeTeam.teamName"
+                          [attr.title]="entry.homeTeam.teamName">
                           {{ entry.homeTeam.teamAbbr }}
                         </span>
                         <span class="leaderboard-finals-factor-value">
@@ -230,7 +249,10 @@
                         <span class="leaderboard-finals-factor-value">
                           {{ getFactorValue(entry, 'away', factorKey) }}
                         </span>
-                        <span class="leaderboard-finals-factor-abbr">
+                        <span
+                          class="leaderboard-finals-factor-abbr"
+                          [attr.aria-label]="entry.awayTeam.teamName"
+                          [attr.title]="entry.awayTeam.teamName">
                           {{ entry.awayTeam.teamAbbr }}
                         </span>
                       </span>
