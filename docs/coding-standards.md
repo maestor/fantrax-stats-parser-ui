@@ -76,6 +76,10 @@ For full testing policy, see `docs/project-testing.md`.
 
 - Accessibility is required: keyboard use, visible focus, hidden content not tabbable, and meaningful labels are part of completion
 - Every UI/styling change must be checked in both light mode and dark mode before review
+- Follow `docs/styling-guide.md` for style ownership, app-token usage, and Material override rules
+- Prefer `--mat-sys-*` tokens first, then `--app-*` semantic tokens when the same styling role repeats across multiple consumers
+- Treat duplicated layout shells and repeated color formulas as refactor candidates, not as a pattern to extend
+- New chart work should route colors through shared theme/app tokens instead of embedding a new per-component palette
 - For project-specific accessibility patterns, see `docs/accessibility.md`
 
 ## Documentation Rules

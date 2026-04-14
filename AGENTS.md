@@ -6,7 +6,7 @@ See `README.md` for project overview and `package.json` for available npm comman
 - Treat repo workflow rules as defaults for cases where the user has not said otherwise.
 
 # Project documentation
-- Read accessibility, codebase structure, coding standards, component guide, development guide, project overview, project requirements, project testing, and roadmap docs via `docs/README.md` and its subpages.
+- Read accessibility, codebase structure, coding standards, component guide, development guide, project overview, project requirements, project testing, roadmap, and styling guide docs via `docs/README.md` and its subpages.
 - Use the installed `angular-developer` skill and official Angular docs for generic Angular guidance.
 - Use repo docs for project-specific workflow, architecture, testing, accessibility, routing/shell structure, and deliberate overrides.
 - If repo docs conflict with generic Angular guidance, follow the repo docs for this project.
@@ -47,6 +47,17 @@ For planning-heavy tasks, save the approved plan first under `docs/plans/` using
 For an approved multi-batch plan, treat all batches as part of the same task until the user declares the plan complete or redirects to a different task.
 
 If a proposed change would alter user-visible application behavior or semantics, stop and confirm with the user before implementing it. Do not make behavior-changing production edits based only on inference from a plan or coverage goal.
+
+## Styling And Theming Rules
+- Read `docs/styling-guide.md` before changing shared styles, theme tokens, or Material overrides.
+- Default to component-local SCSS for feature styling.
+- If multiple components share the same shell or layout pattern, prefer a shared Sass mixin under `src/app/shared/styles/` before adding another copy.
+- Use `src/styles/` only for truly global styles, overlay DOM, shared DOM-targeted shells, or Angular Material/MDC overrides that cannot live in component styles.
+- Prefer `--mat-sys-*` tokens first. Add `--app-*` semantic tokens only when the same styling role repeats across multiple consumers.
+- Avoid introducing new raw color literals in component SCSS when a Material token or app token should own the value.
+- `!important`, MDC-internal selectors, and similar override-heavy rules are acceptable only when narrowly scoped and justified by Angular Material or overlay behavior.
+- New graph work should use shared theme/app chart colors instead of embedding a fresh hard-coded palette per component.
+- For UI styling work, validate light mode, dark mode, and relevant responsive widths before review.
 
 ## Browser Automation Rules
 - For manual browser automation and visual inspection that previously used Playwright MCP, prefer the device-wide `agent-browser` CLI.

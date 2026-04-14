@@ -104,13 +104,23 @@ The UI follows the device/browser color scheme automatically (no manual toggle).
 
 Dark mode verification is mandatory for every UI/styling change.
 
+Use `docs/styling-guide.md` as the source of truth for style ownership, shared Sass primitives, and app-token rules.
+
 - Any new component, layout, card, table, dialog, tooltip, or color tweak must be checked in both light mode and dark mode before the task is considered done.
 - Do not assume a change is "too small" to affect dark mode.
 
 Key files:
 
 - `src/theme.scss`: Angular Material theme configuration (emits `--mat-sys-*` tokens via `theme-type: color-scheme`)
-- `src/styles.scss`: global styles + targeted overrides for overlays/tabs/toggles to ensure dark mode renders consistently
+- `src/styles.scss`: global style composition root for responsibility-based partials
+- `src/styles/`: global partials for overlays, Material overrides, utilities, and shared DOM-targeted shells
+- `src/app/shared/styles/`: shared component-level Sass mixins such as dialog and browse-route shells
+
+Theme/token rule of thumb:
+
+- prefer `--mat-sys-*` first
+- add `--app-*` only for repeated semantic values such as focus rings, scrims, badge backgrounds, or chart palettes
+- do not add new raw color literals to component SCSS when a token should own the value
 
 #### Debugging dark mode
 
