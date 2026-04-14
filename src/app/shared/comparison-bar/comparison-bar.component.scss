@@ -17,7 +17,7 @@
   padding: 12px 24px;
   background: var(--mat-sys-surface-container-high);
   border-top: 1px solid var(--mat-sys-outline-variant);
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--app-sheet-shadow);
   border-radius: 12px 12px 0 0;
 
   @media (max-width: 768px) {

@@ -1,19 +1,15 @@
 :host {
-	display: block;
-	width: 100%;
-	min-width: 0;
+  display: block;
+  width: 100%;
+  min-width: 0;
 }
 
 .team-switcher {
-	display: flex;
-	width: 100%;
-}
-
-.team-switcher-error {
-	color: #b00020;
+  display: flex;
+  width: 100%;
 }
 
 mat-form-field {
-	width: 100%;
-	min-width: 0;
+  width: 100%;
+  min-width: 0;
 }

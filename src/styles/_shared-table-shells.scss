@@ -150,7 +150,7 @@ app-stats-table {
   }
 
   .mat-mdc-row:focus {
-    outline: 2px solid var(--mat-sys-primary);
+    outline: 2px solid var(--app-focus-ring-color);
     outline-offset: -2px;
   }
 
@@ -293,7 +293,7 @@ app-virtual-table {
   }
 
   .virtual-table-row:focus {
-    outline: 2px solid var(--mat-sys-primary);
+    outline: 2px solid var(--app-focus-ring-color);
     outline-offset: -2px;
   }
 
@@ -359,19 +359,19 @@ app-player-card {
 
   .all-stats-container::-webkit-scrollbar-track,
   .season-table-container::-webkit-scrollbar-track {
-    background: var(--mat-sys-surface-container);
+    background: var(--app-scrollbar-track);
     border-radius: 4px;
   }
 
   .all-stats-container::-webkit-scrollbar-thumb,
   .season-table-container::-webkit-scrollbar-thumb {
-    background: var(--mat-sys-outline);
+    background: var(--app-scrollbar-thumb);
     border-radius: 4px;
   }
 
   .all-stats-container::-webkit-scrollbar-thumb:hover,
   .season-table-container::-webkit-scrollbar-thumb:hover {
-    background: var(--mat-sys-on-surface-variant);
+    background: var(--app-scrollbar-thumb-hover);
   }
 
   @media (max-width: 768px) {

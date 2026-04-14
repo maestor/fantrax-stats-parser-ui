@@ -14,7 +14,7 @@
 
 // Backdrop: keep a consistent, not-too-heavy overlay.
 .cdk-overlay-backdrop {
-  background: rgb(0 0 0 / 0.4) !important;
+  background: var(--app-overlay-scrim) !important;
 }
 
 // Prevent macOS trackpad back/forward gesture when player card dialog is open.
@@ -22,12 +22,6 @@
 // even when swiping outside the dialog card itself.
 .cdk-global-overlay-wrapper:has(.player-card-dialog) {
   overscroll-behavior-x: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  .cdk-overlay-backdrop {
-    background: rgb(0 0 0 / 0.55) !important;
-  }
 }
 
 // Dialog surfaces (player card + help dialog) should not default to white.
@@ -50,7 +44,7 @@
 
   // Focus ring for list item buttons — MDC state layer is too subtle in dark mode.
   button[mat-list-item]:focus-visible {
-    outline: 2px solid var(--mat-sys-primary);
+    outline: 2px solid var(--app-focus-ring-color);
     outline-offset: -2px;
     border-radius: 4px;
   }

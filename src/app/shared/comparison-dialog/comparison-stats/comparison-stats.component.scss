@@ -86,16 +86,16 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--mat-sys-surface-container);
+    background: var(--app-scrollbar-track);
     border-radius: 4px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--mat-sys-outline);
+    background: var(--app-scrollbar-thumb);
     border-radius: 4px;
 
     &:hover {
-      background: var(--mat-sys-on-surface-variant);
+      background: var(--app-scrollbar-thumb-hover);
     }
   }
 }

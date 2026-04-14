@@ -117,7 +117,7 @@ mat-card-header {
 }
 
 .table-card-table tbody tr:focus {
-  outline: 2px solid var(--mat-sys-primary);
+  outline: 2px solid var(--app-focus-ring-color);
   outline-offset: -2px;
   background: var(--mat-sys-primary-container);
 }
