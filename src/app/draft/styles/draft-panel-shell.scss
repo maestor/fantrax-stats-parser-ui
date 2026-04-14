@@ -1,4 +1,4 @@
-@use './surface-patterns';
+@use '../../../styles/surface-patterns';
 
 :where(.entry-drafts, .opening-draft) {
   --draft-content-padding-inline: 1.25rem;

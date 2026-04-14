@@ -68,7 +68,11 @@ const FACTOR_KEYS: FinalsFactorKey[] = ['offence', 'physical', 'goalies'];
     DraftPanelHeaderNavigationDirective,
   ],
   templateUrl: './leaderboard-finals.component.html',
-  styleUrl: './leaderboard-finals.component.scss',
+  styleUrls: [
+    './leaderboard-finals.component.scss',
+    './leaderboard-finals-comparison.component.scss',
+    './leaderboard-finals-responsive.component.scss',
+  ],
 })
 export class LeaderboardFinalsComponent implements OnInit {
   private readonly apiService = inject(ApiService);

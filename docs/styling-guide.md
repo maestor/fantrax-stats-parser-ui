@@ -71,6 +71,14 @@ Use it for mixins or small partials that multiple component stylesheets consume 
 
 If the abstraction is still component-oriented and does not need global selectors, prefer this folder over `src/styles/`.
 
+### `src/app/<feature>/styles/`
+
+Use a feature-local `styles/` folder when multiple components inside the same feature share a shell or stylesheet, but the abstraction is not reused outside that feature.
+
+Current example:
+
+- `src/app/draft/styles/draft-panel-shell.scss`
+
 ## Style Ownership Rules
 
 ### Prefer component-local first
@@ -84,16 +92,17 @@ Good local candidates:
 - one component's responsive adjustments
 - feature-specific table tweaks
 
-### Extract shared component mixins before duplicating
+### Extract shared component styling before duplicating
 
-If two or more component stylesheets repeat the same structure, extract a shared mixin under `src/app/shared/styles/`.
+If two or more component stylesheets repeat the same structure, extract a shared mixin or shared stylesheet under `src/app/shared/styles/` for cross-feature reuse, or under `src/app/<feature>/styles/` when the reuse stays inside one feature family.
 
 Current examples:
 
 - `dialog-surface`
 - `browse-section-shell`
+- `draft-panel-shell`
 
-Do not copy-paste a near-identical layout block into a second route/component if a small mixin would remove it cleanly.
+Do not copy-paste a near-identical layout block into a second route/component if a small shared primitive or stylesheet would remove it cleanly.
 
 ### Use global partials only when the selector must be global
 

@@ -1,5 +1,9 @@
 @use '../../../styles/surface-patterns';
 
+.entry-section-title {
+  @include surface-patterns.eyebrow-label(0.78rem, $margin: 0 0 0.7rem);
+}
+
 .entry-draft-panel-content {
   display: grid;
   gap: 1rem;
@@ -8,10 +12,6 @@
 
 .draft-panel.mat-expanded .entry-draft-panel-content {
   padding-top: 0.9rem;
-}
-
-.entry-section-title {
-  @include surface-patterns.eyebrow-label(0.78rem, $margin: 0 0 0.7rem);
 }
 
 .entry-summary-grid {
