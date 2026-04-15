@@ -9,6 +9,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "NODE_OPTIONS=--max-old-space-size=6144 ng build --configuration production",
+    "audit:styles:dead": "node scripts/audit-dead-style-selectors.mjs",
     "perf:audit": "npm run build && npx tsx scripts/perf-audit.ts",
     "generate:types": "openapi-typescript https://ffhl-stats-api.vercel.app/openapi.json -o src/app/services/api.types.generated.ts",
     "watch": "ng build --watch --configuration development",

@@ -225,5 +225,6 @@ For every UI-touching styling change:
 - verify focus states for interactive changes
 - verify loading, empty, and error states when the touched component has them
 - keep component-style budget fixes structural: split large stylesheets by responsibility or extract a shared primitive before raising budgets
+- when auditing selector cleanup, run `npm run audit:styles:dead` and manually review any dynamic-class exceptions before deleting rules
 
 If a refactor changes the styling architecture itself, update this guide in the same batch.
