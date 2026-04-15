@@ -38,7 +38,11 @@ import { scheduleDraftTeamHeaderAlignment } from '../draft-keyboard-navigation.u
     DraftPanelFocusTargetDirective,
   ],
   templateUrl: './opening-draft.component.html',
-  styleUrl: './opening-draft.component.scss',
+  styleUrls: [
+    '../styles/draft-panel-shell.scss',
+    '../styles/draft-panel-picks.scss',
+    './opening-draft.component.scss',
+  ],
 })
 export class OpeningDraftComponent implements OnInit {
   private readonly apiService = inject(ApiService);

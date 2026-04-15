@@ -17,7 +17,7 @@
   padding: 12px 24px;
   background: var(--mat-sys-surface-container-high);
   border-top: 1px solid var(--mat-sys-outline-variant);
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--app-sheet-shadow);
   border-radius: 12px 12px 0 0;
 
   @media (max-width: 768px) {
@@ -34,10 +34,8 @@
   color: var(--mat-sys-on-surface);
 }
 
-// Clear button: neutral color (white in dark mode, dark in light mode)
-:host ::ng-deep .mat-mdc-outlined-button:not(:disabled) {
+.comparison-bar-clear-button:not(:disabled) {
   --mdc-outlined-button-label-text-color: var(--mat-sys-on-surface);
   --mdc-outlined-button-outline-color: var(--mat-sys-outline);
-  color: var(--mat-sys-on-surface) !important;
-  border-color: var(--mat-sys-outline) !important;
+  color: var(--mat-sys-on-surface);
 }

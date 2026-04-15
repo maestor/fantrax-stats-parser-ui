@@ -1,0 +1,89 @@
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  z-index: 10000;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  box-shadow: var(--mat-sys-level2);
+  transform: translateY(-200%);
+  transition: transform 120ms ease-in-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.content {
+  margin: 0 auto;
+  max-width: var(--app-content-max-width);
+}
+
+.center {
+  text-align: center;
+}
+
+.mat-elevation-z1 {
+  box-shadow: var(--mat-sys-level1);
+}
+
+.mat-elevation-z2 {
+  box-shadow: var(--mat-sys-level2);
+}
+
+.mat-elevation-z3 {
+  box-shadow: var(--mat-sys-level3);
+}
+
+.mat-elevation-z4 {
+  box-shadow: var(--mat-sys-level4);
+}
+
+.mat-elevation-z5 {
+  box-shadow: var(--mat-sys-level5);
+}
+
+// Mobile: smaller h1 title
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5em !important;
+    margin: 1em 0 0 0 !important;
+  }
+}
+
+// Shared highlight style for career bests, comparison winners, etc.
+.stat-highlight {
+  font-weight: 700;
+  color: var(--mat-sys-primary);
+}
+
+.table-card-tooltip,
+.table-card-tooltip .mdc-tooltip__surface {
+  white-space: pre-line;
+}
+
+.table-card-tooltip--with-header .mdc-tooltip__surface {
+  line-height: 1.45;
+  text-align: left;
+}
+
+.table-card-tooltip--with-header .mdc-tooltip__surface::first-line {
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+}

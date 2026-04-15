@@ -55,10 +55,7 @@
   align-items: center;
   gap: 8px;
   text-decoration: none;
-}
-
-.mat-mdc-dialog-actions a.help-social-link {
-  color: var(--mat-sys-on-surface) !important;
+  color: var(--mat-sys-on-surface);
 }
 
 .help-social-link:hover {

@@ -12,6 +12,8 @@ For contributor and agent guidance, start at [docs/README.md](docs/README.md).
 
 The docs in this repo intentionally focus on project-specific architecture, workflow, testing, accessibility, and local exceptions rather than re-teaching generic Angular concepts.
 
+For CSS/theming work specifically, read [docs/styling-guide.md](docs/styling-guide.md) before changing shared styles, tokens, or Material overrides.
+
 ## Features
 
 - 📊 **Player Statistics**: View and analyze player performance across seasons

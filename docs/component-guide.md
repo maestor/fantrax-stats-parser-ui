@@ -54,6 +54,14 @@ In this repo, shared controls such as team, season, report, and settings control
 - Do not add extra `@Input()` / `@Output()` plumbing only to satisfy a generic "dumb component" rule
 - Favor the existing service-backed control pattern when the control is tightly coupled to global or per-page state
 
+### Component Style Ownership
+
+- Default to the component stylesheet for feature-local layout and visual rules
+- If multiple component stylesheets need the same shell, extract a Sass mixin under `src/app/shared/styles/`
+- Use `src/styles/` only when the selector must be global, targets overlay DOM, or is an app-wide Material override
+- Keep route/component-specific exceptions local even when the base shell comes from a shared mixin
+- Follow `docs/styling-guide.md` for the detailed ownership and theming rules
+
 ### Prefer Real Contracts Over Defensive Optionality
 
 - Use signal inputs and `input.required()` when the parent always provides the value
@@ -135,6 +143,7 @@ Do not collapse these into a single "universal" table component unless the produ
 
 - Any UI/styling change must be checked in both light mode and dark mode before review
 - Shared components are reused broadly, so even small visual changes can have wide impact
+- New shared graphs should use theme-driven/shared chart colors instead of embedding a one-off palette in each component
 
 ### Test The Real User Path
 

@@ -1,0 +1,183 @@
+@media (min-width: 960px) {
+  .leaderboard-finals-comparison-header {
+    display: none;
+  }
+
+  .leaderboard-finals-comparison-body {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .leaderboard-finals-comparison-group {
+    padding: 0;
+  }
+
+  .leaderboard-finals-comparison-group + .leaderboard-finals-comparison-group {
+    border-top: 0;
+    border-left: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals-subsection-title {
+    padding: 0.75rem 0.75rem 0.55rem;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    background: color-mix(
+      in srgb,
+      var(--mat-sys-surface-container) 85%,
+      transparent
+    );
+  }
+
+  .leaderboard-finals-comparison-team-band {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 2.25rem;
+    padding-inline-start: 2rem;
+    color: var(--mat-sys-on-surface);
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: left;
+    background: color-mix(
+      in srgb,
+      var(--mat-sys-surface-container-high) 92%,
+      transparent
+    );
+  }
+
+  .leaderboard-finals-comparison-team-band--winner {
+    color: var(--mat-sys-primary);
+  }
+
+  .leaderboard-finals-comparison-team-band--home {
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals-comparison-team-band--away {
+    border-top: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals-comparison-team-band--placeholder {
+    color: transparent;
+  }
+
+  .leaderboard-finals-comparison-grid {
+    grid-template-columns: repeat(
+      var(--finals-category-count, 1),
+      minmax(0, 1fr)
+    );
+  }
+
+  .leaderboard-finals-comparison-tile {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(3, minmax(0, auto));
+    border-bottom: 0;
+    border-right: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals-comparison-grid
+    .leaderboard-finals-comparison-tile:last-child {
+    border-right: 0;
+  }
+
+  .leaderboard-finals-comparison-value,
+  .leaderboard-finals-comparison-label {
+    justify-content: center;
+    min-height: 42px;
+    padding-inline: 0.35rem;
+    text-align: center;
+  }
+
+  .leaderboard-finals-comparison-value--home,
+  .leaderboard-finals-comparison-value--away {
+    padding-block: 0.55rem 0.45rem;
+  }
+
+  .leaderboard-finals-comparison-label {
+    min-width: 0;
+    padding-block: 0.4rem;
+    border-block: 1px solid var(--mat-sys-outline-variant);
+  }
+
+  .leaderboard-finals-comparison-value--away {
+    padding-block: 0.45rem 0.55rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .leaderboard-finals-matchup-line {
+    gap: 0;
+    padding-block: 0.2rem;
+  }
+
+  .leaderboard-finals-season {
+    order: 1;
+  }
+
+  .leaderboard-finals-divider {
+    display: none;
+  }
+
+  .leaderboard-finals-matchup-core {
+    order: 3;
+    flex-basis: 100%;
+    gap: 0.2rem;
+  }
+
+  .leaderboard-finals-selected-badge {
+    order: 2;
+    display: inline-flex;
+    margin-inline-start: 0.35rem;
+    margin-inline-end: 0;
+    padding: 0.1rem 0.42rem;
+    font-size: 0.64rem;
+    line-height: 1.2;
+  }
+
+  .leaderboard-finals-team-name {
+    font-size: 0.88rem;
+  }
+
+  .leaderboard-finals-score {
+    font-size: 0.88rem;
+  }
+
+  .leaderboard-finals-header {
+    padding-block: 0.45rem;
+  }
+
+  .leaderboard-finals-factor-line {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard-finals {
+    --finals-content-padding-inline: 1rem;
+  }
+
+  .leaderboard-finals-team-name--full {
+    display: none;
+  }
+
+  .leaderboard-finals-team-name--abbr {
+    display: inline;
+  }
+
+  .leaderboard-finals-content {
+    padding-inline: 0;
+  }
+
+  .leaderboard-finals-summary-card,
+  .leaderboard-finals-rate-card {
+    padding-inline: 0.9rem;
+  }
+
+  .leaderboard-finals-comparison-group {
+    padding-inline: 0;
+  }
+
+  .leaderboard-finals-comparison-value--home,
+  .leaderboard-finals-comparison-value--away {
+    padding-inline: 0.7rem;
+  }
+}

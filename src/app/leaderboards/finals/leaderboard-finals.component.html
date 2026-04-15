@@ -272,12 +272,28 @@
                   <span
                     class="leaderboard-finals-comparison-heading leaderboard-finals-comparison-heading--home"
                     [class.leaderboard-finals-comparison-heading--winner]="isWinner(entry, entry.homeTeam.teamId)">
-                    {{ entry.homeTeam.teamName }}
+                    <span class="leaderboard-finals-team-name--full">
+                      {{ entry.homeTeam.teamName }}
+                    </span>
+                    <span
+                      class="leaderboard-finals-team-name--abbr"
+                      [attr.aria-label]="entry.homeTeam.teamName"
+                      [attr.title]="entry.homeTeam.teamName">
+                      {{ entry.homeTeam.teamAbbr }}
+                    </span>
                   </span>
                   <span
                     class="leaderboard-finals-comparison-heading leaderboard-finals-comparison-heading--away"
                     [class.leaderboard-finals-comparison-heading--winner]="isWinner(entry, entry.awayTeam.teamId)">
-                    {{ entry.awayTeam.teamName }}
+                    <span class="leaderboard-finals-team-name--full">
+                      {{ entry.awayTeam.teamName }}
+                    </span>
+                    <span
+                      class="leaderboard-finals-team-name--abbr"
+                      [attr.aria-label]="entry.awayTeam.teamName"
+                      [attr.title]="entry.awayTeam.teamName">
+                      {{ entry.awayTeam.teamAbbr }}
+                    </span>
                   </span>
                 </div>
 
@@ -291,7 +307,12 @@
                       class="leaderboard-finals-comparison-team-band leaderboard-finals-comparison-team-band--home"
                       [class.leaderboard-finals-comparison-team-band--winner]="isWinner(entry, entry.homeTeam.teamId)"
                       aria-hidden="true">
-                      {{ entry.homeTeam.teamName }}
+                      <span class="leaderboard-finals-team-name--full">
+                        {{ entry.homeTeam.teamName }}
+                      </span>
+                      <span class="leaderboard-finals-team-name--abbr">
+                        {{ entry.homeTeam.teamAbbr }}
+                      </span>
                     </div>
 
                     <div class="leaderboard-finals-comparison-grid"
@@ -327,7 +348,12 @@
                       class="leaderboard-finals-comparison-team-band leaderboard-finals-comparison-team-band--away"
                       [class.leaderboard-finals-comparison-team-band--winner]="isWinner(entry, entry.awayTeam.teamId)"
                       aria-hidden="true">
-                      {{ entry.awayTeam.teamName }}
+                      <span class="leaderboard-finals-team-name--full">
+                        {{ entry.awayTeam.teamName }}
+                      </span>
+                      <span class="leaderboard-finals-team-name--abbr">
+                        {{ entry.awayTeam.teamAbbr }}
+                      </span>
                     </div>
                   </div>
 

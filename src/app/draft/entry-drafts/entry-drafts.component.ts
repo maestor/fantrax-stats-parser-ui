@@ -49,7 +49,11 @@ type DraftPickStatus = {
     DraftPanelFocusTargetDirective,
   ],
   templateUrl: './entry-drafts.component.html',
-  styleUrl: './entry-drafts.component.scss',
+  styleUrls: [
+    '../styles/draft-panel-shell.scss',
+    '../styles/draft-panel-picks.scss',
+    './entry-drafts.component.scss',
+  ],
 })
 export class EntryDraftsComponent implements OnInit {
   private readonly apiService = inject(ApiService);

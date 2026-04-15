@@ -1,4 +1,4 @@
-@use './surface-patterns';
+@use '../../../styles/surface-patterns';
 
 :where(.entry-drafts, .opening-draft) {
   --draft-content-padding-inline: 1.25rem;
@@ -78,94 +78,13 @@
   font-size: 1rem;
 }
 
-:where(.entry-drafts, .opening-draft) .draft-pick-list {
-  display: block;
-  padding: var(--draft-pick-list-padding);
-}
-
-:where(.entry-drafts, .opening-draft) .draft-panel.mat-expanded .draft-pick-list {
-  padding-top: var(--draft-expanded-pick-list-padding-top);
-}
-
-:where(.entry-drafts, .opening-draft) .draft-pick-item {
-  border-top: 1px solid var(--mat-sys-outline-variant);
-}
-
-:where(.entry-drafts, .opening-draft) .draft-pick-item:first-child {
-  border-top: none;
-}
-
-:where(.entry-drafts, .opening-draft) .draft-pick-row {
-  display: grid;
-  grid-template-columns: auto auto auto minmax(0, 1fr) auto;
-  gap: var(--draft-pick-row-gap);
-  align-items: center;
-  padding: 0.7rem 0;
-}
-
-:where(.entry-drafts, .opening-draft) .draft-pick-tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  justify-self: start;
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
-  background: var(--mat-sys-surface-container-high);
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-align: center;
-  white-space: nowrap;
-}
-
-:where(.entry-drafts, .opening-draft) .draft-pick-player {
-  min-width: 0;
-  color: var(--mat-sys-on-surface);
-  font-size: 0.96rem;
-  font-weight: 600;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-
-:where(.entry-drafts, .opening-draft) .draft-pick-origin {
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.82rem;
-  line-height: 1.35;
-  text-align: right;
-}
-
-:where(.entry-drafts, .opening-draft) .draft-pick-origin-team {
-  font-weight: 600;
-}
-
 :where(.entry-drafts, .opening-draft) .draft-focus-target {
   scroll-margin-top: calc(var(--draft-sticky-top) + 4.5rem);
 }
 
 :where(.entry-drafts, .opening-draft) .draft-focus-target:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+  outline: 2px solid var(--app-focus-ring-color);
   outline-offset: 3px;
-}
-
-// Draft pick rows sit edge-to-edge inside their list, so use an inset ring instead of
-// outline-offset to keep the focus indicator aligned with the card boundary.
-:where(.entry-drafts, .opening-draft) .draft-pick-item.draft-focus-target:focus-visible {
-  outline: none;
-  border-radius: 0.9rem;
-  background: color-mix(in srgb, var(--mat-sys-primary) 5%, var(--mat-sys-surface-container-low));
-  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
-}
-
-@media (max-width: 900px) {
-  :where(.entry-drafts, .opening-draft) .draft-pick-row {
-    grid-template-columns: auto auto auto minmax(0, 1fr);
-  }
-
-  :where(.entry-drafts, .opening-draft) .draft-pick-origin {
-    grid-column: 1 / -1;
-    text-align: left;
-    padding-left: 0.1rem;
-  }
 }
 
 @media (max-width: 640px) {
@@ -176,16 +95,5 @@
 
   :where(.entry-drafts, .opening-draft) .draft-panel-title {
     font-size: 0.96rem;
-  }
-}
-
-@media (max-width: 480px) {
-  :where(.entry-drafts, .opening-draft) .draft-pick-row {
-    grid-template-columns: auto auto auto;
-  }
-
-  :where(.entry-drafts, .opening-draft) .draft-pick-player,
-  :where(.entry-drafts, .opening-draft) .draft-pick-origin {
-    grid-column: 1 / -1;
   }
 }

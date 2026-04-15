@@ -1,0 +1,20 @@
+.app-shell .mat-drawer-backdrop.mat-drawer-shown {
+  position: fixed;
+  inset: 0;
+}
+
+.app-shell .mat-drawer.settings-drawer {
+  width: calc(var(--app-shell-side-gutter-width) + var(--settings-drawer-panel-width));
+  height: var(--app-height);
+  max-height: var(--app-height);
+  background: var(--mat-sys-surface);
+  z-index: 5;
+}
+
+.app-shell .mat-drawer-inner-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+}

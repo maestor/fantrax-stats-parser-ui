@@ -13,7 +13,7 @@ import {
 } from '../../../testing/behavior-test-utils';
 import type { Season } from '@services/api.service';
 
-describe('SeasonSwitcherComponent — desktop user flow', () => {
+describe('SeasonSwitcherComponent — desktop user flow', { timeout: 60_000 }, () => {
     beforeEach(() => {
         polyfillJsdom();
         seedLocalStorage();

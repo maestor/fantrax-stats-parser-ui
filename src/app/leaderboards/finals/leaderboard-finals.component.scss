@@ -1,0 +1,123 @@
+@use '../../../styles/surface-patterns';
+
+.leaderboard-finals {
+  --finals-content-padding-inline: 1.25rem;
+  --finals-section-gap: 0.75rem;
+  --finals-card-padding: 0.95rem 1rem;
+  --finals-comparison-label-bg: var(--app-badge-background);
+  --leaderboard-finals-delta-positive: var(--app-status-success);
+  --leaderboard-finals-delta-negative: var(--mat-sys-error);
+}
+
+.leaderboard-finals-accordion {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.leaderboard-finals-panel {
+  --mat-expansion-container-background-color: var(--mat-sys-surface-container-low);
+  --mat-expansion-header-text-color: var(--mat-sys-on-surface);
+  --mat-expansion-header-indicator-color: var(--mat-sys-on-surface-variant);
+  --mat-expansion-header-hover-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 6%, var(--mat-sys-surface-container-low));
+  --mat-expansion-header-focus-state-layer-color:
+    color-mix(in srgb, var(--mat-sys-primary) 10%, var(--mat-sys-surface-container-low));
+  @include surface-patterns.outlined-panel-shell;
+}
+
+.leaderboard-finals-header {
+  padding-inline: var(--finals-content-padding-inline);
+  height: auto;
+  min-height: 56px;
+  padding-block: 0.3rem;
+}
+
+.leaderboard-finals-matchup-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  width: 100%;
+  padding-inline-end: 0.85rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.leaderboard-finals-season {
+  @include surface-patterns.eyebrow-label(0.82rem);
+}
+
+.leaderboard-finals-divider {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.leaderboard-finals-matchup-core {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.leaderboard-finals-team-name {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.leaderboard-finals-team-name--abbr {
+  display: none;
+}
+
+.leaderboard-finals-team-name--winner {
+  color: var(--mat-sys-primary);
+}
+
+.leaderboard-finals-score {
+  font-size: 1.02rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.leaderboard-finals-selected-badge {
+  @include surface-patterns.pill-badge(
+    0.16rem 0.55rem,
+    var(--mat-sys-surface-container-high),
+    var(--mat-sys-on-surface-variant),
+    0.76rem
+  );
+  margin-inline-start: auto;
+  margin-inline-end: 0.85rem;
+}
+
+.leaderboard-finals-content {
+  display: grid;
+  gap: 1rem;
+  padding: 0 1.25rem 1.1rem;
+}
+
+.leaderboard-finals-panel.mat-expanded .leaderboard-finals-content {
+  padding-top: 0.9rem;
+}
+
+.leaderboard-finals-status {
+  @include surface-patterns.status-surface(
+    1rem var(--finals-content-padding-inline)
+  );
+}
+
+.leaderboard-finals-status--error {
+  @include surface-patterns.status-surface-error;
+  color: var(--mat-sys-error);
+}
+
+.leaderboard-finals-status--loading {
+  display: grid;
+  gap: 0.75rem;
+  border: 0;
+  border-radius: 0;
+}
+
+.loading-bar {
+  width: 100%;
+}

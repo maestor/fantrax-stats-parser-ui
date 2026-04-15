@@ -53,10 +53,43 @@ $theme: mat.define-theme(
 
   // Component token variables (e.g. --mat-*)
   @include mat.all-component-themes($theme);
+
+  // Small app-level semantic tokens layered on top of Material tokens.
+  // These cover the repeated styling patterns shared across routes and overlays.
+  --app-status-success: light-dark(#1f6f2a, #8fe39a);
+  --app-focus-ring-color: color-mix(in srgb, var(--mat-sys-primary) 70%, transparent);
+  --app-focus-ring-strong-color: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 55%,
+    transparent
+  );
+  --app-focus-fill-color: color-mix(in srgb, var(--mat-sys-primary) 7%, transparent);
+  --app-focus-fill-muted: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 5%,
+    var(--mat-sys-surface-container-low)
+  );
+  --app-badge-background: color-mix(
+    in srgb,
+    var(--mat-sys-surface-container) 94%,
+    transparent
+  );
+  --app-overlay-scrim: rgb(0 0 0 / 0.4);
+  --app-sheet-shadow: 0 -2px 8px rgb(0 0 0 / 0.15);
+  --app-scrollbar-track: var(--mat-sys-surface-container);
+  --app-scrollbar-thumb: var(--mat-sys-outline);
+  --app-scrollbar-thumb-hover: var(--mat-sys-on-surface-variant);
+  --app-primary-emphasis-surface: color-mix(
+    in srgb,
+    var(--mat-sys-primary-container) 70%,
+    var(--mat-sys-surface-container-high) 30%
+  );
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
+    --app-overlay-scrim: rgb(0 0 0 / 0.55);
+    --app-sheet-shadow: 0 -2px 10px rgb(0 0 0 / 0.2);
   }
 }

@@ -20,6 +20,7 @@ If a local doc conflicts with generic Angular guidance, follow the local doc for
 - [Component Guide](./component-guide.md) - Project-specific component boundaries and shared UI patterns
 - [Service Guide](./service-guide.md) - Service responsibilities and data-flow notes
 - [Coding Standards](./coding-standards.md) - Repo-specific coding conventions and overrides
+- [Styling Guide](./styling-guide.md) - Style ownership, theming, shared Sass patterns, and Material override rules
 - [Roadmap](./roadmap.md) - High-level future work
 
 ## Documentation Philosophy

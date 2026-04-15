@@ -1,0 +1,124 @@
+@use '../../../styles/surface-patterns';
+
+.leaderboard-finals .draft-focus-target:focus-visible {
+  @include surface-patterns.inset-focus-surface;
+}
+
+.leaderboard-finals
+  .leaderboard-finals-comparison-tile.draft-focus-target:focus-visible
+  .leaderboard-finals-comparison-label {
+  background: color-mix(
+    in srgb,
+    var(--mat-sys-primary) 10%,
+    var(--mat-sys-surface-container)
+  );
+  color: var(--mat-sys-on-surface);
+}
+
+.leaderboard-finals-comparison-card {
+  @include surface-patterns.rounded-surface-card;
+  overflow: hidden;
+}
+
+.leaderboard-finals-comparison-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem 0.7rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background: var(--mat-sys-surface-container);
+}
+
+.leaderboard-finals-comparison-heading {
+  @include surface-patterns.eyebrow-label(0.78rem, $letter-spacing: 0.04em);
+}
+
+.leaderboard-finals-comparison-heading--winner {
+  color: var(--mat-sys-primary);
+}
+
+.leaderboard-finals-comparison-heading--home {
+  text-align: left;
+}
+
+.leaderboard-finals-comparison-heading--away {
+  text-align: right;
+}
+
+.leaderboard-finals-comparison-body {
+  display: grid;
+}
+
+.leaderboard-finals-comparison-group {
+  display: grid;
+  gap: 0;
+  padding: 0.95rem 1rem;
+}
+
+.leaderboard-finals-comparison-group + .leaderboard-finals-comparison-group {
+  border-top: 1px solid var(--mat-sys-outline-variant);
+}
+
+.leaderboard-finals-comparison-team-band {
+  display: none;
+}
+
+.leaderboard-finals-comparison-grid {
+  display: grid;
+  gap: 0;
+}
+
+.leaderboard-finals-comparison-tile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  font-size: var(--mat-sys-body-medium-size, 14px);
+  overflow: hidden;
+}
+
+.leaderboard-finals-comparison-grid
+  .leaderboard-finals-comparison-tile:last-child {
+  border-bottom: 0;
+}
+
+.leaderboard-finals-comparison-value,
+.leaderboard-finals-comparison-label {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.leaderboard-finals-comparison-value {
+  color: var(--mat-sys-on-surface);
+  font-weight: 600;
+}
+
+.leaderboard-finals-comparison-value--home {
+  justify-content: flex-end;
+  padding-inline: 0.85rem 1rem;
+}
+
+.leaderboard-finals-comparison-label {
+  justify-content: center;
+  min-width: 5rem;
+  padding: 0 0.7rem;
+  background: var(--finals-comparison-label-bg);
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.leaderboard-finals-comparison-value--away {
+  justify-content: flex-start;
+  padding-inline: 1rem 0.85rem;
+}
+
+.leaderboard-finals-comparison-value--winner {
+  color: var(--mat-sys-primary);
+  font-weight: 800;
+}

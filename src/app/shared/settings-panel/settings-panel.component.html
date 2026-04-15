@@ -1,4 +1,4 @@
-<div class="control-panel-content">
+<div class="control-panel-content" [class.control-panel-content--drawer]="layout() === 'drawer'">
   @if (context() === 'player') {
     <app-position-filter-toggle />
   }

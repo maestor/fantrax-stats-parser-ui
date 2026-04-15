@@ -61,7 +61,3 @@
   color: var(--mat-sys-on-surface-variant);
   text-align: center;
 }
-
-:host ::ng-deep app-settings-panel .control-panel-content {
-  gap: 16px;
-}
