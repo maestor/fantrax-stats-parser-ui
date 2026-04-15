@@ -115,6 +115,8 @@ Global partials are justified when:
 
 If the selector starts depending on route-specific class names without a broader reuse reason, it probably belongs back in feature/component styles.
 
+Avoid `::ng-deep` for normal styling work. If a parent needs to influence a child component, prefer a child-owned variant class or input. If the target is a framework-owned subtree such as drawer or overlay internals, move the selector into the appropriate global partial instead of tunneling through encapsulation.
+
 ## Theme And Token Rules
 
 ### Prefer Material system tokens first

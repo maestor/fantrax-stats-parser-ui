@@ -126,31 +126,6 @@ th.mat-column-__rowNumber {
   min-width: 1.25rem;
 }
 
-// Checkbox on focused/hovered row: ensure contrast with primary-container background
-:host ::ng-deep .mat-mdc-row:hover,
-:host ::ng-deep .mat-mdc-row:focus {
-  .mat-mdc-checkbox .mdc-checkbox__background {
-    border-color: var(--mat-sys-on-primary-container) !important;
-  }
-
-  .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
-    background-color: var(--mat-sys-on-primary-container) !important;
-    border-color: var(--mat-sys-on-primary-container) !important;
-  }
-
-  .mat-mdc-checkbox .mdc-checkbox__checkmark {
-    color: var(--mat-sys-primary-container) !important;
-  }
-
-  .mat-mdc-checkbox.mat-mdc-checkbox-disabled {
-    opacity: 0.5;
-
-    label {
-      color: var(--mat-sys-on-surface-variant) !important;
-    }
-  }
-}
-
 @media (max-width: 600px) {
   .expanded-detail-content {
     width: 100%;

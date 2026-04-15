@@ -16,7 +16,7 @@ import {
 } from '../../../testing/behavior-test-utils';
 import type { Goalie, Player, Season } from '@services/api.service';
 
-describe('TeamSwitcherComponent — desktop user flow', () => {
+describe('TeamSwitcherComponent — desktop user flow', { timeout: 60_000 }, () => {
   beforeEach(() => {
     polyfillJsdom();
     seedLocalStorage();

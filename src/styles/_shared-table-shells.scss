@@ -179,6 +179,32 @@ app-stats-table {
     border-color: var(--mat-sys-outline) !important;
   }
 
+  .mat-mdc-row:hover .mat-mdc-checkbox .mdc-checkbox__background,
+  .mat-mdc-row:focus .mat-mdc-checkbox .mdc-checkbox__background {
+    border-color: var(--mat-sys-on-primary-container) !important;
+  }
+
+  .mat-mdc-row:hover .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background,
+  .mat-mdc-row:focus .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: var(--mat-sys-on-primary-container) !important;
+    border-color: var(--mat-sys-on-primary-container) !important;
+  }
+
+  .mat-mdc-row:hover .mat-mdc-checkbox .mdc-checkbox__checkmark,
+  .mat-mdc-row:focus .mat-mdc-checkbox .mdc-checkbox__checkmark {
+    color: var(--mat-sys-primary-container) !important;
+  }
+
+  .mat-mdc-row:hover .mat-mdc-checkbox.mat-mdc-checkbox-disabled,
+  .mat-mdc-row:focus .mat-mdc-checkbox.mat-mdc-checkbox-disabled {
+    opacity: 0.5;
+  }
+
+  .mat-mdc-row:hover .mat-mdc-checkbox.mat-mdc-checkbox-disabled label,
+  .mat-mdc-row:focus .mat-mdc-checkbox.mat-mdc-checkbox-disabled label {
+    color: var(--mat-sys-on-surface-variant) !important;
+  }
+
   @media (max-width: 768px) {
     .no-results {
       text-align: left;

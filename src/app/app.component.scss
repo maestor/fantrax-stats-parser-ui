@@ -8,33 +8,6 @@
   overflow: visible;
   background: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
-
-  // Let browse-route sticky UI follow the page scroll instead of getting trapped
-  // inside the non-scrolling Material drawer wrappers.
-  ::ng-deep .mat-drawer-content {
-    overflow: visible;
-  }
-
-  ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
-    position: fixed;
-    inset: 0;
-  }
-
-  ::ng-deep .mat-drawer.settings-drawer {
-    width: calc(var(--app-shell-side-gutter-width) + var(--settings-drawer-panel-width));
-    height: var(--app-height);
-    max-height: var(--app-height);
-    background: var(--mat-sys-surface);
-    z-index: 5;
-  }
-
-  ::ng-deep .mat-drawer-inner-container {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    height: 100%;
-    background: inherit;
-  }
 }
 
 .app-shell--drawer-open::before {
@@ -47,6 +20,10 @@
   background: var(--mat-sys-surface);
   pointer-events: none;
   z-index: 4;
+}
+
+.app-shell-content {
+  overflow: visible;
 }
 
 .settings-drawer {

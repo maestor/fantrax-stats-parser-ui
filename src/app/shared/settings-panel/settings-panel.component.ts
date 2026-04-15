@@ -17,5 +17,6 @@ import { MinGamesSliderComponent } from './min-games-slider/min-games-slider.com
 })
 export class SettingsPanelComponent {
   readonly context = input.required<StatsContext>();
+  readonly layout = input<'default' | 'drawer'>('default');
   readonly maxGames = input.required<number>();
 }
