@@ -22,7 +22,10 @@ let nextTableCardInstanceId = 0;
     TranslateModule,
   ],
   templateUrl: './table-card.component.html',
-  styleUrl: './table-card.component.scss',
+  styleUrls: [
+    './table-card.component.scss',
+    './table-card-actions.component.scss',
+  ],
 })
 export class TableCardComponent {
   private readonly instanceId = `table-card-${nextTableCardInstanceId += 1}`;

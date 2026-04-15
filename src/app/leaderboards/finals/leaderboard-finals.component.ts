@@ -70,6 +70,7 @@ const FACTOR_KEYS: FinalsFactorKey[] = ['offence', 'physical', 'goalies'];
   templateUrl: './leaderboard-finals.component.html',
   styleUrls: [
     './leaderboard-finals.component.scss',
+    './leaderboard-finals-summary.component.scss',
     './leaderboard-finals-comparison.component.scss',
     './leaderboard-finals-responsive.component.scss',
   ],

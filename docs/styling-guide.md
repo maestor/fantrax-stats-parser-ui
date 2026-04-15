@@ -224,5 +224,6 @@ For every UI-touching styling change:
 - check desktop and mobile widths when layout/overflow/spacing changed
 - verify focus states for interactive changes
 - verify loading, empty, and error states when the touched component has them
+- keep component-style budget fixes structural: split large stylesheets by responsibility or extract a shared primitive before raising budgets
 
 If a refactor changes the styling architecture itself, update this guide in the same batch.

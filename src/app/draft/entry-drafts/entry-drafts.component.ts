@@ -51,6 +51,7 @@ type DraftPickStatus = {
   templateUrl: './entry-drafts.component.html',
   styleUrls: [
     '../styles/draft-panel-shell.scss',
+    '../styles/draft-panel-picks.scss',
     './entry-drafts.component.scss',
   ],
 })
