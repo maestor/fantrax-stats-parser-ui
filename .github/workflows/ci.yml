@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   src-changes:
-    name: Detect src changes
+    name: Detect e2e running need
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
