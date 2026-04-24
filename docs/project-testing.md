@@ -476,10 +476,11 @@ describe('MyComponent', { timeout: 15_000 }, () => {
 
 ## Continuous Integration
 
-The CI pipeline (`.github/workflows/ci.yml`) runs two parallel jobs on every PR and push to main:
+The CI pipeline (`.github/workflows/ci.yml`) runs on pull requests targeting `main`:
 
 1. **Verify** — tests with coverage + production build (`npm run verify`)
-2. **E2E Tests** — builds the app, then runs Playwright tests against the production build with API fixtures (no live backend needed)
+2. **Detect src changes** — checks the changed PR file list so expensive E2E work can be skipped when app source did not change
+3. **E2E Tests** — when the PR changes `src/**`, builds the app, then runs Playwright tests against the production build with API fixtures (no live backend needed)
 
 E2E tests upload the Playwright HTML report and test results as GitHub Actions artifacts when tests fail (retained for 7 days).
 
