@@ -11,8 +11,36 @@ concurrency:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
+  src-changes:
+    name: Detect e2e running need
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      src: ${{ steps.changed-files.outputs.src }}
+
+    steps:
+      - name: Check changed PR files
+        id: changed-files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              per_page: 100,
+            });
+
+            const srcChanged = files.some((file) =>
+              file.filename.startsWith('src/') ||
+              file.previous_filename?.startsWith('src/')
+            );
+
+            core.setOutput('src', String(srcChanged));
+
   verify:
     name: Verify (test + build)
     runs-on: ubuntu-latest
@@ -36,6 +64,8 @@ jobs:
 
   e2e:
     name: E2E Tests
+    needs: src-changes
+    if: ${{ needs.src-changes.outputs.src == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
