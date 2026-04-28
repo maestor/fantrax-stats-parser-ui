@@ -12,6 +12,8 @@ For contributor and agent guidance, start at [docs/README.md](docs/README.md).
 
 The docs in this repo intentionally focus on project-specific architecture, workflow, testing, accessibility, and local exceptions rather than re-teaching generic Angular concepts.
 
+This repo also carries project-local agent skills under `.agents/skills/`. Keep those committed when the repo workflow depends on them, and use the matching skill when a task touches testing strategy, API contract drift, verification depth, browser UI validation, or accessibility-first UI work.
+
 For CSS/theming work specifically, read [docs/styling-guide.md](docs/styling-guide.md) before changing shared styles, tokens, or Material overrides.
 
 ## Features

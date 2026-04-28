@@ -1,0 +1,4 @@
+interface:
+  display_name: "Accessibility First UI"
+  short_description: "Build accessible UI behavior from the start"
+  default_prompt: "Use $accessibility-first-ui to build or review this UI with accessibility built in from the start."

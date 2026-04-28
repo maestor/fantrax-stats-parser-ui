@@ -2,7 +2,9 @@
 
 These docs are intentionally project-specific.
 
-Use the installed `angular-developer` skill and official Angular docs for generic framework guidance. Use the docs in this directory for this repo's architecture, workflow, testing rules, accessibility requirements, and deliberate overrides of generic Angular guidance.
+Use the project-local skills in `.agents/skills/` when they match the task. In particular, start testing-related work with `intelligence-testing`, use `api-contract-sync` for contract drift, `local-first-verification` for local check depth, `browser-ui-verification` for browser-risk UI work, and `accessibility-first-ui` for accessible UI implementation. Use `angular-developer` and official Angular docs only for generic framework guidance.
+
+Use the docs in this directory for this repo's architecture, workflow, testing rules, accessibility requirements, and deliberate overrides of generic Angular guidance.
 
 If a local doc conflicts with generic Angular guidance, follow the local doc for work in this repo.
 
@@ -30,3 +32,11 @@ If a local doc conflicts with generic Angular guidance, follow the local doc for
 - When a repo rule intentionally overrides generic Angular guidance, document that override in the most specific relevant guide
 - Use the real code as the source of truth for exact component/service APIs when signatures move faster than docs
 - Keep `docs/plans/` as local gitignored working memory for approved plans, not as committed product documentation
+
+## Installed Skills
+
+- `intelligence-testing`: starting point for tasks that add or change tests or rely on behavior-first TDD.
+- `api-contract-sync`: use when backend contracts, generated types, fixtures, or consumer assumptions might drift.
+- `local-first-verification`: use to choose the cheapest honest local verification path before review or commit.
+- `browser-ui-verification`: use for web UI changes with real browser, theme, responsive, or interaction risk.
+- `accessibility-first-ui`: use for UI work where semantics, focus, labels, contrast, and state announcements matter from the start.

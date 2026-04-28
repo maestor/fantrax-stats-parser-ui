@@ -6,6 +6,8 @@ This project uses **Testing Library** (`@testing-library/angular`) with **Vitest
 
 This repo's testing rules override generic Angular examples when they conflict. In particular, this repo prefers Testing Library for UI behavior coverage and Playwright for E2E coverage; do not import Cypress- or raw-DOM-selector-first testing habits from generic framework references.
 
+Start testing-related tasks with the installed `intelligence-testing` skill. Use it as the decision-making lens for behavior-first TDD and realistic scenario selection, then apply the repo-specific rules in this file for concrete test layers and commands.
+
 ## Test Statistics
 
 - **Total Test Files / Tests**: Run `npm test` to see the current count and status
@@ -20,6 +22,7 @@ Note: avoid hard-coding a "current test count" in docs; it becomes stale quickly
 Every contribution must include tests for all new/changed behavior.
 
 - **Rule**: new/changed logic should be tested (include error and edge cases)
+- **Starting bias**: use `intelligence-testing` for the story-first TDD workflow and realistic scenario selection
 - **CI Gate**: `npm run verify` must pass (tests + production build)
 - **Coverage thresholds**: `npm run verify` enforces minimum coverage of 93% statements, 85% branches, 94% functions, and 95% lines via `angular.json` (`architect.test.options.coverageThresholds`)
 - **Branch coverage note**: Angular's generated `ngDevMode` signal-branch coverage noise is no longer skewing the branch baseline, so branch coverage is now a more reliable regression signal. Do not use that as a reason to skip meaningful behavior coverage.
@@ -70,6 +73,7 @@ Interpretation rules:
 
 ### Local Safety Policy
 
+- Use the installed `local-first-verification` skill when deciding how far to escalate local checks while iterating.
 - Do not run partial or targeted test commands as a normal workflow. Use the full suite commands (`npm test`, `npm run test:coverage`, `npm run verify`) unless the user explicitly asks for isolated debugging.
 - Run only one heavy test command at a time. Do not start a new `npm run verify` while another `verify`, coverage run, or full E2E run is still active.
 - Leave cooldown time between repeated `npm run verify` runs on local machines. Wait about 2 minutes after a failed or completed `verify` before starting the next one.

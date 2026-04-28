@@ -2,7 +2,9 @@
 
 This guide focuses on local setup, commands, and repo-specific operational notes.
 
-Use the installed `angular-developer` skill and official Angular docs for generic framework guidance. Follow `AGENTS.md` and `CLAUDE.md` for the authoritative task workflow, review pause, verify, and commit rules.
+Use the project-local skills in `.agents/skills/` when they match the task, especially `intelligence-testing` for testing-related work, `local-first-verification` for local check strategy, and `browser-ui-verification` for browser-risk UI changes. Use `angular-developer` and official Angular docs for generic framework guidance only. Follow `AGENTS.md` and `CLAUDE.md` for the authoritative task workflow, review pause, verify, and commit rules.
+
+The upstream source for the repo-local skills is [maestor/agent-skills](https://github.com/maestor/agent-skills). Its README documents the `skills.sh` install source as `npx skills add maestor/agent-skills --skill <skill-name>`. This repo vendors the selected skills under `.agents/skills/` so they stay project-local and available automatically in future sessions.
 
 Explicit user instructions in chat override those repo workflow defaults. Treat the documented workflow as the fallback when the user has not said otherwise.
 
@@ -259,23 +261,15 @@ npx playwright test --headed
 
 ### Manual Browser Automation For Agent Work
 
-Use the device-wide `agent-browser` CLI for ad hoc browser inspection tasks that are not Playwright E2E tests.
-
-Recommended flow:
-
-```bash
-agent-browser open http://localhost:4200
-agent-browser wait --load networkidle
-agent-browser snapshot -i
-agent-browser click @e2
-agent-browser close
-```
+Use the installed `browser-ui-verification` skill plus the device-wide `agent-browser` CLI for ad hoc browser inspection tasks that are not Playwright E2E tests.
 
 Notes:
 
 - Prefer `agent-browser` for manual UI/theme inspection that older workflow text may still call "Playwright MCP".
+- Use the skill for the generic browser workflow, command patterns, and browser-matrix decisions instead of repeating them in repo docs.
 - Keep Playwright for automated E2E coverage (`npm run e2e`, `npx playwright test`, `npm run perf:audit`).
-- For dark-mode checks, use explicit browser media settings such as `agent-browser --color-scheme dark open http://localhost:4200`.
+- Coordinate before changing ports or stopping an already running local frontend session on `http://localhost:4200`.
+- Close browser sessions after inspection.
 
 ### Angular CLI Commands
 ```bash
@@ -348,6 +342,7 @@ The API endpoint is configured in the service layer. Check:
    - Update translation files for new UI text
 
 5. **Write tests**
+   - Start with `intelligence-testing` for the behavior-first test plan
    - Component tests (`*.spec.ts`) using `@testing-library/angular` with accessible queries
    - Update E2E tests if needed
 
