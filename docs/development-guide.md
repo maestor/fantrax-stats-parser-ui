@@ -2,7 +2,9 @@
 
 This guide focuses on local setup, commands, and repo-specific operational notes.
 
-Use the installed `angular-developer` skill and official Angular docs for generic framework guidance. Follow `AGENTS.md` and `CLAUDE.md` for the authoritative task workflow, review pause, verify, and commit rules.
+Use the project-local skills in `.agents/skills/` when they match the task, especially `intelligence-testing` for testing-related work, `local-first-verification` for local check strategy, and `browser-ui-verification` for browser-risk UI changes. Use `angular-developer` and official Angular docs for generic framework guidance only. Follow `AGENTS.md` and `CLAUDE.md` for the authoritative task workflow, review pause, verify, and commit rules.
+
+The upstream source for the repo-local skills is [maestor/agent-skills](https://github.com/maestor/agent-skills). Its README documents the `skills.sh` install source as `npx skills add maestor/agent-skills --skill <skill-name>`. This repo vendors the selected skills under `.agents/skills/` so they stay project-local and available automatically in future sessions.
 
 Explicit user instructions in chat override those repo workflow defaults. Treat the documented workflow as the fallback when the user has not said otherwise.
 

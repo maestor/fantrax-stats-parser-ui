@@ -2,7 +2,7 @@
 
 This file defines repo-local quality gates and deliberate overrides.
 
-Use the installed `angular-developer` skill and official Angular docs for generic Angular guidance. Use this file for the requirements that are specific to this project and its workflow.
+Use the project-local skills in `.agents/skills/` when their trigger matches the task. Use `angular-developer` and official Angular docs for generic Angular guidance only. Use this file for the requirements that are specific to this project and its workflow.
 
 ## Non-Negotiable Requirements
 
@@ -23,6 +23,7 @@ See `docs/accessibility.md`.
 ### Tested Changes Are Required
 
 - New or changed behavior must be covered by tests
+- Start testing-related work with `intelligence-testing`
 - Aim for full coverage of touched logic, including edge and error cases
 - Prefer removing dead logic over writing tests for impossible states
 
@@ -37,6 +38,8 @@ npm run verify
 ```
 
 That runs linting, coverage-enabled tests, and the production build.
+
+Use `local-first-verification` while iterating to choose the cheapest honest local checks before this final gate.
 
 ### Documentation-Only Batches
 
@@ -89,6 +92,9 @@ These rules override generic Angular examples when they conflict.
 - E2E uses Playwright, not Cypress
 - UI tests mock only approved external/platform boundaries such as `ApiService`, `ViewportService`, and `PwaUpdateService`
 - Do not add `data-testid` or `data-cy` attributes just to support routine testing
+- API contract changes should use `api-contract-sync`
+- Web UI changes with browser risk should use `browser-ui-verification`
+- UI accessibility work should use `accessibility-first-ui`
 
 See `docs/project-testing.md` for the full testing workflow.
 

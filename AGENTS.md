@@ -7,7 +7,13 @@ See `README.md` for project overview and `package.json` for available npm comman
 
 # Project documentation
 - Read accessibility, codebase structure, coding standards, component guide, development guide, project overview, project requirements, project testing, roadmap, and styling guide docs via `docs/README.md` and its subpages.
-- Use the installed `angular-developer` skill and official Angular docs for generic Angular guidance.
+- Use the project-local skills in `.agents/skills/` when their trigger matches the task.
+- Use `intelligence-testing` as the starting point for new tasks that touch testing or behavior protection. Apply the repo's testing rules first, then use the skill's behavior-first TDD lens.
+- Use `api-contract-sync` when backend contracts, OpenAPI, generated API types, fixtures, or consumer assumptions may drift.
+- Use `local-first-verification` when choosing the right local verification depth before handoff, review, or commit.
+- Use `browser-ui-verification` for web UI work with real browser, layout, theme, responsive, or interaction risk.
+- Use `accessibility-first-ui` for UI work that affects semantics, focus, labels, status messaging, or contrast.
+- Use the installed `angular-developer` skill and official Angular docs for generic Angular guidance only.
 - Use repo docs for project-specific workflow, architecture, testing, accessibility, routing/shell structure, and deliberate overrides.
 - If repo docs conflict with generic Angular guidance, follow the repo docs for this project.
 - When a local doc drifts into generic Angular tutorial material, trim it back to the repo-specific rule instead of expanding it further.

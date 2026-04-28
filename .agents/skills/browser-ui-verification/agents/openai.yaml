@@ -1,0 +1,4 @@
+interface:
+  display_name: "Browser UI Verification"
+  short_description: "Verify web UI work in a real browser"
+  default_prompt: "Use $browser-ui-verification to validate this web UI change in the browser, including dark mode when relevant."
