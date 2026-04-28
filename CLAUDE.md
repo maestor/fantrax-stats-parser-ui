@@ -69,8 +69,7 @@ If a proposed change would alter user-visible application behavior or semantics,
 
 ## Browser Automation Rules
 - For manual browser automation and visual inspection that previously used Playwright MCP, prefer the device-wide `agent-browser` CLI.
-- Typical workflow: `agent-browser open <url>`, `agent-browser wait --load networkidle`, `agent-browser snapshot -i`, interact via refs such as `@e2`, then `agent-browser close` when finished.
-- When checking theme-sensitive UI, use explicit browser media settings such as `agent-browser --color-scheme dark open <url>` or `agent-browser set media dark`.
+- Use the `browser-ui-verification` skill for the generic browser-inspection workflow and command patterns.
 - Use agent-browser only when the task includes real theming or styling risk that benefits from browser inspection.
 - Do not use agent-browser for routine non-visual changes that do not meaningfully affect rendering, such as pure data wiring, copy-only tweaks, or simple column-order updates.
 - If using agent-browser during a task, close the browser after you are done with it and no longer need it. Do not leave sessions open across unrelated steps or future sessions.

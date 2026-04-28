@@ -22,7 +22,7 @@ Note: avoid hard-coding a "current test count" in docs; it becomes stale quickly
 Every contribution must include tests for all new/changed behavior.
 
 - **Rule**: new/changed logic should be tested (include error and edge cases)
-- **Starting bias**: frame the real usage story first, choose the highest-signal failing test first, and only then implement the smallest production change
+- **Starting bias**: use `intelligence-testing` for the story-first TDD workflow and realistic scenario selection
 - **CI Gate**: `npm run verify` must pass (tests + production build)
 - **Coverage thresholds**: `npm run verify` enforces minimum coverage of 93% statements, 85% branches, 94% functions, and 95% lines via `angular.json` (`architect.test.options.coverageThresholds`)
 - **Branch coverage note**: Angular's generated `ngDevMode` signal-branch coverage noise is no longer skewing the branch baseline, so branch coverage is now a more reliable regression signal. Do not use that as a reason to skip meaningful behavior coverage.
