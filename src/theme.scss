@@ -84,6 +84,18 @@ $theme: mat.define-theme(
     var(--mat-sys-primary-container) 70%,
     var(--mat-sys-surface-container-high) 30%
   );
+  --app-chart-series-1: light-dark(#1976d2, #8ab4f8);
+  --app-chart-series-1-fill: color-mix(in srgb, var(--app-chart-series-1) 30%, transparent);
+  --app-chart-series-2: light-dark(#ff9800, #ffb74d);
+  --app-chart-series-2-fill: color-mix(in srgb, var(--app-chart-series-2) 30%, transparent);
+  --app-chart-series-3: light-dark(#388e3c, #81c784);
+  --app-chart-series-3-fill: color-mix(in srgb, var(--app-chart-series-3) 30%, transparent);
+  --app-chart-series-4: light-dark(#fbc02d, #ffd54f);
+  --app-chart-series-4-fill: color-mix(in srgb, var(--app-chart-series-4) 30%, transparent);
+  --app-chart-series-5: light-dark(#7b1fa2, #ba68c8);
+  --app-chart-series-5-fill: color-mix(in srgb, var(--app-chart-series-5) 30%, transparent);
+  --app-chart-series-6: light-dark(#00838f, #4dd0e1);
+  --app-chart-series-6-fill: color-mix(in srgb, var(--app-chart-series-6) 30%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {

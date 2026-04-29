@@ -5,6 +5,10 @@ import type { ChartConfiguration, ChartData, TooltipItem } from 'chart.js';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { Player, Goalie, PlayerScores } from '@services/api.service';
 import { StatsContext } from '@shared/types/context.types';
+import {
+  getChartSeriesColors,
+  resolveThemedCssColorVar,
+} from '@shared/utils/chart-theme.utils';
 
 @Component({
   selector: 'app-comparison-radar',
@@ -30,9 +34,14 @@ export class ComparisonRadarComponent implements OnInit {
   }
 
   private buildRadarChartOptions(): void {
-    const textColor = this.resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f');
-    const gridColor = this.resolveCssColorVar('--mat-sys-outline-variant', 'rgba(0,0,0,0.2)');
-    const tooltipBg = this.resolveCssColorVar(
+    const textColor = resolveThemedCssColorVar(this.document, '--mat-sys-on-surface', '#1f1f1f');
+    const gridColor = resolveThemedCssColorVar(
+      this.document,
+      '--mat-sys-outline-variant',
+      'rgba(0,0,0,0.2)',
+    );
+    const tooltipBg = resolveThemedCssColorVar(
+      this.document,
       '--mat-sys-surface-container-high',
       'rgba(0,0,0,0.8)',
       'backgroundColor',
@@ -118,32 +127,38 @@ export class ComparisonRadarComponent implements OnInit {
     this.radarChartData = {
       labels,
       datasets: [
-        {
+        (() => {
+          const seriesColors = getChartSeriesColors(this.document, 0);
+          return {
           label: playerA.name,
           data: dataA,
           fill: true,
-          backgroundColor: 'rgba(25, 118, 210, 0.3)',
-          borderColor: '#1976d2',
-          pointBackgroundColor: '#1976d2',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#1976d2',
+          backgroundColor: seriesColors.fillColor,
+          borderColor: seriesColors.lineColor,
+          pointBackgroundColor: seriesColors.pointBackgroundColor,
+          pointBorderColor: seriesColors.pointBorderColor,
+          pointHoverBackgroundColor: seriesColors.pointHoverBackgroundColor,
+          pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-        },
-        {
+          };
+        })(),
+        (() => {
+          const seriesColors = getChartSeriesColors(this.document, 1);
+          return {
           label: playerB.name,
           data: dataB,
           fill: true,
-          backgroundColor: 'rgba(255, 152, 0, 0.3)',
-          borderColor: '#ff9800',
-          pointBackgroundColor: '#ff9800',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#ff9800',
+          backgroundColor: seriesColors.fillColor,
+          borderColor: seriesColors.lineColor,
+          pointBackgroundColor: seriesColors.pointBackgroundColor,
+          pointBorderColor: seriesColors.pointBorderColor,
+          pointHoverBackgroundColor: seriesColors.pointHoverBackgroundColor,
+          pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-        },
+          };
+        })(),
       ],
     };
   }
@@ -171,65 +186,39 @@ export class ComparisonRadarComponent implements OnInit {
     this.radarChartData = {
       labels,
       datasets: [
-        {
+        (() => {
+          const seriesColors = getChartSeriesColors(this.document, 0);
+          return {
           label: goalieA.name,
           data: dataA,
           fill: true,
-          backgroundColor: 'rgba(25, 118, 210, 0.3)',
-          borderColor: '#1976d2',
-          pointBackgroundColor: '#1976d2',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#1976d2',
+          backgroundColor: seriesColors.fillColor,
+          borderColor: seriesColors.lineColor,
+          pointBackgroundColor: seriesColors.pointBackgroundColor,
+          pointBorderColor: seriesColors.pointBorderColor,
+          pointHoverBackgroundColor: seriesColors.pointHoverBackgroundColor,
+          pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-        },
-        {
+          };
+        })(),
+        (() => {
+          const seriesColors = getChartSeriesColors(this.document, 1);
+          return {
           label: goalieB.name,
           data: dataB,
           fill: true,
-          backgroundColor: 'rgba(255, 152, 0, 0.3)',
-          borderColor: '#ff9800',
-          pointBackgroundColor: '#ff9800',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#ff9800',
+          backgroundColor: seriesColors.fillColor,
+          borderColor: seriesColors.lineColor,
+          pointBackgroundColor: seriesColors.pointBackgroundColor,
+          pointBorderColor: seriesColors.pointBorderColor,
+          pointHoverBackgroundColor: seriesColors.pointHoverBackgroundColor,
+          pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-        },
+          };
+        })(),
       ],
     };
-  }
-
-  private resolveCssColorVar(
-    name: string,
-    fallback: string,
-    cssProperty: 'color' | 'backgroundColor' = 'color',
-  ): string {
-    try {
-      const body = this.document.body;
-      if (!body) return fallback;
-
-      const probe = this.document.createElement('span');
-      probe.setAttribute('aria-hidden', 'true');
-      probe.style.position = 'absolute';
-      probe.style.width = '0';
-      probe.style.height = '0';
-      probe.style.overflow = 'hidden';
-
-      if (cssProperty === 'backgroundColor') {
-        probe.style.backgroundColor = `var(${name})`;
-      } else {
-        probe.style.color = `var(${name})`;
-      }
-
-      body.appendChild(probe);
-      const computed = getComputedStyle(probe)[cssProperty];
-      probe.remove();
-
-      return computed?.trim() ? computed.trim() : fallback;
-    } catch {
-      return fallback;
-    }
   }
 }
