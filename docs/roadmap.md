@@ -37,3 +37,81 @@ Persist the user's last sort column and direction per table (players/goalies) in
 ### Advanced testing
 
 - Visual regression testing (Playwright screenshot comparison)
+
+## Codebase health and refactoring
+
+These topics came from the 2026-04 codebase audit. They are intentionally scoped so a future session can pick one priority band, read the linked local plan, and implement it without needing the original audit conversation.
+
+Detailed implementation notes live in local working memory at `docs/plans/2026-04-29-codebase-health-refactor-plan.md`.
+
+### Critical priority
+
+#### Fix per-game stat data corruption (~2-4h)
+
+`StatsService` currently derives per-game rows by dividing every non-fixed property by `games`. That turns non-numeric fields such as `id` into `NaN`, which can break row identity and comparison state when stats-per-game mode is active. Score breakdown objects are not used for points-per-game mode; the mode should rely on the existing `scoreAdjustedByGames` value instead of trying to recalculate or preserve score breakdowns for that view.
+
+Expected direction:
+- Add focused behavior coverage for stats-per-game rows preserving identity/meta fields and using `scoreAdjustedByGames` for score display/comparison.
+- Replace broad object-entry division with an allowlist of numeric stat fields or a typed stat-transform helper.
+- Drop or ignore unused score breakdown fields in the per-game view unless another real consumer still requires them.
+- Keep impossible fallback branches out of the final implementation.
+
+### High priority
+
+#### Reduce initial bundle and root-shell eager imports (~1-2 days)
+
+The production build passes but warns that the initial bundle exceeds the `1 MB` warning budget. Audit evidence points to eager root-shell imports, eager settings drawer dependencies, global Material component theme output, and large shared Material modules.
+
+Expected direction:
+- Keep the root shell lightweight.
+- Lazy-load drawer content and route-specific controls where practical.
+- Split stats-only drawer dependencies away from browse-route startup.
+- Re-run `npm run build -- --stats-json` and compare initial bundle contributors before and after.
+
+#### Fix desktop layout shift in table routes (~4-8h)
+
+`npm run perf:audit` reported desktop CLS around `0.19-0.22` on `/`, `/career/players`, and `/leaderboards/regular`. The shift source is the table wrapper moving vertically while route headers, subtitles, and table content settle.
+
+Expected direction:
+- Reserve stable vertical space around route subtitle/tabs/table shells.
+- Verify the front page, career players, and regular leaderboards in the perf audit.
+- Avoid solving this with arbitrary fixed heights that hurt mobile or empty/error states.
+
+#### Harden the Vercel API proxy (~4-8h)
+
+The production proxy is intentionally server-side, but its forwarding surface is broader than the current UI appears to need: it accepts common mutation methods, forwards arbitrary paths, and passes through client `Authorization` while also injecting the server-side API key.
+
+Expected direction:
+- Restrict allowed methods and paths to the public read endpoints used by this UI.
+- Stop forwarding client authorization unless a documented use case requires it.
+- Keep CORS and rate-limit behavior covered with focused proxy tests or script-level checks.
+
+### Medium priority
+
+#### Decompose `StatsTableComponent` (~1-3 days)
+
+`StatsTableComponent` owns too many responsibilities: table rendering, filtering, sorting, loading progress, expansion, keyboard navigation, player-card lazy opening, prefetching, and focus restoration. It is well covered but high blast radius.
+
+Expected direction:
+- Extract behavior by responsibility rather than by line count.
+- Keep existing accessibility behavior protected before moving code.
+- Prefer helpers/directives/services that match the current table split instead of building a universal table abstraction.
+
+#### Move chart colors to shared theme tokens (~2-4h)
+
+Player-card graph code still hard-codes chart colors. Future chart work should use shared app/theme chart tokens so light and dark mode stay consistent.
+
+Expected direction:
+- Define a small shared chart palette through theme/app tokens.
+- Read those tokens where Chart.js datasets are built.
+- Validate player-card graphs in light and dark mode.
+
+### Low priority
+
+#### Track dev/build dependency advisories (~1-2h)
+
+`npm audit` reports a moderate PostCSS advisory through the Angular build toolchain. It is not a runtime app dependency, but it should be cleared when Angular/Vite/PostCSS updates make that safe.
+
+#### Make local perf tooling fully explicit (~1-2h)
+
+`npm run perf:audit` uses `npx tsx`, which may download `tsx` in a fresh environment. Add `tsx` as a dev dependency or replace the command with already-installed tooling so performance audits are reproducible offline after install.
