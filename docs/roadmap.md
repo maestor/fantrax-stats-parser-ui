@@ -44,29 +44,7 @@ These topics came from the 2026-04 codebase audit. They are intentionally scoped
 
 Detailed implementation notes live in local working memory at `docs/plans/2026-04-29-codebase-health-refactor-plan.md`.
 
-### Critical priority
-
-#### Fix per-game stat data corruption (~2-4h)
-
-`StatsService` currently derives per-game rows by dividing every non-fixed property by `games`. That turns non-numeric fields such as `id` into `NaN`, which can break row identity and comparison state when stats-per-game mode is active. Score breakdown objects are not used for points-per-game mode; the mode should rely on the existing `scoreAdjustedByGames` value instead of trying to recalculate or preserve score breakdowns for that view.
-
-Expected direction:
-- Add focused behavior coverage for stats-per-game rows preserving identity/meta fields and using `scoreAdjustedByGames` for score display/comparison.
-- Replace broad object-entry division with an allowlist of numeric stat fields or a typed stat-transform helper.
-- Drop or ignore unused score breakdown fields in the per-game view unless another real consumer still requires them.
-- Keep impossible fallback branches out of the final implementation.
-
 ### High priority
-
-#### Reduce initial bundle and root-shell eager imports (~1-2 days)
-
-The production build passes but warns that the initial bundle exceeds the `1 MB` warning budget. Audit evidence points to eager root-shell imports, eager settings drawer dependencies, global Material component theme output, and large shared Material modules.
-
-Expected direction:
-- Keep the root shell lightweight.
-- Lazy-load drawer content and route-specific controls where practical.
-- Split stats-only drawer dependencies away from browse-route startup.
-- Re-run `npm run build -- --stats-json` and compare initial bundle contributors before and after.
 
 #### Fix desktop layout shift in table routes (~4-8h)
 
