@@ -46,15 +46,6 @@ Detailed implementation notes live in local working memory at `docs/plans/2026-0
 
 ### High priority
 
-#### Fix desktop layout shift in table routes (~4-8h)
-
-`npm run perf:audit` reported desktop CLS around `0.19-0.22` on `/`, `/career/players`, and `/leaderboards/regular`. The shift source is the table wrapper moving vertically while route headers, subtitles, and table content settle.
-
-Expected direction:
-- Reserve stable vertical space around route subtitle/tabs/table shells.
-- Verify the front page, career players, and regular leaderboards in the perf audit.
-- Avoid solving this with arbitrary fixed heights that hurt mobile or empty/error states.
-
 #### Harden the Vercel API proxy (~4-8h)
 
 The production proxy is intentionally server-side, but its forwarding surface is broader than the current UI appears to need: it accepts common mutation methods, forwards arbitrary paths, and passes through client `Authorization` while also injecting the server-side API key.

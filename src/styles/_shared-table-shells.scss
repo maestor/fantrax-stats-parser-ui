@@ -115,7 +115,8 @@ app-stats-table {
     overflow-x: auto;
     overflow-y: auto;
     width: 100%;
-    max-height: calc(100vh - 120px);
+    max-height: calc(var(--app-height) - 120px);
+    scrollbar-gutter: stable;
   }
 
   .mat-mdc-table {
@@ -233,7 +234,7 @@ app-virtual-table {
   .table-container--virtual {
     background: var(--mat-sys-surface);
     color: var(--mat-sys-on-surface);
-    max-height: calc(100vh - 200px);
+    max-height: calc(var(--app-height) - 200px);
     overflow-y: hidden;
   }
 
@@ -296,7 +297,7 @@ app-virtual-table {
   }
 
   .virtual-viewport {
-    height: calc(100vh - 200px);
+    height: calc(var(--app-height) - 200px);
     width: 100%;
     background: var(--mat-sys-surface);
     scrollbar-gutter: stable;
