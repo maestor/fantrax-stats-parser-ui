@@ -20,9 +20,7 @@
             "outputPath": "dist/fantrax-stats-parser-ui",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -41,13 +39,10 @@
                 "output": "fonts"
               }
             ],
-            "styles": [
-              "src/theme.scss",
-              "src/styles.scss"
-            ],
+            "styles": ["src/theme.scss", "src/styles.scss"],
             "scripts": [],
             "server": "src/main.server.ts",
-            "outputMode": "static",
+            "outputMode": "static"
           },
           "configurations": {
             "production": {
@@ -101,13 +96,11 @@
           "options": {
             "tsConfig": "tsconfig.spec.json",
             "runnerConfig": "vitest.config.ts",
-            "setupFiles": [
-              "src/test-setup.ts"
-            ],
+            "setupFiles": ["src/test-setup.ts"],
             "coverageThresholds": {
               "branches": 85,
-              "statements": 93,
-              "functions": 94,
+              "statements": 94,
+              "functions": 95,
               "lines": 95
             },
             "coverageExclude": [
