@@ -1,49 +1,68 @@
 import { Injectable } from '@angular/core';
 import { Player, Goalie } from './api.service';
 
+const COMMON_PER_GAME_FIELDS = [
+  'goals',
+  'assists',
+  'points',
+  'penalties',
+  'ppp',
+  'shp',
+] as const;
+
+const PLAYER_PER_GAME_FIELDS = [
+  ...COMMON_PER_GAME_FIELDS,
+  'plusMinus',
+  'shots',
+  'hits',
+  'blocks',
+] as const satisfies readonly (keyof Player)[];
+
+const GOALIE_PER_GAME_FIELDS = [
+  ...COMMON_PER_GAME_FIELDS,
+  'wins',
+  'saves',
+  'shutouts',
+] as const satisfies readonly (keyof Goalie)[];
+
 @Injectable({
   providedIn: 'root',
 })
 export class StatsService {
   getPlayerStatsPerGame(data: Player[]): Player[] {
-    return this.getStatsPerGame(data, [
-      'name',
-      'season',
-      'games',
-      'plusMinus',
-      'position',
-      'scoreByPosition',
-      'scoreByPositionAdjustedByGames',
-      'scoresByPosition',
-    ]);
+    return this.getStatsPerGame(data, PLAYER_PER_GAME_FIELDS);
   }
 
   getGoalieStatsPerGame(data: Goalie[]): Goalie[] {
-    return this.getStatsPerGame(data, ['name', 'season', 'games', 'gaa', 'savePercent']);
+    return this.getStatsPerGame(data, GOALIE_PER_GAME_FIELDS);
   }
 
   private getStatsPerGame<
-    T extends { games: number; scoreAdjustedByGames: number, season?: number }
-  >(data: T[], fixedFields: string[]): T[] {
+    T extends { games: number; score: number; scoreAdjustedByGames: number }
+  >(data: T[], statFields: readonly (keyof T)[]): T[] {
     return data.map((item) => {
-      const { games, scoreAdjustedByGames, season, ...rest } = item;
-      // Create the per-game stats for the dynamic fields
-      const perGameStats = Object.fromEntries(
-        Object.entries(rest).map(([key, value]) => [
-          key,
-          this.format((value as number) / games),
-        ])
-      );
+      const perGameItem = {
+        ...item,
+        score: item.scoreAdjustedByGames,
+      } as T;
 
-      // Combine the fixed fields with the per-game stats
-      return {
-        ...perGameStats,
-        score: scoreAdjustedByGames,
-        scoreAdjustedByGames: scoreAdjustedByGames,
-        seasons: (item as Record<string, unknown>)['seasons'], // Preserve seasons if they exist
-        ...Object.fromEntries(fixedFields.map((field) => [field, (item as Record<string, unknown>)[field]])),
-      } as unknown as T;
+      statFields.forEach((field) => {
+        const value = item[field];
+        if (typeof value === 'number') {
+          perGameItem[field] = this.toPerGameValue(value, item.games) as T[keyof T];
+        }
+      });
+
+      return perGameItem;
     });
+  }
+
+  private toPerGameValue(value: number, games: number): number {
+    if (games <= 0) {
+      return 0;
+    }
+
+    return this.format(value / games);
   }
 
   private format(value: number) {

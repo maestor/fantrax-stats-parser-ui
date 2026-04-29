@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/angular';
+import { fireEvent, render, screen, within } from '@testing-library/angular';
 
 import { AppComponent } from '../../app.component';
 import {
@@ -126,6 +126,10 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
 
   it('shows stats-only comparison content when stats-per-game is enabled', async () => {
     const { fixture } = await render(AppComponent, getBehaviorTestConfig({ isMobile: false }));
+    const selectedPlayers = slicedPlayers.slice(0, 2);
+    const expectedPerGameGoals = selectedPlayers.map((player) =>
+      (player.goals / player.games).toFixed(2)
+    );
 
     await waitForBehaviorAssertion(fixture, () => {
       expect(screen.getByText(slicedPlayers[0].name)).toBeInTheDocument();
@@ -136,12 +140,32 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
     fireEvent.click(statsModeToggle);
 
     await vi.waitFor(() => {
+      fixture.detectChanges();
       expect(statsModeToggle).toHaveAttribute('aria-checked', 'true');
+      const updatedFirstPlayerRow = screen
+        .getByText(selectedPlayers[0].name)
+        .closest('tr');
+
+      expect(updatedFirstPlayerRow).not.toBeNull();
+      expect(
+        within(updatedFirstPlayerRow as HTMLElement).getByText(expectedPerGameGoals[0])
+      ).toBeInTheDocument();
     });
 
-    const [firstCheckbox, secondCheckbox] = screen.getAllByRole('checkbox');
-    fireEvent.click(firstCheckbox);
-    fireEvent.click(secondCheckbox);
+    const firstPlayerRow = screen.getByText(selectedPlayers[0].name).closest('tr');
+    const secondPlayerRow = screen.getByText(selectedPlayers[1].name).closest('tr');
+
+    expect(firstPlayerRow).not.toBeNull();
+    expect(secondPlayerRow).not.toBeNull();
+
+    fireEvent.click(within(firstPlayerRow as HTMLElement).getByRole('checkbox'));
+    fireEvent.click(within(secondPlayerRow as HTMLElement).getByRole('checkbox'));
+
+    await vi.waitFor(() => {
+      expect(screen.getByRole('status')).toHaveTextContent(selectedPlayers[0].name);
+      expect(screen.getByRole('status')).toHaveTextContent(selectedPlayers[1].name);
+    });
+
     fireEvent.click(screen.getByRole('button', { name: 'comparison.compare' }));
 
     await screen.findByRole('button', { name: 'a11y.closeComparisonDialog' }, { timeout: 15000 });
@@ -152,5 +176,14 @@ describe('Comparison flow — desktop user behavior', { timeout: 150_000 }, () =
     expect(
       screen.getByText('tableColumn.scoreAdjustedByGames', { selector: '.stat-label' })
     ).toBeInTheDocument();
+
+    const goalsRow = screen
+      .getByText('tableColumn.goals', { selector: '.stat-label' })
+      .closest('.stat-row-desktop');
+
+    expect(goalsRow).not.toBeNull();
+    expectedPerGameGoals.forEach((goalsValue) => {
+      expect(within(goalsRow as HTMLElement).getByText(goalsValue)).toBeInTheDocument();
+    });
   });
 });
