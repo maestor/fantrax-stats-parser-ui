@@ -24,7 +24,7 @@ Every contribution must include tests for all new/changed behavior.
 - **Rule**: new/changed logic should be tested (include error and edge cases)
 - **Starting bias**: use `intelligence-testing` for the story-first TDD workflow and realistic scenario selection
 - **CI Gate**: `npm run verify` must pass (tests + production build)
-- **Coverage thresholds**: `npm run verify` enforces minimum coverage of 93% statements, 85% branches, 94% functions, and 95% lines via `angular.json` (`architect.test.options.coverageThresholds`)
+- **Coverage thresholds**: `npm run verify` enforces minimum coverage of 94% statements, 86% branches, 96% functions, and 95% lines via `angular.json` (`architect.test.options.coverageThresholds`)
 - **Branch coverage note**: Angular's generated `ngDevMode` signal-branch coverage noise is no longer skewing the branch baseline, so branch coverage is now a more reliable regression signal. Do not use that as a reason to skip meaningful behavior coverage.
 - **Planning-heavy changes**: save the approved implementation plan locally under gitignored `docs/plans/YYYY-MM-DD-*.md` before editing code so behavior-test work can resume cleanly in a later session
 

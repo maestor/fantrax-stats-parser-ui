@@ -1,14 +1,28 @@
+import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { AppComponent } from '../../../app.component';
 import {
   getBehaviorTestConfig,
   openDashboardSettingsDrawer,
   polyfillJsdom,
+  provideDisabledMaterialAnimations,
   seedLocalStorage,
   slicedPlayers,
 } from '../../../testing/behavior-test-utils';
 import type { Player } from '@services/api.service';
+import { FilterService } from '@services/filter.service';
+import { MinGamesSliderComponent } from './min-games-slider.component';
+
+@Component({
+  imports: [MinGamesSliderComponent],
+  template: `<app-min-games-slider context="player" [maxGames]="maxGames" />`,
+})
+class MinGamesSliderHostComponent {
+  maxGames = 10;
+}
 
 describe('MinGamesSliderComponent — player stats user flow', { timeout: 60_000 }, () => {
   const highGamesPlayer = {
@@ -60,6 +74,27 @@ describe('MinGamesSliderComponent — player stats user flow', { timeout: 60_000
       expect(minGamesSlider).toHaveValue('7');
       expect(within(playerTable).getByText(highGamesPlayer.name)).toBeInTheDocument();
       expect(within(playerTable).queryByText(lowGamesPlayer.name)).not.toBeInTheDocument();
+    });
+  });
+
+  it('clamps an impossible minimum games filter to the current maximum', async () => {
+    const { fixture } = await render(MinGamesSliderHostComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [provideDisabledMaterialAnimations()],
+    });
+    const filterService = TestBed.inject(FilterService);
+
+    filterService.updatePlayerFilters({ minGames: 12 });
+    fixture.detectChanges();
+
+    const minGamesSlider = await screen.findByRole('slider', {
+      name: 'minGamesSlider.ariaLabel',
+    });
+
+    await vi.waitFor(() => {
+      fixture.detectChanges();
+      expect(minGamesSlider).toHaveValue('10');
+      expect(filterService.playerFiltersSignal().minGames).toBe(10);
     });
   });
 });

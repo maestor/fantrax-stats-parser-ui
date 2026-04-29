@@ -98,9 +98,9 @@
             "runnerConfig": "vitest.config.ts",
             "setupFiles": ["src/test-setup.ts"],
             "coverageThresholds": {
-              "branches": 85,
+              "branches": 86,
               "statements": 94,
-              "functions": 95,
+              "functions": 96,
               "lines": 95
             },
             "coverageExclude": [

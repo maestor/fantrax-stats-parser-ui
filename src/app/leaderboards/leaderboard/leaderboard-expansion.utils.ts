@@ -9,7 +9,7 @@ import { formatSeasonDisplay, formatSeasonShort } from '@shared/utils/season.uti
 type PlayoffSeason = PlayoffLeaderboardEntry['seasons'][number];
 type RegularSeason = RegularLeaderboardEntry['seasons'][number];
 type TransactionSeason = TransactionLeaderboardEntry['seasons'][number];
-type SeasonLabelOptions = { shortSeasonLabel?: boolean };
+type SeasonLabelOptions = { shortSeasonLabel: boolean };
 
 export const PLAYOFF_ROUND_TRANSLATION_KEY: Record<PlayoffSeason['key'], string> = {
   championship: 'leaderboards.round.championship',
@@ -26,7 +26,7 @@ export function formatPercent(value: number): string {
 
 export function mapRegularLeaderboardSeasons(
   seasons: RegularLeaderboardEntry['seasons'],
-  options: SeasonLabelOptions = {},
+  options: SeasonLabelOptions,
 ): ExpandedRowViewModel[] {
   const formatSeason = options.shortSeasonLabel ? formatSeasonShort : formatSeasonDisplay;
   return [...seasons]
@@ -41,7 +41,7 @@ export function mapRegularLeaderboardSeasons(
 export function mapPlayoffLeaderboardSeasons(
   seasons: PlayoffLeaderboardEntry['seasons'],
   roundLabel: (key: PlayoffSeason['key']) => string,
-  options: SeasonLabelOptions = {},
+  options: SeasonLabelOptions,
 ): ExpandedRowViewModel[] {
   const formatSeason = options.shortSeasonLabel ? formatSeasonShort : formatSeasonDisplay;
   return [...seasons]
@@ -55,7 +55,7 @@ export function mapPlayoffLeaderboardSeasons(
 
 export function mapTransactionLeaderboardSeasons(
   seasons: TransactionLeaderboardEntry['seasons'],
-  options: SeasonLabelOptions = {},
+  options: SeasonLabelOptions,
 ): ExpandedRowViewModel[] {
   const formatSeason = options.shortSeasonLabel ? formatSeasonShort : formatSeasonDisplay;
   return [...seasons]

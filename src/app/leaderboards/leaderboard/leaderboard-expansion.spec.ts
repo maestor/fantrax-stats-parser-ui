@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
 import { ViewportService } from '@services/viewport.service';
@@ -418,5 +418,30 @@ describe('Leaderboard expansion behavior', () => {
       expect(dallasRow).toHaveClass('a11y-active');
     });
     expect(screen.queryByText('2024-25')).toBeNull();
+  });
+
+  it('shows the table error state when leaderboard loading fails', async () => {
+    await render(LeaderboardRegularComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideDisabledMaterialAnimations(),
+        {
+          provide: ViewportService,
+          useValue: {
+            isMobile$: of(false),
+          },
+        },
+        {
+          provide: ApiService,
+          useValue: {
+            getLeaderboardRegular: () => throwError(() => new Error('leaderboard unavailable')),
+            getLeaderboardPlayoffs: () => of([]),
+          },
+        },
+      ],
+    });
+
+    expect(await screen.findByText('table.apiUnavailable')).toBeInTheDocument();
+    expect(screen.queryByText('table.loading')).not.toBeInTheDocument();
   });
 });
