@@ -46,15 +46,6 @@ Detailed implementation notes live in local working memory at `docs/plans/2026-0
 
 ### High priority
 
-#### Harden the Vercel API proxy (~4-8h)
-
-The production proxy is intentionally server-side, but its forwarding surface is broader than the current UI appears to need: it accepts common mutation methods, forwards arbitrary paths, and passes through client `Authorization` while also injecting the server-side API key.
-
-Expected direction:
-- Restrict allowed methods and paths to the public read endpoints used by this UI.
-- Stop forwarding client authorization unless a documented use case requires it.
-- Keep CORS and rate-limit behavior covered with focused proxy tests or script-level checks.
-
 ### Medium priority
 
 #### Decompose `StatsTableComponent` (~1-3 days)
