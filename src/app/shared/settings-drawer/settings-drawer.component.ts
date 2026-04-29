@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,7 +35,7 @@ import { TopControlsComponent } from '@shared/top-controls/top-controls.componen
 export class SettingsDrawerComponent {
   readonly mode = input.required<SettingsDrawerMode>();
   readonly statsContext = input<StatsContext | undefined>(undefined);
-  readonly closeRequested = output<void>();
+  readonly closeDrawer = input<(() => void) | undefined>(undefined);
 
   private readonly apiService = inject(ApiService);
   private readonly drawerContextService = inject(DrawerContextService);
@@ -71,5 +71,9 @@ export class SettingsDrawerComponent {
       hour: '2-digit',
       minute: '2-digit',
     });
+  }
+
+  requestClose(): void {
+    this.closeDrawer()?.();
   }
 }

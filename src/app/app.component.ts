@@ -1,5 +1,5 @@
-import { AsyncPipe, DOCUMENT } from '@angular/common';
-import { Component, DestroyRef, ElementRef, Injector, OnInit, ViewChild, inject } from '@angular/core';
+import { AsyncPipe, DOCUMENT, NgComponentOutlet } from '@angular/common';
+import { Component, DestroyRef, ElementRef, Injector, OnInit, Type, ViewChild, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,7 +33,6 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { PwaUpdateService } from '@services/pwa-update.service';
 import { SeoService } from '@services/seo.service';
 import { TeamService } from '@services/team.service';
-import { SettingsDrawerComponent } from '@shared/settings-drawer/settings-drawer.component';
 import {
   getSettingsDrawerRouteConfig,
   resolveRootRouteGroup,
@@ -58,6 +57,15 @@ let globalNavComponentPromise: Promise<
 function loadGlobalNavComponent() {
   globalNavComponentPromise ??= import('@shared/global-nav/global-nav.component');
   return globalNavComponentPromise;
+}
+
+let settingsDrawerComponentPromise: Promise<
+  typeof import('@shared/settings-drawer/settings-drawer.component')
+> | null = null;
+
+function loadSettingsDrawerComponent() {
+  settingsDrawerComponentPromise ??= import('@shared/settings-drawer/settings-drawer.component');
+  return settingsDrawerComponentPromise;
 }
 
 type RootRouteUiState = {
@@ -116,6 +124,7 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
   imports: [
     RouterOutlet,
     AsyncPipe,
+    NgComponentOutlet,
     TranslateModule,
     MatDialogModule,
     MatButtonModule,
@@ -125,7 +134,6 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
     MatTooltipModule,
     MatBottomSheetModule,
     FooterComponent,
-    SettingsDrawerComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -190,10 +198,19 @@ export class AppComponent implements OnInit {
   private readonly translateService = inject(TranslateService);
   private readonly router = inject(Router);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
+  settingsDrawerComponent: Type<unknown> | null = null;
 
   hasInitializedSettingsDrawerContent = false;
   isSettingsDrawerOpen = false;
   isSettingsDrawerSurfaceVisible = false;
+
+  get settingsDrawerInputs(): Record<string, unknown> {
+    return {
+      mode: this.settingsDrawerRouteConfig.mode,
+      statsContext: this.settingsDrawerRouteConfig.statsContext,
+      closeDrawer: () => this.closeSettingsDrawer(),
+    };
+  }
 
   ngOnInit(): void {
     void this.seoService;
@@ -354,6 +371,7 @@ export class AppComponent implements OnInit {
 
   toggleSettingsDrawer(): void {
     this.hasInitializedSettingsDrawerContent = true;
+    void this.ensureSettingsDrawerContentLoaded();
 
     if (!(this.settingsDrawer?.opened ?? this.isSettingsDrawerOpen)) {
       this.isSettingsDrawerSurfaceVisible = true;
@@ -392,6 +410,15 @@ export class AppComponent implements OnInit {
     }
 
     void this.injector.get(StartFromSeasonSyncService);
+  }
+
+  private async ensureSettingsDrawerContentLoaded(): Promise<void> {
+    if (this.settingsDrawerComponent) {
+      return;
+    }
+
+    const { SettingsDrawerComponent } = await loadSettingsDrawerComponent();
+    this.settingsDrawerComponent = SettingsDrawerComponent;
   }
 
   private restoreFocusAfterSettingsDrawerClose(): void {

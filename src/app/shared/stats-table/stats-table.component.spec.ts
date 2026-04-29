@@ -11,8 +11,11 @@ import { PlayerCardDialogData } from '@shared/player-card/player-card.component'
 import {
   StatsTableComponent,
   TableRow,
-  shouldSchedulePlayerCardPrefetch,
 } from './stats-table.component';
+import {
+  shouldSchedulePlayerCardPrefetch,
+  StatsTablePlayerCardService,
+} from './stats-table-player-card.service';
 import {
   polyfillJsdom,
   provideDisabledMaterialAnimations,
@@ -98,10 +101,11 @@ describe('StatsTableComponent — user behavior', () => {
       componentProperties,
     });
 
-    const statsTable = view.fixture.debugElement.query(By.directive(StatsTableComponent))
-      .componentInstance as StatsTableComponent;
+    const statsTableDebug = view.fixture.debugElement.query(By.directive(StatsTableComponent));
+    const statsTable = statsTableDebug.componentInstance as StatsTableComponent;
+    const playerCardService = statsTableDebug.injector.get(StatsTablePlayerCardService);
 
-    return { ...view, close$, open, statsTable };
+    return { ...view, close$, open, statsTable, playerCardService };
   }
 
   function getDataRows(): HTMLElement[] {
@@ -458,17 +462,17 @@ describe('StatsTableComponent — user behavior', () => {
         })),
       });
 
-      const { statsTable } = await setup();
+      const { statsTable, playerCardService } = await setup();
       await screen.findByText('Alpha Center');
 
-      const statsTableInternal = statsTable as any;
+      const playerCardServiceInternal = playerCardService as any;
 
       statsTable.onPlayerCardPrefetchIntent();
-      expect(statsTableInternal.playerCardPrefetchTimerId).toBeDefined();
+      expect(playerCardServiceInternal.playerCardPrefetchTimerId).toBeDefined();
 
       vi.runOnlyPendingTimers();
 
-      expect(statsTableInternal.playerCardPrefetchTimerId).toBeUndefined();
+      expect(playerCardServiceInternal.playerCardPrefetchTimerId).toBeUndefined();
     } finally {
       Object.defineProperty(window, 'matchMedia', {
         configurable: true,
@@ -494,21 +498,21 @@ describe('StatsTableComponent — user behavior', () => {
         value: cancelIdleCallback,
       });
 
-      const { fixture, statsTable } = await setup();
+      const { fixture, playerCardService } = await setup();
       await screen.findByText('Alpha Center');
 
       const timerId = setTimeout(() => {}, 1500);
-      const componentWithPrefetchState = statsTable as any;
+      const serviceWithPrefetchState = playerCardService as any;
 
-      componentWithPrefetchState.playerCardPrefetchIdleId = 123;
-      componentWithPrefetchState.playerCardPrefetchTimerId = timerId;
+      serviceWithPrefetchState.playerCardPrefetchIdleId = 123;
+      serviceWithPrefetchState.playerCardPrefetchTimerId = timerId;
 
       fixture.destroy();
 
       expect(cancelIdleCallback).toHaveBeenCalledWith(123);
       expect(clearTimeoutSpy).toHaveBeenCalledWith(timerId);
-      expect(componentWithPrefetchState.playerCardPrefetchIdleId).toBeUndefined();
-      expect(componentWithPrefetchState.playerCardPrefetchTimerId).toBeUndefined();
+      expect(serviceWithPrefetchState.playerCardPrefetchIdleId).toBeUndefined();
+      expect(serviceWithPrefetchState.playerCardPrefetchTimerId).toBeUndefined();
     } finally {
       clearTimeoutSpy.mockRestore();
       if (previousCancelIdleCallback) {
@@ -522,7 +526,7 @@ describe('StatsTableComponent — user behavior', () => {
 
   it('no-ops prefetch scheduling helpers when window is unavailable', async () => {
     const windowDescriptor = Object.getOwnPropertyDescriptor(globalThis, 'window');
-    const { statsTable } = await setup();
+    const { playerCardService } = await setup();
     await screen.findByText('Alpha Center');
 
     try {
@@ -532,11 +536,11 @@ describe('StatsTableComponent — user behavior', () => {
       });
 
       expect(() => {
-        (statsTable as any).schedulePlayerCardPrefetch();
+        (playerCardService as any).schedulePlayerCardPrefetch();
       }).not.toThrow();
 
       expect(() => {
-        (statsTable as any).clearPlayerCardPrefetch();
+        (playerCardService as any).clearPlayerCardPrefetch();
       }).not.toThrow();
     } finally {
       if (windowDescriptor) {

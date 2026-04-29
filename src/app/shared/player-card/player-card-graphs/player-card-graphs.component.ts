@@ -21,6 +21,10 @@ import type {
 } from '@services/api.service';
 import type { PositionFilter } from '@services/filter.service';
 import { formatSeasonShort } from '@shared/utils/season.utils';
+import {
+  getChartSeriesColors,
+  resolveThemedCssColorVar,
+} from '@shared/utils/chart-theme.utils';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -346,9 +350,14 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
   }
 
   private applyThemeToChartOptions(): void {
-    const textColor = this.resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f');
-    const gridColor = this.resolveCssColorVar('--mat-sys-outline-variant', 'rgba(0,0,0,0.2)');
-    const tooltipBg = this.resolveCssColorVar(
+    const textColor = resolveThemedCssColorVar(this.document, '--mat-sys-on-surface', '#1f1f1f');
+    const gridColor = resolveThemedCssColorVar(
+      this.document,
+      '--mat-sys-outline-variant',
+      'rgba(0,0,0,0.2)',
+    );
+    const tooltipBg = resolveThemedCssColorVar(
+      this.document,
       '--mat-sys-surface-container-high',
       'rgba(0,0,0,0.8)',
       'backgroundColor',
@@ -406,88 +415,15 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  private resolveCssColorVar(
-    name: string,
-    fallback: string,
-    cssProperty: 'color' | 'backgroundColor' = 'color',
-  ): string {
-    try {
-      const body = this.document.body;
-      if (!body) {
-        return fallback;
-      }
-
-      const root = this.document.documentElement;
-      const rootStyle = root ? getComputedStyle(root) : undefined;
-      const computedSchemeRaw =
-        (rootStyle as CSSStyleDeclaration & { colorScheme?: string })?.colorScheme ||
-        rootStyle?.getPropertyValue('color-scheme') ||
-        '';
-      const schemeTokens = computedSchemeRaw.trim().split(/\s+/).filter(Boolean);
-      const schemeToken = schemeTokens.length === 1 ? schemeTokens[0] : undefined;
-
-      const scheme: 'light' | 'dark' | undefined =
-        schemeToken === 'dark' || schemeToken === 'light'
-          ? (schemeToken as 'light' | 'dark')
-          : undefined;
-
-      const usedScheme = this.detectUsedColorScheme(body, scheme);
-
-      const probe = this.createHiddenProbeElement();
-      if (usedScheme) {
-        probe.style.setProperty('color-scheme', usedScheme);
-      }
-
-      if (cssProperty === 'backgroundColor') {
-        probe.style.backgroundColor = `var(${name})`;
-      } else {
-        probe.style.color = `var(${name})`;
-      }
-
-      body.appendChild(probe);
-      const computed = getComputedStyle(probe)[cssProperty];
-      probe.remove();
-
-      return computed?.trim() ? computed.trim() : fallback;
-    } catch {
-      return fallback;
-    }
-  }
-
-  private createHiddenProbeElement(): HTMLSpanElement {
-    const el = this.document.createElement('span');
-    el.setAttribute('aria-hidden', 'true');
-    el.style.position = 'absolute';
-    el.style.width = '0';
-    el.style.height = '0';
-    el.style.overflow = 'hidden';
-    return el;
-  }
-
-  private detectUsedColorScheme(
-    body: HTMLElement,
-    knownScheme: 'light' | 'dark' | undefined,
-  ): 'light' | 'dark' | undefined {
-    if (knownScheme) {
-      return knownScheme;
-    }
-
-    const schemeProbe = this.createHiddenProbeElement();
-    schemeProbe.style.color = 'light-dark(rgb(1, 2, 3), rgb(4, 5, 6))';
-    body.appendChild(schemeProbe);
-
-    const observed = getComputedStyle(schemeProbe).color?.trim();
-    schemeProbe.remove();
-
-    if (observed === 'rgb(1, 2, 3)') return 'light';
-    if (observed === 'rgb(4, 5, 6)') return 'dark';
-    return undefined;
-  }
-
   private applyThemeToRadarChartOptions(): void {
-    const textColor = this.resolveCssColorVar('--mat-sys-on-surface', '#1f1f1f');
-    const outlineColor = this.resolveCssColorVar('--mat-sys-outline-variant', 'rgba(0,0,0,0.2)');
-    const tooltipBg = this.resolveCssColorVar(
+    const textColor = resolveThemedCssColorVar(this.document, '--mat-sys-on-surface', '#1f1f1f');
+    const outlineColor = resolveThemedCssColorVar(
+      this.document,
+      '--mat-sys-outline-variant',
+      'rgba(0,0,0,0.2)',
+    );
+    const tooltipBg = resolveThemedCssColorVar(
+      this.document,
       '--mat-sys-surface-container-high',
       'rgba(0,0,0,0.8)',
       'backgroundColor',
@@ -596,19 +532,22 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
     this.radarChartData = {
       labels,
       datasets: [
-        {
+        (() => {
+          const seriesColors = getChartSeriesColors(this.document, 0);
+          return {
           label: player.name,
           data,
           fill: true,
-          backgroundColor: 'rgba(25, 118, 210, 0.3)',
-          borderColor: '#1976d2',
-          pointBackgroundColor: '#1976d2',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#1976d2',
+          backgroundColor: seriesColors.fillColor,
+          borderColor: seriesColors.lineColor,
+          pointBackgroundColor: seriesColors.pointBackgroundColor,
+          pointBorderColor: seriesColors.pointBorderColor,
+          pointHoverBackgroundColor: seriesColors.pointHoverBackgroundColor,
+          pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-        },
+          };
+        })(),
       ],
     };
   }
@@ -637,19 +576,22 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
     this.radarChartData = {
       labels,
       datasets: [
-        {
+        (() => {
+          const seriesColors = getChartSeriesColors(this.document, 0);
+          return {
           label: goalie.name,
           data,
           fill: true,
-          backgroundColor: 'rgba(25, 118, 210, 0.3)',
-          borderColor: '#1976d2',
-          pointBackgroundColor: '#1976d2',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: '#1976d2',
+          backgroundColor: seriesColors.fillColor,
+          borderColor: seriesColors.lineColor,
+          pointBackgroundColor: seriesColors.pointBackgroundColor,
+          pointBorderColor: seriesColors.pointBorderColor,
+          pointHoverBackgroundColor: seriesColors.pointHoverBackgroundColor,
+          pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-        },
+          };
+        })(),
       ],
     };
   }
@@ -673,8 +615,6 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
 
   private updateChartData(sortedSeasons: (PlayerSeasonStats | GoalieSeasonStats)[]): void {
     const activeKeys = this.chartStatKeys.filter((key) => this.chartSelections[key]);
-
-    const palette = ['#1976d2', '#d32f2f', '#388e3c', '#fbc02d', '#7b1fa2', '#00838f'];
 
     const seasonByYear = new Map<number, PlayerSeasonStats | GoalieSeasonStats>();
     sortedSeasons.forEach((season) => {
@@ -709,12 +649,13 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
       });
 
       const translatedLabel = this.translateService.instant(`tableColumn.${key}`);
+      const seriesColors = getChartSeriesColors(this.document, index);
 
       return {
         data,
         label: translatedLabel || `tableColumn.${key}`,
-        borderColor: palette[index % palette.length],
-        backgroundColor: palette[index % palette.length],
+        borderColor: seriesColors.lineColor,
+        backgroundColor: seriesColors.lineColor,
         fill: false,
         tension: 0.2,
         pointRadius: 3,

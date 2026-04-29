@@ -16,6 +16,38 @@
  */
 
 const rateLimitState = new Map();
+const ALLOWED_METHODS = ['GET', 'OPTIONS'];
+const REPORT_TYPE_PATTERN = '(regular|playoffs|both)';
+const CAREER_HIGHLIGHT_TYPES = [
+  'most-teams-played',
+  'most-teams-owned',
+  'same-team-seasons-played',
+  'same-team-seasons-owned',
+  'most-stanley-cups',
+  'reunion-king',
+  'stash-king',
+  'regular-grinder-without-playoffs',
+  'most-trades',
+  'most-claims',
+  'most-drops',
+];
+const ALLOWED_PATH_PATTERNS = [
+  /^teams$/,
+  /^last-modified$/,
+  /^leaderboard\/(regular|playoffs|transactions|finals)$/,
+  new RegExp(`^seasons/${REPORT_TYPE_PATTERN}$`),
+  new RegExp(`^players/combined/${REPORT_TYPE_PATTERN}$`),
+  new RegExp(`^players/season/${REPORT_TYPE_PATTERN}/\\d{4}$`),
+  new RegExp(`^goalies/combined/${REPORT_TYPE_PATTERN}$`),
+  new RegExp(`^goalies/season/${REPORT_TYPE_PATTERN}/\\d{4}$`),
+  /^career\/players$/,
+  /^career\/goalies$/,
+  new RegExp(
+    `^career/highlights/(${CAREER_HIGHLIGHT_TYPES.map(escapeForRegExp).join('|')})$`,
+  ),
+  /^draft\/original$/,
+  /^draft\/entry$/,
+];
 
 function toOrigin(value) {
   if (!value) return null;
@@ -82,8 +114,8 @@ function applyCors(req, res, allowedOrigins) {
     res.setHeader('access-control-allow-origin', requestOrigin);
     res.setHeader('vary', 'Origin');
   }
-  res.setHeader('access-control-allow-methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  res.setHeader('access-control-allow-headers', 'content-type,authorization');
+  res.setHeader('access-control-allow-methods', ALLOWED_METHODS.join(','));
+  res.setHeader('access-control-allow-headers', 'content-type');
   res.setHeader('access-control-max-age', '86400');
 }
 
@@ -154,19 +186,19 @@ function joinPaths(basePathname, extraPath) {
   return `${a.startsWith('/') ? a : `/${a}`}/${b}`;
 }
 
+function normalizeProxyPath(path) {
+  return String(path || '').replace(/^\/+/, '').replace(/\/+$/, '');
+}
+
+function isAllowedProxyPath(path) {
+  const normalizedPath = normalizeProxyPath(path);
+  return ALLOWED_PATH_PATTERNS.some((pattern) => pattern.test(normalizedPath));
+}
+
 function sendJson(res, statusCode, body) {
   res.statusCode = statusCode;
   res.setHeader('content-type', 'application/json');
   res.end(JSON.stringify(body));
-}
-
-function readRawBody(req) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-    req.on('data', (chunk) => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
-    req.on('end', () => resolve(Buffer.concat(chunks)));
-    req.on('error', reject);
-  });
 }
 
 async function handler(req, res) {
@@ -182,9 +214,19 @@ async function handler(req, res) {
     // other websites from using your proxy via browser fetch.
     applyCors(req, res, allowedOrigins);
 
-    if (String(req.method || '').toUpperCase() === 'OPTIONS') {
+    const method = String(req.method || '').toUpperCase();
+
+    if (method === 'OPTIONS') {
       res.statusCode = 204;
       res.end();
+      return;
+    }
+
+    if (method !== 'GET') {
+      sendJson(res, 405, {
+        error: 'Method not allowed',
+        allowedMethods: ALLOWED_METHODS,
+      });
       return;
     }
 
@@ -242,8 +284,16 @@ async function handler(req, res) {
     }
 
     const incomingUrl = new URL(req.url || '/', 'http://localhost');
-    const path = incomingUrl.searchParams.get('path') || '';
+    const path = normalizeProxyPath(incomingUrl.searchParams.get('path') || '');
     incomingUrl.searchParams.delete('path');
+
+    if (!isAllowedProxyPath(path)) {
+      sendJson(res, 404, {
+        error: 'Path not allowed',
+        path,
+      });
+      return;
+    }
 
     const target = new URL(base.toString());
     target.pathname = joinPaths(target.pathname, path);
@@ -252,9 +302,6 @@ async function handler(req, res) {
     }
 
     console.log('[proxy] forward', { method: req.method, target: target.toString() });
-
-    const method = String(req.method || 'GET').toUpperCase();
-
     const headers = {
       'x-api-key': apiKey,
     };
@@ -265,14 +312,7 @@ async function handler(req, res) {
     const accept = normalizeHeader(req.headers['accept']);
     if (accept) headers['accept'] = accept;
 
-    const auth = normalizeHeader(req.headers['authorization']);
-    if (auth) headers['authorization'] = auth;
-
     const init = { method, headers };
-
-    if (!['GET', 'HEAD'].includes(method)) {
-      init.body = await readRawBody(req);
-    }
 
     let upstream;
     try {
@@ -294,9 +334,6 @@ async function handler(req, res) {
 
     const cc = upstream.headers.get('cache-control');
     if (cc) res.setHeader('cache-control', cc);
-
-    const setCookie = upstream.headers.get('set-cookie');
-    if (setCookie) res.setHeader('set-cookie', setCookie);
 
     const data = Buffer.from(await upstream.arrayBuffer());
     res.end(data);

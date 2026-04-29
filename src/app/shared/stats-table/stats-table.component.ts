@@ -4,7 +4,6 @@ import {
   Component,
   ElementRef,
   effect,
-  Injector,
   PLATFORM_ID,
   inject,
   input,
@@ -24,7 +23,6 @@ import { SortDirection } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
 import { Column, ColumnIcon } from '@shared/column.types';
 import { formatStatDisplayValue } from '@shared/utils/stat-value-format.utils';
 import {
@@ -37,51 +35,11 @@ import {
   CareerGoalieListItem,
 } from '@services/api.service';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
-import type { PlayerCardDialogData } from '@shared/player-card/player-card.component';
+import {
+  StatsTablePlayerCardService,
+} from './stats-table-player-card.service';
 
 const ROW_NUMBER_COLUMN = '__rowNumber';
-
-let playerCardComponentPromise: Promise<
-  typeof import('@shared/player-card/player-card.component')
-> | null = null;
-
-function loadPlayerCardComponent() {
-  playerCardComponentPromise ??= import('@shared/player-card/player-card.component');
-  return playerCardComponentPromise;
-}
-
-type NetworkInformationLike = {
-  saveData?: boolean;
-  effectiveType?: string;
-};
-
-type PlayerCardPrefetchEnvironment = Pick<Window, 'matchMedia' | 'navigator'> | null | undefined;
-
-export function shouldSchedulePlayerCardPrefetch(
-  env: PlayerCardPrefetchEnvironment,
-): boolean {
-  if (typeof env?.matchMedia !== 'function') {
-    return false;
-  }
-
-  if (env.matchMedia('(max-width: 768px)').matches) {
-    return false;
-  }
-
-  if (!env.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    return false;
-  }
-
-  const connection = (env.navigator as Navigator & { connection?: NetworkInformationLike })
-    .connection;
-  if (connection?.saveData) {
-    return false;
-  }
-
-  return !['slow-2g', '2g', '3g'].includes(
-    connection?.effectiveType?.toLowerCase() ?? '',
-  );
-}
 
 export type TableRow =
   | Player
@@ -110,12 +68,13 @@ export type TableRow =
   ],
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
+  providers: [StatsTablePlayerCardService],
 })
 export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private cdr = inject(ChangeDetectorRef);
-  private readonly injector = inject(Injector);
   private readonly platformId = inject(PLATFORM_ID);
   private translate = inject(TranslateService);
+  private readonly playerCardService = inject(StatsTablePlayerCardService);
 
   readonly dataInput = input.required<TableRow[]>({ alias: 'data' });
   readonly columnsInput = input.required<Column[]>({ alias: 'columns' });
@@ -167,10 +126,6 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   private previousLoading?: boolean;
   private previousTableId?: string;
   private previousShowPositionColumn?: boolean;
-  private playerCardPrefetchScheduled = false;
-  private openingPlayerCard = false;
-  private playerCardPrefetchIdleId?: number;
-  private playerCardPrefetchTimerId?: ReturnType<typeof setTimeout>;
 
   loadingProgress = 0;
   loadingBuffer = 0;
@@ -328,7 +283,6 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clearLoadingProgressTimer();
-    this.clearPlayerCardPrefetch();
   }
 
   private onLoadingChanged(isLoading: boolean) {
@@ -546,46 +500,18 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   }
 
   async selectItem(data: TableRow): Promise<void> {
-    if (this.openingPlayerCard) {
-      return;
-    }
-
-    this.openingPlayerCard = true;
-
-    // Track navigated index in a closure so CDK focus restoration
-    // (which triggers onRowFocus) cannot overwrite it before afterClosed fires.
-    let navigatedIndex = this.dataSource.filteredData.indexOf(data);
-
-    const dialogData: PlayerCardDialogData = {
-      player: data as Player | Goalie,
-      navigationContext: {
-        allPlayers: this.dataSource.filteredData as (Player | Goalie)[],
-        currentIndex: navigatedIndex,
-        onNavigate: (newIndex: number) => {
-          navigatedIndex = newIndex;
-          this.activeRowIndex = newIndex;
-          this.scrollRowIntoView(newIndex);
-          this.cdr.detectChanges();
-        },
+    await this.playerCardService.openPlayerCard({
+      row: data as Player | Goalie,
+      allRows: this.dataSource.filteredData as (Player | Goalie)[],
+      onNavigate: (newIndex) => {
+        this.activeRowIndex = newIndex;
+        this.scrollRowIntoView(newIndex);
+        this.cdr.detectChanges();
       },
-    };
-
-    try {
-      const { PlayerCardComponent } = await loadPlayerCardComponent();
-      const dialogRef = this.injector.get(MatDialog).open(PlayerCardComponent, {
-        data: dialogData,
-        maxWidth: '95vw',
-        width: 'auto',
-        panelClass: 'player-card-dialog',
-      });
-
-      // Focus the navigated-to row when dialog closes.
-      dialogRef.afterClosed().subscribe(() => {
+      onClose: (navigatedIndex) => {
         this.focusRow(navigatedIndex);
-      });
-    } finally {
-      this.openingPlayerCard = false;
-    }
+      },
+    });
   }
 
   onRowSelectToggle(row: TableRow): void {
@@ -593,55 +519,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   }
 
   onPlayerCardPrefetchIntent(): void {
-    if (this.playerCardPrefetchScheduled || !this.clickable) {
-      return;
-    }
-
-    if (typeof window === 'undefined' || !shouldSchedulePlayerCardPrefetch(window)) {
-      return;
-    }
-
-    this.playerCardPrefetchScheduled = true;
-    this.schedulePlayerCardPrefetch();
-  }
-
-  private schedulePlayerCardPrefetch(): void {
-    const warmPlayerCardChunk = () => {
-      void loadPlayerCardComponent();
-    };
-
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    if ('requestIdleCallback' in window) {
-      this.playerCardPrefetchIdleId = window.requestIdleCallback(() => {
-        this.playerCardPrefetchIdleId = undefined;
-        warmPlayerCardChunk();
-      }, { timeout: 2000 });
-      return;
-    }
-
-    this.playerCardPrefetchTimerId = setTimeout(() => {
-      this.playerCardPrefetchTimerId = undefined;
-      warmPlayerCardChunk();
-    }, 1500);
-  }
-
-  private clearPlayerCardPrefetch(): void {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    if (this.playerCardPrefetchIdleId !== undefined && 'cancelIdleCallback' in window) {
-      window.cancelIdleCallback(this.playerCardPrefetchIdleId);
-      this.playerCardPrefetchIdleId = undefined;
-    }
-
-    if (this.playerCardPrefetchTimerId !== undefined) {
-      clearTimeout(this.playerCardPrefetchTimerId);
-      this.playerCardPrefetchTimerId = undefined;
-    }
+    this.playerCardService.onPlayerCardPrefetchIntent(this.clickable);
   }
 
   onSearchKeydown(event: KeyboardEvent): void {

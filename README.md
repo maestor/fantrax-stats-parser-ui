@@ -94,6 +94,8 @@ This UI talks to a separate backend (see [node-fantrax-stats-parser](https://git
 - Vercel rewrites `/api/<path>` to a Serverless Function (`/api/proxy`) which:
 	- forwards the request to your real backend (`API_URL`)
 	- injects a secret `x-api-key` header (`API_KEY`) so the browser never sees the key
+	- only allows the UI's known read endpoints via `GET` and `OPTIONS`
+	- strips client `Authorization` and does not forward upstream `Set-Cookie` headers back to the browser
 
 **Vercel environment variables (required)**
 
