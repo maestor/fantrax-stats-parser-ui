@@ -5,6 +5,18 @@
       "source": "angular/skills",
       "sourceType": "github",
       "computedHash": "19665190ec60c37f59a08715b0896dfa91ee9b9f477d90cb82ce3fb52b06e328"
+    },
+    "git-pr-workflow": {
+      "source": "maestor/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/git-pr-workflow/SKILL.md",
+      "computedHash": "40e64ee3cd04130db176d353aae532da37da659b33736ccd2a7a1b9aec235ca4"
+    },
+    "project-documentation": {
+      "source": "maestor/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/project-documentation/SKILL.md",
+      "computedHash": "6045f59b9b299ff3e7223f5dea726d78817e9937573a48324fd0d50ab86b6d03"
     }
   }
 }
