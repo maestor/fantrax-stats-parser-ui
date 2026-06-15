@@ -1,6 +1,6 @@
 import { PLATFORM_ID } from '@angular/core';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { Subject, of, throwError } from 'rxjs';
 
 import { ApiService, EntryDraftTeamGroup } from '@services/api.service';
@@ -164,7 +164,7 @@ describe('EntryDraftsComponent', () => {
     platformId?: object | string;
   }) {
     return render(EntryDraftsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {

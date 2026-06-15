@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { fireEvent, render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 import { Column } from '@shared/column.types';
 import {
@@ -67,7 +67,7 @@ describe('VirtualTableComponent — user behavior', () => {
 
   async function setup(componentProperties: Partial<VirtualTableHostComponent> = {}) {
     return render(VirtualTableHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [provideDisabledMaterialAnimations()],
       componentProperties,
     });

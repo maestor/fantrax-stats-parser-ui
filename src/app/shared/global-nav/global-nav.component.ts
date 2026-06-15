@@ -4,7 +4,7 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 let helpDialogComponentPromise: Promise<
   typeof import('@shared/help-dialog/help-dialog.component')
@@ -26,7 +26,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-global-nav',
-  imports: [MatListModule, MatIconModule, TranslateModule],
+  imports: [MatListModule, MatIconModule, ...TRANSLATE_IMPORTS],
   templateUrl: './global-nav.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './global-nav.component.scss',

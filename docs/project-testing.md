@@ -127,11 +127,11 @@ import { render, screen } from '@testing-library/angular';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { MyComponent } from './my.component';
 import { ApiService } from '@services/api.service';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 describe('MyComponent', { timeout: 15_000 }, () => {
   async function setup() {
@@ -140,7 +140,7 @@ describe('MyComponent', { timeout: 15_000 }, () => {
     };
 
     await render(MyComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideRouter([]),
         provideHttpClient(),
@@ -455,11 +455,13 @@ fireEvent.input(screen.getByRole('searchbox'), { target: { value: 'search term' 
 
 ### Issue: TranslateService not provided
 
-**Solution**: Import `TranslateModule.forRoot()` in test configuration
+**Solution**: Import `TranslateTestingModule` in test configuration
 
 ```typescript
+import { TranslateTestingModule } from '@testing/translate-testing';
+
 await render(MyComponent, {
-  imports: [TranslateModule.forRoot()],
+  imports: [TranslateTestingModule],
 });
 ```
 

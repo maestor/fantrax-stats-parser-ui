@@ -3,7 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { catchError, defer, distinctUntilChanged, map, of } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
@@ -23,7 +23,7 @@ import { TopControlsComponent } from '@shared/top-controls/top-controls.componen
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     SelectedTeamHighlightToggleComponent,
     TeamSwitcherComponent,
     TopControlsComponent,

@@ -1,4 +1,5 @@
 import { DOCUMENT } from '@angular/common';
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { NavigationEnd, Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
@@ -35,7 +36,7 @@ type FakeRouter = {
 };
 
 class FakeTranslateService {
-  currentLang = 'fi';
+  readonly currentLang = signal<string | null>('fi');
   private translations: Record<string, string>;
   readonly onLangChange = new Subject<LangChangeEvent>();
 
@@ -55,6 +56,10 @@ class FakeTranslateService {
           .map((key) => [key, this.translations[key]]),
       ),
     );
+  }
+
+  getCurrentLang(): string | null {
+    return this.currentLang();
   }
 }
 
@@ -190,7 +195,7 @@ describe('SeoService', () => {
       url: '/career/goalies',
     });
 
-    translate.currentLang = 'en';
+    translate.currentLang.set('en');
     translate.setTranslations({
       pageTitle: ENGLISH_SITE_TITLE,
       'seo.description': ENGLISH_DESCRIPTION,
@@ -219,7 +224,7 @@ describe('SeoService', () => {
       url: '/career/goalies',
     });
 
-    translate.currentLang = '';
+    translate.currentLang.set(null);
     translate.onLangChange.next({
       lang: '',
       translations: {},

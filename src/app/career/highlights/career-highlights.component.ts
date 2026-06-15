@@ -11,7 +11,8 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import {
   ApiService,
@@ -195,7 +196,7 @@ function createInitialCardState(
     ActivateOnViewportDirective,
     SectionJumpNavComponent,
     TableCardComponent,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
   ],
   templateUrl: './career-highlights.component.html',
   styleUrl: './career-highlights.component.scss',
@@ -435,7 +436,7 @@ export class CareerHighlightsComponent implements OnInit {
             claim: this.translate.instant('career.highlights.reunionTypes.claim'),
             trade: this.translate.instant('career.highlights.reunionTypes.trade'),
           },
-          this.translate.currentLang || this.translate.getFallbackLang() || 'fi',
+          this.translate.getCurrentLang() || this.translate.getFallbackLang() || 'fi',
         ),
         detailLabel: item.name,
         detailTooltipClass: 'table-card-tooltip--with-header',

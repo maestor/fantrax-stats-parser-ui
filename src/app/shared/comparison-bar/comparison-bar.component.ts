@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, effect, inject, Injector, input } f
 import { AsyncPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { Observable, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ComparisonService } from '@services/comparison.service';
@@ -11,7 +12,7 @@ import { StatsContext } from '@shared/types/context.types';
 @Component({
   selector: 'app-comparison-bar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, MatButtonModule, TranslateModule],
+  imports: [AsyncPipe, MatButtonModule, ...TRANSLATE_IMPORTS],
   templateUrl: './comparison-bar.component.html',
   styleUrl: './comparison-bar.component.scss',
 })

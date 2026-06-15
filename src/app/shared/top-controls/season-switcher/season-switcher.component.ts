@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, input, si
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatSelectModule, MatSelectChange } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import {
   auditTime,
   catchError,
@@ -27,7 +27,7 @@ import { StatsContext } from '@shared/types/context.types';
   imports: [
     MatFormFieldModule,
     MatSelectModule,
-    TranslateModule
+    ...TRANSLATE_IMPORTS
   ],
   templateUrl: './season-switcher.component.html',
   styleUrl: './season-switcher.component.scss',

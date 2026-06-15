@@ -53,7 +53,7 @@ Handle user-visible dates/times with locale-aware APIs and shared helpers.
 - Do not manually build localized date strings by splitting ISO strings or concatenating day/month/year pieces
 - Prefer shared `Intl.DateTimeFormat`-based helpers under `src/app/shared/utils/` for reusable formatting
 - Use the active UI language when formatting should follow the app locale:
-  - `translate.currentLang || translate.getFallbackLang()`
+  - `translate.getCurrentLang() || translate.getFallbackLang()`
 - Choose the timezone intentionally instead of relying on the browser default by accident:
   - Use `Europe/Helsinki` when the product wants a league/app-local clock time
   - Use `UTC` when only the calendar date should stay stable across browsers for ISO timestamps/date-times

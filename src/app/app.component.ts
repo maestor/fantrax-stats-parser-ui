@@ -14,7 +14,8 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import {
   catchError,
   combineLatest,
@@ -125,7 +126,7 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
     RouterOutlet,
     AsyncPipe,
     NgComponentOutlet,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,

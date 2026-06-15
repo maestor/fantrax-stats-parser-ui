@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { map, take } from 'rxjs';
 import type { Player, Goalie } from '@services/api.service';
 import { ApiService } from '@services/api.service';
@@ -32,7 +32,7 @@ export type ComparisonDialogData = {
     MatIconModule,
     MatTabsModule,
     MatCardModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     ComparisonStatsComponent,
     ComparisonRadarComponent,
   ],

@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { ApiService, DraftTeamRef, OpeningDraftPick, OpeningDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
@@ -33,7 +33,7 @@ import { scheduleDraftTeamHeaderAlignment } from '../draft-keyboard-navigation.u
     MatExpansionModule,
     MatListModule,
     MatProgressBarModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     DraftPanelHeaderNavigationDirective,
     DraftPanelFocusTargetDirective,
   ],

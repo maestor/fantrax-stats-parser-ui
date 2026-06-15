@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, input, ChangeDetectionStrategy } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import type { Player, Goalie } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
 import { take } from 'rxjs';
@@ -21,7 +22,7 @@ export type StatRow = {
 
 @Component({
   selector: 'app-comparison-stats',
-  imports: [TranslateModule],
+  imports: [...TRANSLATE_IMPORTS],
   templateUrl: './comparison-stats.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './comparison-stats.component.scss',

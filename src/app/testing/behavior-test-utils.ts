@@ -3,7 +3,7 @@ import { ComponentFixture, DeferBlockBehavior } from '@angular/core/testing';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
 import { provideRouter } from '@angular/router';
 import { fireEvent, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { Observable, of, throwError } from 'rxjs';
 
 import { AppComponent } from '../app.component';
@@ -381,7 +381,7 @@ export function getBehaviorTestConfig(options: BehaviorTestConfigOptions) {
 
   return {
     deferBlockBehavior: DeferBlockBehavior.Playthrough,
-    imports: [TranslateModule.forRoot()],
+    imports: [TranslateTestingModule],
     providers: [
       provideRouter(routes),
       provideDisabledMaterialAnimations(),

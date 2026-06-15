@@ -16,7 +16,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { ApiService, DraftPick, DraftTeamRef, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
@@ -44,7 +44,7 @@ type DraftPickStatus = {
     MatListModule,
     MatProgressBarModule,
     MatTooltipModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     DraftPanelHeaderNavigationDirective,
     DraftPanelFocusTargetDirective,
   ],

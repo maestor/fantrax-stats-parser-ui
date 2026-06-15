@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PLATFORM_ID, Provider } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { fireEvent, render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 
@@ -93,7 +93,7 @@ describe('StatsTableComponent — user behavior', () => {
     }));
 
     const view = await render(StatsTableHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         { provide: MatDialog, useValue: { open } },
@@ -220,7 +220,7 @@ describe('StatsTableComponent — user behavior', () => {
     const dialogFactory = vi.fn(() => ({ open }));
 
     await render(StatsTableHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         { provide: MatDialog, useFactory: dialogFactory },

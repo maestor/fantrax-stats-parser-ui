@@ -9,12 +9,12 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-navigation',
-  imports: [RouterLink, TranslateModule, MatTabsModule],
+  imports: [RouterLink, ...TRANSLATE_IMPORTS, MatTabsModule],
   templateUrl: './navigation.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './navigation.component.scss',

@@ -1,6 +1,6 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { fireEvent, render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 import {
   SectionJumpNavComponent,
@@ -37,7 +37,7 @@ class SectionJumpNavHostComponent {
 describe('SectionJumpNavComponent', () => {
   async function setup() {
     return render(SectionJumpNavHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
     });
   }
 

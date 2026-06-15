@@ -3,14 +3,14 @@ import {
   MatButtonToggleModule,
   MatButtonToggleChange,
 } from '@angular/material/button-toggle';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { FilterService, PositionFilter } from '@services/filter.service';
 
 @Component({
   selector: 'app-position-filter-toggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatButtonToggleModule, TranslateModule],
+  imports: [MatButtonToggleModule, ...TRANSLATE_IMPORTS],
   templateUrl: './position-filter-toggle.component.html',
   styleUrl: './position-filter-toggle.component.scss',
 })

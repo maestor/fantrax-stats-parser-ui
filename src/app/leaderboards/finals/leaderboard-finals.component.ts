@@ -14,7 +14,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import {
   ApiService,
@@ -63,7 +63,7 @@ const FACTOR_KEYS: FinalsFactorKey[] = ['offence', 'physical', 'goalies'];
     MatIconModule,
     MatProgressBarModule,
     MatTooltipModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     DraftPanelFocusTargetDirective,
     DraftPanelHeaderNavigationDirective,
   ],

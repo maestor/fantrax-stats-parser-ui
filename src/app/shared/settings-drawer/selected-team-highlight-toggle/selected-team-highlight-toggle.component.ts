@@ -3,14 +3,14 @@ import {
   MatSlideToggleChange,
   MatSlideToggleModule,
 } from '@angular/material/slide-toggle';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { SettingsService } from '@services/settings.service';
 
 @Component({
   selector: 'app-selected-team-highlight-toggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatSlideToggleModule, TranslateModule],
+  imports: [MatSlideToggleModule, ...TRANSLATE_IMPORTS],
   templateUrl: './selected-team-highlight-toggle.component.html',
   styleUrl: './selected-team-highlight-toggle.component.scss',
 })

@@ -1,7 +1,7 @@
 import { PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { Subject, of, throwError } from 'rxjs';
 
 import { ApiService, EntryDraftTeamGroup } from '@services/api.service';
@@ -69,7 +69,7 @@ describe('DraftStatisticsComponent', () => {
     platformId?: object | string;
   }) {
     return render(DraftStatisticsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
