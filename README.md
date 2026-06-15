@@ -124,7 +124,7 @@ After changing Vercel env vars, redeploy so they take effect.
 ```bash
 # Development
 npm start                              # Dev server on http://localhost:4200 (live reload, HMR disabled)
-npm run generate:types                 # Regenerate API types from OpenAPI spec
+npm run generate:types                 # Regenerate API types from OpenAPI spec with pinned openapi-typescript
 
 # Tests (Vitest + Testing Library)
 npm test                               # Run once (no browser required)

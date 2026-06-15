@@ -96,7 +96,7 @@ class TeamService {
 
 ### API Types
 
-Types for all API responses are auto-generated from the OpenAPI spec via `openapi-typescript`.
+Types for all API responses are auto-generated from the OpenAPI spec via a pinned `openapi-typescript` CLI invocation in `npm run generate:types`.
 The generated file lives at `src/app/services/api.types.generated.ts` — never edit it manually.
 
 Types are re-exported from `api.service.ts` under stable names so consumers don't need to
@@ -111,6 +111,9 @@ To regenerate after backend API changes:
 ```bash
 npm run generate:types
 ```
+
+The generator is intentionally invoked via `npx` instead of a project dependency so fresh `npm ci`
+installs stay compatible with Angular 22's TypeScript 6 requirement.
 
 **Manually maintained types** (not in the OpenAPI spec):
 - `ReportType` — `'regular' | 'playoffs' | 'both'`

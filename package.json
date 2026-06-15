@@ -11,7 +11,7 @@
     "build": "NODE_OPTIONS=--max-old-space-size=6144 ng build --configuration production",
     "audit:styles:dead": "node scripts/audit-dead-style-selectors.mjs",
     "perf:audit": "npm run build && npx tsx scripts/perf-audit.ts",
-    "generate:types": "openapi-typescript https://ffhl-stats-api.vercel.app/openapi.json -o src/app/services/api.types.generated.ts",
+    "generate:types": "npx --yes openapi-typescript@7.13.0 https://ffhl-stats-api.vercel.app/openapi.json -o src/app/services/api.types.generated.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch=false",
     "test:watch": "ng test",
@@ -70,7 +70,6 @@
     "@vitest/coverage-istanbul": "^4.1.8",
     "eslint": "^10.0.2",
     "jsdom": "^28.1.0",
-    "openapi-typescript": "^7.13.0",
     "typescript": "6.0.3",
     "vitest": "^4.1.8",
     "vitest-canvas-mock": "^1.1.3"
