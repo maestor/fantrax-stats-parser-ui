@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -16,6 +16,7 @@ type LeaderboardRow = {
 @Component({
   standalone: true,
   imports: [StatsTableComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-stats-table
       [data]="data"

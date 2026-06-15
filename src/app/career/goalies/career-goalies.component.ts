@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { ApiService, CareerGoalieListItem } from '@services/api.service';
@@ -12,6 +12,7 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
 @Component({
   selector: 'app-career-goalies',
   imports: [VirtualTableComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './career-goalies.component.html',
 })
 export class CareerGoaliesComponent implements OnInit {

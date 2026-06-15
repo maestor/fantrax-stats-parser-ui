@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ViewChild, inject } from '@angular/core';
+import { Component, DestroyRef, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'app-draft',
   imports: [RouterLink, RouterOutlet, TranslateModule, MatTabsModule],
   templateUrl: './draft.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './draft.component.scss',
 })
 export class DraftComponent {

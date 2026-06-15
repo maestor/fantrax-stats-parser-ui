@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { render, screen } from '@testing-library/angular';
 
 import { ActivateOnViewportDirective } from './activate-on-viewport.directive';
@@ -56,6 +56,7 @@ class FakeIntersectionObserver {
 @Component({
   standalone: true,
   imports: [ActivateOnViewportDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div
       appActivateOnViewport

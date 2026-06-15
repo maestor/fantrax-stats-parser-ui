@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -11,6 +11,7 @@ import { mapTransactionLeaderboardSeasons } from '../leaderboard/leaderboard-exp
 @Component({
   selector: 'app-leaderboard-transactions',
   imports: [LeaderboardComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<app-leaderboard
     [fetchFn]="fetchFn"
     [columns]="columns"

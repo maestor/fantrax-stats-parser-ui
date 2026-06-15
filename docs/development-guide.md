@@ -10,7 +10,7 @@ Explicit user instructions in chat override those repo workflow defaults. Treat 
 
 ## Prerequisites
 
-1. **Node.js**: Version 24.x
+1. **Node.js**: Version 24.15+ within the 24.x line
 2. **npm**: Comes with Node.js
 3. **Backend**: [node-fantrax-stats-parser](https://github.com/maestor/node-fantrax-stats-parser) running
 

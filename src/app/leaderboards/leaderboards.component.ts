@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
@@ -7,6 +7,7 @@ import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
   selector: 'app-leaderboards',
   imports: [RouterLink, RouterOutlet, TranslateModule, MatTabsModule],
   templateUrl: './leaderboards.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './leaderboards.component.scss',
 })
 export class LeaderboardsComponent implements OnInit {

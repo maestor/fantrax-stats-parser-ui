@@ -1,7 +1,10 @@
-import { getChartSeriesColors } from './chart-theme.utils';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import { getChartSeriesColors, resolveThemedCssColorVar } from './chart-theme.utils';
 
 describe('chart theme utilities', () => {
   afterEach(() => {
+    vi.restoreAllMocks();
     document.documentElement.removeAttribute('style');
     document.body.removeAttribute('style');
   });
@@ -38,5 +41,72 @@ describe('chart theme utilities', () => {
 
     expect(colors.lineColor).toBe('rgb(10, 20, 30)');
     expect(colors.fillColor).toBe('rgba(10, 20, 30, 0.25)');
+  });
+
+  it('returns the fallback when the document has no body', () => {
+    const fakeDocument = {
+      body: undefined,
+      documentElement: document.documentElement,
+    } as unknown as Document;
+
+    expect(resolveThemedCssColorVar(fakeDocument, '--missing-color', '#abc123')).toBe('#abc123');
+  });
+
+  it('falls back to the direct root token when the probe cannot resolve a var() value', () => {
+    const getComputedStyleSpy = vi.spyOn(window, 'getComputedStyle');
+
+    getComputedStyleSpy.mockImplementation((element: Element) => {
+      if (element === document.documentElement) {
+        return {
+          getPropertyValue: (name: string) => {
+            if (name === '--app-chart-series-1') return 'rgb(90, 91, 92)';
+            if (name === 'color-scheme') return '';
+            return '';
+          },
+        } as CSSStyleDeclaration;
+      }
+
+      return {
+        color: 'var(--app-chart-series-1)',
+        backgroundColor: 'var(--app-chart-series-1-fill)',
+        getPropertyValue: (_name: string) => '',
+      } as CSSStyleDeclaration;
+    });
+
+    expect(resolveThemedCssColorVar(document, '--app-chart-series-1', '#fallback')).toBe(
+      'rgb(90, 91, 92)',
+    );
+  });
+
+  it('returns the provided fallback when neither the probe nor the root token resolve a raw color', () => {
+    vi.spyOn(window, 'getComputedStyle').mockImplementation((element: Element) => {
+      if (element === document.documentElement) {
+        return {
+          getPropertyValue: (name: string) => {
+            if (name === '--missing-color') return 'var(--missing-color)';
+            if (name === 'color-scheme') return '';
+            return '';
+          },
+        } as CSSStyleDeclaration;
+      }
+
+      return {
+        color: 'var(--missing-color)',
+        backgroundColor: 'var(--missing-color)',
+        getPropertyValue: (_name: string) => '',
+      } as CSSStyleDeclaration;
+    });
+
+    expect(resolveThemedCssColorVar(document, '--missing-color', '#fallback')).toBe('#fallback');
+  });
+
+  it('returns the fallback when computed-style resolution throws', () => {
+    vi.spyOn(window, 'getComputedStyle').mockImplementation(() => {
+      throw new Error('boom');
+    });
+
+    expect(resolveThemedCssColorVar(document, '--app-chart-series-1', '#fallback')).toBe(
+      '#fallback',
+    );
   });
 });

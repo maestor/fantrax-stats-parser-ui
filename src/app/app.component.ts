@@ -1,5 +1,5 @@
 import { AsyncPipe, DOCUMENT, NgComponentOutlet } from '@angular/common';
-import { Component, DestroyRef, ElementRef, Injector, OnInit, Type, ViewChild, inject } from '@angular/core';
+import { Component, DestroyRef, ElementRef, Injector, OnInit, Type, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatButtonModule } from '@angular/material/button';
@@ -136,6 +136,7 @@ export function buildRootRouteUiState(url: string): RootRouteUiState {
     FooterComponent,
   ],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {

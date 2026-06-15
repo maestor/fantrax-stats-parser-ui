@@ -8,6 +8,7 @@ import {
   effect,
   inject,
   input,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgClass } from '@angular/common';
@@ -44,6 +45,7 @@ const DEFAULT_ROW_HEIGHT = 52;
     MatIconModule,
   ],
   templateUrl: './virtual-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './virtual-table.component.scss',
 })
 export class VirtualTableComponent implements AfterViewInit {

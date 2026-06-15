@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiParams, Player } from '@services/api.service';
 import { FilterState } from '@services/filter.service';
@@ -11,6 +11,7 @@ import { StatsBaseComponent } from '@base/stats/stats-base.component';
   selector: 'app-player-stats',
   imports: [StatsTableComponent],
   templateUrl: './player-stats.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './player-stats.component.scss',
 })
 export class PlayerStatsComponent extends StatsBaseComponent<Player> {

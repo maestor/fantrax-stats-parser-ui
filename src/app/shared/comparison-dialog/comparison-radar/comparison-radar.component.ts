@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, OnInit, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import type { ChartConfiguration, ChartData, TooltipItem } from 'chart.js';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ import {
   imports: [BaseChartDirective, TranslateModule],
   templateUrl: './comparison-radar.component.html',
   styleUrl: './comparison-radar.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideCharts(withDefaultRegisterables())],
 })
 export class ComparisonRadarComponent implements OnInit {

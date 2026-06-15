@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -37,6 +37,7 @@ export type ComparisonDialogData = {
     ComparisonRadarComponent,
   ],
   templateUrl: './comparison-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './comparison-dialog.component.scss',
 })
 export class ComparisonDialogComponent {

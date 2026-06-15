@@ -11,6 +11,7 @@ import {
   effect,
   inject,
   signal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -70,6 +71,7 @@ export type PlayerCardDialogData = {
   ],
   templateUrl: './player-card.component.html',
   styleUrl: './player-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [PlayerCardNavigationService],
 })
 export class PlayerCardComponent implements AfterViewInit {

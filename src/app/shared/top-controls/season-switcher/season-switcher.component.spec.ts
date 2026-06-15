@@ -90,6 +90,9 @@ describe('SeasonSwitcherComponent — desktop user flow', { timeout: 60_000 }, (
                 getSeasons.mock.calls.some(([, , startFrom]) => startFrom === 2012)
             ).toBe(true);
         });
+        expect(
+            getSeasons.mock.calls.some(([, teamId]) => teamId === undefined)
+        ).toBe(true);
         delayedSeasonOptions$.next(seasonsFixture as Season[]);
         delayedSeasonOptions$.complete();
 

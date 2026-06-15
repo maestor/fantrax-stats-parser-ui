@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -13,6 +13,7 @@ import { VirtualTableComponent } from './virtual-table.component';
 @Component({
   standalone: true,
   imports: [VirtualTableComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-virtual-table
       [data]="data"
