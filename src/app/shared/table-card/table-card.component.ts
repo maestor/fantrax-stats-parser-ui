@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { TableCardRow } from './table-card.types';
 
@@ -19,7 +19,7 @@ let nextTableCardInstanceId = 0;
     MatIconModule,
     MatProgressBarModule,
     MatTooltipModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
   ],
   templateUrl: './table-card.component.html',
   styleUrls: [

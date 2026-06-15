@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { of } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
@@ -22,7 +22,7 @@ describe('Leaderboard expansion behavior on mobile', () => {
 
   it('uses short season labels', async () => {
     await render(LeaderboardRegularComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
@@ -82,7 +82,7 @@ describe('Leaderboard expansion behavior on mobile', () => {
 
   it('uses short season labels for playoff details', async () => {
     await render(LeaderboardPlayoffsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
@@ -125,7 +125,7 @@ describe('Leaderboard expansion behavior on mobile', () => {
 
   it('uses short season labels for transaction details and keeps newest seasons first', async () => {
     await render(LeaderboardTransactionsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {

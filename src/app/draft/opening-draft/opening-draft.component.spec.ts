@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/angular';
 import { Subject, of, throwError } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { PLATFORM_ID } from '@angular/core';
 
 import { OpeningDraftComponent } from './opening-draft.component';
@@ -65,7 +65,7 @@ describe('OpeningDraftComponent', () => {
     platformId?: object | string;
   }) {
     return render(OpeningDraftComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {

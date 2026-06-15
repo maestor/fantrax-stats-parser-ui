@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { catchError, map, of } from 'rxjs';
 
 import { ApiService, Team } from '@services/api.service';
@@ -12,7 +12,7 @@ import { TeamService } from '@services/team.service';
 @Component({
   selector: 'app-team-switcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatFormFieldModule, MatSelectModule, TranslateModule],
+  imports: [MatFormFieldModule, MatSelectModule, ...TRANSLATE_IMPORTS],
   templateUrl: './team-switcher.component.html',
   styleUrl: './team-switcher.component.scss',
 })
@@ -62,8 +62,6 @@ export class TeamSwitcherComponent {
 
   changeTeam(event: MatSelectChange): void {
     const teamId: string = event.value;
-    if (!teamId) return;
-
     this.teamService.setTeamId(teamId);
     this.filterService.resetAll();
   }

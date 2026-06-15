@@ -19,7 +19,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { Column, ColumnIcon } from '@shared/column.types';
 import { formatStatDisplayValue } from '@shared/utils/stat-value-format.utils';
@@ -36,7 +36,7 @@ const DEFAULT_ROW_HEIGHT = 52;
   imports: [
     NgClass,
     ScrollingModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,

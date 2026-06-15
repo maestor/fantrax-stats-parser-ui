@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { of, throwError } from 'rxjs';
 
 import { ApiService } from '@services/api.service';
@@ -22,7 +22,7 @@ describe('Leaderboard expansion behavior', () => {
 
   it('renders regular season expansion with percent formatting and trophy mapping', async () => {
     await render(LeaderboardRegularComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
@@ -116,7 +116,7 @@ describe('Leaderboard expansion behavior', () => {
 
   it('renders playoffs expansion with trophy only for championship seasons', async () => {
     await render(LeaderboardPlayoffsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
@@ -165,7 +165,7 @@ describe('Leaderboard expansion behavior', () => {
 
   it('leaves the displayed rank blank for tied playoff rows', async () => {
     await render(LeaderboardPlayoffsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
@@ -237,7 +237,7 @@ describe('Leaderboard expansion behavior', () => {
 
   it('renders transactions expansion with incremental ranks even when the API marks a tie', async () => {
     await render(LeaderboardTransactionsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
@@ -340,7 +340,7 @@ describe('Leaderboard expansion behavior', () => {
     }));
 
     await render(LeaderboardRegularComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {
@@ -422,7 +422,7 @@ describe('Leaderboard expansion behavior', () => {
 
   it('shows the table error state when leaderboard loading fails', async () => {
     await render(LeaderboardRegularComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         {

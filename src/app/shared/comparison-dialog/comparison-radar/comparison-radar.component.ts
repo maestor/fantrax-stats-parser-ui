@@ -2,7 +2,8 @@ import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import type { ChartConfiguration, ChartData, TooltipItem } from 'chart.js';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import type { Player, Goalie, PlayerScores } from '@services/api.service';
 import { StatsContext } from '@shared/types/context.types';
 import {
@@ -12,7 +13,7 @@ import {
 
 @Component({
   selector: 'app-comparison-radar',
-  imports: [BaseChartDirective, TranslateModule],
+  imports: [BaseChartDirective, ...TRANSLATE_IMPORTS],
   templateUrl: './comparison-radar.component.html',
   styleUrl: './comparison-radar.component.scss',
   changeDetection: ChangeDetectionStrategy.Eager,

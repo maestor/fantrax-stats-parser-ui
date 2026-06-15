@@ -12,7 +12,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 let nextSectionJumpNavId = 0;
 
@@ -24,7 +24,7 @@ export interface SectionJumpNavItem {
 @Component({
   selector: 'app-section-jump-nav',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule],
+  imports: [...TRANSLATE_IMPORTS],
   templateUrl: './section-jump-nav.component.html',
   styleUrl: './section-jump-nav.component.scss',
 })

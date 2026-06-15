@@ -3,7 +3,7 @@ import {
   MatSlideToggleModule,
   MatSlideToggleChange,
 } from '@angular/material/slide-toggle';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { FilterService } from '@services/filter.service';
 import { StatsContext } from '@shared/types/context.types';
@@ -11,7 +11,7 @@ import { StatsContext } from '@shared/types/context.types';
 @Component({
   selector: 'app-stats-mode-toggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatSlideToggleModule, TranslateModule],
+  imports: [MatSlideToggleModule, ...TRANSLATE_IMPORTS],
   templateUrl: './stats-mode-toggle.component.html',
 })
 export class StatsModeToggleComponent {

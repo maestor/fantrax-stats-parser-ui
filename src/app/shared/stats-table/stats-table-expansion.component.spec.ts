@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { fireEvent, render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 import { Column } from '@shared/column.types';
 import { provideDisabledMaterialAnimations } from '../../testing/behavior-test-utils';
@@ -67,7 +67,7 @@ describe('StatsTableComponent expansion', () => {
 
   it('toggles expanded details, supports multiple open rows, and handles keyboard', async () => {
     await render(StatsTableExpansionHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [provideDisabledMaterialAnimations()],
     });
 
@@ -97,7 +97,7 @@ describe('StatsTableComponent expansion', () => {
 
   it('supports space-key expansion and blurs collapsed rows after mouse close', async () => {
     await render(StatsTableExpansionHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [provideDisabledMaterialAnimations()],
     });
 

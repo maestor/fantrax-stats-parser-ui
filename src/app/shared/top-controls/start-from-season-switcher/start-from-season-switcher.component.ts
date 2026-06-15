@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { StartFromSeasonSyncService } from './start-from-season-sync.service';
 
 @Component({
   selector: 'app-start-from-season-switcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatFormFieldModule, MatSelectModule, TranslateModule],
+  imports: [MatFormFieldModule, MatSelectModule, ...TRANSLATE_IMPORTS],
   templateUrl: './start-from-season-switcher.component.html',
   styleUrl: './start-from-season-switcher.component.scss',
 })

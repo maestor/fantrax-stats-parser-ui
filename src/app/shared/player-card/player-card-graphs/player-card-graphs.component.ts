@@ -12,7 +12,8 @@ import {
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import type { ChartConfiguration, ChartData, ChartDataset, TooltipItem } from 'chart.js';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import type {
   Goalie,
   GoalieSeasonStats,
@@ -36,7 +37,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatCheckboxModule,
     MatButtonModule,
     MatIconModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     BaseChartDirective,
   ],
   templateUrl: './player-card-graphs.component.html',

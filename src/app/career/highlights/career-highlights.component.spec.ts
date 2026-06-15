@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, within } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { of, throwError } from 'rxjs';
 
 import { ApiService, CareerHighlightType } from '@services/api.service';
@@ -130,7 +130,7 @@ describe('CareerHighlightsComponent', () => {
     );
 
     await render(CareerHighlightsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
@@ -232,7 +232,7 @@ describe('CareerHighlightsComponent', () => {
     });
 
     const view = await render(CareerHighlightsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
@@ -321,7 +321,7 @@ describe('CareerHighlightsComponent', () => {
 
   it('shows an error state for an activated failing card without forcing untouched cards to load', async () => {
     await render(CareerHighlightsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
@@ -411,7 +411,7 @@ describe('CareerHighlightsComponent', () => {
     });
 
     const view = await render(CareerHighlightsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
@@ -497,7 +497,7 @@ describe('CareerHighlightsComponent', () => {
     };
 
     const view = await render(CareerHighlightsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,

@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-career',
-  imports: [RouterLink, RouterOutlet, TranslateModule, MatTabsModule],
+  imports: [RouterLink, RouterOutlet, ...TRANSLATE_IMPORTS, MatTabsModule],
   templateUrl: './career.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './career.component.scss',

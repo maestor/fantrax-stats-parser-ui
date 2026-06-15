@@ -21,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import {
   Player,
   Goalie,
@@ -66,7 +66,7 @@ export type PlayerCardDialogData = {
     MatTabsModule,
     MatSlideToggleModule,
     MatTooltipModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     NgComponentOutlet,
   ],
   templateUrl: './player-card.component.html',

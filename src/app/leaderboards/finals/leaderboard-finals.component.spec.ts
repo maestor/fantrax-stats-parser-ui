@@ -1,7 +1,7 @@
 import { PLATFORM_ID } from '@angular/core';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { Observable, of, throwError } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
 
 import { LeaderboardFinalsComponent } from './leaderboard-finals.component';
@@ -27,7 +27,7 @@ describe('LeaderboardFinalsComponent', () => {
     }));
 
     const result = await render(LeaderboardFinalsComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         {
           provide: MATERIAL_ANIMATIONS,

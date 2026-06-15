@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { MatSliderModule } from '@angular/material/slider';
 import { FilterService } from '@services/filter.service';
 import { StatsContext } from '@shared/types/context.types';
@@ -14,7 +14,7 @@ import { StatsContext } from '@shared/types/context.types';
 @Component({
   selector: 'app-min-games-slider',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslateModule, MatSliderModule],
+  imports: [...TRANSLATE_IMPORTS, MatSliderModule],
   templateUrl: './min-games-slider.component.html',
   styleUrl: './min-games-slider.component.scss',
 })

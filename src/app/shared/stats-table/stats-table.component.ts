@@ -14,7 +14,8 @@ import {
 import { AsyncPipe, NgClass, isPlatformBrowser } from '@angular/common';
 import { Observable, of } from 'rxjs';
 
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -57,7 +58,7 @@ export type TableRow =
   imports: [
     AsyncPipe,
     NgClass,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,

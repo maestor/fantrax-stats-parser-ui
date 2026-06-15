@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 import {
   provideDisabledMaterialAnimations,
@@ -61,7 +61,7 @@ class TableCardHostComponent {
 describe('TableCardComponent', () => {
   async function setup(componentProperties: Partial<TableCardHostComponent> = {}) {
     return render(TableCardHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [provideDisabledMaterialAnimations()],
       componentProperties,
     });

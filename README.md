@@ -257,7 +257,7 @@ Accessibility is a core requirement of this project (not optional).
 - **State Management**: Angular signals for synchronous UI state reads, RxJS 7.8 for async flows and compatibility streams
 - **HTTP Client**: Angular HttpClient with caching
 - **Testing**: Vitest + Testing Library (`@testing-library/angular`), Playwright (E2E)
-- **i18n**: ngx-translate 17
+- **i18n**: ngx-translate 18
 
 ## Angular Component Conventions
 

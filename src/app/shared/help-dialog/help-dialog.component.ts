@@ -5,7 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 export type HelpDialogBlockType = 'h2' | 'h3' | 'p' | 'ul';
 
@@ -27,7 +28,7 @@ export interface HelpDialogModel {
     MatButtonModule,
     MatIconModule,
     FontAwesomeModule,
-    TranslateModule,
+    ...TRANSLATE_IMPORTS,
   ],
   templateUrl: './help-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,

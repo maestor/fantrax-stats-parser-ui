@@ -29,6 +29,9 @@
       ],
       "@shared/*": [
         "./src/app/shared/*"
+      ],
+      "@testing/*": [
+        "./src/app/testing/*"
       ]
     }
   },

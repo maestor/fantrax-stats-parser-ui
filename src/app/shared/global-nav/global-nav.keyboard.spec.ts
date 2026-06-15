@@ -2,7 +2,7 @@ import { provideRouter } from '@angular/router';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { fireEvent, render, screen } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 import { provideDisabledMaterialAnimations, polyfillJsdom } from '../../testing/behavior-test-utils';
 import { GlobalNavComponent } from './global-nav.component';
@@ -14,7 +14,7 @@ describe('GlobalNavComponent — keyboard navigation', () => {
 
   it('supports wrapped vertical arrow navigation across nav items', async () => {
     await render(GlobalNavComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         provideRouter([]),
@@ -58,7 +58,7 @@ describe('GlobalNavComponent — keyboard navigation', () => {
     const dialogOpen = vi.fn();
 
     await render(GlobalNavComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [
         provideDisabledMaterialAnimations(),
         provideRouter([]),

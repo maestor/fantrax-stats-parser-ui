@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 import { AppComponent } from '../../../app.component';
 import {
@@ -22,6 +22,15 @@ import { MinGamesSliderComponent } from './min-games-slider.component';
   template: `<app-min-games-slider context="player" [maxGames]="maxGames" />`,
 })
 class MinGamesSliderHostComponent {
+  maxGames = 10;
+}
+
+@Component({
+  imports: [MinGamesSliderComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  template: `<app-min-games-slider context="goalie" [maxGames]="maxGames" />`,
+})
+class GoalieMinGamesSliderHostComponent {
   maxGames = 10;
 }
 
@@ -80,7 +89,7 @@ describe('MinGamesSliderComponent — player stats user flow', { timeout: 60_000
 
   it('clamps an impossible minimum games filter to the current maximum', async () => {
     const { fixture } = await render(MinGamesSliderHostComponent, {
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateTestingModule],
       providers: [provideDisabledMaterialAnimations()],
     });
     const filterService = TestBed.inject(FilterService);
@@ -96,6 +105,27 @@ describe('MinGamesSliderComponent — player stats user flow', { timeout: 60_000
       fixture.detectChanges();
       expect(minGamesSlider).toHaveValue('10');
       expect(filterService.playerFiltersSignal().minGames).toBe(10);
+    });
+  });
+
+  it('updates goalie filters without touching player filters when used in goalie context', async () => {
+    await render(GoalieMinGamesSliderHostComponent, {
+      imports: [TranslateTestingModule],
+      providers: [provideDisabledMaterialAnimations()],
+    });
+    const filterService = TestBed.inject(FilterService);
+
+    const minGamesSlider = await screen.findByRole('slider', {
+      name: 'minGamesSlider.ariaLabel',
+    });
+
+    fireEvent.input(minGamesSlider, { target: { value: '7' } });
+    fireEvent.change(minGamesSlider, { target: { value: '7' } });
+
+    await vi.waitFor(() => {
+      expect(minGamesSlider).toHaveValue('7');
+      expect(filterService.goalieFiltersSignal().minGames).toBe(7);
+      expect(filterService.playerFiltersSignal().minGames).toBe(0);
     });
   });
 });

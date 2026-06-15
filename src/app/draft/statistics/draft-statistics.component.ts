@@ -11,7 +11,8 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { ApiService, EntryDraftTeamGroup } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
@@ -196,7 +197,7 @@ const draftStatisticDefinitions: readonly DraftStatisticDefinition[] = DRAFT_STA
 @Component({
   selector: 'app-draft-statistics',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SectionJumpNavComponent, TableCardComponent, TranslateModule],
+  imports: [SectionJumpNavComponent, TableCardComponent, ...TRANSLATE_IMPORTS],
   templateUrl: './draft-statistics.component.html',
   styleUrl: './draft-statistics.component.scss',
 })

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
+import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ReportType } from '@services/api.service';
@@ -9,7 +9,7 @@ import { StatsContext } from '@shared/types/context.types';
 @Component({
   selector: 'app-report-switcher',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatFormFieldModule, MatSelectModule, TranslateModule],
+  imports: [MatFormFieldModule, MatSelectModule, ...TRANSLATE_IMPORTS],
   templateUrl: './report-switcher.component.html',
   styleUrl: './report-switcher.component.scss',
 })
