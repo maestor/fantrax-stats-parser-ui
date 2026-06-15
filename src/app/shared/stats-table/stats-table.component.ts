@@ -9,6 +9,7 @@ import {
   input,
   ViewChild,
   OnDestroy,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { AsyncPipe, NgClass, isPlatformBrowser } from '@angular/common';
 import { Observable, of } from 'rxjs';
@@ -68,6 +69,7 @@ export type TableRow =
   ],
   templateUrl: './stats-table.component.html',
   styleUrl: './stats-table.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [StatsTablePlayerCardService],
 })
 export class StatsTableComponent implements AfterViewInit, OnDestroy {

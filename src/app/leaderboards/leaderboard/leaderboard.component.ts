@@ -9,6 +9,7 @@ import {
   input,
   signal,
   viewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
@@ -33,6 +34,7 @@ type LeaderboardRow = LeaderboardEntry & { displayPosition: string };
 @Component({
   selector: 'app-leaderboard',
   imports: [StatsTableComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-stats-table
       [data]="data"

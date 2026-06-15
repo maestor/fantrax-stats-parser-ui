@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { fireEvent, render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -10,6 +10,7 @@ import {
 @Component({
   standalone: true,
   imports: [SectionJumpNavComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-section-jump-nav
       [items]="items"

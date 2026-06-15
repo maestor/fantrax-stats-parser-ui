@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, input } from '@angular/core';
+import { Component, OnInit, inject, input, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import type { Player, Goalie } from '@services/api.service';
 import { FilterService } from '@services/filter.service';
@@ -23,6 +23,7 @@ export type StatRow = {
   selector: 'app-comparison-stats',
   imports: [TranslateModule],
   templateUrl: './comparison-stats.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './comparison-stats.component.scss',
 })
 export class ComparisonStatsComponent implements OnInit {

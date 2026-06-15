@@ -59,6 +59,24 @@ describe('seo.utils', () => {
     });
   });
 
+  it('ignores non-seo route data and lets deeper seo metadata override parent keys', () => {
+    const snapshot: FakeRouteSnapshot = {
+      data: { seo: { sectionKey: 'nav.playerCareers' } },
+      firstChild: {
+        data: { seo: { sectionKey: 'nav.drafts', tabKey: 'draft.tabs.statistics' } },
+        firstChild: {
+          data: { seo: { invalid: true } },
+          firstChild: null,
+        },
+      },
+    };
+
+    expect(resolveActiveRouteSeo(snapshot)).toEqual({
+      sectionKey: 'nav.drafts',
+      tabKey: 'draft.tabs.statistics',
+    });
+  });
+
   it('returns empty seo data when there is no active route snapshot yet', () => {
     expect(resolveActiveRouteSeo(undefined)).toEqual({});
   });

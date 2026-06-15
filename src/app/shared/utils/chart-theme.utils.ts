@@ -92,16 +92,11 @@ export function resolveThemedCssColorVar(
 ): string {
   try {
     const body = document.body;
-    if (!body) {
-      return fallback;
-    }
-
-    const root = document.documentElement;
-    const rootStyle = root ? getComputedStyle(root) : undefined;
-    const directRootValue = rootStyle?.getPropertyValue(name)?.trim();
+    const rootStyle = getComputedStyle(document.documentElement);
+    const directRootValue = rootStyle.getPropertyValue(name).trim();
     const computedSchemeRaw =
       (rootStyle as CSSStyleDeclaration & { colorScheme?: string })?.colorScheme ||
-      rootStyle?.getPropertyValue('color-scheme') ||
+      rootStyle.getPropertyValue('color-scheme') ||
       '';
     const schemeTokens = computedSchemeRaw.trim().split(/\s+/).filter(Boolean);
     const schemeToken = schemeTokens.length === 1 ? schemeTokens[0] : undefined;

@@ -7,6 +7,7 @@ import {
   inject,
   input,
   viewChildren,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
@@ -40,6 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   templateUrl: './player-card-graphs.component.html',
   styleUrl: './player-card-graphs.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideCharts(withDefaultRegisterables())],
 })
 export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { render, screen } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -11,6 +11,7 @@ import { TableCardRow } from './table-card.types';
 @Component({
   standalone: true,
   imports: [TableCardComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-table-card
       [titleKey]="titleKey"

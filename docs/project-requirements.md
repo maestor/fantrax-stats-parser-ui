@@ -114,7 +114,7 @@ If you see:
 npm WARN npm npm does not support Node.js v24.x
 ```
 
-you can ignore it for this project as long as scripts still succeed. The repo intentionally targets Node 24.x.
+you can ignore it for this project as long as scripts still succeed. The repo intentionally targets Node 24.15+ within the 24.x line.
 
 ### Never Add `"type": "module"` To `package.json`
 

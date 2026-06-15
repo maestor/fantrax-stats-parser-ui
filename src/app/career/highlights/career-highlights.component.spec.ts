@@ -381,4 +381,174 @@ describe('CareerHighlightsComponent', () => {
     expect(within(mostTeamsOwnedCard!).getByText('tableCard.loadWhenVisible')).toBeInTheDocument();
     expect(within(sameTeamOwnedCard!).getByText('tableCard.apiUnavailable')).toBeInTheDocument();
   });
+
+  it('loads the remaining highlight group cards once and keeps first-page pagination guards from refetching', async () => {
+    const getCareerHighlights = vi.fn((type: CareerHighlightType) => {
+      switch (type) {
+        case 'most-teams-played':
+          return of(mostTeamsPlayedHighlightsPage0Fixture);
+        case 'most-teams-owned':
+          return of(mostTeamsOwnedHighlightsPage0Fixture);
+        case 'same-team-seasons-played':
+          return of(sameTeamSeasonsHighlightsPage0Fixture);
+        case 'same-team-seasons-owned':
+          return of(sameTeamSeasonsOwnedHighlightsPage0Fixture);
+        case 'most-stanley-cups':
+          return of(mostStanleyCupsHighlightsPage0Fixture);
+        case 'regular-grinder-without-playoffs':
+          return of(regularGrinderWithoutPlayoffsHighlightsPage0Fixture);
+        case 'stash-king':
+          return of(stashKingHighlightsPage0Fixture);
+        case 'most-trades':
+          return of(mostTradesHighlightsPage0Fixture);
+        case 'most-claims':
+          return of(mostClaimsHighlightsPage0Fixture);
+        case 'most-drops':
+          return of(mostDropsHighlightsPage0Fixture);
+        case 'reunion-king':
+          return of(reunionKingHighlightsPage0Fixture);
+      }
+    });
+
+    const view = await render(CareerHighlightsComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideDisabledMaterialAnimations(),
+        FooterVisibilityService,
+        {
+          provide: ApiService,
+          useValue: {
+            getCareerHighlights,
+          },
+        },
+      ],
+    });
+
+    await vi.waitFor(() => {
+      expect(FakeIntersectionObserver.instances).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length);
+    });
+
+    view.fixture.componentInstance.loadPreviousPage('regular-grinder-without-playoffs');
+    view.fixture.componentInstance.loadNextPage('regular-grinder-without-playoffs');
+    expect(getCareerHighlights).not.toHaveBeenCalled();
+
+    FakeIntersectionObserver.instances[1]?.trigger();
+    FakeIntersectionObserver.instances[1]?.trigger();
+    FakeIntersectionObserver.instances[6]?.trigger();
+    FakeIntersectionObserver.instances[8]?.trigger();
+
+    await vi.waitFor(() => {
+      const sections = view.fixture.componentInstance.sections();
+      const achievementsSection = sections.find((section) => section.id === 'achievements');
+      const longStaysSection = sections.find((section) => section.id === 'long-stays');
+
+      expect(
+        achievementsSection?.cards.find((card) => card.type === 'regular-grinder-without-playoffs')?.state.rows[0],
+      ).toMatchObject({
+        primaryText: 'F Radek Faksa',
+        value: 512,
+        detailLines: ['Dallas Stars', 'Carolina Hurricanes'],
+      });
+      expect(
+        longStaysSection?.cards.find((card) => card.type === 'same-team-seasons-played')?.state.rows[0],
+      ).toMatchObject({
+        primaryText: 'F Jamie Benn',
+        value: 9,
+        detailLines: ['Colorado Avalanche'],
+      });
+      expect(
+        longStaysSection?.cards.find((card) => card.type === 'stash-king')?.state.rows[0],
+      ).toMatchObject({
+        primaryText: 'G Anton Khudobin',
+        value: 11,
+        detailLines: ['Dallas Stars'],
+      });
+    });
+
+    expect(getCareerHighlights).toHaveBeenCalledTimes(3);
+    expect(getCareerHighlights).toHaveBeenCalledWith('regular-grinder-without-playoffs', 0, 11);
+    expect(getCareerHighlights).toHaveBeenCalledWith('same-team-seasons-played', 0, 11);
+    expect(getCareerHighlights).toHaveBeenCalledWith('stash-king', 0, 11);
+
+    view.fixture.componentInstance.loadPreviousPage('regular-grinder-without-playoffs');
+    view.fixture.componentInstance.loadNextPage('regular-grinder-without-playoffs');
+
+    expect(getCareerHighlights).toHaveBeenCalledTimes(3);
+  });
+
+  it('falls back to the original reunion date string when reunion highlight data contains an invalid date', async () => {
+    const firstReunionItem = reunionKingHighlightsPage0Fixture.items[0] as
+      typeof reunionKingHighlightsPage0Fixture.items[number] & {
+        reunions: Array<{ date: string; type: string }>;
+      };
+    const invalidReunionFixture = {
+      ...reunionKingHighlightsPage0Fixture,
+      items: [
+        {
+          ...firstReunionItem,
+          reunions: firstReunionItem.reunions.map((reunion, reunionIndex) =>
+            reunionIndex === 0
+              ? { ...reunion, date: 'invalid-date-value' }
+              : reunion
+          ),
+        },
+        ...reunionKingHighlightsPage0Fixture.items.slice(1),
+      ],
+    };
+
+    const view = await render(CareerHighlightsComponent, {
+      imports: [TranslateModule.forRoot()],
+      providers: [
+        provideDisabledMaterialAnimations(),
+        FooterVisibilityService,
+        {
+          provide: ApiService,
+          useValue: {
+            getCareerHighlights: (type: CareerHighlightType) =>
+              of(
+                type === 'reunion-king'
+                  ? invalidReunionFixture
+                  : type === 'most-trades'
+                    ? mostTradesHighlightsPage0Fixture
+                    : type === 'most-claims'
+                      ? mostClaimsHighlightsPage0Fixture
+                      : type === 'most-drops'
+                        ? mostDropsHighlightsPage0Fixture
+                        : type === 'same-team-seasons-played'
+                          ? sameTeamSeasonsHighlightsPage0Fixture
+                          : type === 'same-team-seasons-owned'
+                            ? sameTeamSeasonsOwnedHighlightsPage0Fixture
+                            : type === 'most-stanley-cups'
+                              ? mostStanleyCupsHighlightsPage0Fixture
+                              : type === 'regular-grinder-without-playoffs'
+                                ? regularGrinderWithoutPlayoffsHighlightsPage0Fixture
+                                : type === 'stash-king'
+                                  ? stashKingHighlightsPage0Fixture
+                                  : type === 'most-teams-owned'
+                                    ? mostTeamsOwnedHighlightsPage0Fixture
+                                    : mostTeamsPlayedHighlightsPage0Fixture,
+              ),
+          },
+        },
+      ],
+    });
+
+    await vi.waitFor(() => {
+      expect(FakeIntersectionObserver.instances).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length);
+    });
+
+    FakeIntersectionObserver.instances[5]?.trigger();
+
+    await vi.waitFor(() => {
+      const transactionSection = view.fixture.componentInstance.sections().find(
+        (section) => section.id === 'transactions',
+      );
+      const reunionState = transactionSection?.cards.find((card) => card.type === 'reunion-king')?.state;
+
+      expect(reunionState?.rows[0]?.detailLines).toEqual([
+        '1. invalid-date-value career.highlights.reunionTypes.trade',
+        '2. 10.8.2016 career.highlights.reunionTypes.claim',
+      ]);
+    });
+  });
 });

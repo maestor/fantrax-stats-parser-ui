@@ -14,7 +14,7 @@ Use the installed `angular-developer` skill and the official Angular docs for ge
 
 ### Component And Service APIs
 
-- Use Angular 21 standalone defaults; do not add redundant `standalone: true`
+- Use Angular 22 standalone defaults; do not add redundant `standalone: true`
 - Prefer `inject()` over constructor DI unless inheritance or a clear testability/readability reason makes constructor injection better
 - Prefer signal inputs/outputs for new component APIs
 - Use `input.required()` when the parent contract is genuinely mandatory

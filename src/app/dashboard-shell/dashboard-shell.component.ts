@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTabsModule, MatTabNavPanel } from '@angular/material/tabs';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
@@ -31,6 +31,7 @@ export function buildDashboardRouteUiState(url: string): DashboardRouteUiState {
     ComparisonBarComponent,
   ],
   templateUrl: './dashboard-shell.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './dashboard-shell.component.scss',
 })
 export class DashboardShellComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { afterNextRender, Component, ElementRef, inject } from '@angular/core';
+import { afterNextRender, Component, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
@@ -28,6 +28,7 @@ interface NavItem {
   selector: 'app-global-nav',
   imports: [MatListModule, MatIconModule, TranslateModule],
   templateUrl: './global-nav.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './global-nav.component.scss',
 })
 export class GlobalNavComponent {

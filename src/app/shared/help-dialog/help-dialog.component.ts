@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +30,7 @@ export interface HelpDialogModel {
     TranslateModule,
   ],
   templateUrl: './help-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './help-dialog.component.scss',
 })
 export class HelpDialogComponent implements OnInit {

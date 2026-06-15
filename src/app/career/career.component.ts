@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
   selector: 'app-career',
   imports: [RouterLink, RouterOutlet, TranslateModule, MatTabsModule],
   templateUrl: './career.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './career.component.scss',
 })
 export class CareerComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService, RegularLeaderboardEntry } from '@services/api.service';
 import { ViewportService } from '@services/viewport.service';
@@ -10,6 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-leaderboard-regular',
   imports: [LeaderboardComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<app-leaderboard
     [fetchFn]="fetchFn"
     [columns]="columns"

@@ -112,7 +112,7 @@ This UI talks to a separate backend (see [node-fantrax-stats-parser](https://git
 After changing Vercel env vars, redeploy so they take effect.
 
 ```bash
-1. Install Node.js (version 24.x)
+1. Install Node.js (version 24.15+ within the 24.x line)
 2. Clone this repository
 3. npm install
 4. npm start
@@ -124,7 +124,7 @@ After changing Vercel env vars, redeploy so they take effect.
 ```bash
 # Development
 npm start                              # Dev server on http://localhost:4200 (live reload, HMR disabled)
-npm run generate:types                 # Regenerate API types from OpenAPI spec
+npm run generate:types                 # Regenerate API types from OpenAPI spec with pinned openapi-typescript
 
 # Tests (Vitest + Testing Library)
 npm test                               # Run once (no browser required)
@@ -251,9 +251,9 @@ Accessibility is a core requirement of this project (not optional).
 
 ## Technology Stack
 
-- **Framework**: Angular 21
-- **UI Library**: Angular Material 21
-- **Language**: TypeScript 5.9
+- **Framework**: Angular 22.0.1
+- **UI Library**: Angular Material 22.0.1
+- **Language**: TypeScript 6.0
 - **State Management**: Angular signals for synchronous UI state reads, RxJS 7.8 for async flows and compatibility streams
 - **HTTP Client**: Angular HttpClient with caching
 - **Testing**: Vitest + Testing Library (`@testing-library/angular`), Playwright (E2E)
@@ -261,7 +261,7 @@ Accessibility is a core requirement of this project (not optional).
 
 ## Angular Component Conventions
 
-For Angular 21 component work in this repo:
+For Angular 22 component work in this repo:
 
 - Standalone components are the default. Do not add redundant `standalone: true`.
 - Prefer signal inputs for component APIs. Use `input.required()` whenever the parent must always provide the value; do not keep inputs optional "just in case".
@@ -307,7 +307,7 @@ src/
 
 ## Development Notes
 
-This project was originally generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6 and has been upgraded to Angular 21.
+This project was originally generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6 and has been upgraded to Angular 22.0.1.
 
 ### Key Architectural Decisions
 

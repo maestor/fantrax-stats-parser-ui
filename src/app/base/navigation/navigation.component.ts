@@ -5,6 +5,7 @@ import {
   OnInit,
   inject,
   input,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, Router } from '@angular/router';
@@ -15,6 +16,7 @@ import { MatTabNavPanel, MatTabsModule } from '@angular/material/tabs';
   selector: 'app-navigation',
   imports: [RouterLink, TranslateModule, MatTabsModule],
   templateUrl: './navigation.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './navigation.component.scss',
 })
 export class NavigationComponent implements OnInit {

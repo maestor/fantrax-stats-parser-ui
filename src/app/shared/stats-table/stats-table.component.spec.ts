@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PLATFORM_ID, Provider } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { fireEvent, render, screen } from '@testing-library/angular';
@@ -24,6 +24,7 @@ import {
 @Component({
   standalone: true,
   imports: [StatsTableComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-stats-table
       [data]="data"
@@ -380,6 +381,35 @@ describe('StatsTableComponent — user behavior', () => {
       expect(screen.getByText('Goalie Alpha')).toBeInTheDocument();
       expect(screen.getByText('2.10')).toBeInTheDocument();
       expect(screen.getByText('0.921')).toBeInTheDocument();
+    });
+  });
+
+  it('formats stat cells through the visible table behavior for fixed decimals, raw invalid strings, and missing values', async () => {
+    const view = await setup();
+
+    await screen.findByText('Alpha Center');
+
+    view.fixture.componentInstance.data = [
+      {
+        name: 'Goalie Beta',
+        scoreAdjustedByGames: undefined,
+        gaa: 2.345,
+        savePercent: 'not-a-number',
+      },
+    ] as unknown as TableRow[];
+    view.fixture.componentInstance.columns = [
+      { field: 'name', align: 'left', initialSortDirection: 'asc' },
+      { field: 'scoreAdjustedByGames', align: 'left' },
+      { field: 'gaa', align: 'left' },
+      { field: 'savePercent', align: 'left' },
+    ];
+    view.fixture.detectChanges();
+
+    await vi.waitFor(() => {
+      expect(screen.getByText('Goalie Beta')).toBeInTheDocument();
+      expect(screen.getByText('2.35')).toBeInTheDocument();
+      expect(screen.getByText('not-a-number')).toBeInTheDocument();
+      expect(screen.getByText('-')).toBeInTheDocument();
     });
   });
 

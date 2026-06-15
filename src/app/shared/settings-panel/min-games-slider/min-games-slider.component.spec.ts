@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,6 +18,7 @@ import { MinGamesSliderComponent } from './min-games-slider.component';
 
 @Component({
   imports: [MinGamesSliderComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<app-min-games-slider context="player" [maxGames]="maxGames" />`,
 })
 class MinGamesSliderHostComponent {
