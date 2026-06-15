@@ -1,7 +1,9 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { fireEvent, render, screen } from '@testing-library/angular';
-import { Subject, of } from 'rxjs';
+import { TranslateTestingModule } from '@testing/translate-testing';
+import { Subject, of, throwError } from 'rxjs';
 
 import { AppComponent } from '../../../app.component';
 import {
@@ -14,7 +16,11 @@ import {
   slicedPlayers,
   waitForBehaviorAssertion,
 } from '../../../testing/behavior-test-utils';
+import { ApiService } from '@services/api.service';
 import type { Goalie, Player, Season } from '@services/api.service';
+import { FilterService } from '@services/filter.service';
+import { TeamService } from '@services/team.service';
+import { TeamSwitcherComponent } from './team-switcher.component';
 
 describe('TeamSwitcherComponent — desktop user flow', { timeout: 60_000 }, () => {
   beforeEach(() => {
@@ -137,6 +143,64 @@ describe('TeamSwitcherComponent — desktop user flow', { timeout: 60_000 }, () 
       expect(getPlayerData).toHaveBeenCalledWith(
         expect.objectContaining({ teamId: '29', startFrom: 2015 })
       );
+    });
+  });
+
+  it('keeps the selector disabled while teams are still loading', async () => {
+    const pendingTeams$ = new Subject<ReadonlyArray<{ id: string; presentName: string }>>();
+
+    await render(TeamSwitcherComponent, {
+      imports: [TranslateTestingModule],
+      providers: [
+        {
+          provide: ApiService,
+          useValue: { getTeams: () => pendingTeams$.asObservable() },
+        },
+        {
+          provide: TeamService,
+          useValue: {
+            selectedTeamIdSignal: signal('1'),
+            setTeamId: vi.fn(),
+          },
+        },
+        {
+          provide: FilterService,
+          useValue: { resetAll: vi.fn() },
+        },
+      ],
+    });
+
+    const teamCombobox = await screen.findByRole('combobox', { name: /team\.selector/ });
+
+    expect(teamCombobox).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('keeps the selector disabled when team loading fails', async () => {
+    await render(TeamSwitcherComponent, {
+      imports: [TranslateTestingModule],
+      providers: [
+        {
+          provide: ApiService,
+          useValue: { getTeams: () => throwError(() => new Error('teams failed')) },
+        },
+        {
+          provide: TeamService,
+          useValue: {
+            selectedTeamIdSignal: signal('1'),
+            setTeamId: vi.fn(),
+          },
+        },
+        {
+          provide: FilterService,
+          useValue: { resetAll: vi.fn() },
+        },
+      ],
+    });
+
+    const teamCombobox = await screen.findByRole('combobox', { name: /team\.selector/ });
+
+    await vi.waitFor(() => {
+      expect(teamCombobox).toHaveAttribute('aria-disabled', 'true');
     });
   });
 });

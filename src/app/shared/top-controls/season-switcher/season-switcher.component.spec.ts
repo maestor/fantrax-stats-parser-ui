@@ -171,4 +171,41 @@ describe('SeasonSwitcherComponent — desktop user flow', { timeout: 60_000 }, (
             season: 2018,
         });
     });
+
+    it('resets a persisted season when the resolved options no longer include it', async () => {
+        localStorage.setItem(
+            'fantrax.settings',
+            JSON.stringify({
+                selectedTeamId: '1',
+                startFromSeason: 2012,
+                season: 2018,
+                reportType: 'regular',
+            })
+        );
+
+        const shortenedSeasonOptions = [
+            { season: 2012, text: '2012-2013' },
+            { season: 2013, text: '2013-2014' },
+        ] as Season[];
+
+        const { fixture } = await render(
+            AppComponent,
+            getBehaviorTestConfig({
+                isMobile: false,
+                getSeasons: () => of(shortenedSeasonOptions),
+            })
+        );
+
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(screen.getByText(slicedPlayers[0].name)).toBeTruthy();
+        });
+
+        await openDashboardSettingsDrawer();
+
+        await waitForBehaviorAssertion(fixture, () => {
+            expect(
+                screen.getByRole('combobox', { name: /season\.selector/ })
+            ).toHaveTextContent('season.allSeasons');
+        });
+    });
 });
