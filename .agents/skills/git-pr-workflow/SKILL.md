@@ -1,6 +1,6 @@
 ---
 name: git-pr-workflow
-description: Use when a task should follow a consistent working-branch, review, verify, commit, push, and PR-handoff flow across repositories. Helps enforce branch hygiene before edits, use repo-aware branch naming, pause for user review before the final verification gate, commit in coherent batches with consistent prefixes, and finish with pushed changes plus copy-pasteable PR notes.
+description: Use when a task should follow a consistent working-branch, review, verify, commit, push, and PR-handoff flow across repositories. Helps enforce branch hygiene before edits, use repo-aware branch naming, pause for user review before the final verification gate, commit in coherent batches with consistent prefixes, and finish with pushed changes plus a clickable GitHub PR link and copy-pasteable PR notes.
 ---
 
 # Git PR Workflow
@@ -18,7 +18,7 @@ The goal is to keep delivery flow consistent across repositories:
 - run the real verification gate after acceptance
 - commit with consistent prefixes
 - push the ready branch
-- finish with copy-pasteable PR notes
+- finish with a clickable GitHub PR link plus copy-pasteable PR notes
 
 Read [references/workflow-checklist.md](./references/workflow-checklist.md) when deciding branch naming, docs-only verification exceptions, or the expected PR-notes shape.
 
@@ -33,7 +33,7 @@ Read [references/workflow-checklist.md](./references/workflow-checklist.md) when
 - Commit in reasonable, coherent batches. A single PR may contain multiple commits.
 - Use capitalized conventional commit prefixes such as `Feature:`, `Fix:`, `Docs:`, `Chore:`, `Refactor:`, or `Test:`.
 - After acceptance, verification, and commit, push the branch unless the user explicitly wants to stop before push.
-- End with copy-pasteable PR notes in a single fenced code block unless the branch is intentionally not PR-ready.
+- End with a separate clickable GitHub PR link and copy-pasteable PR notes in a single fenced code block unless the branch is intentionally not PR-ready.
 
 ## Token Discipline
 
@@ -44,7 +44,7 @@ Read [references/workflow-checklist.md](./references/workflow-checklist.md) when
   - final verification result
   - commits created
   - whether the branch was pushed
-  - PR notes or the reason they were intentionally omitted
+  - PR link and PR notes, or the reason they were intentionally omitted
 - Expand only when branch hygiene, verification exceptions, or push readiness is non-obvious.
 
 ## Workflow
@@ -130,7 +130,7 @@ When the branch is accepted, verified, and committed:
 
 - push the branch
 - if more implementation is still planned on the same branch, say so clearly
-- if the branch is PR-ready, provide copy-pasteable PR notes
+- if the branch is PR-ready, provide a separate clickable GitHub PR link and copy-pasteable PR notes
 
 PR notes should usually include:
 
@@ -140,6 +140,8 @@ PR notes should usually include:
 
 Wrap the notes in one fenced code block so they are easy to copy.
 
+Place the clickable GitHub PR link outside the fenced code block so the user can open GitHub directly and create the PR from the compare page.
+
 ## Anti-Patterns
 
 - starting implementation on `main`
@@ -147,7 +149,7 @@ Wrap the notes in one fenced code block so they are easy to copy.
 - treating targeted tests as a substitute for the final verify gate
 - running final verify before the user has reviewed the batch
 - building one giant end-of-task commit when the work had obvious batch boundaries
-- skipping push or PR notes without saying why
+- skipping the PR link or PR notes without saying why
 - mixing docs-only exceptions into runtime-code changes without calling out the difference
 
 ## Expected Behavior When This Skill Is Used
@@ -160,4 +162,4 @@ When applying this skill to a task:
 4. Pause for user review before the final verification gate.
 5. After acceptance, run the real verification gate.
 6. Commit with consistent prefixes.
-7. Push the branch and provide fenced PR notes when ready.
+7. Push the branch and provide a clickable PR link plus fenced PR notes when ready.

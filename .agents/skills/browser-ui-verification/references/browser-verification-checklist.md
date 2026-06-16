@@ -92,11 +92,11 @@ Use these only when they fit the changed UI surface:
 | Annotated visual refs                | `agent-browser screenshot --annotate`                                                                                                 |
 | Long-page inspection                 | `agent-browser screenshot --full`                                                                                                     |
 | Semantic interaction                 | `agent-browser find role button click --name "Submit"`                                                                                |
-| Interaction states                   | `agent-browser hover <sel>`, `focus <sel>`, `press Tab`, `check <sel>`, `select <sel> <value>`                                      |
+| Interaction states                   | `agent-browser hover <sel>`, `focus <sel>`, `press Tab`, `check <sel>`, `select <sel> <value>`                                        |
 | Scroll or sticky state               | `agent-browser scroll down 500` / `agent-browser scrollintoview <sel>`                                                                |
 | Targeted layout/style facts          | `agent-browser get box <sel>` / `agent-browser get styles <sel>`                                                                      |
 | Visibility and control state         | `agent-browser is visible <sel>` / `is enabled <sel>` / `is checked <sel>`                                                            |
-| Route and readiness                  | `agent-browser wait --url "**/dashboard"` / `wait --text "Ready"` / `wait "#spinner" --state hidden`                                 |
+| Route and readiness                  | `agent-browser wait --url "**/dashboard"` / `wait --text "Ready"` / `wait "#spinner" --state hidden`                                  |
 | Browser-side failures                | `agent-browser console` / `agent-browser errors`                                                                                      |
 | API activity behind UI               | `agent-browser network requests --type xhr,fetch`                                                                                     |
 | Focused before/after comparison      | `agent-browser diff snapshot --selector "#main" --compact` / `agent-browser diff screenshot --baseline before.png --selector "#main"` |

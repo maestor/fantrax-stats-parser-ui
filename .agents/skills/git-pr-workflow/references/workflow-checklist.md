@@ -83,7 +83,9 @@ When the batch is accepted, verified, and committed:
 
 - push the branch
 - state clearly if more work is still planned before PR
-- if PR-ready, provide notes in one fenced code block
+- if PR-ready, provide a separate clickable GitHub PR link and notes in one fenced code block
+
+Keep the GitHub PR link outside the fenced block so it stays clickable and opens the compare page directly.
 
 Suggested PR-notes shape:
 
