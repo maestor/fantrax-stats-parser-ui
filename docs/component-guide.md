@@ -26,6 +26,8 @@ Before editing a component, read the real implementation and nearby specs first.
 
 - Career, draft, and leaderboard routes render under the root shell without stats tabs, comparison state, or the heavier dashboard startup cost
 - Preserve that split when adding new browse routes or shared UI
+- Career, draft, and leaderboard tab shells use `RouterLinkActive` for selected/current state; query parameters and fragments do not change the selected tab
+- Career player/goalie containers expose loading, data, and error through `toSignal` while retaining `ApiService` caching and navigation-cycle-aware footer readiness
 
 ## Feature Families
 
@@ -123,6 +125,8 @@ Do not collapse these into a single "universal" table component unless the produ
 
 - Complex dialog with tab switching, graphs, deep-link tab selection, navigation context, keyboard/swipe/trackpad navigation, and row-sync back to the table
 - Protect focus return, reduced-motion behavior, and accessibility announcements when editing it
+- Graph inputs derive chart data with computed signals; metric selections persist across players of the same type and chart-mode switches
+- Graph theme reads and canvas resizing run in render callbacks; section-jump navigation also measures overflow after rendering
 
 ### `TeamSwitcherComponent`, `TopControlsComponent`, And `SettingsPanelComponent`
 

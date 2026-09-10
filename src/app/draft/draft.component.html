@@ -1,7 +1,9 @@
 <div class="draft">
   <nav mat-tab-nav-bar [tabPanel]="tabPanel">
     @for (tab of tabs; track tab.path) {
-    <a mat-tab-link [routerLink]="tab.path" [active]="activeLink === tab.path" ariaCurrentWhenActive="page">
+    <a mat-tab-link [routerLink]="tab.path" routerLinkActive #activeLink="routerLinkActive"
+      [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+      [active]="activeLink.isActive" ariaCurrentWhenActive="page">
       {{ tab.label | translate }}
     </a>
     }

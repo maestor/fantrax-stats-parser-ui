@@ -9,7 +9,7 @@ Accessibility is a core requirement: the UI is designed to remain usable via key
 ## Architecture
 
 ### Frontend Stack
-- **Framework**: Angular 22.0.1 (standalone components)
+- **Framework**: Angular 22.1.6 (standalone components)
 - **UI Library**: Angular Material
 - **State Management**: Signals-first services with RxJS used for async composition and compatibility streams
 - **Internationalization**: ngx-translate

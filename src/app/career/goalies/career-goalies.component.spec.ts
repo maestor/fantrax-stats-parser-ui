@@ -1,45 +1,64 @@
 import { TestBed } from '@angular/core/testing';
-import { of, throwError } from 'rxjs';
-
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/angular';
+import { Subject } from 'rxjs';
+import { TranslateTestingModule } from '@testing/translate-testing';
 import { CareerGoaliesComponent } from './career-goalies.component';
-import { ApiService } from '@services/api.service';
-import { careerGoaliesFixture } from '../../testing/behavior-test-utils';
+import { ApiService, CareerGoalieListItem } from '@services/api.service';
+import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { careerGoaliesFixture, polyfillJsdom, provideDisabledMaterialAnimations } from '../../testing/behavior-test-utils';
 
 describe('CareerGoaliesComponent', () => {
-  function createComponent(apiServiceMock: Partial<ApiService>) {
-    TestBed.configureTestingModule({
-      providers: [{ provide: ApiService, useValue: apiServiceMock }],
-    });
+  beforeEach(() => polyfillJsdom());
 
-    return TestBed.runInInjectionContext(() => new CareerGoaliesComponent());
+  async function setup() {
+    const response = new Subject<CareerGoalieListItem[]>();
+    const view = await render(CareerGoaliesComponent, {
+      imports: [TranslateTestingModule],
+      providers: [
+        provideDisabledMaterialAnimations(),
+        { provide: ApiService, useValue: { getCareerGoalies: () => response } },
+      ],
+    });
+    return { ...view, response, footer: TestBed.inject(FooterVisibilityService) };
   }
 
-  it('loads goalie career rows and formats season numbers for display', () => {
-    const component = createComponent({
-      getCareerGoalies: () => of(careerGoaliesFixture),
-    });
-
-    component.ngOnInit();
-
-    expect(component.searchLabelKey).toBe('table.playerSearch');
-    expect(component.apiError).toBe(false);
-    expect(component.loading).toBe(false);
-    expect(component.data[0]).toEqual(careerGoaliesFixture[0]);
-    expect(
-      component.formatCell(component.data[0], 'firstSeason', component.data[0].firstSeason)
-    ).toBe('2015-16');
-    expect(component.formatCell(component.data[0], 'regularGames', undefined)).toBe('-');
+  it('shows loading, then formatted career rows that can be searched', async () => {
+    const { response, footer } = await setup();
+    expect(screen.getByText('table.loading')).toBeInTheDocument();
+    expect(footer.footerVisible()).toBe(false);
+    const row = careerGoaliesFixture[0];
+    response.next([row]);
+    response.complete();
+    const cell = await screen.findByRole('cell', { name: row.name });
+    expect(within(cell.closest('[role="row"]') as HTMLElement).getAllByRole('cell', { name: '2015-16' }).length).toBeGreaterThan(0);
+    expect(screen.queryByText('table.loading')).not.toBeInTheDocument();
+    expect(footer.footerVisible()).toBe(true);
+    fireEvent.input(screen.getByRole('searchbox', { name: 'table.playerSearch' }), { target: { value: 'no matching career' } });
+    expect(await screen.findByText('table.noSearchResults')).toBeInTheDocument();
   });
 
-  it('shows an API error state when career goalies loading fails', () => {
-    const component = createComponent({
-      getCareerGoalies: () => throwError(() => new Error('career goalies failed')),
-    });
+  it('finishes loading with the empty state for an empty response', async () => {
+    const { response, footer } = await setup();
+    response.next([]);
+    response.complete();
+    expect(await screen.findByText('table.noSearchResults')).toBeInTheDocument();
+    expect(footer.footerVisible()).toBe(true);
+  });
 
-    component.ngOnInit();
+  it('shows the API error and releases the footer when loading fails', async () => {
+    const { response, footer } = await setup();
+    response.error(new Error('career request failed'));
+    expect(await screen.findByText('table.apiUnavailable')).toBeInTheDocument();
+    expect(screen.queryByText('table.loading')).not.toBeInTheDocument();
+    expect(footer.footerVisible()).toBe(true);
+  });
 
-    expect(component.data).toEqual([]);
-    expect(component.apiError).toBe(true);
-    expect(component.loading).toBe(false);
+  it('ignores a late result after leaving the career page', async () => {
+    const { response, fixture, footer } = await setup();
+    fixture.destroy();
+    footer.beginNavigation();
+    response.next(careerGoaliesFixture);
+    response.complete();
+    await waitFor(() => expect(footer.footerVisible()).toBe(false));
   });
 });

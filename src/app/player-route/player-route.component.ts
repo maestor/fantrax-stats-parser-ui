@@ -18,7 +18,7 @@ import { matchesSlug } from '@shared/utils/slug.utils';
   selector: 'app-player-route',
   imports: [PlayerStatsComponent],
   template: `
-    <app-player-stats></app-player-stats>
+    <app-player-stats />
     @if (error) {
       <div class="error-overlay">
         <div class="error-message">

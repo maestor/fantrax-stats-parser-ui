@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, inject } from '@angular/core';
+import { Directive, ElementRef, inject } from '@angular/core';
 
 import {
   handleDraftFocusTargetKeydown,
@@ -8,17 +8,15 @@ import {
 
 @Directive({
   selector: 'mat-expansion-panel-header[draftPanelHeaderNavigation]',
-  standalone: true,
+  host: { '(click)': 'onClick()', '(keydown)': 'onKeydown($event)' },
 })
 export class DraftPanelHeaderNavigationDirective {
   private readonly elementRef = inject(ElementRef<HTMLElement>);
 
-  @HostListener('click')
   onClick(): void {
     handleDraftHeaderClick(this.elementRef.nativeElement);
   }
 
-  @HostListener('keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void {
     handleDraftHeaderKeydown(event, this.elementRef.nativeElement);
   }
@@ -26,12 +24,11 @@ export class DraftPanelHeaderNavigationDirective {
 
 @Directive({
   selector: '[draftPanelFocusTarget]',
-  standalone: true,
+  host: { '(keydown)': 'onKeydown($event)' },
 })
 export class DraftPanelFocusTargetDirective {
   private readonly elementRef = inject(ElementRef<HTMLElement>);
 
-  @HostListener('keydown', ['$event'])
   onKeydown(event: KeyboardEvent): void {
     handleDraftFocusTargetKeydown(event, this.elementRef.nativeElement);
   }

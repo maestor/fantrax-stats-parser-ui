@@ -1,48 +1,55 @@
-import { ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { provideRouter, Router, RouterOutlet } from '@angular/router';
+import { fireEvent, render, screen, waitFor } from '@testing-library/angular';
+import { TranslateTestingModule } from '@testing/translate-testing';
 
 import { LeaderboardsComponent } from './leaderboards.component';
+import { CareerComponent } from '../career/career.component';
+import { DraftComponent } from '../draft/draft.component';
 
-describe('LeaderboardsComponent', () => {
-  function createComponent(initialUrl = '/leaderboards/regular') {
-    const events$ = new Subject<unknown>();
-    const router = {
-      events: events$.asObservable(),
-      url: initialUrl,
-    };
-    const detectChanges = vi.fn();
+@Component({ template: '<p>Route content</p>' })
+class RouteContentComponent {}
 
-    TestBed.configureTestingModule({
-      providers: [
-        { provide: Router, useValue: router },
-        { provide: ChangeDetectorRef, useValue: { detectChanges } },
-      ],
+describe.each([
+  {
+    name: 'leaderboards', component: LeaderboardsComponent, paths: ['regular', 'transactions'],
+    labels: ['leaderboards.tabs.regular', 'leaderboards.tabs.transactions'],
+  },
+  {
+    name: 'career', component: CareerComponent, paths: ['players', 'goalies'],
+    labels: ['career.tabs.players', 'career.tabs.goalies'],
+  },
+  {
+    name: 'draft', component: DraftComponent, paths: ['entry-drafts', 'statistics'],
+    labels: ['draft.tabs.entryDrafts', 'draft.tabs.statistics'],
+  },
+])('$name route navigation', ({ name, component, paths, labels }) => {
+  it('keeps the current tab selected through clicks, query changes, and leaving and returning', async () => {
+    await render('<router-outlet />', {
+      imports: [RouterOutlet, TranslateTestingModule],
+      providers: [provideRouter([
+        { path: name, component, children: paths.map((path) => ({ path, component: RouteContentComponent })) },
+        { path: 'outside', component: RouteContentComponent },
+      ])],
     });
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl(`/${name}/${paths[0]}?search=test`);
+    const firstTab = await screen.findByRole('tab', { name: labels[0], selected: true });
+    expect(firstTab).toHaveAttribute('aria-current', 'page');
 
-    const component = TestBed.runInInjectionContext(() => new LeaderboardsComponent());
+    fireEvent.click(screen.getByRole('tab', { name: labels[1] }));
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: labels[1], selected: true })).toHaveAttribute('aria-current', 'page');
+    });
+    expect(firstTab).toHaveAttribute('aria-selected', 'false');
 
-    return { component, detectChanges, events$, router };
-  }
+    await router.navigateByUrl(`/${name}/${paths[1]}?search=changed#details`);
+    expect(screen.getByRole('tab', { name: labels[1], selected: true })).toHaveAttribute('aria-current', 'page');
 
-  it('tracks the active leaderboard tab from the current route and router events', () => {
-    const { component, detectChanges, events$, router } = createComponent('/leaderboards/regular?foo=1');
-
-    component.ngOnInit();
-
-    expect(component.tabs.map((tab) => tab.path)).toEqual([
-      '/leaderboards/regular',
-      '/leaderboards/playoffs',
-      '/leaderboards/transactions',
-      '/leaderboards/finals',
-    ]);
-    expect(component.activeLink).toBe('/leaderboards/regular');
-
-    router.url = '/leaderboards/transactions?bar=1';
-    events$.next({});
-
-    expect(component.activeLink).toBe('/leaderboards/transactions');
-    expect(detectChanges).toHaveBeenCalledTimes(1);
+    await router.navigateByUrl('/outside');
+    expect(screen.queryByRole('tab')).not.toBeInTheDocument();
+    await router.navigateByUrl(`/${name}/${paths[0]}`);
+    expect(await screen.findByRole('tab', { name: labels[0], selected: true })).toHaveAttribute('aria-current', 'page');
   });
 });

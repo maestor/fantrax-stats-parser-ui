@@ -251,8 +251,8 @@ Accessibility is a core requirement of this project (not optional).
 
 ## Technology Stack
 
-- **Framework**: Angular 22.0.1
-- **UI Library**: Angular Material 22.0.1
+- **Framework**: Angular 22.1.6
+- **UI Library**: Angular Material 22.1.6
 - **Language**: TypeScript 6.0
 - **State Management**: Angular signals for synchronous UI state reads, RxJS 7.8 for async flows and compatibility streams
 - **HTTP Client**: Angular HttpClient with caching
@@ -307,7 +307,7 @@ src/
 
 ## Development Notes
 
-This project was originally generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6 and has been upgraded to Angular 22.0.1.
+This project was originally generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6 and has been upgraded to Angular 22.1.6.
 
 ### Key Architectural Decisions
 
