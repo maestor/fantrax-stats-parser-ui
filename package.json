@@ -71,7 +71,7 @@
     "eslint": "^10.7.0",
     "jsdom": "^28.1.0",
     "typescript": "6.0.3",
-    "vitest": "^4.1.8",
+    "vitest": "^4.1.11",
     "vitest-canvas-mock": "^1.1.4"
   }
 }
