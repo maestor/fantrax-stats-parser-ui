@@ -1,13 +1,9 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   ElementRef,
-  HostListener,
-  ViewChild,
-  effect,
-  inject,
+  viewChild,
+  afterRenderEffect,
   input,
   output,
   signal,
@@ -27,12 +23,11 @@ export interface SectionJumpNavItem {
   imports: [...TRANSLATE_IMPORTS],
   templateUrl: './section-jump-nav.component.html',
   styleUrl: './section-jump-nav.component.scss',
+  host: { '(window:resize)': 'onWindowResize()' },
 })
-export class SectionJumpNavComponent implements AfterViewInit {
-  private readonly destroyRef = inject(DestroyRef);
-
-  @ViewChild('scrollContainer', { read: ElementRef })
-  private scrollContainerRef?: ElementRef<HTMLElement>;
+export class SectionJumpNavComponent {
+  private readonly scrollContainerRef = viewChild.required<ElementRef<HTMLElement>>('scrollContainer');
+  private readonly resizeRevision = signal(0);
 
   readonly items = input.required<readonly SectionJumpNavItem[]>();
   readonly ariaLabelKey = input.required<string>();
@@ -46,25 +41,17 @@ export class SectionJumpNavComponent implements AfterViewInit {
   readonly hasOverflow = signal(false);
   readonly instructionsId = `section-jump-nav-instructions-${nextSectionJumpNavId += 1}`;
 
-  private viewInitialized = false;
-  private syncPending = false;
-  private destroyed = false;
-
   constructor() {
-    this.destroyRef.onDestroy(() => {
-      this.destroyed = true;
-    });
-
-    effect(() => {
+    // Scrolling changes layout and the overflow hints depend on its measured result.
+    afterRenderEffect(() => {
       this.items();
-      this.activeItemId();
-      this.scheduleSync();
+      this.resizeRevision();
+      const activeItemId = this.activeItemId();
+      if (activeItemId) {
+        this.scrollItemIntoView(activeItemId, 'auto');
+      }
+      this.refreshOverflowState();
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.viewInitialized = true;
-    this.scheduleSync();
   }
 
   onScroll(): void {
@@ -77,16 +64,12 @@ export class SectionJumpNavComponent implements AfterViewInit {
     this.refreshOverflowState();
   }
 
-  @HostListener('window:resize')
   onWindowResize(): void {
-    this.scheduleSync();
+    this.resizeRevision.update((revision) => revision + 1);
   }
 
   refreshOverflowState(): void {
-    const container = this.scrollContainerRef?.nativeElement;
-    if (!container) {
-      return;
-    }
+    const container = this.scrollContainerRef().nativeElement;
 
     const maxScrollLeft = Math.max(container.scrollWidth - container.clientWidth, 0);
     const scrollLeft = Math.max(container.scrollLeft, 0);
@@ -98,36 +81,8 @@ export class SectionJumpNavComponent implements AfterViewInit {
     this.canScrollEnd.set(hasOverflow && maxScrollLeft - scrollLeft > threshold);
   }
 
-  private scheduleSync(): void {
-    if (!this.viewInitialized || this.syncPending) {
-      return;
-    }
-
-    this.syncPending = true;
-    queueMicrotask(() => {
-      this.syncPending = false;
-
-      if (this.destroyed) {
-        return;
-      }
-
-      this.refreshOverflowState();
-
-      const activeItemId = this.activeItemId();
-      if (!activeItemId) {
-        return;
-      }
-
-      this.scrollItemIntoView(activeItemId, 'auto');
-      this.refreshOverflowState();
-    });
-  }
-
   private scrollItemIntoView(itemId: string, behavior: ScrollBehavior): void {
-    const container = this.scrollContainerRef?.nativeElement;
-    if (!container) {
-      return;
-    }
+    const container = this.scrollContainerRef().nativeElement;
 
     const escapedItemId = itemId.replaceAll('"', '\\"');
     const itemButton = container.querySelector<HTMLElement>(

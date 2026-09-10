@@ -1,5 +1,5 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { fireEvent, render, screen } from '@testing-library/angular';
+import { fireEvent, render, screen, waitFor } from '@testing-library/angular';
 import { TranslateTestingModule } from '@testing/translate-testing';
 
 import {
@@ -95,8 +95,8 @@ describe('SectionJumpNavComponent', () => {
       scrollLeft: 0,
     });
 
-    view.fixture.componentInstance.sectionJumpNavComponent?.refreshOverflowState();
-    view.fixture.detectChanges();
+    fireEvent(window, new Event('resize'));
+    await waitFor(() => expect(nav).toHaveClass('section-jump-nav--can-scroll-end'));
 
     expect(nav).toHaveClass('section-jump-nav--can-scroll-end');
     expect(nav).not.toHaveClass('section-jump-nav--can-scroll-start');
@@ -142,6 +142,9 @@ describe('SectionJumpNavComponent', () => {
     view.fixture.detectChanges();
 
     expect(activeButton).toHaveClass('section-jump-nav-link--active');
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalledWith({
+      block: 'nearest', inline: 'center', behavior: 'auto',
+    }));
 
     fireEvent.click(activeButton);
     view.fixture.detectChanges();

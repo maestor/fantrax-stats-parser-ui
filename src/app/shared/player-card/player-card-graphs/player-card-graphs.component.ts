@@ -1,9 +1,12 @@
 import { DOCUMENT } from '@angular/common';
 import {
-  AfterViewInit,
   Component,
   OnDestroy,
-  effect,
+  afterRenderEffect,
+  computed,
+  linkedSignal,
+  signal,
+  untracked,
   inject,
   input,
   viewChildren,
@@ -24,6 +27,7 @@ import type {
 import type { PositionFilter } from '@services/filter.service';
 import { formatSeasonShort } from '@shared/utils/season.utils';
 import {
+  ChartSeriesColors,
   getChartSeriesColors,
   resolveThemedCssColorVar,
 } from '@shared/utils/chart-theme.utils';
@@ -42,10 +46,10 @@ import { MatIconModule } from '@angular/material/icon';
   ],
   templateUrl: './player-card-graphs.component.html',
   styleUrl: './player-card-graphs.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [provideCharts(withDefaultRegisterables())],
 })
-export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
+export class PlayerCardGraphsComponent implements OnDestroy {
   private static readonly RADAR_COMPACT_MAX_WIDTH = 520;
   private static readonly DEFAULT_VIEWPORT_WIDTH = 1024;
 
@@ -64,179 +68,87 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
 
   readonly charts = viewChildren(BaseChartDirective);
 
-  private prefersDarkMql?: MediaQueryList;
-  private previousData?: Player | Goalie;
-  private previousViewContext?: 'combined' | 'season';
-  private previousPositionFilter?: PositionFilter;
-  private initialized = false;
-  private readonly onPrefersSchemeChange = () => {
-    this.applyThemeToChartOptions();
-    this.applyThemeToRadarChartOptions();
-    this.refreshChartsLayout();
-  };
-
-  data!: Player | Goalie;
-  closeButtonEl?: HTMLButtonElement;
-  requestFocusTabHeader?: () => void;
-  viewContext: 'combined' | 'season' = 'combined';
-  positionFilter: PositionFilter = 'all';
+  private readonly themeRevision = signal(0);
+  private readonly theme = signal<{
+    series: ChartSeriesColors[];
+    lineOptions: NonNullable<ChartConfiguration<'line'>['options']>;
+    radarOptions: ChartConfiguration<'radar'>['options'];
+  } | null>(null);
+  private readonly prefersDarkMql = this.document.defaultView?.matchMedia?.('(prefers-color-scheme: dark)');
+  private readonly onPrefersSchemeChange = () => this.themeRevision.update((revision) => revision + 1);
 
   graphControlsExpanded = false;
-  chartViewMode: 'line' | 'radar' = 'line';
-
-  radarChartData: ChartData<'radar'> = { labels: [], datasets: [] };
-  radarChartOptions: ChartConfiguration<'radar'>['options'] = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      r: {
-        min: 0,
-        max: 100,
-        ticks: {
-          stepSize: 20,
-          callback: (value) => `${value}`,
+  readonly chartViewMode = linkedSignal<'combined' | 'season', 'line' | 'radar'>({
+    source: this.viewContextInput,
+    computation: (context, previous) => context === 'season' ? 'radar' : previous?.value ?? 'line',
+  });
+  readonly isGoalie = computed(() => 'wins' in this.dataInput());
+  readonly hasSeasons = computed(() => !!this.dataInput().seasons?.length);
+  readonly hasMultipleSeasons = computed(() =>
+    this.viewContextInput() === 'combined' && (this.dataInput().seasons?.length ?? 0) > 1,
+  );
+  readonly chartStatKeys = computed(() => this.isGoalie()
+    ? ['score', 'scoreAdjustedByGames', 'games', 'wins', 'saves', 'shutouts']
+    : ['score', 'scoreAdjustedByGames', 'games', 'goals', 'assists', 'points', 'shots', 'penalties', 'hits', 'blocks'],
+  );
+  readonly chartSelections = linkedSignal(() => Object.fromEntries(
+    this.chartStatKeys().map((key) => [key, key === 'score' || key === 'scoreAdjustedByGames']),
+  ));
+  private readonly chartYearsRange = computed(() => {
+    const seasons = this.dataInput().seasons ?? [];
+    if (seasons.length === 0) return [];
+    const minYear = Math.min(...seasons.map((season) => season.season));
+    const maxYear = Math.max(...seasons.map((season) => season.season));
+    return Array.from({ length: maxYear - minYear + 1 }, (_, index) => minYear + index);
+  });
+  private readonly chartLabels = computed(() => this.chartYearsRange().map(formatSeasonShort));
+  readonly lineChartData = computed(() => this.buildLineChartData());
+  readonly radarChartData = computed(() => this.isGoalie() ? this.buildGoalieRadarData() : this.buildPlayerRadarData());
+  readonly radarChartOptions = computed(() => this.theme()?.radarOptions);
+  readonly lineChartOptions = computed<NonNullable<ChartConfiguration<'line'>['options']>>(() => {
+    const options = this.theme()?.lineOptions ?? {};
+    const values = this.lineChartData().datasets.flatMap((dataset) =>
+      dataset.data.filter((value): value is number => typeof value === 'number'),
+    );
+    if (values.length === 0) return options;
+    const maxValue = Math.max(...values);
+    const stepSize = maxValue > 0 ? Math.ceil(maxValue / 5) : 1;
+    const y = options.scales?.['y'];
+    return {
+      ...options,
+      scales: {
+        ...options.scales,
+        y: {
+          type: 'linear', offset: true, min: 0, max: stepSize * 5,
+          grid: y?.grid, ticks: { color: y?.ticks?.color, stepSize },
         },
       },
-    },
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-      tooltip: {
-        callbacks: {
-          label: (context: TooltipItem<'radar'>) => {
-            const label = context.dataset.label || '';
-            const value = context.parsed.r;
-            return `${label}: ${value}/100`;
-          },
-        },
-      },
-    },
-  };
-
-  chartSelections: Record<string, boolean> = {};
-  chartLabels: string[] = [];
-  chartYearsRange: number[] = [];
-
-  lineChartData: ChartConfiguration['data'] = {
-    labels: [],
-    datasets: [],
-  };
-
-  lineChartOptions: NonNullable<ChartConfiguration['options']> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'bottom',
-      },
-    },
-    scales: {
-      x: {},
-      y: { offset: true },
-    },
-  };
+    };
+  });
 
   constructor() {
-    this.applyThemeToChartOptions();
-    this.applyThemeToRadarChartOptions();
-
-    this.prefersDarkMql = this.document.defaultView?.matchMedia?.('(prefers-color-scheme: dark)');
     this.prefersDarkMql?.addEventListener?.('change', this.onPrefersSchemeChange);
 
-    effect(() => {
+    // Resolving CSS colors uses DOM probes, so do it only after rendering.
+    afterRenderEffect(() => {
+      this.themeRevision();
+      const seriesCount = this.chartStatKeys().length;
+      this.theme.set({
+        series: Array.from({ length: seriesCount }, (_, index) => getChartSeriesColors(this.document, index)),
+        lineOptions: this.buildThemedLineOptions(),
+        radarOptions: this.buildThemedRadarOptions(),
+      });
+    });
+
+    // Chart.js measures and draws its canvas; Angular owns the bindings above.
+    afterRenderEffect(() => {
       const charts = this.charts();
-      if (!this.initialized || charts.length === 0) {
-        return;
-      }
-
-      this.refreshChartsLayout();
+      this.theme();
+      untracked(() => charts.forEach((chart) => {
+        chart.chart?.resize();
+        chart.update();
+      }));
     });
-
-    effect(() => {
-      const data = this.dataInput();
-      const closeButtonEl = this.closeButtonElInput();
-      const requestFocusTabHeader = this.requestFocusTabHeaderInput();
-      const viewContext = this.viewContextInput();
-      const positionFilter = this.positionFilterInput();
-
-      const dataChanged = data !== this.previousData;
-      const viewContextChanged = viewContext !== this.previousViewContext;
-      const positionFilterChanged = positionFilter !== this.previousPositionFilter;
-
-      this.data = data;
-      this.closeButtonEl = closeButtonEl;
-      this.requestFocusTabHeader = requestFocusTabHeader;
-      this.viewContext = viewContext;
-      this.positionFilter = positionFilter;
-      this.syncChartSelections();
-
-      if (viewContext === 'season') {
-        this.chartViewMode = 'radar';
-      }
-
-      if (!this.initialized) {
-        this.previousData = data;
-        this.previousViewContext = viewContext;
-        this.previousPositionFilter = positionFilter;
-        return;
-      }
-
-      if (viewContextChanged && viewContext === 'season') {
-        this.chartViewMode = 'radar';
-      }
-
-      if (dataChanged || viewContextChanged) {
-        this.rebuildChartData();
-      } else if (positionFilterChanged) {
-        this.rebuildChartDataForPositionFilterChange();
-      }
-
-      this.previousData = data;
-      this.previousViewContext = viewContext;
-      this.previousPositionFilter = positionFilter;
-    });
-  }
-
-  get chartStatKeys(): string[] {
-    return this.isGoalie
-      ? ['score', 'scoreAdjustedByGames', 'games', 'wins', 'saves', 'shutouts']
-      : [
-        'score',
-        'scoreAdjustedByGames',
-        'games',
-        'goals',
-        'assists',
-        'points',
-        'shots',
-        'penalties',
-        'hits',
-        'blocks',
-      ];
-  }
-
-  get isGoalie(): boolean {
-    return this.data != null && 'wins' in this.data;
-  }
-
-  get hasSeasons(): boolean {
-    return !!this.data?.seasons && this.data.seasons.length > 0;
-  }
-
-  get hasMultipleSeasons(): boolean {
-    return this.viewContext === 'combined' && this.hasSeasons && this.data.seasons!.length > 1;
-  }
-
-  ngAfterViewInit(): void {
-    this.initialized = true;
-    this.syncChartSelections();
-
-    if (this.viewContext === 'season') {
-      this.chartViewMode = 'radar';
-    }
-
-    this.rebuildChartData();
-    queueMicrotask(() => this.refreshChartsLayout());
   }
 
   ngOnDestroy(): void {
@@ -244,12 +156,7 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
   }
 
   toggleChartView(): void {
-    this.chartViewMode = this.chartViewMode === 'line' ? 'radar' : 'line';
-    if (this.chartViewMode === 'radar') {
-      this.buildRadarChartData();
-    }
-
-    setTimeout(() => this.refreshChartsLayout(), 0);
+    this.chartViewMode.update((mode) => mode === 'line' ? 'radar' : 'line');
   }
 
   toggleGraphControls(): void {
@@ -257,23 +164,18 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
   }
 
   onStatToggle(key: string, event: MatCheckboxChange): void {
-    this.chartSelections[key] = event.checked;
-
-    if (!this.data.seasons) return;
-
-    const sortedSeasons = [...this.data.seasons].sort((a, b) => b.season - a.season);
-    this.updateChartData(sortedSeasons);
+    this.chartSelections.update((selection) => ({ ...selection, [key]: event.checked }));
   }
 
   onGraphCheckboxKeydown(event: KeyboardEvent): void {
     switch (event.key) {
       case 'ArrowUp': {
         event.preventDefault();
-        this.requestFocusTabHeader?.();
+        this.requestFocusTabHeaderInput()?.();
         return;
       }
       case 'ArrowDown': {
-        const btn = this.closeButtonEl;
+        const btn = this.closeButtonElInput();
         if (!btn) {
           return;
         }
@@ -286,73 +188,7 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private syncChartSelections(): void {
-    const chartKeys = this.chartStatKeys;
-    const currentKeys = Object.keys(this.chartSelections);
-    const matchesCurrentChart =
-      currentKeys.length === chartKeys.length &&
-      chartKeys.every((key) => currentKeys.includes(key));
-
-    if (matchesCurrentChart) {
-      return;
-    }
-
-    this.chartSelections = chartKeys.reduce(
-      (acc, key) => ({
-        ...acc,
-        [key]: key === 'score' || key === 'scoreAdjustedByGames',
-      }),
-      {} as Record<string, boolean>,
-    );
-  }
-
-  private rebuildChartData(): void {
-    if (this.hasSeasons) {
-      this.setupChartData();
-    } else {
-      this.resetLineChartData();
-    }
-
-    if (this.chartViewMode === 'radar' || this.viewContext === 'season') {
-      this.buildRadarChartData();
-    }
-
-    this.refreshChartsLayout();
-  }
-
-  private rebuildChartDataForPositionFilterChange(): void {
-    if (this.chartViewMode === 'radar' || this.viewContext === 'season') {
-      this.buildRadarChartData();
-    }
-
-    if (this.hasSeasons && this.data.seasons) {
-      this.updateChartData([...this.data.seasons]);
-    }
-
-    this.refreshChartsLayout();
-  }
-
-  private resetLineChartData(): void {
-    this.chartLabels = [];
-    this.chartYearsRange = [];
-    this.lineChartData = {
-      labels: [],
-      datasets: [],
-    };
-  }
-
-  private refreshChartsLayout(): void {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        this.charts().forEach((chart) => {
-          chart.chart?.resize();
-          chart.update();
-        });
-      });
-    });
-  }
-
-  private applyThemeToChartOptions(): void {
+  private buildThemedLineOptions(): NonNullable<ChartConfiguration<'line'>['options']> {
     const textColor = resolveThemedCssColorVar(this.document, '--mat-sys-on-surface', '#1f1f1f');
     const gridColor = resolveThemedCssColorVar(
       this.document,
@@ -366,22 +202,17 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
       'backgroundColor',
     );
 
-    const plugins = this.lineChartOptions.plugins ?? {};
-    const scales = this.lineChartOptions.scales ?? {};
-
-    this.lineChartOptions = {
-      ...this.lineChartOptions,
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
-        ...plugins,
         legend: {
-          ...(plugins.legend ?? {}),
+          position: 'bottom',
           labels: {
-            ...(plugins.legend?.labels ?? {}),
             color: textColor,
           },
         },
         tooltip: {
-          ...(plugins.tooltip ?? {}),
           titleColor: textColor,
           bodyColor: textColor,
           footerColor: textColor,
@@ -391,26 +222,20 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
         },
       },
       scales: {
-        ...scales,
         x: {
-          ...(scales['x'] ?? {}),
           ticks: {
-            ...((scales['x'] as { ticks?: Record<string, unknown> })?.ticks ?? {}),
             color: textColor,
           },
           grid: {
-            ...((scales['x'] as { grid?: Record<string, unknown> })?.grid ?? {}),
             color: gridColor,
           },
         },
         y: {
-          ...(scales['y'] ?? {}),
+          offset: true,
           ticks: {
-            ...((scales['y'] as { ticks?: Record<string, unknown> })?.ticks ?? {}),
             color: textColor,
           },
           grid: {
-            ...((scales['y'] as { grid?: Record<string, unknown> })?.grid ?? {}),
             color: gridColor,
           },
         },
@@ -418,7 +243,7 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  private applyThemeToRadarChartOptions(): void {
+  private buildThemedRadarOptions(): ChartConfiguration<'radar'>['options'] {
     const textColor = resolveThemedCssColorVar(this.document, '--mat-sys-on-surface', '#1f1f1f');
     const outlineColor = resolveThemedCssColorVar(
       this.document,
@@ -442,7 +267,7 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
 
     const gridColor = outlineColor;
 
-    this.radarChartOptions = {
+    return {
       responsive: true,
       maintainAspectRatio: false,
       layout: {
@@ -492,25 +317,16 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  private buildRadarChartData(): void {
-    const isGoalie = 'wins' in this.data;
+  private buildPlayerRadarData(): ChartData<'radar'> {
+    const player = this.dataInput() as Player;
 
-    if (isGoalie) {
-      this.buildGoalieRadarData();
-    } else {
-      this.buildPlayerRadarData();
-    }
-  }
-
-  private buildPlayerRadarData(): void {
-    const player = this.data as Player;
-
-    const scores = (this.positionFilter !== 'all' && player.scoresByPosition)
+    const scores = (this.positionFilterInput() !== 'all' && player.scoresByPosition)
       ? player.scoresByPosition
       : player.scores;
 
-    if (!scores) {
-      return;
+    const seriesColors = this.theme()?.series[0];
+    if (!scores || !seriesColors) {
+      return { labels: [], datasets: [] };
     }
 
     const statKeys: (keyof PlayerScores)[] = [
@@ -532,12 +348,10 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
 
     const data = statKeys.map((key) => scores[key]);
 
-    this.radarChartData = {
+    return {
       labels,
       datasets: [
-        (() => {
-          const seriesColors = getChartSeriesColors(this.document, 0);
-          return {
+        {
           label: player.name,
           data,
           fill: true,
@@ -549,17 +363,17 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
           pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-          };
-        })(),
+        },
       ],
     };
   }
 
-  private buildGoalieRadarData(): void {
-    const goalie = this.data as Goalie;
+  private buildGoalieRadarData(): ChartData<'radar'> {
+    const goalie = this.dataInput() as Goalie;
 
-    if (!goalie.scores) {
-      return;
+    const seriesColors = this.theme()?.series[0];
+    if (!goalie.scores || !seriesColors) {
+      return { labels: [], datasets: [] };
     }
 
     const scores = goalie.scores;
@@ -576,12 +390,10 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
 
     const data = statKeys.map((key) => (scores as Record<string, number>)[key]);
 
-    this.radarChartData = {
+    return {
       labels,
       datasets: [
-        (() => {
-          const seriesColors = getChartSeriesColors(this.document, 0);
-          return {
+        {
           label: goalie.name,
           data,
           fill: true,
@@ -593,41 +405,25 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
           pointHoverBorderColor: seriesColors.pointHoverBorderColor,
           pointRadius: 4,
           pointHoverRadius: 6,
-          };
-        })(),
+        },
       ],
     };
   }
 
-  private setupChartData(): void {
-    if (!this.data.seasons) return;
-
-    const seasons = [...this.data.seasons];
-    const minYear = Math.min(...seasons.map((s) => s.season));
-    const maxYear = Math.max(...seasons.map((s) => s.season));
-
-    this.chartYearsRange = Array.from(
-      { length: maxYear - minYear + 1 },
-      (_, index) => minYear + index,
-    );
-
-    this.chartLabels = this.chartYearsRange.map((year) => formatSeasonShort(year));
-
-    this.updateChartData(seasons);
-  }
-
-  private updateChartData(sortedSeasons: (PlayerSeasonStats | GoalieSeasonStats)[]): void {
-    const activeKeys = this.chartStatKeys.filter((key) => this.chartSelections[key]);
+  private buildLineChartData(): ChartData<'line', (number | null)[]> {
+    const series = this.theme()?.series;
+    if (!series) return { labels: [], datasets: [] };
+    const activeKeys = this.chartStatKeys().filter((key) => this.chartSelections()[key]);
 
     const seasonByYear = new Map<number, PlayerSeasonStats | GoalieSeasonStats>();
-    sortedSeasons.forEach((season) => {
+    this.dataInput().seasons?.forEach((season) => {
       seasonByYear.set(season.season, season);
     });
 
-    const usePositionScores = !this.isGoalie && this.positionFilter !== 'all';
+    const usePositionScores = !this.isGoalie() && this.positionFilterInput() !== 'all';
 
     const datasets: ChartDataset<'line', (number | null)[]>[] = activeKeys.map((key, index) => {
-      const data = this.chartYearsRange.map((year) => {
+      const data = this.chartYearsRange().map((year) => {
         const season = seasonByYear.get(year);
         if (!season) {
           return null;
@@ -652,7 +448,7 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
       });
 
       const translatedLabel = this.translateService.instant(`tableColumn.${key}`);
-      const seriesColors = getChartSeriesColors(this.document, index);
+      const seriesColors = series[index];
 
       return {
         data,
@@ -665,38 +461,9 @@ export class PlayerCardGraphsComponent implements AfterViewInit, OnDestroy {
       };
     });
 
-    this.lineChartData = {
-      labels: this.chartLabels,
+    return {
+      labels: this.chartLabels(),
       datasets,
     };
-
-    const allValues = datasets.flatMap((dataset) =>
-      (dataset.data as (number | null)[]).filter((value): value is number => typeof value === 'number'),
-    );
-
-    if (allValues.length > 0) {
-      const maxValue = Math.max(...allValues);
-
-      if (!this.lineChartOptions.scales) {
-        this.lineChartOptions.scales = {};
-      }
-
-      if (!this.lineChartOptions.scales['y']) {
-        this.lineChartOptions.scales['y'] = {};
-      }
-
-      const yScale = this.lineChartOptions.scales['y']!;
-
-      const tickCount = 5;
-      const stepSize = maxValue > 0 ? Math.ceil(maxValue / tickCount) : 1;
-      const max = stepSize * tickCount;
-
-      yScale.min = 0;
-      yScale.max = max;
-      yScale.ticks = {
-        ...(yScale.ticks || {}),
-        stepSize,
-      };
-    }
   }
 }
