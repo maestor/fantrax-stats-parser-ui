@@ -11,7 +11,7 @@
       "source": "angular/skills",
       "sourceType": "github",
       "skillPath": "angular-developer/SKILL.md",
-      "computedHash": "a786c2637f1bece6324d6280b510aa8485b9ccda4a7ec62ca840c4fdab561ced"
+      "computedHash": "0850aa966b6a7da1151daa9d0ef2081bf397f052573a35c1643fb92b948f0f00"
     },
     "angular-new-app": {
       "source": "angular/skills",
@@ -35,7 +35,7 @@
       "source": "maestor/agent-skills",
       "sourceType": "github",
       "skillPath": "skills/git-pr-workflow/SKILL.md",
-      "computedHash": "0dc1c064459c2ba9d939c8a159b646ccb99ccc395b25e6cae0d1aeb5a268cc1d"
+      "computedHash": "7673150b86d7723f0d9101b85bd80aa84c83b2b6a109e06b6d5ce8bc3cffff0d"
     },
     "intelligence-testing": {
       "source": "maestor/agent-skills",
