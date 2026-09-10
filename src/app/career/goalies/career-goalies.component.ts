@@ -1,5 +1,6 @@
-import { Component, DestroyRef, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, map, of, tap } from 'rxjs';
 
 import { ApiService, CareerGoalieListItem } from '@services/api.service';
 import { TableRow } from '@shared/stats-table/stats-table.component';
@@ -12,12 +13,11 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
 @Component({
   selector: 'app-career-goalies',
   imports: [VirtualTableComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './career-goalies.component.html',
 })
-export class CareerGoaliesComponent implements OnInit {
+export class CareerGoaliesComponent {
   private readonly apiService = inject(ApiService);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   readonly columns: Column[] = CAREER_GOALIE_COLUMNS;
@@ -28,31 +28,15 @@ export class CareerGoaliesComponent implements OnInit {
     value: number | string | undefined,
   ): string => this.formatCellValue(column, value);
 
-  data: CareerGoalieListItem[] = [];
-  loading = true;
-  apiError = false;
-  private footerVisibilityCycle = 0;
-
-  ngOnInit(): void {
-    this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
-    this.loading = true;
-    this.apiService
-      .getCareerGoalies()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (data) => {
-          this.data = data;
-          this.loading = false;
-          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
-        },
-        error: () => {
-          this.data = [];
-          this.apiError = true;
-          this.loading = false;
-          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
-        },
-      });
-  }
+  private readonly footerVisibilityCycle = this.footerVisibilityService.currentCycle();
+  readonly requestState = toSignal(
+    this.apiService.getCareerGoalies().pipe(
+      map((data) => ({ data, loading: false, apiError: false })),
+      catchError(() => of({ data: [] as CareerGoalieListItem[], loading: false, apiError: true })),
+      tap(() => this.footerVisibilityService.markReady(this.footerVisibilityCycle)),
+    ),
+    { initialValue: { data: [] as CareerGoalieListItem[], loading: true, apiError: false } },
+  );
 
   private formatCellValue(column: string, value: number | string | undefined): string {
     if ((column === 'firstSeason' || column === 'lastSeason') && typeof value === 'number') {

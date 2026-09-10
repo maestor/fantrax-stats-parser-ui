@@ -1,5 +1,6 @@
-import { Component, DestroyRef, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, map, of, tap } from 'rxjs';
 
 import { ApiService, CareerPlayerListItem } from '@services/api.service';
 import { TableRow } from '@shared/stats-table/stats-table.component';
@@ -12,12 +13,11 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
 @Component({
   selector: 'app-career-players',
   imports: [VirtualTableComponent],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './career-players.component.html',
 })
-export class CareerPlayersComponent implements OnInit {
+export class CareerPlayersComponent {
   private readonly apiService = inject(ApiService);
-  private readonly destroyRef = inject(DestroyRef);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 
   readonly columns: Column[] = CAREER_PLAYER_COLUMNS;
@@ -28,31 +28,15 @@ export class CareerPlayersComponent implements OnInit {
     value: number | string | undefined,
   ): string => this.formatCellValue(row as CareerPlayerListItem, column, value);
 
-  data: CareerPlayerListItem[] = [];
-  loading = true;
-  apiError = false;
-  private footerVisibilityCycle = 0;
-
-  ngOnInit(): void {
-    this.footerVisibilityCycle = this.footerVisibilityService.currentCycle();
-    this.loading = true;
-    this.apiService
-      .getCareerPlayers()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (data) => {
-          this.data = data;
-          this.loading = false;
-          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
-        },
-        error: () => {
-          this.data = [];
-          this.apiError = true;
-          this.loading = false;
-          this.footerVisibilityService.markReady(this.footerVisibilityCycle);
-        },
-      });
-  }
+  private readonly footerVisibilityCycle = this.footerVisibilityService.currentCycle();
+  readonly requestState = toSignal(
+    this.apiService.getCareerPlayers().pipe(
+      map((data) => ({ data, loading: false, apiError: false })),
+      catchError(() => of({ data: [] as CareerPlayerListItem[], loading: false, apiError: true })),
+      tap(() => this.footerVisibilityService.markReady(this.footerVisibilityCycle)),
+    ),
+    { initialValue: { data: [] as CareerPlayerListItem[], loading: true, apiError: false } },
+  );
 
   private formatCellValue(
     row: CareerPlayerListItem,
