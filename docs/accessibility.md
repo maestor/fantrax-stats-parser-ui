@@ -1,55 +1,6 @@
-# Accessibility Guide
+# Accessibility
 
-Accessibility is a **core, non-negotiable requirement** of this project.
-
-If a feature is not usable with keyboard and assistive technologies, it is considered incomplete.
-
-Start UI accessibility work with the installed `accessibility-first-ui` skill, then apply the concrete repo patterns and constraints in this guide.
-
-## Goals
-
-- Keep the UI usable for:
-  - Keyboard-only users
-  - Screen reader users
-  - Users with low vision (clear focus, sufficient contrast, zoom)
-- Aim for WCAG 2.2 AA-aligned behavior where practical.
-
-## Project Principles
-
-### 1) Keyboard-first interactions
-
-- Every interactive element must be reachable via `Tab` in a logical order.
-- No “keyboard traps”.
-- Use semantic elements whenever possible:
-  - Prefer `<button>` and `<a>` over clickable `<div>`.
-  - If you must use a non-semantic element, you must implement **role + tabindex + keyboard events** (but avoid this unless necessary).
-
-### 2) Visible focus
-
-- Focus must always be visible.
-- Don’t remove outlines unless you replace them with an equally visible alternative.
-
-### 3) No focus in hidden UI
-
-Collapsed/hidden regions must not be tabbable.
-
-In this project, collapsible sections use:
-
-- `aria-hidden` when collapsed
-- `inert` when collapsed (prevents focus + interaction)
-
-This prevents confusing focus jumps into content that is not visible.
-
-### 4) Announce intent with labels
-
-- Inputs must have labels (`<label>` or `mat-label`).
-- Icon-only buttons must have `aria-label`.
-- Prefer plain-language labels.
-
-### 5) Prefer minimal ARIA
-
-- Use ARIA to *complete* semantics, not to re-create them.
-- Avoid adding roles that conflict with native semantics.
+Keyboard and assistive-technology access is required. Use semantic controls, visible focus, meaningful labels, and i18n strings. Hidden/collapsed regions use `aria-hidden` and `inert` so they cannot receive focus. Preserve logical tab order without trapping focus; composite widgets may use roving tab stops. Aim for WCAG 2.2 AA-aligned behavior where practical.
 
 ## Patterns Used in This Codebase
 
@@ -186,36 +137,6 @@ Notes:
 - Route items still activate with the native button keys (`Enter` / `Space`)
 - The info item keeps its existing dialog-opening behavior and focus restoration
 
-## Development Checklist (Always)
+## Verification
 
-Before you consider a feature “done”:
-
-- [ ] Can you reach it with `Tab`?
-- [ ] Can you operate it with keyboard only?
-- [ ] Is focus visible and not lost?
-- [ ] Does focus avoid hidden/collapsed content?
-- [ ] Does it have a meaningful label/announcement?
-- [ ] Are new user-visible strings added to i18n files?
-
-## Testing Guidance
-
-### Component tests
-
-- Add behavior tests for keyboard handlers when you introduce keyboard behavior.
-- Test through user-visible behavior using Testing Library accessible queries.
-- Use the installed `intelligence-testing` skill when deciding the first failing accessibility behavior test.
-
-### E2E tests (Playwright)
-
-For major interaction changes, add/extend Playwright tests to cover:
-
-- Keyboard navigation through the feature
-- Opening/closing dialogs with keyboard
-- Focus landing in the correct place after actions
-
-For layout, clipping, theme, contrast, or focus-visibility risk that tests cannot fully prove, use the installed `browser-ui-verification` skill and the repo's `agent-browser` workflow before handoff.
-
-## References
-
-- WCAG Quick Reference: https://www.w3.org/WAI/WCAG22/quickref/
-- ARIA Authoring Practices: https://www.w3.org/WAI/ARIA/apg/
+Cover changed keyboard handlers through real user behavior with Testing Library; extend Playwright for major navigation/dialog/focus flows. See [testing](testing.md). Use [styling](styling.md) and browser inspection for contrast, clipping, layout, or visible-focus risks that DOM tests cannot prove.
