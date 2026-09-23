@@ -127,4 +127,5 @@ test.describe('Leaderboards', () => {
     await expect(page).toHaveURL(/\/leaderboards\/transactions/);
     await page.locator('tr[mat-row]').first().waitFor({ state: 'visible', timeout: 10000 });
   });
+
 });

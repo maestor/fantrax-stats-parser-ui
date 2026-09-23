@@ -118,7 +118,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
     ((row: TableRow, expanded: boolean) => string) | undefined
   >(undefined, { alias: 'expandToggleAriaLabel' });
   readonly expandedHeaderLabelsInput = input<
-    { season: string; primary: string; secondary?: string } | undefined
+    { season: string; primary: string; secondary?: string; primaryAlign?: 'left' | 'center' } | undefined
   >(undefined, { alias: 'expandedHeaderLabels' });
 
   private loadingIntervalId?: ReturnType<typeof setInterval>;
@@ -154,7 +154,7 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
   isRowExpandable?: (row: TableRow) => boolean;
   expandedRowsFor?: (row: TableRow) => ExpandedRowViewModel[];
   expandToggleAriaLabel?: (row: TableRow, expanded: boolean) => string;
-  expandedHeaderLabels?: { season: string; primary: string; secondary?: string };
+  expandedHeaderLabels?: { season: string; primary: string; secondary?: string; primaryAlign?: 'left' | 'center' };
 
   instructionsId = 'stats-table-instructions';
   activeRowIndex = 0;
@@ -407,6 +407,10 @@ export class StatsTableComponent implements AfterViewInit, OnDestroy {
       'col-left': column.align === 'left',
       'col-center': column.align !== 'left',
     };
+  }
+
+  getCellDelta(column: Column, row: TableRow): { text: string; className?: string } | undefined {
+    return column.cellDelta?.(row);
   }
 
   getPositionDisplay(row: TableRow, i: number): string | number {

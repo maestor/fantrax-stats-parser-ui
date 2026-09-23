@@ -14,6 +14,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    path: 'category-stats',
+    renderMode: RenderMode.Prerender,
+  },
+  {
     path: 'career',
     renderMode: RenderMode.Prerender,
   },

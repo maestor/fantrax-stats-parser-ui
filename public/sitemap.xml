@@ -36,4 +36,7 @@
   <url>
     <loc>https://ffhl-stats.vercel.app/leaderboards/transactions</loc>
   </url>
+  <url>
+    <loc>https://ffhl-stats.vercel.app/category-stats</loc>
+  </url>
 </urlset>

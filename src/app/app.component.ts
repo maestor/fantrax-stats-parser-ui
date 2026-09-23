@@ -83,6 +83,12 @@ const rootRouteUiStateByGroup: Record<RootRouteGroup, RootRouteUiState> = {
     skipLinkTargetId: 'stats-table',
     skipLinkLabelKey: 'a11y.skipToTable',
   },
+  'category-stats': {
+    isDashboardRoute: true,
+    currentRouteSubtitleKey: 'nav.hockeyPlayerStats',
+    skipLinkTargetId: 'stats-table',
+    skipLinkLabelKey: 'a11y.skipToTable',
+  },
   'goalie-stats': {
     isDashboardRoute: true,
     currentRouteSubtitleKey: 'nav.hockeyPlayerStats',

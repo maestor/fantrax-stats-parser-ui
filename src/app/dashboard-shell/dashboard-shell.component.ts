@@ -14,11 +14,14 @@ import {
 
 type DashboardRouteUiState = {
   controlsContext: StatsContext;
+  showComparisonBar: boolean;
 };
 
 export function buildDashboardRouteUiState(url: string): DashboardRouteUiState {
+  const routeGroup = resolveRootRouteGroup(url);
   return {
-    controlsContext: getDashboardControlsContext(resolveRootRouteGroup(url)),
+    controlsContext: getDashboardControlsContext(routeGroup),
+    showComparisonBar: routeGroup !== 'category-stats',
   };
 }
 
@@ -43,6 +46,7 @@ export class DashboardShellComponent implements OnInit {
   );
 
   controlsContext: StatsContext = this.initialRouteUiState.controlsContext;
+  showComparisonBar = this.initialRouteUiState.showComparisonBar;
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
@@ -63,5 +67,6 @@ export class DashboardShellComponent implements OnInit {
     const nextState = buildDashboardRouteUiState(url);
 
     this.controlsContext = nextState.controlsContext;
+    this.showComparisonBar = nextState.showComparisonBar;
   }
 }

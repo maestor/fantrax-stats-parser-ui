@@ -35,6 +35,7 @@ const ALLOWED_PATH_PATTERNS = [
   /^teams$/,
   /^last-modified$/,
   /^leaderboard\/(regular|playoffs|transactions|finals)$/,
+  /^leaderboard\/categories$/,
   new RegExp(`^seasons/${REPORT_TYPE_PATTERN}$`),
   new RegExp(`^players/combined/${REPORT_TYPE_PATTERN}$`),
   new RegExp(`^players/season/${REPORT_TYPE_PATTERN}/\\d{4}$`),

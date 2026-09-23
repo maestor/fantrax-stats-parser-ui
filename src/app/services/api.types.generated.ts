@@ -1332,6 +1332,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/leaderboard/categories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Regular-season team category dashboard
+         * @description Returns regular-season category totals and credited-game rates, ranks among teams with
+         *     reported production, eligible-team medians, next-better gaps, immediate prior-season
+         *     comparisons, and credited player contributions. This endpoint never includes playoff
+         *     rows. Missing team reports are reported through coverage metadata and are not treated
+         *     as zero totals. Goalie GAA and save percentage are omitted because stored player ratios
+         *     cannot be combined into exact team rates.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /**
+                     * @description Starting year for an imported regular season. Omission selects the latest season with credited games.
+                     * @example 2025
+                     */
+                    season?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Regular-season team category dashboard. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CategoryDashboardResponse"];
+                    };
+                };
+                /** @description Malformed or unavailable season. */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/leaderboard/finals": {
         parameters: {
             query?: never;
@@ -2003,6 +2067,101 @@ export interface components {
             players: number;
             /** @description Count of distinct goalie Fantrax entity IDs the team rostered that season. */
             goalies: number;
+        };
+        CategoryDashboardResponse: {
+            /** @description Resolved starting year of the regular season. */
+            season: number;
+            /** @enum {string} */
+            scope: "regular";
+            /** @description Seasons with imported regular rows, including seasons with zero credited games. */
+            availableSeasons: number[];
+            /** Format: date-time */
+            lastModified: string | null;
+            seasonHasCreditedGames: boolean;
+            coverage: components["schemas"]["CategoryDashboardCoverage"];
+            categories: components["schemas"]["CategoryDashboardDefinition"][];
+            teams: components["schemas"]["CategoryDashboardTeam"][];
+        };
+        CategoryDashboardCoverage: {
+            /** @enum {string} */
+            status: "complete" | "partial" | "unknown";
+            expectedTeamCount: number;
+            participatingTeamCount: number;
+            reportedTeamCount: number;
+            missingReportTeamIds: string[];
+            unknownTeamIds: string[];
+        };
+        CategoryDashboardDefinition: {
+            /** @enum {string} */
+            key: "goals" | "assists" | "points" | "plusMinus" | "penalties" | "shots" | "ppp" | "shp" | "hits" | "blocks" | "wins" | "saves" | "shutouts";
+            /** @enum {string} */
+            group: "skater" | "goalie";
+            higherIsBetter: boolean;
+        };
+        CategoryDashboardTeam: {
+            teamId: string;
+            teamName: string;
+            teamAbbr: string;
+            /** @enum {string} */
+            participation: "not-yet-joined" | "reported" | "missing-report" | "unknown";
+            skaterGames: number;
+            goalieGames: number;
+            categories: {
+                [key: string]: components["schemas"]["CategoryDashboardValue"];
+            };
+            players: components["schemas"]["CategoryPlayerContribution"][];
+            goalies: components["schemas"]["CategoryGoalieContribution"][];
+        };
+        CategoryDashboardValue: {
+            total: number;
+            games: number;
+            rate: number | null;
+            totalRank: number | null;
+            rateRank: number | null;
+            totalEligibleTeamCount: number;
+            rateEligibleTeamCount: number;
+            totalMedian: number | null;
+            rateMedian: number | null;
+            totalGapToNext: number | null;
+            rateGapToNext: number | null;
+            previous: components["schemas"]["CategoryDashboardPrevious"] | null;
+        };
+        CategoryDashboardPrevious: {
+            total: number;
+            games: number;
+            rate: number | null;
+            totalRank: number | null;
+            rateRank: number | null;
+            totalEligibleTeamCount: number;
+            rateEligibleTeamCount: number;
+            totalChange: number | null;
+            rateChange: number | null;
+            totalRankChange: number | null;
+            rateRankChange: number | null;
+        };
+        CategoryPlayerContribution: {
+            id: string;
+            name: string;
+            position: string | null;
+            games: number;
+            goals: number;
+            assists: number;
+            points: number;
+            plusMinus: number;
+            penalties: number;
+            shots: number;
+            ppp: number;
+            shp: number;
+            hits: number;
+            blocks: number;
+        };
+        CategoryGoalieContribution: {
+            id: string;
+            name: string;
+            games: number;
+            wins: number;
+            saves: number;
+            shutouts: number;
         };
         FinalsLeaderboardEntry: {
             season: number;

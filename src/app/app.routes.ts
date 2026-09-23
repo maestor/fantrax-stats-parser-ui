@@ -23,6 +23,11 @@ const goalieStatsSeo: RouteSeoData = {
   tabKey: 'link.goalieStats',
 };
 
+const categoryStatsSeo: RouteSeoData = {
+  sectionKey: 'nav.hockeyPlayerStats',
+  tabKey: 'link.categoryStats',
+};
+
 export const routes: Routes = [
   {
     path: 'leaderboards',
@@ -87,6 +92,7 @@ export const routes: Routes = [
             (m) => m.LeaderboardFinalsComponent
           ),
       },
+      { path: 'categories', redirectTo: '/category-stats', pathMatch: 'full' },
     ],
   },
   {
@@ -222,6 +228,16 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./goalie-stats/goalie-stats.component').then(
             (m) => m.GoalieStatsComponent
+        ),
+      },
+      {
+        path: 'category-stats',
+        data: {
+          seo: categoryStatsSeo,
+        },
+        loadComponent: () =>
+          import('./category-stats/team-category-stats.component').then(
+            (m) => m.TeamCategoryStatsComponent
           ),
       },
       {

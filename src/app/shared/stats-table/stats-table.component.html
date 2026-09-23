@@ -66,27 +66,27 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header
               [start]="getInitialSortDirection(column)"
               [ngClass]="getCellClass(column)"
-              matTooltip="{{ 'tableColumn.' + column.field | translate }}">
+              [matTooltip]="column.headerTooltip ?? (('tableColumn.' + column.field) | translate)">
               @if (getHeaderIconType(column) === 'emoji') {
                 {{ column.icon!.name }}
               } @else if (getHeaderIconType(column) === 'material') {
                 <mat-icon>{{ column.icon!.name }}</mat-icon>
               }
               <span [class.sr-only]="column.icon">
-                {{ "tableColumnShort." + column.field | translate }}
+                {{ column.headerLabel ?? (('tableColumnShort.' + column.field) | translate) }}
               </span>
             </th>
           } @else {
             <th mat-header-cell *matHeaderCellDef
               [ngClass]="getCellClass(column)"
-              matTooltip="{{ 'tableColumn.' + column.field | translate }}">
+              [matTooltip]="column.headerTooltip ?? (('tableColumn.' + column.field) | translate)">
               @if (getHeaderIconType(column) === 'emoji') {
                 {{ column.icon!.name }}
               } @else if (getHeaderIconType(column) === 'material') {
                 <mat-icon>{{ column.icon!.name }}</mat-icon>
               }
               <span [class.sr-only]="column.icon">
-                {{ "tableColumnShort." + column.field | translate }}
+                {{ column.headerLabel ?? (('tableColumnShort.' + column.field) | translate) }}
               </span>
             </th>
           }
@@ -95,6 +95,10 @@
             {{ formatCell
                 ? formatCell(column.field, getCellValue(element, column.field))
                 : formatDefaultCellValue(column.field, getCellValue(element, column.field)) }}
+            @let delta = getCellDelta(column, element);
+            @if (delta) {
+              &nbsp;<span class="stats-table-cell-delta">(<span [class]="delta.className">{{ delta.text }}</span>)</span>
+            }
           </td>
         </ng-container>
       }
@@ -108,7 +112,8 @@
             <div class="expanded-detail-content"
               animate.enter="expanded-detail-enter">
               @if (expandedHeaderLabels) {
-                <div class="expanded-season-header">
+                <div class="expanded-season-header"
+                  [class.expanded-season-header--primary-center]="expandedHeaderLabels.primaryAlign === 'center'">
                   <span class="expanded-season-header-cell">{{ expandedHeaderLabels.season }}</span>
                   <span class="expanded-season-header-cell">{{ expandedHeaderLabels.primary }}</span>
                   @if (expandedHeaderLabels.secondary !== undefined) {
@@ -119,7 +124,8 @@
                 </div>
               }
               @for (detail of details; track detail.seasonLabel + ':' + $index) {
-                <div class="expanded-season-row">
+                <div class="expanded-season-row"
+                  [class.expanded-season-row--primary-center]="expandedHeaderLabels?.primaryAlign === 'center'">
                   <span class="expanded-season-label">{{ detail.seasonLabel }}</span>
                   <span class="expanded-season-primary">{{ detail.primary }}</span>
                   @if (detail.secondary) {

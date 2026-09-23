@@ -77,7 +77,7 @@
 
         @if (currentRouteSubtitleKey; as subtitleKey) {
           <h2 class="route-subtitle">
-            {{ subtitleKey | translate }}@if (settingsDrawerRouteConfig.mode === 'stats') {@if (selectedTeamName$ | async; as teamName) {<span class="route-subtitle-team">: {{ teamName }}</span>}}
+            {{ subtitleKey | translate }}@if (settingsDrawerRouteConfig.showSelectedTeamName) {@if (selectedTeamName$ | async; as teamName) {<span class="route-subtitle-team">: {{ teamName }}</span>}}
           </h2>
         }
 

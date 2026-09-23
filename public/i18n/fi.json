@@ -5,7 +5,8 @@
   },
   "link": {
     "playerStats": "Kenttäpelaajat",
-    "goalieStats": "Maalivahdit"
+    "goalieStats": "Maalivahdit",
+    "categoryStats": "Kategoriat"
   },
   "nav": {
     "hockeyPlayerStats": "Pelaajatilastot",
@@ -358,7 +359,9 @@
     "selectToCompare": "Valitse vertailuun: {{name}}",
     "openNavMenu": "Avaa valikko",
     "expandSeasonDetails": "Näytä kausierittely: {{name}}",
-    "collapseSeasonDetails": "Piilota kausierittely: {{name}}"
+    "collapseSeasonDetails": "Piilota kausierittely: {{name}}",
+    "expandCategoryDetails": "Näytä pelaajien kirjaukset kategoriassa {{name}}",
+    "collapseCategoryDetails": "Piilota pelaajien kirjaukset kategoriassa {{name}}"
   },
   "pwa": {
     "updateAvailable": "Päivitys tarjolla!",
@@ -552,7 +555,12 @@
     "conferenceFinals": "Konf. finaalit",
     "secondRound": "2. kierros",
     "firstRound": "1. kierros",
-    "appearances": "Mukana playoffseissa"
+    "appearances": "Mukana playoffseissa",
+    "category": "Kategoria",
+    "value": "Määrä (muutos edellisvuodesta)",
+    "categoryRank": "Sijoitus liigassa (muutos edellisvuodesta)",
+    "median": "Liigan mediaani",
+    "comparison": "Ero vertailujoukkueeseen"
   },
   "tableColumnShort": {
     "position": "#",
@@ -605,7 +613,12 @@
     "conferenceFinals": "KF",
     "secondRound": "2K",
     "firstRound": "1K",
-    "appearances": "PO"
+    "appearances": "PO",
+    "category": "Kategoria",
+    "value": "Määrä",
+    "categoryRank": "Sijoitus",
+    "median": "Mediaani",
+    "comparison": "Vertailu"
   },
   "season": {
     "selector": "Kausivalitsin",
@@ -692,5 +705,28 @@
         "href": "https://github.com/maestor/node-fantrax-stats-parser"
       }
     }
+  },
+  "categoryStats": {
+    "heading": "Joukkueen kategoriat",
+    "seasonLabel": "Kausi",
+    "comparisonLabel": "Vertaa joukkueeseen",
+    "noComparison": "Ei vertailujoukkuetta",
+    "coveragePartial": "Tuontikattavuus on puutteellinen. Sijoitus lasketaan saatavilla olevista joukkueista.",
+    "coverageUnknown": "Tuontikattavuutta ei voitu varmistaa. Sijoitus sisältää vain joukkueet, joilla on kirjattuja tilastoja.",
+    "loading": "Ladataan runkosarjan joukkuetilastoja…",
+    "apiUnavailable": "Joukkuetilastojen haku epäonnistui.",
+    "retry": "Yritä uudelleen",
+    "noSeasons": "Runkosarjan joukkuetilastoja ei ole saatavilla.",
+    "regularSeasonDisclaimer": "Huomioitu vain runkosarjatilastot vertailukelpoisuuden vuoksi.",
+    "goalieRateDisclaimer": "Maalivahtien GAA ja torjunta% eivät ole vertailtavissa.",
+    "notYetJoined": "Joukkue ei ollut vielä mukana tässä runkosarjassa.",
+    "missingReport": "Joukkue osallistui, mutta sen runkosarjan tilastoraporttia ei löytynyt.",
+    "unknownParticipation": "Joukkueen osallistumista tai tilastotuontia ei voitu vahvistaa.",
+    "noCreditedGames": "Tilastoja ei vielä saatavilla, todennäköisesti kausi ei ole alkanut.",
+    "noContributions": "Tälle joukkueelle ei ole pelaajakirjauksia tässä kategoriassa.",
+    "contributor": "Pelaaja",
+    "share": "%-osuus",
+    "contributionDetails": "Määrä",
+    "teamUnavailable": "Valitun joukkueen tietoja ei löytynyt."
   }
 }

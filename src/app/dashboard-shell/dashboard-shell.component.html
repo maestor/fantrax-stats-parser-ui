@@ -2,4 +2,6 @@
 <mat-tab-nav-panel #tabPanel>
   <router-outlet />
 </mat-tab-nav-panel>
-<app-comparison-bar [context]="controlsContext" />
+@if (showComparisonBar) {
+  <app-comparison-bar [context]="controlsContext" />
+}
