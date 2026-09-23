@@ -213,6 +213,33 @@ describe('TeamCategoryStatsComponent', () => {
     expect(screen.getByText('100 %')).toBeInTheDocument();
   });
 
+  it('shows the empty state for categories without contributors and expands goalie contributions', async () => {
+    await setup();
+    await screen.findByRole('table');
+
+    const blocksRow = document.querySelector<HTMLElement>('tr[data-row-key="blocks"]')!;
+    blocksRow.focus();
+    fireEvent.keyDown(blocksRow, { key: 'Enter' });
+    expect(await screen.findByText('categoryStats.noContributions')).toBeInTheDocument();
+
+    fireEvent.keyDown(blocksRow, { key: 'Enter' });
+    const winsRow = document.querySelector<HTMLElement>('tr[data-row-key="wins"]')!;
+    winsRow.focus();
+    fireEvent.keyDown(winsRow, { key: 'Enter' });
+    expect(await screen.findByText('Colorado Avalanche Goalie')).toBeInTheDocument();
+  });
+
+  it('reports unknown coverage and an unavailable team when the selected team has no dashboard row', async () => {
+    const dashboard = createDashboard();
+    dashboard.coverage.status = 'unknown';
+    const { teamService } = await setup({ getCategoryDashboard: vi.fn(() => of(dashboard)) });
+    await screen.findByRole('table');
+
+    teamService.setTeamId('unavailable');
+    expect(await screen.findByText('categoryStats.coverageUnknown')).toBeInTheDocument();
+    expect(screen.getByText('categoryStats.teamUnavailable')).toBeInTheDocument();
+  });
+
   it('shows a retryable error and recovers on retry', async () => {
     const getCategoryDashboard = vi.fn()
       .mockReturnValueOnce(throwError(() => new Error('unavailable')))
