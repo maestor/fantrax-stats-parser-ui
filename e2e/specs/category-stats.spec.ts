@@ -17,7 +17,7 @@ test.describe('Team category stats', () => {
     await page.goto('/category-stats');
     await expect(page).toHaveURL(/\/category-stats$/);
     await expect(page.getByRole('tab', { name: TAB_LABELS.CATEGORY_STATS })).toHaveAttribute('aria-selected', 'true');
-    await expect(page.getByRole('heading', { level: 2 })).toContainText('Colorado Avalanche');
+    await expect(page.getByRole('heading', { name: /Colorado Avalanche/ })).toBeVisible();
     await expect(page.getByRole('combobox', { name: fi('categoryStats.seasonLabel') })).toContainText(fixtureSeasonLabel);
     await expect(page.getByText('Colorado Avalanche')).toBeVisible();
     await expect(page.getByRole('table')).toBeVisible();
