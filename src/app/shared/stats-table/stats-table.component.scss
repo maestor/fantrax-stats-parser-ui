@@ -63,8 +63,9 @@ th.mat-column-__rowNumber {
   flex-direction: column;
   padding: 8px 12px 10px 12px;
   gap: 6px;
-  width: fit-content;
-  max-width: 100%;
+  width: 100%;
+  max-width: min(100%, 52rem);
+  box-sizing: border-box;
   margin: 0 auto;
   overflow: hidden;
   transform-origin: top;
@@ -88,7 +89,7 @@ th.mat-column-__rowNumber {
 
 .expanded-season-header {
   display: grid;
-  grid-template-columns: minmax(95px, 130px) max-content auto;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.9fr);
   gap: 12px;
   align-items: center;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
@@ -108,34 +109,52 @@ th.mat-column-__rowNumber {
   text-align: center;
 }
 
+.expanded-season-header--primary-center > :nth-child(2),
+.expanded-season-row--primary-center > :nth-child(2) {
+  text-align: center;
+}
+
 .expanded-season-row {
   display: grid;
-  grid-template-columns: minmax(60px, 95px) max-content auto;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 0.9fr);
   gap: 12px;
   align-items: center;
   color: var(--mat-sys-on-surface);
   border-bottom: 1px solid var(--mat-sys-outline-variant);
-  height: 28px;
-
-  @media (max-width: 768px) {
-    grid-template-columns: minmax(30px, 65px) max-content auto;
-  }
+  min-height: 36px;
+  padding-block: 4px;
+  box-sizing: border-box;
 }
 
 .expanded-season-label {
+  min-width: 0;
   color: var(--mat-sys-on-surface-variant);
   font-size: 0.88rem;
+  overflow-wrap: anywhere;
 }
 
 .expanded-season-primary {
   font-weight: 500;
-  min-width: 260px;
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 
 .expanded-season-secondary {
+  min-width: 0;
   text-align: center;
-  min-width: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.stats-table-delta-positive {
+  color: var(--app-status-success);
+}
+
+.stats-table-delta-negative {
+  color: var(--mat-sys-error);
+}
+
+.stats-table-cell-delta {
+  white-space: nowrap;
 }
 
 @media (max-width: 600px) {
@@ -148,16 +167,12 @@ th.mat-column-__rowNumber {
   }
 
   .expanded-season-header {
-    grid-template-columns: minmax(20px, 55px) max-content auto;
-    gap: 0;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: 6px;
   }
 
   .expanded-season-row {
-    grid-template-columns: minmax(20px, 55px) max-content auto;
-    gap: 0;
-  }
-
-  .expanded-season-primary {
-    min-width: 260px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: 6px;
   }
 }

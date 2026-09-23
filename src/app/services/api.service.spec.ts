@@ -187,6 +187,21 @@ describe('ApiService', () => {
     ]);
   });
 
+  it('requests category dashboard data for a season using its own season-specific cache key', async () => {
+    const firstResponse = firstValueFrom(service.getCategoryDashboard(2024));
+    const request = httpMock.expectOne((req) =>
+      req.url === 'http://localhost:3000/leaderboard/categories' &&
+      req.params.get('season') === '2024'
+    );
+    request.flush({ season: 2024, scope: 'regular' });
+    await expect(firstResponse).resolves.toEqual({ season: 2024, scope: 'regular' });
+
+    const secondResponse = firstValueFrom(service.getCategoryDashboard(2025));
+    httpMock.expectOne((req) => req.params.get('season') === '2025')
+      .flush({ season: 2025, scope: 'regular' });
+    await expect(secondResponse).resolves.toEqual({ season: 2025, scope: 'regular' });
+  });
+
   it('requests career highlights with explicit paging params', async () => {
     const responsePromise = firstValueFrom(
       service.getCareerHighlights('most-teams-played', 10, 10)

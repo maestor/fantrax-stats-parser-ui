@@ -7,18 +7,18 @@
 | Surface | Responsibility |
 | --- | --- |
 | `AppComponent` | Shared header/settings drawer, skip link, subtitle, footer readiness, global shortcuts, lazy help/navigation overlays, PWA update UX |
-| `DashboardShellComponent` | Lazy stats-only tabs and comparison bar for `/`, `/player-stats`, `/goalie-stats`, and direct player/goalie links |
+| `DashboardShellComponent` | Lazy player/goalie/category stats tabs and player comparison bar for `/`, `/player-stats`, `/goalie-stats`, `/category-stats`, and direct player/goalie links |
 | Browse routes | `/career/*`, `/draft/*`, `/leaderboards/*` render under the root shell with the base drawer and without dashboard startup work |
 | Direct cards | `/player/:teamSlug/:playerSlug[/:season]` and goalie equivalent synchronize background stats and dialog state |
 
-Career includes virtualized player/goalie lists and paged highlights. Draft includes entry/opening history and statistics. Leaderboards include regular season, playoffs, transactions, and finals. Preserve the lighter browse-route boundary when adding features.
+Career includes virtualized player/goalie lists and paged highlights. Draft includes entry/opening history and statistics. Leaderboards include regular season, playoffs, transactions, and finals. The team category dashboard is the third stats tab, but uses a bounded team-only settings drawer and does not initialize player or goalie tables.
 
 ## Where code belongs
 
 | Path | Owns |
 | --- | --- |
 | `src/app/base/` | Navigation and footer primitives |
-| `src/app/{player-stats,goalie-stats}/` | Stats-page data orchestration |
+| `src/app/{player-stats,goalie-stats,category-stats}/` | Stats-tab data orchestration |
 | `src/app/{career,draft,leaderboards}/` | Browse features |
 | `src/app/{player-route,goalie-route}/` | Direct-card route resolution |
 | `src/app/services/` | Shared state, HTTP/cache, platform, SEO, persistence |

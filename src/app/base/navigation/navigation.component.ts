@@ -28,6 +28,7 @@ export class NavigationComponent implements OnInit {
   navItems = [
     { label: 'link.playerStats', path: '/player-stats' },
     { label: 'link.goalieStats', path: '/goalie-stats' },
+    { label: 'link.categoryStats', path: '/category-stats' },
   ];
   activeLink = '';
 

@@ -3,6 +3,7 @@ import { StatsContext } from '@shared/types/context.types';
 export type RootRouteGroup =
   | 'player-stats'
   | 'goalie-stats'
+  | 'category-stats'
   | 'leaderboards'
   | 'career'
   | 'draft';
@@ -12,6 +13,7 @@ export type SettingsDrawerMode = 'default' | 'team' | 'stats';
 export type SettingsDrawerRouteConfig = {
   mode: SettingsDrawerMode;
   statsContext?: StatsContext;
+  showSelectedTeamName?: boolean;
 };
 
 type RouteGroupDefinition = {
@@ -29,6 +31,7 @@ const routeGroupDefinitions: Record<RootRouteGroup, RouteGroupDefinition> = {
     settingsDrawerRouteConfig: {
       mode: 'stats',
       statsContext: 'player',
+      showSelectedTeamName: true,
     },
   },
   'goalie-stats': {
@@ -37,7 +40,13 @@ const routeGroupDefinitions: Record<RootRouteGroup, RouteGroupDefinition> = {
     settingsDrawerRouteConfig: {
       mode: 'stats',
       statsContext: 'goalie',
+      showSelectedTeamName: true,
     },
+  },
+  'category-stats': {
+    prefixes: ['/category-stats'],
+    dashboardControlsContext: 'player',
+    settingsDrawerRouteConfig: { mode: 'team', showSelectedTeamName: true },
   },
   leaderboards: {
     prefixes: ['/leaderboards'],
@@ -55,6 +64,7 @@ const routeGroupDefinitions: Record<RootRouteGroup, RouteGroupDefinition> = {
 
 const routeGroupResolutionOrder: RootRouteGroup[] = [
   'goalie-stats',
+  'category-stats',
   'player-stats',
   'leaderboards',
   'career',

@@ -647,18 +647,33 @@ describe('buildDashboardRouteUiState', () => {
   it('uses goalie context for goalie stats and direct goalie routes', () => {
     expect(buildDashboardRouteUiState('/goalie-stats')).toEqual({
       controlsContext: 'goalie',
+      showComparisonBar: true,
     });
     expect(buildDashboardRouteUiState('/goalie/colorado/philipp-grubauer')).toEqual({
       controlsContext: 'goalie',
+      showComparisonBar: true,
     });
   });
 
   it('uses player context for player stats and direct player routes', () => {
     expect(buildDashboardRouteUiState('/player-stats')).toEqual({
       controlsContext: 'player',
+      showComparisonBar: true,
     });
     expect(buildDashboardRouteUiState('/player/colorado/jamie-benn')).toEqual({
       controlsContext: 'player',
+      showComparisonBar: true,
+    });
+  });
+
+  it('uses the player team context without the player comparison bar on category stats', () => {
+    expect(buildDashboardRouteUiState('/category-stats')).toEqual({
+      controlsContext: 'player',
+      showComparisonBar: false,
+    });
+    expect(buildSettingsDrawerRouteConfig('/category-stats')).toEqual({
+      mode: 'team',
+      showSelectedTeamName: true,
     });
   });
 });
@@ -668,14 +683,17 @@ describe('buildSettingsDrawerRouteConfig', () => {
     expect(buildSettingsDrawerRouteConfig('/')).toEqual({
       mode: 'stats',
       statsContext: 'player',
+      showSelectedTeamName: true,
     });
     expect(buildSettingsDrawerRouteConfig('/goalie-stats')).toEqual({
       mode: 'stats',
       statsContext: 'goalie',
+      showSelectedTeamName: true,
     });
     expect(buildSettingsDrawerRouteConfig('/player/colorado/jamie-benn')).toEqual({
       mode: 'stats',
       statsContext: 'player',
+      showSelectedTeamName: true,
     });
   });
 
@@ -701,6 +719,7 @@ describe('buildSettingsDrawerRouteConfig', () => {
     expect(buildSettingsDrawerRouteConfig('/future-route')).toEqual({
       mode: 'stats',
       statsContext: 'player',
+      showSelectedTeamName: true,
     });
   });
 });

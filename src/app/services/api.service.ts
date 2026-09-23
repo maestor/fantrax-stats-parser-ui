@@ -21,6 +21,12 @@ export type FinalsLeaderboardTeam = components['schemas']['FinalsLeaderboardTeam
 export type FinalsLeaderboardCategory = components['schemas']['FinalsLeaderboardCategory'];
 export type FinalsLeaderboardRates = components['schemas']['FinalsLeaderboardRates'];
 export type FinalsStatKey = components['schemas']['FinalsStatKey'];
+export type CategoryDashboardResponse = components['schemas']['CategoryDashboardResponse'];
+export type CategoryDashboardTeam = components['schemas']['CategoryDashboardTeam'];
+export type CategoryDashboardValue = components['schemas']['CategoryDashboardValue'];
+export type CategoryDashboardDefinition = components['schemas']['CategoryDashboardDefinition'];
+export type CategoryPlayerContribution = components['schemas']['CategoryPlayerContribution'];
+export type CategoryGoalieContribution = components['schemas']['CategoryGoalieContribution'];
 export type CareerPlayerListItem    = components['schemas']['CareerPlayerListItem'];
 export type CareerGoalieListItem    = components['schemas']['CareerGoalieListItem'];
 export type CareerPlayer            = components['schemas']['CareerPlayer'];
@@ -178,6 +184,16 @@ export class ApiService {
     return this.handleRequest<FinalsLeaderboardEntry[]>(
       'leaderboard/finals',
       'leaderboard-finals',
+    );
+  }
+
+  getCategoryDashboard(season?: number): Observable<CategoryDashboardResponse> {
+    const queryParams = season === undefined ? undefined : { season: String(season) };
+    const cacheKey = `leaderboard-categories-${season ?? 'latest'}`;
+    return this.handleRequest<CategoryDashboardResponse>(
+      'leaderboard/categories',
+      cacheKey,
+      queryParams,
     );
   }
 

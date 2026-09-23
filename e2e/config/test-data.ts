@@ -55,6 +55,7 @@ export const ROUTE_LABELS = {
 export const TAB_LABELS = {
   PLAYERS: fi('link.playerStats'),
   GOALIES: fi('link.goalieStats'),
+  CATEGORY_STATS: fi('link.categoryStats'),
   CAREER_PLAYERS: fi('career.tabs.players'),
   CAREER_GOALIES: fi('career.tabs.goalies'),
   CAREER_HIGHLIGHTS: fi('career.tabs.highlights'),

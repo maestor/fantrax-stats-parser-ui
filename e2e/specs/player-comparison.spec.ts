@@ -20,30 +20,29 @@ test.describe('Player Comparison', () => {
     test('selection progression: one player shows prompt, two shows compare button and names', async ({ page }) => {
       // Select one player — bar visible with prompt
       await comparisonBar.selectPlayer('Jamie Benn');
-      expect(await comparisonBar.isVisible()).toBeTruthy();
-      let text = await comparisonBar.getBarText();
-      expect(text).toContain('valitse toinen vertailuun');
+      const bar = page.locator('.comparison-bar');
+      await expect(bar).toBeVisible();
+      await expect(bar).toContainText('valitse toinen vertailuun');
 
       // Select second player — compare button visible, both names shown
       await comparisonBar.selectPlayer('Vincent Trocheck');
       await expect(page.getByRole('button', { name: 'Vertaile' })).toBeVisible();
-      text = await comparisonBar.getBarText();
-      expect(text).toContain('Jamie Benn');
-      expect(text).toContain('Vincent Trocheck');
+      await expect(bar).toContainText('Jamie Benn');
+      await expect(bar).toContainText('Vincent Trocheck');
     });
 
-    test('deselecting players updates bar state correctly', async () => {
+    test('deselecting players updates bar state correctly', async ({ page }) => {
       // Select two, deselect one — bar stays with prompt
       await comparisonBar.selectPlayer('Jamie Benn');
       await comparisonBar.selectPlayer('Vincent Trocheck');
       await comparisonBar.deselectPlayer('Vincent Trocheck');
-      expect(await comparisonBar.isVisible()).toBeTruthy();
-      const text = await comparisonBar.getBarText();
-      expect(text).toContain('valitse toinen vertailuun');
+      const bar = page.locator('.comparison-bar');
+      await expect(bar).toBeVisible();
+      await expect(bar).toContainText('valitse toinen vertailuun');
 
       // Deselect last — bar hides
       await comparisonBar.deselectPlayer('Jamie Benn');
-      expect(await comparisonBar.isVisible()).toBeFalsy();
+      await expect(bar).not.toBeVisible();
     });
 
     test('clear button hides bar and checkboxes disabled at max selection', async ({ page }) => {

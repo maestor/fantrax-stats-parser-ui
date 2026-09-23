@@ -6,6 +6,7 @@ Read implementations and nearby specs for exact APIs. [Architecture](architectur
 
 - Stats containers own data orchestration. Shared team/season/report/settings controls may inject project state directly; do not add input/output plumbing solely to enforce a generic presentational-component pattern.
 - Browse tab shells use `RouterLinkActive`; query parameters/fragments do not change selected tabs. Career player/goalie containers expose loading/data/error through signals while retaining API cache and navigation-cycle-aware footer readiness.
+- The third player/goalie stats tab at `/category-stats` loads one regular-season category response for all teams, reads the shared selected team, and keeps season and comparison team local to the page. It displays totals only and must not initialize player/goalie table requests or use their global season/report filters. It uses centered Material selectors and `StatsTableComponent` for the shared expandable contributor rows.
 - Direct player/goalie routes preserve background team/season state and dialog tab selection.
 - Required parent values use required inputs; remove optional APIs/fallback states without real consumers.
 

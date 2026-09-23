@@ -69,12 +69,16 @@ test.describe('Smoke Tests', () => {
   test('basic tab switching works', async ({ page }) => {
     const playerTab = page.getByRole('tab', { name: TAB_LABELS.PLAYERS });
     const goalieTab = page.getByRole('tab', { name: TAB_LABELS.GOALIES });
+    const categoryTab = page.getByRole('tab', { name: TAB_LABELS.CATEGORY_STATS });
 
     await goalieTab.click();
     await expect(page).toHaveURL(/.*\/goalie-stats$/);
 
     await playerTab.click();
     await expect(page).toHaveURL(/.*\/player-stats$/);
+
+    await categoryTab.click();
+    await expect(page).toHaveURL(/.*\/category-stats$/);
   });
 
   test('global navigation opens career listings and career tabs switch between players and goalies', async ({ page }) => {
