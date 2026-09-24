@@ -1,20 +1,32 @@
 <section aria-labelledby="team-category-stats-heading">
-  <h2 id="team-category-stats-heading" class="sr-only">{{ 'categoryStats.heading' | translate }}</h2>
+  <h2 id="team-category-stats-heading" class="sr-only">
+    {{ "categoryStats.heading" | translate }}
+  </h2>
 
   <div class="category-stats-controls">
     <mat-form-field subscriptSizing="dynamic">
-      <mat-label>{{ 'categoryStats.seasonLabel' | translate }}</mat-label>
-      <mat-select [value]="selectedSeason()" (selectionChange)="onSeasonChange($event)">
+      <mat-label>{{ "categoryStats.seasonLabel" | translate }}</mat-label>
+      <mat-select
+        [value]="selectedSeason()"
+        (selectionChange)="onSeasonChange($event)"
+      >
         @for (season of seasons(); track season) {
-          <mat-option [value]="season">{{ season }}–{{ (season + 1).toString().slice(-2) }}</mat-option>
+          <mat-option [value]="season"
+            >{{ season }}–{{ (season + 1).toString().slice(-2) }}</mat-option
+          >
         }
       </mat-select>
     </mat-form-field>
 
     <mat-form-field subscriptSizing="dynamic">
-      <mat-label>{{ 'categoryStats.comparisonLabel' | translate }}</mat-label>
-      <mat-select [value]="comparisonTeamId()" (selectionChange)="onComparisonChange($event)">
-        <mat-option value="">{{ 'categoryStats.noComparison' | translate }}</mat-option>
+      <mat-label>{{ "categoryStats.comparisonLabel" | translate }}</mat-label>
+      <mat-select
+        [value]="comparisonTeamId()"
+        (selectionChange)="onComparisonChange($event)"
+      >
+        <mat-option value="">{{
+          "categoryStats.noComparison" | translate
+        }}</mat-option>
         @for (team of response()?.teams ?? []; track team.teamId) {
           @if (team.teamId !== selectedTeamId()) {
             <mat-option [value]="team.teamId">{{ team.teamName }}</mat-option>
@@ -25,17 +37,19 @@
   </div>
 
   @if (loading()) {
-    <p role="status" aria-live="polite">{{ 'categoryStats.loading' | translate }}</p>
+    <p role="status" aria-live="polite">
+      {{ "categoryStats.loading" | translate }}
+    </p>
   } @else if (apiError()) {
     <div role="alert">
-      <p>{{ 'categoryStats.apiUnavailable' | translate }}</p>
+      <p>{{ "categoryStats.apiUnavailable" | translate }}</p>
       <button mat-stroked-button type="button" (click)="loadDashboard()">
-        {{ 'categoryStats.retry' | translate }}
+        {{ "categoryStats.retry" | translate }}
       </button>
     </div>
   } @else if (response(); as dashboard) {
     @if (dashboard.availableSeasons.length === 0) {
-      <p role="status">{{ 'categoryStats.noSeasons' | translate }}</p>
+      <p role="status">{{ "categoryStats.noSeasons" | translate }}</p>
     } @else {
       @if (coverageMessage(); as message) {
         <p role="status">{{ message }}</p>
@@ -62,9 +76,9 @@
         defaultSortColumn=""
         tableId="stats-table"
       />
-      <p>
-        {{ 'categoryStats.regularSeasonDisclaimer' | translate }}<br />
-        {{ 'categoryStats.goalieRateDisclaimer' | translate }}
+      <p class="category-stats-disclaimer">
+        {{ "categoryStats.regularSeasonDisclaimer" | translate }}<br />
+        {{ "categoryStats.goalieRateDisclaimer" | translate }}
       </p>
     }
   }

@@ -708,7 +708,7 @@
   },
   "categoryStats": {
     "heading": "Joukkueen kategoriat",
-    "seasonLabel": "Kausi",
+    "seasonLabel": "FFHL-runkosarjakausi",
     "comparisonLabel": "Vertaa joukkueeseen",
     "noComparison": "Ei vertailujoukkuetta",
     "coveragePartial": "Tuontikattavuus on puutteellinen. Sijoitus lasketaan saatavilla olevista joukkueista.",
