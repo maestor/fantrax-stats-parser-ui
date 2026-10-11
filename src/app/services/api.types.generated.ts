@@ -1143,7 +1143,7 @@ export interface paths {
                 query?: {
                     /** @description Number of rows to skip from the start of the sorted highlight list. Defaults to `0`. */
                     skip?: components["parameters"]["skip"];
-                    /** @description Number of rows to return from the sorted highlight list. Defaults to `10`. Maximum `100`. */
+                    /** @description Number of rows to return from the sorted highlight list. Defaults to `10`. Use `all` to return every remaining row; the response reports the resolved numeric take. */
                     take?: components["parameters"]["take"];
                 };
                 header?: never;
@@ -1352,7 +1352,7 @@ export interface paths {
             parameters: {
                 query?: {
                     /**
-                     * @description Starting year for an imported regular season. Omission selects the latest season with credited games.
+                     * @description Starting year for an imported regular season. Omission selects the previous season.
                      * @example 2025
                      */
                     season?: string;
@@ -2255,8 +2255,8 @@ export interface components {
         startFrom: number;
         /** @description Number of rows to skip from the start of the sorted highlight list. Defaults to `0`. */
         skip: number;
-        /** @description Number of rows to return from the sorted highlight list. Defaults to `10`. Maximum `100`. */
-        take: number;
+        /** @description Number of rows to return from the sorted highlight list. Defaults to `10`. Use `all` to return every remaining row; the response reports the resolved numeric take. */
+        take: number | "all";
         /** @description Fantrax player or goalie identifier. */
         careerId: string;
     };

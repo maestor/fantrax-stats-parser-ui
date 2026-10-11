@@ -16,6 +16,7 @@ export interface CareerHighlightCardState {
   readonly valueColumnTooltipKey?: string;
   readonly activated: boolean;
   readonly rows: readonly TableCardRow[];
+  readonly allRows: readonly TableCardRow[];
   readonly loading: boolean;
   readonly apiError: boolean;
   readonly skip: number;

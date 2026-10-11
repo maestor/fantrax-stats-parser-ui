@@ -1,0 +1,1377 @@
+{
+  "type": "reunion-king",
+  "minAllowed": 2,
+  "skip": 0,
+  "take": 64,
+  "total": 64,
+  "items": [
+    {
+      "id": "05gsr",
+      "name": "Matt Kiersted",
+      "position": "D",
+      "reunionCount": 5,
+      "team": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      },
+      "reunions": [
+        {
+          "date": "2024-10-09T13:19:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-12-07T17:42:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-01-17T12:14:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-04-07T06:08:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-09-29T12:47:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "05rer",
+      "name": "Zach Metsa",
+      "position": "D",
+      "reunionCount": 5,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2021-11-16T08:45:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-04-18T16:34:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-11-11T03:47:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-12-02T23:07:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-12-18T11:22:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "05gry",
+      "name": "Josh Dunne",
+      "position": "F",
+      "reunionCount": 4,
+      "team": {
+        "id": "32",
+        "name": "Vegas Golden Knights"
+      },
+      "reunions": [
+        {
+          "date": "2022-12-19T15:08:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-03-09T17:45:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-03-25T22:11:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-10-25T19:44:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "04r05",
+      "name": "Michael Callahan",
+      "position": "D",
+      "reunionCount": 4,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2023-12-07T17:48:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-12-28T05:53:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-02-17T14:59:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-09-26T15:49:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "02oax",
+      "name": "Vinnie Hinostroza",
+      "position": "F",
+      "reunionCount": 4,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2013-10-23T21:48:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2015-11-08T10:23:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2021-10-29T13:11:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2025-01-15T06:10:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "01c73",
+      "name": "Anthony Peluso",
+      "position": "F",
+      "reunionCount": 3,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2013-02-27T00:34:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2013-07-13T09:00:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2014-01-17T20:06:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "02ir0",
+      "name": "Colin Blackwell",
+      "position": "F",
+      "reunionCount": 3,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2018-09-27T06:36:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2019-01-19T14:20:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-12-21T18:00:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "031oa",
+      "name": "Dillon Heatherington",
+      "position": "D",
+      "reunionCount": 3,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      },
+      "reunions": [
+        {
+          "date": "2021-12-06T07:31:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2022-03-20T09:25:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-10-27T14:10:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "03rgl",
+      "name": "Glenn Gawdin",
+      "position": "F",
+      "reunionCount": 3,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2024-04-08T20:41:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-11-14T04:13:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-03-03T23:14:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "04obf",
+      "name": "Hunter Shepard",
+      "position": "G",
+      "reunionCount": 3,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2022-12-05T18:05:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-01-01T18:38:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2025-06-24T20:37:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "0046j",
+      "name": "Jamie McGinn",
+      "position": "F",
+      "reunionCount": 3,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2014-01-03T23:01:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2014-01-04T03:05:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2015-04-29T20:03:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "04xc8",
+      "name": "Jonathan Aspirot",
+      "position": "D",
+      "reunionCount": 3,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2024-12-18T19:25:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-10-04T20:53:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-10-27T05:14:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "02zge",
+      "name": "Justin Dowling",
+      "position": "F",
+      "reunionCount": 3,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2016-10-25T09:19:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2019-09-26T06:13:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-10-29T16:15:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "051vs",
+      "name": "Matias Mantykivi",
+      "position": "F",
+      "reunionCount": 3,
+      "team": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      },
+      "reunions": [
+        {
+          "date": "2023-04-10T19:09:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-10-25T18:59:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-01-20T16:35:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "05oyk",
+      "name": "Ryan Tverberg",
+      "position": "F",
+      "reunionCount": 3,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2025-09-26T15:51:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-11-17T17:23:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-03-01T03:16:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "01zun",
+      "name": "Alex Petrovic",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2024-02-19T14:10:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-06-24T17:57:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "024ix",
+      "name": "Allen York",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      },
+      "reunions": [
+        {
+          "date": "2014-06-06T08:03:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2014-06-11T22:29:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "06dms",
+      "name": "Atlee Calvert",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2025-04-17T04:22:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-04-22T10:25:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "06mqj",
+      "name": "Basile Sansonnens",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2025-12-29T18:11:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-09-01T15:47:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "05xcz",
+      "name": "Brett Hyland",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2024-01-09T18:11:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-06-01T21:08:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "03ris",
+      "name": "Brett Seney",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2022-06-14T18:55:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2022-11-14T04:00:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "031qf",
+      "name": "Cal Petersen",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2014-08-07T20:56:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2015-07-12T19:42:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "03riz",
+      "name": "Cameron Hughes",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      },
+      "reunions": [
+        {
+          "date": "2025-06-21T20:23:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-09-18T17:54:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "003vz",
+      "name": "Carey Price",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      },
+      "reunions": [
+        {
+          "date": "2025-09-08T09:05:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-12-17T18:11:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "02zov",
+      "name": "Chad Ruhwedel",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2013-04-24T03:16:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2022-03-27T16:15:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "0241k",
+      "name": "Chris Wideman",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2014-02-20T15:46:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2022-03-16T21:59:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "043cd",
+      "name": "Colby Sissons",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2016-10-26T09:00:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-11-20T04:00:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "020f6",
+      "name": "Curtis McKenzie",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2013-10-14T21:03:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2015-05-06T23:35:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "03ecn",
+      "name": "Dakota Joshua",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2018-02-01T16:00:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2024-12-07T15:57:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "051us",
+      "name": "Frederik Nissen Dichow",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      },
+      "reunions": [
+        {
+          "date": "2024-01-12T16:33:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-01-31T11:19:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "03cyw",
+      "name": "Gavin Bayreuther",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      },
+      "reunions": [
+        {
+          "date": "2021-04-04T11:20:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2025-11-09T00:46:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "062pu",
+      "name": "Hunter McDonald",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2024-04-01T14:24:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-10-17T23:05:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "06mjc",
+      "name": "Ivan Yunin",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2026-01-13T09:52:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-10-07T21:17:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "05uft",
+      "name": "Jack Beck",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2024-06-04T18:12:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-09-15T19:39:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "01zr6",
+      "name": "Jarred Tinordi",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      },
+      "reunions": [
+        {
+          "date": "2022-10-11T10:05:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2023-04-20T13:14:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "03eam",
+      "name": "Jayce Hawryluk",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2022-07-26T13:06:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2022-10-17T06:25:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "02fzu",
+      "name": "Joe Labate",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2014-01-20T02:05:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2016-01-11T08:05:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "04gef",
+      "name": "Joel Teasdale",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2022-01-20T18:49:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-02-11T05:01:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "02ycg",
+      "name": "Juho Olkinuora",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      },
+      "reunions": [
+        {
+          "date": "2013-04-06T21:33:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2021-11-07T10:11:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "01ztz",
+      "name": "Justin Holl",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2018-03-02T12:24:00.000Z",
+          "type": "trade"
+        },
+        {
+          "date": "2023-10-26T12:38:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "04xcp",
+      "name": "Kyle MacLean",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      },
+      "reunions": [
+        {
+          "date": "2023-10-05T19:38:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-10-21T23:48:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "05ug4",
+      "name": "Lucas Ciona",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2022-10-17T04:13:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-11-18T07:34:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "064wp",
+      "name": "Luke Cavallin",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      },
+      "reunions": [
+        {
+          "date": "2025-06-08T06:19:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-09-08T09:06:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "015hz",
+      "name": "Luke Schenn",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      },
+      "reunions": [
+        {
+          "date": "2026-04-16T09:01:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-07-22T19:27:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "05oym",
+      "name": "Maksim Berezkin",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2024-04-17T03:05:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-03-23T20:25:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "065g8",
+      "name": "Marshall Rifai",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2025-12-12T18:46:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-01-05T15:35:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "06ce5",
+      "name": "Matteo Giampa",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2024-01-15T08:02:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2024-04-17T04:43:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "02oxu",
+      "name": "Maxime Lagace",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2017-07-19T09:58:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2021-12-28T02:57:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "02i5q",
+      "name": "Mike Halmo",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2013-11-04T06:48:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2014-03-07T20:42:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "06gyi",
+      "name": "Oasiz Wiesblatt",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2025-11-29T21:08:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-03-18T18:45:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "03c9o",
+      "name": "Patrick Brown",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      },
+      "reunions": [
+        {
+          "date": "2021-01-11T04:05:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2021-10-28T09:00:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "03edm",
+      "name": "Pavel Kraskovsky",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2014-10-09T20:08:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2021-03-17T22:57:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "024j2",
+      "name": "Rasmus Rissanen",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      },
+      "reunions": [
+        {
+          "date": "2014-07-24T15:09:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2014-12-28T17:58:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "0392k",
+      "name": "Roland McKeown",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      },
+      "reunions": [
+        {
+          "date": "2021-10-04T00:26:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2023-08-28T23:19:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "03edx",
+      "name": "Sammy Blais",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      },
+      "reunions": [
+        {
+          "date": "2024-11-13T13:56:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-10-07T16:19:00.000Z",
+          "type": "trade"
+        }
+      ]
+    },
+    {
+      "id": "02j3z",
+      "name": "Seth Helgeson",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "reunions": [
+        {
+          "date": "2013-08-06T08:40:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2013-11-18T08:32:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "003x7",
+      "name": "Shea Weber",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      },
+      "reunions": [
+        {
+          "date": "2025-10-08T11:40:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-12-22T01:43:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "05nxy",
+      "name": "Simon Knak",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2022-08-18T14:01:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-05-22T19:20:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "031qq",
+      "name": "Teemu Kivihalme",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      },
+      "reunions": [
+        {
+          "date": "2019-03-05T15:13:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2022-03-21T22:13:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "04r0g",
+      "name": "Tim Berni",
+      "position": "D",
+      "reunionCount": 2,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      },
+      "reunions": [
+        {
+          "date": "2019-12-04T05:13:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2021-12-31T06:02:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "03edb",
+      "name": "Tyler Vesel",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2014-12-27T22:02:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2016-11-07T17:03:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "060uq",
+      "name": "Wilmer Skoog",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      },
+      "reunions": [
+        {
+          "date": "2025-12-01T15:52:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2026-09-19T10:45:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "060x7",
+      "name": "Wyatt Bongiovanni",
+      "position": "F",
+      "reunionCount": 2,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      },
+      "reunions": [
+        {
+          "date": "2024-11-18T13:37:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2025-01-06T07:26:00.000Z",
+          "type": "claim"
+        }
+      ]
+    },
+    {
+      "id": "01zrv",
+      "name": "Zane McIntyre",
+      "position": "G",
+      "reunionCount": 2,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      },
+      "reunions": [
+        {
+          "date": "2014-04-03T14:47:00.000Z",
+          "type": "claim"
+        },
+        {
+          "date": "2015-01-19T11:16:00.000Z",
+          "type": "trade"
+        }
+      ]
+    }
+  ]
+}

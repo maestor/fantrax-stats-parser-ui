@@ -263,7 +263,7 @@ export class ApiService {
   getCareerHighlights(
     type: CareerHighlightType,
     skip = 0,
-    take = 10,
+    take: components['parameters']['take'] = 10,
   ): Observable<CareerHighlightPage> {
     return this.handleRequest<CareerHighlightPage>(
       `career/highlights/${type}`,

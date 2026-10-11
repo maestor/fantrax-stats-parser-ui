@@ -230,39 +230,39 @@ describe('ApiService', () => {
     });
   });
 
-  it('caches career highlights by type and paging window', async () => {
+  it('caches career highlights full career highlight lists by type', async () => {
     const firstResponse = firstValueFrom(
-      service.getCareerHighlights('same-team-seasons-played', 0, 10)
+      service.getCareerHighlights('same-team-seasons-played', 0, 'all')
     );
 
     const request = httpMock.expectOne((req) =>
       req.url === 'http://localhost:3000/career/highlights/same-team-seasons-played' &&
       req.params.get('skip') === '0' &&
-      req.params.get('take') === '10'
+      req.params.get('take') === 'all'
     );
     request.flush({
       type: 'same-team-seasons-played',
       skip: 0,
-      take: 10,
-      total: 11,
+      take: 0,
+      total: 0,
       items: [],
     });
 
     await expect(firstResponse).resolves.toEqual({
       type: 'same-team-seasons-played',
       skip: 0,
-      take: 10,
-      total: 11,
+      take: 0,
+      total: 0,
       items: [],
     });
 
     await expect(
-      firstValueFrom(service.getCareerHighlights('same-team-seasons-played', 0, 10))
+      firstValueFrom(service.getCareerHighlights('same-team-seasons-played', 0, 'all'))
     ).resolves.toEqual({
       type: 'same-team-seasons-played',
       skip: 0,
-      take: 10,
-      total: 11,
+      take: 0,
+      total: 0,
       items: [],
     });
     httpMock.expectNone('http://localhost:3000/career/highlights/same-team-seasons-played');

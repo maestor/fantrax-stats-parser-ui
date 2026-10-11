@@ -1,0 +1,289 @@
+{
+  "type": "stash-king",
+  "minAllowed": 10,
+  "skip": 0,
+  "take": 28,
+  "total": 28,
+  "items": [
+    {
+      "id": "02g1k",
+      "name": "Adam Wilcox",
+      "position": "G",
+      "seasonCount": 14,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "02nog",
+      "name": "Derrick Pouliot",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "02g1c",
+      "name": "Matthew Peca",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "03rjg",
+      "name": "Adam Huska",
+      "position": "G",
+      "seasonCount": 12,
+      "team": {
+        "id": "30",
+        "name": "Winnipeg Jets"
+      }
+    },
+    {
+      "id": "02nqi",
+      "name": "Charles Hudon",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "03rit",
+      "name": "Cooper Marody",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "03rg4",
+      "name": "Jesper Lindgren",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "03ebk",
+      "name": "Louie Belpedio",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "031ow",
+      "name": "Tyrell Goulbourne",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "03rg5",
+      "name": "Colton White",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "042wn",
+      "name": "Fredrik Karlstrom",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "031or",
+      "name": "Keegan Kanzig",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "042yi",
+      "name": "Matthew Phillips",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "02oav",
+      "name": "Riley Barber",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "043c8",
+      "name": "Zachary Sawchenko",
+      "position": "G",
+      "seasonCount": 11,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "042ys",
+      "name": "Chase Priskie",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "02fzr",
+      "name": "Dillon Simpson",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "2",
+        "name": "Carolina Hurricanes"
+      }
+    },
+    {
+      "id": "04f20",
+      "name": "Eetu Makiniemi",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "03rfk",
+      "name": "J.C. Beaudin",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "04f7p",
+      "name": "John Adams",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "031oy",
+      "name": "John Hayden",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "042xo",
+      "name": "Joona Koppanen",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "04f6w",
+      "name": "Lucas Elvenes",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "03y7l",
+      "name": "Michael DiPietro",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "03mn6",
+      "name": "Nick Merkley",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "02g9y",
+      "name": "Nikita Gusev",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "03avw",
+      "name": "Nikita Tryamkin",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "02o8a",
+      "name": "Travis Brown",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    }
+  ]
+}

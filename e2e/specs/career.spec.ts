@@ -17,6 +17,12 @@ import {
 
 test.describe('Career listings', () => {
   test('redirects /career to players, renders the table, switches to highlights, and then to goalie careers', async ({ page }) => {
+    const highlightRequests: string[] = [];
+    page.on('request', (request) => {
+      if (new URL(request.url()).pathname.includes('/career/highlights/')) {
+        highlightRequests.push(request.url());
+      }
+    });
     await page.goto('/career');
     await expect(page).toHaveURL(/\/career\/players$/);
 
@@ -79,6 +85,10 @@ test.describe('Career listings', () => {
       await expect(card.getByRole('table')).toBeVisible();
     }
 
+    expect(highlightRequests).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length);
+    for (const request of highlightRequests) {
+      expect(new URL(request).searchParams.get('take')).toBe('all');
+    }
     const nextPageButtons = page.getByRole('button', {
       name: new RegExp(fi('tableCard.next')),
     });
@@ -100,6 +110,7 @@ test.describe('Career listings', () => {
       break;
     }
 
+    expect(highlightRequests).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length);
     expect(pagedCard).not.toBeNull();
     expect(pagedCardFirstRow).not.toBeNull();
 
