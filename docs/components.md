@@ -35,7 +35,7 @@ Drawer content initializes on first open. `StartFromSeasonSwitcherComponent` sta
 | `SectionJumpNavComponent` | Sticky browse pills with overflow fades and screen-reader scroll instructions; consumers supply section metadata and click behavior |
 | `PlayerCardComponent` | Combined/season/graphs tabs, dynamic width, deep links, circular player navigation, table-row synchronization, focus return and reduced motion |
 
-Keep the three table components distinct while their interaction models differ. Highlights lazy-load API pages near the viewport. Draft team accordions scroll inside a bounded route region, align opened headers, and support keyboard entry/exit; see [accessibility](accessibility.md).
+Keep the three table components distinct while their interaction models differ. Each highlight card loads its complete list once near the viewport using `take=all`, reuses the API cache, and calculates tied ranks once. Its ten-row pages use the loaded rows without further requests; untouched cards stay deferred. Draft team accordions scroll inside a bounded route region, align opened headers, and support keyboard entry/exit; see [accessibility](accessibility.md).
 
 Player-card chart data uses computed signals. Metric selections persist across players of the same type and chart-mode switches. Theme reads/canvas resize and section-jump overflow measurement run after rendering.
 

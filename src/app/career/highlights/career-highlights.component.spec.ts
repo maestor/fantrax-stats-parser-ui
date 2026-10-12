@@ -75,7 +75,7 @@ class FakeIntersectionObserver {
 const mostTeamsPlayedHighlightsFullFixture = {
   ...mostTeamsPlayedHighlightsPage0Fixture,
   skip: 0,
-  take: 21,
+  take: mostTeamsPlayedHighlightsPage0Fixture.total,
   items: [
     ...mostTeamsPlayedHighlightsPage0Fixture.items,
     ...mostTeamsPlayedHighlightsPage1Fixture.items,
@@ -97,14 +97,10 @@ describe('CareerHighlightsComponent', () => {
 
   it('renders grouped sections, lazy-loads cards on viewport entry, and applies tied ranks across paged career rows', async () => {
     const getCareerHighlights = vi.fn(
-      (type: CareerHighlightType, _skip = 0, take = 10) => {
+      (type: CareerHighlightType) => {
         switch (type) {
           case 'most-teams-played':
-            return of(
-              take > 11
-                ? mostTeamsPlayedHighlightsFullFixture
-                : mostTeamsPlayedHighlightsPage0Fixture,
-            );
+            return of(mostTeamsPlayedHighlightsFullFixture);
           case 'most-teams-owned':
             return of(mostTeamsOwnedHighlightsPage0Fixture);
           case 'same-team-seasons-played':
@@ -190,8 +186,8 @@ describe('CareerHighlightsComponent', () => {
     expect(await within(stanleyCupCard!).findByText('F Patrick Maroon')).toBeInTheDocument();
     expect(within(stanleyCupCard!).getByLabelText('career.highlights.columnHelp.cups')).toBeInTheDocument();
 
-    expect(getCareerHighlights).toHaveBeenNthCalledWith(1, 'most-stanley-cups', 0, 11);
-    expect(getCareerHighlights).toHaveBeenNthCalledWith(2, 'most-teams-played', 0, 11);
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(1, 'most-stanley-cups', 0, 'all');
+    expect(getCareerHighlights).toHaveBeenNthCalledWith(2, 'most-teams-played', 0, 'all');
 
     fireEvent.click(within(mostTeamsCard!).getByRole('button', {
       name: /career\.highlights\.cards\.mostTeamsPlayed\.title.*tableCard\.next/,
@@ -200,7 +196,51 @@ describe('CareerHighlightsComponent', () => {
     expect(await within(mostTeamsCard!).findByText('F Anthony Duclair')).toBeInTheDocument();
     expect(within(mostTeamsCard!).queryByText('F Jamie Benn')).not.toBeInTheDocument();
     expect(within(mostTeamsCard!).getAllByText('T7.')).toHaveLength(2);
-    expect(getCareerHighlights).toHaveBeenLastCalledWith('most-teams-played', 0, 21);
+    expect(getCareerHighlights).toHaveBeenCalledTimes(2);
+  });
+
+  it('browses all 500 claim highlights locally with tied ranks across page boundaries', async () => {
+    const items = Array.from({ length: 500 }, (_, index) => ({
+      id: `claim-${index}`,
+      name: `Claimer ${String(index).padStart(3, '0')}`,
+      position: 'F' as const,
+      transactionCount: 600 - Math.floor(index / 3),
+      teams: [{ id: '7', name: 'Edmonton Oilers', count: 600 - Math.floor(index / 3) }],
+    }));
+    const getCareerHighlights = vi.fn(() => of({
+      type: 'most-claims' as const, minAllowed: 3, skip: 0, take: 500, total: 500, items,
+    }));
+    await render(CareerHighlightsComponent, {
+      imports: [TranslateTestingModule],
+      providers: [
+        provideDisabledMaterialAnimations(), FooterVisibilityService,
+        { provide: ApiService, useValue: { getCareerHighlights } },
+      ],
+    });
+    await vi.waitFor(() => expect(FakeIntersectionObserver.instances).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length));
+    expect(getCareerHighlights).not.toHaveBeenCalled();
+    FakeIntersectionObserver.instances[3]?.trigger();
+    const card = screen.getByRole('heading', {
+      name: 'career.highlights.cards.mostClaims.title',
+    }).closest('mat-card') as HTMLElement;
+    expect(await within(card).findByText('F Claimer 000')).toBeInTheDocument();
+    const next = within(card).getByRole('button', { name: /tableCard\.next/ });
+    const previous = within(card).getByRole('button', { name: /tableCard\.previous/ });
+    expect(await within(card).findByText('F Claimer 000')).toBeInTheDocument();
+    expect(previous).toBeDisabled();
+    for (let page = 1; page < 50; page++) {
+      fireEvent.click(next);
+      expect(await within(card).findByText(`F Claimer ${String(page * 10).padStart(3, '0')}`)).toBeInTheDocument();
+      if (page === 10) {
+        expect(within(card).getAllByText('T100.')).toHaveLength(2);
+      }
+    }
+    expect(next).toBeDisabled();
+    fireEvent.click(previous);
+    expect(await within(card).findByText('F Claimer 480')).toBeInTheDocument();
+    expect(next).toBeEnabled();
+    expect(getCareerHighlights).toHaveBeenCalledExactlyOnceWith('most-claims', 0, 'all');
+    expect(screen.getAllByText('tableCard.loadWhenVisible')).toHaveLength(CAREER_HIGHLIGHT_CARD_TYPES.length - 1);
   });
 
   it('keeps all grouped sections visible, scrolls jump navigation to the target section, and preserves transaction tooltip ordering', async () => {
@@ -292,8 +332,8 @@ describe('CareerHighlightsComponent', () => {
     expect(tradesCard).not.toBeNull();
     expect(await within(tradesCard!).findByText('F Mike Hoffman')).toBeInTheDocument();
     expect(within(tradesCard!).getByText('6')).toBeInTheDocument();
-    expect(getCareerHighlights).toHaveBeenCalledWith('most-trades', 0, 11);
-    expect(getCareerHighlights).toHaveBeenCalledWith('reunion-king', 0, 11);
+    expect(getCareerHighlights).toHaveBeenCalledWith('most-trades', 0, 'all');
+    expect(getCareerHighlights).toHaveBeenCalledWith('reunion-king', 0, 'all');
 
     const transactionSection = view.fixture.componentInstance.sections().find(
       (section) => section.id === 'transactions',
@@ -466,9 +506,9 @@ describe('CareerHighlightsComponent', () => {
     });
 
     expect(getCareerHighlights).toHaveBeenCalledTimes(3);
-    expect(getCareerHighlights).toHaveBeenCalledWith('regular-grinder-without-playoffs', 0, 11);
-    expect(getCareerHighlights).toHaveBeenCalledWith('same-team-seasons-played', 0, 11);
-    expect(getCareerHighlights).toHaveBeenCalledWith('stash-king', 0, 11);
+    expect(getCareerHighlights).toHaveBeenCalledWith('regular-grinder-without-playoffs', 0, 'all');
+    expect(getCareerHighlights).toHaveBeenCalledWith('same-team-seasons-played', 0, 'all');
+    expect(getCareerHighlights).toHaveBeenCalledWith('stash-king', 0, 'all');
 
     view.fixture.componentInstance.loadPreviousPage('regular-grinder-without-playoffs');
     view.fixture.componentInstance.loadNextPage('regular-grinder-without-playoffs');

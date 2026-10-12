@@ -181,6 +181,7 @@ function createInitialCardState(
     valueColumnTooltipKey: config.valueColumnTooltipKey,
     activated: false,
     rows: [],
+    allRows: [],
     loading: false,
     apiError: false,
     skip: 0,
@@ -293,7 +294,7 @@ export class CareerHighlightsComponent implements OnInit {
       return;
     }
 
-    this.loadCard(type, nextSkip);
+    this.showPage(type, nextSkip);
   }
 
   loadNextPage(type: CareerHighlightsUiType): void {
@@ -307,7 +308,7 @@ export class CareerHighlightsComponent implements OnInit {
       return;
     }
 
-    this.loadCard(type, nextSkip);
+    this.showPage(type, nextSkip);
   }
 
   activateCard(type: CareerHighlightsUiType): void {
@@ -321,17 +322,19 @@ export class CareerHighlightsComponent implements OnInit {
       activated: true,
     }));
 
-    this.loadCard(type, 0, true);
+    this.loadCard(type);
   }
 
-  private loadCard(
-    type: CareerHighlightsUiType,
-    targetSkip: number,
-    initialLoad = false,
-  ): void {
+  private showPage(type: CareerHighlightsUiType, skip: number): void {
+    this.getCardSignal(type).update((current) => ({
+      ...current,
+      skip,
+      rows: current.allRows.slice(skip, skip + current.take),
+    }));
+  }
+
+  private loadCard(type: CareerHighlightsUiType): void {
     const cardSignal = this.getCardSignal(type);
-    const pageSize = cardSignal().take;
-    const requestTake = targetSkip + pageSize + 1;
 
     cardSignal.update((current) => ({
       ...current,
@@ -340,21 +343,22 @@ export class CareerHighlightsComponent implements OnInit {
     }));
 
     this.apiService
-      .getCareerHighlights(type, 0, requestTake)
+      .getCareerHighlights(type, 0, 'all')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (page) => {
+          const allRows = this.normalizeRows(page);
           cardSignal.update((current) => ({
             ...current,
-            rows: this.normalizeRows(page, targetSkip, pageSize),
+            allRows,
+            rows: allRows.slice(0, current.take),
             descriptionParams: this.descriptionParamsFor(page),
             loading: false,
             apiError: false,
-            skip: targetSkip,
-            take: pageSize,
+            skip: 0,
             total: page.total,
           }));
-          this.markInitialLoadReady(initialLoad);
+          this.markInitialLoadReady();
         },
         error: () => {
           cardSignal.update((current) => ({
@@ -362,21 +366,16 @@ export class CareerHighlightsComponent implements OnInit {
             loading: false,
             apiError: true,
           }));
-          this.markInitialLoadReady(initialLoad);
+          this.markInitialLoadReady();
         },
       });
   }
 
-  private normalizeRows(
-    page: CareerHighlightPage,
-    visibleSkip: number,
-    visibleTake: number,
-  ): TableCardRow[] {
+  private normalizeRows(page: CareerHighlightPage): TableCardRow[] {
     if (this.isTeamCountPage(page)) {
-      return this.sliceVisibleRows(
-        deriveTiedRanks(page.items, (left, right) => left.teamCount === right.teamCount),
-        visibleSkip,
-        visibleTake,
+      return deriveTiedRanks(
+        page.items,
+        (left, right) => left.teamCount === right.teamCount,
       ).map((item) => ({
         key: `${item.id}:${item.teams.map((team) => team.id).join(',')}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
@@ -388,10 +387,9 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isSameTeamPage(page)) {
-      return this.sliceVisibleRows(
-        deriveTiedRanks(page.items, (left, right) => left.seasonCount === right.seasonCount),
-        visibleSkip,
-        visibleTake,
+      return deriveTiedRanks(
+        page.items,
+        (left, right) => left.seasonCount === right.seasonCount,
       ).map((item) => ({
         key: `${item.id}:${item.team.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
@@ -403,10 +401,9 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isStanleyCupPage(page)) {
-      return this.sliceVisibleRows(
-        deriveTiedRanks(page.items, (left, right) => left.cupCount === right.cupCount),
-        visibleSkip,
-        visibleTake,
+      return deriveTiedRanks(
+        page.items,
+        (left, right) => left.cupCount === right.cupCount,
       ).map((item) => ({
         key: item.id,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
@@ -420,10 +417,9 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isReunionPage(page)) {
-      return this.sliceVisibleRows(
-        deriveTiedRanks(page.items, (left, right) => left.reunionCount === right.reunionCount),
-        visibleSkip,
-        visibleTake,
+      return deriveTiedRanks(
+        page.items,
+        (left, right) => left.reunionCount === right.reunionCount,
       ).map((item) => ({
         key: `${item.id}:${item.team.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
@@ -444,10 +440,9 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isRegularGrinderPage(page)) {
-      return this.sliceVisibleRows(
-        deriveTiedRanks(page.items, (left, right) => left.regularGames === right.regularGames),
-        visibleSkip,
-        visibleTake,
+      return deriveTiedRanks(
+        page.items,
+        (left, right) => left.regularGames === right.regularGames,
       ).map((item) => ({
         key: item.id,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
@@ -459,10 +454,9 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isStashPage(page)) {
-      return this.sliceVisibleRows(
-        deriveTiedRanks(page.items, (left, right) => left.seasonCount === right.seasonCount),
-        visibleSkip,
-        visibleTake,
+      return deriveTiedRanks(
+        page.items,
+        (left, right) => left.seasonCount === right.seasonCount,
       ).map((item) => ({
         key: `${item.id}:${item.team.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
@@ -474,13 +468,9 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     if (this.isTransactionPage(page)) {
-      return this.sliceVisibleRows(
-        deriveTiedRanks(
-          page.items,
-          (left, right) => left.transactionCount === right.transactionCount,
-        ),
-        visibleSkip,
-        visibleTake,
+      return deriveTiedRanks(
+        page.items,
+        (left, right) => left.transactionCount === right.transactionCount,
       ).map((item) => ({
         key: `${page.type}:${item.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
@@ -492,14 +482,6 @@ export class CareerHighlightsComponent implements OnInit {
     }
 
     return [];
-  }
-
-  private sliceVisibleRows<T>(
-    rows: readonly T[],
-    visibleSkip: number,
-    visibleTake: number,
-  ): readonly T[] {
-    return rows.slice(visibleSkip, visibleSkip + visibleTake);
   }
 
   private buildPrimaryText(name: string, position: string): string {
@@ -581,8 +563,8 @@ export class CareerHighlightsComponent implements OnInit {
     return this.cardSignals[type];
   }
 
-  private markInitialLoadReady(initialLoad: boolean): void {
-    if (!initialLoad || this.footerMarkedReady) {
+  private markInitialLoadReady(): void {
+    if (this.footerMarkedReady) {
       return;
     }
 

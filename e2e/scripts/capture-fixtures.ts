@@ -14,6 +14,7 @@
 import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { CAREER_HIGHLIGHT_CARD_TYPES } from '../../src/app/career/highlights/career-highlights.constants';
 
 const API_URL = 'http://localhost:3000';
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -101,6 +102,9 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
     { path: 'goalies/combined/regular', params: { startFrom: oldest, teamId: DALLAS } },
 
     // ── Career highlights ─────────────────────────────────────────────
+    ...CAREER_HIGHLIGHT_CARD_TYPES.map((type) => ({
+      path: `career/highlights/${type}`, params: { skip: '0', take: 'all' },
+    })),
     { path: 'career/highlights/most-teams-played', params: { skip: '0', take: '10' } },
     { path: 'career/highlights/most-teams-played', params: { skip: '10', take: '10' } },
     { path: 'career/highlights/most-teams-owned', params: { skip: '0', take: '10' } },

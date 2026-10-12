@@ -1,0 +1,1229 @@
+{
+  "type": "most-stanley-cups",
+  "minAllowed": 2,
+  "skip": 0,
+  "take": 51,
+  "total": 51,
+  "items": [
+    {
+      "id": "01bvj",
+      "name": "Ryan McDonagh",
+      "position": "D",
+      "cupCount": 4,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01f6j",
+      "name": "Alex Chiasson",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "005is",
+      "name": "Blake Wheeler",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003fy",
+      "name": "David Krejci",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2014,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "0047m",
+      "name": "Erik Johnson",
+      "position": "D",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2012,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        }
+      ]
+    },
+    {
+      "id": "00qs7",
+      "name": "Jamie Benn",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003ky",
+      "name": "Jonathan Toews",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "004nk",
+      "name": "Logan Couture",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "00477",
+      "name": "Marc-Edouard Vlasic",
+      "position": "D",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2012,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003wj",
+      "name": "Patric Hornqvist",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2012,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01mzf",
+      "name": "Reilly Smith",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01mjf",
+      "name": "Travis Hamonic",
+      "position": "D",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2014,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02b76",
+      "name": "Vincent Trocheck",
+      "position": "F",
+      "cupCount": 3,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02fro",
+      "name": "Adam Lowry",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003q3",
+      "name": "Andrew Cogliano",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02fnl",
+      "name": "Andrew Shaw",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02fzj",
+      "name": "Blake Coleman",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03xmh",
+      "name": "Brandon Tanev",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003tz",
+      "name": "Brent Burns",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "031oq",
+      "name": "Brett Pesce",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003u1",
+      "name": "Cal Clutterbuck",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2012,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01f5z",
+      "name": "Chris Kreider",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2014,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03cwq",
+      "name": "Conor Sheary",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01uoz",
+      "name": "David Savard",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2024,
+          "team": {
+            "id": "9",
+            "name": "New York Rangers"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02b40",
+      "name": "Dmitrij Jaskin",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2014,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        },
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02wy3",
+      "name": "Elias Lindholm",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2014,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        },
+        {
+          "season": 2023,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02fzm",
+      "name": "Filip Forsberg",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2025,
+          "team": {
+            "id": "7",
+            "name": "Edmonton Oilers"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01s5k",
+      "name": "Jake Muzzin",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003hw",
+      "name": "Jarome Iginla",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2014,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        },
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01g5y",
+      "name": "Jimmy Hayes",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "0046u",
+      "name": "Joe Pavelski",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2021,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "031pl",
+      "name": "Juuse Saros",
+      "position": "G",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003ew",
+      "name": "Kari Lehtonen",
+      "position": "G",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03dms",
+      "name": "Kevin Fiala",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "00577",
+      "name": "Kyle Turris",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003gf",
+      "name": "Mark Stuart",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2012,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "00445",
+      "name": "Martin Hanzal",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03yg3",
+      "name": "Mikhail Sergachev",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02f9l",
+      "name": "Nathan MacKinnon",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01etq",
+      "name": "Nick Leddy",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01zt4",
+      "name": "Nino Niederreiter",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01f3d",
+      "name": "Oliver Ekman-Larsson",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "004jg",
+      "name": "Pat Maroon",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2012,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2014,
+          "team": {
+            "id": "5",
+            "name": "Montreal Canadiens"
+          }
+        }
+      ]
+    },
+    {
+      "id": "0046i",
+      "name": "Patrick Marleau",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2013,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02422",
+      "name": "Ryan Nugent-Hopkins",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "039cg",
+      "name": "Sam Bennett",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01lkz",
+      "name": "Taylor Hall",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "03rad",
+      "name": "Thomas Chabot",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "003g5",
+      "name": "Tuukka Rask",
+      "position": "G",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2012,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        },
+        {
+          "season": 2016,
+          "team": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "01c13",
+      "name": "Victor Hedman",
+      "position": "D",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2017,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        },
+        {
+          "season": 2022,
+          "team": {
+            "id": "10",
+            "name": "Nashville Predators"
+          }
+        }
+      ]
+    },
+    {
+      "id": "02zpp",
+      "name": "Viktor Arvidsson",
+      "position": "F",
+      "cupCount": 2,
+      "cups": [
+        {
+          "season": 2015,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        },
+        {
+          "season": 2018,
+          "team": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    }
+  ]
+}

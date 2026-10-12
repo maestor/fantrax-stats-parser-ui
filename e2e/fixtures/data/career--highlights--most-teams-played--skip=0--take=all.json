@@ -1,0 +1,8697 @@
+{
+  "type": "most-teams-played",
+  "minAllowed": 4,
+  "skip": 0,
+  "take": 323,
+  "total": 323,
+  "items": [
+    {
+      "id": "0056v",
+      "name": "Mathieu Perreault",
+      "position": "F",
+      "teamCount": 8,
+      "teams": [
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "004jg",
+      "name": "Pat Maroon",
+      "position": "F",
+      "teamCount": 8,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "01mjf",
+      "name": "Travis Hamonic",
+      "position": "D",
+      "teamCount": 8,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "031q7",
+      "name": "Tyler Motte",
+      "position": "F",
+      "teamCount": 8,
+      "teams": [
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "01n84",
+      "name": "Alex Killorn",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "004cq",
+      "name": "Alex Ovechkin",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        }
+      ]
+    },
+    {
+      "id": "01cwe",
+      "name": "Alex Stalock",
+      "position": "G",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        }
+      ]
+    },
+    {
+      "id": "01mzc",
+      "name": "Brayden McNabb",
+      "position": "D",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "01skq",
+      "name": "Cam Fowler",
+      "position": "D",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "0041s",
+      "name": "Chris Kelly",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "02ir0",
+      "name": "Colin Blackwell",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "003hh",
+      "name": "Drew Stafford",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "04nwz",
+      "name": "Eric Robinson",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "031nz",
+      "name": "Jason Dickinson",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "00459",
+      "name": "Marc-Andre Fleury",
+      "position": "G",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "003q6",
+      "name": "Sam Gagner",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "02ycl",
+      "name": "Trevor van Riemsdyk",
+      "position": "D",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "02oax",
+      "name": "Vinnie Hinostroza",
+      "position": "F",
+      "teamCount": 7,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "04zb6",
+      "name": "Alex Vlasic",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "004ax",
+      "name": "Alexander Edler",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      ]
+    },
+    {
+      "id": "004pc",
+      "name": "Anton Khudobin",
+      "position": "G",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "01f3j",
+      "name": "Calvin de Haan",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "02npg",
+      "name": "Chris Tierney",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "0241k",
+      "name": "Chris Wideman",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "04r0z",
+      "name": "Cole Koepke",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "0243l",
+      "name": "Craig Smith",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "01uoz",
+      "name": "David Savard",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "02b40",
+      "name": "Dmitrij Jaskin",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "01zry",
+      "name": "Frederik Andersen",
+      "position": "G",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "003nc",
+      "name": "Jakub Voracek",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      ]
+    },
+    {
+      "id": "0055l",
+      "name": "James Reimer",
+      "position": "G",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "02azh",
+      "name": "Jamie Oleksiak",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "023wa",
+      "name": "Jared Spurgeon",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "01zv2",
+      "name": "Jesper Fast",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "003tj",
+      "name": "Jonathan Quick",
+      "position": "G",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "015ol",
+      "name": "Josh Bailey",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        }
+      ]
+    },
+    {
+      "id": "003no",
+      "name": "Loui Eriksson",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "00477",
+      "name": "Marc-Edouard Vlasic",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "02yli",
+      "name": "Mattias Janmark",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "01xfn",
+      "name": "Michael Bournival",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "004b1",
+      "name": "Michael Grabner",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      ]
+    },
+    {
+      "id": "030x6",
+      "name": "Michael Raffl",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "01sxt",
+      "name": "Nick Bonino",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "0041m",
+      "name": "Nick Foligno",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "0056w",
+      "name": "Nick Holden",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "01etq",
+      "name": "Nick Leddy",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "031pn",
+      "name": "Nick Paul",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "03rah",
+      "name": "Noah Juulsen",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "0047d",
+      "name": "Patrik Berglund",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        }
+      ]
+    },
+    {
+      "id": "003m1",
+      "name": "Paul Stastny",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "02noh",
+      "name": "Radek Faksa",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "03rf5",
+      "name": "Rasmus Andersson",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      ]
+    },
+    {
+      "id": "03wnw",
+      "name": "Ryan Lomberg",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "003vy",
+      "name": "Tomas Plekanec",
+      "position": "F",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "015j6",
+      "name": "Tyler Myers",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "0430a",
+      "name": "Vincent Desharnais",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "003fm",
+      "name": "Zdeno Chara",
+      "position": "D",
+      "teamCount": 6,
+      "teams": [
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      ]
+    },
+    {
+      "id": "04408",
+      "name": "Alex Barre-Boulet",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "01f6j",
+      "name": "Alex Chiasson",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "01zun",
+      "name": "Alex Petrovic",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "02nqh",
+      "name": "Andreas Athanasiou",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "02ygs",
+      "name": "Andrew Agozzino",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "003q3",
+      "name": "Andrew Cogliano",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "031pq",
+      "name": "Andrew Copp",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "02frb",
+      "name": "Antoine Roussel",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      ]
+    },
+    {
+      "id": "02o88",
+      "name": "Ben Hutton",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "02ni8",
+      "name": "Ben Street",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "005is",
+      "name": "Blake Wheeler",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "03167",
+      "name": "Bo Horvat",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "0042k",
+      "name": "Braydon Coburn",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "01zv1",
+      "name": "Brendan Gallagher",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "01d69",
+      "name": "Brendan Smith",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "003gq",
+      "name": "Brian Campbell",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "003jy",
+      "name": "Bryan Bickell",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "003ex",
+      "name": "Bryan Little",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "00482",
+      "name": "Bryce Salvador",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "04f1m",
+      "name": "Cale Fleury",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "01yj4",
+      "name": "Cam Atkinson",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "004q6",
+      "name": "Carl Soderberg",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "01zto",
+      "name": "Charlie Coyle",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "003dg",
+      "name": "Chris Kunitz",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        }
+      ]
+    },
+    {
+      "id": "0046a",
+      "name": "Christian Ehrhoff",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "0310p",
+      "name": "Christian Folin",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "02nqb",
+      "name": "Colton Parayko",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "02npb",
+      "name": "Colton Sissons",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "03ecn",
+      "name": "Dakota Joshua",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "003fy",
+      "name": "David Krejci",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "003wn",
+      "name": "David Legwand",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "03ygn",
+      "name": "David Rittich",
+      "position": "G",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "004lk",
+      "name": "David Schlemko",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "003m9",
+      "name": "Derick Brassard",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "03ec6",
+      "name": "Devon Toews",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "003ie",
+      "name": "Dion Phaneuf",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "01zub",
+      "name": "Dylan McIlrath",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "03as9",
+      "name": "Dylan Strome",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        }
+      ]
+    },
+    {
+      "id": "04f0t",
+      "name": "Eetu Luostarinen",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "003iz",
+      "name": "Erik Cole",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "0047m",
+      "name": "Erik Johnson",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "03w5m",
+      "name": "Gabriel Vilardi",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "01gjz",
+      "name": "Gustav Nyquist",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "04mq1",
+      "name": "Ilya Mikheyev",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "04qy0",
+      "name": "Jack Drury",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "02np6",
+      "name": "Jake McCabe",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "01s5k",
+      "name": "Jake Muzzin",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "004b2",
+      "name": "Jannik Hansen",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "003hw",
+      "name": "Jarome Iginla",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "015tb",
+      "name": "Jason Garrison",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "00427",
+      "name": "Jason Spezza",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "0049z",
+      "name": "John Mitchell",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "02npn",
+      "name": "Joonas Korpisalo",
+      "position": "G",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "01587",
+      "name": "Jordan Eberle",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "04dwk",
+      "name": "Josh Norris",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "01ztz",
+      "name": "Justin Holl",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "003ju",
+      "name": "Justin Williams",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "01uof",
+      "name": "Korbinian Holzer",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "0045j",
+      "name": "Kris Letang",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "02fzk",
+      "name": "Kyle Rau",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "03mm6",
+      "name": "Lawson Crouse",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "00485",
+      "name": "Lee Stempniak",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "015j8",
+      "name": "Luca Sbisa",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "031vc",
+      "name": "Luke Glendening",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "015hz",
+      "name": "Luke Schenn",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "01f64",
+      "name": "Marcus Johansson",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "04f0y",
+      "name": "Mario Ferraro",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "004pk",
+      "name": "Mark Giordano",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "003wc",
+      "name": "Martin Erat",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "00499",
+      "name": "Martin St. Louis",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "003j2",
+      "name": "Matt Cullen",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "01tf0",
+      "name": "Matt Irwin",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "003o8",
+      "name": "Matt Niskanen",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "024lv",
+      "name": "Mattias Ekholm",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "03ebr",
+      "name": "Michael Amadio",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "02fzd",
+      "name": "Mike Reilly",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "003oe",
+      "name": "Mike Ribeiro",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "04f80",
+      "name": "Morgan Barron",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "04f7w",
+      "name": "Nick Perbix",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "02unz",
+      "name": "Nick Schmaltz",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "03w5l",
+      "name": "Oliver Wahlstrom",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "04xjf",
+      "name": "Owen Power",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      ]
+    },
+    {
+      "id": "003kt",
+      "name": "Patrick Sharp",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "03mn5",
+      "name": "Patrik Laine",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "004ba",
+      "name": "Roberto Luongo",
+      "position": "G",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "003ii",
+      "name": "Robyn Regehr",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "003vi",
+      "name": "Saku Koivu",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "02non",
+      "name": "Scott Laughton",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "02noj",
+      "name": "Tom Wilson",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "004c9",
+      "name": "Tomas Fleischmann",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "03rer",
+      "name": "Travis Dermott",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "03e7p",
+      "name": "Travis Sanheim",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "003nn",
+      "name": "Trevor Daley",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      ]
+    },
+    {
+      "id": "01cht",
+      "name": "Tyler Bozak",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "02b3l",
+      "name": "Vladislav Namestnikov",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "03ebb",
+      "name": "Warren Foegele",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "031of",
+      "name": "William Carrier",
+      "position": "F",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "00qrs",
+      "name": "Zach Bogosian",
+      "position": "D",
+      "teamCount": 5,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "03ret",
+      "name": "A.J. Greer",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "004p6",
+      "name": "Adam Cracknell",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "051v9",
+      "name": "Adam Edstrom",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "0040v",
+      "name": "Al Montoya",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "03nqi",
+      "name": "Alex Lyon",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "051tx",
+      "name": "Aliaksei Protas",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "01uo8",
+      "name": "Anders Lindback",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "01mzi",
+      "name": "Andrej Nestrasil",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "003jc",
+      "name": "Andrew Ladd",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "003zh",
+      "name": "Andrew MacDonald",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "042vk",
+      "name": "Andrew Peeke",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "02np7",
+      "name": "Anthony Stolarz",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "00qmz",
+      "name": "Ben Lovejoy",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "04zj9",
+      "name": "Ben Meyers",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "003uk",
+      "name": "Benoit Pouliot",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "05j3d",
+      "name": "Bobby McMann",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      ]
+    },
+    {
+      "id": "02b3w",
+      "name": "Boone Jenner",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "01mnz",
+      "name": "Brandon Pirri",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "03xmh",
+      "name": "Brandon Tanev",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "02not",
+      "name": "Brendan Gaunce",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "003tz",
+      "name": "Brent Burns",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      ]
+    },
+    {
+      "id": "01wlq",
+      "name": "Brett Connolly",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "02o78",
+      "name": "Brett Kulak",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      ]
+    },
+    {
+      "id": "003xq",
+      "name": "Brian Gionta",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "01zql",
+      "name": "Brock Nelson",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "02zbg",
+      "name": "Buddy Robinson",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "01t68",
+      "name": "Cam Talbot",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "01svj",
+      "name": "Carl Hagelin",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "0457b",
+      "name": "Casey Mittelstadt",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "02zov",
+      "name": "Chad Ruhwedel",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "0047z",
+      "name": "Chris Porter",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "01nrm",
+      "name": "Cody Eakin",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "04uql",
+      "name": "Cole Perfetti",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "01bvb",
+      "name": "Colton Sceviour",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      ]
+    },
+    {
+      "id": "003ij",
+      "name": "Cory Sarich",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "02wy2",
+      "name": "Curtis Lazar",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "003i5",
+      "name": "Curtis McElhinney",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "0048d",
+      "name": "Dan Boyle",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "03rez",
+      "name": "Daniel Sprong",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "003pa",
+      "name": "Darren Helm",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "003k0",
+      "name": "Dave Bolland",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "0047a",
+      "name": "David Backes",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "042t3",
+      "name": "Dennis Cholowski",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "0044d",
+      "name": "Derek Morris",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "003hd",
+      "name": "Derek Roy",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "01mz5",
+      "name": "Dmitry Orlov",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      ]
+    },
+    {
+      "id": "02o7o",
+      "name": "Dominic Toninato",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      ]
+    },
+    {
+      "id": "015ps",
+      "name": "Dwight King",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "01mnx",
+      "name": "Eric Gelinas",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "01wlp",
+      "name": "Erik Gudbranson",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "04lc0",
+      "name": "Evan Bouchard",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "01kn1",
+      "name": "Evgenii Dadonov",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "02fzm",
+      "name": "Filip Forsberg",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "003zo",
+      "name": "Frans Nielsen",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      ]
+    },
+    {
+      "id": "01n8e",
+      "name": "Gabriel Dumont",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      ]
+    },
+    {
+      "id": "03cyw",
+      "name": "Gavin Bayreuther",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "04ob4",
+      "name": "Ilya Lyubushkin",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "0322w",
+      "name": "Ilya Sorokin",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "02aez",
+      "name": "J.T. Miller",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "01zrz",
+      "name": "Jack Campbell",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "01d6c",
+      "name": "Jacob Markstrom",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "04z1e",
+      "name": "Jake Lucchini",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "03dde",
+      "name": "Jake Walman",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "0043s",
+      "name": "James van Riemsdyk",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      ]
+    },
+    {
+      "id": "04d2e",
+      "name": "Jan Rutta",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "003ve",
+      "name": "Jaroslav Halak",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      ]
+    },
+    {
+      "id": "003mb",
+      "name": "Jason Chimera",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "01zt0",
+      "name": "Jason Zucker",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "05rap",
+      "name": "Jaxson Stauber",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "0047u",
+      "name": "Jay McClement",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "05r3q",
+      "name": "Jeffrey Viel",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "03mn2",
+      "name": "Jesse Puljujarvi",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "004ag",
+      "name": "Jiri Tlusty",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "050tk",
+      "name": "Joel Kiviranta",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      ]
+    },
+    {
+      "id": "01zsz",
+      "name": "Johan Larsson",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "01zu8",
+      "name": "John Klingberg",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "03eb6",
+      "name": "Jonas Johansson",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "03rf3",
+      "name": "Jordan Greenway",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "02npj",
+      "name": "Jordan Martinook",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "28",
+          "name": "Seattle Kraken"
+        }
+      ]
+    },
+    {
+      "id": "003vc",
+      "name": "Josh Gorges",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "01tks",
+      "name": "Justin Braun",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "05r9l",
+      "name": "Justin Danforth",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "02zge",
+      "name": "Justin Dowling",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "020h1",
+      "name": "Justin Schultz",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "02mun",
+      "name": "Jyrki Jokipakka",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "03rih",
+      "name": "Karel Vejmelka",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "03rfj",
+      "name": "Keegan Kolesar",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      ]
+    },
+    {
+      "id": "03dms",
+      "name": "Kevin Fiala",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "01zr4",
+      "name": "Kevin Gravel",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "03edt",
+      "name": "Kevin Labanc",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "02wki",
+      "name": "Kurtis MacDermid",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "02oar",
+      "name": "Linus Ullmark",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "02fmj",
+      "name": "Lukas Sedlak",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      ]
+    },
+    {
+      "id": "01f3h",
+      "name": "Magnus Paajarvi",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "01ci5",
+      "name": "Marco Scandella",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        }
+      ]
+    },
+    {
+      "id": "026hb",
+      "name": "Mark Arcobello",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      ]
+    },
+    {
+      "id": "02b7b",
+      "name": "Martin Frk",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "00445",
+      "name": "Martin Hanzal",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "01zr2",
+      "name": "Martin Marincin",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "02dq2",
+      "name": "Mathew Dumba",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "03rgp",
+      "name": "Mathieu Joseph",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "005gk",
+      "name": "Matt Beleskey",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "02ob1",
+      "name": "Matt Benning",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "003fr",
+      "name": "Matt Hendricks",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "05oxu",
+      "name": "Matt Kessel",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "01lsj",
+      "name": "Matt Martin",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "02699",
+      "name": "Matt Read",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      ]
+    },
+    {
+      "id": "004ac",
+      "name": "Matt Stajan",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "003ss",
+      "name": "Michael Cammalleri",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      ]
+    },
+    {
+      "id": "0043k",
+      "name": "Mike Richards",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      ]
+    },
+    {
+      "id": "003wz",
+      "name": "Mike Santorelli",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "003vd",
+      "name": "Mikhail Grabovski",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "0042x",
+      "name": "Nate Guenin",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "005h0",
+      "name": "Nathan Gerbe",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        }
+      ]
+    },
+    {
+      "id": "025e1",
+      "name": "Nic Dowd",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "02yjk",
+      "name": "Nic Petan",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "02oeo",
+      "name": "Nick Jensen",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "04yk3",
+      "name": "Nico Sturm",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "02b70",
+      "name": "Nikita Kucherov",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      ]
+    },
+    {
+      "id": "01uv5",
+      "name": "Nikita Nikitin",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "03cvd",
+      "name": "Nikita Zaitsev",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "28",
+          "name": "Seattle Kraken"
+        }
+      ]
+    },
+    {
+      "id": "00qrv",
+      "name": "Nikolay Kulemin",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "01f3d",
+      "name": "Oliver Ekman-Larsson",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "015pt",
+      "name": "P.K. Subban",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "04l8w",
+      "name": "Parker Kelly",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      ]
+    },
+    {
+      "id": "03rgh",
+      "name": "Parker Wotherspoon",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "03c9o",
+      "name": "Patrick Brown",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "03l0t",
+      "name": "Pavel Zacha",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "28",
+          "name": "Seattle Kraken"
+        }
+      ]
+    },
+    {
+      "id": "05ykq",
+      "name": "Pavol Regenda",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "0044e",
+      "name": "Peter Mueller",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "02np0",
+      "name": "Phillip Di Giuseppe",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      ]
+    },
+    {
+      "id": "04zb8",
+      "name": "Phillip Tomasino",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "01mzf",
+      "name": "Reilly Smith",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "02yob",
+      "name": "Reto Berra",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "01f6p",
+      "name": "Richard Panik",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      ]
+    },
+    {
+      "id": "01bvl",
+      "name": "Riley Nash",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "01zqi",
+      "name": "Riley Sheahan",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "042xa",
+      "name": "Ross Colton",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      ]
+    },
+    {
+      "id": "0040a",
+      "name": "Ryan Callahan",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      ]
+    },
+    {
+      "id": "03av3",
+      "name": "Ryan Carpenter",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "18",
+          "name": "Boston Bruins"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      ]
+    },
+    {
+      "id": "02fsw",
+      "name": "Ryan Garbutt",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      ]
+    },
+    {
+      "id": "003d9",
+      "name": "Ryan Getzlaf",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        }
+      ]
+    },
+    {
+      "id": "0045l",
+      "name": "Ryan Malone",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "01bvj",
+      "name": "Ryan McDonagh",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      ]
+    },
+    {
+      "id": "03w5s",
+      "name": "Ryan McLeod",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "01f6d",
+      "name": "Ryan O'Reilly",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      ]
+    },
+    {
+      "id": "003x4",
+      "name": "Ryan Suter",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "039cg",
+      "name": "Sam Bennett",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      ]
+    },
+    {
+      "id": "03eca",
+      "name": "Sam Lafferty",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "03rfp",
+      "name": "Sam Montembeault",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      ]
+    },
+    {
+      "id": "004qi",
+      "name": "Semyon Varlamov",
+      "position": "G",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      ]
+    },
+    {
+      "id": "0045b",
+      "name": "Sergei Gonchar",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      ]
+    },
+    {
+      "id": "04m7o",
+      "name": "Sheldon Rempal",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      ]
+    },
+    {
+      "id": "01f6a",
+      "name": "Simon Despres",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        }
+      ]
+    },
+    {
+      "id": "003sg",
+      "name": "Stephen Weiss",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "14",
+          "name": "Minnesota Wild"
+        }
+      ]
+    },
+    {
+      "id": "003ti",
+      "name": "Teddy Purcell",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      ]
+    },
+    {
+      "id": "004l7",
+      "name": "Thomas Hickey",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        },
+        {
+          "id": "31",
+          "name": "Utah Mammoth"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "003t9",
+      "name": "Trevor Lewis",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      ]
+    },
+    {
+      "id": "015j5",
+      "name": "Tyler Ennis",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "32",
+          "name": "Vegas Golden Knights"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      ]
+    },
+    {
+      "id": "01ztg",
+      "name": "Tyler Pitlick",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "04r1c",
+      "name": "Tyler Tucker",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      ]
+    },
+    {
+      "id": "01c13",
+      "name": "Victor Hedman",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      ]
+    },
+    {
+      "id": "0048s",
+      "name": "Vincent Lecavalier",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "15",
+          "name": "St. Louis Blues"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      ]
+    },
+    {
+      "id": "03ebs",
+      "name": "William Lagesson",
+      "position": "D",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "17",
+          "name": "Florida Panthers"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      ]
+    },
+    {
+      "id": "01bvm",
+      "name": "Zac Dalpe",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "10",
+          "name": "Nashville Predators"
+        },
+        {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      ]
+    },
+    {
+      "id": "01h4l",
+      "name": "Zac Rinaldo",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        },
+        {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        },
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      ]
+    },
+    {
+      "id": "003yc",
+      "name": "Zach Parise",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "29",
+          "name": "Dallas Stars"
+        },
+        {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "24",
+          "name": "New Jersey Devils"
+        }
+      ]
+    },
+    {
+      "id": "048vt",
+      "name": "Zack MacEwen",
+      "position": "F",
+      "teamCount": 4,
+      "teams": [
+        {
+          "id": "8",
+          "name": "San Jose Sharks"
+        },
+        {
+          "id": "3",
+          "name": "Calgary Flames"
+        },
+        {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        },
+        {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      ]
+    }
+  ]
+}

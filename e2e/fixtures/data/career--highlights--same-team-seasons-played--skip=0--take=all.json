@@ -1,0 +1,3759 @@
+{
+  "type": "same-team-seasons-played",
+  "minAllowed": 8,
+  "skip": 0,
+  "take": 375,
+  "total": 375,
+  "items": [
+    {
+      "id": "02440",
+      "name": "Anders Lee",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "01c32",
+      "name": "Brayden Schenn",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "025me",
+      "name": "Brenden Dillon",
+      "position": "D",
+      "seasonCount": 15,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "01mje",
+      "name": "Casey Cizikas",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "003dv",
+      "name": "Corey Perry",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "016g3",
+      "name": "Erik Karlsson",
+      "position": "D",
+      "seasonCount": 15,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "01xfp",
+      "name": "Jaden Schwartz",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "00qs7",
+      "name": "Jamie Benn",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "015pv",
+      "name": "John Carlson",
+      "position": "D",
+      "seasonCount": 15,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "01zu5",
+      "name": "Justin Faulk",
+      "position": "D",
+      "seasonCount": 15,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02azb",
+      "name": "Mark Scheifele",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "027i6",
+      "name": "Mika Zibanejad",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "01skr",
+      "name": "Mikael Granlund",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "02fqa",
+      "name": "Ondrej Palat",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "01fx3",
+      "name": "Roman Josi",
+      "position": "D",
+      "seasonCount": 15,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "01ud1",
+      "name": "Sergei Bobrovsky",
+      "position": "G",
+      "seasonCount": 15,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "00qru",
+      "name": "Steven Stamkos",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "01zti",
+      "name": "Tyler Toffoli",
+      "position": "F",
+      "seasonCount": 15,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "003t7",
+      "name": "Anze Kopitar",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "0243d",
+      "name": "Brandon Saad",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "0047x",
+      "name": "David Perron",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "02wy3",
+      "name": "Elias Lindholm",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "01gjn",
+      "name": "Erik Haula",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "026p4",
+      "name": "Jonathan Huberdeau",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "01f66",
+      "name": "Kyle Palmieri",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "005ho",
+      "name": "Lars Eller",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "01mke",
+      "name": "Marcus Foligno",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "01ex7",
+      "name": "Matt Duchene",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02noe",
+      "name": "Morgan Rielly",
+      "position": "D",
+      "seasonCount": 14,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02i6q",
+      "name": "Nate Schmidt",
+      "position": "D",
+      "seasonCount": 14,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "02f9l",
+      "name": "Nathan MacKinnon",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "02nop",
+      "name": "Olli Maatta",
+      "position": "D",
+      "seasonCount": 14,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "003kg",
+      "name": "Patrick Kane",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "02ybo",
+      "name": "Rasmus Ristolainen",
+      "position": "D",
+      "seasonCount": 14,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "01mzf",
+      "name": "Reilly Smith",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "02b3o",
+      "name": "Rickard Rakell",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "004mz",
+      "name": "Ryan Reaves",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "01z7v",
+      "name": "Sean Couturier",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "02un6",
+      "name": "Sean Monahan",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "01lkz",
+      "name": "Taylor Hall",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "01sif",
+      "name": "Tyler Seguin",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02b76",
+      "name": "Vincent Trocheck",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "01xfq",
+      "name": "Vladimir Tarasenko",
+      "position": "F",
+      "seasonCount": 14,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02fro",
+      "name": "Adam Lowry",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "02un7",
+      "name": "Aleksander Barkov",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "00u0m",
+      "name": "Alex Pietrangelo",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "02nom",
+      "name": "Andrei Vasilevskiy",
+      "position": "G",
+      "seasonCount": 13,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "01f5z",
+      "name": "Chris Kreider",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "01uor",
+      "name": "Christopher Tanev",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "02noi",
+      "name": "Cody Ceci",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "02azm",
+      "name": "Connor Murphy",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "02azf",
+      "name": "Dougie Hamilton",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "01f3c",
+      "name": "Evander Kane",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "01lyi",
+      "name": "Ian Cole",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "03c0c",
+      "name": "Josh Manson",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "01ztq",
+      "name": "Nick Bjugstad",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "02441",
+      "name": "Nicolas Deslauriers",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "01meu",
+      "name": "Robert Bortuzzo",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "02un5",
+      "name": "Sam Reinhart",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "02nq3",
+      "name": "Shayne Gostisbehere",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "01g14",
+      "name": "T.J. Brodie",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "0239u",
+      "name": "Tyler Johnson",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "01mza",
+      "name": "Tyson Barrie",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "01c13",
+      "name": "Victor Hedman",
+      "position": "D",
+      "seasonCount": 13,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "02zpp",
+      "name": "Viktor Arvidsson",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "02dpz",
+      "name": "Zemgus Girgensons",
+      "position": "F",
+      "seasonCount": 13,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02npq",
+      "name": "Adam Pelech",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "0045a",
+      "name": "Alex Goligoski",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "03169",
+      "name": "Alexander Wennberg",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02wy6",
+      "name": "Andre Burakovsky",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "02un9",
+      "name": "Anthony Duclair",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "03bfj",
+      "name": "Artemi Panarin",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "025by",
+      "name": "Ben Chiarot",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "004jl",
+      "name": "Brad Marchand",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "031oq",
+      "name": "Brett Pesce",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "003u1",
+      "name": "Cal Clutterbuck",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "02un4",
+      "name": "Connor McDavid",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "03161",
+      "name": "Darnell Nurse",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "02fq7",
+      "name": "Dylan DeMelo",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "03duf",
+      "name": "Dylan Larkin",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "01wlp",
+      "name": "Erik Gudbranson",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "2",
+        "name": "Carolina Hurricanes"
+      }
+    },
+    {
+      "id": "03ne3",
+      "name": "Frank Vatrano",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "0243e",
+      "name": "Gabriel Landeskog",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02nof",
+      "name": "Hampus Lindholm",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "01f6k",
+      "name": "Jakob Silfverberg",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "0043s",
+      "name": "James van Riemsdyk",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "03as6",
+      "name": "Jared McCann",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "023wa",
+      "name": "Jared Spurgeon",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "0042j",
+      "name": "Jeff Carter",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "02ni5",
+      "name": "Jonathan Marchessault",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "0045u",
+      "name": "Jordan Staal",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "01zt2",
+      "name": "Kevin Hayes",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "01bvd",
+      "name": "Kevin Shattenkirk",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02dq2",
+      "name": "Mathew Dumba",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "01mnq",
+      "name": "Mike Hoffman",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "02noq",
+      "name": "Mike Matheson",
+      "position": "D",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "003g0",
+      "name": "Milan Lucic",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "01f3e",
+      "name": "Nazem Kadri",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "004by",
+      "name": "Nicklas Backstrom",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "02b70",
+      "name": "Nikita Kucherov",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "03as8",
+      "name": "Nikolaj Ehlers",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "01zs7",
+      "name": "Philipp Grubauer",
+      "position": "G",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "02b3k",
+      "name": "Phillip Danault",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "02422",
+      "name": "Ryan Nugent-Hopkins",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "01f6d",
+      "name": "Ryan O'Reilly",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "02nol",
+      "name": "Teuvo Teravainen",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "01gjh",
+      "name": "Tomas Tatar",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "02ybl",
+      "name": "Valeri Nichushkin",
+      "position": "F",
+      "seasonCount": 12,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "003q3",
+      "name": "Andrew Cogliano",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "03raj",
+      "name": "Anthony Beauvillier",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02ybj",
+      "name": "Anthony Mantha",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "02ybk",
+      "name": "Artturi Lehkonen",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      }
+    },
+    {
+      "id": "02nou",
+      "name": "Brady Skjei",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "03res",
+      "name": "Brandon Carlo",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "03e1m",
+      "name": "Brayden Point",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "003tz",
+      "name": "Brent Burns",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "01zvp",
+      "name": "Bryan Rust",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "01ztf",
+      "name": "Calle Jarnkrok",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "0042t",
+      "name": "Claude Giroux",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      }
+    },
+    {
+      "id": "03ecc",
+      "name": "Danton Heinen",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "01gjy",
+      "name": "Derek Stepan",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02nqk",
+      "name": "Erik Gustafsson",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "02aez",
+      "name": "J.T. Miller",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "02dq3",
+      "name": "Jacob Trouba",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "0046u",
+      "name": "Joe Pavelski",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "02b3d",
+      "name": "Joel Armia",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "01zu8",
+      "name": "John Klingberg",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "003ky",
+      "name": "Jonathan Toews",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "02ybn",
+      "name": "Josh Morrissey",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "031pl",
+      "name": "Juuse Saros",
+      "position": "G",
+      "seasonCount": 11,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "01f6f",
+      "name": "Kyle Clifford",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "03kra",
+      "name": "Kyle Connor",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "02yjl",
+      "name": "Leon Draisaitl",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "004nk",
+      "name": "Logan Couture",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "00477",
+      "name": "Marc-Edouard Vlasic",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "015y8",
+      "name": "Martin Jones",
+      "position": "G",
+      "seasonCount": 11,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "01lsj",
+      "name": "Matt Martin",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      }
+    },
+    {
+      "id": "02wy4",
+      "name": "Max Domi",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "03yg3",
+      "name": "Mikhail Sergachev",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "03jvu",
+      "name": "Mitch Marner",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "02wy5",
+      "name": "Nikita Zadorov",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "03pd1",
+      "name": "Noel Acciari",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "02nq6",
+      "name": "Oskar Sundqvist",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "003wj",
+      "name": "Patric Hornqvist",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "003fj",
+      "name": "Patrice Bergeron",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "02wy7",
+      "name": "Pavel Buchnevich",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "03rmx",
+      "name": "Sebastian Aho",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "02b3h",
+      "name": "Stefan Noesen",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "0046d",
+      "name": "Thomas Greiss",
+      "position": "G",
+      "seasonCount": 11,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "03ra8",
+      "name": "Timo Meier",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "03dug",
+      "name": "Tony DeAngelo",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "038vb",
+      "name": "Travis Konecny",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "03m3m",
+      "name": "Troy Stecher",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "031og",
+      "name": "Tyler Bertuzzi",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "02yjj",
+      "name": "William Nylander",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "03ra7",
+      "name": "Zach Werenski",
+      "position": "D",
+      "seasonCount": 11,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "01f3k",
+      "name": "Zack Kassian",
+      "position": "F",
+      "seasonCount": 11,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "01s88",
+      "name": "Adam Henrique",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "020f4",
+      "name": "Adam Larsson",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "03mkm",
+      "name": "Adin Hill",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "03e1n",
+      "name": "Adrian Kempe",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "005gi",
+      "name": "Alec Martinez",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "03v70",
+      "name": "Alex DeBrincat",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "02b79",
+      "name": "Alex Galchenyuk",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "04az7",
+      "name": "Alex Iafallo",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02fzj",
+      "name": "Blake Coleman",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "003z1",
+      "name": "Blake Comeau",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "30",
+        "name": "Winnipeg Jets"
+      }
+    },
+    {
+      "id": "02b3w",
+      "name": "Boone Jenner",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "016kx",
+      "name": "Braden Holtby",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "03de2",
+      "name": "Brandon Montour",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "0041j",
+      "name": "Brian Elliott",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "03raf",
+      "name": "Brock Boeser",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "01yj4",
+      "name": "Cam Atkinson",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "01t68",
+      "name": "Cam Talbot",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "02nq2",
+      "name": "Chandler Stephenson",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "02o8c",
+      "name": "Colin Miller",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "0222k",
+      "name": "Darcy Kuemper",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "01n7l",
+      "name": "Derek Grant",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "01f3l",
+      "name": "Dmitry Kulikov",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "01mz5",
+      "name": "Dmitry Orlov",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "003sp",
+      "name": "Dustin Brown",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "003jl",
+      "name": "Eric Staal",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "01xfs",
+      "name": "Evgeny Kuznetsov",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "02fzm",
+      "name": "Filip Forsberg",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "03ecl",
+      "name": "Gustav Forsling",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "03pax",
+      "name": "Ivan Provorov",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "03163",
+      "name": "J.T. Compher",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "02o7l",
+      "name": "Jaccob Slavin",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "03924",
+      "name": "Jack Eichel",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "03rab",
+      "name": "Jake DeBrusk",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "0055l",
+      "name": "James Reimer",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      }
+    },
+    {
+      "id": "01zt0",
+      "name": "Jason Zucker",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "042ye",
+      "name": "Jesper Bratt",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "01c12",
+      "name": "John Tavares",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "02b81",
+      "name": "Johnny Gaudreau",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "01zr8",
+      "name": "Jon Merrill",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "02fsv",
+      "name": "Jordie Benn",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      }
+    },
+    {
+      "id": "03yuc",
+      "name": "Kailer Yamamoto",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "004j7",
+      "name": "Kyle Okposo",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "031vc",
+      "name": "Luke Glendening",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "031v6",
+      "name": "MacKenzie Weegar",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "00414",
+      "name": "Marc Staal",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "01f64",
+      "name": "Marcus Johansson",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "03daz",
+      "name": "Marcus Pettersson",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "025z7",
+      "name": "Mark Borowiecki",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "01zvf",
+      "name": "Mark Stone",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "02uws",
+      "name": "Mathew Barzal",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "02nq8",
+      "name": "Matt Murray",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "004p4",
+      "name": "Mikael Backlund",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "02b3e",
+      "name": "Nathan Beaulieu",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "0457f",
+      "name": "Nico Hischier",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      }
+    },
+    {
+      "id": "01zt4",
+      "name": "Nino Niederreiter",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "01f3d",
+      "name": "Oliver Ekman-Larsson",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "01yj6",
+      "name": "Radko Gudas",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "03d5e",
+      "name": "Robby Fabbri",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "01f6r",
+      "name": "Robin Lehner",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "01f3i",
+      "name": "Ryan Ellis",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "01bvj",
+      "name": "Ryan McDonagh",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "02dq0",
+      "name": "Ryan Murray",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "02aza",
+      "name": "Ryan Strome",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "031nx",
+      "name": "Shea Theodore",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "00454",
+      "name": "Sidney Crosby",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      }
+    },
+    {
+      "id": "03rad",
+      "name": "Thomas Chabot",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "003t9",
+      "name": "Trevor Lewis",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "003g5",
+      "name": "Tuukka Rask",
+      "position": "G",
+      "seasonCount": 10,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "03rf8",
+      "name": "Vince Dunn",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "02b3l",
+      "name": "Vladislav Namestnikov",
+      "position": "F",
+      "seasonCount": 10,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "00qrs",
+      "name": "Zach Bogosian",
+      "position": "D",
+      "seasonCount": 10,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "02g00",
+      "name": "Aaron Ekblad",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "01n84",
+      "name": "Alex Killorn",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "048vf",
+      "name": "Andrei Svechnikov",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "003hf",
+      "name": "Andrej Sekera",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "03e2l",
+      "name": "Andrew Mangiapane",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "02yov",
+      "name": "Antti Raanta",
+      "position": "G",
+      "seasonCount": 9,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "03jxy",
+      "name": "Auston Matthews",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "005is",
+      "name": "Blake Wheeler",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "003lu",
+      "name": "Brad Richardson",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "003jn",
+      "name": "Brandon Sutter",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "03wpn",
+      "name": "Brett Howden",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "003so",
+      "name": "Brian Boyle",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "003vz",
+      "name": "Carey Price",
+      "position": "G",
+      "seasonCount": 9,
+      "team": {
+        "id": "30",
+        "name": "Winnipeg Jets"
+      }
+    },
+    {
+      "id": "03wpm",
+      "name": "Charlie McAvoy",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "03eb3",
+      "name": "Christian Dvorak",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "031qj",
+      "name": "Connor Clifton",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02i6m",
+      "name": "Danny DeKeyser",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "04bpi",
+      "name": "David Kampf",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "03d12",
+      "name": "David Pastrnak",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "03p3i",
+      "name": "Derek Ryan",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "04f2d",
+      "name": "Drake Batherson",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "003kh",
+      "name": "Duncan Keith",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "048x9",
+      "name": "Elias Pettersson",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "042vx",
+      "name": "Filip Hronek",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "003t3",
+      "name": "Jack Johnson",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "016g5",
+      "name": "Jake Gardiner",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "003o6",
+      "name": "James Neal",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "015xa",
+      "name": "Jason Demers",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "02dq6",
+      "name": "Jean-Gabriel Pageau",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "01bw5",
+      "name": "Jeff Petry",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "03rmu",
+      "name": "Joel Hanley",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "01f61",
+      "name": "John Moore",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "02azg",
+      "name": "Jonas Brodin",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "01587",
+      "name": "Jordan Eberle",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "042vl",
+      "name": "Jordan Kyrou",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "03c6x",
+      "name": "Jordan Oesterle",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "043ca",
+      "name": "Josh Mahura",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "0045j",
+      "name": "Kris Letang",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "003n5",
+      "name": "Kris Russell",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "8",
+        "name": "San Jose Sharks"
+      }
+    },
+    {
+      "id": "01ci5",
+      "name": "Marco Scandella",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "03rj0",
+      "name": "Mason Appleton",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "03mn7",
+      "name": "Max Jones",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "00qrt",
+      "name": "Max Pacioretty",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "004n1",
+      "name": "Michael Frolik",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "031pm",
+      "name": "Miles Wood",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "04an5",
+      "name": "Miro Heiskanen",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "6",
+        "name": "Detroit Red Wings"
+      }
+    },
+    {
+      "id": "0041m",
+      "name": "Nick Foligno",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "003ke",
+      "name": "Niklas Hjalmarsson",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "01zr7",
+      "name": "Patrik Nemeth",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "003fw",
+      "name": "Phil Kessel",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "03cyf",
+      "name": "Pierre-Edouard Bellemare",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "04ad7",
+      "name": "Rasmus Dahlin",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "6",
+        "name": "Detroit Red Wings"
+      }
+    },
+    {
+      "id": "04apb",
+      "name": "Robert Thomas",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "03eb0",
+      "name": "Ryan Donato",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "01ztr",
+      "name": "Ryan Johansen",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "03yg4",
+      "name": "Samuel Girard",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "04kyn",
+      "name": "Sean Walker",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "003x7",
+      "name": "Shea Weber",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "005hn",
+      "name": "T.J. Oshie",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "02nok",
+      "name": "Tomas Hertl",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02ib8",
+      "name": "Torey Krug",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "02b6w",
+      "name": "William Karlsson",
+      "position": "F",
+      "seasonCount": 9,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "0112c",
+      "name": "Yannick Weber",
+      "position": "D",
+      "seasonCount": 9,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "042w4",
+      "name": "Adam Fox",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "03d09",
+      "name": "Alex Tuch",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "004ad",
+      "name": "Alexander Steen",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "02nqh",
+      "name": "Andreas Athanasiou",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "00404",
+      "name": "Artem Anisimov",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "04osu",
+      "name": "Barrett Hayton",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "03167",
+      "name": "Bo Horvat",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "01d69",
+      "name": "Brendan Smith",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "003ks",
+      "name": "Brent Seabrook",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "02b41",
+      "name": "Brett Ritchie",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "01mnw",
+      "name": "Brian Dumoulin",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "02np9",
+      "name": "Brock McGinn",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "30",
+        "name": "Winnipeg Jets"
+      }
+    },
+    {
+      "id": "03vuj",
+      "name": "Carl Grundstrom",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "031qn",
+      "name": "Carson Soucy",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "02o75",
+      "name": "Cedric Paquette",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "02npg",
+      "name": "Chris Tierney",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "03m26",
+      "name": "Conor Garland",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "003k6",
+      "name": "Corey Crawford",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "004bq",
+      "name": "Cory Schneider",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "02npl",
+      "name": "Damon Severson",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "003wg",
+      "name": "Dan Hamhuis",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "6",
+        "name": "Detroit Red Wings"
+      }
+    },
+    {
+      "id": "01uoz",
+      "name": "David Savard",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "02npm",
+      "name": "Devin Shore",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "00qnu",
+      "name": "Drew Doughty",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "03rew",
+      "name": "Erik Cernak",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "03kng",
+      "name": "Frederick Gaudreau",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "01zry",
+      "name": "Frederik Andersen",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      }
+    },
+    {
+      "id": "01ont",
+      "name": "Gabriel Bourque",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "03klu",
+      "name": "Garnet Hathaway",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "039ci",
+      "name": "Haydn Fleury",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "0040r",
+      "name": "Henrik Lundqvist",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "03ece",
+      "name": "Igor Shesterkin",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "04bdb",
+      "name": "Jack Hughes",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "016kv",
+      "name": "Jake Allen",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "031p0",
+      "name": "Jake Guentzel",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "5",
+        "name": "Montreal Canadiens"
+      }
+    },
+    {
+      "id": "03eer",
+      "name": "Jake Middleton",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "01s5k",
+      "name": "Jake Muzzin",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "03pim",
+      "name": "Jeremy Lauzon",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "003pc",
+      "name": "Jimmy Howard",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "6",
+        "name": "Detroit Red Wings"
+      }
+    },
+    {
+      "id": "02npr",
+      "name": "Jimmy Vesey",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "01zqe",
+      "name": "Joakim Nordstrom",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "00474",
+      "name": "Joe Thornton",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "03rf9",
+      "name": "Jonas Siegenthaler",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "003sm",
+      "name": "Jonathan Bernier",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "02o70",
+      "name": "Josh Anderson",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    },
+    {
+      "id": "015ol",
+      "name": "Josh Bailey",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "02npo",
+      "name": "Jujhar Khaira",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "0057f",
+      "name": "Justin Abdelkader",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "04mto",
+      "name": "Kaapo Kakko",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "039ch",
+      "name": "Kasperi Kapanen",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      }
+    },
+    {
+      "id": "03dms",
+      "name": "Kevin Fiala",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      }
+    },
+    {
+      "id": "003no",
+      "name": "Loui Eriksson",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "004pk",
+      "name": "Mark Giordano",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    },
+    {
+      "id": "01ztw",
+      "name": "Mark Pysyk",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "01sio",
+      "name": "Mats Zuccarello",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "01mlo",
+      "name": "Matt Calvert",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "3",
+        "name": "Calgary Flames"
+      }
+    },
+    {
+      "id": "01fx4",
+      "name": "Michael Hutchinson",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "14",
+        "name": "Minnesota Wild"
+      }
+    },
+    {
+      "id": "048x4",
+      "name": "Michael Rasmussen",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "015ss",
+      "name": "Michael Stone",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "004cb",
+      "name": "Mike Green",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "03mn9",
+      "name": "Mikko Rantanen",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "04ezy",
+      "name": "Morgan Frost",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "01sxt",
+      "name": "Nick Bonino",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "30",
+        "name": "Winnipeg Jets"
+      }
+    },
+    {
+      "id": "02unz",
+      "name": "Nick Schmaltz",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "02iqx",
+      "name": "Nick Seeler",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "25",
+        "name": "Washington Capitals"
+      }
+    },
+    {
+      "id": "048xc",
+      "name": "Nick Suzuki",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "13",
+        "name": "Chicago Blackhawks"
+      }
+    },
+    {
+      "id": "03c9z",
+      "name": "Nicolas Roy",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "24",
+        "name": "New Jersey Devils"
+      }
+    },
+    {
+      "id": "03yh8",
+      "name": "Owen Tippett",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "2",
+        "name": "Carolina Hurricanes"
+      }
+    },
+    {
+      "id": "003wy",
+      "name": "Pekka Rinne",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "04lbz",
+      "name": "Quinn Hughes",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "31",
+        "name": "Utah Mammoth"
+      }
+    },
+    {
+      "id": "029vk",
+      "name": "Scott Harrington",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "23",
+        "name": "New York Islanders"
+      }
+    },
+    {
+      "id": "01zs1",
+      "name": "Scott Wedgewood",
+      "position": "G",
+      "seasonCount": 8,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "03ddd",
+      "name": "Sonny Milano",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    },
+    {
+      "id": "02gmm",
+      "name": "Tanner Pearson",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "9",
+        "name": "New York Rangers"
+      }
+    },
+    {
+      "id": "003yp",
+      "name": "Travis Zajac",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "03bxl",
+      "name": "Trevor Moore",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "003k3",
+      "name": "Troy Brouwer",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "11",
+        "name": "Los Angeles Kings"
+      }
+    },
+    {
+      "id": "03rik",
+      "name": "Troy Terry",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "12",
+        "name": "Anaheim Ducks"
+      }
+    },
+    {
+      "id": "01cht",
+      "name": "Tyler Bozak",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    },
+    {
+      "id": "01ztg",
+      "name": "Tyler Pitlick",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "22",
+        "name": "Philadelphia Flyers"
+      }
+    },
+    {
+      "id": "03w83",
+      "name": "Urho Vaakanainen",
+      "position": "D",
+      "seasonCount": 8,
+      "team": {
+        "id": "20",
+        "name": "Ottawa Senators"
+      }
+    },
+    {
+      "id": "003p4",
+      "name": "Valtteri Filppula",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "02430",
+      "name": "Victor Rask",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "15",
+        "name": "St. Louis Blues"
+      }
+    },
+    {
+      "id": "02jrw",
+      "name": "Yanni Gourde",
+      "position": "F",
+      "seasonCount": 8,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      }
+    }
+  ]
+}
