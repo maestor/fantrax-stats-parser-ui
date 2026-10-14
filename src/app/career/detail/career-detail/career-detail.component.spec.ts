@@ -565,6 +565,100 @@ describe('Career profile', () => {
     expect(screen.getAllByText('career.profile.noStats')).toHaveLength(2);
   });
 
+  it.each([false, true])('sorts received draft picks by round, year, and original team (mobile: %s)', async (isMobile) => {
+    type Asset = components['schemas']['TradeDetail']['blocks'][number]['assets'][number];
+    const fromTeam = { id: '2', name: 'Carolina Hurricanes' };
+    const toTeam = { id: '4', name: 'Vancouver Canucks' };
+    const ownerIds = { 'Dallas Stars': '29', 'San Jose Sharks': '8', 'Colorado Avalanche': '1' };
+    const pick = (draftSeason: number, draftRound: number, owner: keyof typeof ownerIds): Asset => ({
+      type: 'draft_pick',
+      name: `${draftSeason} Draft Pick, Round ${draftRound} (${owner})`,
+      rawName: `${draftSeason} Draft Pick, Round ${draftRound} (${owner})`,
+      entityId: null,
+      careerType: null,
+      position: null,
+      fromTeam,
+      toTeam,
+      draftSeason,
+      draftRound,
+      draftOriginalOwner: { id: ownerIds[owner], name: owner },
+    });
+    const player: Asset = {
+      ...pick(2022, 3, 'Dallas Stars'),
+      type: 'player',
+      name: 'Other Goalie',
+      rawName: 'Other Goalie',
+      entityId: 'g1',
+      careerType: 'goalie',
+      position: 'G',
+      draftSeason: null,
+      draftRound: null,
+      draftOriginalOwner: null,
+    };
+    const other: Asset = {
+      ...player,
+      type: 'other',
+      name: 'Future consideration',
+      entityId: null,
+      careerType: null,
+    };
+    const assets = [
+      pick(2022, 3, 'Dallas Stars'),
+      player,
+      pick(2022, 3, 'San Jose Sharks'),
+      other,
+      pick(2022, 2, 'Dallas Stars'),
+      pick(2021, 3, 'Dallas Stars'),
+      pick(2023, 1, 'San Jose Sharks'),
+      pick(2022, 3, 'Colorado Avalanche'),
+      pick(2022, 10, 'Dallas Stars'),
+      {
+        ...pick(2022, 3, 'Dallas Stars'),
+        name: '2022 Draft Pick, Round 3 (Quebec Nordiques)',
+        rawName: '2022 Draft Pick, Round 3 (Quebec Nordiques)',
+        draftOriginalOwner: null,
+      },
+    ];
+    const detail: components['schemas']['TradeDetail'] = {
+      id: 'deal1',
+      season: 2024,
+      date: '2025-01-10T12:00:00.000Z',
+      status: 'ambiguous',
+      blocks: [
+        { sourceBlockIndex: 0, sourcePeriod: 10, assets: assets.slice(0, 4) },
+        { sourceBlockIndex: 1, sourcePeriod: 11, assets: assets.slice(4) },
+      ],
+    };
+    await setup(
+      { getTradeDetail: () => of(detail), getCareerHistory: () => of(historyFixture) },
+      isMobile,
+    );
+    await TestBed.inject(Router).navigateByUrl('/career/players/p1');
+    if (isMobile) {
+      fireEvent.click(await screen.findByRole('button', { name: /career.profile.inspectTrade/ }));
+    }
+    const received = await screen.findByRole('region', {
+      name: 'Vancouver Canucks career.profile.received',
+    });
+    const labels = within(received).getAllByRole('listitem').map((item) => item.textContent?.trim());
+    expect(labels).toEqual([
+      '2023 Draft Pick, Round 1 (San Jose Sharks)',
+      'Other Goalie',
+      '2022 Draft Pick, Round 2 (Dallas Stars)',
+      'Future consideration',
+      '2021 Draft Pick, Round 3 (Dallas Stars)',
+      '2022 Draft Pick, Round 3 (Colorado Avalanche)',
+      '2022 Draft Pick, Round 3 (Dallas Stars)',
+      '2022 Draft Pick, Round 3 (Quebec Nordiques)',
+      '2022 Draft Pick, Round 3 (San Jose Sharks)',
+      '2022 Draft Pick, Round 10 (Dallas Stars)',
+    ]);
+    expect(within(received).getByRole('link', { name: 'Other Goalie' })).toHaveAttribute(
+      'href', '/career/goalies/other-goalie-g1',
+    );
+    expect(detail.blocks.flatMap((block) => block.assets)).toEqual(assets);
+  });
+
   it('retries an individual trade failure without hiding statistics and removes collapsed content', async () => {
     const asset = {
       name: 'Unresolved Prospect',
