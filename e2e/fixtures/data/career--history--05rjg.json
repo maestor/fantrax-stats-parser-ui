@@ -116,16 +116,6 @@
       ]
     },
     {
-      "id": "claim-WyJjbGFpbXMtMjAyMi0yMDIzLmNzdiIsNTYxLDBd",
-      "type": "claim",
-      "date": "2022-07-09T18:34:00.000Z",
-      "season": 2022,
-      "team": {
-        "id": "32",
-        "name": "Vegas Golden Knights"
-      }
-    },
-    {
       "id": "draft-entry-2022-24",
       "type": "draft",
       "draftType": "entry",
