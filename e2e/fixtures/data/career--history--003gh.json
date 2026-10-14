@@ -1,0 +1,126 @@
+{
+  "id": "003gh",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "claim-WyJjbGFpbXMtMjAxNC0yMDE1LmNzdiIsNjMsMF0",
+      "type": "drop",
+      "date": "2015-03-08T08:49:00.000Z",
+      "season": 2014,
+      "team": {
+        "id": "27",
+        "name": "Columbus Blue Jackets"
+      }
+    },
+    {
+      "id": "trade-WzIwMTMsInRyYWRlcy0yMDEzLTIwMTQuY3N2IiwiMjAxMy0xMC0wMlQxNTozNDowMC4wMDBaIiwiMXwyNyJd",
+      "type": "trade",
+      "season": 2013,
+      "date": "2013-10-02T15:34:00.000Z",
+      "tradeId": "WzIwMTMsInRyYWRlcy0yMDEzLTIwMTQuY3N2IiwiMjAxMy0xMC0wMlQxNTozNDowMC4wMDBaIiwiMXwyNyJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "toTeam": {
+            "id": "27",
+            "name": "Columbus Blue Jackets"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxNTowODowMC4wMDBaIiwiMXw0Il0",
+      "type": "trade",
+      "season": 2012,
+      "date": "2013-01-09T15:08:00.000Z",
+      "tradeId": "WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxNTowODowMC4wMDBaIiwiMXw0Il0",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "draft-opening-opening-673",
+      "type": "draft",
+      "draftType": "opening",
+      "date": null,
+      "season": null,
+      "round": 23,
+      "pickNumber": 673,
+      "team": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      },
+      "originalOwner": {
+        "id": "4",
+        "name": "Vancouver Canucks"
+      }
+    }
+  ]
+}

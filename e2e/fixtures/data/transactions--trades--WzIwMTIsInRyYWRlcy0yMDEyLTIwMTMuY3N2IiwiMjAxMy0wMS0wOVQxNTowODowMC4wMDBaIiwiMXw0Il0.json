@@ -1,0 +1,115 @@
+{
+  "id": "WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxNTowODowMC4wMDBaIiwiMXw0Il0",
+  "season": 2012,
+  "date": "2013-01-09T15:08:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 122,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Kent Patterson",
+          "rawName": "Kent Patterson",
+          "entityId": "0243v",
+          "careerType": "goalie",
+          "position": "G",
+          "fromTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Curtis Glencross",
+          "rawName": "Curtis Glencross",
+          "entityId": "003q9",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Mark Giordano",
+          "rawName": "Mark Giordano",
+          "entityId": "004pk",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 123,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Tim Thomas",
+          "rawName": "Tim Thomas",
+          "entityId": "003gh",
+          "careerType": "goalie",
+          "position": "G",
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Jamie Benn",
+          "rawName": "Jamie Benn",
+          "entityId": "00qs7",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    }
+  ]
+}

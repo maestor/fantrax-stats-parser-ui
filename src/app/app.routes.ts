@@ -108,6 +108,16 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'players/:slug',
+        data: { careerKind: 'player', seo: { tabKey: 'career.tabs.players' } satisfies RouteSeoData },
+        loadComponent: () => import('./career/detail/career-detail/career-detail.component').then((m) => m.CareerDetailComponent),
+      },
+      {
+        path: 'goalies/:slug',
+        data: { careerKind: 'goalie', seo: { tabKey: 'career.tabs.goalies' } satisfies RouteSeoData },
+        loadComponent: () => import('./career/detail/career-detail/career-detail.component').then((m) => m.CareerDetailComponent),
+      },
+      {
         path: 'players',
         data: {
           seo: {

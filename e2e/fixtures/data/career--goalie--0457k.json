@@ -1,0 +1,530 @@
+{
+  "id": "0457k",
+  "name": "Jake Oettinger",
+  "summary": {
+    "firstSeason": 2017,
+    "lastSeason": 2026,
+    "seasonCount": {
+      "owned": 10,
+      "played": 7
+    },
+    "teamCount": {
+      "owned": 2,
+      "played": 1
+    },
+    "teams": [
+      {
+        "teamId": "26",
+        "teamName": "Pittsburgh Penguins",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2017,
+        "lastSeason": 2018
+      },
+      {
+        "teamId": "1",
+        "teamName": "Colorado Avalanche",
+        "seasonCount": {
+          "owned": 8,
+          "played": 7
+        },
+        "firstSeason": 2019,
+        "lastSeason": 2026
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 10,
+        "played": 7
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "1",
+          "teamName": "Colorado Avalanche",
+          "seasonCount": {
+            "owned": 8,
+            "played": 7
+          },
+          "games": 246,
+          "wins": 148,
+          "saves": 6182,
+          "shutouts": 14,
+          "goals": 0,
+          "assists": 3,
+          "points": 3,
+          "penalties": 8,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "26",
+          "teamName": "Pittsburgh Penguins",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 246,
+      "wins": 148,
+      "saves": 6182,
+      "shutouts": 14,
+      "goals": 0,
+      "assists": 3,
+      "points": 3,
+      "penalties": 8,
+      "ppp": 0,
+      "shp": 0
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 10,
+        "played": 7
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "1",
+          "teamName": "Colorado Avalanche",
+          "seasonCount": {
+            "owned": 8,
+            "played": 7
+          },
+          "games": 211,
+          "wins": 123,
+          "saves": 5307,
+          "shutouts": 11,
+          "goals": 0,
+          "assists": 3,
+          "points": 3,
+          "penalties": 6,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "26",
+          "teamName": "Pittsburgh Penguins",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 211,
+      "wins": 123,
+      "saves": 5307,
+      "shutouts": 11,
+      "goals": 0,
+      "assists": 3,
+      "points": 3,
+      "penalties": 6,
+      "ppp": 0,
+      "shp": 0
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 8,
+        "played": 6
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "1",
+          "teamName": "Colorado Avalanche",
+          "seasonCount": {
+            "owned": 7,
+            "played": 6
+          },
+          "games": 35,
+          "wins": 25,
+          "saves": 875,
+          "shutouts": 3,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 2,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "26",
+          "teamName": "Pittsburgh Penguins",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 35,
+      "wins": 25,
+      "saves": 875,
+      "shutouts": 3,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2026,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 2,
+      "wins": 1,
+      "saves": 33,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "1.01",
+      "savePercent": "0.943"
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 42,
+      "wins": 27,
+      "saves": 977,
+      "shutouts": 2,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.59",
+      "savePercent": "0.900"
+    },
+    {
+      "season": 2025,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 5,
+      "wins": 2,
+      "saves": 95,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.72",
+      "savePercent": "0.888"
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 43,
+      "wins": 26,
+      "saves": 1036,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.68",
+      "savePercent": "0.902"
+    },
+    {
+      "season": 2024,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 7,
+      "wins": 6,
+      "saves": 218,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "1.84",
+      "savePercent": "0.944"
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 33,
+      "wins": 19,
+      "saves": 827,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "3.12",
+      "savePercent": "0.896"
+    },
+    {
+      "season": 2023,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 10,
+      "wins": 9,
+      "saves": 239,
+      "shutouts": 2,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "1.30",
+      "savePercent": "0.948"
+    },
+    {
+      "season": 2022,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 47,
+      "wins": 27,
+      "saves": 1266,
+      "shutouts": 4,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.43",
+      "savePercent": "0.918"
+    },
+    {
+      "season": 2022,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 5,
+      "wins": 3,
+      "saves": 147,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "3.37",
+      "savePercent": "0.896"
+    },
+    {
+      "season": 2021,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 29,
+      "wins": 17,
+      "saves": 772,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.67",
+      "savePercent": "0.914"
+    },
+    {
+      "season": 2021,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 4,
+      "wins": 2,
+      "saves": 90,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.52",
+      "savePercent": "0.900"
+    },
+    {
+      "season": 2020,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 15,
+      "wins": 6,
+      "saves": 396,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.36",
+      "savePercent": "0.917"
+    },
+    {
+      "season": 2020,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 4,
+      "wins": 3,
+      "saves": 86,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "1.76",
+      "savePercent": "0.925"
+    },
+    {
+      "season": 2019,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2019,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2018,
+      "reportType": "regular",
+      "teamId": "26",
+      "teamName": "Pittsburgh Penguins",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2017,
+      "reportType": "regular",
+      "teamId": "26",
+      "teamName": "Pittsburgh Penguins",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2017,
+      "reportType": "playoffs",
+      "teamId": "26",
+      "teamName": "Pittsburgh Penguins",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  ]
+}

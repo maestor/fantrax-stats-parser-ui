@@ -1,0 +1,333 @@
+{
+  "id": "0618g",
+  "name": "Cole Knuble",
+  "position": "F",
+  "summary": {
+    "firstSeason": 2023,
+    "lastSeason": 2026,
+    "seasonCount": {
+      "owned": 4,
+      "played": 0
+    },
+    "teamCount": {
+      "owned": 2,
+      "played": 0
+    },
+    "teams": [
+      {
+        "teamId": "19",
+        "teamName": "Toronto Maple Leafs",
+        "seasonCount": {
+          "owned": 3,
+          "played": 0
+        },
+        "firstSeason": 2023,
+        "lastSeason": 2025
+      },
+      {
+        "teamId": "21",
+        "teamName": "Buffalo Sabres",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2025,
+        "lastSeason": 2026
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 4,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 0
+      },
+      "teams": [
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 3,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        },
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 4,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 0
+      },
+      "teams": [
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 3,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        },
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 2,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 1,
+        "played": 0
+      },
+      "teams": [
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2026,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2024,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2023,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    }
+  ]
+}

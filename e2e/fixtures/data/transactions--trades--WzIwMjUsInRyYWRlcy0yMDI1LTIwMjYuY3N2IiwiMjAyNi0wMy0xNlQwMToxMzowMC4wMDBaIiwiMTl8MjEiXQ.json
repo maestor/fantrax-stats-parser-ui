@@ -1,0 +1,140 @@
+{
+  "id": "WzIwMjUsInRyYWRlcy0yMDI1LTIwMjYuY3N2IiwiMjAyNi0wMy0xNlQwMToxMzowMC4wMDBaIiwiMTl8MjEiXQ",
+  "season": 2025,
+  "date": "2026-03-16T01:13:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 262,
+      "sourcePeriod": 161,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Danila Yurov",
+          "rawName": "Danila Yurov",
+          "entityId": "05rjg",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Carey Price",
+          "rawName": "Carey Price",
+          "entityId": "003vz",
+          "careerType": "goalie",
+          "position": "G",
+          "fromTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "draft_pick",
+          "name": "2027 Draft Pick, Round 1 (San Jose Sharks)",
+          "rawName": "2027 Draft Pick, Round 1 (San Jose Sharks)",
+          "entityId": null,
+          "careerType": null,
+          "position": null,
+          "fromTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "draftSeason": 2027,
+          "draftRound": 1,
+          "draftOriginalOwner": {
+            "id": "8",
+            "name": "San Jose Sharks"
+          }
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 263,
+      "sourcePeriod": 161,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Alexander Nikishin",
+          "rawName": "Alexander Nikishin",
+          "entityId": "05lu8",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Cole Knuble",
+          "rawName": "Cole Knuble",
+          "entityId": "0618g",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "draft_pick",
+          "name": "2028 Draft Pick, Round 3 (Toronto Maple Leafs)",
+          "rawName": "2028 Draft Pick, Round 3 (Toronto Maple Leafs)",
+          "entityId": null,
+          "careerType": null,
+          "position": null,
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "draftSeason": 2028,
+          "draftRound": 3,
+          "draftOriginalOwner": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          }
+        }
+      ]
+    }
+  ]
+}

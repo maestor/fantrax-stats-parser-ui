@@ -171,8 +171,8 @@ export class GoalieRouteComponent implements OnInit {
       panelClass: 'player-card-dialog',
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.navigateToStats();
+    dialogRef.afterClosed().subscribe((reason) => {
+      if (reason !== 'career') this.navigateToStats();
     });
   }
 

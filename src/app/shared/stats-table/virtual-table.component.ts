@@ -8,10 +8,12 @@ import {
   effect,
   inject,
   input,
+  output,
   ChangeDetectionStrategy
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +30,14 @@ import { TableRow } from './stats-table.component';
 const ROW_NUMBER_COLUMN = '__rowNumber';
 const DEFAULT_ROW_HEIGHT = 52;
 
+export interface VirtualTableBrowseState {
+  search: string;
+  sortColumn: string;
+  sortDirection: SortDirection;
+  activeId: string;
+  scrollOffset: number;
+}
+
 @Component({
   selector: 'app-virtual-table',
   host: {
@@ -35,6 +45,7 @@ const DEFAULT_ROW_HEIGHT = 52;
   },
   imports: [
     NgClass,
+    RouterLink,
     ScrollingModule,
     ...TRANSLATE_IMPORTS,
     MatFormFieldModule,
@@ -61,6 +72,10 @@ export class VirtualTableComponent implements AfterViewInit {
   readonly formatCellInput = input<
     ((row: TableRow, column: string, value: number | string | undefined) => string) | undefined
   >(undefined, { alias: 'formatCell' });
+  readonly rowLink = input<((row: TableRow) => string[]) | null>(null);
+  readonly browseState = input<VirtualTableBrowseState | null>(null);
+  readonly browseStateChange = output<VirtualTableBrowseState>();
+  private restoredBrowseState = false;
 
   data: TableRow[] = [];
   defaultSortColumn = 'name';
@@ -136,6 +151,7 @@ export class VirtualTableComponent implements AfterViewInit {
       this.previousData = data;
       this.previousColumns = columns;
       this.previousDefaultSortColumn = defaultSortColumn;
+      this.restoreBrowseState();
     });
 
     this.destroyRef.onDestroy(() => {
@@ -156,6 +172,7 @@ export class VirtualTableComponent implements AfterViewInit {
     this.recomputeRows(false);
     queueMicrotask(() => this.syncViewportMetrics());
     this.cdr.detectChanges();
+    this.restoreBrowseState();
   }
 
   onWindowResize(): void {
@@ -231,6 +248,13 @@ export class VirtualTableComponent implements AfterViewInit {
 
   onRowKeydown(event: KeyboardEvent, index: number): void {
     switch (event.key) {
+      case 'Enter':
+      case ' ':
+        if (!this.rowLink()) return;
+        if (event.key === 'Enter' && event.target instanceof Element && event.target.closest('a')) return;
+        event.preventDefault();
+        (event.currentTarget as HTMLElement).querySelector<HTMLAnchorElement>('a')?.click();
+        return;
       case 'PageDown':
         event.preventDefault();
         this.focusRow(index + 10);
@@ -264,6 +288,40 @@ export class VirtualTableComponent implements AfterViewInit {
     const keyValue = (row as Record<string, unknown>)['id'];
     return typeof keyValue === 'string' && keyValue.length > 0 ? keyValue : `${index}`;
   };
+
+  onRowClick(event: MouseEvent): void {
+    if (!this.rowLink() || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    if (event.target instanceof Element && event.target.closest('a')) return;
+    (event.currentTarget as HTMLElement).querySelector<HTMLAnchorElement>('a')?.click();
+  }
+
+  saveBrowseState(event: MouseEvent, row: TableRow, index: number): void {
+    if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    this.browseStateChange.emit({
+      search: this.searchInput?.nativeElement.value ?? '',
+      sortColumn: this.sort?.active ?? this.defaultSortColumn,
+      sortDirection: this.sort?.direction ?? 'asc',
+      activeId: this.trackRow(index, row),
+      scrollOffset: this.viewport?.measureScrollOffset() ?? 0,
+    });
+  }
+
+  private restoreBrowseState(): void {
+    const state = this.browseState();
+    if (!state || this.restoredBrowseState || !this.initialized || !this.data.length) return;
+    this.restoredBrowseState = true;
+    this.filterValue = state.search.trim().toLowerCase();
+    if (this.searchInput) this.searchInput.nativeElement.value = state.search;
+    if (this.sort) { this.sort.active = state.sortColumn; this.sort.direction = state.sortDirection; }
+    this.recomputeRows(false);
+    const index = this.filteredRows.findIndex((row, rowIndex) => this.trackRow(rowIndex, row) === state.activeId);
+    this.activeRowIndex = Math.max(0, index);
+    this.cdr.detectChanges();
+    requestAnimationFrame(() => {
+      this.viewport?.scrollToOffset(state.scrollOffset);
+      this.focusRow(this.activeRowIndex, false);
+    });
+  }
 
   private applyDefaultSort(): void {
     if (!this.sort || !this.defaultSortColumn) {
@@ -394,12 +452,12 @@ export class VirtualTableComponent implements AfterViewInit {
     }
   }
 
-  private focusRow(index: number): void {
+  private focusRow(index: number, scroll = true): void {
     if (this.filteredRows.length === 0) return;
 
     const clampedIndex = Math.max(0, Math.min(index, this.filteredRows.length - 1));
     this.activeRowIndex = clampedIndex;
-    this.viewport?.scrollToIndex(clampedIndex, 'auto');
+    if (scroll) this.viewport?.scrollToIndex(clampedIndex, 'auto');
     this.cdr.detectChanges();
 
     requestAnimationFrame(() => {

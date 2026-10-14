@@ -1,0 +1,38 @@
+@use '../profile' as profile;
+@use '../../../../styles/surface-patterns' as surfaces;
+@include profile.controls;
+@include profile.sections;
+.history-season {
+  margin-top: 1.5rem;
+}
+h4 {
+  font-size: 1.05rem;
+}
+.timeline {
+  list-style: none;
+  padding: 0 0 0 1rem;
+  margin: 0;
+  border-inline-start: 2px solid var(--mat-sys-outline-variant);
+}
+.timeline > li {
+  @include surfaces.rounded-surface-card(1rem);
+  margin-block: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.event-heading {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.event-heading h5 {
+  margin: 0;
+  font-size: 1rem;
+}
+time {
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+.timeline p {
+  margin-block: 0.5rem;
+}

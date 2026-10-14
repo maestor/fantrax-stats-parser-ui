@@ -30,7 +30,7 @@ Drawer content initializes on first open. `StartFromSeasonSwitcherComponent` sta
 | Component | Behavior to preserve |
 | --- | --- |
 | `StatsTableComponent` | Interactive dashboard/leaderboard search, sort, roving focus, optional comparison/expanded rows/card opening |
-| `VirtualTableComponent` | Read-only career virtualization, row focus and sort; displayed position must not change plain-name sorting |
+| `VirtualTableComponent` | Career virtualization, row focus/search/sort, optional native career links and return-state capture/restore; displayed position must not change plain-name sorting |
 | `TableCardComponent` | Compact highlight/draft statistics tables: loading/empty/error, tooltips, tied-rank prefixes, paging, row emphasis, labeled tables/pagers, accessible emoji-header help |
 | `SectionJumpNavComponent` | Sticky browse pills with overflow fades and screen-reader scroll instructions; consumers supply section metadata and click behavior |
 | `PlayerCardComponent` | Combined/season/graphs tabs, dynamic width, deep links, circular player navigation, table-row synchronization, focus return and reduced motion |
@@ -40,3 +40,15 @@ Keep the three table components distinct while their interaction models differ. 
 Player-card chart data uses computed signals. Metric selections persist across players of the same type and chart-mode switches. Theme reads/canvas resize and section-jump overflow measurement run after rendering.
 
 Shared component changes can affect multiple routes. Use [testing](testing.md), [accessibility](accessibility.md), and [styling](styling.md) for relevant validation rather than duplicating their rules here.
+
+Player-card popups expose a native FFHL-ura history-icon link for the currently displayed identity. Opening a career page closes the popup with an explicit career-navigation result; direct-card hosts skip their usual close-to-statistics redirect for that result.
+
+## Career profiles
+
+`CareerDetailComponent` owns identity-scoped statistics loading, page focus, a copy-link icon with temporary tooltip/live-region feedback, and section navigation. `CareerStatisticsComponent` owns a local regular/playoff/combined scope and season/team tables; changing scope leaves lifetime metadata and history untouched. Goalie rates appear only on source season/team rows, never as averages of row rates.
+
+`CareerHistoryComponent` loads independently of statistics and groups linked draft/transaction events by recorded season. Trade details show received packages by team immediately on desktop; mobile uses a lazy disclosure. Failures have independent retries. The section disclaimer covers timestamp-based reconstruction; undated drafts and unlinked assets remain explicit. Profile links are offered only for assets with career records. The sibling API's [importing guide](../../node-fantrax-stats-parser/docs/importing.md#career-history-consumers) owns source interpretation.
+
+`CareerListStateService` retains transient search, sort, scroll offset, and originating identity when opening a profile, separately for player and goalie lists. Returning restores row focus, including repeated browser Back/Forward navigation; direct profile visits have a normal list-link fallback. This state does not change persisted dashboard settings.
+
+Career pages opened from statistics carry a `from=player-stats` or `from=goalie-stats` return context, preserved through trade-profile links. The back link accepts those two statistics destinations; other entries return to the corresponding career list. Copied career URLs omit return context.

@@ -898,6 +898,122 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/career/history/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Recorded draft and transaction history for a career identity
+         * @description Reads linked records only, across all teams. Supports players and goalies with career
+         *     statistics, including zero-game rows. Coverage describes stored-record seasons with
+         *     unknown completeness. Does not infer current ownership or exact roster tenures.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Fantrax player or goalie identifier. */
+                    id: components["parameters"]["careerId"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Career history and source coverage. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CareerHistory"];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description No career statistics for this identity. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/transactions/trades/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Inspect a reconstructed trade or ambiguous source group
+         * @description Returns all directed assets in the source group, including unresolved names and picks.
+         *     Use status before describing the group as one package. IDs are opaque source-derived
+         *     identifiers returned by career history; their encoding is not a client contract.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Opaque trade identifier returned by career history. */
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Trade source blocks and assembly status. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TradeDetail"];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Invalid or unknown trade identifier. */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/career/player/{id}": {
         parameters: {
             query?: never;
@@ -1668,6 +1784,98 @@ export interface components {
             gaa?: string;
             /** @description Save percentage formatted with three decimals. Played zero values are returned as `0.000`; omitted only when source data only contains a non-played zero placeholder. */
             savePercent?: string;
+        };
+        HistoryTeam: {
+            id: string;
+            name: string;
+        };
+        /** @description Seasons containing stored records, not a completed-import manifest. Empty imports and missing imports cannot be distinguished; completeness is unknown. */
+        HistoryCoverage: {
+            entryDraftSeasons: number[];
+            openingDraftPresent: boolean;
+            claimSeasons: number[];
+            tradeSeasons: number[];
+            /** @enum {string} */
+            completeness: "unknown";
+        };
+        DraftHistoryEvent: {
+            id: string;
+            /** @enum {string} */
+            type: "draft";
+            /** @description Opening draft records have no stored season. */
+            season: number | null;
+            /** @description No exact draft date is stored; always null. */
+            date: string | null;
+            /** @enum {string} */
+            draftType: "entry" | "opening";
+            round: number;
+            pickNumber: number;
+            team: components["schemas"]["HistoryTeam"];
+            originalOwner: components["schemas"]["HistoryTeam"];
+        };
+        ClaimHistoryEvent: {
+            id: string;
+            /** @enum {string} */
+            type: "claim" | "drop";
+            season: number;
+            date: string;
+            team: components["schemas"]["HistoryTeam"];
+        };
+        HistoryMovement: {
+            fromTeam: components["schemas"]["HistoryTeam"];
+            toTeam: components["schemas"]["HistoryTeam"];
+        };
+        TradeHistoryEvent: {
+            id: string;
+            /** @enum {string} */
+            type: "trade";
+            season: number;
+            date: string;
+            tradeId: string;
+            status: components["schemas"]["TradeAssemblyStatus"];
+            movements: components["schemas"]["HistoryMovement"][];
+        };
+        CareerHistory: {
+            id: string;
+            coverage: components["schemas"]["HistoryCoverage"];
+            /** @description Newest season first, then newest dated event; undated drafts follow dated events within a season. Opening draft records appear last. Equal timestamps use deterministic source identity order, not a claimed temporal order. */
+            events: (components["schemas"]["DraftHistoryEvent"] | components["schemas"]["ClaimHistoryEvent"] | components["schemas"]["TradeHistoryEvent"])[];
+        };
+        /**
+         * @description Reconstructed means exactly two opposing source blocks with matching period within one source-file/season/timestamp/participant group. This is an inference, not a provider-confirmed deal ID. Extra blocks or different periods are ambiguous; missing opposing directions are incomplete.
+         * @enum {string}
+         */
+        TradeAssemblyStatus: "reconstructed" | "ambiguous" | "incomplete";
+        TradeAsset: {
+            /** @enum {string} */
+            type: "player" | "draft_pick" | "other";
+            name: string;
+            rawName: string;
+            entityId: string | null;
+            /**
+             * @description Present only when linked career statistics exist, including zero-game records.
+             * @enum {string|null}
+             */
+            careerType: "player" | "goalie" | null;
+            position: string | null;
+            fromTeam: components["schemas"]["HistoryTeam"];
+            toTeam: components["schemas"]["HistoryTeam"];
+            draftSeason: number | null;
+            draftRound: number | null;
+            draftOriginalOwner: components["schemas"]["HistoryTeam"] | null;
+        };
+        TradeSourceBlock: {
+            sourceBlockIndex: number;
+            sourcePeriod: number;
+            assets: components["schemas"]["TradeAsset"][];
+        };
+        TradeDetail: {
+            id: string;
+            season: number;
+            date: string;
+            status: components["schemas"]["TradeAssemblyStatus"];
+            /** @description Original directional blocks preserved even when assembly is ambiguous or incomplete. */
+            blocks: components["schemas"]["TradeSourceBlock"][];
         };
         CareerPlayer: {
             id: string;

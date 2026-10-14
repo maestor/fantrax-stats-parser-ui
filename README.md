@@ -1,6 +1,6 @@
 # FFHL Stats UI
 
-Angular UI for the [FFHL Stats API](https://github.com/maestor/node-fantrax-stats-parser): player/goalie stats, comparisons and charts, career highlights, team leaderboards, finals, and draft history. Finnish UI with keyboard navigation, responsive layouts, automatic light/dark mode, and a production PWA.
+Angular UI for the [FFHL Stats API](https://github.com/maestor/node-fantrax-stats-parser): player/goalie stats, comparisons and charts, career profiles and highlights, team leaderboards, finals, and draft history. Finnish UI with keyboard navigation, responsive layouts, automatic light/dark mode, and a production PWA.
 
 [Live app](https://ffhl-stats.vercel.app/) · [Development docs](docs/README.md) · [Agent workflow](AGENTS.md)
 

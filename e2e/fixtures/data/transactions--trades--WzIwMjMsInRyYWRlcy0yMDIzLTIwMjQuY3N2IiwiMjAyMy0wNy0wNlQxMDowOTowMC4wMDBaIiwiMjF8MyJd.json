@@ -1,0 +1,61 @@
+{
+  "id": "WzIwMjMsInRyYWRlcy0yMDIzLTIwMjQuY3N2IiwiMjAyMy0wNy0wNlQxMDowOTowMC4wMDBaIiwiMjF8MyJd",
+  "season": 2023,
+  "date": "2023-07-06T10:09:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 403,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "draft_pick",
+          "name": "2024 Draft Pick, Round 5 (Buffalo Sabres)",
+          "rawName": "2024 Draft Pick, Round 5 (Buffalo Sabres)",
+          "entityId": null,
+          "careerType": null,
+          "position": null,
+          "fromTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": 2024,
+          "draftRound": 5,
+          "draftOriginalOwner": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          }
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 404,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Carey Price",
+          "rawName": "Carey Price",
+          "entityId": "003vz",
+          "careerType": "goalie",
+          "position": "G",
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    }
+  ]
+}

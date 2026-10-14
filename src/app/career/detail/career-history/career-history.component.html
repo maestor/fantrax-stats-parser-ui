@@ -1,0 +1,95 @@
+<section aria-labelledby="career-history">
+  <h3 id="career-history" tabindex="-1">{{ 'career.profile.history' | translate }}</h3>
+  @if (state().loading) {
+    <p role="status" class="status-surface">{{ 'career.profile.historyLoading' | translate }}</p>
+  } @else if (state().error) {
+    <div role="alert" class="status-surface">
+      <p>{{ 'career.profile.historyFailed' | translate }}</p>
+      <button mat-stroked-button type="button" (click)="reload()">{{ 'career.profile.retry' | translate }}</button>
+    </div>
+  } @else if (state().data; as history) {
+    <p>{{ 'career.profile.historyNote' | translate }}</p>
+    @for (group of groups(); track group.season) {
+      <section
+        class="history-season"
+        [attr.aria-label]="
+          group.season === null
+            ? ('career.profile.openingDraft' | translate)
+            : formatSeason(group.season)
+        "
+      >
+        <h4>
+          {{
+            group.season === null
+              ? ('career.profile.openingDraft' | translate)
+              : formatSeason(group.season)
+          }}
+        </h4>
+        <ol class="timeline">
+          @for (event of group.events; track event.id) {
+            <li>
+              <div class="event-heading">
+                <h5>
+                  {{
+                    (event.type === 'draft' && event.draftType === 'opening'
+                      ? 'career.profile.openingDraft'
+                      : 'career.profile.events.' + event.type
+                    ) | translate
+                  }}
+                </h5>
+                @if (event.date; as date) {
+                  <time [attr.datetime]="date">{{ dateLabel(date) }}</time>
+                }
+              </div>
+              @if (event.type === 'draft') {
+                <p>
+                  {{ event.team.name }} ·
+                  {{
+                    'career.profile.roundPick'
+                      | translate: { round: event.round, pick: event.pickNumber }
+                  }}
+                </p>
+                @if (event.originalOwner.id !== event.team.id) {
+                  <p>
+                    {{ 'career.profile.originalOwner' | translate }}: {{ event.originalOwner.name }}
+                  </p>
+                }
+              } @else if (event.type === 'trade') {
+                @if (isMobile()) {
+                  @for (move of event.movements; track $index) {
+                    <p>{{ move.fromTeam.name }} → {{ move.toTeam.name }}</p>
+                  }
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    [attr.aria-expanded]="expanded().has(event.id)"
+                    [attr.aria-controls]="'trade-' + event.id"
+                    [attr.aria-label]="
+                      ('career.profile.inspectTrade' | translate) + ' ' + dateLabel(event.date)
+                    "
+                    (click)="toggle(event.id)"
+                  >
+                    {{ 'career.profile.inspectTrade' | translate }}
+                  </button>
+                }
+                @if (!isMobile() || expanded().has(event.id)) {
+                  <div
+                    [id]="'trade-' + event.id"
+                    role="region"
+                    [attr.aria-label]="'career.profile.tradeDetails' | translate"
+                  >
+                    <app-career-trade [tradeId]="event.tradeId" />
+                  </div>
+                }
+              } @else {
+                <p>{{ event.team.name }}</p>
+              }
+            </li>
+          }
+        </ol>
+      </section>
+    } @empty {
+      <p role="status">{{ 'career.profile.noHistory' | translate }}</p>
+    }
+  }
+</section>

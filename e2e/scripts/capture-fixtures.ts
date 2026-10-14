@@ -15,6 +15,8 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { CAREER_HIGHLIGHT_CARD_TYPES } from '../../src/app/career/highlights/career-highlights.constants';
+import { CAREER_POPUP_PROFILES, CAREER_PROFILES } from '../config/career-profiles';
+import type { components } from '../../src/app/services/api.types.generated';
 
 const API_URL = 'http://localhost:3000';
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,6 +44,8 @@ async function fetchJson<T>(path: string): Promise<T> {
  * even when new seasons are added.
  */
 async function buildFixtureList(): Promise<FixtureEntry[]> {
+  const careerEntries = await buildCareerProfileFixtureList();
+  if (process.argv.includes('--career-profiles-only')) return careerEntries;
   const regularSeasons = await fetchJson<Season[]>('seasons/regular');
 
   // The default team's oldest season (used as default startFrom by the app)
@@ -57,6 +61,7 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
   const DALLAS = '29';
 
   const entries: FixtureEntry[] = [
+    ...careerEntries,
     // ── Static endpoints ─────────────────────────────────────────────
     { path: 'teams' },
     { path: 'last-modified' },
@@ -126,6 +131,33 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
   ];
 
   return entries;
+}
+
+async function buildCareerProfileFixtureList(): Promise<FixtureEntry[]> {
+  const paths = new Set(['career/players', 'career/goalies', 'goalies/combined/regular']);
+  for (const profile of CAREER_PROFILES) {
+    paths.add(`career/${profile.kind}/${profile.id}`);
+    paths.add(`career/history/${profile.id}`);
+    const history = await fetchJson<components['schemas']['CareerHistory']>(`career/history/${profile.id}`);
+    const trades = history.events.filter((event) => event.type === 'trade');
+    for (const [index, trade] of trades.entries()) {
+      const path = `transactions/trades/${trade.tradeId}`;
+      paths.add(path);
+      // Cross-profile navigation uses the first trade's linked career records.
+      if (index !== 0) continue;
+      const detail = await fetchJson<components['schemas']['TradeDetail']>(path);
+      for (const asset of detail.blocks.flatMap((block) => block.assets)) {
+        if (!asset.entityId || !asset.careerType) continue;
+        paths.add(`career/${asset.careerType}/${asset.entityId}`);
+        paths.add(`career/history/${asset.entityId}`);
+      }
+    }
+  }
+  for (const profile of CAREER_POPUP_PROFILES) {
+    paths.add(`career/${profile.kind}/${profile.id}`);
+    paths.add(`career/history/${profile.id}`);
+  }
+  return [...paths].map((path) => ({ path }));
 }
 
 /** Convert a fixture entry to a filename */

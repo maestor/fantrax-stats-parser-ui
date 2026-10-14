@@ -1,0 +1,146 @@
+{
+  "id": "05lu8",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "trade-WzIwMjUsInRyYWRlcy0yMDI1LTIwMjYuY3N2IiwiMjAyNi0wMy0xNlQwMToxMzowMC4wMDBaIiwiMTl8MjEiXQ",
+      "type": "trade",
+      "season": 2025,
+      "date": "2026-03-16T01:13:00.000Z",
+      "tradeId": "WzIwMjUsInRyYWRlcy0yMDI1LTIwMjYuY3N2IiwiMjAyNi0wMy0xNlQwMToxMzowMC4wMDBaIiwiMTl8MjEiXQ",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-WzIwMjQsInRyYWRlcy0yMDI0LTIwMjUuY3N2IiwiMjAyNS0wMS0xNlQxNToyNjowMC4wMDBaIiwiMTl8NyJd",
+      "type": "trade",
+      "season": 2024,
+      "date": "2025-01-16T15:26:00.000Z",
+      "tradeId": "WzIwMjQsInRyYWRlcy0yMDI0LTIwMjUuY3N2IiwiMjAyNS0wMS0xNlQxNToyNjowMC4wMDBaIiwiMTl8NyJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "7",
+            "name": "Edmonton Oilers"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-WzIwMjMsInRyYWRlcy0yMDIzLTIwMjQuY3N2IiwiMjAyMy0xMC0wNFQxODoyNDowMC4wMDBaIiwiMTl8NyJd",
+      "type": "trade",
+      "season": 2023,
+      "date": "2023-10-04T18:24:00.000Z",
+      "tradeId": "WzIwMjMsInRyYWRlcy0yMDIzLTIwMjQuY3N2IiwiMjAyMy0xMC0wNFQxODoyNDowMC4wMDBaIiwiMTl8NyJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "7",
+            "name": "Edmonton Oilers"
+          }
+        }
+      ]
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyMC0yMDIxLmNzdiIsMzAxLDBd",
+      "type": "claim",
+      "date": "2020-10-13T07:44:00.000Z",
+      "season": 2020,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "draft-entry-2020-150",
+      "type": "draft",
+      "draftType": "entry",
+      "date": null,
+      "season": 2020,
+      "round": 5,
+      "pickNumber": 150,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      },
+      "originalOwner": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    }
+  ]
+}

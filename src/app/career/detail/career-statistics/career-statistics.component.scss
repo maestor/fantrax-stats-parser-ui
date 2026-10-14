@@ -1,0 +1,71 @@
+@use '../profile' as profile;
+@use '../../../../styles/surface-patterns' as surfaces;
+@include profile.controls;
+@include profile.sections;
+.stat-grid {
+  @include profile.stats-grid;
+}
+.section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+mat-form-field {
+  width: 290px;
+  max-width: 100%;
+}
+.table-scroll {
+  overflow-x: auto;
+  @include surfaces.themed-scrollbars;
+  @include surfaces.rounded-surface-card;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+th,
+td {
+  padding: 0.85rem 0.75rem;
+  text-align: center;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+th {
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 600;
+}
+thead {
+  background: var(--mat-sys-surface-container);
+}
+.text-column {
+  text-align: left;
+}
+tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+@media (min-width: 769px) {
+  .stat-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+
+    > div {
+      grid-column: span 2;
+      min-width: 0;
+    }
+
+    > div:nth-child(7) {
+      grid-column: 2 / span 2;
+    }
+  }
+
+  .stat-grid--goalie {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    > div,
+    > div:nth-child(7) {
+      grid-column: auto;
+    }
+  }
+}

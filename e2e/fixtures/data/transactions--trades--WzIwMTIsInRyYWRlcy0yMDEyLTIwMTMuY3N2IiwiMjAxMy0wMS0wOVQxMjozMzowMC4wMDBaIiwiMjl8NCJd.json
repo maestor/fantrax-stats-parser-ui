@@ -1,0 +1,172 @@
+{
+  "id": "WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxMjozMzowMC4wMDBaIiwiMjl8NCJd",
+  "season": 2012,
+  "date": "2013-01-09T12:33:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 126,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Rich Peverley",
+          "rawName": "Rich Peverley",
+          "entityId": "003wv",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Ben Street",
+          "rawName": "Ben Street",
+          "entityId": "02ni8",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Jay Bouwmeester",
+          "rawName": "Jay Bouwmeester",
+          "entityId": "003rf",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Jamie Benn",
+          "rawName": "Jamie Benn",
+          "entityId": "00qs7",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 127,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Jared Spurgeon",
+          "rawName": "Jared Spurgeon",
+          "entityId": "023wa",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Nick Palmieri",
+          "rawName": "Nick Palmieri",
+          "entityId": "003y8",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Tim Erixon",
+          "rawName": "Tim Erixon",
+          "entityId": "01f63",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Zach Parise",
+          "rawName": "Zach Parise",
+          "entityId": "003yc",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    }
+  ]
+}
