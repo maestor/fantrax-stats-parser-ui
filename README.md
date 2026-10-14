@@ -24,7 +24,7 @@ Open `http://localhost:4200`. Development calls the API directly; production use
 | `npm run test:watch` | Watch tests |
 | `npm run e2e` | Playwright; requires local API |
 | `npm run build` | Production build with prerendering |
-| `npm run verify` | Lint, coverage tests, production build; after review acceptance |
+| `npm run verify` | Lint, proxy tests, coverage tests, production build; after review acceptance |
 | `npm run generate:types` | Generate UI types from hosted OpenAPI |
 
 [package.json](package.json) owns the complete command and dependency lists. Read only the task-relevant guides from the [docs index](docs/README.md).

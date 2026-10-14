@@ -171,9 +171,46 @@ describe('Vercel proxy handler', () => {
     });
   });
 
-  it('rejects unknown rewritten paths before reaching the backend', async () => {
+  it.each([
+    'career/player/02noj',
+    'career/goalie/003vz',
+    'career/history/03ret',
+    'transactions/trades/WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxNTowODowMC4wMDBaIiwiMXw0Il0',
+  ])('forwards the career profile read endpoint %s', async (path) => {
+    const payload = { id: path.split('/').at(-1) };
+    fetch.mockResolvedValue(
+      new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { 'content-type': 'application/json' },
+      }),
+    );
+
     const req = createRequest({
-      url: '/api/proxy?path=admin/secrets',
+      url: `/api/proxy?path=${encodeURIComponent(path)}`,
+      headers: { origin: 'https://ffhl-stats.vercel.app' },
+    });
+    const res = createResponse();
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(fetch).toHaveBeenCalledWith(
+      new URL(`https://backend.example.com/api/${path}`),
+      { method: 'GET', headers: { 'x-api-key': 'server-secret' } },
+    );
+    expect(JSON.parse(res.body.toString('utf8'))).toEqual(payload);
+  });
+
+  it.each([
+    'admin/secrets',
+    'career/player',
+    'career/player/02noj/admin',
+    'career/history/../teams',
+    'transactions/trades',
+    'transactions/trades/trade-id/admin',
+  ])('rejects unknown rewritten path %s before reaching the backend', async (path) => {
+    const req = createRequest({
+      url: `/api/proxy?path=${encodeURIComponent(path)}`,
       headers: {
         origin: 'https://ffhl-stats.vercel.app',
       },
@@ -186,7 +223,7 @@ describe('Vercel proxy handler', () => {
     expect(res.statusCode).toBe(404);
     expect(JSON.parse(res.body.toString('utf8'))).toEqual({
       error: 'Path not allowed',
-      path: 'admin/secrets',
+      path,
     });
   });
 });

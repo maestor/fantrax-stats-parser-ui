@@ -6,13 +6,14 @@ Use `intelligence-testing` to choose realistic behavior coverage, then apply the
 
 | Command | Scope |
 | --- | --- |
-| `npm test` | All Vitest/jsdom tests, once |
+| `npm test` | Angular Vitest/jsdom tests, once |
 | `npm run test:watch` | Watch component/service tests |
 | `npm run test:coverage` | Istanbul coverage through Angular's unit-test builder |
+| `npm run test:proxy` | Vercel proxy forwarding and path/method restrictions |
 | `npm run e2e` | Full Chromium Playwright suite |
 | `npx playwright test e2e/specs/<spec>.ts` | Relevant E2E spec while iterating |
 | `npm run e2e:capture-fixtures` | Capture API responses from local backend |
-| `npm run verify` | Lint + coverage tests + production build, after acceptance |
+| `npm run verify` | Lint + proxy tests + coverage tests + production build, after acceptance |
 
 [angular.json](../angular.json) → `architect.test.options.coverageThresholds` owns exact coverage gates. Cover changed behavior, including realistic error/edge cases; aim for full coverage of touched logic. Do not preserve dead branches just to test them. Tests/config own current counts and exclusions.
 
