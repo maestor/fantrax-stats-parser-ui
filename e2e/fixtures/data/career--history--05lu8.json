@@ -116,16 +116,6 @@
       ]
     },
     {
-      "id": "claim-WyJjbGFpbXMtMjAyMC0yMDIxLmNzdiIsMzAxLDBd",
-      "type": "claim",
-      "date": "2020-10-13T07:44:00.000Z",
-      "season": 2020,
-      "team": {
-        "id": "19",
-        "name": "Toronto Maple Leafs"
-      }
-    },
-    {
       "id": "draft-entry-2020-150",
       "type": "draft",
       "draftType": "entry",

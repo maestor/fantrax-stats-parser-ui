@@ -910,6 +910,9 @@ export interface paths {
          * @description Reads linked records only, across all teams. Supports players and goalies with career
          *     statistics, including zero-game rows. Coverage describes stored-record seasons with
          *     unknown completeness. Does not infer current ownership or exact roster tenures.
+         *     Omits a claim when it is the first transaction after a draft and goes to the drafting
+         *     team, regardless of season. Claims tied with another transaction at the same timestamp
+         *     remain visible because their order is unknown. Stored transactions and counts are unchanged.
          */
         get: {
             parameters: {
