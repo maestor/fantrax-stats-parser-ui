@@ -1,0 +1,106 @@
+{
+  "id": "0457k",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "trade-WzIwMTksInRyYWRlcy0yMDE5LTIwMjAuY3N2IiwiMjAxOS0wNi0yM1QxNTozMzowMC4wMDBaIiwiMXwyNiJd",
+      "type": "trade",
+      "season": 2019,
+      "date": "2019-06-23T15:33:00.000Z",
+      "tradeId": "WzIwMTksInRyYWRlcy0yMDE5LTIwMjAuY3N2IiwiMjAxOS0wNi0yM1QxNTozMzowMC4wMDBaIiwiMXwyNiJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "26",
+            "name": "Pittsburgh Penguins"
+          },
+          "toTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAxNy0yMDE4LmNzdiIsNTE0LDBd",
+      "type": "claim",
+      "date": "2017-06-26T14:00:00.000Z",
+      "season": 2017,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    },
+    {
+      "id": "draft-entry-2017-18",
+      "type": "draft",
+      "draftType": "entry",
+      "date": null,
+      "season": 2017,
+      "round": 1,
+      "pickNumber": 18,
+      "team": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      },
+      "originalOwner": {
+        "id": "26",
+        "name": "Pittsburgh Penguins"
+      }
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/angular';
 import { Subject } from 'rxjs';
 import { TranslateTestingModule } from '@testing/translate-testing';
@@ -15,6 +16,7 @@ describe('CareerPlayersComponent', () => {
     const view = await render(CareerPlayersComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         { provide: ApiService, useValue: { getCareerPlayers: () => response } },
       ],
@@ -26,7 +28,7 @@ describe('CareerPlayersComponent', () => {
     const { response, footer } = await setup();
     expect(screen.getByText('table.loading')).toBeInTheDocument();
     expect(footer.footerVisible()).toBe(false);
-    const row = careerPlayersFixture[0];
+    const row = careerPlayersFixture.find((player) => player.name === 'Jamie Benn')!;
     response.next([row]);
     response.complete();
     const cell = await screen.findByRole('cell', { name: `${row.position} ${row.name}` });

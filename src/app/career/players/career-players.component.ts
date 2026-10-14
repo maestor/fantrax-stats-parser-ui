@@ -9,6 +9,8 @@ import { CAREER_PLAYER_COLUMNS } from '@shared/table-columns';
 import { Column } from '@shared/column.types';
 import { formatSeasonDisplay } from '@shared/utils/season.utils';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { CareerListStateService } from '../career-list-state.service';
+import { careerProfileSlug } from '@shared/utils/career-profile-url.utils';
 
 @Component({
   selector: 'app-career-players',
@@ -17,6 +19,12 @@ import { FooterVisibilityService } from '@services/footer-visibility.service';
   templateUrl: './career-players.component.html',
 })
 export class CareerPlayersComponent {
+  readonly listState = inject(CareerListStateService);
+  readonly browseState = this.listState.restore('players');
+  readonly rowLink = (row: TableRow): string[] => {
+    const player = row as CareerPlayerListItem;
+    return ['/career/players', careerProfileSlug(player.name, player.id)];
+  };
   private readonly apiService = inject(ApiService);
   private readonly footerVisibilityService = inject(FooterVisibilityService);
 

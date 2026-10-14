@@ -1,3 +1,4 @@
 @let state = requestState();
 <app-virtual-table [data]="state.data" [columns]="columns" [loading]="state.loading" [apiError]="state.apiError"
-  [searchLabelKey]="searchLabelKey" [formatCell]="formatCell" />
+  [searchLabelKey]="searchLabelKey" [formatCell]="formatCell" [rowLink]="rowLink"
+  [browseState]="browseState" (browseStateChange)="listState.save('goalies', $event)" />

@@ -1,0 +1,106 @@
+{
+  "id": "0618g",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "trade-WzIwMjUsInRyYWRlcy0yMDI1LTIwMjYuY3N2IiwiMjAyNi0wMy0xNlQwMToxMzowMC4wMDBaIiwiMTl8MjEiXQ",
+      "type": "trade",
+      "season": 2025,
+      "date": "2026-03-16T01:13:00.000Z",
+      "tradeId": "WzIwMjUsInRyYWRlcy0yMDI1LTIwMjYuY3N2IiwiMjAyNi0wMy0xNlQwMToxMzowMC4wMDBaIiwiMTl8MjEiXQ",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          }
+        }
+      ]
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyMy0yMDI0LmNzdiIsNjI1LDBd",
+      "type": "claim",
+      "date": "2023-07-04T11:00:00.000Z",
+      "season": 2023,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "draft-entry-2023-99",
+      "type": "draft",
+      "draftType": "entry",
+      "date": null,
+      "season": 2023,
+      "round": 4,
+      "pickNumber": 99,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      },
+      "originalOwner": {
+        "id": "17",
+        "name": "Florida Panthers"
+      }
+    }
+  ]
+}

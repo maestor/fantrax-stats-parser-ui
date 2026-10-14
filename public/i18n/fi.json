@@ -107,6 +107,60 @@
         "trade": "kaupalla",
         "claim": "vapaista"
       }
+    },
+    "profile": {
+      "title": "FFHL-ura",
+      "back": "Takaisin uralistaan",
+      "backPlayerStats": "Takaisin pelaajatilastoihin",
+      "backGoalieStats": "Takaisin maalivahtitilastoihin",
+      "copyLink": "Kopioi linkki leikepöydälle",
+      "copied": "Linkki kopioitu!",
+      "copyFailed": "Linkin kopiointi epäonnistui. Voit kopioida osoitteen selaimen osoiteriviltä.",
+      "seasonsOwned": "Kausia omistuksessa",
+      "seasonsPlayed": "Pelattuja kausia",
+      "teamsOwned": "Omistaneita joukkueita",
+      "teamsPlayed": "Joukkueita, joissa pelannut",
+      "firstAppearance": "Ensimmäinen pelattu kausi",
+      "noAppearance": "Ei kirjattuja otteluita",
+      "loading": "Ladataan uraa…",
+      "failed": "Uratilastojen lataaminen epäonnistui.",
+      "notFound": "Tälle pelaajalle ei löytynyt uratietoja.",
+      "retry": "Yritä uudelleen",
+      "overview": "Uratilastot",
+      "seasons": "Kausittain",
+      "teams": "Joukkueittain",
+      "history": "Siirrot",
+      "jumpLabel": "Urasivun osiot",
+      "scope": "Tilastojen rajaus",
+      "scopes": {
+        "regular": "Runkosarja",
+        "playoffs": "Pudotuspelit",
+        "career": "Kaikki"
+      },
+      "season": "Kausi",
+      "team": "Joukkue",
+      "report": "Sarja",
+      "noStats": "Ei kirjattuja tilastoja valitussa rajauksessa.",
+      "goalieRatesNote": "GAA ja torjuntaprosentti näytetään vain alkuperäisillä kausi- ja joukkueriveillä. Uralla tai joukkueittain yhdistettyjä arvoja ei lasketa näistä keskiarvoista.",
+      "historyLoading": "Ladataan historiaa…",
+      "historyFailed": "Historian lataaminen epäonnistui. Uratilastot ovat edelleen käytettävissä.",
+      "historyNote": "HUOM! Kaupat koottu aikaleiman perusteella, mutta virheitä voi esiintyä.",
+      "openingDraft": "Avausdrafti",
+      "noHistory": "Pelaajalle ei löytynyt linkitettyjä tapahtumia tallennetusta historiasta.",
+      "events": {
+        "draft": "Entry draft",
+        "claim": "Nosto",
+        "drop": "Pudotus",
+        "trade": "Kauppa"
+      },
+      "roundPick": "Kierros {{round}}, varaus {{pick}}",
+      "originalOwner": "Varausvuoron alkuperäinen omistaja",
+      "inspectTrade": "Näytä kauppa",
+      "tradeLoading": "Ladataan kaupan osapuolia…",
+      "tradeFailed": "Kaupan tietojen lataaminen epäonnistui.",
+      "received": "sai",
+      "noReceivedAssets": "Ei tallennettuja siirtoja.",
+      "tradeDetails": "Kaupan tapahtumat"
     }
   },
   "draft": {
@@ -361,7 +415,8 @@
     "expandSeasonDetails": "Näytä kausierittely: {{name}}",
     "collapseSeasonDetails": "Piilota kausierittely: {{name}}",
     "expandCategoryDetails": "Näytä pelaajien kirjaukset kategoriassa {{name}}",
-    "collapseCategoryDetails": "Piilota pelaajien kirjaukset kategoriassa {{name}}"
+    "collapseCategoryDetails": "Piilota pelaajien kirjaukset kategoriassa {{name}}",
+    "careerNavigationHint": "Käytä ylös/alas-näppäimiä riveillä liikkumiseen ja Enter- tai välilyöntinäppäintä urasivun avaamiseen. Home/End siirtyy alkuun tai loppuun, PageUp/PageDown hyppää 10 riviä."
   },
   "pwa": {
     "updateAvailable": "Päivitys tarjolla!",
@@ -636,6 +691,7 @@
     "ariaLabel": "Säädä vähimmäispelien määrää"
   },
   "playerCard": {
+    "careerLink": "FFHL-ura",
     "all": "Tilastot",
     "bySeason": "Kausittain",
     "graphs": "Graafit",

@@ -1,0 +1,213 @@
+{
+  "id": "0243v",
+  "name": "Kent Patterson",
+  "summary": {
+    "firstSeason": 2012,
+    "lastSeason": 2016,
+    "seasonCount": {
+      "owned": 5,
+      "played": 0
+    },
+    "teamCount": {
+      "owned": 1,
+      "played": 0
+    },
+    "teams": [
+      {
+        "teamId": "29",
+        "teamName": "Dallas Stars",
+        "seasonCount": {
+          "owned": 5,
+          "played": 0
+        },
+        "firstSeason": 2012,
+        "lastSeason": 2016
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 5,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 1,
+        "played": 0
+      },
+      "teams": [
+        {
+          "teamId": "29",
+          "teamName": "Dallas Stars",
+          "seasonCount": {
+            "owned": 5,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 5,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 1,
+        "played": 0
+      },
+      "teams": [
+        {
+          "teamId": "29",
+          "teamName": "Dallas Stars",
+          "seasonCount": {
+            "owned": 5,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 0,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 0,
+        "played": 0
+      },
+      "teams": [],
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2016,
+      "reportType": "regular",
+      "teamId": "29",
+      "teamName": "Dallas Stars",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2015,
+      "reportType": "regular",
+      "teamId": "29",
+      "teamName": "Dallas Stars",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2014,
+      "reportType": "regular",
+      "teamId": "29",
+      "teamName": "Dallas Stars",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2013,
+      "reportType": "regular",
+      "teamId": "29",
+      "teamName": "Dallas Stars",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2012,
+      "reportType": "regular",
+      "teamId": "29",
+      "teamName": "Dallas Stars",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  ]
+}

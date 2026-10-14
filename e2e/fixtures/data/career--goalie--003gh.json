@@ -1,0 +1,314 @@
+{
+  "id": "003gh",
+  "name": "Tim Thomas",
+  "summary": {
+    "firstSeason": 2012,
+    "lastSeason": 2014,
+    "seasonCount": {
+      "owned": 3,
+      "played": 1
+    },
+    "teamCount": {
+      "owned": 2,
+      "played": 1
+    },
+    "teams": [
+      {
+        "teamId": "1",
+        "teamName": "Colorado Avalanche",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2012,
+        "lastSeason": 2013
+      },
+      {
+        "teamId": "27",
+        "teamName": "Columbus Blue Jackets",
+        "seasonCount": {
+          "owned": 2,
+          "played": 1
+        },
+        "firstSeason": 2013,
+        "lastSeason": 2014
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 3,
+        "played": 1
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "27",
+          "teamName": "Columbus Blue Jackets",
+          "seasonCount": {
+            "owned": 2,
+            "played": 1
+          },
+          "games": 35,
+          "wins": 14,
+          "saves": 917,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 4,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "1",
+          "teamName": "Colorado Avalanche",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 35,
+      "wins": 14,
+      "saves": 917,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 4,
+      "ppp": 0,
+      "shp": 0
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 3,
+        "played": 1
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "27",
+          "teamName": "Columbus Blue Jackets",
+          "seasonCount": {
+            "owned": 2,
+            "played": 1
+          },
+          "games": 35,
+          "wins": 14,
+          "saves": 917,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 4,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "1",
+          "teamName": "Colorado Avalanche",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 35,
+      "wins": 14,
+      "saves": 917,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 4,
+      "ppp": 0,
+      "shp": 0
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 2,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 0
+      },
+      "teams": [
+        {
+          "teamId": "1",
+          "teamName": "Colorado Avalanche",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "27",
+          "teamName": "Columbus Blue Jackets",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2014,
+      "reportType": "regular",
+      "teamId": "27",
+      "teamName": "Columbus Blue Jackets",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2013,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2013,
+      "reportType": "regular",
+      "teamId": "27",
+      "teamName": "Columbus Blue Jackets",
+      "games": 35,
+      "wins": 14,
+      "saves": 917,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 4,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "3.07",
+      "savePercent": "0.902"
+    },
+    {
+      "season": 2013,
+      "reportType": "playoffs",
+      "teamId": "27",
+      "teamName": "Columbus Blue Jackets",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2012,
+      "reportType": "regular",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2012,
+      "reportType": "playoffs",
+      "teamId": "1",
+      "teamName": "Colorado Avalanche",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  ]
+}

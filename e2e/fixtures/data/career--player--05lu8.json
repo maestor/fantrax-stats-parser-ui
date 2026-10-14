@@ -1,0 +1,489 @@
+{
+  "id": "05lu8",
+  "name": "Alexander Nikishin",
+  "position": "D",
+  "summary": {
+    "firstSeason": 2020,
+    "lastSeason": 2026,
+    "seasonCount": {
+      "owned": 7,
+      "played": 1
+    },
+    "teamCount": {
+      "owned": 3,
+      "played": 1
+    },
+    "teams": [
+      {
+        "teamId": "19",
+        "teamName": "Toronto Maple Leafs",
+        "seasonCount": {
+          "owned": 5,
+          "played": 1
+        },
+        "firstSeason": 2020,
+        "lastSeason": 2025
+      },
+      {
+        "teamId": "7",
+        "teamName": "Edmonton Oilers",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2023,
+        "lastSeason": 2024
+      },
+      {
+        "teamId": "21",
+        "teamName": "Buffalo Sabres",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2025,
+        "lastSeason": 2026
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 7,
+        "played": 1
+      },
+      "teamCount": {
+        "owned": 3,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 5,
+            "played": 1
+          },
+          "games": 65,
+          "goals": 9,
+          "assists": 16,
+          "points": 25,
+          "plusMinus": 13,
+          "penalties": 27,
+          "shots": 102,
+          "ppp": 8,
+          "shp": 0,
+          "hits": 112,
+          "blocks": 72
+        },
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        },
+        {
+          "teamId": "7",
+          "teamName": "Edmonton Oilers",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 65,
+      "goals": 9,
+      "assists": 16,
+      "points": 25,
+      "plusMinus": 13,
+      "penalties": 27,
+      "shots": 102,
+      "ppp": 8,
+      "shp": 0,
+      "hits": 112,
+      "blocks": 72
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 7,
+        "played": 1
+      },
+      "teamCount": {
+        "owned": 3,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 5,
+            "played": 1
+          },
+          "games": 65,
+          "goals": 9,
+          "assists": 16,
+          "points": 25,
+          "plusMinus": 13,
+          "penalties": 27,
+          "shots": 102,
+          "ppp": 8,
+          "shp": 0,
+          "hits": 112,
+          "blocks": 72
+        },
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        },
+        {
+          "teamId": "7",
+          "teamName": "Edmonton Oilers",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 65,
+      "goals": 9,
+      "assists": 16,
+      "points": 25,
+      "plusMinus": 13,
+      "penalties": 27,
+      "shots": 102,
+      "ppp": 8,
+      "shp": 0,
+      "hits": 112,
+      "blocks": 72
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 4,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 1,
+        "played": 0
+      },
+      "teams": [
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 4,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2026,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 65,
+      "goals": 9,
+      "assists": 16,
+      "points": 25,
+      "plusMinus": 13,
+      "penalties": 27,
+      "shots": 102,
+      "ppp": 8,
+      "shp": 0,
+      "hits": 112,
+      "blocks": 72
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2024,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "7",
+      "teamName": "Edmonton Oilers",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "7",
+      "teamName": "Edmonton Oilers",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2022,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2022,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2021,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2021,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2020,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2020,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "D",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    }
+  ]
+}

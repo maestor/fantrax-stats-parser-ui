@@ -1,0 +1,226 @@
+{
+  "id": "003vz",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNi0yMDI3LmNzdiIsMzgyLDFd",
+      "type": "drop",
+      "date": "2026-04-18T18:40:00.000Z",
+      "season": 2026,
+      "team": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      }
+    },
+    {
+      "id": "trade-WzIwMjUsInRyYWRlcy0yMDI1LTIwMjYuY3N2IiwiMjAyNi0wMy0xNlQwMToxMzowMC4wMDBaIiwiMTl8MjEiXQ",
+      "type": "trade",
+      "season": 2025,
+      "date": "2026-03-16T01:13:00.000Z",
+      "tradeId": "WzIwMjUsInRyYWRlcy0yMDI1LTIwMjYuY3N2IiwiMjAyNi0wMy0xNlQwMToxMzowMC4wMDBaIiwiMTl8MjEiXQ",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          }
+        }
+      ]
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMTE4LDBd",
+      "type": "claim",
+      "date": "2025-12-17T18:11:00.000Z",
+      "season": 2025,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMTQxLDFd",
+      "type": "drop",
+      "date": "2025-11-30T06:54:00.000Z",
+      "season": 2025,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMzA3LDBd",
+      "type": "claim",
+      "date": "2025-09-08T09:05:00.000Z",
+      "season": 2025,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsNjcxLDBd",
+      "type": "drop",
+      "date": "2025-06-29T12:11:00.000Z",
+      "season": 2025,
+      "team": {
+        "id": "6",
+        "name": "Detroit Red Wings"
+      }
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNC0yMDI1LmNzdiIsMzk5LDBd",
+      "type": "claim",
+      "date": "2024-09-28T12:57:00.000Z",
+      "season": 2024,
+      "team": {
+        "id": "6",
+        "name": "Detroit Red Wings"
+      }
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNC0yMDI1LmNzdiIsNDA1LDFd",
+      "type": "drop",
+      "date": "2024-09-24T11:31:00.000Z",
+      "season": 2024,
+      "team": {
+        "id": "21",
+        "name": "Buffalo Sabres"
+      }
+    },
+    {
+      "id": "trade-WzIwMjMsInRyYWRlcy0yMDIzLTIwMjQuY3N2IiwiMjAyMy0wNy0wNlQxMDowOTowMC4wMDBaIiwiMjF8MyJd",
+      "type": "trade",
+      "season": 2023,
+      "date": "2023-07-06T10:09:00.000Z",
+      "tradeId": "WzIwMjMsInRyYWRlcy0yMDIzLTIwMjQuY3N2IiwiMjAyMy0wNy0wNlQxMDowOTowMC4wMDBaIiwiMjF8MyJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "21",
+            "name": "Buffalo Sabres"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-WzIwMjEsInRyYWRlcy0yMDIxLTIwMjIuY3N2IiwiMjAyMS0xMi0zMVQxMzozMjowMC4wMDBaIiwiM3wzMCJd",
+      "type": "trade",
+      "season": 2021,
+      "date": "2021-12-31T13:32:00.000Z",
+      "tradeId": "WzIwMjEsInRyYWRlcy0yMDIxLTIwMjIuY3N2IiwiMjAyMS0xMi0zMVQxMzozMjowMC4wMDBaIiwiM3wzMCJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMi0wNVQxMjo0OTowMC4wMDBaIiwiMTB8MzAiXQ",
+      "type": "trade",
+      "season": 2012,
+      "date": "2013-02-05T12:49:00.000Z",
+      "tradeId": "WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMi0wNVQxMjo0OTowMC4wMDBaIiwiMTB8MzAiXQ",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "10",
+            "name": "Nashville Predators"
+          },
+          "toTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          }
+        }
+      ]
+    },
+    {
+      "id": "draft-opening-opening-22",
+      "type": "draft",
+      "draftType": "opening",
+      "date": null,
+      "season": null,
+      "round": 1,
+      "pickNumber": 22,
+      "team": {
+        "id": "10",
+        "name": "Nashville Predators"
+      },
+      "originalOwner": {
+        "id": "18",
+        "name": "Boston Bruins"
+      }
+    }
+  ]
+}

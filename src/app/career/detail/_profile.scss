@@ -1,0 +1,53 @@
+@use '../../../styles/surface-patterns' as surfaces;
+
+@mixin controls {
+  :host {
+    --mat-button-outlined-label-text-color: var(--mat-sys-primary);
+    --mat-button-outlined-outline-color: var(--mat-sys-outline);
+    --mat-button-outlined-state-layer-color: var(--mat-sys-primary);
+    --mat-button-text-label-text-color: var(--mat-sys-primary);
+    --mat-button-text-state-layer-color: var(--mat-sys-primary);
+  }
+  a {
+    color: var(--mat-sys-primary);
+    text-underline-offset: 0.2em;
+  }
+  :is(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--app-focus-ring-color);
+    outline-offset: 3px;
+  }
+}
+
+@mixin sections {
+  section {
+    margin-block: 2rem;
+  }
+  h3 {
+    scroll-margin-top: 6rem;
+    font-size: 1.2rem;
+  }
+  p {
+    color: var(--mat-sys-on-surface-variant);
+    line-height: 1.6;
+  }
+  .status-surface {
+    @include surfaces.status-surface(1rem);
+  }
+}
+
+@mixin stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  gap: 0.65rem;
+  margin-block: 1rem;
+  div {
+    @include surfaces.compact-stat-tile;
+  }
+  dt {
+    @include surfaces.compact-stat-label;
+  }
+  dd {
+    @include surfaces.compact-stat-value(1.2rem);
+    margin: 0;
+  }
+}

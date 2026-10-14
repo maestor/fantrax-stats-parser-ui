@@ -1,6 +1,6 @@
 <div class="stats-table-wrapper mat-elevation-z4" id="career-table" tabindex="-1" #tableRoot>
   <p class="sr-only" [attr.id]="instructionsId">
-    {{ 'a11y.tableNavigationHintReadOnly' | translate }}
+    {{ (rowLink() ? 'a11y.careerNavigationHint' : 'a11y.tableNavigationHintReadOnly') | translate }}
   </p>
 
   <div class="search-container">
@@ -68,7 +68,8 @@
             [attr.tabindex]="getRowTabIndex(i)"
             [attr.data-row-index]="i"
             [class.a11y-active]="i === activeRowIndex"
-            (focus)="onRowFocus(i)"
+            (focusin)="onRowFocus(i)"
+            (click)="onRowClick($event)"
             (keydown)="onRowKeydown($event, i)"
           >
             <div class="virtual-table-cell mat-mdc-cell mat-column-__rowNumber" role="cell">
@@ -77,7 +78,9 @@
 
             @for (column of dynamicColumns; track column.field) {
               <div class="virtual-table-cell mat-mdc-cell" role="cell" [ngClass]="getCellClass(column)">
-                {{ formatValue(row, column.field) }}
+                @if (column.field === 'name' && rowLink(); as link) {
+                  <a [routerLink]="link(row)" tabindex="-1" (click)="saveBrowseState($event, row, i)">{{ formatValue(row, column.field) }}</a>
+                } @else { {{ formatValue(row, column.field) }} }
               </div>
             }
           </div>

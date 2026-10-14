@@ -1,0 +1,82 @@
+<article
+  class="career-profile"
+  id="career-table"
+  tabindex="-1"
+  aria-labelledby="career-profile-heading"
+>
+  <div class="profile-actions">
+    <a mat-button [routerLink]="backLink().path">← {{ backLink().labelKey | translate }}</a>
+  </div>
+  <header class="profile-header">
+    <p class="eyebrow">{{ 'career.profile.title' | translate }}</p>
+    <div class="profile-title">
+      <h2 id="career-profile-heading" tabindex="-1" data-skip-focus="true" #heading>
+        {{ state().data?.name ?? ('career.profile.title' | translate) }}
+      </h2>
+      @if (state().data) {
+        <button
+          mat-icon-button
+          type="button"
+          class="copy-link-button"
+          (click)="copyLink()"
+          [matTooltip]="
+            (copyStatus() ? 'career.profile.' + copyStatus() : 'career.profile.copyLink') | translate
+          "
+          [attr.aria-label]="'career.profile.copyLink' | translate"
+          #copyTooltip="matTooltip"
+        >
+          <mat-icon fontIcon="link" />
+        </button>
+      }
+    </div>
+    <span class="sr-only" role="status" aria-atomic="true">
+      {{ copyStatus() ? ('career.profile.' + copyStatus() | translate) : '' }}
+    </span>
+    @if (state().data; as career) {
+      <p>
+        {{ position() }} · {{ formatSeason(career.summary.firstSeason) }} –
+        {{ formatSeason(career.summary.lastSeason) }}
+      </p>
+      <dl class="summary-grid">
+        <div>
+          <dt>{{ 'career.profile.seasonsOwned' | translate }}</dt>
+          <dd>{{ career.summary.seasonCount.owned }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'career.profile.seasonsPlayed' | translate }}</dt>
+          <dd>{{ career.summary.seasonCount.played }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'career.profile.teamsOwned' | translate }}</dt>
+          <dd>{{ career.summary.teamCount.owned }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'career.profile.teamsPlayed' | translate }}</dt>
+          <dd>{{ career.summary.teamCount.played }}</dd>
+        </div>
+        <div>
+          <dt>{{ 'career.profile.firstAppearance' | translate }}</dt>
+          <dd>{{ firstAppearance() ?? ('career.profile.noAppearance' | translate) }}</dd>
+        </div>
+      </dl>
+    }
+  </header>
+  @if (state().loading) {
+    <p role="status" class="status-surface">{{ 'career.profile.loading' | translate }}</p>
+  } @else if (state().error; as error) {
+    <div role="alert" class="status-surface">
+      <p>{{ 'career.profile.' + (error === 'notFound' ? 'notFound' : 'failed') | translate }}</p>
+      @if (error !== 'notFound') {
+        <button mat-stroked-button type="button" (click)="reload()">{{ 'career.profile.retry' | translate }}</button>
+      }
+    </div>
+  } @else if (state().data; as career) {
+    <app-section-jump-nav
+      [items]="jumpItems"
+      ariaLabelKey="career.profile.jumpLabel"
+      (itemSelected)="jumpTo($event)"
+    />
+    <app-career-statistics [career]="career" [isGoalie]="isGoalie" />
+    <app-career-history [id]="career.id" />
+  }
+</article>

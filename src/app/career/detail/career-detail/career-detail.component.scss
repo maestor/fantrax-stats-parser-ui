@@ -1,0 +1,49 @@
+@use '../profile' as profile;
+@use '../../../../styles/surface-patterns' as surfaces;
+@include profile.controls;
+@include profile.sections;
+.career-profile {
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding-inline: 0.5rem;
+}
+.profile-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.profile-header {
+  margin-block: 1.25rem;
+  @include surfaces.rounded-surface-card(1.25rem);
+}
+.eyebrow {
+  @include surfaces.eyebrow-label;
+}
+.profile-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.copy-link-button {
+  flex-shrink: 0;
+  --mat-icon-button-icon-color: var(--mat-sys-on-surface-variant);
+  --mat-icon-button-state-layer-color: var(--mat-sys-on-surface);
+}
+h2 {
+  min-width: 0;
+  margin-block: 0.5rem;
+  font-size: clamp(1.65rem, 4vw, 2.4rem);
+  overflow-wrap: anywhere;
+}
+.summary-grid {
+  @include profile.stats-grid;
+}
+@media (max-width: 480px) {
+  .profile-header {
+    padding: 0.85rem;
+  }
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

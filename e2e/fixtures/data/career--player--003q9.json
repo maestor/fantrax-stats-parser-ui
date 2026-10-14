@@ -1,0 +1,352 @@
+{
+  "id": "003q9",
+  "name": "Curtis Glencross",
+  "position": "F",
+  "summary": {
+    "firstSeason": 2012,
+    "lastSeason": 2015,
+    "seasonCount": {
+      "owned": 4,
+      "played": 3
+    },
+    "teamCount": {
+      "owned": 2,
+      "played": 2
+    },
+    "teams": [
+      {
+        "teamId": "4",
+        "teamName": "Vancouver Canucks",
+        "seasonCount": {
+          "owned": 2,
+          "played": 2
+        },
+        "firstSeason": 2012,
+        "lastSeason": 2013
+      },
+      {
+        "teamId": "7",
+        "teamName": "Edmonton Oilers",
+        "seasonCount": {
+          "owned": 3,
+          "played": 2
+        },
+        "firstSeason": 2013,
+        "lastSeason": 2015
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 4,
+        "played": 3
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "7",
+          "teamName": "Edmonton Oilers",
+          "seasonCount": {
+            "owned": 3,
+            "played": 2
+          },
+          "games": 69,
+          "goals": 17,
+          "assists": 24,
+          "points": 41,
+          "plusMinus": 1,
+          "penalties": 47,
+          "shots": 116,
+          "ppp": 13,
+          "shp": 0,
+          "hits": 131,
+          "blocks": 49
+        },
+        {
+          "teamId": "4",
+          "teamName": "Vancouver Canucks",
+          "seasonCount": {
+            "owned": 2,
+            "played": 2
+          },
+          "games": 53,
+          "goals": 19,
+          "assists": 14,
+          "points": 33,
+          "plusMinus": -15,
+          "penalties": 22,
+          "shots": 118,
+          "ppp": 8,
+          "shp": 1,
+          "hits": 68,
+          "blocks": 27
+        }
+      ],
+      "games": 122,
+      "goals": 36,
+      "assists": 38,
+      "points": 74,
+      "plusMinus": -14,
+      "penalties": 69,
+      "shots": 234,
+      "ppp": 21,
+      "shp": 1,
+      "hits": 199,
+      "blocks": 76
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 4,
+        "played": 3
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "7",
+          "teamName": "Edmonton Oilers",
+          "seasonCount": {
+            "owned": 3,
+            "played": 2
+          },
+          "games": 66,
+          "goals": 14,
+          "assists": 23,
+          "points": 37,
+          "plusMinus": -1,
+          "penalties": 45,
+          "shots": 107,
+          "ppp": 13,
+          "shp": 0,
+          "hits": 128,
+          "blocks": 48
+        },
+        {
+          "teamId": "4",
+          "teamName": "Vancouver Canucks",
+          "seasonCount": {
+            "owned": 2,
+            "played": 2
+          },
+          "games": 45,
+          "goals": 18,
+          "assists": 11,
+          "points": 29,
+          "plusMinus": -15,
+          "penalties": 18,
+          "shots": 106,
+          "ppp": 8,
+          "shp": 1,
+          "hits": 57,
+          "blocks": 26
+        }
+      ],
+      "games": 111,
+      "goals": 32,
+      "assists": 34,
+      "points": 66,
+      "plusMinus": -16,
+      "penalties": 63,
+      "shots": 213,
+      "ppp": 21,
+      "shp": 1,
+      "hits": 185,
+      "blocks": 74
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 2,
+        "played": 2
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "7",
+          "teamName": "Edmonton Oilers",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 3,
+          "goals": 3,
+          "assists": 1,
+          "points": 4,
+          "plusMinus": 2,
+          "penalties": 2,
+          "shots": 9,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 3,
+          "blocks": 1
+        },
+        {
+          "teamId": "4",
+          "teamName": "Vancouver Canucks",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 8,
+          "goals": 1,
+          "assists": 3,
+          "points": 4,
+          "plusMinus": 0,
+          "penalties": 4,
+          "shots": 12,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 11,
+          "blocks": 1
+        }
+      ],
+      "games": 11,
+      "goals": 4,
+      "assists": 4,
+      "points": 8,
+      "plusMinus": 2,
+      "penalties": 6,
+      "shots": 21,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 14,
+      "blocks": 2
+    }
+  },
+  "seasons": [
+    {
+      "season": 2015,
+      "reportType": "regular",
+      "teamId": "7",
+      "teamName": "Edmonton Oilers",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2014,
+      "reportType": "regular",
+      "teamId": "7",
+      "teamName": "Edmonton Oilers",
+      "position": "F",
+      "games": 58,
+      "goals": 12,
+      "assists": 20,
+      "points": 32,
+      "plusMinus": 2,
+      "penalties": 41,
+      "shots": 100,
+      "ppp": 10,
+      "shp": 0,
+      "hits": 112,
+      "blocks": 40
+    },
+    {
+      "season": 2013,
+      "reportType": "regular",
+      "teamId": "4",
+      "teamName": "Vancouver Canucks",
+      "position": "F",
+      "games": 15,
+      "goals": 5,
+      "assists": 4,
+      "points": 9,
+      "plusMinus": -4,
+      "penalties": 6,
+      "shots": 30,
+      "ppp": 2,
+      "shp": 0,
+      "hits": 22,
+      "blocks": 13
+    },
+    {
+      "season": 2013,
+      "reportType": "regular",
+      "teamId": "7",
+      "teamName": "Edmonton Oilers",
+      "position": "F",
+      "games": 8,
+      "goals": 2,
+      "assists": 3,
+      "points": 5,
+      "plusMinus": -3,
+      "penalties": 4,
+      "shots": 7,
+      "ppp": 3,
+      "shp": 0,
+      "hits": 16,
+      "blocks": 8
+    },
+    {
+      "season": 2013,
+      "reportType": "playoffs",
+      "teamId": "7",
+      "teamName": "Edmonton Oilers",
+      "position": "F",
+      "games": 3,
+      "goals": 3,
+      "assists": 1,
+      "points": 4,
+      "plusMinus": 2,
+      "penalties": 2,
+      "shots": 9,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 3,
+      "blocks": 1
+    },
+    {
+      "season": 2012,
+      "reportType": "regular",
+      "teamId": "4",
+      "teamName": "Vancouver Canucks",
+      "position": "F",
+      "games": 30,
+      "goals": 13,
+      "assists": 7,
+      "points": 20,
+      "plusMinus": -11,
+      "penalties": 12,
+      "shots": 76,
+      "ppp": 6,
+      "shp": 1,
+      "hits": 35,
+      "blocks": 13
+    },
+    {
+      "season": 2012,
+      "reportType": "playoffs",
+      "teamId": "4",
+      "teamName": "Vancouver Canucks",
+      "position": "F",
+      "games": 8,
+      "goals": 1,
+      "assists": 3,
+      "points": 4,
+      "plusMinus": 0,
+      "penalties": 4,
+      "shots": 12,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 11,
+      "blocks": 1
+    }
+  ]
+}

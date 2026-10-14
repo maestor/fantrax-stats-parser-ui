@@ -3,7 +3,7 @@ import { provideHttpClientTesting, HttpTestingController } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 
-import { ApiService } from './api.service';
+import { ApiRequestError, ApiService } from './api.service';
 import { CacheService } from './cache.service';
 
 describe('ApiService', () => {
@@ -43,6 +43,27 @@ describe('ApiService', () => {
     await expect(responsePromise).resolves.toEqual([
       { id: '1', name: 'colorado', presentName: 'Colorado Avalanche' },
     ]);
+  });
+
+  it('keeps career identities and trade identifiers in their own encoded request paths', async () => {
+    for (const [request, path] of [
+      [() => service.getCareerPlayer('id/1'), 'career/player/id%2F1'],
+      [() => service.getCareerGoalie('id/1'), 'career/goalie/id%2F1'],
+      [() => service.getCareerHistory('id/1'), 'career/history/id%2F1'],
+      [() => service.getTradeDetail('deal/1'), 'transactions/trades/deal%2F1'],
+    ] as const) {
+      const result = firstValueFrom<unknown>(request());
+      httpMock.expectOne(`http://localhost:3000/${path}`).flush({ id: 'response' });
+      expect(await result).toEqual({ id: 'response' });
+    }
+  });
+
+  it('retains a missing-career HTTP status for the dedicated not-found page', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const result = firstValueFrom(service.getCareerPlayer('missing')).catch((error: unknown) => error);
+    httpMock.expectOne('http://localhost:3000/career/player/missing').flush('Not found', { status: 404, statusText: 'Not Found' });
+    expect(await result).toBeInstanceOf(ApiRequestError);
+    expect(await result).toHaveProperty('status', 404);
   });
 
   it('requests seasons without team params when no team id is provided', async () => {
@@ -387,7 +408,7 @@ describe('ApiService', () => {
     request.flush('failure', { status: 500, statusText: 'Server Error' });
 
     await expect(responsePromise).rejects.toEqual(
-      new Error('Something went wrong with the API!')
+      new ApiRequestError(500)
     );
     expect(console.error).toHaveBeenCalledWith(
       'API Error:',

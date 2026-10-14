@@ -1,3 +1,6 @@
 .mat-column-__rowNumber {
   text-align: center;
 }
+
+a { color: var(--mat-sys-primary); text-underline-offset: 0.2em; }
+.virtual-table-row:has(a) { cursor: pointer; }

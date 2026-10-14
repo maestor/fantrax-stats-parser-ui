@@ -1,0 +1,44 @@
+@if (state().loading) {
+  <p role="status">{{ 'career.profile.tradeLoading' | translate }}</p>
+} @else if (state().error) {
+  <div role="alert">
+    <p>{{ 'career.profile.tradeFailed' | translate }}</p>
+    <button mat-stroked-button type="button" (click)="reload()">
+      {{ 'career.profile.retry' | translate }}
+    </button>
+  </div>
+} @else if (state().data) {
+  <div class="trade-detail">
+    <div class="packages">
+      @for (package of packages(); track package.team.id) {
+        <section [attr.aria-labelledby]="'received-' + tradeId() + '-' + package.team.id">
+          <h6 [id]="'received-' + tradeId() + '-' + package.team.id">
+            {{ package.team.name }} {{ 'career.profile.received' | translate }}
+          </h6>
+          @if (package.assets.length) {
+            <ul class="assets">
+              @for (asset of package.assets; track $index) {
+                <li>
+                  @if (asset.entityId && asset.careerType) {
+                    <a
+                      [routerLink]="[
+                        asset.careerType === 'goalie' ? '/career/goalies' : '/career/players',
+                        profileSlug(asset.name, asset.entityId),
+                      ]"
+                      queryParamsHandling="preserve"
+                      >{{ asset.name }}</a
+                    >
+                  } @else {
+                    <span>{{ asset.name }}</span>
+                  }
+                </li>
+              }
+            </ul>
+          } @else {
+            <p>{{ 'career.profile.noReceivedAssets' | translate }}</p>
+          }
+        </section>
+      }
+    </div>
+  </div>
+}

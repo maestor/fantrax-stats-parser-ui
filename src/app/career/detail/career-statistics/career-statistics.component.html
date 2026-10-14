@@ -1,0 +1,116 @@
+<section aria-labelledby="career-overview">
+  <div class="section-heading">
+    <h3 id="career-overview" tabindex="-1">{{ 'career.profile.overview' | translate }}</h3>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>{{ 'career.profile.scope' | translate }}</mat-label>
+      <mat-select [value]="scope()" (selectionChange)="scope.set($event.value)">
+        <mat-option value="regular">{{ 'career.profile.scopes.regular' | translate }}</mat-option>
+        <mat-option value="playoffs">{{ 'career.profile.scopes.playoffs' | translate }}</mat-option>
+        <mat-option value="career">{{ 'career.profile.scopes.career' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <dl class="stat-grid" [class.stat-grid--goalie]="isGoalie()">
+    @for (field of fields(); track field) {
+      <div>
+        <dt>{{ 'tableColumn.' + field | translate }}</dt>
+        <dd>{{ value(totals(), field) }}</dd>
+      </div>
+    }
+  </dl>
+</section>
+<section aria-labelledby="career-seasons">
+  <h3 id="career-seasons" tabindex="-1">{{ 'career.profile.seasons' | translate }}</h3>
+  @if (seasons().length) {
+    <div
+      class="table-scroll"
+      role="region"
+      tabindex="0"
+      [attr.aria-label]="'career.profile.seasons' | translate"
+    >
+      <table [attr.aria-label]="'career.profile.seasons' | translate">
+        <thead>
+          <tr>
+            <th scope="col" class="text-column">{{ 'career.profile.season' | translate }}</th>
+            <th scope="col" class="text-column">{{ 'career.profile.team' | translate }}</th>
+            <th scope="col" class="text-column">{{ 'career.profile.report' | translate }}</th>
+            @for (field of seasonFields(); track field) {
+              <th
+                scope="col"
+                [attr.title]="'tableColumn.' + field | translate"
+                [attr.aria-label]="'tableColumn.' + field | translate"
+              >
+                {{ 'tableColumnShort.' + field | translate }}
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of seasons(); track row.season + '-' + row.teamId + '-' + row.reportType) {
+            <tr>
+              <th scope="row" class="text-column" [attr.aria-label]="formatSeason(row.season)">
+                @if ($first || seasons()[$index - 1].season !== row.season) {
+                  {{ formatSeason(row.season) }}
+                }
+              </th>
+              <td class="text-column">{{ row.teamName }}</td>
+              <td class="text-column">{{ 'career.profile.scopes.' + row.reportType | translate }}</td>
+              @for (field of seasonFields(); track field) {
+                <td>{{ value(row, field) }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <p role="status">{{ 'career.profile.noStats' | translate }}</p>
+  }
+</section>
+<section aria-labelledby="career-teams">
+  <h3 id="career-teams" tabindex="-1">{{ 'career.profile.teams' | translate }}</h3>
+  @if (totals().teams.length) {
+    <div
+      class="table-scroll"
+      role="region"
+      tabindex="0"
+      [attr.aria-label]="'career.profile.teams' | translate"
+    >
+      <table [attr.aria-label]="'career.profile.teams' | translate">
+        <thead>
+          <tr>
+            <th scope="col" class="text-column">{{ 'career.profile.team' | translate }}</th>
+            <th scope="col">{{ 'career.profile.seasonsOwned' | translate }}</th>
+            <th scope="col">{{ 'career.profile.seasonsPlayed' | translate }}</th>
+            @for (field of fields(); track field) {
+              <th
+                scope="col"
+                [attr.title]="'tableColumn.' + field | translate"
+                [attr.aria-label]="'tableColumn.' + field | translate"
+              >
+                {{ 'tableColumnShort.' + field | translate }}
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of totals().teams; track row.teamId) {
+            <tr>
+              <th scope="row" class="text-column">{{ row.teamName }}</th>
+              <td>{{ row.seasonCount.owned }}</td>
+              <td>{{ row.seasonCount.played }}</td>
+              @for (field of fields(); track field) {
+                <td>{{ value(row, field) }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <p role="status">{{ 'career.profile.noStats' | translate }}</p>
+  }
+  @if (isGoalie()) {
+    <p>{{ 'career.profile.goalieRatesNote' | translate }}</p>
+  }
+</section>

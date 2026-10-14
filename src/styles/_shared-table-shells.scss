@@ -355,7 +355,7 @@ app-player-card {
     color: var(--mat-sys-on-surface);
   }
 
-  .mdc-icon-button:not(.copy-link-button) {
+  .player-card > button[mat-icon-button] {
     position: absolute;
     right: 8px;
   }

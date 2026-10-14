@@ -1,4 +1,6 @@
 import { DOCUMENT, NgComponentOutlet } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { careerProfileSlug } from '@shared/utils/career-profile-url.utils';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -59,6 +61,7 @@ export type PlayerCardDialogData = {
     '(touchend)': 'onTouchEnd($event)',
   },
   imports: [
+    RouterLink,
     MatButtonModule,
     MatIconModule,
     MatCardModule,
@@ -75,7 +78,7 @@ export type PlayerCardDialogData = {
   providers: [PlayerCardNavigationService],
 })
 export class PlayerCardComponent implements AfterViewInit {
-  readonly dialogRef = inject(MatDialogRef<PlayerCardComponent>);
+  readonly dialogRef = inject(MatDialogRef<PlayerCardComponent, 'career'>);
   private readonly rawDialogData = inject<Player | Goalie | PlayerCardDialogData>(MAT_DIALOG_DATA);
   private readonly document = inject(DOCUMENT);
   private readonly destroyRef = inject(DestroyRef);
@@ -101,6 +104,11 @@ export class PlayerCardComponent implements AfterViewInit {
   private readonly closeButtonElementState = signal<HTMLButtonElement | undefined>(undefined);
 
   private readonly isGoalieState = computed(() => 'wins' in this.dataState());
+  readonly careerLink = computed(() => [
+    this.isGoalieState() ? '/career/goalies' : '/career/players',
+    careerProfileSlug(this.dataState().name, this.dataState().id),
+  ]);
+  readonly careerSource = computed(() => this.isGoalieState() ? 'goalie-stats' : 'player-stats');
   private readonly hasSeasonsState = computed(() => Boolean(this.dataState().seasons?.length));
   private readonly viewContextState = computed<'combined' | 'season'>(() =>
     this.hasSeasonsState() ? 'combined' : 'season',
@@ -319,6 +327,12 @@ export class PlayerCardComponent implements AfterViewInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onCareerLinkClick(event: MouseEvent): void {
+    if (event.button === 0 && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey) {
+      this.dialogRef.close('career');
+    }
   }
 
   copyLinkToClipboard(tooltip?: MatTooltip): void {

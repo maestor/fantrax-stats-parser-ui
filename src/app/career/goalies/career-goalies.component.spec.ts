@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/angular';
 import { Subject } from 'rxjs';
 import { TranslateTestingModule } from '@testing/translate-testing';
@@ -15,6 +16,7 @@ describe('CareerGoaliesComponent', () => {
     const view = await render(CareerGoaliesComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         { provide: ApiService, useValue: { getCareerGoalies: () => response } },
       ],

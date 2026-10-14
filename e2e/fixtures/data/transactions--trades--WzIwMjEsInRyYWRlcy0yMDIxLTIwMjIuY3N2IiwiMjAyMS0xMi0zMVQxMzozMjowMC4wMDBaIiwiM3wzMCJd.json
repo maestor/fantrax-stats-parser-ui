@@ -1,0 +1,175 @@
+{
+  "id": "WzIwMjEsInRyYWRlcy0yMDIxLTIwMjIuY3N2IiwiMjAyMS0xMi0zMVQxMzozMjowMC4wMDBaIiwiM3wzMCJd",
+  "season": 2021,
+  "date": "2021-12-31T13:32:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 76,
+      "sourcePeriod": 81,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Oliver Tarnstrom",
+          "rawName": "Oliver Tarnstrom",
+          "entityId": "05lug",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Laurent Brossoit",
+          "rawName": "Laurent Brossoit",
+          "entityId": "02fnj",
+          "careerType": "goalie",
+          "position": "G",
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Brad Hunt",
+          "rawName": "Brad Hunt",
+          "entityId": "0320x",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 78,
+      "sourcePeriod": 81,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Carey Price",
+          "rawName": "Carey Price",
+          "entityId": "003vz",
+          "careerType": "goalie",
+          "position": "G",
+          "fromTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Noah Juulsen",
+          "rawName": "Noah Juulsen",
+          "entityId": "03rah",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Valtteri Puustinen",
+          "rawName": "Valtteri Puustinen",
+          "entityId": "051w6",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Mathieu Perreault",
+          "rawName": "Mathieu Perreault",
+          "entityId": "0056v",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "draft_pick",
+          "name": "2023 Draft Pick, Round 3 (Winnipeg Jets)",
+          "rawName": "2023 Draft Pick, Round 3 (Winnipeg Jets)",
+          "entityId": null,
+          "careerType": null,
+          "position": null,
+          "fromTeam": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": 2023,
+          "draftRound": 3,
+          "draftOriginalOwner": {
+            "id": "30",
+            "name": "Winnipeg Jets"
+          }
+        }
+      ]
+    }
+  ]
+}

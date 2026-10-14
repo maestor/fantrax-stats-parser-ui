@@ -31,6 +31,14 @@ export type CareerPlayerListItem    = components['schemas']['CareerPlayerListIte
 export type CareerGoalieListItem    = components['schemas']['CareerGoalieListItem'];
 export type CareerPlayer            = components['schemas']['CareerPlayer'];
 export type CareerGoalie            = components['schemas']['CareerGoalie'];
+export type CareerHistory          = components['schemas']['CareerHistory'];
+export type TradeDetail            = components['schemas']['TradeDetail'];
+
+export class ApiRequestError extends Error {
+  constructor(readonly status: number) {
+    super('Something went wrong with the API!');
+  }
+}
 export type CareerHighlightType     = components['schemas']['CareerHighlightType'];
 export type CareerHighlightTeam     = components['schemas']['CareerHighlightTeam'];
 export type CareerTeamCountHighlightItem = components['schemas']['CareerTeamCountHighlightItem'];
@@ -275,6 +283,22 @@ export class ApiService {
     );
   }
 
+  getCareerPlayer(id: string): Observable<CareerPlayer> {
+    return this.handleRequest<CareerPlayer>(`career/player/${encodeURIComponent(id)}`, `career-player-${id}`);
+  }
+
+  getCareerGoalie(id: string): Observable<CareerGoalie> {
+    return this.handleRequest<CareerGoalie>(`career/goalie/${encodeURIComponent(id)}`, `career-goalie-${id}`);
+  }
+
+  getCareerHistory(id: string): Observable<CareerHistory> {
+    return this.handleRequest<CareerHistory>(`career/history/${encodeURIComponent(id)}`, `career-history-${id}`);
+  }
+
+  getTradeDetail(id: string): Observable<TradeDetail> {
+    return this.handleRequest<TradeDetail>(`transactions/trades/${encodeURIComponent(id)}`, `trade-detail-${id}`);
+  }
+
   getOpeningDrafts(): Observable<OpeningDraftTeamGroup[]> {
     return this.handleRequest<OpeningDraftTeamGroup[]>(
       'draft/original',
@@ -386,6 +410,6 @@ export class ApiService {
   // Error handling function
   private handleError(error: HttpErrorResponse) {
     console.error("API Error:", error);
-    return throwError(() => new Error("Something went wrong with the API!"));
+    return throwError(() => new ApiRequestError(error.status));
   }
 }

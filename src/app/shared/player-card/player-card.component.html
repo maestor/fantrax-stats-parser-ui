@@ -21,6 +21,17 @@
             " [attr.aria-label]="'playerCard.copyLink' | translate" #copyTooltip="matTooltip">
             <mat-icon fontIcon="link" />
           </button>
+          <a
+            mat-icon-button
+            class="career-link-button"
+            [routerLink]="careerLink()"
+            [queryParams]="{ from: careerSource() }"
+            (click)="onCareerLinkClick($event)"
+            [matTooltip]="'playerCard.careerLink' | translate"
+            [attr.aria-label]="'playerCard.careerLink' | translate"
+          >
+            <mat-icon fontIcon="history" />
+          </a>
         </div>
         @if (selectedTeam) {
         <span class="team-name">{{ selectedTeam.presentName }}</span>

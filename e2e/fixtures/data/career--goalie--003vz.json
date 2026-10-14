@@ -1,0 +1,728 @@
+{
+  "id": "003vz",
+  "name": "Carey Price",
+  "summary": {
+    "firstSeason": 2012,
+    "lastSeason": 2025,
+    "seasonCount": {
+      "owned": 14,
+      "played": 9
+    },
+    "teamCount": {
+      "owned": 6,
+      "played": 2
+    },
+    "teams": [
+      {
+        "teamId": "10",
+        "teamName": "Nashville Predators",
+        "seasonCount": {
+          "owned": 1,
+          "played": 1
+        },
+        "firstSeason": 2012,
+        "lastSeason": 2012
+      },
+      {
+        "teamId": "30",
+        "teamName": "Winnipeg Jets",
+        "seasonCount": {
+          "owned": 10,
+          "played": 9
+        },
+        "firstSeason": 2012,
+        "lastSeason": 2021
+      },
+      {
+        "teamId": "3",
+        "teamName": "Calgary Flames",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2021,
+        "lastSeason": 2022
+      },
+      {
+        "teamId": "21",
+        "teamName": "Buffalo Sabres",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2023,
+        "lastSeason": 2025
+      },
+      {
+        "teamId": "6",
+        "teamName": "Detroit Red Wings",
+        "seasonCount": {
+          "owned": 1,
+          "played": 0
+        },
+        "firstSeason": 2024,
+        "lastSeason": 2024
+      },
+      {
+        "teamId": "19",
+        "teamName": "Toronto Maple Leafs",
+        "seasonCount": {
+          "owned": 1,
+          "played": 0
+        },
+        "firstSeason": 2025,
+        "lastSeason": 2025
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 14,
+        "played": 9
+      },
+      "teamCount": {
+        "owned": 6,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "30",
+          "teamName": "Winnipeg Jets",
+          "seasonCount": {
+            "owned": 10,
+            "played": 9
+          },
+          "games": 347,
+          "wins": 190,
+          "saves": 9417,
+          "shutouts": 28,
+          "goals": 0,
+          "assists": 5,
+          "points": 5,
+          "penalties": 18,
+          "ppp": 1,
+          "shp": 0
+        },
+        {
+          "teamId": "10",
+          "teamName": "Nashville Predators",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 7,
+          "wins": 6,
+          "saves": 183,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "3",
+          "teamName": "Calgary Flames",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "6",
+          "teamName": "Detroit Red Wings",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 354,
+      "wins": 196,
+      "saves": 9600,
+      "shutouts": 28,
+      "goals": 0,
+      "assists": 5,
+      "points": 5,
+      "penalties": 18,
+      "ppp": 1,
+      "shp": 0
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 14,
+        "played": 9
+      },
+      "teamCount": {
+        "owned": 6,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "30",
+          "teamName": "Winnipeg Jets",
+          "seasonCount": {
+            "owned": 10,
+            "played": 9
+          },
+          "games": 342,
+          "wins": 187,
+          "saves": 9310,
+          "shutouts": 28,
+          "goals": 0,
+          "assists": 5,
+          "points": 5,
+          "penalties": 18,
+          "ppp": 1,
+          "shp": 0
+        },
+        {
+          "teamId": "10",
+          "teamName": "Nashville Predators",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 7,
+          "wins": 6,
+          "saves": 183,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "3",
+          "teamName": "Calgary Flames",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "6",
+          "teamName": "Detroit Red Wings",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "wins": 0,
+          "saves": 0,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 349,
+      "wins": 193,
+      "saves": 9493,
+      "shutouts": 28,
+      "goals": 0,
+      "assists": 5,
+      "points": 5,
+      "penalties": 18,
+      "ppp": 1,
+      "shp": 0
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 3,
+        "played": 3
+      },
+      "teamCount": {
+        "owned": 1,
+        "played": 1
+      },
+      "teams": [
+        {
+          "teamId": "30",
+          "teamName": "Winnipeg Jets",
+          "seasonCount": {
+            "owned": 3,
+            "played": 3
+          },
+          "games": 5,
+          "wins": 3,
+          "saves": 107,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 5,
+      "wins": 3,
+      "saves": 107,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "6",
+      "teamName": "Detroit Red Wings",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2022,
+      "reportType": "regular",
+      "teamId": "3",
+      "teamName": "Calgary Flames",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2021,
+      "reportType": "regular",
+      "teamId": "3",
+      "teamName": "Calgary Flames",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2021,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2020,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 19,
+      "wins": 11,
+      "saves": 486,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.34",
+      "savePercent": "0.915"
+    },
+    {
+      "season": 2020,
+      "reportType": "playoffs",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 1,
+      "wins": 1,
+      "saves": 21,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "1.87",
+      "savePercent": "0.913"
+    },
+    {
+      "season": 2019,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 49,
+      "wins": 22,
+      "saves": 1345,
+      "shutouts": 4,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 6,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2019,
+      "reportType": "playoffs",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 2,
+      "wins": 1,
+      "saves": 39,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2018,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 50,
+      "wins": 25,
+      "saves": 1364,
+      "shutouts": 3,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.58",
+      "savePercent": "0.915"
+    },
+    {
+      "season": 2018,
+      "reportType": "playoffs",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 2,
+      "wins": 1,
+      "saves": 47,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "4.50",
+      "savePercent": "0.839"
+    },
+    {
+      "season": 2017,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 37,
+      "wins": 14,
+      "saves": 1007,
+      "shutouts": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2016,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 50,
+      "wins": 29,
+      "saves": 1354,
+      "shutouts": 3,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "penalties": 4,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.31",
+      "savePercent": "0.922"
+    },
+    {
+      "season": 2015,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 12,
+      "wins": 10,
+      "saves": 341,
+      "shutouts": 2,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2014,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 56,
+      "wins": 38,
+      "saves": 1563,
+      "shutouts": 7,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "1.91",
+      "savePercent": "0.936"
+    },
+    {
+      "season": 2013,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 48,
+      "wins": 27,
+      "saves": 1346,
+      "shutouts": 4,
+      "goals": 0,
+      "assists": 2,
+      "points": 2,
+      "penalties": 4,
+      "ppp": 1,
+      "shp": 0,
+      "gaa": "2.33",
+      "savePercent": "0.925"
+    },
+    {
+      "season": 2012,
+      "reportType": "regular",
+      "teamId": "10",
+      "teamName": "Nashville Predators",
+      "games": 7,
+      "wins": 6,
+      "saves": 183,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2012,
+      "reportType": "regular",
+      "teamId": "30",
+      "teamName": "Winnipeg Jets",
+      "games": 21,
+      "wins": 11,
+      "saves": 504,
+      "shutouts": 3,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.48",
+      "savePercent": "0.906"
+    }
+  ]
+}

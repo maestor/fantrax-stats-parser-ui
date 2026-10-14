@@ -1,0 +1,409 @@
+{
+  "id": "05rjg",
+  "name": "Danila Yurov",
+  "position": "F",
+  "summary": {
+    "firstSeason": 2022,
+    "lastSeason": 2026,
+    "seasonCount": {
+      "owned": 5,
+      "played": 2
+    },
+    "teamCount": {
+      "owned": 4,
+      "played": 2
+    },
+    "teams": [
+      {
+        "teamId": "32",
+        "teamName": "Vegas Golden Knights",
+        "seasonCount": {
+          "owned": 2,
+          "played": 0
+        },
+        "firstSeason": 2022,
+        "lastSeason": 2023
+      },
+      {
+        "teamId": "21",
+        "teamName": "Buffalo Sabres",
+        "seasonCount": {
+          "owned": 3,
+          "played": 1
+        },
+        "firstSeason": 2023,
+        "lastSeason": 2025
+      },
+      {
+        "teamId": "19",
+        "teamName": "Toronto Maple Leafs",
+        "seasonCount": {
+          "owned": 1,
+          "played": 0
+        },
+        "firstSeason": 2025,
+        "lastSeason": 2025
+      },
+      {
+        "teamId": "26",
+        "teamName": "Pittsburgh Penguins",
+        "seasonCount": {
+          "owned": 1,
+          "played": 1
+        },
+        "firstSeason": 2026,
+        "lastSeason": 2026
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 5,
+        "played": 2
+      },
+      "teamCount": {
+        "owned": 4,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 3,
+            "played": 1
+          },
+          "games": 61,
+          "goals": 10,
+          "assists": 15,
+          "points": 25,
+          "plusMinus": -2,
+          "penalties": 22,
+          "shots": 68,
+          "ppp": 2,
+          "shp": 0,
+          "hits": 43,
+          "blocks": 35
+        },
+        {
+          "teamId": "26",
+          "teamName": "Pittsburgh Penguins",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 3,
+          "goals": 1,
+          "assists": 1,
+          "points": 2,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 4,
+          "ppp": 2,
+          "shp": 0,
+          "hits": 5,
+          "blocks": 1
+        },
+        {
+          "teamId": "32",
+          "teamName": "Vegas Golden Knights",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        },
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 64,
+      "goals": 11,
+      "assists": 16,
+      "points": 27,
+      "plusMinus": -2,
+      "penalties": 22,
+      "shots": 72,
+      "ppp": 4,
+      "shp": 0,
+      "hits": 48,
+      "blocks": 36
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 5,
+        "played": 2
+      },
+      "teamCount": {
+        "owned": 4,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "21",
+          "teamName": "Buffalo Sabres",
+          "seasonCount": {
+            "owned": 3,
+            "played": 1
+          },
+          "games": 61,
+          "goals": 10,
+          "assists": 15,
+          "points": 25,
+          "plusMinus": -2,
+          "penalties": 22,
+          "shots": 68,
+          "ppp": 2,
+          "shp": 0,
+          "hits": 43,
+          "blocks": 35
+        },
+        {
+          "teamId": "26",
+          "teamName": "Pittsburgh Penguins",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 3,
+          "goals": 1,
+          "assists": 1,
+          "points": 2,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 4,
+          "ppp": 2,
+          "shp": 0,
+          "hits": 5,
+          "blocks": 1
+        },
+        {
+          "teamId": "32",
+          "teamName": "Vegas Golden Knights",
+          "seasonCount": {
+            "owned": 2,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        },
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 1,
+            "played": 0
+          },
+          "games": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 0
+        }
+      ],
+      "games": 64,
+      "goals": 11,
+      "assists": 16,
+      "points": 27,
+      "plusMinus": -2,
+      "penalties": 22,
+      "shots": 72,
+      "ppp": 4,
+      "shp": 0,
+      "hits": 48,
+      "blocks": 36
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 0,
+        "played": 0
+      },
+      "teamCount": {
+        "owned": 0,
+        "played": 0
+      },
+      "teams": [],
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2026,
+      "reportType": "regular",
+      "teamId": "26",
+      "teamName": "Pittsburgh Penguins",
+      "position": "F",
+      "games": 3,
+      "goals": 1,
+      "assists": 1,
+      "points": 2,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 4,
+      "ppp": 2,
+      "shp": 0,
+      "hits": 5,
+      "blocks": 1
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "position": "F",
+      "games": 61,
+      "goals": 10,
+      "assists": 15,
+      "points": 25,
+      "plusMinus": -2,
+      "penalties": 22,
+      "shots": 68,
+      "ppp": 2,
+      "shp": 0,
+      "hits": 43,
+      "blocks": 35
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "21",
+      "teamName": "Buffalo Sabres",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "32",
+      "teamName": "Vegas Golden Knights",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2022,
+      "reportType": "regular",
+      "teamId": "32",
+      "teamName": "Vegas Golden Knights",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    }
+  ]
+}

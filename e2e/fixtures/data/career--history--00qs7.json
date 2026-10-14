@@ -1,0 +1,116 @@
+{
+  "id": "00qs7",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "trade-WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxNTowODowMC4wMDBaIiwiMXw0Il0",
+      "type": "trade",
+      "season": 2012,
+      "date": "2013-01-09T15:08:00.000Z",
+      "tradeId": "WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxNTowODowMC4wMDBaIiwiMXw0Il0",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          },
+          "toTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxMjozMzowMC4wMDBaIiwiMjl8NCJd",
+      "type": "trade",
+      "season": 2012,
+      "date": "2013-01-09T12:33:00.000Z",
+      "tradeId": "WzIwMTIsInRyYWRlcy0yMDEyLTIwMTMuY3N2IiwiMjAxMy0wMS0wOVQxMjozMzowMC4wMDBaIiwiMjl8NCJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "29",
+            "name": "Dallas Stars"
+          },
+          "toTeam": {
+            "id": "4",
+            "name": "Vancouver Canucks"
+          }
+        }
+      ]
+    },
+    {
+      "id": "draft-opening-opening-45",
+      "type": "draft",
+      "draftType": "opening",
+      "date": null,
+      "season": null,
+      "round": 2,
+      "pickNumber": 45,
+      "team": {
+        "id": "29",
+        "name": "Dallas Stars"
+      },
+      "originalOwner": {
+        "id": "29",
+        "name": "Dallas Stars"
+      }
+    }
+  ]
+}

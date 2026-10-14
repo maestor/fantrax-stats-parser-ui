@@ -137,6 +137,14 @@ Notes:
 - Route items still activate with the native button keys (`Enter` / `Space`)
 - The info item keeps its existing dialog-opening behavior and focus restoration
 
+### Career profile navigation
+
+- Statistics popups provide a labeled FFHL-ura icon link to the career profile and a statistics-aware return path.
+- Career-list names are native links supporting normal browser link actions. Roving row navigation remains available; `Enter` or `Space` opens a profile without adding a tab stop for every name link.
+- Returning from a profile restores the originating list's search, sort, virtual scroll, and row focus. Detail navigation focuses the player heading, and section-jump controls focus headings below the sticky navigation, scrolling smoothly unless reduced motion is requested.
+- Season/team tables have accessible names and labeled, keyboard-scrollable overflow regions. Consecutive repeated season labels are visually omitted; every row header retains its accessible season label.
+- Mobile trade disclosure controls expose expanded state and contextual names; desktop shows received packages directly. Collapsed trade details are removed from the DOM; failures and copy-link feedback use alert/status messaging independently of successful statistics.
+
 ## Verification
 
 Cover changed keyboard handlers through real user behavior with Testing Library; extend Playwright for major navigation/dialog/focus flows. See [testing](testing.md). Use [styling](styling.md) and browser inspection for contrast, clipping, layout, or visible-focus risks that DOM tests cannot prove.
