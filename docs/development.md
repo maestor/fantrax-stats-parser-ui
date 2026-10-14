@@ -8,6 +8,8 @@ Development uses `src/environments/environment.ts` → `http://localhost:3000`. 
 
 Vercel rewrites `/api/<path>` to [api/proxy.js](../api/proxy.js), which forwards allowed read endpoints via GET/OPTIONS, injects the server-side API key, strips client Authorization, and suppresses upstream Set-Cookie.
 
+When adding an API endpoint used by the frontend, update the proxy allowlist and cover forwarding in [api/proxy.spec.js](../api/proxy.spec.js). Local development calls the backend directly and E2E API fixtures bypass the proxy. A production `404` with `{"error":"Path not allowed"}` means the proxy rejected the path before contacting the backend; deploy the frontend with the updated allowlist.
+
 | Vercel variable | Value |
 | --- | --- |
 | `API_URL` | Absolute backend base URL |

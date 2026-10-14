@@ -43,6 +43,8 @@ const ALLOWED_PATH_PATTERNS = [
   new RegExp(`^goalies/season/${REPORT_TYPE_PATTERN}/\\d{4}$`),
   /^career\/players$/,
   /^career\/goalies$/,
+  /^career\/(player|goalie|history)\/[A-Za-z0-9_-]+$/,
+  /^transactions\/trades\/[A-Za-z0-9_-]+$/,
   new RegExp(
     `^career/highlights/(${CAREER_HIGHLIGHT_TYPES.map(escapeForRegExp).join('|')})$`,
   ),
