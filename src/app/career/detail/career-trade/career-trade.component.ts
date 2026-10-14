@@ -29,6 +29,8 @@ export class CareerTradeComponent {
   );
   readonly packages = computed(() => {
     type Asset = TradeDetail['blocks'][number]['assets'][number];
+    const pickTeamName = (asset: Asset): string =>
+      asset.draftOriginalOwner?.name ?? asset.name.slice(asset.name.indexOf('(') + 1, -1);
     const packages = new Map<string, { team: Asset['toTeam']; assets: Asset[] }>();
     for (const block of this.state().data?.blocks ?? []) {
       for (const asset of block.assets) {
@@ -38,7 +40,21 @@ export class CareerTradeComponent {
         packages.get(asset.toTeam.id)!.assets.push(asset);
       }
     }
-    return [...packages.values()];
+    return [...packages.values()].map((received) => {
+      const picks = received.assets.filter((asset) => asset.type === 'draft_pick');
+      picks.sort((left, right) =>
+        left.draftRound! - right.draftRound! ||
+        left.draftSeason! - right.draftSeason! ||
+        pickTeamName(left).localeCompare(pickTeamName(right)),
+      );
+      let pickIndex = 0;
+      return {
+        ...received,
+        assets: received.assets.map((asset) =>
+          asset.type === 'draft_pick' ? picks[pickIndex++] : asset,
+        ),
+      };
+    });
   });
   reload(): void {
     this.revision.update((value) => value + 1);

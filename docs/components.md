@@ -49,6 +49,8 @@ Player-card popups expose a native FFHL-ura history-icon link for the currently 
 
 `CareerHistoryComponent` loads independently of statistics and groups linked draft/transaction events by recorded season. Trade details show received packages by team immediately on desktop; mobile uses a lazy disclosure. Failures have independent retries. The section disclaimer covers timestamp-based reconstruction; undated drafts and unlinked assets remain explicit. Profile links are offered only for assets with career records. The sibling API's [importing guide](../../node-fantrax-stats-parser/docs/importing.md#career-history-consumers) owns source interpretation.
 
+Within each received trade package, draft picks sort by round, then earlier draft year, then original team name alphabetically. Sorting spans all source blocks in that package and preserves the positions of players and other assets. Picks with an unresolved original team use the team name in their source label for the alphabetical tie-break; labels remain as supplied by the API.
+
 `CareerListStateService` retains transient search, sort, scroll offset, and originating identity when opening a profile, separately for player and goalie lists. Returning restores row focus, including repeated browser Back/Forward navigation; direct profile visits have a normal list-link fallback. This state does not change persisted dashboard settings.
 
 Career pages opened from statistics carry a `from=player-stats` or `from=goalie-stats` return context, preserved through trade-profile links. The back link accepts those two statistics destinations; other entries return to the corresponding career list. Copied career URLs omit return context.
