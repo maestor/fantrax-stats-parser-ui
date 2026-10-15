@@ -1,0 +1,83 @@
+{
+  "id": "074qj",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "expansionDraftSeasons": [
+      2017,
+      2021
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNi0yMDI3LmNzdiIsMzg4LDBd",
+      "type": "drop",
+      "date": "2026-06-27T20:24:00.000Z",
+      "season": 2026,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    },
+    {
+      "id": "claim-WyJjbGFpbXMtMjAyNi0yMDI3LmNzdiIsNDEwLDBd",
+      "type": "claim",
+      "date": "2026-06-24T17:41:00.000Z",
+      "season": 2026,
+      "team": {
+        "id": "1",
+        "name": "Colorado Avalanche"
+      }
+    }
+  ]
+}

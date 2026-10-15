@@ -15,7 +15,7 @@ async function setup(getExpansionDrafts = vi.fn(() => of(expansionDraftsFixture)
 }
 
 describe('Expansion drafts', () => {
-  it('shows both drafts immediately with F/D/G groups, source teams, native career links, and plain identity-only names', async () => {
+  it('shows both drafts immediately with F/D/G groups, source teams, native career links, including history-only identities', async () => {
     await setup();
     const seattle = await screen.findByRole('region', { name: 'Seattle Kraken 2021' });
     const vegas = screen.getByRole('region', { name: 'Vegas Golden Knights 2017' });
@@ -25,9 +25,16 @@ describe('Expansion drafts', () => {
     const zacha = within(seattle).getByRole('row', { name: 'Pavel Zacha Toronto Maple Leafs' });
     expect(within(zacha).getByRole('link', { name: 'Pavel Zacha' })).toHaveAttribute('href', '/career/players/pavel-zacha-03l0t?from=expansion-drafts');
     expect(within(seattle).getByRole('link', { name: 'Tristan Jarry' })).toHaveAttribute('href', '/career/goalies/tristan-jarry-02yjw?from=expansion-drafts');
-    expect(within(vegas).getByRole('rowheader', { name: 'Juuso Hietanen' })).toBeInTheDocument();
-    expect(within(vegas).queryByRole('link', { name: 'Juuso Hietanen' })).not.toBeInTheDocument();
-    expect(within(vegas).getAllByRole('link')).toHaveLength(29);
+    expect(within(vegas).getByRole('link', { name: 'Juuso Hietanen' })).toHaveAttribute('href', '/career/players/juuso-hietanen-04dut?from=expansion-drafts');
+    expect(within(vegas).getAllByRole('link')).toHaveLength(30);
+  });
+
+  it('keeps a selection with an unresolved identity as plain text', async () => {
+    const drafts = structuredClone(expansionDraftsFixture);
+    drafts[0].picks[0] = { ...drafts[0].picks[0], draftedPlayer: 'Unresolved Prospect', careerProfile: null };
+    await setup(vi.fn(() => of(drafts)));
+    expect(await screen.findByRole('rowheader', { name: 'Unresolved Prospect' })).toBeVisible();
+    expect(screen.queryByRole('link', { name: 'Unresolved Prospect' })).not.toBeInTheDocument();
   });
 
   it('announces loading and then a valid empty import', async () => {

@@ -39,6 +39,22 @@ describe('CareerGoaliesComponent', () => {
     expect(await screen.findByText('table.noSearchResults')).toBeInTheDocument();
   });
 
+  it('renders a linked history-only identity with zero counts and missing season dashes', async () => {
+    const { response } = await setup();
+    response.next([{
+      id: 'prospect', name: 'Prospect',
+      firstSeason: null, lastSeason: null, seasonsOwned: 0, seasonsPlayedRegular: 0,
+      seasonsPlayedPlayoffs: 0, teamsOwned: 0, teamsPlayedRegular: 0,
+      teamsPlayedPlayoffs: 0, regularGames: 0, playoffGames: 0,
+    }]);
+    response.complete();
+    const link = await screen.findByRole('link', { name: /Prospect/ });
+    expect(link).toHaveAttribute('href', '/career/goalies/prospect-prospect');
+    const row = within(link.closest('[role="row"]') as HTMLElement);
+    expect(row.getAllByRole('cell', { name: '-' })).toHaveLength(2);
+    expect(row.getAllByRole('cell', { name: '0' })).toHaveLength(8);
+  });
+
   it('finishes loading with the empty state for an empty response', async () => {
     const { response, footer } = await setup();
     response.next([]);

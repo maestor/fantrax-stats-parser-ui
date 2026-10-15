@@ -15,7 +15,7 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { CAREER_HIGHLIGHT_CARD_TYPES } from '../../src/app/career/highlights/career-highlights.constants';
-import { CAREER_DRAFT_PROFILES, CAREER_POPUP_PROFILES, CAREER_PROFILES } from '../config/career-profiles';
+import { CAREER_DRAFT_PROFILES, CAREER_HISTORY_ONLY_PROFILES, CAREER_POPUP_PROFILES, CAREER_PROFILES } from '../config/career-profiles';
 import type { components } from '../../src/app/services/api.types.generated';
 
 const API_URL = 'http://localhost:3000';
@@ -135,9 +135,10 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
 }
 
 async function buildCareerProfileFixtureList(): Promise<FixtureEntry[]> {
-  const paths = new Set(['career/players', 'career/goalies', 'goalies/combined/regular', 'draft/expansion']);
+  const paths = new Set(['career/players', 'career/goalies', 'goalies/combined/regular', 'draft/entry', 'draft/original', 'draft/expansion']);
   const profiles = new Map([
     ...CAREER_PROFILES,
+    ...CAREER_HISTORY_ONLY_PROFILES,
     ...CAREER_POPUP_PROFILES,
     ...Object.values(CAREER_DRAFT_PROFILES).flatMap((profiles) => Object.values(profiles)),
   ].map((profile) => [profile.id, profile]));

@@ -199,7 +199,7 @@ export class VirtualTableComponent implements AfterViewInit {
   }
 
   getCellValue(row: TableRow, field: string): number | string | undefined {
-    return (row as Record<string, unknown>)[field] as number | string | undefined;
+    return ((row as Record<string, unknown>)[field] ?? undefined) as number | string | undefined;
   }
 
   formatValue(row: TableRow, field: string): string {

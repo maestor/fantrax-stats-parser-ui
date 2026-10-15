@@ -32,11 +32,15 @@
     <span class="sr-only" role="status" aria-atomic="true">
       {{ copyStatus() ? ('career.profile.' + copyStatus() | translate) : '' }}
     </span>
-    @if (state().data; as career) {
+    @if (state().data) {
       <p>
-        {{ position() }} · {{ formatSeason(career.summary.firstSeason) }} –
-        {{ formatSeason(career.summary.lastSeason) }}
+        {{ position() }}
+        @if (statistics(); as career) {
+          · {{ formatSeason(career.summary.firstSeason) }} – {{ formatSeason(career.summary.lastSeason) }}
+        }
       </p>
+    }
+    @if (statistics(); as career) {
       <dl class="summary-grid">
         <div>
           <dt>{{ 'career.profile.seasonsOwned' | translate }}</dt>
@@ -71,12 +75,14 @@
       }
     </div>
   } @else if (state().data; as career) {
-    <app-section-jump-nav
-      [items]="jumpItems"
-      ariaLabelKey="career.profile.jumpLabel"
-      (itemSelected)="jumpTo($event)"
-    />
-    <app-career-statistics [career]="career" [isGoalie]="isGoalie" />
+    @if (statistics(); as statistics) {
+      <app-section-jump-nav
+        [items]="jumpItems"
+        ariaLabelKey="career.profile.jumpLabel"
+        (itemSelected)="jumpTo($event)"
+      />
+      <app-career-statistics [career]="statistics" [isGoalie]="isGoalie" />
+    }
     <app-career-history [id]="career.id" />
   }
 </article>
