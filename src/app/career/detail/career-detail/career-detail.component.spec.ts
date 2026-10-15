@@ -201,7 +201,7 @@ describe('Career profile', () => {
     });
   }
 
-  it('opens a whole-league profile with scoped statistics and full received trade packages on desktop', async () => {
+  it.each([false, true])('opens a whole-league profile and puts its player first as plain text in the received packages (mobile: %s)', async (isMobile) => {
     const getTradeDetail = vi.fn(() =>
       of({
         id: 'deal1',
@@ -213,6 +213,19 @@ describe('Career profile', () => {
             sourceBlockIndex: 0,
             sourcePeriod: 10,
             assets: [
+              {
+                type: 'player',
+                name: 'Package Player',
+                rawName: 'Package Player',
+                entityId: 'p2',
+                careerType: 'player',
+                position: 'F',
+                fromTeam: { id: '2', name: 'Carolina Hurricanes' },
+                toTeam: { id: '4', name: 'Vancouver Canucks' },
+                draftSeason: null,
+                draftRound: null,
+                draftOriginalOwner: null,
+              },
               {
                 type: 'player',
                 name: 'Career Player',
@@ -250,7 +263,7 @@ describe('Career profile', () => {
         ],
       } satisfies components['schemas']['TradeDetail']),
     );
-    const config = getBehaviorTestConfig({ isMobile: false });
+    const config = getBehaviorTestConfig({ isMobile });
     await render(AppComponent, {
       ...config,
       providers: [
@@ -293,9 +306,13 @@ describe('Career profile', () => {
     ).not.toBeInTheDocument();
     expect(within(seasonTable).getByRole('rowheader', { name: '2024-25' })).toHaveTextContent('2024-25');
     expect(
-      screen.getByRole('heading', { name: 'career.profile.events.draft' }),
+      screen.getByRole('heading', { name: 'career.profile.events.draft 2023' }),
     ).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: 'career.profile.inspectTrade' })).not.toBeInTheDocument();
+    if (isMobile) {
+      fireEvent.click(screen.getByRole('button', { name: /career.profile.inspectTrade/ }));
+    } else {
+      expect(screen.queryByRole('button', { name: /career.profile.inspectTrade/ })).not.toBeInTheDocument();
+    }
     expect(await screen.findByRole('link', { name: 'Other Goalie' })).toHaveAttribute(
       'href',
       '/career/goalies/other-goalie-g1',
@@ -307,7 +324,14 @@ describe('Career profile', () => {
     const otherPackage = screen.getByRole('region', {
       name: 'Vancouver Canucks career.profile.received',
     });
-    expect(within(otherPackage).getByRole('link', { name: 'Career Player' })).toBeInTheDocument();
+    expect(within(otherPackage).getAllByRole('listitem').map((item) => item.textContent?.trim()))
+      .toEqual(['Career Player', 'Package Player']);
+    expect(within(otherPackage).queryByRole('link', { name: 'Career Player' })).not.toBeInTheDocument();
+    expect(within(otherPackage).getByRole('link', { name: 'Package Player' })).toHaveAttribute(
+      'href', '/career/players/package-player-p2',
+    );
+    const tradeDetails = screen.getByRole('region', { name: 'career.profile.tradeDetails' });
+    expect(within(tradeDetails).getAllByRole('region')[0]).toBe(otherPackage);
   });
 
   it('normalizes old and stale-name links by ID and copies unique readable URLs', async () => {
@@ -612,6 +636,9 @@ describe('Career profile', () => {
       pick(2023, 1, 'San Jose Sharks'),
       pick(2022, 3, 'Colorado Avalanche'),
       pick(2022, 10, 'Dallas Stars'),
+      pick(2026, 4, 'Dallas Stars'),
+      pick(2026, 5, 'Dallas Stars'),
+      pick(2026, 11, 'Dallas Stars'),
       {
         ...pick(2022, 3, 'Dallas Stars'),
         name: '2022 Draft Pick, Round 3 (Quebec Nordiques)',
@@ -642,17 +669,23 @@ describe('Career profile', () => {
     });
     const labels = within(received).getAllByRole('listitem').map((item) => item.textContent?.trim());
     expect(labels).toEqual([
-      '2023 Draft Pick, Round 1 (San Jose Sharks)',
+      '2023 career.profile.events.draft 1st (SJS)',
       'Other Goalie',
-      '2022 Draft Pick, Round 2 (Dallas Stars)',
+      '2022 career.profile.events.draft 2nd (DAL)',
       'Future consideration',
-      '2021 Draft Pick, Round 3 (Dallas Stars)',
-      '2022 Draft Pick, Round 3 (Colorado Avalanche)',
-      '2022 Draft Pick, Round 3 (Dallas Stars)',
+      '2021 career.profile.events.draft 3rd (DAL)',
+      '2022 career.profile.events.draft 3rd (COL)',
+      '2022 career.profile.events.draft 3rd (DAL)',
       '2022 Draft Pick, Round 3 (Quebec Nordiques)',
-      '2022 Draft Pick, Round 3 (San Jose Sharks)',
-      '2022 Draft Pick, Round 10 (Dallas Stars)',
+      '2022 career.profile.events.draft 3rd (SJS)',
+      '2026 career.profile.events.draft 4th (DAL)',
+      '2026 career.profile.events.draft 5th (DAL)',
+      '2022 career.profile.events.draft 10th (DAL)',
+      '2026 career.profile.events.draft 11th (DAL)',
     ]);
+    const abbreviation = within(received).getAllByText('SJS')[0];
+    expect(abbreviation).toHaveAttribute('title', 'San Jose Sharks');
+    expect(abbreviation).toHaveAttribute('aria-label', 'San Jose Sharks');
     expect(within(received).getByRole('link', { name: 'Other Goalie' })).toHaveAttribute(
       'href', '/career/goalies/other-goalie-g1',
     );
@@ -686,6 +719,20 @@ describe('Career profile', () => {
             {
               ...asset,
               type: 'draft_pick',
+              name: 'Draft Pick, Round 2 (Carolina Hurricanes)',
+              draftRound: 2,
+              draftOriginalOwner: { id: '2', name: 'Carolina Hurricanes' },
+            },
+            {
+              ...asset,
+              type: 'draft_pick',
+              name: '2026 Draft Pick (Carolina Hurricanes)',
+              draftSeason: 2026,
+              draftOriginalOwner: { id: '2', name: 'Carolina Hurricanes' },
+            },
+            {
+              ...asset,
+              type: 'draft_pick',
               name: '2026 Round 2',
               rawName: '2026 Round 2',
               draftSeason: 2026,
@@ -700,7 +747,11 @@ describe('Career profile', () => {
       .fn()
       .mockReturnValueOnce(throwError(() => new ApiRequestError(500)))
       .mockReturnValue(of(detail));
-    await setup({ getTradeDetail, getCareerHistory: () => of(historyFixture) }, true);
+    await setup({
+      getTradeDetail,
+      getCareerHistory: () => of(historyFixture),
+      getTeams: () => throwError(() => new ApiRequestError(500)),
+    }, true);
     await TestBed.inject(Router).navigateByUrl('/career/players/p1');
     const button = await screen.findByRole('button', { name: /career.profile.inspectTrade/ });
     expect(getTradeDetail).not.toHaveBeenCalled();
@@ -711,9 +762,11 @@ describe('Career profile', () => {
     expect(await screen.findByText('Unresolved Prospect')).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Unresolved Prospect' })).not.toBeInTheDocument();
     const received = screen.getByRole('region', { name: 'Vancouver Canucks career.profile.received' });
-    expect(within(received).getAllByRole('listitem')).toHaveLength(2);
-    expect(within(received).getByText('2026 Round 2').closest('li')).toHaveTextContent(
-      /^2026 Round 2$/,
+    expect(within(received).getAllByRole('listitem')).toHaveLength(4);
+    expect(within(received).getByText('Draft Pick, Round 2 (Carolina Hurricanes)')).toBeInTheDocument();
+    expect(within(received).getByText('2026 Draft Pick (Carolina Hurricanes)')).toBeInTheDocument();
+    expect(within(received).getByText(/2026 career.profile.events.draft 2nd/).closest('li')).toHaveTextContent(
+      /^2026 career.profile.events.draft 2nd \(Carolina Hurricanes\)$/,
     );
     const missingPackage = screen.getByRole('region', {
       name: 'Carolina Hurricanes career.profile.received',

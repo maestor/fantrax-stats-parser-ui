@@ -121,7 +121,7 @@
       "teamsOwned": "Omistaneita joukkueita",
       "teamsPlayed": "Joukkueita, joissa pelannut",
       "firstAppearance": "Ensimmäinen pelattu kausi",
-      "noAppearance": "Ei kirjattuja otteluita",
+      "noAppearance": "Ei FFHL-otteluita",
       "loading": "Ladataan uraa…",
       "failed": "Uratilastojen lataaminen epäonnistui.",
       "notFound": "Tälle pelaajalle ei löytynyt uratietoja.",
@@ -144,7 +144,7 @@
       "goalieRatesNote": "GAA ja torjuntaprosentti näytetään vain alkuperäisillä kausi- ja joukkueriveillä. Uralla tai joukkueittain yhdistettyjä arvoja ei lasketa näistä keskiarvoista.",
       "historyLoading": "Ladataan historiaa…",
       "historyFailed": "Historian lataaminen epäonnistui. Uratilastot ovat edelleen käytettävissä.",
-      "historyNote": "HUOM! Kaupat koottu aikaleiman perusteella, mutta virheitä voi esiintyä.",
+      "historyNote": "Pelaajan siirtohistoria (varaus, kaupat, nostot, pudotukset).\nHUOM! Varsinkin kaupoissa voi esiintyä puutteita. Esim. kauppojen ehdollisuuksia ei saada mitenkään kaupan yhteyteen.",
       "openingDraft": "Avausdrafti",
       "noHistory": "Pelaajalle ei löytynyt linkitettyjä tapahtumia tallennetusta historiasta.",
       "events": {
@@ -158,7 +158,7 @@
       "inspectTrade": "Näytä kauppa",
       "tradeLoading": "Ladataan kaupan osapuolia…",
       "tradeFailed": "Kaupan tietojen lataaminen epäonnistui.",
-      "received": "sai",
+      "received": "sai:",
       "noReceivedAssets": "Ei tallennettuja siirtoja.",
       "tradeDetails": "Kaupan tapahtumat"
     }

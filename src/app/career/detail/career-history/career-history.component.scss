@@ -2,6 +2,9 @@
 @use '../../../../styles/surface-patterns' as surfaces;
 @include profile.controls;
 @include profile.sections;
+.history-note {
+  white-space: pre-line;
+}
 .history-season {
   margin-top: 1.5rem;
 }

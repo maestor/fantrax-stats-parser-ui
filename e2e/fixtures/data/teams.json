@@ -2,158 +2,189 @@
   {
     "id": "1",
     "name": "colorado",
-    "presentName": "Colorado Avalanche"
+    "presentName": "Colorado Avalanche",
+    "teamAbbr": "COL"
   },
   {
     "id": "2",
     "name": "carolina",
-    "presentName": "Carolina Hurricanes"
+    "presentName": "Carolina Hurricanes",
+    "teamAbbr": "CAR"
   },
   {
     "id": "3",
     "name": "calgary",
-    "presentName": "Calgary Flames"
+    "presentName": "Calgary Flames",
+    "teamAbbr": "CGY"
   },
   {
     "id": "4",
     "name": "vancouver",
-    "presentName": "Vancouver Canucks"
+    "presentName": "Vancouver Canucks",
+    "teamAbbr": "VAN"
   },
   {
     "id": "5",
     "name": "montreal",
-    "presentName": "Montreal Canadiens"
+    "presentName": "Montreal Canadiens",
+    "teamAbbr": "MTL"
   },
   {
     "id": "6",
     "name": "detroit",
-    "presentName": "Detroit Red Wings"
+    "presentName": "Detroit Red Wings",
+    "teamAbbr": "DET"
   },
   {
     "id": "7",
     "name": "edmonton",
-    "presentName": "Edmonton Oilers"
+    "presentName": "Edmonton Oilers",
+    "teamAbbr": "EDM"
   },
   {
     "id": "8",
     "name": "sanjose",
-    "presentName": "San Jose Sharks"
+    "presentName": "San Jose Sharks",
+    "teamAbbr": "SJS"
   },
   {
     "id": "9",
     "name": "nyrangers",
-    "presentName": "New York Rangers"
+    "presentName": "New York Rangers",
+    "teamAbbr": "NYR"
   },
   {
     "id": "10",
     "name": "nashville",
-    "presentName": "Nashville Predators"
+    "presentName": "Nashville Predators",
+    "teamAbbr": "NSH"
   },
   {
     "id": "11",
     "name": "losangeles",
-    "presentName": "Los Angeles Kings"
+    "presentName": "Los Angeles Kings",
+    "teamAbbr": "LAK"
   },
   {
     "id": "12",
     "name": "anaheim",
-    "presentName": "Anaheim Ducks"
+    "presentName": "Anaheim Ducks",
+    "teamAbbr": "ANA"
   },
   {
     "id": "13",
     "name": "chicago",
-    "presentName": "Chicago Blackhawks"
+    "presentName": "Chicago Blackhawks",
+    "teamAbbr": "CHI"
   },
   {
     "id": "14",
     "name": "minnesota",
-    "presentName": "Minnesota Wild"
+    "presentName": "Minnesota Wild",
+    "teamAbbr": "MIN"
   },
   {
     "id": "15",
     "name": "stlouis",
-    "presentName": "St. Louis Blues"
+    "presentName": "St. Louis Blues",
+    "teamAbbr": "STL"
   },
   {
     "id": "16",
     "name": "tampabay",
-    "presentName": "Tampa Bay Lightning"
+    "presentName": "Tampa Bay Lightning",
+    "teamAbbr": "TBL"
   },
   {
     "id": "17",
     "name": "florida",
-    "presentName": "Florida Panthers"
+    "presentName": "Florida Panthers",
+    "teamAbbr": "FLA"
   },
   {
     "id": "18",
     "name": "boston",
-    "presentName": "Boston Bruins"
+    "presentName": "Boston Bruins",
+    "teamAbbr": "BOS"
   },
   {
     "id": "19",
     "name": "toronto",
-    "presentName": "Toronto Maple Leafs"
+    "presentName": "Toronto Maple Leafs",
+    "teamAbbr": "TOR"
   },
   {
     "id": "20",
     "name": "ottawa",
-    "presentName": "Ottawa Senators"
+    "presentName": "Ottawa Senators",
+    "teamAbbr": "OTT"
   },
   {
     "id": "21",
     "name": "buffalo",
-    "presentName": "Buffalo Sabres"
+    "presentName": "Buffalo Sabres",
+    "teamAbbr": "BUF"
   },
   {
     "id": "22",
     "name": "philadelphia",
-    "presentName": "Philadelphia Flyers"
+    "presentName": "Philadelphia Flyers",
+    "teamAbbr": "PHI"
   },
   {
     "id": "23",
     "name": "nyislanders",
-    "presentName": "New York Islanders"
+    "presentName": "New York Islanders",
+    "teamAbbr": "NYI"
   },
   {
     "id": "24",
     "name": "newjersey",
-    "presentName": "New Jersey Devils"
+    "presentName": "New Jersey Devils",
+    "teamAbbr": "NJD"
   },
   {
     "id": "25",
     "name": "washington",
-    "presentName": "Washington Capitals"
+    "presentName": "Washington Capitals",
+    "teamAbbr": "WSH"
   },
   {
     "id": "26",
     "name": "pittsburgh",
-    "presentName": "Pittsburgh Penguins"
+    "presentName": "Pittsburgh Penguins",
+    "teamAbbr": "PIT"
   },
   {
     "id": "27",
     "name": "columbus",
-    "presentName": "Columbus Blue Jackets"
+    "presentName": "Columbus Blue Jackets",
+    "teamAbbr": "CBJ"
   },
   {
     "id": "28",
     "name": "seattle",
     "presentName": "Seattle Kraken",
+    "teamAbbr": "SEA",
     "firstSeason": 2021
   },
   {
     "id": "29",
     "name": "dallas",
-    "presentName": "Dallas Stars"
+    "presentName": "Dallas Stars",
+    "teamAbbr": "DAL"
   },
   {
     "id": "30",
     "name": "winnipeg",
-    "presentName": "Winnipeg Jets"
+    "presentName": "Winnipeg Jets",
+    "teamAbbr": "WPG"
   },
   {
     "id": "31",
     "name": "utah",
     "presentName": "Utah Mammoth",
+    "teamAbbr": "UTA",
     "nameAliases": [
       "Utah Hockey Club",
       "Arizona Coyotes",
@@ -166,6 +197,7 @@
     "id": "32",
     "name": "vegas",
     "presentName": "Vegas Golden Knights",
+    "teamAbbr": "VGK",
     "firstSeason": 2017
   }
 ]
