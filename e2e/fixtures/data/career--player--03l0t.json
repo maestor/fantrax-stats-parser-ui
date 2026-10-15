@@ -1,0 +1,665 @@
+{
+  "id": "03l0t",
+  "name": "Pavel Zacha",
+  "position": "F",
+  "summary": {
+    "firstSeason": 2015,
+    "lastSeason": 2026,
+    "seasonCount": {
+      "owned": 12,
+      "played": 11
+    },
+    "teamCount": {
+      "owned": 4,
+      "played": 4
+    },
+    "teams": [
+      {
+        "teamId": "16",
+        "teamName": "Tampa Bay Lightning",
+        "seasonCount": {
+          "owned": 3,
+          "played": 2
+        },
+        "firstSeason": 2015,
+        "lastSeason": 2017
+      },
+      {
+        "teamId": "3",
+        "teamName": "Calgary Flames",
+        "seasonCount": {
+          "owned": 2,
+          "played": 2
+        },
+        "firstSeason": 2017,
+        "lastSeason": 2018
+      },
+      {
+        "teamId": "19",
+        "teamName": "Toronto Maple Leafs",
+        "seasonCount": {
+          "owned": 3,
+          "played": 2
+        },
+        "firstSeason": 2018,
+        "lastSeason": 2020
+      },
+      {
+        "teamId": "28",
+        "teamName": "Seattle Kraken",
+        "seasonCount": {
+          "owned": 6,
+          "played": 6
+        },
+        "firstSeason": 2021,
+        "lastSeason": 2026
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 12,
+        "played": 11
+      },
+      "teamCount": {
+        "owned": 4,
+        "played": 4
+      },
+      "teams": [
+        {
+          "teamId": "28",
+          "teamName": "Seattle Kraken",
+          "seasonCount": {
+            "owned": 6,
+            "played": 6
+          },
+          "games": 325,
+          "goals": 80,
+          "assists": 128,
+          "points": 208,
+          "plusMinus": 15,
+          "penalties": 91,
+          "shots": 577,
+          "ppp": 50,
+          "shp": 4,
+          "hits": 299,
+          "blocks": 106
+        },
+        {
+          "teamId": "16",
+          "teamName": "Tampa Bay Lightning",
+          "seasonCount": {
+            "owned": 3,
+            "played": 2
+          },
+          "games": 87,
+          "goals": 11,
+          "assists": 16,
+          "points": 27,
+          "plusMinus": -12,
+          "penalties": 39,
+          "shots": 103,
+          "ppp": 10,
+          "shp": 0,
+          "hits": 62,
+          "blocks": 28
+        },
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 3,
+            "played": 2
+          },
+          "games": 82,
+          "goals": 13,
+          "assists": 30,
+          "points": 43,
+          "plusMinus": -22,
+          "penalties": 18,
+          "shots": 138,
+          "ppp": 10,
+          "shp": 1,
+          "hits": 72,
+          "blocks": 19
+        },
+        {
+          "teamId": "3",
+          "teamName": "Calgary Flames",
+          "seasonCount": {
+            "owned": 2,
+            "played": 2
+          },
+          "games": 79,
+          "goals": 14,
+          "assists": 11,
+          "points": 25,
+          "plusMinus": -14,
+          "penalties": 21,
+          "shots": 132,
+          "ppp": 6,
+          "shp": 4,
+          "hits": 86,
+          "blocks": 31
+        }
+      ],
+      "games": 573,
+      "goals": 118,
+      "assists": 185,
+      "points": 303,
+      "plusMinus": -33,
+      "penalties": 169,
+      "shots": 950,
+      "ppp": 76,
+      "shp": 9,
+      "hits": 519,
+      "blocks": 184
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 12,
+        "played": 11
+      },
+      "teamCount": {
+        "owned": 4,
+        "played": 4
+      },
+      "teams": [
+        {
+          "teamId": "28",
+          "teamName": "Seattle Kraken",
+          "seasonCount": {
+            "owned": 6,
+            "played": 6
+          },
+          "games": 324,
+          "goals": 80,
+          "assists": 128,
+          "points": 208,
+          "plusMinus": 15,
+          "penalties": 91,
+          "shots": 576,
+          "ppp": 50,
+          "shp": 4,
+          "hits": 299,
+          "blocks": 105
+        },
+        {
+          "teamId": "16",
+          "teamName": "Tampa Bay Lightning",
+          "seasonCount": {
+            "owned": 3,
+            "played": 2
+          },
+          "games": 87,
+          "goals": 11,
+          "assists": 16,
+          "points": 27,
+          "plusMinus": -12,
+          "penalties": 39,
+          "shots": 103,
+          "ppp": 10,
+          "shp": 0,
+          "hits": 62,
+          "blocks": 28
+        },
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 3,
+            "played": 2
+          },
+          "games": 75,
+          "goals": 10,
+          "assists": 27,
+          "points": 37,
+          "plusMinus": -26,
+          "penalties": 16,
+          "shots": 118,
+          "ppp": 7,
+          "shp": 1,
+          "hits": 63,
+          "blocks": 19
+        },
+        {
+          "teamId": "3",
+          "teamName": "Calgary Flames",
+          "seasonCount": {
+            "owned": 2,
+            "played": 2
+          },
+          "games": 78,
+          "goals": 14,
+          "assists": 11,
+          "points": 25,
+          "plusMinus": -13,
+          "penalties": 21,
+          "shots": 132,
+          "ppp": 6,
+          "shp": 4,
+          "hits": 84,
+          "blocks": 30
+        }
+      ],
+      "games": 564,
+      "goals": 115,
+      "assists": 182,
+      "points": 297,
+      "plusMinus": -36,
+      "penalties": 167,
+      "shots": 929,
+      "ppp": 73,
+      "shp": 9,
+      "hits": 508,
+      "blocks": 182
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 4,
+        "played": 4
+      },
+      "teamCount": {
+        "owned": 3,
+        "played": 3
+      },
+      "teams": [
+        {
+          "teamId": "19",
+          "teamName": "Toronto Maple Leafs",
+          "seasonCount": {
+            "owned": 2,
+            "played": 2
+          },
+          "games": 7,
+          "goals": 3,
+          "assists": 3,
+          "points": 6,
+          "plusMinus": 4,
+          "penalties": 2,
+          "shots": 20,
+          "ppp": 3,
+          "shp": 0,
+          "hits": 9,
+          "blocks": 0
+        },
+        {
+          "teamId": "3",
+          "teamName": "Calgary Flames",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 1,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": -1,
+          "penalties": 0,
+          "shots": 0,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 2,
+          "blocks": 1
+        },
+        {
+          "teamId": "28",
+          "teamName": "Seattle Kraken",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 1,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "plusMinus": 0,
+          "penalties": 0,
+          "shots": 1,
+          "ppp": 0,
+          "shp": 0,
+          "hits": 0,
+          "blocks": 1
+        }
+      ],
+      "games": 9,
+      "goals": 3,
+      "assists": 3,
+      "points": 6,
+      "plusMinus": 3,
+      "penalties": 2,
+      "shots": 21,
+      "ppp": 3,
+      "shp": 0,
+      "hits": 11,
+      "blocks": 2
+    }
+  },
+  "seasons": [
+    {
+      "season": 2026,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "position": "F",
+      "games": 7,
+      "goals": 2,
+      "assists": 1,
+      "points": 3,
+      "plusMinus": 3,
+      "penalties": 4,
+      "shots": 11,
+      "ppp": 1,
+      "shp": 0,
+      "hits": 4,
+      "blocks": 5
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "position": "F",
+      "games": 63,
+      "goals": 19,
+      "assists": 27,
+      "points": 46,
+      "plusMinus": -1,
+      "penalties": 28,
+      "shots": 102,
+      "ppp": 17,
+      "shp": 0,
+      "hits": 46,
+      "blocks": 23
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "position": "F",
+      "games": 68,
+      "goals": 13,
+      "assists": 27,
+      "points": 40,
+      "plusMinus": -2,
+      "penalties": 19,
+      "shots": 119,
+      "ppp": 6,
+      "shp": 3,
+      "hits": 44,
+      "blocks": 20
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "position": "F",
+      "games": 65,
+      "goals": 17,
+      "assists": 29,
+      "points": 46,
+      "plusMinus": 8,
+      "penalties": 16,
+      "shots": 123,
+      "ppp": 14,
+      "shp": 0,
+      "hits": 82,
+      "blocks": 27
+    },
+    {
+      "season": 2022,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "position": "F",
+      "games": 65,
+      "goals": 16,
+      "assists": 29,
+      "points": 45,
+      "plusMinus": 24,
+      "penalties": 10,
+      "shots": 100,
+      "ppp": 4,
+      "shp": 1,
+      "hits": 58,
+      "blocks": 15
+    },
+    {
+      "season": 2021,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "position": "F",
+      "games": 56,
+      "goals": 13,
+      "assists": 15,
+      "points": 28,
+      "plusMinus": -17,
+      "penalties": 14,
+      "shots": 121,
+      "ppp": 8,
+      "shp": 0,
+      "hits": 65,
+      "blocks": 15
+    },
+    {
+      "season": 2021,
+      "reportType": "playoffs",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "position": "F",
+      "games": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 1,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 1
+    },
+    {
+      "season": 2020,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 28,
+      "goals": 6,
+      "assists": 10,
+      "points": 16,
+      "plusMinus": -8,
+      "penalties": 4,
+      "shots": 46,
+      "ppp": 3,
+      "shp": 0,
+      "hits": 21,
+      "blocks": 5
+    },
+    {
+      "season": 2020,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 4,
+      "goals": 3,
+      "assists": 2,
+      "points": 5,
+      "plusMinus": 3,
+      "penalties": 2,
+      "shots": 17,
+      "ppp": 3,
+      "shp": 0,
+      "hits": 3,
+      "blocks": 0
+    },
+    {
+      "season": 2019,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 47,
+      "goals": 4,
+      "assists": 17,
+      "points": 21,
+      "plusMinus": -18,
+      "penalties": 12,
+      "shots": 72,
+      "ppp": 4,
+      "shp": 1,
+      "hits": 42,
+      "blocks": 14
+    },
+    {
+      "season": 2019,
+      "reportType": "playoffs",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 3,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "plusMinus": 1,
+      "penalties": 0,
+      "shots": 3,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 6,
+      "blocks": 0
+    },
+    {
+      "season": 2018,
+      "reportType": "regular",
+      "teamId": "19",
+      "teamName": "Toronto Maple Leafs",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    },
+    {
+      "season": 2018,
+      "reportType": "regular",
+      "teamId": "3",
+      "teamName": "Calgary Flames",
+      "position": "F",
+      "games": 53,
+      "goals": 11,
+      "assists": 6,
+      "points": 17,
+      "plusMinus": -8,
+      "penalties": 13,
+      "shots": 86,
+      "ppp": 3,
+      "shp": 3,
+      "hits": 55,
+      "blocks": 22
+    },
+    {
+      "season": 2017,
+      "reportType": "regular",
+      "teamId": "16",
+      "teamName": "Tampa Bay Lightning",
+      "position": "F",
+      "games": 34,
+      "goals": 3,
+      "assists": 8,
+      "points": 11,
+      "plusMinus": 4,
+      "penalties": 20,
+      "shots": 46,
+      "ppp": 2,
+      "shp": 0,
+      "hits": 25,
+      "blocks": 9
+    },
+    {
+      "season": 2017,
+      "reportType": "regular",
+      "teamId": "3",
+      "teamName": "Calgary Flames",
+      "position": "F",
+      "games": 25,
+      "goals": 3,
+      "assists": 5,
+      "points": 8,
+      "plusMinus": -5,
+      "penalties": 8,
+      "shots": 46,
+      "ppp": 3,
+      "shp": 1,
+      "hits": 29,
+      "blocks": 8
+    },
+    {
+      "season": 2017,
+      "reportType": "playoffs",
+      "teamId": "3",
+      "teamName": "Calgary Flames",
+      "position": "F",
+      "games": 1,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": -1,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 2,
+      "blocks": 1
+    },
+    {
+      "season": 2016,
+      "reportType": "regular",
+      "teamId": "16",
+      "teamName": "Tampa Bay Lightning",
+      "position": "F",
+      "games": 53,
+      "goals": 8,
+      "assists": 8,
+      "points": 16,
+      "plusMinus": -16,
+      "penalties": 19,
+      "shots": 57,
+      "ppp": 8,
+      "shp": 0,
+      "hits": 37,
+      "blocks": 19
+    },
+    {
+      "season": 2015,
+      "reportType": "regular",
+      "teamId": "16",
+      "teamName": "Tampa Bay Lightning",
+      "position": "F",
+      "games": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "plusMinus": 0,
+      "penalties": 0,
+      "shots": 0,
+      "ppp": 0,
+      "shp": 0,
+      "hits": 0,
+      "blocks": 0
+    }
+  ]
+}

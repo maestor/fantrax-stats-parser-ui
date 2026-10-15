@@ -117,6 +117,15 @@ describe('Vercel proxy handler', () => {
     ]);
   });
 
+  it('forwards the expansion draft endpoint', async () => {
+    fetch.mockResolvedValue(new Response('[]', { status: 200, headers: { 'content-type': 'application/json' } }));
+    const req = createRequest({ url: '/api/proxy?path=draft/expansion', headers: { origin: 'https://ffhl-stats.vercel.app' } });
+    const res = createResponse();
+    await handler(req, res);
+    expect(res.statusCode).toBe(200);
+    expect(fetch.mock.calls[0][0].toString()).toBe('https://backend.example.com/api/draft/expansion');
+  });
+
   it('forwards allowlisted dynamic read endpoints with their query params', async () => {
     fetch.mockResolvedValue(
       new Response(JSON.stringify([]), {

@@ -1,0 +1,140 @@
+{
+  "id": "WzIwMTgsInRyYWRlcy0yMDE4LTIwMTkuY3N2IiwiMjAxOS0wMi0yNVQxODo0MjowMC4wMDBaIiwiMTl8MyJd",
+  "season": 2018,
+  "date": "2019-02-25T18:42:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 10,
+      "sourcePeriod": 146,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Pavel Zacha",
+          "rawName": "Pavel Zacha",
+          "entityId": "03l0t",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Nikita Zaitsev",
+          "rawName": "Nikita Zaitsev",
+          "entityId": "03cvd",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "draft_pick",
+          "name": "2019 Draft Pick, Round 4 (Florida Panthers)",
+          "rawName": "2019 Draft Pick, Round 4 (Florida Panthers)",
+          "entityId": null,
+          "careerType": null,
+          "position": null,
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "draftSeason": 2019,
+          "draftRound": 4,
+          "draftOriginalOwner": {
+            "id": "17",
+            "name": "Florida Panthers"
+          }
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 11,
+      "sourcePeriod": 146,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Andrew Shaw",
+          "rawName": "Andrew Shaw",
+          "entityId": "02fnl",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Cale Fleury",
+          "rawName": "Cale Fleury",
+          "entityId": "04f1m",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "draft_pick",
+          "name": "2019 Draft Pick, Round 3 (Toronto Maple Leafs)",
+          "rawName": "2019 Draft Pick, Round 3 (Toronto Maple Leafs)",
+          "entityId": null,
+          "careerType": null,
+          "position": null,
+          "fromTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": 2019,
+          "draftRound": 3,
+          "draftOriginalOwner": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          }
+        }
+      ]
+    }
+  ]
+}

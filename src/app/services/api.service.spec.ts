@@ -58,6 +58,14 @@ describe('ApiService', () => {
     }
   });
 
+  it('requests and caches expansion draft selections', async () => {
+    const result = firstValueFrom(service.getExpansionDrafts());
+    httpMock.expectOne('http://localhost:3000/draft/expansion').flush([]);
+    expect(await result).toEqual([]);
+    expect(await firstValueFrom(service.getExpansionDrafts())).toEqual([]);
+    httpMock.expectNone('http://localhost:3000/draft/expansion');
+  });
+
   it('retains a missing-career HTTP status for the dedicated not-found page', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const result = firstValueFrom(service.getCareerPlayer('missing')).catch((error: unknown) => error);

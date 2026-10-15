@@ -19,6 +19,7 @@ import {
   CareerGoalieListItem,
   CareerPlayerListItem,
   EntryDraftTeamGroup,
+  ExpansionDraftGroup,
   OpeningDraftTeamGroup,
   PlayoffLeaderboardEntry,
   RegularLeaderboardEntry,
@@ -39,6 +40,7 @@ import careerPlayersFixtureData from '../../../e2e/fixtures/data/career--players
 import careerGoaliesFixtureData from '../../../e2e/fixtures/data/career--goalies.json';
 import entryDraftsFixtureData from '../../../e2e/fixtures/data/draft--entry.json';
 import openingDraftsFixtureData from '../../../e2e/fixtures/data/draft--original.json';
+import expansionDraftsFixtureData from '../../../e2e/fixtures/data/draft--expansion.json';
 import mostTeamsPlayedHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--most-teams-played--skip=0--take=10.json';
 import mostTeamsPlayedHighlightsPage1FixtureData from '../../../e2e/fixtures/data/career--highlights--most-teams-played--skip=10--take=10.json';
 import mostTeamsOwnedHighlightsPage0FixtureData from '../../../e2e/fixtures/data/career--highlights--most-teams-owned--skip=0--take=10.json';
@@ -62,6 +64,7 @@ export const slicedGoalies = goaliesFixture.slice(0, GOALIE_SLICE_COUNT);
 export const careerPlayersFixture = careerPlayersFixtureData as unknown as CareerPlayerListItem[];
 export const careerGoaliesFixture = careerGoaliesFixtureData as unknown as CareerGoalieListItem[];
 export const entryDraftsFixture = entryDraftsFixtureData as EntryDraftTeamGroup[];
+export const expansionDraftsFixture = expansionDraftsFixtureData as ExpansionDraftGroup[];
 export const openingDraftsFixture = openingDraftsFixtureData as OpeningDraftTeamGroup[];
 export const mostTeamsPlayedHighlightsPage0Fixture =
   mostTeamsPlayedHighlightsPage0FixtureData as CareerHighlightPage;
@@ -196,6 +199,7 @@ type BehaviorApiErrorKey =
   | 'careerGoalies'
   | 'entryDrafts'
   | 'openingDrafts'
+  | 'expansionDrafts'
   | 'careerHighlights'
   | 'leaderboardRegular'
   | 'leaderboardPlayoffs'
@@ -211,6 +215,7 @@ export type BehaviorApiMockOptions = {
   careerGoalies?: CareerGoalieListItem[];
   entryDrafts?: EntryDraftTeamGroup[];
   openingDrafts?: OpeningDraftTeamGroup[];
+  expansionDrafts?: ExpansionDraftGroup[];
   careerHighlightsMostTeamsPlayed?: CareerHighlightPage;
   careerHighlightsMostTeamsOwned?: CareerHighlightPage;
   careerHighlightsSameTeamSeasonsPlayed?: CareerHighlightPage;
@@ -237,6 +242,7 @@ export type BehaviorApiMockOptions = {
   getCareerGoalies?: () => Observable<CareerGoalieListItem[]>;
   getEntryDrafts?: () => Observable<EntryDraftTeamGroup[]>;
   getOpeningDrafts?: () => Observable<OpeningDraftTeamGroup[]>;
+  getExpansionDrafts?: () => Observable<ExpansionDraftGroup[]>;
   getCareerHighlights?: (
     type: CareerHighlightType,
     skip?: number,
@@ -347,6 +353,10 @@ export function createApiServiceMock(options: BehaviorApiMockOptions = {}) {
       errorKeys.has('entryDrafts')
         ? createApiError()
         : (options.getEntryDrafts?.() ?? of(options.entryDrafts ?? entryDraftsFixture)),
+    getExpansionDrafts: () =>
+      errorKeys.has('expansionDrafts')
+        ? createApiError()
+        : (options.getExpansionDrafts?.() ?? of(options.expansionDrafts ?? expansionDraftsFixture)),
     getOpeningDrafts: () =>
       errorKeys.has('openingDrafts')
         ? createApiError()

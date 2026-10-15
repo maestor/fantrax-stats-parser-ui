@@ -1,0 +1,530 @@
+{
+  "id": "02yjw",
+  "name": "Tristan Jarry",
+  "summary": {
+    "firstSeason": 2013,
+    "lastSeason": 2026,
+    "seasonCount": {
+      "owned": 14,
+      "played": 10
+    },
+    "teamCount": {
+      "owned": 2,
+      "played": 2
+    },
+    "teams": [
+      {
+        "teamId": "24",
+        "teamName": "New Jersey Devils",
+        "seasonCount": {
+          "owned": 8,
+          "played": 4
+        },
+        "firstSeason": 2013,
+        "lastSeason": 2020
+      },
+      {
+        "teamId": "28",
+        "teamName": "Seattle Kraken",
+        "seasonCount": {
+          "owned": 6,
+          "played": 6
+        },
+        "firstSeason": 2021,
+        "lastSeason": 2026
+      }
+    ]
+  },
+  "totals": {
+    "career": {
+      "seasonCount": {
+        "owned": 14,
+        "played": 10
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "28",
+          "teamName": "Seattle Kraken",
+          "seasonCount": {
+            "owned": 6,
+            "played": 6
+          },
+          "games": 160,
+          "wins": 80,
+          "saves": 4125,
+          "shutouts": 12,
+          "goals": 1,
+          "assists": 3,
+          "points": 4,
+          "penalties": 12,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "24",
+          "teamName": "New Jersey Devils",
+          "seasonCount": {
+            "owned": 8,
+            "played": 4
+          },
+          "games": 35,
+          "wins": 20,
+          "saves": 909,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 2,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 195,
+      "wins": 100,
+      "saves": 5034,
+      "shutouts": 12,
+      "goals": 1,
+      "assists": 3,
+      "points": 4,
+      "penalties": 14,
+      "ppp": 0,
+      "shp": 0
+    },
+    "regular": {
+      "seasonCount": {
+        "owned": 14,
+        "played": 10
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "28",
+          "teamName": "Seattle Kraken",
+          "seasonCount": {
+            "owned": 6,
+            "played": 6
+          },
+          "games": 158,
+          "wins": 80,
+          "saves": 4067,
+          "shutouts": 12,
+          "goals": 1,
+          "assists": 3,
+          "points": 4,
+          "penalties": 12,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "24",
+          "teamName": "New Jersey Devils",
+          "seasonCount": {
+            "owned": 8,
+            "played": 4
+          },
+          "games": 32,
+          "wins": 19,
+          "saves": 841,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 2,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 190,
+      "wins": 99,
+      "saves": 4908,
+      "shutouts": 12,
+      "goals": 1,
+      "assists": 3,
+      "points": 4,
+      "penalties": 14,
+      "ppp": 0,
+      "shp": 0
+    },
+    "playoffs": {
+      "seasonCount": {
+        "owned": 4,
+        "played": 3
+      },
+      "teamCount": {
+        "owned": 2,
+        "played": 2
+      },
+      "teams": [
+        {
+          "teamId": "24",
+          "teamName": "New Jersey Devils",
+          "seasonCount": {
+            "owned": 3,
+            "played": 2
+          },
+          "games": 3,
+          "wins": 1,
+          "saves": 68,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        },
+        {
+          "teamId": "28",
+          "teamName": "Seattle Kraken",
+          "seasonCount": {
+            "owned": 1,
+            "played": 1
+          },
+          "games": 2,
+          "wins": 0,
+          "saves": 58,
+          "shutouts": 0,
+          "goals": 0,
+          "assists": 0,
+          "points": 0,
+          "penalties": 0,
+          "ppp": 0,
+          "shp": 0
+        }
+      ],
+      "games": 5,
+      "wins": 1,
+      "saves": 126,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  },
+  "seasons": [
+    {
+      "season": 2026,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "games": 2,
+      "wins": 1,
+      "saves": 36,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "3.46",
+      "savePercent": "0.837"
+    },
+    {
+      "season": 2025,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "games": 19,
+      "wins": 10,
+      "saves": 414,
+      "shutouts": 2,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "3.68",
+      "savePercent": "0.872"
+    },
+    {
+      "season": 2024,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "games": 20,
+      "wins": 7,
+      "saves": 476,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "3.34",
+      "savePercent": "0.883"
+    },
+    {
+      "season": 2023,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "games": 45,
+      "wins": 18,
+      "saves": 1122,
+      "shutouts": 6,
+      "goals": 1,
+      "assists": 0,
+      "points": 1,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2022,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "games": 20,
+      "wins": 11,
+      "saves": 626,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 1,
+      "points": 1,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.99",
+      "savePercent": "0.913"
+    },
+    {
+      "season": 2021,
+      "reportType": "regular",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "games": 52,
+      "wins": 33,
+      "saves": 1393,
+      "shutouts": 4,
+      "goals": 0,
+      "assists": 2,
+      "points": 2,
+      "penalties": 6,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2021,
+      "reportType": "playoffs",
+      "teamId": "28",
+      "teamName": "Seattle Kraken",
+      "games": 2,
+      "wins": 0,
+      "saves": 58,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2020,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 5,
+      "wins": 4,
+      "saves": 132,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2019,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 16,
+      "wins": 9,
+      "saves": 444,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2019,
+      "reportType": "playoffs",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 1,
+      "wins": 0,
+      "saves": 30,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "0.00",
+      "savePercent": "0.000"
+    },
+    {
+      "season": 2018,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 1,
+      "wins": 0,
+      "saves": 20,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "5.14",
+      "savePercent": "0.800"
+    },
+    {
+      "season": 2018,
+      "reportType": "playoffs",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2017,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 10,
+      "wins": 6,
+      "saves": 245,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 2,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "2.78",
+      "savePercent": "0.911"
+    },
+    {
+      "season": 2017,
+      "reportType": "playoffs",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 2,
+      "wins": 1,
+      "saves": 38,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0,
+      "gaa": "3.62",
+      "savePercent": "0.864"
+    },
+    {
+      "season": 2016,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2015,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2014,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    },
+    {
+      "season": 2013,
+      "reportType": "regular",
+      "teamId": "24",
+      "teamName": "New Jersey Devils",
+      "games": 0,
+      "wins": 0,
+      "saves": 0,
+      "shutouts": 0,
+      "goals": 0,
+      "assists": 0,
+      "points": 0,
+      "penalties": 0,
+      "ppp": 0,
+      "shp": 0
+    }
+  ]
+}

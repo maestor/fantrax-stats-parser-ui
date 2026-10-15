@@ -1,0 +1,93 @@
+@use '../../../styles/surface-patterns';
+@use '../../shared/styles/career-name-link';
+
+@include career-name-link.styles;
+
+.expansion-scroll {
+  display: grid;
+  gap: 1rem;
+  max-height: calc(var(--app-height) - 170px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 0 0.25rem calc(8px + var(--safe-bottom));
+}
+
+.expansion-draft {
+  @include surface-patterns.rounded-surface-card(1.25rem, var(--mat-sys-surface-container-low));
+  color: var(--mat-sys-on-surface);
+}
+
+.expansion-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+  font-size: 1.1rem;
+
+  span {
+    color: var(--mat-sys-on-surface-variant);
+    font-size: 0.95rem;
+  }
+}
+
+.position-groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.5rem;
+}
+
+h5 {
+  @include surface-patterns.eyebrow-label($margin: 0 0 0.75rem);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.875rem;
+}
+
+th, td {
+  padding: 0.65rem 0.25rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  overflow-wrap: anywhere;
+}
+
+th {
+  font-weight: 500;
+}
+
+thead th {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.8rem;
+}
+
+td {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+a {
+  display: inline-block;
+  scroll-margin-block: 1rem;
+}
+
+@media (max-width: 1100px) {
+  .position-groups {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .expansion-scroll {
+    max-height: calc(var(--app-height) - 140px);
+  }
+
+  .expansion-draft {
+    padding: 1rem;
+  }
+}

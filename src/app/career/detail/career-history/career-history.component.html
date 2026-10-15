@@ -57,6 +57,8 @@
                     {{ 'career.profile.originalOwner' | translate }}: {{ event.originalOwner.name }}
                   </p>
                 }
+              } @else if (event.type === 'expansion') {
+                <p>{{ event.fromTeam.name }} → {{ event.team.name }}</p>
               } @else if (event.type === 'trade') {
                 @if (isMobile()) {
                   @for (move of event.movements; track $index) {

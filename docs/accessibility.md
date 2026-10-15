@@ -41,7 +41,8 @@ Notes:
 - Team-header alignment now usually resolves inside the bounded accordion scroller instead of the whole page
 - Entry drafts use section- and season-level focus targets, followed by linked highest-pick and season-pick names
 - Opening draft focuses career links for matched picks and pick rows for names without career data
-- Draft name links stay outside the normal tab order; panel arrow navigation reaches them and native `Enter` follows the link, keeping long pick lists keyboard-browsable without bloating the page tab order
+- Expansion drafts remain fully visible with native career links in normal tab order, labeled position tables, and the shared draft skip target.
+- Entry/opening draft name links stay outside the normal tab order; panel arrow navigation reaches them and native `Enter` follows the link, keeping long pick lists keyboard-browsable without bloating the page tab order
 
 ### Stats table keyboard navigation
 

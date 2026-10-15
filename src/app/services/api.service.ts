@@ -67,6 +67,7 @@ export type CareerHighlightPage =
   | CareerStashHighlightPage
   | CareerRegularGrinderHighlightPage
   | CareerTransactionHighlightPage;
+export type ExpansionDraftGroup = components['schemas']['ExpansionDraftGroup'];
 export type DraftTeamRef = components['schemas']['DraftTeamRef'];
 export type DraftPick = components['schemas']['DraftPick'];
 export type OpeningDraftPick = components['schemas']['OpeningDraftPick'];
@@ -297,6 +298,10 @@ export class ApiService {
 
   getTradeDetail(id: string): Observable<TradeDetail> {
     return this.handleRequest<TradeDetail>(`transactions/trades/${encodeURIComponent(id)}`, `trade-detail-${id}`);
+  }
+
+  getExpansionDrafts(): Observable<ExpansionDraftGroup[]> {
+    return this.handleRequest<ExpansionDraftGroup[]>('draft/expansion', 'draft-expansion');
   }
 
   getOpeningDrafts(): Observable<OpeningDraftTeamGroup[]> {

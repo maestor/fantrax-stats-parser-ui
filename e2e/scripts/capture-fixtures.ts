@@ -128,13 +128,14 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
     // ── Draft routes ─────────────────────────────────────────────────
     { path: 'draft/entry' },
     { path: 'draft/original' },
+    { path: 'draft/expansion' },
   ];
 
   return entries;
 }
 
 async function buildCareerProfileFixtureList(): Promise<FixtureEntry[]> {
-  const paths = new Set(['career/players', 'career/goalies', 'goalies/combined/regular']);
+  const paths = new Set(['career/players', 'career/goalies', 'goalies/combined/regular', 'draft/expansion']);
   const profiles = new Map([
     ...CAREER_PROFILES,
     ...CAREER_POPUP_PROFILES,
