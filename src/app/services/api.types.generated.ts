@@ -360,7 +360,7 @@ export interface paths {
         };
         /**
          * Expansion draft selections
-         * @description Returns imported expansion drafts newest season first. Career links require existing player or goalie statistics, including zero-game rows.
+         * @description Returns imported expansion drafts newest season first. Career links support known player and goalie identities with or without statistical rows.
          */
         get: {
             parameters: {
@@ -953,8 +953,8 @@ export interface paths {
         };
         /**
          * Recorded draft and transaction history for a career identity
-         * @description Reads linked records only, across all teams. Supports players and goalies with career
-         *     statistics, including zero-game rows. Coverage describes stored-record seasons with
+         * @description Reads linked records only, across all teams. Supports stats-backed careers and known Fantrax identities without
+         *     statistical rows. Coverage describes stored-record seasons with
          *     unknown completeness. Does not infer current ownership or exact roster tenures.
          *     Omits a claim when it is the first transaction after a draft and goes to the drafting
          *     team, regardless of season. Claims tied with another transaction at the same timestamp
@@ -988,7 +988,7 @@ export interface paths {
                     };
                     content?: never;
                 };
-                /** @description No career statistics for this identity. */
+                /** @description Unknown career identity. */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -1071,8 +1071,9 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Career stats for one player
+         * Career profile for one player
          * @description Returns all imported career records for a single Fantrax player ID across all fantasy teams.
+         *     Known identities without statistical rows return only id, name and position.
          *     Zero-game rows are included and count toward `owned` totals but not `played` totals.
          */
         get: {
@@ -1087,13 +1088,13 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Career stats document for one player. */
+                /** @description Career profile document for one player. */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["CareerPlayer"];
+                        "application/json": components["schemas"]["CareerPlayerProfile"];
                     };
                 };
                 /** @description Missing or invalid API key. */
@@ -1131,6 +1132,7 @@ export interface paths {
          * Career player list
          * @description Returns one summary row per player across all fantasy teams.
          *     Zero-game rows count toward owned seasons and teams, but not played counts.
+         *     Identities without any statistical rows have zero counters and null first/last statistical seasons.
          */
         get: {
             parameters: {
@@ -1175,8 +1177,9 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Career stats for one goalie
+         * Career profile for one goalie
          * @description Returns all imported career records for a single Fantrax goalie ID across all fantasy teams.
+         *     Known identities without statistical rows return only id, name and position.
          *     Zero-game rows are included and count toward `owned` totals but not `played` totals.
          */
         get: {
@@ -1191,13 +1194,13 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Career stats document for one goalie. */
+                /** @description Career profile document for one goalie. */
                 200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["CareerGoalie"];
+                        "application/json": components["schemas"]["CareerGoalieProfile"];
                     };
                 };
                 /** @description Missing or invalid API key. */
@@ -1235,6 +1238,7 @@ export interface paths {
          * Career goalie list
          * @description Returns one summary row per goalie across all fantasy teams.
          *     Zero-game rows count toward owned seasons and teams, but not played counts.
+         *     Identities without any statistical rows have zero counters and null first/last statistical seasons.
          */
         get: {
             parameters: {
@@ -1636,7 +1640,7 @@ export interface components {
             /** @example Anaheim Ducks */
             name: string;
         };
-        /** @description Career identity when the linked Fantrax entity has player or goalie statistics, including zero-game records. Null for unmatched picks or entities without career data. */
+        /** @description Career identity for linked players and goalies, including known identities without statistical rows. Null for unmatched picks or identities without a known position. */
         DraftCareerProfile: {
             /** @example 00qs7 */
             id: string;
@@ -1939,7 +1943,7 @@ export interface components {
             rawName: string;
             entityId: string | null;
             /**
-             * @description Present only when linked career statistics exist, including zero-game records.
+             * @description Present for linked career identities, including known players and goalies without statistical rows.
              * @enum {string|null}
              */
             careerType: "player" | "goalie" | null;
@@ -1963,6 +1967,15 @@ export interface components {
             /** @description Original directional blocks preserved even when assembly is ambiguous or incomplete. */
             blocks: components["schemas"]["TradeSourceBlock"][];
         };
+        /** @description Identity-only career profile for a known player without any imported statistical rows. History is available separately from /career/history/{id}. */
+        CareerHistoryProfile: {
+            id: string;
+            name: string;
+            /** @enum {string} */
+            position: "F" | "D" | "G";
+        };
+        CareerPlayerProfile: components["schemas"]["CareerPlayer"] | components["schemas"]["CareerHistoryProfile"];
+        CareerGoalieProfile: components["schemas"]["CareerGoalie"] | components["schemas"]["CareerHistoryProfile"];
         CareerPlayer: {
             id: string;
             name: string;
@@ -1979,8 +1992,10 @@ export interface components {
             id: string;
             name: string;
             position: string;
-            firstSeason: number;
-            lastSeason: number;
+            /** @description Statistical season; null when no statistical rows exist. */
+            firstSeason: number | null;
+            /** @description Statistical season; null when no statistical rows exist. */
+            lastSeason: number | null;
             seasonsOwned: number;
             seasonsPlayedRegular: number;
             seasonsPlayedPlayoffs: number;
@@ -1993,8 +2008,10 @@ export interface components {
         CareerGoalieListItem: {
             id: string;
             name: string;
-            firstSeason: number;
-            lastSeason: number;
+            /** @description Statistical season; null when no statistical rows exist. */
+            firstSeason: number | null;
+            /** @description Statistical season; null when no statistical rows exist. */
+            lastSeason: number | null;
             seasonsOwned: number;
             seasonsPlayedRegular: number;
             seasonsPlayedPlayoffs: number;

@@ -630,7 +630,10 @@
         "selectionNumber": 2,
         "draftedPlayer": "Juuso Hietanen",
         "position": "D",
-        "careerProfile": null,
+        "careerProfile": {
+          "id": "04dut",
+          "type": "player"
+        },
         "sourceTeam": {
           "id": "2",
           "name": "Carolina Hurricanes"

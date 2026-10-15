@@ -202,6 +202,32 @@ describe('Career profile', () => {
     });
   }
 
+  it.each([
+    { kind: 'player', list: 'players', id: '02npi', name: 'Alex Mallet', position: 'F' },
+    { kind: 'goalie', list: 'goalies', id: 'prospect-g', name: 'Prospect Goalie', position: 'G' },
+  ])('shows only the hero and history for a history-only $kind', async ({ kind, list, id, name, position }) => {
+    const clipboard = { writeText: vi.fn().mockResolvedValue(undefined) };
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: clipboard });
+    await setup({
+      [kind === 'player' ? 'getCareerPlayer' : 'getCareerGoalie']: () => of({ id, name, position }),
+      getCareerHistory: () => of({
+        ...historyFixture, id,
+        events: [{ id: 'drop-1', type: 'drop', season: 2012, date: '2013-01-06T23:34:00.000Z', team: { id: '1', name: 'Colorado Avalanche' } }],
+      }),
+    });
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl(`/career/${list}/${id}`);
+    expect(await screen.findByRole('heading', { name })).toHaveFocus();
+    expect(await screen.findByRole('heading', { name: 'career.profile.history' })).toBeVisible();
+    expect(screen.getByText(position, { exact: true })).toBeVisible();
+    expect(screen.getByText('Colorado Avalanche')).toBeVisible();
+    expect(screen.queryByRole('navigation', { name: 'career.profile.jumpLabel' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: 'career.profile.scope' })).not.toBeInTheDocument();
+    expect(screen.queryByText('career.profile.seasonsOwned')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'career.profile.copyLink' }));
+    await waitFor(() => expect(clipboard.writeText).toHaveBeenCalledWith(expect.stringContaining(`/career/${list}/`)));
+  });
+
   it.each([false, true])('opens a whole-league profile and puts its player first as plain text in the received packages (mobile: %s)', async (isMobile) => {
     const getTradeDetail = vi.fn(() =>
       of({

@@ -16,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { combineLatest, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
-import { ApiService, CareerGoalie, CareerPlayer } from '@services/api.service';
+import { ApiService, CareerGoalieProfile, CareerPlayerProfile } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { SectionJumpNavComponent } from '@shared/section-jump-nav/section-jump-nav.component';
@@ -94,7 +94,7 @@ export class CareerDetailComponent {
       switchMap(([id]) => {
         const cycle = this.footer.currentCycle();
         const request = this.isGoalie ? this.api.getCareerGoalie(id) : this.api.getCareerPlayer(id);
-        return resourceState<CareerPlayer | CareerGoalie>(request).pipe(
+        return resourceState<CareerPlayerProfile | CareerGoalieProfile>(request).pipe(
           tap((state) => {
             if (!state.loading) this.footer.markReady(cycle);
           }),
@@ -103,14 +103,18 @@ export class CareerDetailComponent {
     ),
     { initialValue: { data: null, loading: true, error: null } },
   );
+  readonly statistics = computed(() => {
+    const career = this.state().data;
+    return career && 'summary' in career ? career : null;
+  });
   readonly position = computed(() => {
     const data = this.state().data;
     return data && 'position' in data ? data.position : 'G';
   });
   readonly firstAppearance = computed(() => {
     const seasons =
-      this.state()
-        .data?.seasons.filter((row) => row.games > 0)
+      this.statistics()
+        ?.seasons.filter((row) => row.games > 0)
         .map((row) => row.season) ?? [];
     return seasons.length ? formatSeasonDisplay(Math.min(...seasons)) : null;
   });

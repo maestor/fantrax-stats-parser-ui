@@ -307,8 +307,11 @@
       {
         "round": 26,
         "pickNumber": 774,
-        "draftedPlayer": "Alexandre Mallet",
-        "careerProfile": null,
+        "draftedPlayer": "Alex Mallet",
+        "careerProfile": {
+          "id": "02npi",
+          "type": "player"
+        },
         "originalOwner": {
           "id": "1",
           "name": "Colorado Avalanche"
@@ -396,7 +399,10 @@
         "round": 31,
         "pickNumber": 907,
         "draftedPlayer": "Jarkko Immonen",
-        "careerProfile": null,
+        "careerProfile": {
+          "id": "01bw4",
+          "type": "player"
+        },
         "originalOwner": {
           "id": "1",
           "name": "Colorado Avalanche"
@@ -817,7 +823,10 @@
         "round": 28,
         "pickNumber": 826,
         "draftedPlayer": "Chay Genoway",
-        "careerProfile": null,
+        "careerProfile": {
+          "id": "026ks",
+          "type": "player"
+        },
         "originalOwner": {
           "id": "29",
           "name": "Dallas Stars"
@@ -1316,7 +1325,10 @@
         "round": 31,
         "pickNumber": 905,
         "draftedPlayer": "Brett MacLean",
-        "careerProfile": null,
+        "careerProfile": {
+          "id": "005ge",
+          "type": "player"
+        },
         "originalOwner": {
           "id": "10",
           "name": "Nashville Predators"

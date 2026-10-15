@@ -1,0 +1,87 @@
+{
+  "id": "04dut",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "expansionDraftSeasons": [
+      2017,
+      2021
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "claim-WyJjbGFpbXMtMjAxNy0yMDE4LmNzdiIsNTU1LDBd",
+      "type": "drop",
+      "date": "2017-06-23T19:24:00.000Z",
+      "season": 2017,
+      "team": {
+        "id": "32",
+        "name": "Vegas Golden Knights"
+      }
+    },
+    {
+      "id": "expansion-2017-32-2",
+      "type": "expansion",
+      "season": 2017,
+      "date": null,
+      "fromTeam": {
+        "id": "2",
+        "name": "Carolina Hurricanes"
+      },
+      "team": {
+        "id": "32",
+        "name": "Vegas Golden Knights"
+      }
+    }
+  ]
+}

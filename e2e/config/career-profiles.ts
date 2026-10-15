@@ -22,3 +22,11 @@ export const CAREER_DRAFT_PROFILES = {
     goalie: CAREER_PROFILES[1],
   },
 } as const;
+
+export const CAREER_HISTORY_ONLY_PROFILES = [
+  { id: '04dut', slug: 'juuso-hietanen-04dut', kind: 'player', name: 'Juuso Hietanen', list: 'players', position: 'D' },
+  { id: '01bw4', slug: 'jarkko-immonen-01bw4', kind: 'player', name: 'Jarkko Immonen', list: 'players', position: 'F' },
+  { id: '02npi', slug: 'alex-mallet-02npi', kind: 'player', name: 'Alex Mallet', list: 'players', position: 'F' },
+  { id: '02o87', slug: 'francois-tremblay-02o87', kind: 'goalie', name: 'Francois Tremblay', list: 'goalies', position: 'G' },
+  { id: '074qj', slug: 'hugo-pettersson-074qj', kind: 'player', name: 'Hugo Pettersson', list: 'players', position: 'F' },
+] as const;

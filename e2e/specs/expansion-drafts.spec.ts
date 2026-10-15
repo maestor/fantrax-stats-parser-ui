@@ -12,9 +12,8 @@ test('draft navigation opens both expansion lists with source teams and career l
   const seattle = page.getByRole('region', { name: 'Seattle Kraken 2021' });
   const vegas = page.getByRole('region', { name: 'Vegas Golden Knights 2017' });
   await expect(seattle.getByRole('link')).toHaveCount(30);
-  await expect(vegas.getByRole('link')).toHaveCount(29);
-  await expect(vegas.getByText('Juuso Hietanen', { exact: true })).toBeVisible();
-  await expect(vegas.getByRole('link', { name: 'Juuso Hietanen' })).toHaveCount(0);
+  await expect(vegas.getByRole('link')).toHaveCount(30);
+  await expect(vegas.getByRole('link', { name: 'Juuso Hietanen' })).toHaveAttribute('href', '/career/players/juuso-hietanen-04dut?from=expansion-drafts');
   const zachaRow = seattle.getByRole('row', { name: 'Pavel Zacha Toronto Maple Leafs' });
   await expect(zachaRow).toBeVisible();
   await zachaRow.getByRole('link', { name: 'Pavel Zacha' }).focus();

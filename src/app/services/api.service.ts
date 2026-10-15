@@ -29,6 +29,8 @@ export type CategoryPlayerContribution = components['schemas']['CategoryPlayerCo
 export type CategoryGoalieContribution = components['schemas']['CategoryGoalieContribution'];
 export type CareerPlayerListItem    = components['schemas']['CareerPlayerListItem'];
 export type CareerGoalieListItem    = components['schemas']['CareerGoalieListItem'];
+export type CareerPlayerProfile = components['schemas']['CareerPlayerProfile'];
+export type CareerGoalieProfile = components['schemas']['CareerGoalieProfile'];
 export type CareerPlayer            = components['schemas']['CareerPlayer'];
 export type CareerGoalie            = components['schemas']['CareerGoalie'];
 export type CareerHistory          = components['schemas']['CareerHistory'];
@@ -284,12 +286,12 @@ export class ApiService {
     );
   }
 
-  getCareerPlayer(id: string): Observable<CareerPlayer> {
-    return this.handleRequest<CareerPlayer>(`career/player/${encodeURIComponent(id)}`, `career-player-${id}`);
+  getCareerPlayer(id: string): Observable<CareerPlayerProfile> {
+    return this.handleRequest<CareerPlayerProfile>(`career/player/${encodeURIComponent(id)}`, `career-player-${id}`);
   }
 
-  getCareerGoalie(id: string): Observable<CareerGoalie> {
-    return this.handleRequest<CareerGoalie>(`career/goalie/${encodeURIComponent(id)}`, `career-goalie-${id}`);
+  getCareerGoalie(id: string): Observable<CareerGoalieProfile> {
+    return this.handleRequest<CareerGoalieProfile>(`career/goalie/${encodeURIComponent(id)}`, `career-goalie-${id}`);
   }
 
   getCareerHistory(id: string): Observable<CareerHistory> {

@@ -164,7 +164,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 127,
+    "regularGames": 128,
     "playoffGames": 5
   },
   {
@@ -173,12 +173,12 @@
     "firstSeason": 2018,
     "lastSeason": 2026,
     "seasonsOwned": 9,
-    "seasonsPlayedRegular": 4,
+    "seasonsPlayedRegular": 5,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 19,
+    "regularGames": 21,
     "playoffGames": 0
   },
   {
@@ -322,6 +322,20 @@
     "playoffGames": 4
   },
   {
+    "id": "01s7p",
+    "name": "Alexander Pechurskiy",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "01fx8",
     "name": "Alexander Salak",
     "firstSeason": 2012,
@@ -372,6 +386,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "04duv",
+    "name": "Alexander Yeryomenko",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -584,7 +612,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 464,
+    "regularGames": 465,
     "playoffGames": 30
   },
   {
@@ -710,7 +738,7 @@
     "teamsOwned": 5,
     "teamsPlayedRegular": 4,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 66,
+    "regularGames": 67,
     "playoffGames": 7
   },
   {
@@ -1274,6 +1302,20 @@
     "playoffGames": 0
   },
   {
+    "id": "02j3y",
+    "name": "Brett Bennett",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "05nfs",
     "name": "Brett Brochu",
     "firstSeason": 2022,
@@ -1328,6 +1370,20 @@
     "teamsPlayedPlayoffs": 2,
     "regularGames": 163,
     "playoffGames": 6
+  },
+  {
+    "id": "02fpz",
+    "name": "Brian Foster",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
   },
   {
     "id": "02yce",
@@ -1475,12 +1531,12 @@
     "firstSeason": 2012,
     "lastSeason": 2026,
     "seasonsOwned": 15,
-    "seasonsPlayedRegular": 8,
+    "seasonsPlayedRegular": 9,
     "seasonsPlayedPlayoffs": 3,
     "teamsOwned": 2,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 67,
+    "regularGames": 68,
     "playoffGames": 11
   },
   {
@@ -1508,7 +1564,7 @@
     "teamsOwned": 5,
     "teamsPlayedRegular": 4,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 335,
+    "regularGames": 336,
     "playoffGames": 0
   },
   {
@@ -1690,7 +1746,7 @@
     "teamsOwned": 4,
     "teamsPlayedRegular": 3,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 162,
+    "regularGames": 163,
     "playoffGames": 3
   },
   {
@@ -1713,12 +1769,12 @@
     "firstSeason": 2016,
     "lastSeason": 2026,
     "seasonsOwned": 11,
-    "seasonsPlayedRegular": 8,
+    "seasonsPlayedRegular": 9,
     "seasonsPlayedPlayoffs": 6,
     "teamsOwned": 3,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 2,
-    "regularGames": 94,
+    "regularGames": 95,
     "playoffGames": 8
   },
   {
@@ -1788,7 +1844,7 @@
     "teamsOwned": 2,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 108,
+    "regularGames": 109,
     "playoffGames": 1
   },
   {
@@ -1870,6 +1926,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "01unv",
+    "name": "Chris Carrozzi",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -2010,6 +2080,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "01zs2",
+    "name": "Cody Rosen",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -2383,8 +2467,8 @@
     "id": "06xwy",
     "name": "Daniel Salonen",
     "firstSeason": 2025,
-    "lastSeason": 2025,
-    "seasonsOwned": 1,
+    "lastSeason": 2026,
+    "seasonsOwned": 2,
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
@@ -2418,7 +2502,7 @@
     "teamsOwned": 2,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 97,
+    "regularGames": 98,
     "playoffGames": 4
   },
   {
@@ -2488,7 +2572,7 @@
     "teamsOwned": 3,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 2,
-    "regularGames": 256,
+    "regularGames": 257,
     "playoffGames": 19
   },
   {
@@ -2712,7 +2796,7 @@
     "teamsOwned": 2,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 29,
+    "regularGames": 30,
     "playoffGames": 0
   },
   {
@@ -2936,7 +3020,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 44,
+    "regularGames": 45,
     "playoffGames": 11
   },
   {
@@ -2964,7 +3048,7 @@
     "teamsOwned": 2,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 1,
+    "regularGames": 3,
     "playoffGames": 0
   },
   {
@@ -3424,6 +3508,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "02o87",
+    "name": "Francois Tremblay",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -4070,7 +4168,7 @@
     "teamsOwned": 4,
     "teamsPlayedRegular": 4,
     "teamsPlayedPlayoffs": 3,
-    "regularGames": 206,
+    "regularGames": 207,
     "playoffGames": 9
   },
   {
@@ -4312,6 +4410,20 @@
     "playoffGames": 0
   },
   {
+    "id": "027bk",
+    "name": "Jacob DeSerres",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "068yz",
     "name": "Jacob Fowler",
     "firstSeason": 2023,
@@ -4364,8 +4476,22 @@
     "teamsOwned": 5,
     "teamsPlayedRegular": 4,
     "teamsPlayedPlayoffs": 3,
-    "regularGames": 308,
+    "regularGames": 309,
     "playoffGames": 46
+  },
+  {
+    "id": "060yb",
+    "name": "Jacob Oster",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
   },
   {
     "id": "016kv",
@@ -4420,7 +4546,7 @@
     "teamsOwned": 2,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 213,
+    "regularGames": 214,
     "playoffGames": 35
   },
   {
@@ -4462,8 +4588,22 @@
     "teamsOwned": 2,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 25,
+    "regularGames": 26,
     "playoffGames": 9
+  },
+  {
+    "id": "02jq1",
+    "name": "Jakub Kovar",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
   },
   {
     "id": "072nb",
@@ -4896,7 +5036,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 154,
+    "regularGames": 155,
     "playoffGames": 11
   },
   {
@@ -4952,7 +5092,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 26,
+    "regularGames": 27,
     "playoffGames": 2
   },
   {
@@ -5078,7 +5218,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 49,
+    "regularGames": 50,
     "playoffGames": 0
   },
   {
@@ -5120,7 +5260,7 @@
     "teamsOwned": 3,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 106,
+    "regularGames": 107,
     "playoffGames": 0
   },
   {
@@ -5174,6 +5314,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "004mp",
+    "name": "John Curry",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -5474,6 +5628,20 @@
     "playoffGames": 0
   },
   {
+    "id": "003yb",
+    "name": "Jordan Parise",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "03bmj",
     "name": "Jordon Cooke",
     "firstSeason": 2014,
@@ -5670,6 +5838,20 @@
     "playoffGames": 0
   },
   {
+    "id": "03kqh",
+    "name": "Julio Billia",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "01t7b",
     "name": "Jussi Rynnas",
     "firstSeason": 2012,
@@ -5722,7 +5904,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 286,
+    "regularGames": 287,
     "playoffGames": 52
   },
   {
@@ -5808,6 +5990,20 @@
     "teamsPlayedPlayoffs": 1,
     "regularGames": 193,
     "playoffGames": 41
+  },
+  {
+    "id": "05res",
+    "name": "Kari Piiroinen",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
   },
   {
     "id": "00491",
@@ -5922,6 +6118,20 @@
     "playoffGames": 0
   },
   {
+    "id": "004ml",
+    "name": "Kevin Lalande",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "04ai3",
     "name": "Kevin Lankinen",
     "firstSeason": 2017,
@@ -5932,7 +6142,7 @@
     "teamsOwned": 3,
     "teamsPlayedRegular": 3,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 73,
+    "regularGames": 74,
     "playoffGames": 8
   },
   {
@@ -6042,6 +6252,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "0243u",
+    "name": "Konstantin Barulin",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -6202,6 +6426,20 @@
     "playoffGames": 0
   },
   {
+    "id": "01zs5",
+    "name": "Lars Volden",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "0733d",
     "name": "Lassi Lehti",
     "firstSeason": 2025,
@@ -6263,12 +6501,12 @@
     "firstSeason": 2020,
     "lastSeason": 2026,
     "seasonsOwned": 7,
-    "seasonsPlayedRegular": 0,
+    "seasonsPlayedRegular": 1,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 3,
-    "teamsPlayedRegular": 0,
+    "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 0,
+    "regularGames": 1,
     "playoffGames": 0
   },
   {
@@ -6338,7 +6576,7 @@
     "teamsOwned": 4,
     "teamsPlayedRegular": 4,
     "teamsPlayedPlayoffs": 3,
-    "regularGames": 162,
+    "regularGames": 163,
     "playoffGames": 18
   },
   {
@@ -6394,7 +6632,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 150,
+    "regularGames": 151,
     "playoffGames": 6
   },
   {
@@ -6507,6 +6745,20 @@
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 85,
+    "playoffGames": 0
+  },
+  {
+    "id": "03p6v",
+    "name": "Lukas Flueler",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
     "playoffGames": 0
   },
   {
@@ -7985,12 +8237,12 @@
     "firstSeason": 2020,
     "lastSeason": 2026,
     "seasonsOwned": 7,
-    "seasonsPlayedRegular": 4,
+    "seasonsPlayedRegular": 5,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 2,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 42,
+    "regularGames": 43,
     "playoffGames": 0
   },
   {
@@ -8428,6 +8680,20 @@
     "playoffGames": 0
   },
   {
+    "id": "025z5",
+    "name": "Pat Nagle",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "01tey",
     "name": "Patrick Killeen",
     "firstSeason": 2012,
@@ -8512,6 +8778,20 @@
     "playoffGames": 0
   },
   {
+    "id": "02j7g",
+    "name": "Paul Karpowich",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "05uxe",
     "name": "Pavel Cajan",
     "firstSeason": 2022,
@@ -8579,6 +8859,20 @@
     "teamsPlayedRegular": 3,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 44,
+    "playoffGames": 0
+  },
+  {
+    "id": "01nin",
+    "name": "Peter Delmas",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
     "playoffGames": 0
   },
   {
@@ -8690,7 +8984,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 258,
+    "regularGames": 259,
     "playoffGames": 4
   },
   {
@@ -8732,7 +9026,7 @@
     "teamsOwned": 2,
     "teamsPlayedRegular": 2,
     "teamsPlayedPlayoffs": 2,
-    "regularGames": 58,
+    "regularGames": 60,
     "playoffGames": 5
   },
   {
@@ -8859,6 +9153,20 @@
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 7,
+    "playoffGames": 0
+  },
+  {
+    "id": "02ug3",
+    "name": "Richard Ullberg",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
     "playoffGames": 0
   },
   {
@@ -9404,7 +9712,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 95,
+    "regularGames": 96,
     "playoffGames": 9
   },
   {
@@ -9492,6 +9800,20 @@
     "playoffGames": 37
   },
   {
+    "id": "024j3",
+    "name": "Sergei Gayduchenko",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "05yme",
     "name": "Sergei Ivanov",
     "firstSeason": 2022,
@@ -9530,7 +9852,7 @@
     "teamsOwned": 3,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
-    "regularGames": 6,
+    "regularGames": 7,
     "playoffGames": 0
   },
   {
@@ -9556,6 +9878,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "02j0n",
+    "name": "Shawn Hunwick",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -9600,7 +9936,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 70,
+    "regularGames": 71,
     "playoffGames": 10
   },
   {
@@ -9768,7 +10104,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 129,
+    "regularGames": 130,
     "playoffGames": 9
   },
   {
@@ -9808,6 +10144,20 @@
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
     "teamsOwned": 1,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
+    "id": "03p3j",
+    "name": "Taran Kozun",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
@@ -9856,6 +10206,20 @@
     "playoffGames": 20
   },
   {
+    "id": "01nao",
+    "name": "Thomas Heemskerk",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "05u3g",
     "name": "Thomas Milic",
     "firstSeason": 2022,
@@ -9881,6 +10245,20 @@
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 35,
+    "playoffGames": 0
+  },
+  {
+    "id": "00qry",
+    "name": "Timo Pielmeier",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
     "playoffGames": 0
   },
   {
@@ -10094,6 +10472,20 @@
     "playoffGames": 0
   },
   {
+    "id": "01dcb",
+    "name": "Trevor Cann",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "068yu",
     "name": "Trey Augustine",
     "firstSeason": 2023,
@@ -10220,6 +10612,20 @@
     "playoffGames": 0
   },
   {
+    "id": "01mj9",
+    "name": "Tyler Beskorowany",
+    "firstSeason": null,
+    "lastSeason": null,
+    "seasonsOwned": 0,
+    "seasonsPlayedRegular": 0,
+    "seasonsPlayedPlayoffs": 0,
+    "teamsOwned": 0,
+    "teamsPlayedRegular": 0,
+    "teamsPlayedPlayoffs": 0,
+    "regularGames": 0,
+    "playoffGames": 0
+  },
+  {
     "id": "05rf9",
     "name": "Tyler Brennan",
     "firstSeason": 2022,
@@ -10328,7 +10734,7 @@
     "teamsOwned": 1,
     "teamsPlayedRegular": 1,
     "teamsPlayedPlayoffs": 1,
-    "regularGames": 28,
+    "regularGames": 29,
     "playoffGames": 2
   },
   {
@@ -10629,11 +11035,11 @@
     "id": "05kdy",
     "name": "Will Cranley",
     "firstSeason": 2020,
-    "lastSeason": 2025,
-    "seasonsOwned": 5,
+    "lastSeason": 2026,
+    "seasonsOwned": 6,
     "seasonsPlayedRegular": 0,
     "seasonsPlayedPlayoffs": 0,
-    "teamsOwned": 2,
+    "teamsOwned": 3,
     "teamsPlayedRegular": 0,
     "teamsPlayedPlayoffs": 0,
     "regularGames": 0,
