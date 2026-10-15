@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { DecimalPipe, PercentPipe, isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -16,6 +17,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { careerProfilePath } from '@shared/utils/career-profile-url.utils';
 import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { ApiService, DraftPick, DraftTeamRef, EntryDraftTeamGroup } from '@services/api.service';
@@ -38,6 +40,7 @@ type DraftPickStatus = {
   selector: 'app-entry-drafts',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterLink,
     DecimalPipe,
     PercentPipe,
     MatExpansionModule,
@@ -67,6 +70,8 @@ export class EntryDraftsComponent implements OnInit {
   private readonly selectedTeamId = this.settingsService.selectedTeamIdSignal;
   private readonly disableSelectedTeamHighlight =
     this.settingsService.disableSelectedTeamHighlightSignal;
+
+  readonly careerProfilePath = careerProfilePath;
 
   groups: EntryDraftTeamGroup[] = [];
   loading = true;

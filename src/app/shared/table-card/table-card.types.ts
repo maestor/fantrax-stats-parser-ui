@@ -7,6 +7,8 @@ export interface TableCardRow {
   readonly key: string;
   readonly rank?: TableCardRankLabel;
   readonly primaryText: string;
+  readonly primaryLink?: string;
+  readonly primaryLinkQueryParams?: Readonly<Record<string, string>>;
   readonly value: number | string;
   readonly emphasized?: boolean;
   readonly detailHeader?: string;

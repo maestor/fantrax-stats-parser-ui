@@ -1590,11 +1590,19 @@ export interface components {
             /** @example Anaheim Ducks */
             name: string;
         };
+        /** @description Career identity when the linked Fantrax entity has player or goalie statistics, including zero-game records. Null for unmatched picks or entities without career data. */
+        DraftCareerProfile: {
+            /** @example 00qs7 */
+            id: string;
+            /** @enum {string} */
+            type: "player" | "goalie";
+        } | null;
         DraftPick: {
             /** @example 1 */
             round: number;
             /** @example 1 */
             pickNumber: number;
+            careerProfile?: components["schemas"]["DraftCareerProfile"];
             /** @example Connor McDavid */
             draftedPlayer: string | null;
             /**
@@ -1614,6 +1622,7 @@ export interface components {
             round: number;
             /** @example 1 */
             pickNumber: number;
+            careerProfile?: components["schemas"]["DraftCareerProfile"];
             /** @example Sidney Crosby */
             draftedPlayer: string;
             originalOwner: components["schemas"]["DraftTeamRef"];
@@ -1632,6 +1641,7 @@ export interface components {
             season: number;
             /** @example 1 */
             round: number;
+            careerProfile?: components["schemas"]["DraftCareerProfile"];
             /** @example Connor McDavid */
             draftedPlayer: string;
         };

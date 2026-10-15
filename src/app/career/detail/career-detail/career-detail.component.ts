@@ -62,12 +62,16 @@ export class CareerDetailComponent {
   private readonly source = toSignal(this.route.queryParamMap.pipe(map((params) => params.get('from'))));
   readonly backLink = computed(() => {
     const source = this.source();
-    if (source === 'player-stats' || source === 'goalie-stats') {
-      return {
-        path: '/' + source,
-        labelKey: source === 'player-stats' ? 'career.profile.backPlayerStats' : 'career.profile.backGoalieStats',
-      };
-    }
+    const returnLinks = [
+      { source: 'player-stats', path: '/player-stats', labelKey: 'career.profile.backPlayerStats' },
+      { source: 'goalie-stats', path: '/goalie-stats', labelKey: 'career.profile.backGoalieStats' },
+      { source: 'career-highlights', path: '/career/highlights', labelKey: 'career.profile.backHighlights' },
+      { source: 'category-stats', path: '/category-stats', labelKey: 'career.profile.backCategoryStats' },
+      { source: 'entry-drafts', path: '/draft/entry-drafts', labelKey: 'career.profile.backEntryDrafts' },
+      { source: 'opening-draft', path: '/draft/opening-draft', labelKey: 'career.profile.backOpeningDraft' },
+    ];
+    const returnLink = returnLinks.find((link) => link.source === source);
+    if (returnLink) return returnLink;
     return { path: this.listPath, labelKey: 'career.profile.back' };
   });
   readonly jumpItems = ['overview', 'seasons', 'teams', 'history'].map((id) => ({

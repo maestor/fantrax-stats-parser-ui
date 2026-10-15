@@ -164,7 +164,10 @@
                 {{ 'draft.entryDrafts.turnLabel' | translate }} {{ highestPick.pickNumber }}:
               </span>
               @for (item of highestPick.items; track item.season + '-' + item.draftedPlayer; let isLast = $last) {
-              <span>{{ item.season }} {{ item.draftedPlayer }}</span>@if (!isLast) {<span>, </span>}
+              <span>{{ item.season + ' ' }}@if (item.careerProfile; as profile) {
+                  <a class="career-name-link draft-focus-target" tabindex="-1" draftPanelFocusTarget [queryParams]="{ from: 'entry-drafts' }" [routerLink]="careerProfilePath(item.draftedPlayer, profile.id, profile.type)">{{ item.draftedPlayer }}</a>
+                } @else {<span>{{ item.draftedPlayer }}</span>}
+              </span>@if (!isLast) {<span>, </span>}
               }
             </p>
             } @else {
@@ -207,7 +210,11 @@
                         {{ 'draft.entryDrafts.turnLabel' | translate }} {{ pick.pickNumber }}
                       </span>
                       <span class="draft-pick-player" [class.draft-pick-player--missing]="pick.draftedPlayer === null">
+                        @if (pick.careerProfile; as profile) {
+                        <a class="career-name-link draft-focus-target" tabindex="-1" draftPanelFocusTarget [queryParams]="{ from: 'entry-drafts' }" [routerLink]="careerProfilePath(pick.draftedPlayer!, profile.id, profile.type)">{{ pick.draftedPlayer }}</a>
+                        } @else {
                         <span>{{ pick.draftedPlayer ?? ('draft.entryDrafts.unknownPlayerLabel' | translate) }}</span>
+                        }
                         @if (getPickStatus(pick); as pickStatus) {
                         <span class="draft-pick-status-badge" [matTooltip]="pickStatus.tooltipKey | translate"
                           aria-hidden="true">

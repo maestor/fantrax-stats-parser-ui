@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
+import { careerProfilePath } from '@shared/utils/career-profile-url.utils';
 import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import {
@@ -380,6 +381,8 @@ export class CareerHighlightsComponent implements OnInit {
         key: `${item.id}:${item.teams.map((team) => team.id).join(',')}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
         primaryText: this.buildPrimaryText(item.name, item.position),
+        primaryLink: careerProfilePath(item.name, item.id, item.position === 'G' ? 'goalie' : 'player'),
+        primaryLinkQueryParams: { from: 'career-highlights' },
         value: item.teamCount,
         detailLines: item.teams.map((team) => team.name),
         detailLabel: item.name,
@@ -394,6 +397,8 @@ export class CareerHighlightsComponent implements OnInit {
         key: `${item.id}:${item.team.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
         primaryText: this.buildPrimaryText(item.name, item.position),
+        primaryLink: careerProfilePath(item.name, item.id, item.position === 'G' ? 'goalie' : 'player'),
+        primaryLinkQueryParams: { from: 'career-highlights' },
         value: item.seasonCount,
         detailLines: [item.team.name],
         detailLabel: item.name,
@@ -408,6 +413,8 @@ export class CareerHighlightsComponent implements OnInit {
         key: item.id,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
         primaryText: this.buildPrimaryText(item.name, item.position),
+        primaryLink: careerProfilePath(item.name, item.id, item.position === 'G' ? 'goalie' : 'player'),
+        primaryLinkQueryParams: { from: 'career-highlights' },
         value: item.cupCount,
         detailLines: item.cups.map(
           (cup) => `${formatPlayoffYear(cup.season)} ${cup.team.name}`,
@@ -424,6 +431,8 @@ export class CareerHighlightsComponent implements OnInit {
         key: `${item.id}:${item.team.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
         primaryText: this.buildPrimaryText(item.name, item.position),
+        primaryLink: careerProfilePath(item.name, item.id, item.position === 'G' ? 'goalie' : 'player'),
+        primaryLinkQueryParams: { from: 'career-highlights' },
         value: item.reunionCount,
         detailHeader: item.team.name,
         detailLines: formatReunionDetailLines(
@@ -447,6 +456,8 @@ export class CareerHighlightsComponent implements OnInit {
         key: item.id,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
         primaryText: this.buildPrimaryText(item.name, item.position),
+        primaryLink: careerProfilePath(item.name, item.id, item.position === 'G' ? 'goalie' : 'player'),
+        primaryLinkQueryParams: { from: 'career-highlights' },
         value: item.regularGames,
         detailLines: item.teams.map((team) => team.name),
         detailLabel: item.name,
@@ -461,6 +472,8 @@ export class CareerHighlightsComponent implements OnInit {
         key: `${item.id}:${item.team.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
         primaryText: this.buildPrimaryText(item.name, item.position),
+        primaryLink: careerProfilePath(item.name, item.id, item.position === 'G' ? 'goalie' : 'player'),
+        primaryLinkQueryParams: { from: 'career-highlights' },
         value: item.seasonCount,
         detailLines: [item.team.name],
         detailLabel: item.name,
@@ -475,6 +488,8 @@ export class CareerHighlightsComponent implements OnInit {
         key: `${page.type}:${item.id}`,
         rank: this.buildRankLabel(item.displayRank, item.tieRank),
         primaryText: this.buildPrimaryText(item.name, item.position),
+        primaryLink: careerProfilePath(item.name, item.id, item.position === 'G' ? 'goalie' : 'player'),
+        primaryLinkQueryParams: { from: 'career-highlights' },
         value: item.transactionCount,
         detailLines: item.teams.map((team) => `${team.name} ${team.count}`),
         detailLabel: item.name,

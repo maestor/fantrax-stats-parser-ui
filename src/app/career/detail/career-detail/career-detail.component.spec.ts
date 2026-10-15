@@ -402,6 +402,21 @@ describe('Career profile', () => {
     expect(await screen.findByRole('heading', { name: 'Career Player' })).toBeInTheDocument();
   });
 
+  it('preserves browse origins through readable URL normalization and labels the matching back link', async () => {
+    await setup();
+    const router = TestBed.inject(Router);
+    for (const [source, path, label] of [
+      ['career-highlights', '/career/highlights', 'backHighlights'],
+      ['category-stats', '/category-stats', 'backCategoryStats'],
+      ['entry-drafts', '/draft/entry-drafts', 'backEntryDrafts'],
+      ['opening-draft', '/draft/opening-draft', 'backOpeningDraft'],
+    ]) {
+      await router.navigateByUrl(`/career/players/p1?from=${source}`);
+      await waitFor(() => expect(router.url).toBe(`/career/players/career-player-p1?from=${source}`));
+      expect(await screen.findByRole('link', { name: new RegExp(`career.profile.${label}`) })).toHaveAttribute('href', path);
+    }
+  });
+
   it('opens a statistics popup career shortcut and returns to the originating statistics page', async () => {
     seedLocalStorage();
     await setup({ getCareerPlayer: (id: string) => of({ ...profileFixture, id, name: 'Jamie Benn' }) });

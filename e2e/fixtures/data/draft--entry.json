@@ -1,63 +1,239 @@
 [
   {
     "team": {
-      "id": "1",
-      "name": "Colorado Avalanche"
+      "id": "26",
+      "name": "Pittsburgh Penguins"
     },
     "summary": {
       "highestPick": {
         "pickNumber": 4,
         "items": [
           {
+            "season": 2026,
+            "round": 1,
+            "draftedPlayer": "Viggo Bjorck",
+            "careerProfile": {
+              "id": "06lok",
+              "type": "player"
+            }
+          },
+          {
             "season": 2025,
             "round": 1,
-            "draftedPlayer": "Matthew Schaefer"
+            "draftedPlayer": "Porter Martone",
+            "careerProfile": {
+              "id": "06hj9",
+              "type": "player"
+            }
           }
         ]
       },
-      "averageDraftPosition": 17.5,
+      "averageDraftPosition": 78.73,
       "amounts": {
-        "total": 4,
-        "ownPicks": 3,
-        "tradedPicks": 1,
-        "playersPerDraftAverage": 2,
-        "playedInLeague": 2,
-        "playedInLeaguePercent": 0.5,
-        "playedForDraftingTeam": 1,
-        "playedForDraftingTeamPercent": 0.25
+        "total": 73,
+        "ownPicks": 42,
+        "tradedPicks": 31,
+        "playersPerDraftAverage": 5.21,
+        "playedInLeague": 31,
+        "playedInLeaguePercent": 0.425,
+        "playedForDraftingTeam": 26,
+        "playedForDraftingTeamPercent": 0.356
       },
       "rounds": {
-        "first": 2,
-        "second": 1,
-        "third": 1,
-        "fourth": 0,
-        "fifth": 0
+        "first": 16,
+        "second": 13,
+        "third": 19,
+        "fourth": 15,
+        "fifth": 10
       }
     },
     "seasons": [
+      {
+        "season": 2026,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 4,
+            "draftedPlayer": "Viggo Bjorck",
+            "careerProfile": {
+              "id": "06lok",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 36,
+            "draftedPlayer": "Tobias Trejbal",
+            "careerProfile": {
+              "id": "07337",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 63,
+            "draftedPlayer": "Victor Plante",
+            "careerProfile": {
+              "id": "0760p",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "2",
+              "name": "Carolina Hurricanes"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 68,
+            "draftedPlayer": "Adam Nemec",
+            "careerProfile": {
+              "id": "0760j",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 90,
+            "draftedPlayer": "Jonah Sivertson",
+            "careerProfile": {
+              "id": "076ww",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "17",
+              "name": "Florida Panthers"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 100,
+            "draftedPlayer": "Evan Jardine",
+            "careerProfile": {
+              "id": "0769f",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
       {
         "season": 2025,
         "picks": [
           {
             "round": 1,
             "pickNumber": 4,
-            "draftedPlayer": "Matthew Schaefer",
+            "draftedPlayer": "Porter Martone",
+            "careerProfile": {
+              "id": "06hj9",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 15,
+            "draftedPlayer": "Roger McQueen",
+            "careerProfile": {
+              "id": "06imm",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "16",
+              "name": "Tampa Bay Lightning"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 26,
+            "draftedPlayer": "Malcolm Spence",
+            "careerProfile": {
+              "id": "064n0",
+              "type": "player"
+            },
             "playedInLeague": false,
             "playedForDraftingTeam": false,
             "originalOwner": {
-              "id": "1",
-              "name": "Colorado Avalanche"
+              "id": "23",
+              "name": "New York Islanders"
             }
           },
           {
             "round": 2,
-            "pickNumber": 28,
-            "draftedPlayer": null,
+            "pickNumber": 47,
+            "draftedPlayer": "Theo Stockselius",
+            "careerProfile": {
+              "id": "06sqc",
+              "type": "player"
+            },
             "playedInLeague": false,
             "playedForDraftingTeam": false,
             "originalOwner": {
-              "id": "29",
-              "name": "Dallas Stars"
+              "id": "16",
+              "name": "Tampa Bay Lightning"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 67,
+            "draftedPlayer": "Charlie Trethewey",
+            "careerProfile": {
+              "id": "06pyj",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 94,
+            "draftedPlayer": "Tyler Hopkins",
+            "careerProfile": {
+              "id": "06sq7",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "5",
+              "name": "Montreal Canadiens"
             }
           }
         ]
@@ -67,9 +243,138 @@
         "picks": [
           {
             "round": 1,
-            "pickNumber": 11,
-            "draftedPlayer": "Tij Iginla",
+            "pickNumber": 13,
+            "draftedPlayer": "Sam Dickinson",
+            "careerProfile": {
+              "id": "06amv",
+              "type": "player"
+            },
             "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "32",
+              "name": "Vegas Golden Knights"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 27,
+            "draftedPlayer": "Igor Chernyshov",
+            "careerProfile": {
+              "id": "06hcr",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 33,
+            "draftedPlayer": "Matvei Gridin",
+            "careerProfile": {
+              "id": "06mb0",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "21",
+              "name": "Buffalo Sabres"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 121,
+            "draftedPlayer": "Matvei Shuravin",
+            "careerProfile": {
+              "id": "06md3",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "23",
+              "name": "New York Islanders"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 127,
+            "draftedPlayer": "Jonathan Morello",
+            "careerProfile": {
+              "id": "06mct",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2023,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 20,
+            "draftedPlayer": "Samuel Honzek",
+            "careerProfile": {
+              "id": "06axc",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 84,
+            "draftedPlayer": "Mathieu Cataford",
+            "careerProfile": {
+              "id": "06be2",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 120,
+            "draftedPlayer": "Jesse Nurmi",
+            "careerProfile": {
+              "id": "06bnc",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 124,
+            "draftedPlayer": "Cam Squires",
+            "careerProfile": {
+              "id": "06be8",
+              "type": "player"
+            },
+            "playedInLeague": false,
             "playedForDraftingTeam": false,
             "originalOwner": {
               "id": "1",
@@ -77,14 +382,833 @@
             }
           },
           {
+            "round": 5,
+            "pickNumber": 148,
+            "draftedPlayer": "Brandon Svoboda",
+            "careerProfile": {
+              "id": "06c5t",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2022,
+        "picks": [
+          {
             "round": 3,
-            "pickNumber": 27,
-            "draftedPlayer": "Jesse Pulkkinen",
+            "pickNumber": 79,
+            "draftedPlayer": "Bryce McConnell-Barker",
+            "careerProfile": {
+              "id": "05ymy",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 82,
+            "draftedPlayer": "Jordan Gustafson",
+            "careerProfile": {
+              "id": "060j8",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "15",
+              "name": "St. Louis Blues"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 111,
+            "draftedPlayer": "Ben MacDonald",
+            "careerProfile": {
+              "id": "060no",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2021,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 11,
+            "draftedPlayer": "Sebastian Cossa",
+            "careerProfile": {
+              "id": "05o01",
+              "type": "goalie"
+            },
             "playedInLeague": true,
             "playedForDraftingTeam": true,
             "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 77,
+            "draftedPlayer": "Ryder Korczak",
+            "careerProfile": {
+              "id": "05tqm",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 101,
+            "draftedPlayer": "Jakub Brabenec",
+            "careerProfile": {
+              "id": "05u3y",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "6",
+              "name": "Detroit Red Wings"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 143,
+            "draftedPlayer": "Carson Latimer",
+            "careerProfile": {
+              "id": "05uf8",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 157,
+            "draftedPlayer": "William von Barnekow",
+            "careerProfile": {
+              "id": "05u0j",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "9",
+              "name": "New York Rangers"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2020,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 13,
+            "draftedPlayer": "Dawson Mercer",
+            "careerProfile": {
+              "id": "05gtp",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 58,
+            "draftedPlayer": "Justin Barron",
+            "careerProfile": {
+              "id": "051z1",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "9",
+              "name": "New York Rangers"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 75,
+            "draftedPlayer": "Will Cuylle",
+            "careerProfile": {
+              "id": "05kbn",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 78,
+            "draftedPlayer": "Egor Sokolov",
+            "careerProfile": {
+              "id": "04rfg",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "30",
+              "name": "Winnipeg Jets"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 85,
+            "draftedPlayer": "Jaromir Pytlik",
+            "careerProfile": {
+              "id": "05kkd",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "5",
+              "name": "Montreal Canadiens"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 89,
+            "draftedPlayer": "William Villeneuve",
+            "careerProfile": {
+              "id": "05kdv",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "9",
+              "name": "New York Rangers"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 110,
+            "draftedPlayer": "Connor McClennon",
+            "careerProfile": {
+              "id": "04uqj",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 140,
+            "draftedPlayer": "Evan Vierling",
+            "careerProfile": {
+              "id": "04uqk",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "8",
+              "name": "San Jose Sharks"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 141,
+            "draftedPlayer": "William Dufour",
+            "careerProfile": {
+              "id": "05nfy",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 158,
+            "draftedPlayer": "Ryder Rolston",
+            "careerProfile": {
+              "id": "05lu7",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
               "id": "1",
               "name": "Colorado Avalanche"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2019,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 15,
+            "draftedPlayer": "Cam York",
+            "careerProfile": {
+              "id": "04ye7",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 79,
+            "draftedPlayer": "Rhett Pitlick",
+            "careerProfile": {
+              "id": "051m1",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 84,
+            "draftedPlayer": "Yegor Spiridonov",
+            "careerProfile": {
+              "id": "04zov",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "24",
+              "name": "New Jersey Devils"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 113,
+            "draftedPlayer": "Dmitry Voronkov",
+            "careerProfile": {
+              "id": "050rc",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 129,
+            "draftedPlayer": "Billy Constantinou",
+            "careerProfile": {
+              "id": "04zp4",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2018,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 28,
+            "draftedPlayer": "Jesse Ylonen",
+            "careerProfile": {
+              "id": "04lcx",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 62,
+            "draftedPlayer": "Olivier Rodrigue",
+            "careerProfile": {
+              "id": "04ld1",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "5",
+              "name": "Montreal Canadiens"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 71,
+            "draftedPlayer": "Sampo Ranta",
+            "careerProfile": {
+              "id": "04qyo",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "32",
+              "name": "Vegas Golden Knights"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 81,
+            "draftedPlayer": "Adam Ginning",
+            "careerProfile": {
+              "id": "04qy6",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "24",
+              "name": "New Jersey Devils"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 96,
+            "draftedPlayer": "Luke Henman",
+            "careerProfile": {
+              "id": "04qz3",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 157,
+            "draftedPlayer": "Xavier Bouchard",
+            "careerProfile": {
+              "id": "04lch",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2017,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 18,
+            "draftedPlayer": "Jake Oettinger",
+            "careerProfile": {
+              "id": "0457k",
+              "type": "goalie"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 50,
+            "draftedPlayer": "MacKenzie Entwistle",
+            "careerProfile": {
+              "id": "04apd",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 83,
+            "draftedPlayer": "David Noel",
+            "careerProfile": {
+              "id": "04f6y",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 113,
+            "draftedPlayer": "Tim Soderlund",
+            "careerProfile": {
+              "id": "04f25",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "24",
+              "name": "New Jersey Devils"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 118,
+            "draftedPlayer": "Jan Drozg",
+            "careerProfile": {
+              "id": "04f7j",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 129,
+            "draftedPlayer": "Luke Martin",
+            "careerProfile": {
+              "id": "0457j",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "10",
+              "name": "Nashville Predators"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2016,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 18,
+            "draftedPlayer": "Max Jones",
+            "careerProfile": {
+              "id": "03mn7",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 49,
+            "draftedPlayer": "Nathan Bastian",
+            "careerProfile": {
+              "id": "03zum",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 145,
+            "draftedPlayer": "Axel Jonsson-Fjallby",
+            "careerProfile": {
+              "id": "042xz",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2015,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 27,
+            "draftedPlayer": "Ilya Samsonov",
+            "careerProfile": {
+              "id": "03mm7",
+              "type": "goalie"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 58,
+            "draftedPlayer": "Daniel Vladar",
+            "careerProfile": {
+              "id": "03rfo",
+              "type": "goalie"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 124,
+            "draftedPlayer": "Jesse Gabrielle",
+            "careerProfile": {
+              "id": "03rgb",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 154,
+            "draftedPlayer": "Casey Fitzgerald",
+            "careerProfile": {
+              "id": "03wok",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2014,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 29,
+            "draftedPlayer": "Julius Honka",
+            "careerProfile": {
+              "id": "0367u",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 46,
+            "draftedPlayer": "Brett Pollock",
+            "careerProfile": {
+              "id": "03eas",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "3",
+              "name": "Calgary Flames"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 60,
+            "draftedPlayer": "Ville Husso",
+            "careerProfile": {
+              "id": "03ar6",
+              "type": "goalie"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 63,
+            "draftedPlayer": "Christian Dvorak",
+            "careerProfile": {
+              "id": "03eb3",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 156,
+            "draftedPlayer": "Rasmus Tirronen",
+            "careerProfile": {
+              "id": "039w4",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2013,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 15,
+            "draftedPlayer": "Kerby Rychel",
+            "careerProfile": {
+              "id": "02yjs",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 46,
+            "draftedPlayer": "Philippe Desrosiers",
+            "careerProfile": {
+              "id": "031od",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 78,
+            "draftedPlayer": "Ryan Kujawinski",
+            "careerProfile": {
+              "id": "031ox",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 114,
+            "draftedPlayer": "Nick Paul",
+            "careerProfile": {
+              "id": "031pn",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
             }
           }
         ]
@@ -93,47 +1217,190 @@
   },
   {
     "team": {
-      "id": "29",
-      "name": "Dallas Stars"
+      "id": "19",
+      "name": "Toronto Maple Leafs"
     },
     "summary": {
       "highestPick": {
         "pickNumber": 2,
         "items": [
           {
-            "season": 2025,
+            "season": 2015,
             "round": 1,
-            "draftedPlayer": "Michael Misa"
+            "draftedPlayer": "Jack Eichel",
+            "careerProfile": {
+              "id": "03924",
+              "type": "player"
+            }
           }
         ]
       },
-      "averageDraftPosition": 12.33,
+      "averageDraftPosition": 81.75,
       "amounts": {
-        "total": 3,
-        "ownPicks": 2,
-        "tradedPicks": 1,
-        "playersPerDraftAverage": 1.5,
-        "playedInLeague": 2,
-        "playedInLeaguePercent": 0.667,
-        "playedForDraftingTeam": 1,
-        "playedForDraftingTeamPercent": 0.333
+        "total": 92,
+        "ownPicks": 36,
+        "tradedPicks": 56,
+        "playersPerDraftAverage": 6.57,
+        "playedInLeague": 27,
+        "playedInLeaguePercent": 0.293,
+        "playedForDraftingTeam": 20,
+        "playedForDraftingTeamPercent": 0.217
       },
       "rounds": {
-        "first": 1,
-        "second": 1,
-        "third": 1,
-        "fourth": 0,
-        "fifth": 0
+        "first": 21,
+        "second": 14,
+        "third": 18,
+        "fourth": 18,
+        "fifth": 21
       }
     },
     "seasons": [
       {
-        "season": 2025,
+        "season": 2026,
         "picks": [
           {
             "round": 1,
-            "pickNumber": 2,
-            "draftedPlayer": "Michael Misa",
+            "pickNumber": 3,
+            "draftedPlayer": "Chase Reid",
+            "careerProfile": {
+              "id": "070fo",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 5,
+            "draftedPlayer": "Carson Carels",
+            "careerProfile": {
+              "id": "071wj",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "21",
+              "name": "Buffalo Sabres"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 12,
+            "draftedPlayer": "Wyatt Cullen",
+            "careerProfile": {
+              "id": "075ko",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "8",
+              "name": "San Jose Sharks"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 15,
+            "draftedPlayer": "Elton Hermansson",
+            "careerProfile": {
+              "id": "071wk",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "4",
+              "name": "Vancouver Canucks"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 17,
+            "draftedPlayer": "Liam Ruck",
+            "careerProfile": {
+              "id": "074mg",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "16",
+              "name": "Tampa Bay Lightning"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 18,
+            "draftedPlayer": "Markus Ruck",
+            "careerProfile": {
+              "id": "074mh",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "13",
+              "name": "Chicago Blackhawks"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 24,
+            "draftedPlayer": "Niklas Aaram-Olsen",
+            "careerProfile": {
+              "id": "071wn",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "23",
+              "name": "New York Islanders"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 26,
+            "draftedPlayer": "Adam Novotny",
+            "careerProfile": {
+              "id": "06r60",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "17",
+              "name": "Florida Panthers"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 54,
+            "draftedPlayer": "Adam Valentini",
+            "careerProfile": {
+              "id": "070fq",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "15",
+              "name": "St. Louis Blues"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 97,
+            "draftedPlayer": "Ryder Fetterolf",
+            "careerProfile": {
+              "id": "075kl",
+              "type": "goalie"
+            },
             "playedInLeague": false,
             "playedForDraftingTeam": false,
             "originalOwner": {
@@ -142,14 +1409,128 @@
             }
           },
           {
-            "round": 2,
-            "pickNumber": 14,
-            "draftedPlayer": "Kashawn Aitcheson",
-            "playedInLeague": true,
+            "round": 4,
+            "pickNumber": 114,
+            "draftedPlayer": "Giorgos Pantelas",
+            "careerProfile": {
+              "id": "0769g",
+              "type": "player"
+            },
+            "playedInLeague": false,
             "playedForDraftingTeam": false,
             "originalOwner": {
-              "id": "16",
-              "name": "Tampa Bay Lightning"
+              "id": "13",
+              "name": "Chicago Blackhawks"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 136,
+            "draftedPlayer": "Viktor Fedorov",
+            "careerProfile": {
+              "id": "06ydq",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "20",
+              "name": "Ottawa Senators"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2025,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 30,
+            "draftedPlayer": "Jack Nesbitt",
+            "careerProfile": {
+              "id": "06snc",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "5",
+              "name": "Montreal Canadiens"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 31,
+            "draftedPlayer": "Milton Gastrin",
+            "careerProfile": {
+              "id": "06pyv",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "7",
+              "name": "Edmonton Oilers"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 48,
+            "draftedPlayer": "Jack Ivankovic",
+            "careerProfile": {
+              "id": "06gk1",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "13",
+              "name": "Chicago Blackhawks"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 51,
+            "draftedPlayer": "Petteri Rimpinen",
+            "careerProfile": {
+              "id": "06mho",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 56,
+            "draftedPlayer": "William Horcoff",
+            "careerProfile": {
+              "id": "06axx",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "2",
+              "name": "Carolina Hurricanes"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 68,
+            "draftedPlayer": "Peyton Kettles",
+            "careerProfile": {
+              "id": "06sqt",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "30",
+              "name": "Winnipeg Jets"
             }
           }
         ]
@@ -158,14 +1539,1165 @@
         "season": 2024,
         "picks": [
           {
-            "round": 3,
-            "pickNumber": 21,
+            "round": 2,
+            "pickNumber": 49,
             "draftedPlayer": "Aron Kiviharju",
+            "careerProfile": {
+              "id": "05rjz",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "15",
+              "name": "St. Louis Blues"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 85,
+            "draftedPlayer": "Adam Jecho",
+            "careerProfile": {
+              "id": "06ll3",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "2",
+              "name": "Carolina Hurricanes"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 104,
+            "draftedPlayer": "Matyas Melovsky",
+            "careerProfile": {
+              "id": "06cfd",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "27",
+              "name": "Columbus Blue Jackets"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 123,
+            "draftedPlayer": "Ethan Procyszyn",
+            "careerProfile": {
+              "id": "06mcr",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 155,
+            "draftedPlayer": "Darels Uljanskis",
+            "careerProfile": {
+              "id": "06md9",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 159,
+            "draftedPlayer": "Colton Roberts",
+            "careerProfile": {
+              "id": "06ll4",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 160,
+            "draftedPlayer": "Owen Allard",
+            "careerProfile": {
+              "id": "06h7v",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "5",
+              "name": "Montreal Canadiens"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2023,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 13,
+            "draftedPlayer": "Axel Sandin Pellikka",
+            "careerProfile": {
+              "id": "067xz",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "13",
+              "name": "Chicago Blackhawks"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 66,
+            "draftedPlayer": "Damian Clara",
+            "careerProfile": {
+              "id": "06c3y",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "3",
+              "name": "Calgary Flames"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 88,
+            "draftedPlayer": "Rasmus Kumpulainen",
+            "careerProfile": {
+              "id": "06buu",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 97,
+            "draftedPlayer": "Emil Jarventie",
+            "careerProfile": {
+              "id": "06bdo",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "21",
+              "name": "Buffalo Sabres"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 99,
+            "draftedPlayer": "Cole Knuble",
+            "careerProfile": {
+              "id": "0618g",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "17",
+              "name": "Florida Panthers"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 151,
+            "draftedPlayer": "Antoine Keller",
+            "careerProfile": {
+              "id": "06ce2",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "23",
+              "name": "New York Islanders"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2022,
+        "picks": [
+          {
+            "round": 2,
+            "pickNumber": 54,
+            "draftedPlayer": "Noah Warren",
+            "careerProfile": {
+              "id": "060je",
+              "type": "player"
+            },
             "playedInLeague": true,
             "playedForDraftingTeam": true,
             "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 66,
+            "draftedPlayer": "Maveric Lamoureux",
+            "careerProfile": {
+              "id": "05ymn",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "17",
+              "name": "Florida Panthers"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 68,
+            "draftedPlayer": "Tomas Hamara",
+            "careerProfile": {
+              "id": "05rj1",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "32",
+              "name": "Vegas Golden Knights"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 86,
+            "draftedPlayer": "Tyler Brennan",
+            "careerProfile": {
+              "id": "05rf9",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 120,
+            "draftedPlayer": "Ben King",
+            "careerProfile": {
+              "id": "05xca",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "10",
+              "name": "Nashville Predators"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 131,
+            "draftedPlayer": "Hugo Havelid",
+            "careerProfile": {
+              "id": "060y6",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "6",
+              "name": "Detroit Red Wings"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 138,
+            "draftedPlayer": "David Spacek",
+            "careerProfile": {
+              "id": "060wp",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "8",
+              "name": "San Jose Sharks"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 150,
+            "draftedPlayer": "Frederic Brunet",
+            "careerProfile": {
+              "id": "061jm",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2021,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 20,
+            "draftedPlayer": "Corson Ceulemans",
+            "careerProfile": {
+              "id": "05nzw",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "8",
+              "name": "San Jose Sharks"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 86,
+            "draftedPlayer": "Samuel Helenius",
+            "careerProfile": {
+              "id": "05rc6",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "8",
+              "name": "San Jose Sharks"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 128,
+            "draftedPlayer": "Topias Vilen",
+            "careerProfile": {
+              "id": "05twk",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 156,
+            "draftedPlayer": "Elias Vilen",
+            "careerProfile": {
+              "id": "05txh",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "4",
+              "name": "Vancouver Canucks"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 160,
+            "draftedPlayer": "Nikita Quapp",
+            "careerProfile": {
+              "id": "05uga",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2020,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 22,
+            "draftedPlayer": "Dylan Holloway",
+            "careerProfile": {
+              "id": "051yz",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 72,
+            "draftedPlayer": "Samuel Knazko",
+            "careerProfile": {
+              "id": "05ltg",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
               "id": "29",
               "name": "Dallas Stars"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 84,
+            "draftedPlayer": "Dmitri Ovchinnikov",
+            "careerProfile": {
+              "id": "05kej",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 124,
+            "draftedPlayer": "Alexander Ljungkrantz",
+            "careerProfile": {
+              "id": "05luo",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "9",
+              "name": "New York Rangers"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 150,
+            "draftedPlayer": "Alexander Nikishin",
+            "careerProfile": {
+              "id": "05lu8",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2019,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 13,
+            "draftedPlayer": "Matt Boldy",
+            "careerProfile": {
+              "id": "04xec",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 45,
+            "draftedPlayer": "Egor Afanasyev",
+            "careerProfile": {
+              "id": "04zou",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 111,
+            "draftedPlayer": "Michael Vukojevic",
+            "careerProfile": {
+              "id": "051tt",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 142,
+            "draftedPlayer": "John Ludvig",
+            "careerProfile": {
+              "id": "051tn",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 144,
+            "draftedPlayer": "Mason Primeau",
+            "careerProfile": {
+              "id": "051ut",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "26",
+              "name": "Pittsburgh Penguins"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2018,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 11,
+            "draftedPlayer": "Noah Dobson",
+            "careerProfile": {
+              "id": "04ld3",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 42,
+            "draftedPlayer": "Olof Lindbom",
+            "careerProfile": {
+              "id": "04qxz",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 101,
+            "draftedPlayer": "Curtis Douglas",
+            "careerProfile": {
+              "id": "04qzb",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "31",
+              "name": "Utah Mammoth"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 108,
+            "draftedPlayer": "Dmitri Semykin",
+            "careerProfile": {
+              "id": "04qyx",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 139,
+            "draftedPlayer": "Mathias Emilio Pettersen",
+            "careerProfile": {
+              "id": "04r0l",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2017,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 10,
+            "draftedPlayer": "Gabriel Vilardi",
+            "careerProfile": {
+              "id": "03w5m",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 75,
+            "draftedPlayer": "Nick Henry",
+            "careerProfile": {
+              "id": "04f1s",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 110,
+            "draftedPlayer": "Cale Fleury",
+            "careerProfile": {
+              "id": "04f1m",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 141,
+            "draftedPlayer": "Aarne Talvitie",
+            "careerProfile": {
+              "id": "04f7n",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2016,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 6,
+            "draftedPlayer": "Olli Juolevi",
+            "careerProfile": {
+              "id": "03yg5",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 61,
+            "draftedPlayer": "Libor Hajek",
+            "careerProfile": {
+              "id": "042vn",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 93,
+            "draftedPlayer": "Tim Gettinger",
+            "careerProfile": {
+              "id": "042xu",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 105,
+            "draftedPlayer": "Jack Kopacka",
+            "careerProfile": {
+              "id": "042wo",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "13",
+              "name": "Chicago Blackhawks"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 139,
+            "draftedPlayer": "Otto Somppi",
+            "careerProfile": {
+              "id": "0430r",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "25",
+              "name": "Washington Capitals"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 156,
+            "draftedPlayer": "Joe Masonius",
+            "careerProfile": {
+              "id": "03wm2",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "5",
+              "name": "Montreal Canadiens"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2015,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 2,
+            "draftedPlayer": "Jack Eichel",
+            "careerProfile": {
+              "id": "03924",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 1,
+            "pickNumber": 23,
+            "draftedPlayer": "Jack Roslovic",
+            "careerProfile": {
+              "id": "03rag",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "17",
+              "name": "Florida Panthers"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 32,
+            "draftedPlayer": "Jansen Harkins",
+            "careerProfile": {
+              "id": "03rf0",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 45,
+            "draftedPlayer": "Rasmus Andersson",
+            "careerProfile": {
+              "id": "03rf5",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "21",
+              "name": "Buffalo Sabres"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 46,
+            "draftedPlayer": "Jordan Greenway",
+            "careerProfile": {
+              "id": "03rf3",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "14",
+              "name": "Minnesota Wild"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 60,
+            "draftedPlayer": "A.J. Greer",
+            "careerProfile": {
+              "id": "03ret",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 70,
+            "draftedPlayer": "Erik Foley",
+            "careerProfile": {
+              "id": "03rfq",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "7",
+              "name": "Edmonton Oilers"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 78,
+            "draftedPlayer": "Michael Spacek",
+            "careerProfile": {
+              "id": "03rgd",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "14",
+              "name": "Minnesota Wild"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 100,
+            "draftedPlayer": "Thomas Schemitsch",
+            "careerProfile": {
+              "id": "03rg0",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "30",
+              "name": "Winnipeg Jets"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 122,
+            "draftedPlayer": "Ethan Bear",
+            "careerProfile": {
+              "id": "03rgs",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "4",
+              "name": "Vancouver Canucks"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 130,
+            "draftedPlayer": "Tyler Soy",
+            "careerProfile": {
+              "id": "03sd9",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "30",
+              "name": "Winnipeg Jets"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2014,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 6,
+            "draftedPlayer": "Leon Draisaitl",
+            "careerProfile": {
+              "id": "02yjl",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 2,
+            "pickNumber": 57,
+            "draftedPlayer": "Alex Lintuniemi",
+            "careerProfile": {
+              "id": "03eb5",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "8",
+              "name": "San Jose Sharks"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 83,
+            "draftedPlayer": "Kaapo Kahkonen",
+            "careerProfile": {
+              "id": "03ec7",
+              "type": "goalie"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "17",
+              "name": "Florida Panthers"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 94,
+            "draftedPlayer": "Shane Eiserman",
+            "careerProfile": {
+              "id": "03eby",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "1",
+              "name": "Colorado Avalanche"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 103,
+            "draftedPlayer": "Edgars Kulda",
+            "careerProfile": {
+              "id": "03czb",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 133,
+            "draftedPlayer": "Ivan Nalimov",
+            "careerProfile": {
+              "id": "03e1s",
+              "type": "goalie"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 147,
+            "draftedPlayer": "Matthew Mistele",
+            "careerProfile": {
+              "id": "03ee0",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "17",
+              "name": "Florida Panthers"
+            }
+          }
+        ]
+      },
+      {
+        "season": 2013,
+        "picks": [
+          {
+            "round": 1,
+            "pickNumber": 20,
+            "draftedPlayer": "Nikita Zadorov",
+            "careerProfile": {
+              "id": "02wy5",
+              "type": "player"
+            },
+            "playedInLeague": true,
+            "playedForDraftingTeam": true,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 83,
+            "draftedPlayer": "Jonathan-Ismael Diaby",
+            "careerProfile": {
+              "id": "031ol",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 3,
+            "pickNumber": 98,
+            "draftedPlayer": "Linus Arnesson",
+            "careerProfile": {
+              "id": "031oh",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 4,
+            "pickNumber": 119,
+            "draftedPlayer": "David Pope",
+            "careerProfile": {
+              "id": "031pv",
+              "type": "player"
+            },
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
+            }
+          },
+          {
+            "round": 5,
+            "pickNumber": 149,
+            "draftedPlayer": "Mitch Wheaton",
+            "careerProfile": null,
+            "playedInLeague": false,
+            "playedForDraftingTeam": false,
+            "originalOwner": {
+              "id": "19",
+              "name": "Toronto Maple Leafs"
             }
           }
         ]

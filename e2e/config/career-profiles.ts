@@ -7,3 +7,14 @@ export const CAREER_POPUP_PROFILES = [
   CAREER_PROFILES[0],
   { id: '0457k', slug: 'jake-oettinger-0457k', kind: 'goalie', name: 'Jake Oettinger', list: 'goalies' },
 ] as const;
+
+export const CAREER_DRAFT_PROFILES = {
+  entry: {
+    player: { id: '0618g', kind: 'player', name: 'Cole Knuble' },
+    goalie: CAREER_POPUP_PROFILES[1],
+  },
+  opening: {
+    player: CAREER_PROFILES[0],
+    goalie: CAREER_PROFILES[1],
+  },
+} as const;

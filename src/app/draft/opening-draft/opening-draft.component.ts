@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -15,6 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { careerProfilePath } from '@shared/utils/career-profile-url.utils';
 import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 
 import { ApiService, DraftTeamRef, OpeningDraftPick, OpeningDraftTeamGroup } from '@services/api.service';
@@ -30,6 +32,7 @@ import { scheduleDraftTeamHeaderAlignment } from '../draft-keyboard-navigation.u
   selector: 'app-opening-draft',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterLink,
     MatExpansionModule,
     MatListModule,
     MatProgressBarModule,
@@ -56,6 +59,8 @@ export class OpeningDraftComponent implements OnInit {
   private readonly selectedTeamId = this.settingsService.selectedTeamIdSignal;
   private readonly disableSelectedTeamHighlight =
     this.settingsService.disableSelectedTeamHighlightSignal;
+
+  readonly careerProfilePath = careerProfilePath;
 
   groups: OpeningDraftTeamGroup[] = [];
   loading = true;

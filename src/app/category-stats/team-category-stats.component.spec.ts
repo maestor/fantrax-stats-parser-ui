@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/angular';
 import { MATERIAL_ANIMATIONS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -130,6 +131,7 @@ describe('TeamCategoryStatsComponent', () => {
     await render(TeamCategoryStatsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         { provide: MATERIAL_ANIMATIONS, useValue: { animationsDisabled: true } },
         { provide: ApiService, useValue: { getCategoryDashboard } },
         { provide: FooterVisibilityService, useValue: { currentCycle: () => 3, markReady } },
@@ -208,7 +210,7 @@ describe('TeamCategoryStatsComponent', () => {
     goalRow.focus();
     fireEvent.keyDown(goalRow, { key: 'Enter' });
     expect(goalRow).toHaveAttribute('aria-expanded', 'true');
-    expect(await screen.findByText('Colorado Avalanche Player')).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: 'Colorado Avalanche Player' })).toHaveAttribute('href', '/career/players/colorado-avalanche-player-1-player?from=category-stats');
     expect(document.querySelector('.expanded-season-primary')).toHaveTextContent('10');
     expect(screen.getByText('100 %')).toBeInTheDocument();
   });
@@ -226,7 +228,7 @@ describe('TeamCategoryStatsComponent', () => {
     const winsRow = document.querySelector<HTMLElement>('tr[data-row-key="wins"]')!;
     winsRow.focus();
     fireEvent.keyDown(winsRow, { key: 'Enter' });
-    expect(await screen.findByText('Colorado Avalanche Goalie')).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: 'Colorado Avalanche Goalie' })).toHaveAttribute('href', '/career/goalies/colorado-avalanche-goalie-1-goalie?from=category-stats');
   });
 
   it('reports unknown coverage and an unavailable team when the selected team has no dashboard row', async () => {

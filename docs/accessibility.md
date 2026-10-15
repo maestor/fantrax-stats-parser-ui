@@ -39,8 +39,9 @@ Notes:
 
 - Keyboard movement relies on focusing the next target and letting the nearest draft scroll region follow with `scrollIntoView()`
 - Team-header alignment now usually resolves inside the bounded accordion scroller instead of the whole page
-- Entry drafts use section- and season-level focus targets rather than tabbing through every summary value
-- Opening draft uses roving focus on pick rows so long pick lists stay keyboard-browsable without bloating the page tab order
+- Entry drafts use section- and season-level focus targets, followed by linked highest-pick and season-pick names
+- Opening draft focuses career links for matched picks and pick rows for names without career data
+- Draft name links stay outside the normal tab order; panel arrow navigation reaches them and native `Enter` follows the link, keeping long pick lists keyboard-browsable without bloating the page tab order
 
 ### Stats table keyboard navigation
 
@@ -139,7 +140,8 @@ Notes:
 
 ### Career profile navigation
 
-- Statistics popups provide a labeled FFHL-ura icon link to the career profile and a statistics-aware return path.
+- Statistics popups provide a labeled FFHL-ura icon link to the career profile. Popup, highlight, category-contributor, and draft links include their source so the profile back link returns to the originating page, including after a reload or navigation through trade assets. Career-list links keep their list return path.
+- Career highlights and category contributor names are native links to the matching skater or goalie career. Draft picks and highest-pick summaries link when the API supplies a career identity; unmatched names remain plain text.
 - Career-list names are native links supporting normal browser link actions. Roving row navigation remains available; `Enter` or `Space` opens a profile without adding a tab stop for every name link.
 - Returning from a profile restores the originating list's search, sort, virtual scroll, and row focus. Detail navigation focuses the player heading, and section-jump controls focus headings below the sticky navigation, scrolling smoothly unless reduced motion is requested.
 - Season/team tables have accessible names and labeled, keyboard-scrollable overflow regions. Consecutive repeated season labels are visually omitted; every row header retains its accessible season label.

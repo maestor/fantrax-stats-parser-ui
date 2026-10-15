@@ -66,6 +66,6 @@ When routes, pagination, filters, report types, or request parameters change:
 3. Recapture from the live backend and commit relevant fixtures with the change. Capture also resolves new season indices dynamically.
 4. Validate affected coverage in explicit CI fixture mode when possible, respecting port ownership above; report any gap.
 
-Career-profile fixtures can be refreshed with `npx tsx e2e/scripts/capture-fixtures.ts --career-profiles-only`. This captures the career lists, sample profiles/history, all their trade groups, linked career records from their first trades, and the popup-shortcut profile/direct-goalie source records from the local API.
+Career-profile fixtures can be refreshed with `npx tsx e2e/scripts/capture-fixtures.ts --career-profiles-only`. This captures the career lists, sample profiles/history, all their trade groups, linked career records from their first trades, the popup-shortcut profile/direct-goalie source records, and draft-link profiles with their trade details from the local API.
 
 Performance auditing is documented in [development](development.md#build-and-performance); it does not replace behavior/E2E coverage.

@@ -1,3 +1,4 @@
+@use '../styles/career-name-link';
 .mat-column-compare {
   max-width: 44px;
   width: 44px;
@@ -176,3 +177,5 @@ th.mat-column-__rowNumber {
     gap: 6px;
   }
 }
+
+@include career-name-link.styles;

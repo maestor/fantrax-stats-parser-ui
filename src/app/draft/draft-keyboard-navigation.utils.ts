@@ -167,6 +167,8 @@ export function handleDraftFocusTargetKeydown(
     return;
   }
 
+  if (event.defaultPrevented) return;
+
   const panelElement = target.closest('mat-expansion-panel');
   if (!panelElement) {
     return;

@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { TranslateTestingModule } from '@testing/translate-testing';
 import { of, throwError } from 'rxjs';
@@ -95,6 +96,26 @@ describe('CareerHighlightsComponent', () => {
     vi.unstubAllGlobals();
   });
 
+  it('links skater and goalie highlight names to readable career routes', async () => {
+    await render(CareerHighlightsComponent, {
+      imports: [TranslateTestingModule],
+      providers: [
+        provideRouter([]),
+        provideDisabledMaterialAnimations(),
+        { provide: ApiService, useValue: { getCareerHighlights: () => of({
+          ...mostTeamsPlayedHighlightsPage0Fixture,
+          items: [
+            { ...mostTeamsPlayedHighlightsPage0Fixture.items[0], id: 'skater', name: 'Test Skater', position: 'F' },
+            { ...mostTeamsPlayedHighlightsPage0Fixture.items[0], id: 'goalie', name: 'Test Goalie', position: 'G' },
+          ],
+        }) } },
+      ],
+    });
+    FakeIntersectionObserver.instances[0]?.trigger();
+    expect(await screen.findByRole('link', { name: 'F Test Skater' })).toHaveAttribute('href', '/career/players/test-skater-skater?from=career-highlights');
+    expect(screen.getByRole('link', { name: 'G Test Goalie' })).toHaveAttribute('href', '/career/goalies/test-goalie-goalie?from=career-highlights');
+  });
+
   it('renders grouped sections, lazy-loads cards on viewport entry, and applies tied ranks across paged career rows', async () => {
     const getCareerHighlights = vi.fn(
       (type: CareerHighlightType) => {
@@ -128,6 +149,7 @@ describe('CareerHighlightsComponent', () => {
     await render(CareerHighlightsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
         {
@@ -213,6 +235,7 @@ describe('CareerHighlightsComponent', () => {
     await render(CareerHighlightsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(), FooterVisibilityService,
         { provide: ApiService, useValue: { getCareerHighlights } },
       ],
@@ -274,6 +297,7 @@ describe('CareerHighlightsComponent', () => {
     const view = await render(CareerHighlightsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
         {
@@ -363,6 +387,7 @@ describe('CareerHighlightsComponent', () => {
     await render(CareerHighlightsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
         {
@@ -453,6 +478,7 @@ describe('CareerHighlightsComponent', () => {
     const view = await render(CareerHighlightsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
         {
@@ -539,6 +565,7 @@ describe('CareerHighlightsComponent', () => {
     const view = await render(CareerHighlightsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         FooterVisibilityService,
         {
