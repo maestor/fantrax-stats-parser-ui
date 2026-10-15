@@ -15,7 +15,7 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { CAREER_HIGHLIGHT_CARD_TYPES } from '../../src/app/career/highlights/career-highlights.constants';
-import { CAREER_POPUP_PROFILES, CAREER_PROFILES } from '../config/career-profiles';
+import { CAREER_DRAFT_PROFILES, CAREER_POPUP_PROFILES, CAREER_PROFILES } from '../config/career-profiles';
 import type { components } from '../../src/app/services/api.types.generated';
 
 const API_URL = 'http://localhost:3000';
@@ -135,7 +135,12 @@ async function buildFixtureList(): Promise<FixtureEntry[]> {
 
 async function buildCareerProfileFixtureList(): Promise<FixtureEntry[]> {
   const paths = new Set(['career/players', 'career/goalies', 'goalies/combined/regular']);
-  for (const profile of CAREER_PROFILES) {
+  const profiles = new Map([
+    ...CAREER_PROFILES,
+    ...CAREER_POPUP_PROFILES,
+    ...Object.values(CAREER_DRAFT_PROFILES).flatMap((profiles) => Object.values(profiles)),
+  ].map((profile) => [profile.id, profile]));
+  for (const profile of profiles.values()) {
     paths.add(`career/${profile.kind}/${profile.id}`);
     paths.add(`career/history/${profile.id}`);
     const history = await fetchJson<components['schemas']['CareerHistory']>(`career/history/${profile.id}`);
@@ -144,7 +149,7 @@ async function buildCareerProfileFixtureList(): Promise<FixtureEntry[]> {
       const path = `transactions/trades/${trade.tradeId}`;
       paths.add(path);
       // Cross-profile navigation uses the first trade's linked career records.
-      if (index !== 0) continue;
+      if (index !== 0 || !CAREER_PROFILES.some((primary) => primary.id === profile.id)) continue;
       const detail = await fetchJson<components['schemas']['TradeDetail']>(path);
       for (const asset of detail.blocks.flatMap((block) => block.assets)) {
         if (!asset.entityId || !asset.careerType) continue;
@@ -152,10 +157,6 @@ async function buildCareerProfileFixtureList(): Promise<FixtureEntry[]> {
         paths.add(`career/history/${asset.entityId}`);
       }
     }
-  }
-  for (const profile of CAREER_POPUP_PROFILES) {
-    paths.add(`career/${profile.kind}/${profile.id}`);
-    paths.add(`career/history/${profile.id}`);
   }
   return [...paths].map((path) => ({ path }));
 }

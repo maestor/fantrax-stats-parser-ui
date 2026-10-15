@@ -69,7 +69,7 @@ describe('AppComponent — mobile browse routes', { timeout: 60_000 }, () => {
     expect(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'draft.tabs.statistics' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'draft.tabs.entryDrafts' })).toBeInTheDocument();
-    expect(await screen.findByText(entryDraftsFixture[0].team.name)).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: entryDraftsFixture[0].team.name })).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.openingDraft' }));
     await vi.waitFor(() => {
@@ -79,7 +79,7 @@ describe('AppComponent — mobile browse routes', { timeout: 60_000 }, () => {
       await screen.findByRole('heading', { name: 'draft.tabs.openingDraft' }, { timeout: 5_000 })
     ).toBeInTheDocument();
     expect(
-      await screen.findByText(openingDraftsFixture[0].team.name, {}, { timeout: 5_000 })
+      await screen.findByRole('button', { name: openingDraftsFixture[0].team.name }, { timeout: 5_000 })
     ).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('tab', { name: 'draft.tabs.statistics' }));

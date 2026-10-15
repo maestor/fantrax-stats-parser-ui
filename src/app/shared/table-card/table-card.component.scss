@@ -1,3 +1,4 @@
+@use '../styles/career-name-link';
 @use '../../../styles/surface-patterns';
 
 :host {
@@ -178,3 +179,5 @@ mat-card-header {
     height: 2.65rem;
   }
 }
+
+@include career-name-link.styles;

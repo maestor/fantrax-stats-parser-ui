@@ -1,3 +1,4 @@
+import { provideRouter } from '@angular/router';
 import { PLATFORM_ID } from '@angular/core';
 import { fireEvent, render, screen, within } from '@testing-library/angular';
 import { TranslateTestingModule } from '@testing/translate-testing';
@@ -166,6 +167,7 @@ describe('EntryDraftsComponent', () => {
     return render(EntryDraftsComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         {
           provide: ApiService,
@@ -185,6 +187,22 @@ describe('EntryDraftsComponent', () => {
       ],
     });
   }
+
+  it('links picks and highest-pick names when a career identity is available', async () => {
+    const group = structuredClone(entryDraftGroupsFixture[0]);
+    group.summary.highestPick!.items[0].careerProfile = { id: 'provorov', type: 'player' };
+    group.seasons[0].picks[0].careerProfile = { id: 'pesce', type: 'player' };
+    const goalie = { ...group.seasons[0].picks[0], pickNumber: 117, draftedPlayer: 'Test Goalie', careerProfile: { id: 'goalie', type: 'goalie' as const } };
+    group.seasons[0].picks.push(goalie);
+    await renderComponent({ apiService: { getEntryDrafts: () => of([group]) } });
+    const header = await screen.findByRole('button', { name: 'Anaheim Ducks' });
+    if (header.getAttribute('aria-expanded') !== 'true') fireEvent.click(header);
+    expect((await screen.findByRole('link', { name: 'Ivan Provorov' })).parentElement?.textContent).toContain('2015 Ivan Provorov');
+    expect(screen.getByRole('link', { name: 'Ivan Provorov' })).toHaveAttribute('href', '/career/players/ivan-provorov-provorov?from=entry-drafts');
+    expect(screen.getByRole('link', { name: 'Brett Pesce' })).toHaveAttribute('href', '/career/players/brett-pesce-pesce?from=entry-drafts');
+    expect(screen.getByRole('link', { name: 'Test Goalie' })).toHaveAttribute('href', '/career/goalies/test-goalie-goalie?from=entry-drafts');
+    expect(screen.queryByRole('link', { name: 'Max Domi' })).not.toBeInTheDocument();
+  });
 
   it('opens the shared selected team by default when draft highlighting is enabled', async () => {
     localStorage.setItem('fantrax.settings', JSON.stringify({

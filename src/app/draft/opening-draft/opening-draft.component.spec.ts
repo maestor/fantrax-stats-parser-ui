@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/angular';
+import { provideRouter } from '@angular/router';
+import { render, screen, fireEvent, within } from '@testing-library/angular';
 import { Subject, of, throwError } from 'rxjs';
 import { TranslateTestingModule } from '@testing/translate-testing';
 import { PLATFORM_ID } from '@angular/core';
@@ -67,6 +68,7 @@ describe('OpeningDraftComponent', () => {
     return render(OpeningDraftComponent, {
       imports: [TranslateTestingModule],
       providers: [
+        provideRouter([]),
         provideDisabledMaterialAnimations(),
         {
           provide: ApiService,
@@ -86,6 +88,28 @@ describe('OpeningDraftComponent', () => {
       ],
     });
   }
+
+  it('links matched skater and goalie picks and keeps unknown careers as text', async () => {
+    seedCollapsedDrawerState();
+    const group = openingDraftsFixture[0];
+    await renderComponent({ apiService: { getOpeningDrafts: () => of([{ ...group, picks: [
+      { ...group.picks[0], pickNumber: 1, draftedPlayer: 'Test Skater', careerProfile: { id: 'skater', type: 'player' } },
+      { ...group.picks[0], pickNumber: 2, draftedPlayer: 'Test Goalie', careerProfile: { id: 'goalie', type: 'goalie' } },
+      { ...group.picks[0], pickNumber: 3, draftedPlayer: 'Prospect', careerProfile: null },
+    ] }]) } });
+    fireEvent.click(await screen.findByRole('button', { name: group.team.name }));
+    const skater = await screen.findByRole('link', { name: 'Test Skater' });
+    expect(skater).toHaveAttribute('href', '/career/players/test-skater-skater?from=opening-draft');
+    expect(screen.getByRole('link', { name: 'Test Goalie' })).toHaveAttribute('href', '/career/goalies/test-goalie-goalie?from=opening-draft');
+    expect(screen.getByText('Prospect')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Prospect' })).not.toBeInTheDocument();
+    skater.focus();
+    fireEvent.keyDown(skater, { key: 'ArrowDown' });
+    expect(screen.getByRole('link', { name: 'Test Goalie' })).toHaveFocus();
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' });
+    expect(screen.getByRole('button', { name: group.team.name })).toHaveFocus();
+    expect(screen.queryByRole('link', { name: 'Test Skater' })).not.toBeInTheDocument();
+  });
 
   it('opens the shared selected team by default when draft highlighting is enabled', async () => {
     localStorage.setItem('fantrax.settings', JSON.stringify({
@@ -152,20 +176,18 @@ describe('OpeningDraftComponent', () => {
     const { fixture } = await renderComponent({ footerVisibilityService });
 
     const panelButtons = await screen.findAllByRole('button', { expanded: false });
-    expect(panelButtons.map((button) => button.textContent?.trim())).toEqual([
-      'Colorado Avalanche',
-      'Dallas Stars',
-    ]);
+    expect(panelButtons.map((button) => button.textContent?.trim())).toEqual(openingDraftsFixture.map((group) => group.team.name));
 
     fireEvent.click(screen.getByRole('button', { name: 'Colorado Avalanche' }));
 
-    expect(screen.getAllByText(/draft\.openingDraft\.selectionLabel 1/)).toHaveLength(2);
-    expect(screen.getByText('Sidney Crosby')).toBeInTheDocument();
-    expect(screen.getByText('Corey Perry')).toBeInTheDocument();
-    expect(screen.getByText('Carey Price')).toBeInTheDocument();
-    expect(screen.getAllByText(/draft\.openingDraft\.originalOwnerLabel/)).toHaveLength(2);
-    expect(screen.getByText('Tampa Bay Lightning')).toBeInTheDocument();
-    expect(screen.getByText('Edmonton Oilers')).toBeInTheDocument();
+    const coloradoPanel = screen.getByRole('button', { name: 'Colorado Avalanche' }).closest('mat-expansion-panel')!;
+    const group = openingDraftsFixture[0];
+    expect(within(coloradoPanel as HTMLElement).getAllByRole('listitem')).toHaveLength(group.picks.length);
+    expect(within(coloradoPanel as HTMLElement).getByRole('link', { name: group.picks[0].draftedPlayer })).toHaveAttribute(
+      'href', expect.stringMatching(/^\/career\/(players|goalies)\//),
+    );
+    const tradedPick = group.picks.find((pick) => pick.originalOwner.id !== group.team.id)!;
+    expect(within(coloradoPanel as HTMLElement).getAllByText(tradedPick.originalOwner.name).length).toBeGreaterThan(0);
 
     expect(fixture.componentInstance.loading).toBe(false);
     expect(fixture.componentInstance.apiError).toBe(false);
@@ -183,7 +205,7 @@ describe('OpeningDraftComponent', () => {
     const firstPanel = container.querySelector('mat-expansion-panel');
     expect(firstPanel).not.toBeNull();
 
-    const pickRows = Array.from((firstPanel as HTMLElement).querySelectorAll<HTMLElement>('.draft-pick-item'));
+    const pickRows = Array.from((firstPanel as HTMLElement).querySelectorAll<HTMLElement>('.draft-focus-target'));
     expect(pickRows.length).toBeGreaterThan(1);
 
     const [firstPick, secondPick] = pickRows;
@@ -219,7 +241,7 @@ describe('OpeningDraftComponent', () => {
     const firstPanel = container.querySelector('mat-expansion-panel');
     expect(firstPanel).not.toBeNull();
 
-    const pickRows = Array.from((firstPanel as HTMLElement).querySelectorAll<HTMLElement>('.draft-pick-item'));
+    const pickRows = Array.from((firstPanel as HTMLElement).querySelectorAll<HTMLElement>('.draft-focus-target'));
     expect(pickRows.length).toBeGreaterThan(1);
 
     const [firstPick] = pickRows;
@@ -231,9 +253,9 @@ describe('OpeningDraftComponent', () => {
     expect(firstPick).toHaveFocus();
 
     fireEvent.keyDown(firstPick as HTMLElement, { key: 'PageDown' });
-    expect(lastPick).toHaveFocus();
+    expect(pickRows[5]).toHaveFocus();
 
-    fireEvent.keyDown(lastPick as HTMLElement, { key: 'PageUp' });
+    fireEvent.keyDown(pickRows[5], { key: 'PageUp' });
     expect(firstPick).toHaveFocus();
 
     fireEvent.keyDown(firstPick as HTMLElement, { key: 'ArrowUp' });
@@ -311,7 +333,7 @@ describe('OpeningDraftComponent', () => {
     await waitForBehaviorAssertion(fixture, () => {
       expect(fixture.componentInstance.loading).toBe(false);
       expect(fixture.componentInstance.groups).toEqual(openingDraftsFixture);
-      expect(screen.getByText('Colorado Avalanche')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Colorado Avalanche' })).toBeInTheDocument();
       expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
     });
     expect(footerVisibilityService.markReady).toHaveBeenCalledWith(7);

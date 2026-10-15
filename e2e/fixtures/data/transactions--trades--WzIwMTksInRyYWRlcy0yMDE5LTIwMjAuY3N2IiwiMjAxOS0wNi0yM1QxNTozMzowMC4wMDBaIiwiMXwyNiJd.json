@@ -1,0 +1,99 @@
+{
+  "id": "WzIwMTksInRyYWRlcy0yMDE5LTIwMjAuY3N2IiwiMjAxOS0wNi0yM1QxNTozMzowMC4wMDBaIiwiMXwyNiJd",
+  "season": 2019,
+  "date": "2019-06-23T15:33:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 80,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Tim Heed",
+          "rawName": "Tim Heed",
+          "entityId": "01zum",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "toTeam": {
+            "id": "26",
+            "name": "Pittsburgh Penguins"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "player",
+          "name": "Travis Hamonic",
+          "rawName": "Travis Hamonic",
+          "entityId": "01mjf",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "toTeam": {
+            "id": "26",
+            "name": "Pittsburgh Penguins"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 81,
+      "sourcePeriod": 1,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Jake Oettinger",
+          "rawName": "Jake Oettinger",
+          "entityId": "0457k",
+          "careerType": "goalie",
+          "position": "G",
+          "fromTeam": {
+            "id": "26",
+            "name": "Pittsburgh Penguins"
+          },
+          "toTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        },
+        {
+          "type": "draft_pick",
+          "name": "2021 Draft Pick, Round 5 (Pittsburgh Penguins)",
+          "rawName": "2021 Draft Pick, Round 5 (Pittsburgh Penguins)",
+          "entityId": null,
+          "careerType": null,
+          "position": null,
+          "fromTeam": {
+            "id": "26",
+            "name": "Pittsburgh Penguins"
+          },
+          "toTeam": {
+            "id": "1",
+            "name": "Colorado Avalanche"
+          },
+          "draftSeason": 2021,
+          "draftRound": 5,
+          "draftOriginalOwner": {
+            "id": "26",
+            "name": "Pittsburgh Penguins"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -126,7 +126,11 @@
               @for (detail of details; track detail.seasonLabel + ':' + $index) {
                 <div class="expanded-season-row"
                   [class.expanded-season-row--primary-center]="expandedHeaderLabels?.primaryAlign === 'center'">
+                  @if (detail.seasonLink) {
+                  <a class="expanded-season-label career-name-link" [routerLink]="detail.seasonLink" [queryParams]="detail.seasonLinkQueryParams">{{ detail.seasonLabel }}</a>
+                  } @else {
                   <span class="expanded-season-label">{{ detail.seasonLabel }}</span>
+                  }
                   <span class="expanded-season-primary">{{ detail.primary }}</span>
                   @if (detail.secondary) {
                     <span class="expanded-season-secondary">{{ detail.secondary }}</span>

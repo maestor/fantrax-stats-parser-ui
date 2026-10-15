@@ -100,9 +100,11 @@
                   }
                 </span>
                 }
-                <span class="primary-text">
-                  {{ row.primaryText }}
-                </span>
+                @if (row.primaryLink) {
+                <a class="primary-text career-name-link" [routerLink]="row.primaryLink" [queryParams]="row.primaryLinkQueryParams">{{ row.primaryText }}</a>
+                } @else {
+                <span class="primary-text">{{ row.primaryText }}</span>
+                }
               </div>
             </td>
             <td class="value-column">

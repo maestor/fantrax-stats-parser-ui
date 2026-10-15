@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ApiService, CategoryDashboardResponse, CategoryDashboardTeam } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
 import { TeamService } from '@services/team.service';
+import { careerProfilePath } from '@shared/utils/career-profile-url.utils';
 import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { Column } from '@shared/column.types';
 import { ExpandedRowViewModel } from '@shared/table-row-expansion.types';
@@ -32,7 +33,7 @@ type CategoryStatsRow = Record<string, string | number | null> & {
   rankChange: number | null;
   comparisonChange: number | null;
 };
-type Contributor = { name: string; value: number; share: number | null };
+type Contributor = { name: string; link: string; value: number; share: number | null };
 
 const SKATER_FIELDS: readonly CategoryKey[] = [
   'goals', 'assists', 'points', 'plusMinus', 'penalties', 'shots', 'ppp', 'shp', 'hits', 'blocks',
@@ -160,6 +161,8 @@ export class TeamCategoryStatsComponent implements OnInit {
     const category = row as unknown as CategoryStatsRow;
     const rows = this.contributionRows(category.key).map((contributor) => ({
       seasonLabel: contributor.name,
+      seasonLink: contributor.link,
+      seasonLinkQueryParams: { from: 'category-stats' },
       primary: this.formatCount(contributor.value),
       secondary: this.contributionShare(contributor),
     }));
@@ -247,10 +250,12 @@ export class TeamCategoryStatsComponent implements OnInit {
     const rows = SKATER_FIELDS.includes(key)
       ? team.players.map((player) => ({
           name: player.name,
+          link: careerProfilePath(player.name, player.id, 'player'),
           value: player[key as keyof typeof player] as number,
         }))
       : team.goalies.map((goalie) => ({
           name: goalie.name,
+          link: careerProfilePath(goalie.name, goalie.id, 'goalie'),
           value: goalie[key as keyof typeof goalie] as number,
         }));
     return rows

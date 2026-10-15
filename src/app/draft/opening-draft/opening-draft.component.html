@@ -37,7 +37,8 @@
               [attr.inert]="panel.expanded ? null : ''">
               <mat-list class="draft-pick-list" role="list">
                 @for (pick of group.picks; track pick.pickNumber; let pickIndex = $index) {
-                  <div class="draft-pick-item draft-focus-target" role="listitem" tabindex="-1" draftPanelFocusTarget>
+                  <div class="draft-pick-item"
+                    [class.draft-focus-target]="!pick.careerProfile" role="listitem" tabindex="-1" draftPanelFocusTarget>
                     <div class="draft-pick-row">
                       <span class="draft-pick-tag">
                         {{ 'draft.openingDraft.selectionLabel' | translate }} {{ pickIndex + 1 }}
@@ -48,7 +49,12 @@
                       <span class="draft-pick-tag">
                         {{ 'draft.openingDraft.turnLabel' | translate }} {{ pick.pickNumber }}
                       </span>
+                      @if (pick.careerProfile; as profile) {
+                      <a class="draft-pick-player career-name-link draft-focus-target" tabindex="-1" draftPanelFocusTarget
+                        [queryParams]="{ from: 'opening-draft' }" [routerLink]="careerProfilePath(pick.draftedPlayer, profile.id, profile.type)">{{ pick.draftedPlayer }}</a>
+                      } @else {
                       <span class="draft-pick-player">{{ pick.draftedPlayer }}</span>
+                      }
                       @if (isTradedPick(group.team, pick)) {
                         <span class="draft-pick-origin">
                           {{ 'draft.openingDraft.originalOwnerLabel' | translate }}

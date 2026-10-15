@@ -1,3 +1,4 @@
+@use '../../shared/styles/career-name-link';
 @use '../../../styles/surface-patterns';
 
 :where(.entry-drafts, .opening-draft) .draft-pick-list {
@@ -81,3 +82,5 @@
     grid-column: 1 / -1;
   }
 }
+
+@include career-name-link.styles;

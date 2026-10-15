@@ -1,3 +1,4 @@
+import { RouterLink } from '@angular/router';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -56,6 +57,7 @@ export type TableRow =
 @Component({
   selector: 'app-stats-table',
   imports: [
+    RouterLink,
     AsyncPipe,
     NgClass,
     ...TRANSLATE_IMPORTS,
