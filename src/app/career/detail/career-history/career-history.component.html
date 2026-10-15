@@ -8,7 +8,7 @@
       <button mat-stroked-button type="button" (click)="reload()">{{ 'career.profile.retry' | translate }}</button>
     </div>
   } @else if (state().data; as history) {
-    <p>{{ 'career.profile.historyNote' | translate }}</p>
+    <p class="history-note">{{ 'career.profile.historyNote' | translate }}</p>
     @for (group of groups(); track group.season) {
       <section
         class="history-season"
@@ -36,6 +36,9 @@
                       : 'career.profile.events.' + event.type
                     ) | translate
                   }}
+                  @if (event.type === 'draft' && event.draftType === 'entry') {
+                    {{ event.season }}
+                  }
                 </h5>
                 @if (event.date; as date) {
                   <time [attr.datetime]="date">{{ dateLabel(date) }}</time>
@@ -78,7 +81,7 @@
                     role="region"
                     [attr.aria-label]="'career.profile.tradeDetails' | translate"
                   >
-                    <app-career-trade [tradeId]="event.tradeId" />
+                    <app-career-trade [tradeId]="event.tradeId" [playerId]="id()" />
                   </div>
                 }
               } @else {

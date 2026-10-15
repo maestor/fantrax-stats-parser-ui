@@ -16,10 +16,12 @@
             {{ package.team.name }} {{ 'career.profile.received' | translate }}
           </h6>
           @if (package.assets.length) {
-            <ul class="assets">
+            <ul class="assets" role="list">
               @for (asset of package.assets; track $index) {
                 <li>
-                  @if (asset.entityId && asset.careerType) {
+                  @if (asset.entityId === playerId()) {
+                    <span>{{ asset.name }}</span>
+                  } @else if (asset.entityId && asset.careerType) {
                     <a
                       [routerLink]="[
                         asset.careerType === 'goalie' ? '/career/goalies' : '/career/players',
@@ -28,6 +30,11 @@
                       queryParamsHandling="preserve"
                       >{{ asset.name }}</a
                     >
+                  } @else if (asset.draftPick; as pick) {
+                    <span>{{ pick.year }} {{ 'career.profile.events.draft' | translate }} {{ pick.round }} (</span><abbr
+                      [title]="pick.ownerName"
+                      [attr.aria-label]="pick.ownerName"
+                    >{{ pick.ownerAbbr }}</abbr><span>)</span>
                   } @else {
                     <span>{{ asset.name }}</span>
                   }
