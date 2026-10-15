@@ -1,0 +1,57 @@
+<section id="draft-list" aria-labelledby="expansion-drafts-heading">
+  <h3 id="expansion-drafts-heading" class="sr-only" tabindex="-1" data-skip-focus="true">
+    {{ 'draft.tabs.expansionDrafts' | translate }}
+  </h3>
+  @if (loading()) {
+    <p class="status-surface" role="status">{{ 'draft.loading' | translate }}</p>
+  } @else if (apiError()) {
+    <div class="status-surface" role="alert">
+      <p>{{ 'draft.apiUnavailable' | translate }}</p>
+      <button mat-stroked-button type="button" (click)="reload()">{{ 'career.profile.retry' | translate }}</button>
+    </div>
+  } @else if (drafts().length === 0) {
+    <p class="status-surface" role="status">{{ 'draft.noResults' | translate }}</p>
+  } @else {
+    <div class="expansion-scroll">
+      @for (draft of drafts(); track draft.team.id) {
+        <section class="expansion-draft" [attr.aria-labelledby]="'expansion-' + draft.team.id">
+          <h4 [id]="'expansion-' + draft.team.id" class="expansion-heading">
+            {{ draft.team.name }} <span>{{ draft.season }}</span>
+          </h4>
+          <div class="position-groups">
+            @for (group of draft.positions; track group.position) {
+              <div class="position-group">
+                <h5 [id]="'position-' + draft.team.id + '-' + group.position">
+                  {{ 'draft.expansionDrafts.positions.' + group.position | translate }}
+                </h5>
+                <table [attr.aria-labelledby]="'expansion-' + draft.team.id + ' position-' + draft.team.id + '-' + group.position">
+                  <thead>
+                    <tr>
+                      <th scope="col">{{ 'draft.expansionDrafts.player' | translate }}</th>
+                      <th scope="col">{{ 'draft.expansionDrafts.sourceTeam' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (pick of group.picks; track pick.selectionNumber) {
+                      <tr>
+                        <th scope="row">
+                          @if (pick.careerProfile; as profile) {
+                            <a class="career-name-link" [routerLink]="careerProfilePath(pick.draftedPlayer, profile.id, profile.type)"
+                              [queryParams]="{ from: 'expansion-drafts' }">{{ pick.draftedPlayer }}</a>
+                          } @else {
+                            {{ pick.draftedPlayer }}
+                          }
+                        </th>
+                        <td>{{ pick.sourceTeam.name }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  }
+</section>

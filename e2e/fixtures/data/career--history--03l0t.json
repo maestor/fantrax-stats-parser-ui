@@ -1,0 +1,134 @@
+{
+  "id": "03l0t",
+  "coverage": {
+    "entryDraftSeasons": [
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "expansionDraftSeasons": [
+      2017,
+      2021
+    ],
+    "openingDraftPresent": true,
+    "claimSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "tradeSeasons": [
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "completeness": "unknown"
+  },
+  "events": [
+    {
+      "id": "expansion-2021-28-19",
+      "type": "expansion",
+      "season": 2021,
+      "date": null,
+      "fromTeam": {
+        "id": "19",
+        "name": "Toronto Maple Leafs"
+      },
+      "team": {
+        "id": "28",
+        "name": "Seattle Kraken"
+      }
+    },
+    {
+      "id": "trade-WzIwMTgsInRyYWRlcy0yMDE4LTIwMTkuY3N2IiwiMjAxOS0wMi0yNVQxODo0MjowMC4wMDBaIiwiMTl8MyJd",
+      "type": "trade",
+      "season": 2018,
+      "date": "2019-02-25T18:42:00.000Z",
+      "tradeId": "WzIwMTgsInRyYWRlcy0yMDE4LTIwMTkuY3N2IiwiMjAxOS0wMi0yNVQxODo0MjowMC4wMDBaIiwiMTl8MyJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "19",
+            "name": "Toronto Maple Leafs"
+          }
+        }
+      ]
+    },
+    {
+      "id": "trade-WzIwMTcsInRyYWRlcy0yMDE3LTIwMTguY3N2IiwiMjAxOC0wMS0wN1QxOTowODowMC4wMDBaIiwiMTZ8MyJd",
+      "type": "trade",
+      "season": 2017,
+      "date": "2018-01-07T19:08:00.000Z",
+      "tradeId": "WzIwMTcsInRyYWRlcy0yMDE3LTIwMTguY3N2IiwiMjAxOC0wMS0wN1QxOTowODowMC4wMDBaIiwiMTZ8MyJd",
+      "status": "reconstructed",
+      "movements": [
+        {
+          "fromTeam": {
+            "id": "16",
+            "name": "Tampa Bay Lightning"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          }
+        }
+      ]
+    },
+    {
+      "id": "draft-entry-2015-7",
+      "type": "draft",
+      "draftType": "entry",
+      "date": null,
+      "season": 2015,
+      "round": 1,
+      "pickNumber": 7,
+      "team": {
+        "id": "16",
+        "name": "Tampa Bay Lightning"
+      },
+      "originalOwner": {
+        "id": "7",
+        "name": "Edmonton Oilers"
+      }
+    }
+  ]
+}

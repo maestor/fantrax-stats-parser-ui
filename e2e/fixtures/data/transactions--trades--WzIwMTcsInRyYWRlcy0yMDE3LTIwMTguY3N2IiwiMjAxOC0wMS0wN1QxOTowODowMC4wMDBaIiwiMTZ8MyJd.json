@@ -1,0 +1,58 @@
+{
+  "id": "WzIwMTcsInRyYWRlcy0yMDE3LTIwMTguY3N2IiwiMjAxOC0wMS0wN1QxOTowODowMC4wMDBaIiwiMTZ8MyJd",
+  "season": 2017,
+  "date": "2018-01-07T19:08:00.000Z",
+  "status": "reconstructed",
+  "blocks": [
+    {
+      "sourceBlockIndex": 44,
+      "sourcePeriod": 97,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Matt Benning",
+          "rawName": "Matt Benning",
+          "entityId": "02ob1",
+          "careerType": "player",
+          "position": "D",
+          "fromTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "toTeam": {
+            "id": "16",
+            "name": "Tampa Bay Lightning"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    },
+    {
+      "sourceBlockIndex": 45,
+      "sourcePeriod": 97,
+      "assets": [
+        {
+          "type": "player",
+          "name": "Pavel Zacha",
+          "rawName": "Pavel Zacha",
+          "entityId": "03l0t",
+          "careerType": "player",
+          "position": "F",
+          "fromTeam": {
+            "id": "16",
+            "name": "Tampa Bay Lightning"
+          },
+          "toTeam": {
+            "id": "3",
+            "name": "Calgary Flames"
+          },
+          "draftSeason": null,
+          "draftRound": null,
+          "draftOriginalOwner": null
+        }
+      ]
+    }
+  ]
+}

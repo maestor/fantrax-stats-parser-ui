@@ -13,6 +13,10 @@ export const CAREER_DRAFT_PROFILES = {
     player: { id: '0618g', kind: 'player', name: 'Cole Knuble' },
     goalie: CAREER_POPUP_PROFILES[1],
   },
+  expansion: {
+    player: { id: '03l0t', kind: 'player', name: 'Pavel Zacha' },
+    goalie: { id: '02yjw', kind: 'goalie', name: 'Tristan Jarry' },
+  },
   opening: {
     player: CAREER_PROFILES[0],
     goalie: CAREER_PROFILES[1],

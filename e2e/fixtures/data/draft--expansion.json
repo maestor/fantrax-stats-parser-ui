@@ -1,0 +1,797 @@
+[
+  {
+    "season": 2021,
+    "team": {
+      "id": "28",
+      "name": "Seattle Kraken"
+    },
+    "picks": [
+      {
+        "selectionNumber": 1,
+        "draftedPlayer": "Pavel Zacha",
+        "position": "F",
+        "careerProfile": {
+          "id": "03l0t",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      },
+      {
+        "selectionNumber": 2,
+        "draftedPlayer": "Alexander Kerfoot",
+        "position": "F",
+        "careerProfile": {
+          "id": "02o8b",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      },
+      {
+        "selectionNumber": 3,
+        "draftedPlayer": "Jesperi Kotkaniemi",
+        "position": "F",
+        "careerProfile": {
+          "id": "04lc8",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      },
+      {
+        "selectionNumber": 4,
+        "draftedPlayer": "Jonathan Drouin",
+        "position": "F",
+        "careerProfile": {
+          "id": "02wy1",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        }
+      },
+      {
+        "selectionNumber": 5,
+        "draftedPlayer": "Mark Jankowski",
+        "position": "F",
+        "careerProfile": {
+          "id": "02noo",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        }
+      },
+      {
+        "selectionNumber": 6,
+        "draftedPlayer": "Connor Brown",
+        "position": "F",
+        "careerProfile": {
+          "id": "02oak",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      },
+      {
+        "selectionNumber": 7,
+        "draftedPlayer": "Adam Erne",
+        "position": "F",
+        "careerProfile": {
+          "id": "02wy8",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      },
+      {
+        "selectionNumber": 8,
+        "draftedPlayer": "Wayne Simmonds",
+        "position": "F",
+        "careerProfile": {
+          "id": "003tl",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      },
+      {
+        "selectionNumber": 9,
+        "draftedPlayer": "Jordan Martinook",
+        "position": "F",
+        "careerProfile": {
+          "id": "02npj",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      },
+      {
+        "selectionNumber": 10,
+        "draftedPlayer": "Sam Steel",
+        "position": "F",
+        "careerProfile": {
+          "id": "03mn4",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      },
+      {
+        "selectionNumber": 11,
+        "draftedPlayer": "Zach Hyman",
+        "position": "F",
+        "careerProfile": {
+          "id": "01ztp",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      },
+      {
+        "selectionNumber": 12,
+        "draftedPlayer": "Tanner Pearson",
+        "position": "F",
+        "careerProfile": {
+          "id": "02gmm",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      },
+      {
+        "selectionNumber": 21,
+        "draftedPlayer": "Remi Elie",
+        "position": "F",
+        "careerProfile": {
+          "id": "031o4",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      },
+      {
+        "selectionNumber": 22,
+        "draftedPlayer": "Ben Jones",
+        "position": "F",
+        "careerProfile": {
+          "id": "04f8b",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      },
+      {
+        "selectionNumber": 23,
+        "draftedPlayer": "Jakob Stukel",
+        "position": "F",
+        "careerProfile": {
+          "id": "042y6",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      },
+      {
+        "selectionNumber": 24,
+        "draftedPlayer": "Todd Burgess",
+        "position": "F",
+        "careerProfile": {
+          "id": "042wx",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      },
+      {
+        "selectionNumber": 25,
+        "draftedPlayer": "Nikita Scherbak",
+        "position": "F",
+        "careerProfile": {
+          "id": "03asd",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      },
+      {
+        "selectionNumber": 26,
+        "draftedPlayer": "Tyler Angle",
+        "position": "F",
+        "careerProfile": {
+          "id": "051wd",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      },
+      {
+        "selectionNumber": 13,
+        "draftedPlayer": "Logan Stanley",
+        "position": "D",
+        "careerProfile": {
+          "id": "042t2",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      },
+      {
+        "selectionNumber": 14,
+        "draftedPlayer": "Jonas Brodin",
+        "position": "D",
+        "careerProfile": {
+          "id": "02azg",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "18",
+          "name": "Boston Bruins"
+        }
+      },
+      {
+        "selectionNumber": 15,
+        "draftedPlayer": "Jacob Larsson",
+        "position": "D",
+        "careerProfile": {
+          "id": "03rai",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      },
+      {
+        "selectionNumber": 16,
+        "draftedPlayer": "Drew Doughty",
+        "position": "D",
+        "careerProfile": {
+          "id": "00qnu",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      },
+      {
+        "selectionNumber": 17,
+        "draftedPlayer": "Nikita Zaitsev",
+        "position": "D",
+        "careerProfile": {
+          "id": "03cvd",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      },
+      {
+        "selectionNumber": 18,
+        "draftedPlayer": "Brendan Guhle",
+        "position": "D",
+        "careerProfile": {
+          "id": "03rf4",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      },
+      {
+        "selectionNumber": 27,
+        "draftedPlayer": "Gabriel Carlsson",
+        "position": "D",
+        "careerProfile": {
+          "id": "03rak",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      },
+      {
+        "selectionNumber": 28,
+        "draftedPlayer": "Mason Geertsen",
+        "position": "D",
+        "careerProfile": {
+          "id": "031pf",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      },
+      {
+        "selectionNumber": 29,
+        "draftedPlayer": "Casey Fitzgerald",
+        "position": "D",
+        "careerProfile": {
+          "id": "03wok",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      },
+      {
+        "selectionNumber": 19,
+        "draftedPlayer": "Tristan Jarry",
+        "position": "G",
+        "careerProfile": {
+          "id": "02yjw",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "24",
+          "name": "New Jersey Devils"
+        }
+      },
+      {
+        "selectionNumber": 20,
+        "draftedPlayer": "Vitek Vanecek",
+        "position": "G",
+        "careerProfile": {
+          "id": "03eap",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      },
+      {
+        "selectionNumber": 30,
+        "draftedPlayer": "Artyom Zagidulin",
+        "position": "G",
+        "careerProfile": {
+          "id": "04a43",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "14",
+          "name": "Minnesota Wild"
+        }
+      }
+    ]
+  },
+  {
+    "season": 2017,
+    "team": {
+      "id": "32",
+      "name": "Vegas Golden Knights"
+    },
+    "picks": [
+      {
+        "selectionNumber": 3,
+        "draftedPlayer": "Austin Cangelosi",
+        "position": "F",
+        "careerProfile": {
+          "id": "03d06",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "3",
+          "name": "Calgary Flames"
+        }
+      },
+      {
+        "selectionNumber": 4,
+        "draftedPlayer": "Tyler Bird",
+        "position": "F",
+        "careerProfile": {
+          "id": "03ecv",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "27",
+          "name": "Columbus Blue Jackets"
+        }
+      },
+      {
+        "selectionNumber": 7,
+        "draftedPlayer": "Stephen Harper",
+        "position": "F",
+        "careerProfile": {
+          "id": "03c9a",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "7",
+          "name": "Edmonton Oilers"
+        }
+      },
+      {
+        "selectionNumber": 9,
+        "draftedPlayer": "Tim Gettinger",
+        "position": "F",
+        "careerProfile": {
+          "id": "042xu",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "19",
+          "name": "Toronto Maple Leafs"
+        }
+      },
+      {
+        "selectionNumber": 11,
+        "draftedPlayer": "Colton Sissons",
+        "position": "F",
+        "careerProfile": {
+          "id": "02npb",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "12",
+          "name": "Anaheim Ducks"
+        }
+      },
+      {
+        "selectionNumber": 12,
+        "draftedPlayer": "Nicholas Shore",
+        "position": "F",
+        "careerProfile": {
+          "id": "02fzo",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "18",
+          "name": "Boston Bruins"
+        }
+      },
+      {
+        "selectionNumber": 15,
+        "draftedPlayer": "Radek Faksa",
+        "position": "F",
+        "careerProfile": {
+          "id": "02noh",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "1",
+          "name": "Colorado Avalanche"
+        }
+      },
+      {
+        "selectionNumber": 16,
+        "draftedPlayer": "Rick Nash",
+        "position": "F",
+        "careerProfile": {
+          "id": "003mw",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "17",
+          "name": "Florida Panthers"
+        }
+      },
+      {
+        "selectionNumber": 18,
+        "draftedPlayer": "Michael Raffl",
+        "position": "F",
+        "careerProfile": {
+          "id": "030x6",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "14",
+          "name": "Minnesota Wild"
+        }
+      },
+      {
+        "selectionNumber": 20,
+        "draftedPlayer": "Sven Andrighetto",
+        "position": "F",
+        "careerProfile": {
+          "id": "02zri",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "10",
+          "name": "Nashville Predators"
+        }
+      },
+      {
+        "selectionNumber": 22,
+        "draftedPlayer": "Carl Hagelin",
+        "position": "F",
+        "careerProfile": {
+          "id": "01svj",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "23",
+          "name": "New York Islanders"
+        }
+      },
+      {
+        "selectionNumber": 24,
+        "draftedPlayer": "Lukas Sedlak",
+        "position": "F",
+        "careerProfile": {
+          "id": "02fmj",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "20",
+          "name": "Ottawa Senators"
+        }
+      },
+      {
+        "selectionNumber": 25,
+        "draftedPlayer": "Tyler Ennis",
+        "position": "F",
+        "careerProfile": {
+          "id": "015j5",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "22",
+          "name": "Philadelphia Flyers"
+        }
+      },
+      {
+        "selectionNumber": 26,
+        "draftedPlayer": "Cody Eakin",
+        "position": "F",
+        "careerProfile": {
+          "id": "01nrm",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "26",
+          "name": "Pittsburgh Penguins"
+        }
+      },
+      {
+        "selectionNumber": 27,
+        "draftedPlayer": "Tomas Plekanec",
+        "position": "F",
+        "careerProfile": {
+          "id": "003vy",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "8",
+          "name": "San Jose Sharks"
+        }
+      },
+      {
+        "selectionNumber": 29,
+        "draftedPlayer": "Gabriel Dumont",
+        "position": "F",
+        "careerProfile": {
+          "id": "01n8e",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "4",
+          "name": "Vancouver Canucks"
+        }
+      },
+      {
+        "selectionNumber": 1,
+        "draftedPlayer": "Dmitry Korobov",
+        "position": "D",
+        "careerProfile": {
+          "id": "02qsf",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "31",
+          "name": "Utah Mammoth"
+        }
+      },
+      {
+        "selectionNumber": 2,
+        "draftedPlayer": "Juuso Hietanen",
+        "position": "D",
+        "careerProfile": null,
+        "sourceTeam": {
+          "id": "2",
+          "name": "Carolina Hurricanes"
+        }
+      },
+      {
+        "selectionNumber": 10,
+        "draftedPlayer": "Chris Martenet",
+        "position": "D",
+        "careerProfile": {
+          "id": "03rg9",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "30",
+          "name": "Winnipeg Jets"
+        }
+      },
+      {
+        "selectionNumber": 13,
+        "draftedPlayer": "Nick Leddy",
+        "position": "D",
+        "careerProfile": {
+          "id": "01etq",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "21",
+          "name": "Buffalo Sabres"
+        }
+      },
+      {
+        "selectionNumber": 14,
+        "draftedPlayer": "Christian Folin",
+        "position": "D",
+        "careerProfile": {
+          "id": "0310p",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "13",
+          "name": "Chicago Blackhawks"
+        }
+      },
+      {
+        "selectionNumber": 17,
+        "draftedPlayer": "Dmitry Kulikov",
+        "position": "D",
+        "careerProfile": {
+          "id": "01f3l",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "11",
+          "name": "Los Angeles Kings"
+        }
+      },
+      {
+        "selectionNumber": 19,
+        "draftedPlayer": "Alexander Edler",
+        "position": "D",
+        "careerProfile": {
+          "id": "004ax",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "5",
+          "name": "Montreal Canadiens"
+        }
+      },
+      {
+        "selectionNumber": 21,
+        "draftedPlayer": "Mattias Ekholm",
+        "position": "D",
+        "careerProfile": {
+          "id": "024lv",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "24",
+          "name": "New Jersey Devils"
+        }
+      },
+      {
+        "selectionNumber": 30,
+        "draftedPlayer": "Connor Carrick",
+        "position": "D",
+        "careerProfile": {
+          "id": "02o7y",
+          "type": "player"
+        },
+        "sourceTeam": {
+          "id": "25",
+          "name": "Washington Capitals"
+        }
+      },
+      {
+        "selectionNumber": 5,
+        "draftedPlayer": "C.J. Motte",
+        "position": "G",
+        "careerProfile": {
+          "id": "03ai8",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "29",
+          "name": "Dallas Stars"
+        }
+      },
+      {
+        "selectionNumber": 6,
+        "draftedPlayer": "Eetu Laurikainen",
+        "position": "G",
+        "careerProfile": {
+          "id": "03afd",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "6",
+          "name": "Detroit Red Wings"
+        }
+      },
+      {
+        "selectionNumber": 8,
+        "draftedPlayer": "Harri Sateri",
+        "position": "G",
+        "careerProfile": {
+          "id": "01g60",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "16",
+          "name": "Tampa Bay Lightning"
+        }
+      },
+      {
+        "selectionNumber": 23,
+        "draftedPlayer": "Jonathan Quick",
+        "position": "G",
+        "careerProfile": {
+          "id": "003tj",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "9",
+          "name": "New York Rangers"
+        }
+      },
+      {
+        "selectionNumber": 28,
+        "draftedPlayer": "Joonas Korpisalo",
+        "position": "G",
+        "careerProfile": {
+          "id": "02npn",
+          "type": "goalie"
+        },
+        "sourceTeam": {
+          "id": "15",
+          "name": "St. Louis Blues"
+        }
+      }
+    ]
+  }
+]

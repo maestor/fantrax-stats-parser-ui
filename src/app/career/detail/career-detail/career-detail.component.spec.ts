@@ -140,6 +140,7 @@ const historyFixture: components['schemas']['CareerHistory'] = {
   id: 'p1',
   coverage: {
     entryDraftSeasons: [2023],
+    expansionDraftSeasons: [],
     openingDraftPresent: false,
     claimSeasons: [],
     tradeSeasons: [2024],
@@ -410,6 +411,7 @@ describe('Career profile', () => {
       ['category-stats', '/category-stats', 'backCategoryStats'],
       ['entry-drafts', '/draft/entry-drafts', 'backEntryDrafts'],
       ['opening-draft', '/draft/opening-draft', 'backOpeningDraft'],
+      ['expansion-drafts', '/draft/expansion-drafts', 'backExpansionDrafts'],
     ]) {
       await router.navigateByUrl(`/career/players/p1?from=${source}`);
       await waitFor(() => expect(router.url).toBe(`/career/players/career-player-p1?from=${source}`));

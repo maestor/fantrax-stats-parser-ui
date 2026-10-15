@@ -116,6 +116,7 @@
       "backHighlights": "Takaisin uranostoihin",
       "backCategoryStats": "Takaisin kategoriatilastoihin",
       "backEntryDrafts": "Takaisin entry drafteihin",
+      "backExpansionDrafts": "Takaisin laajennusdrafteihin",
       "backOpeningDraft": "Takaisin avausdraftiin",
       "copyLink": "Kopioi linkki leikepöydälle",
       "copied": "Linkki kopioitu!",
@@ -148,11 +149,12 @@
       "goalieRatesNote": "GAA ja torjuntaprosentti näytetään vain alkuperäisillä kausi- ja joukkueriveillä. Uralla tai joukkueittain yhdistettyjä arvoja ei lasketa näistä keskiarvoista.",
       "historyLoading": "Ladataan historiaa…",
       "historyFailed": "Historian lataaminen epäonnistui. Uratilastot ovat edelleen käytettävissä.",
-      "historyNote": "Pelaajan siirtohistoria (varaus, kaupat, nostot, pudotukset).\nHUOM! Varsinkin kaupoissa voi esiintyä puutteita. Esim. kauppojen ehdollisuuksia ei saada mitenkään kaupan yhteyteen.",
+      "historyNote": "Pelaajan siirtohistoria (varaus, laajennusdrafti, kaupat, nostot, pudotukset).\nHUOM! Varsinkin kaupoissa voi esiintyä puutteita. Esim. kauppojen ehdollisuuksia ei saada mitenkään kaupan yhteyteen.",
       "openingDraft": "Avausdrafti",
       "noHistory": "Pelaajalle ei löytynyt linkitettyjä tapahtumia tallennetusta historiasta.",
       "events": {
         "draft": "Entry draft",
+        "expansion": "Laajennusdrafti",
         "claim": "Nosto",
         "drop": "Pudotus",
         "trade": "Kauppa"
@@ -171,7 +173,17 @@
     "tabs": {
       "entryDrafts": "Entry draftit",
       "openingDraft": "Avausdrafti",
+      "expansionDrafts": "Laajennusdraftit",
       "statistics": "Tilastot"
+    },
+    "expansionDrafts": {
+      "sourceTeam": "Joukkueesta",
+      "player": "Pelaaja",
+      "positions": {
+        "F": "Hyökkääjät",
+        "D": "Puolustajat",
+        "G": "Maalivahdit"
+      }
     },
     "settings": {
       "disableSelectedTeamHighlight": "Poista valitun joukkueen korostus"

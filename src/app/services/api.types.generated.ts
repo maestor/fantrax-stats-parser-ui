@@ -351,6 +351,52 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/draft/expansion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Expansion draft selections
+         * @description Returns imported expansion drafts newest season first. Career links require existing player or goalie statistics, including zero-game rows.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Expansion drafts with source teams and linked careers. */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExpansionDraftGroup"][];
+                    };
+                };
+                /** @description Missing or invalid API key. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/draft/original": {
         parameters: {
             query?: never;
@@ -1631,6 +1677,22 @@ export interface components {
             team: components["schemas"]["DraftTeamRef"];
             picks: components["schemas"]["OpeningDraftPick"][];
         };
+        ExpansionDraftPick: {
+            /** @description Source display order, not a draft ranking. */
+            selectionNumber: number;
+            draftedPlayer: string;
+            /** @enum {string} */
+            position: "F" | "D" | "G";
+            sourceTeam: components["schemas"]["DraftTeamRef"];
+            careerProfile: components["schemas"]["DraftCareerProfile"];
+        };
+        ExpansionDraftGroup: {
+            /** @description Expansion team's first season starting year. */
+            season: number;
+            team: components["schemas"]["DraftTeamRef"];
+            /** @description Forwards, defensemen, then goalies; source order within each position. */
+            picks: components["schemas"]["ExpansionDraftPick"][];
+        };
         EntryDraftSeasonGroup: {
             /** @example 2025 */
             season: number;
@@ -1804,6 +1866,7 @@ export interface components {
         };
         /** @description Seasons containing stored records, not a completed-import manifest. Empty imports and missing imports cannot be distinguished; completeness is unknown. */
         HistoryCoverage: {
+            expansionDraftSeasons: number[];
             entryDraftSeasons: number[];
             openingDraftPresent: boolean;
             claimSeasons: number[];
@@ -1825,6 +1888,16 @@ export interface components {
             pickNumber: number;
             team: components["schemas"]["HistoryTeam"];
             originalOwner: components["schemas"]["HistoryTeam"];
+        };
+        ExpansionHistoryEvent: {
+            id: string;
+            /** @enum {string} */
+            type: "expansion";
+            season: number;
+            /** @description No exact expansion draft date is stored; always null. */
+            date: string | null;
+            fromTeam: components["schemas"]["HistoryTeam"];
+            team: components["schemas"]["HistoryTeam"];
         };
         ClaimHistoryEvent: {
             id: string;
@@ -1851,8 +1924,8 @@ export interface components {
         CareerHistory: {
             id: string;
             coverage: components["schemas"]["HistoryCoverage"];
-            /** @description Newest season first, then newest dated event; undated drafts follow dated events within a season. Opening draft records appear last. Equal timestamps use deterministic source identity order, not a claimed temporal order. */
-            events: (components["schemas"]["DraftHistoryEvent"] | components["schemas"]["ClaimHistoryEvent"] | components["schemas"]["TradeHistoryEvent"])[];
+            /** @description Newest season first, then newest dated event; undated drafts follow dated events within a season, with expansion selections at the bottom of their season. Opening draft records appear last. Equal timestamps use deterministic source identity order, not a claimed temporal order. */
+            events: (components["schemas"]["DraftHistoryEvent"] | components["schemas"]["ExpansionHistoryEvent"] | components["schemas"]["ClaimHistoryEvent"] | components["schemas"]["TradeHistoryEvent"])[];
         };
         /**
          * @description Reconstructed means exactly two opposing source blocks with matching period within one source-file/season/timestamp/participant group. This is an inference, not a provider-confirmed deal ID. Extra blocks or different periods are ambiguous; missing opposing directions are incomplete.

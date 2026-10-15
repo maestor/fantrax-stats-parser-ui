@@ -127,7 +127,7 @@ async function expectOpeningDraftContent(page: Page) {
 }
 
 test.describe('Draft pages', () => {
-  test('global nav reaches /draft, /draft redirects to entry drafts, and tabs switch between all three views', async ({ page }) => {
+  test('global nav reaches /draft, /draft redirects to entry drafts, and tabs switch between draft views', async ({ page }) => {
     await page.goto('/leaderboards/regular');
 
     await page.getByRole('button', { name: fi('a11y.openNavMenu') }).last().click();

@@ -14,6 +14,7 @@ export class DraftComponent {
   readonly tabs = [
     { label: 'draft.tabs.entryDrafts', path: '/draft/entry-drafts' },
     { label: 'draft.tabs.openingDraft', path: '/draft/opening-draft' },
+    { label: 'draft.tabs.expansionDrafts', path: '/draft/expansion-drafts' },
     { label: 'draft.tabs.statistics', path: '/draft/statistics' },
   ];
 }

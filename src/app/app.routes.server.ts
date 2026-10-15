@@ -46,6 +46,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
   },
   {
+    path: 'draft/expansion-drafts',
+    renderMode: RenderMode.Prerender,
+  },
+  {
     path: 'draft/statistics',
     renderMode: RenderMode.Prerender,
   },

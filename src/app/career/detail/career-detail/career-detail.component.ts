@@ -68,6 +68,7 @@ export class CareerDetailComponent {
       { source: 'career-highlights', path: '/career/highlights', labelKey: 'career.profile.backHighlights' },
       { source: 'category-stats', path: '/category-stats', labelKey: 'career.profile.backCategoryStats' },
       { source: 'entry-drafts', path: '/draft/entry-drafts', labelKey: 'career.profile.backEntryDrafts' },
+      { source: 'expansion-drafts', path: '/draft/expansion-drafts', labelKey: 'career.profile.backExpansionDrafts' },
       { source: 'opening-draft', path: '/draft/opening-draft', labelKey: 'career.profile.backOpeningDraft' },
     ];
     const returnLink = returnLinks.find((link) => link.source === source);

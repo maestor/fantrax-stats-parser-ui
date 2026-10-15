@@ -50,6 +50,7 @@ const ALLOWED_PATH_PATTERNS = [
   ),
   /^draft\/original$/,
   /^draft\/entry$/,
+  /^draft\/expansion$/,
 ];
 
 function toOrigin(value) {

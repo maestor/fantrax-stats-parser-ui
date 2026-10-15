@@ -17,6 +17,10 @@
       2025,
       2026
     ],
+    "expansionDraftSeasons": [
+      2017,
+      2021
+    ],
     "openingDraftPresent": true,
     "claimSeasons": [
       2012,
@@ -56,7 +60,7 @@
   },
   "events": [
     {
-      "id": "claim-WyJjbGFpbXMtMjAyNi0yMDI3LmNzdiIsMzgyLDFd",
+      "id": "claim-WyJjbGFpbXMtMjAyNi0yMDI3LmNzdiIsNDY2LDFd",
       "type": "drop",
       "date": "2026-04-18T18:40:00.000Z",
       "season": 2026,
@@ -86,7 +90,7 @@
       ]
     },
     {
-      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMTE4LDBd",
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMjA5LDBd",
       "type": "claim",
       "date": "2025-12-17T18:11:00.000Z",
       "season": 2025,
@@ -96,7 +100,7 @@
       }
     },
     {
-      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMTQxLDFd",
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMjMyLDFd",
       "type": "drop",
       "date": "2025-11-30T06:54:00.000Z",
       "season": 2025,
@@ -106,7 +110,7 @@
       }
     },
     {
-      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMzA3LDBd",
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsMzk4LDBd",
       "type": "claim",
       "date": "2025-09-08T09:05:00.000Z",
       "season": 2025,
@@ -116,7 +120,7 @@
       }
     },
     {
-      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsNjcxLDBd",
+      "id": "claim-WyJjbGFpbXMtMjAyNS0yMDI2LmNzdiIsNzYyLDBd",
       "type": "drop",
       "date": "2025-06-29T12:11:00.000Z",
       "season": 2025,

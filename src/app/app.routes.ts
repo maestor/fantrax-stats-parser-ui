@@ -192,6 +192,16 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'expansion-drafts',
+        data: {
+          seo: { tabKey: 'draft.tabs.expansionDrafts' } satisfies RouteSeoData,
+        },
+        loadComponent: () =>
+          import('./draft/expansion-drafts/expansion-drafts.component').then(
+            (m) => m.ExpansionDraftsComponent
+          ),
+      },
+      {
         path: 'statistics',
         data: {
           seo: {
