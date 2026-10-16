@@ -9,7 +9,7 @@ Use `intelligence-testing` to choose realistic behavior coverage, then apply the
 | `npm test` | Angular Vitest/jsdom tests, once |
 | `npm run test:watch` | Watch component/service tests |
 | `npm run test:coverage` | Istanbul coverage through Angular's unit-test builder |
-| `npm run test:proxy` | Vercel proxy forwarding and path/method restrictions |
+| `npm run test:proxy` | Vercel API handlers: proxy restrictions and career-page sharing metadata |
 | `npm run e2e` | Full Chromium Playwright suite |
 | `npx playwright test e2e/specs/<spec>.ts` | Relevant E2E spec while iterating |
 | `npm run e2e:capture-fixtures` | Capture API responses from local backend |

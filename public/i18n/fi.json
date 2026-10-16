@@ -1,7 +1,9 @@
 {
   "pageTitle": "FFHL tilastopalvelu",
   "seo": {
-    "description": "FFHL-fantasyliigan tilastoja Fantraxista kaivettuna kootusti ja helppokäyttöisesti."
+    "description": "FFHL-fantasyliigan tilastoja Fantraxista kaivettuna kootusti ja helppokäyttöisesti.",
+    "careerTitle": "FFHL-ura - {{name}} ({{position}})",
+    "careerDescription": "Uratilastot ja siirtohistoria FFHL:ssä pelaajasta {{name}} ({{position}})"
   },
   "link": {
     "playerStats": "Kenttäpelaajat",

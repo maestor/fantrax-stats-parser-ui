@@ -16,7 +16,7 @@
     "test": "ng test --watch=false",
     "test:watch": "ng test",
     "test:coverage": "ng test --coverage --watch=false",
-    "test:proxy": "vitest run api/proxy.spec.js",
+    "test:proxy": "vitest run api/*.spec.js",
     "lint": "eslint src --ext .ts --ignore-pattern '*.spec.ts'",
     "verify": "npm run lint && npm run test:proxy && npm run test:coverage && npm run build",
     "e2e": "playwright test",
