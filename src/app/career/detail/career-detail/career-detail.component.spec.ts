@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/angular';
 import { of, Subject, throwError } from 'rxjs';
 import { AppComponent } from '../../../app.component';
@@ -201,6 +202,45 @@ describe('Career profile', () => {
       ],
     });
   }
+
+  it.each([
+    { list: 'players', position: 'F', name: 'Artturi Lehkonen' },
+    { list: 'players', position: 'D', name: 'Miro Heiskanen' },
+    { list: 'goalies', position: 'G', name: 'Mitchell Gibson' },
+  ])('keeps document and social metadata specific to the loaded $position career', async ({ list, position, name }) => {
+    const pending = new Subject<components['schemas']['CareerPlayerProfile']>();
+    await setup({
+      [list === 'goalies' ? 'getCareerGoalie' : 'getCareerPlayer']: (id: string) =>
+        id === 'next' ? pending : of({ id: 'p1', name, position }),
+    });
+    TestBed.inject(TranslateService).setTranslation('fi', {
+      seo: {
+        careerTitle: 'FFHL-ura - {{name}} ({{position}})',
+        careerDescription: 'Uratilastot ja siirtohistoria FFHL:ssä pelaajasta {{name}} ({{position}})',
+      },
+    }, true);
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl(`/career/${list}/p1?from=career-highlights`);
+    const title = `FFHL-ura - ${name} (${position})`;
+    const description = `Uratilastot ja siirtohistoria FFHL:ssä pelaajasta ${name} (${position})`;
+    await waitFor(() => expect(document.title).toBe(title));
+    for (const tag of ['og:title', 'twitter:title']) {
+      expect(document.head.querySelector(`meta[property="${tag}"], meta[name="${tag}"]`)).toHaveAttribute('content', title);
+    }
+    for (const tag of ['description', 'og:description', 'twitter:description']) {
+      expect(document.head.querySelector(`meta[property="${tag}"], meta[name="${tag}"]`)).toHaveAttribute('content', description);
+    }
+    await router.navigateByUrl(`${router.url.split('?')[0]}?from=entry-drafts`);
+    await waitFor(() => expect(document.title).toBe(title));
+    await router.navigateByUrl(`/career/${list}/next`);
+    await screen.findByText('career.profile.loading');
+    expect(document.title).not.toContain(name);
+    pending.error(new ApiRequestError(404));
+    await screen.findByText('career.profile.notFound');
+    expect(document.title).not.toContain(name);
+    await router.navigateByUrl('/career/highlights');
+    await waitFor(() => expect(document.title).toBe('pageTitle | nav.playerCareers | career.tabs.highlights'));
+  });
 
   it.each([
     { kind: 'player', list: 'players', id: '02npi', name: 'Alex Mallet', position: 'F' },

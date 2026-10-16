@@ -3,7 +3,7 @@ import { DestroyRef, Injectable, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { filter, map, merge, of, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, map, merge, switchMap } from 'rxjs';
 
 import {
   buildPageTitle,
@@ -28,41 +28,58 @@ export class SeoService {
   private readonly router = inject(Router);
   private readonly translateService = inject(TranslateService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly careerProfile = new BehaviorSubject<{
+    path: string;
+    name: string;
+    position: string;
+  } | null>(null);
 
   constructor() {
     merge(
-      of(null),
       this.router.events.pipe(
         filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       ),
       this.translateService.onLangChange.pipe(map(() => null)),
+      this.careerProfile,
     )
       .pipe(
         switchMap(() => {
           const routeSeo = resolveActiveRouteSeo(this.router.routerState.snapshot.root);
+          const profile = this.careerProfile.value;
+          const career = profile?.path === normalizeSeoPath(this.router.url) ? profile : null;
+          const keys = buildSeoTranslationKeys(routeSeo);
+          if (career) keys.push('seo.careerTitle', 'seo.careerDescription');
 
-          return this.translateService.get(buildSeoTranslationKeys(routeSeo)).pipe(
+          return this.translateService.get(keys, career ?? undefined).pipe(
             map((translations) => ({
               routeSeo,
               translations: translations as SeoTranslations,
+              career,
             })),
           );
         }),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(({ routeSeo, translations }) => {
-        this.applySeo(routeSeo, translations);
+      .subscribe(({ routeSeo, translations, career }) => {
+        this.applySeo(routeSeo, translations, Boolean(career));
       });
   }
 
-  private applySeo(routeSeo: RouteSeoData, translations: SeoTranslations): void {
+  setCareerProfile(profile: { name: string; position: string } | null): void {
+    this.careerProfile.next(profile ? {
+      ...profile,
+      path: normalizeSeoPath(this.router.url),
+    } : null);
+  }
+
+  private applySeo(routeSeo: RouteSeoData, translations: SeoTranslations, isCareer: boolean): void {
     const siteTitle = translations['pageTitle']!;
-    const description = translations['seo.description']!;
+    const description = translations[isCareer ? 'seo.careerDescription' : 'seo.description']!;
     const sectionName = routeSeo.sectionKey ? translations[routeSeo.sectionKey]! : null;
     const tabName = routeSeo.tabKey ? translations[routeSeo.tabKey]! : null;
     const canonicalUrl = this.absoluteUrlFor(normalizeSeoPath(this.router.url));
     const socialImageUrl = this.absoluteUrlFor(DEFAULT_SOCIAL_IMAGE_PATH);
-    const title = buildPageTitle(siteTitle, sectionName, tabName);
+    const title = isCareer ? translations['seo.careerTitle']! : buildPageTitle(siteTitle, sectionName, tabName);
     const lang = this.translateService.getCurrentLang() || 'fi';
 
     this.document.title = title;

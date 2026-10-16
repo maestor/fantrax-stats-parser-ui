@@ -54,7 +54,9 @@ When adding/renaming a public route, update:
 - `src/app/app.routes.server.ts`: prerender eligibility for fixed public routes; dynamic player/goalie cards remain client-rendered.
 - `public/sitemap.xml`: crawlable routes; `public/robots.txt` for crawler policy.
 
-`SeoService` updates metadata after navigation/language changes. `/` uses `FFHL tilastopalvelu`; other titles append translated section/tab names. `src/index.html` supplies fallback social metadata. Prerendering uses `ServerTranslateLoader` with bundled Finnish translations and skips live API requests; browser hydration fetches stats.
+`SeoService` updates metadata after navigation/language changes. `/` uses `FFHL tilastopalvelu`; section titles append translated section/tab names. Loaded career profiles use `FFHL-ura - <name> (<position>)` and a player-specific description for document, Open Graph, and Twitter metadata. `src/index.html` supplies fallback social metadata. Prerendering uses `ServerTranslateLoader` with bundled Finnish translations and skips live API requests; browser hydration fetches stats.
+
+Career-profile requests on Vercel are rewritten to [api/career-page.js](../api/career-page.js), which injects metadata into the built `index.csr.html` before returning it. This lets sharing crawlers read the player name and position without running JavaScript. The handler uses the existing server-only `API_URL` / `API_KEY`; `vercel.json` bundles the shell with the function. Finnish career metadata templates live in `public/i18n/fi.json` and are shared with the browser. Canonical and Open Graph URLs use the API name and ID, excluding browse query parameters. Successful HTML responses cache at the CDN for an hour; API failures return an uncached app shell, and missing profiles return a non-indexable 404 shell. The Angular dev server does not run this Vercel handler.
 
 ## Local tooling
 

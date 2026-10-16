@@ -18,6 +18,7 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { combineLatest, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { ApiService, CareerGoalieProfile, CareerPlayerProfile } from '@services/api.service';
 import { FooterVisibilityService } from '@services/footer-visibility.service';
+import { SeoService } from '@services/seo.service';
 import { TRANSLATE_IMPORTS } from '@shared/translate/translate-imports';
 import { SectionJumpNavComponent } from '@shared/section-jump-nav/section-jump-nav.component';
 import { formatSeasonDisplay } from '@shared/utils/season.utils';
@@ -48,6 +49,7 @@ export class CareerDetailComponent {
   private readonly router = inject(Router);
   private readonly document = inject(DOCUMENT);
   private readonly footer = inject(FooterVisibilityService);
+  private readonly seo = inject(SeoService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly heading = viewChild<ElementRef<HTMLElement>>('heading');
   private readonly copyTooltip = viewChild<MatTooltip>('copyTooltip');
@@ -122,14 +124,17 @@ export class CareerDetailComponent {
 
   constructor() {
     this.destroyRef.onDestroy(() => this.resetCopyFeedback());
+    this.destroyRef.onDestroy(() => this.seo.setCareerProfile(null));
     afterRenderEffect(() => {
+      const slug = this.slug();
+      const career = this.state().data;
+      this.seo.setCareerProfile(career ? { name: career.name, position: this.position() } : null);
       const identity = this.requestedId();
       if (identity && identity !== this.focusedIdentity) {
         this.focusedIdentity = identity;
         this.heading()?.nativeElement.focus();
       }
-      const career = this.state().data;
-      if (career && this.slug() !== careerProfileSlug(career.name, career.id)) {
+      if (career && slug !== careerProfileSlug(career.name, career.id)) {
         void this.router.navigate([this.listPath, careerProfileSlug(career.name, career.id)], {
           replaceUrl: true,
           queryParamsHandling: 'preserve',

@@ -1,5 +1,14 @@
 {
+  "functions": {
+    "api/career-page.js": {
+      "includeFiles": "dist/fantrax-stats-parser-ui/browser/index.csr.html"
+    }
+  },
   "rewrites": [
+    {
+      "source": "/career/:kind(players|goalies)/:slug",
+      "destination": "/api/career-page?kind=:kind&slug=:slug"
+    },
     {
       "source": "/api/(.*)",
       "destination": "/api/proxy?path=$1"
