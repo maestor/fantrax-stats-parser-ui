@@ -203,6 +203,46 @@ describe('Career profile', () => {
     });
   }
 
+  it('places the team from the previous season after the new team in a two-team season', async () => {
+    const row = profileFixture.seasons[0];
+    const profile = {
+      ...profileFixture,
+      seasons: [
+        { ...row, season: 2023, teamId: '1', teamName: 'Colorado Avalanche', games: 1 },
+        { ...row, season: 2023, teamId: '2', teamName: 'Anaheim Ducks', games: 0 },
+        { ...row, season: 2022, teamId: '1', teamName: 'Colorado Avalanche' },
+      ],
+    } satisfies components['schemas']['CareerPlayer'];
+    await setup({ getCareerPlayer: () => of(profile) });
+    await TestBed.inject(Router).navigateByUrl('/career/players/p1');
+    const table = await screen.findByRole('table', { name: 'career.profile.seasons' });
+    const rows = within(table).getAllByRole('row').slice(1);
+    expect(rows.map((item) => item.textContent)).toEqual([
+      expect.stringContaining('Anaheim Ducks'),
+      expect.stringContaining('Colorado Avalanche'),
+      expect.stringContaining('Colorado Avalanche'),
+    ]);
+  });
+
+  it('preserves the API order when adjacent seasons give conflicting clues', async () => {
+    const row = profileFixture.seasons[0];
+    const profile = {
+      ...profileFixture,
+      seasons: [
+        { ...row, season: 2024, teamId: '1', teamName: 'Colorado Avalanche' },
+        { ...row, season: 2023, teamId: '1', teamName: 'Colorado Avalanche' },
+        { ...row, season: 2023, teamId: '2', teamName: 'Anaheim Ducks' },
+        { ...row, season: 2022, teamId: '1', teamName: 'Colorado Avalanche' },
+      ],
+    } satisfies components['schemas']['CareerPlayer'];
+    await setup({ getCareerPlayer: () => of(profile) });
+    await TestBed.inject(Router).navigateByUrl('/career/players/p1');
+    const table = await screen.findByRole('table', { name: 'career.profile.seasons' });
+    const rows = within(table).getAllByRole('row').slice(1);
+    expect(rows[1]).toHaveTextContent('Colorado Avalanche');
+    expect(rows[2]).toHaveTextContent('Anaheim Ducks');
+  });
+
   it.each([
     { list: 'players', position: 'F', name: 'Artturi Lehkonen' },
     { list: 'players', position: 'D', name: 'Miro Heiskanen' },
